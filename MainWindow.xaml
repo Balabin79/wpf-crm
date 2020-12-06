@@ -4,9 +4,299 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental"
+        xmlns:viewModels="clr-namespace:Dental.ViewModels"
+        xmlns:pages="clr-namespace:Dental.Views.Pages"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="{Binding Path=Title}" Visibility="Visible">
+    <Window.Resources>
+        <Storyboard x:Key="MenuOpen">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="70"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200"/>
+            </DoubleAnimationUsingKeyFrames>
+
+        </Storyboard>
+        <Storyboard x:Key="MenuClose">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="70"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <!--<vm:TicketViewModel x:Key="TicketViewModel" />-->
+
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">
+            <BeginStoryboard Storyboard="{StaticResource MenuOpen}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseMenu">
+            <BeginStoryboard Storyboard="{StaticResource MenuClose}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Window.DataContext>
+        <viewModels:MainWindowViewModel></viewModels:MainWindowViewModel>
+    </Window.DataContext>
+
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+
+
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition />
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="20*"/>
+        </Grid.ColumnDefinitions>
+
+
+
+
+        <!-- Верхняя панель (меню) -->
+
+        <materialDesign:ColorZone Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="0" 
+                                      Height="60" VerticalAlignment="Top" Mode="PrimaryMid"  Padding="7">
+            <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="40*"/>
+                    </Grid.ColumnDefinitions>
+                
+                    <materialDesign:ColorZone
+                              Grid.Column="1"
+                                Mode="Standard"
+                                Padding="5 0 5 0"
+                                CornerRadius="2"
+                                Panel.ZIndex="1"
+                                Margin="10 5 0 0"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                HorizontalAlignment="Stretch"
+                                >
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="20" Width="20" 
+                                                         Margin="0 7 0 0 "/>
+
+                        <TextBox
+                                        Grid.Column="1"
+                                       Height="30"
+                                       Margin="2 5 0 0"
+                                        materialDesign:HintAssist.Hint="Поиск"
+                                
+                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                        BorderThickness="0"
+                                        VerticalAlignment="Center" 
+                                        FontSize="16"
+                                        HorizontalAlignment="Stretch"
+                                        />
+                    </Grid>
+
+                </materialDesign:ColorZone>
+
+                <Button  Grid.Column="2" Width="70" Padding="5" Height="35" Margin="5 0 0 0" Background="{x:Null}" Foreground="White" 
+                                BorderBrush="{x:Null}" >
+                    НАЙТИ
+                </Button>
+
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="3">
+                    <Button  Background="{x:Null}" Foreground="White" 
+                            BorderBrush="{x:Null}"                             
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="BellOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
+                                BorderBrush="{x:Null}"                             
+                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="HelpCircleOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
+                                BorderBrush="{x:Null}"                             
+                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="AlertRhombusOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White"
+                            BorderBrush="{x:Null}"                             
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="AccountConvertOutline" Width="25" Height="25" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+
+
+        <Grid Width="200" HorizontalAlignment="Left" x:Name="GridMenu" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0">
+            <!-- Левая боковая панель (меню) -->
+
+            <StackPanel  
+                        Orientation="Vertical" Background="#e8eaf6" VerticalAlignment="Stretch" Grid.RowSpan="3">
+                <Grid Height="65" Background="White">
+                    <Button Width="60" Height="60" Background="{x:Null}" BorderBrush="{x:Null}" 
+                            VerticalAlignment="Top" HorizontalAlignment="Right" Name="ButtonCloseMenu" Click="ButtonCloseMenu_Click">
+                        <materialDesign:PackIcon Kind="ArrowLeft" Width="25" Height="25" Foreground="#5c6bc0"/>
+                    </Button>
+                    <Button Width="60" Height="65" Background="{x:Null}" BorderBrush="{x:Null}" 
+                                 Click="ButtonOpenMenu_Click" Name="ButtonOpenMenu" Visibility="Collapsed"
+                            VerticalAlignment="Top" HorizontalAlignment="Left"  
+                                Margin="5 0 0 0">
+                        <materialDesign:PackIcon Kind="Menu" Width="25" Height="25" Foreground="#5c6bc0"/>
+                    </Button>
+                </Grid>
+
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Рабочий стол"
+                            Command="{Binding LeftMenuClick}"  
+                            CommandParameter="Main"
+                            >
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="DesktopMacDashboard" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >РАБОЧИЙ СТОЛ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40" Style="{StaticResource MaterialDesignFlatButton}"
+                            Command="{Binding LeftMenuClick}" CommandParameter="Shedule" ToolTip="Раcписание">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="CalendarAccount" Width="25" Height="25" 
+                                                     VerticalAlignment="Center"  />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >РАСПИСАНИЕ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            ToolTip="Пациенты"  
+                            Command="{Binding LeftMenuClick}"
+                            CommandParameter="ClientsList">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >ПАЦИЕНТЫ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Карта пациента"  
+                            Command="{Binding LeftMenuClick}" CommandParameter="PatientCard">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="AccountDetails" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >КАРТА ПАЦИЕНТА</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Персонал"
+                            Command="{Binding LeftMenuClick}" CommandParameter="Personals">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="AccountTie" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >ПЕРСОНАЛ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Прайсы"
+                            Command="{Binding LeftMenuClick}" CommandParameter="Prices">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="CardText" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" 
+                                                     />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >ПРАЙСЫ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Отчеты"
+                            Command="{Binding LeftMenuClick}" CommandParameter="Reports">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="ChartBar" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >ОТЧЕТЫ</TextBlock>
+                    </Grid>
+                </Button>
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Справочники"
+                            Command="{Binding LeftMenuClick}" CommandParameter="Nomenclature">
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="Bookshelf" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" 
+                                                     />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >СПРАВОЧНИКИ</TextBlock>
+                    </Grid>
+                </Button>
+
+                <Button Foreground="#5c6bc0" Height="40"
+                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Администрирование"                          
+                            Command="{Binding LeftMenuClick}" CommandParameter="Settings" >
+
+                    <Grid Width="200"  Margin="5,0,0,0" >
+                        <materialDesign:PackIcon Kind="HammerScrewdriver" Width="25" Height="25" 
+                                                     VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
+                                       >НАСТРОЙКИ</TextBlock>
+                    </Grid>
+                </Button>
+            </StackPanel>
+
+
+        </Grid>
+
+
+            <Frame  Source="{Binding CurrentPage}" Name="FramePage"
+                        VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                        NavigationUIVisibility="Hidden"  Content="{Binding CurrentPage}"
+                        Opacity="{Binding FrameOpacity}" />
+
+        <!--<t:Ticket x:Name="Ticket" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                      DataContext="{Binding Source={StaticResource TicketViewModel}}"
+                      Width="Auto" Height="Auto" Visibility="{Binding OpenModalWindow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Grid.ColumnSpan="3"  
+                      Grid.RowSpan="3"/>-->
+
 
     </Grid>
+    </ScrollViewer>
 </Window>
