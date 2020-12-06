@@ -21,13 +21,13 @@
         <Storyboard x:Key="MenuOpen">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="70"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="175"/>
             </DoubleAnimationUsingKeyFrames>
 
         </Storyboard>
         <Storyboard x:Key="MenuClose">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0" Value="175"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="70"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
@@ -74,7 +74,7 @@
                                       Height="60" VerticalAlignment="Top" Mode="PrimaryMid"  Padding="7">
             <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="150*"/>
                         <ColumnDefinition Width="10*"/>
                         <ColumnDefinition Width="40*"/>
@@ -86,7 +86,7 @@
                                 Padding="5 0 5 0"
                                 CornerRadius="2"
                                 Panel.ZIndex="1"
-                                Margin="10 5 0 0"
+                                Margin="0 5 0 0"
                                 materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                 HorizontalAlignment="Stretch"
                                 >
@@ -149,7 +149,7 @@
 
 
 
-        <Grid Width="200" HorizontalAlignment="Left" x:Name="GridMenu" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0">
+        <Grid Width="175" HorizontalAlignment="Left" x:Name="GridMenu" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0">
             <!-- Левая боковая панель (меню) -->
 
             <StackPanel  
@@ -172,7 +172,7 @@
                             Style="{StaticResource MaterialDesignFlatButton}"
                             ToolTip="Рабочий стол"
                             Command="{Binding LeftMenuClick}"  
-                            CommandParameter="Main"
+                            CommandParameter="{x:Type pages:MainPage}"
                             >
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="DesktopMacDashboard" Width="25" Height="25" 
@@ -183,7 +183,7 @@
                 </Button>
 
                 <Button Foreground="#5c6bc0" Height="40" Style="{StaticResource MaterialDesignFlatButton}"
-                            Command="{Binding LeftMenuClick}" CommandParameter="Shedule" ToolTip="Раcписание">
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:ShedulePage}" ToolTip="Раcписание">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="CalendarAccount" Width="25" Height="25" 
@@ -197,7 +197,7 @@
                             Style="{StaticResource MaterialDesignFlatButton}"
                             ToolTip="Пациенты"  
                             Command="{Binding LeftMenuClick}"
-                            CommandParameter="ClientsList">
+                            CommandParameter="{x:Type pages:PatientListPage}">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="AccountGroup" Width="25" Height="25" 
@@ -208,20 +208,8 @@
                 </Button>
 
                 <Button Foreground="#5c6bc0" Height="40"
-                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Карта пациента"  
-                            Command="{Binding LeftMenuClick}" CommandParameter="PatientCard">
-
-                    <Grid Width="200"  Margin="5,0,0,0" >
-                        <materialDesign:PackIcon Kind="AccountDetails" Width="25" Height="25" 
-                                                     VerticalAlignment="Center" />
-                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12" 
-                                       >КАРТА ПАЦИЕНТА</TextBlock>
-                    </Grid>
-                </Button>
-
-                <Button Foreground="#5c6bc0" Height="40"
                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Персонал"
-                            Command="{Binding LeftMenuClick}" CommandParameter="Personals">
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployeeListPage}">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="AccountTie" Width="25" Height="25" 
@@ -233,7 +221,7 @@
 
                 <Button Foreground="#5c6bc0" Height="40"
                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Прайсы"
-                            Command="{Binding LeftMenuClick}" CommandParameter="Prices">
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:PriceListPage}">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="CardText" Width="25" Height="25" 
@@ -246,7 +234,7 @@
 
                 <Button Foreground="#5c6bc0" Height="40"
                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Отчеты"
-                            Command="{Binding LeftMenuClick}" CommandParameter="Reports">
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:ReportListPage}">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="ChartBar" Width="25" Height="25" 
@@ -257,7 +245,7 @@
                 </Button>
                 <Button Foreground="#5c6bc0" Height="40"
                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Справочники"
-                            Command="{Binding LeftMenuClick}" CommandParameter="Nomenclature">
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:HandbooksPage}">
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="Bookshelf" Width="25" Height="25" 
@@ -270,7 +258,7 @@
 
                 <Button Foreground="#5c6bc0" Height="40"
                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Администрирование"                          
-                            Command="{Binding LeftMenuClick}" CommandParameter="Settings" >
+                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:SettingsPage}" >
 
                     <Grid Width="200"  Margin="5,0,0,0" >
                         <materialDesign:PackIcon Kind="HammerScrewdriver" Width="25" Height="25" 

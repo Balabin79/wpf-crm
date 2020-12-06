@@ -9,6 +9,6 @@
       Title="ShedulePage">
 
     <Grid>
-        
+        <TextBlock Text="Расписание"/>
     </Grid>
 </Page>

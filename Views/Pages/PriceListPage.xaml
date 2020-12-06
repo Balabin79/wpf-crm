@@ -9,6 +9,6 @@
       Title="PriceListPage">
 
     <Grid>
-        
+        <TextBlock Text="Список прайсов"/>
     </Grid>
 </Page>

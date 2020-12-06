@@ -9,6 +9,6 @@
       Title="PatientListPage">
 
     <Grid>
-        
+        <TextBlock Text="Список пациентов"/>
     </Grid>
 </Page>
