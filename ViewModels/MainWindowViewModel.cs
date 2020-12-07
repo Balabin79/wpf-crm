@@ -87,21 +87,17 @@ namespace Dental.ViewModels
         private bool CanLeftMenuClickCommandExecute(object p) => true;
         private void OnLeftMenuClickCommandExecuted(object p)
         {
-            bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
-            /* switch ((String)p)
-             {
-                 case "Main": Page main = this.Main ?? new Main(); SlowOpacity(main); break;
-                 case "Shedule": Page shedule = this.Shedules ?? new Shedules(); SlowOpacity(shedule); break;
-                 case "ClientsList": Page clientsList = this.ClientsList ?? new ClientsList(); SlowOpacity(clientsList); break;
-                 case "PatientCard": Page patientCard = this.PatientCard ?? new PatientCard(isNew); SlowOpacity(patientCard); break;
-                 case "Personals": Page personals = this.Personals ?? new Personals(); SlowOpacity(personals); break;
-                 case "Prices": Page prices = this.Prices ?? new Prices(); SlowOpacity(prices); break;
-                 case "Reports": Page reports = this.Reports ?? new Reports(); SlowOpacity(reports); break;
-                 case "Settings": Page settings = this.Settings ?? new Settings(); SlowOpacity(settings); break;
-                 default: Page def = this.Main ?? new Main(); SlowOpacity(def); break;
-             }*/
-            Page instance = (Page)Assembly.GetExecutingAssembly().CreateInstance(p.ToString());
-            SlowOpacity(instance);
+            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
+            try
+            {
+                Page instance = (Page)Assembly.GetExecutingAssembly().CreateInstance(p.ToString());
+                SlowOpacity(instance);
+            } catch(Exception e)
+            {
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                int x = 0;
+            }
+
         }
         #endregion
 

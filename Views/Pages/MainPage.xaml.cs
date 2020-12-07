@@ -21,6 +21,6 @@ namespace Dental.Views.Pages
         public MainPage()
         {
             InitializeComponent();
-        }
+        }     
     }
 }

@@ -16,7 +16,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}" Visibility="Visible">
+        Title="{Binding Path=Title}" Visibility="Visible"
+        >
     <Window.Resources>
         <Storyboard x:Key="MenuOpen">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
@@ -50,107 +51,26 @@
     </Window.DataContext>
 
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-
-
-
-    <Grid VerticalAlignment="Stretch">
+    <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition />
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
 
 
 
-        <!-- Верхняя панель (меню) -->
-
-        <materialDesign:ColorZone Grid.ColumnSpan="1" Grid.Column="1" Grid.Row="0" 
-                                      Height="60" VerticalAlignment="Top" Mode="PrimaryMid"  Padding="7">
-            <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="150*"/>
-                        <ColumnDefinition Width="10*"/>
-                        <ColumnDefinition Width="40*"/>
-                    </Grid.ColumnDefinitions>
-                
-                    <materialDesign:ColorZone
-                              Grid.Column="1"
-                                Mode="Standard"
-                                Padding="5 0 5 0"
-                                CornerRadius="2"
-                                Panel.ZIndex="1"
-                                Margin="0 5 0 0"
-                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
-                                HorizontalAlignment="Stretch"
-                                >
-                    <Grid HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="20" Width="20" 
-                                                         Margin="0 7 0 0 "/>
-
-                        <TextBox
-                                        Grid.Column="1"
-                                       Height="30"
-                                       Margin="2 5 0 0"
-                                        materialDesign:HintAssist.Hint="Поиск"
-                                
-                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                        BorderThickness="0"
-                                        VerticalAlignment="Center" 
-                                        FontSize="16"
-                                        HorizontalAlignment="Stretch"
-                                        />
-                    </Grid>
-
-                </materialDesign:ColorZone>
-
-                <Button  Grid.Column="2" Width="70" Padding="5" Height="35" Margin="5 0 0 0" Background="{x:Null}" Foreground="White" 
-                                BorderBrush="{x:Null}" >
-                    НАЙТИ
-                </Button>
-
-
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="3">
-                    <Button  Background="{x:Null}" Foreground="White" 
-                            BorderBrush="{x:Null}"                             
-                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="BellOutline" Width="25" Height="25" />
-                    </Button>
-                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
-                                BorderBrush="{x:Null}"                             
-                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="HelpCircleOutline" Width="25" Height="25" />
-                    </Button>
-                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
-                                BorderBrush="{x:Null}"                             
-                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="AlertRhombusOutline" Width="25" Height="25" />
-                    </Button>
-                    <Button  Background="{x:Null}" Foreground="White"
-                            BorderBrush="{x:Null}"                             
-                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                        <materialDesign:PackIcon Kind="AccountConvertOutline" Width="25" Height="25" />
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </materialDesign:ColorZone>
 
 
 
+        <!-- Левая боковая панель (меню) -->
         <Grid Width="175" HorizontalAlignment="Left" x:Name="GridMenu" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0">
-            <!-- Левая боковая панель (меню) -->
+            
 
             <StackPanel  
                         Orientation="Vertical" Background="#e8eaf6" VerticalAlignment="Stretch" Grid.RowSpan="3">
@@ -271,10 +191,80 @@
 
 
         </Grid>
+        
+        
+        <!-- Верхняя панель (меню) -->
+        
+        <materialDesign:ColorZone  Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"
+                                      Height="60" VerticalAlignment="Top" Mode="PrimaryMid"  Padding="7">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:ColorZone Grid.Column="1" Mode="Standard" Padding="5 0 5 0"
+                                CornerRadius="2" Panel.ZIndex="1" Margin="0 5 10 0"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1" HorizontalAlignment="Stretch">
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <materialDesign:PackIcon Kind="Magnify" Opacity=".56" Height="20" Width="20" 
+                                                         Margin="0 8 0 0 "/>
+
+                        <TextBox
+                                        Grid.Column="1"
+                                       Height="35"
+                                       Margin="2 2 0 0"
+                                        materialDesign:HintAssist.Hint="Поиск"
+                                
+                                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                        BorderThickness="0"
+                                        VerticalAlignment="Center" 
+                                        FontSize="15"
+                                        HorizontalAlignment="Stretch"
+                                        />
+                    </Grid>
+
+                </materialDesign:ColorZone>
+
+                <Button  Grid.Column="2" Width="70" Padding="5" Height="35"  Background="{x:Null}" Foreground="White" 
+                                BorderBrush="{x:Null}" Margin="0 0 20 0">НАЙТИ</Button>
 
 
-            <Frame  Source="{Binding CurrentPage}" Name="FramePage"
-                        VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Grid.Column="3">
+                    <Button  Background="{x:Null}" Foreground="White" 
+                            BorderBrush="{x:Null}"                             
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="BellOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
+                                BorderBrush="{x:Null}"                             
+                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="HelpCircleOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White" HorizontalAlignment="Right"
+                                BorderBrush="{x:Null}"                             
+                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="AlertRhombusOutline" Width="25" Height="25" />
+                    </Button>
+                    <Button  Background="{x:Null}" Foreground="White"
+                            BorderBrush="{x:Null}"                             
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                        <materialDesign:PackIcon Kind="AccountConvertOutline" Width="25" Height="25" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <Frame  Source="{Binding CurrentPage}" Name="FramePage"
+                        VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" 
                         NavigationUIVisibility="Hidden"  Content="{Binding CurrentPage}"
                         Opacity="{Binding FrameOpacity}" />
 
@@ -286,5 +276,5 @@
 
 
     </Grid>
-    </ScrollViewer>
+    
 </Window>
