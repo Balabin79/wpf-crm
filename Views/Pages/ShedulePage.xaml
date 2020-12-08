@@ -4,19 +4,46 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Dental.Views.Pages"
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling" x:Class="Dental.Views.Pages.ShedulePage"
-      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+      xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling" 
+      xmlns:viewModels="clr-namespace:Dental.ViewModels"
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+      xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
+      xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      x:Class="Dental.Views.Pages.ShedulePage"
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ShedulePage">
+    <Grid x:Name="GridSheduler" Margin="10" DataContext="{dxmvvm:ViewModelSource viewModels:SheduleViewModel}">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            
+            <dxsch:SchedulerControl x:Name="scheduler" CommandBarStyle="Ribbon"
+                    Width="{Binding ActualWidth, ElementName=GridSheduler}" Height="{Binding ActualHeight, ElementName=GridSheduler}" 
+                    GroupType="Resource" FirstDayOfWeek="Monday">
 
-    <Grid x:Name="GridSheduler" Margin="10" >
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <dxsch:SchedulerControl Name="Sheduler"
-                              
-               Width="{Binding ElementName=GridSheduler, Path=ActualWidth}"
-               Height="{Binding ElementName=GridSheduler, Path=ActualHeight}"
-               />
+                <dxsch:SchedulerControl.DataSource>
+                    
+                    <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
+                        
+                        <dxsch:DataSource.ResourceMappings>
+                            <dxsch:ResourceMappings Caption="Name" Id="Id"/>
+                        </dxsch:DataSource.ResourceMappings>
+                        
+                        <dxsch:DataSource.AppointmentMappings>
+                            <dxsch:AppointmentMappings Type="Type" Start="StartTime" StatusId="StatusId" Subject="PatientName" ResourceId="DoctorId" RecurrenceInfo="RecurrenceInfo" Reminder="ReminderInfo" LabelId="CategoryId" Location="Location" Id="Id" End="EndTime" Description="Notes" AllDay="AllDay">
+                                <dxsch:CustomFieldMapping Mapping="InsuranceNumber" Name="InsuranceNumber"/>
+                                <dxsch:CustomFieldMapping Mapping="FirstVisit" Name="FirstVisit"/>
+                            </dxsch:AppointmentMappings>
+                        </dxsch:DataSource.AppointmentMappings>
+                        
+                    </dxsch:DataSource>
+                    
+                </dxsch:SchedulerControl.DataSource>
+                
+            </dxsch:SchedulerControl>
+            
         </ScrollViewer>
-
     </Grid>
 </Page>

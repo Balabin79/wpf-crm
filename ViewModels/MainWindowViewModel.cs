@@ -16,14 +16,7 @@ namespace Dental.ViewModels
         /// <summary>
         /// Страницы разделов программы
         /// </summary>
-        private Page MainPage;
-        private Page ShedulePage;
-        private Page PatientListPage;
-        private Page PriceListPage;
-        private Page EmployeeListPage;
-        private Page ReportListPage;
-        private Page SettingsPage;
-
+     
         private Page currentPage;
         private Double frameOpacity;
 
