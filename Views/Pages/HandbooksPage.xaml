@@ -1,14 +1,53 @@
-﻿<Page x:Class="Dental.Views.Pages.HandbooksPage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Dental.Views.Pages"
+        xmlns:viewModels="clr-namespace:Dental.ViewModels" 
+      xmlns:pages="clr-namespace:Dental.Views.HandbooksPages"
+      xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="Dental.Views.Pages.HandbooksPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HandbooksPage">
 
-    <Grid>
-        <TextBlock Text="Справочники"/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="166"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.DataContext>
+            <viewModels:HandbooksViewModel/>
+        </Grid.DataContext>
+
+        <dxr:RibbonControl Height="166" RibbonStyle="Office2010" Grid.Row="0" ShowApplicationButton="False" >
+  
+            <dxr:RibbonPageCategory Caption="Ribbon Category" >
+                
+                <dxr:RibbonPage Caption="Интеграции">
+                    <dxr:RibbonPageGroup Caption="Ribbon Page Group">
+                        <dxb:BarButtonItem Content=" Сотрудники  " RibbonStyle="Default" 
+                                           LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" />
+                        
+                        <dxb:BarButtonItem Content="Специальности" RibbonStyle="Default" 
+                                           LargeGlyph="{dx:DXImage Images/Content/Notes_32x32.png}"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
+                        <dxb:BarButtonItem Content="    Статусы    " RibbonStyle="Default" 
+                                           LargeGlyph="{dx:DXImage Images/XAF/BO_Position_32x32.png}"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}"/>
+                        <dxb:BarButtonItem Content="      Роли       " RibbonStyle="Default" 
+                                           LargeGlyph="{dx:DXImage Images/XAF/BO_Role_32x32.png}" 
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Roles}"/>
+                    </dxr:RibbonPageGroup>
+
+                </dxr:RibbonPage>
+            </dxr:RibbonPageCategory>
+        </dxr:RibbonControl>
+
+        <Frame Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch"               
+               Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" 
+               NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}" 
+               Opacity="{Binding FrameOpacity}" />
     </Grid>
 </Page>

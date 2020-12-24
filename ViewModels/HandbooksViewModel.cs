@@ -1,36 +1,23 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Dental.Infrastructures.Commands.Base;
-using Dental.Views.Pages;
-using System.Threading.Tasks;
-using System.Windows;
+using Dental.Views.HandbooksPages;
 using System.Windows.Input;
 using System.Threading;
 using System.Reflection;
 
 namespace Dental.ViewModels
 {
-    internal class MainWindowViewModel : ViewModelBase
+    class HandbooksViewModel : ViewModelBase
     {
-        private string _Title = "Dental";
-        /// <summary>
-        /// Страницы разделов программы
-        /// </summary>
-     
-        private Page currentPage;
-        private Double frameOpacity;
-
-
-
-        public MainWindowViewModel()
+        public HandbooksViewModel()
         {
             FrameOpacity = 1;
-            CurrentPage = new MainPage();
-
-            CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
+            CurrentPage = new Employes();
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
         }
-        
+
         /// <summary>
         /// Текущая страница
         /// </summary>
@@ -49,33 +36,7 @@ namespace Dental.ViewModels
             set => Set(ref frameOpacity, value);
         }
 
-        /// <summary>
-        /// Заголовок окна
-        /// </summary>
-        public string Title
-        {
-            get => _Title;
-            set => Set(ref _Title, value);
-        }
 
-
-        #region Command
-
-        /// <summary>
-        /// Команда закрытия приложения
-        /// </summary>
-        public ICommand CloseApplicationCommand { get; }
-
-        private bool CanCloseApplicationCommandExecute(object p) => true;
-
-        private void OnCloseApplicationCommandExecuted(object p)
-        {
-            Application.Current.Shutdown();
-        }
-
-        /// <summary>
-        /// Команда переключения страниц через боковую (слева) панель меню (разделы)
-        /// </summary>
         public ICommand LeftMenuClick { get; }
         private bool CanLeftMenuClickCommandExecute(object p) => true;
         private void OnLeftMenuClickCommandExecuted(object p)
@@ -85,14 +46,15 @@ namespace Dental.ViewModels
             {
                 Page instance = (Page)Assembly.GetExecutingAssembly().CreateInstance(p.ToString());
                 SlowOpacity(instance);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
                 int x = 0;
             }
 
         }
-        #endregion
+
 
 
         /// <summary>
@@ -116,5 +78,8 @@ namespace Dental.ViewModels
                 }
             });
         }
+
+        private Page currentPage;
+        private Double frameOpacity;
     }
 }

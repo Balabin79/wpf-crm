@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Pages
+namespace Dental.Views.HandbooksPages
 {
     /// <summary>
-    /// Логика взаимодействия для EmployeeListPage.xaml
+    /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class EmployeeListPage : Page
+    public partial class Roles : Page
     {
-        public EmployeeListPage()
+        public Roles()
         {
             InitializeComponent();
         }

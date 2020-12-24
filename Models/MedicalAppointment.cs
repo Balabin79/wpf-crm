@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +13,7 @@ namespace Dental.Models
         {
             return ViewModelSource.Create(() => new MedicalAppointment());
         }
+
         internal static MedicalAppointment Create(DateTime startTime, DateTime endTime,
             int doctorId, string notes, string location, int categoryId, string patientName,
             string insuranceNumber, bool firstVisit)

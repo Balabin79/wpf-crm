@@ -16,34 +16,45 @@
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ShedulePage">
-    <Grid x:Name="GridSheduler" Margin="10" DataContext="{dxmvvm:ViewModelSource viewModels:SheduleViewModel}">
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            
-            <dxsch:SchedulerControl x:Name="scheduler" CommandBarStyle="Ribbon"
-                    Width="{Binding ActualWidth, ElementName=GridSheduler}" Height="{Binding ActualHeight, ElementName=GridSheduler}" 
-                    GroupType="Resource" FirstDayOfWeek="Monday">
+    <Grid x:Name="GridSheduler" Margin="10 10 10 10" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="53*"/>
+            <RowDefinition Height="162*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
+            <Grid>
 
-                <dxsch:SchedulerControl.DataSource>
+              <!--  <dxr:RibbonControl RibbonStyle="Office2019"  Background="Red"></dxr:RibbonControl> -->
+                <dxsch:SchedulerControl x:Name="scheduler" CommandBarStyle="Ribbon"
+                    DataContext="{dxmvvm:ViewModelSource viewModels:SheduleViewModel}"
+                    Width="{Binding ActualWidth, ElementName=GridSheduler}" Height="{Binding ActualHeight, ElementName=GridSheduler}" 
+                    GroupType="Resource" FirstDayOfWeek="Monday" ShowDateNavigationPanel="False" >
                     
-                    <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
-                        
-                        <dxsch:DataSource.ResourceMappings>
-                            <dxsch:ResourceMappings Caption="Name" Id="Id"/>
-                        </dxsch:DataSource.ResourceMappings>
-                        
-                        <dxsch:DataSource.AppointmentMappings>
-                            <dxsch:AppointmentMappings Type="Type" Start="StartTime" StatusId="StatusId" Subject="PatientName" ResourceId="DoctorId" RecurrenceInfo="RecurrenceInfo" Reminder="ReminderInfo" LabelId="CategoryId" Location="Location" Id="Id" End="EndTime" Description="Notes" AllDay="AllDay">
-                                <dxsch:CustomFieldMapping Mapping="InsuranceNumber" Name="InsuranceNumber"/>
-                                <dxsch:CustomFieldMapping Mapping="FirstVisit" Name="FirstVisit"/>
-                            </dxsch:AppointmentMappings>
-                        </dxsch:DataSource.AppointmentMappings>
-                        
-                    </dxsch:DataSource>
-                    
-                </dxsch:SchedulerControl.DataSource>
-                
-            </dxsch:SchedulerControl>
-            
+
+                    <dxsch:SchedulerControl.DataSource>
+
+                        <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
+
+                            <dxsch:DataSource.ResourceMappings>
+                                <dxsch:ResourceMappings 
+                                    Caption="Name" 
+                                    Id="Id"/>
+                            </dxsch:DataSource.ResourceMappings>
+
+                            <dxsch:DataSource.AppointmentMappings>
+                                <dxsch:AppointmentMappings Type="Type" Start="StartTime" StatusId="StatusId" Subject="PatientName" ResourceId="DoctorId" RecurrenceInfo="RecurrenceInfo" Reminder="ReminderInfo" LabelId="CategoryId" Location="Location" Id="Id" End="EndTime" Description="Notes" AllDay="AllDay">
+                                    <dxsch:CustomFieldMapping Mapping="InsuranceNumber" Name="InsuranceNumber"/>
+                                    <dxsch:CustomFieldMapping Mapping="FirstVisit" Name="FirstVisit"/>
+                                </dxsch:AppointmentMappings>
+                            </dxsch:DataSource.AppointmentMappings>
+
+                        </dxsch:DataSource>
+
+                    </dxsch:SchedulerControl.DataSource>
+
+                </dxsch:SchedulerControl>
+                   
+            </Grid>
         </ScrollViewer>
     </Grid>
 </Page>

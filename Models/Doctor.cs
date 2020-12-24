@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dental.Models.Share;
 using DevExpress.Mvvm.POCO;
+using System;
+using System.Linq;
 
 namespace Dental.Models
 {
@@ -13,7 +11,8 @@ namespace Dental.Models
         {
             return ViewModelSource.Create(() => new Doctor());
         }
-        public static Doctor Create(int Id, string Name)
+
+        public static Doctor Create(string Id, string Name)
         {
             Doctor doctor = Doctor.Create();
             doctor.Id = Id;
@@ -23,7 +22,12 @@ namespace Dental.Models
 
         protected Doctor() { }
 
-        public virtual int Id { get; set; }
+        public virtual string Id { get; set; }
+        public virtual string Type { get; set; }
+        public Employee Employee { get; set; }
+
+
+
         public virtual string Name { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using Dental.Models;
 
@@ -12,19 +12,19 @@ namespace Dental.ViewModels
 
         protected SheduleViewModel()
         {
-            CreateDoctors();
-            CreateMedicalAppointments();
+            GetDoctors();
+            GetMedicalAppointments();
         }
 
-        private void CreateDoctors()
+        private void GetDoctors()
         {
             Doctors = new ObservableCollection<Doctor>();
-            Doctors.Add(Doctor.Create(Id: 1, Name: "Stomatologist"));
-            Doctors.Add(Doctor.Create(Id: 2, Name: "Ophthalmologist"));
-            Doctors.Add(Doctor.Create(Id: 3, Name: "Surgeon"));
+            Doctors.Add(Doctor.Create(Id: "doctor_1", Name: "Stomatologist"));
+            Doctors.Add(Doctor.Create(Id: "doctor_2", Name: "Ophthalmologist"));
+            Doctors.Add(Doctor.Create(Id: "doctor_3", Name: "Surgeon"));
         }
             
-        private void CreateMedicalAppointments()           
+        private void GetMedicalAppointments()           
         {
             Appointments = new ObservableCollection<MedicalAppointment>();
             Appointments.Add(MedicalAppointment.Create(
