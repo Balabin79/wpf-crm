@@ -9,6 +9,9 @@
     xmlns:pages="clr-namespace:Dental.Views.Pages" 
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz">
+
+    
+
     <Window.Resources>
         <Storyboard x:Key="MenuOpen">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
@@ -25,7 +28,7 @@
         </Storyboard>
 
         <!--<vm:TicketViewModel x:Key="TicketViewModel" />-->
-
+        
     </Window.Resources>
 
     <Window.Triggers>

@@ -9,41 +9,57 @@
       xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="Dental.Views.Pages.HandbooksPage"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
       Title="HandbooksPage">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="166"/>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.DataContext>
             <viewModels:HandbooksViewModel/>
         </Grid.DataContext>
 
-        <dxr:RibbonControl Height="166" RibbonStyle="Office2010" Grid.Row="0" ShowApplicationButton="False" >
-  
-            <dxr:RibbonPageCategory Caption="Ribbon Category" >
-                
-                <dxr:RibbonPage Caption="Интеграции">
-                    <dxr:RibbonPageGroup Caption="Ribbon Page Group">
-                        <dxb:BarButtonItem Content=" Сотрудники  " RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" />
-                        
-                        <dxb:BarButtonItem Content="Специальности" RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/Content/Notes_32x32.png}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
-                        <dxb:BarButtonItem Content="    Статусы    " RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/XAF/BO_Position_32x32.png}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}"/>
-                        <dxb:BarButtonItem Content="      Роли       " RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/XAF/BO_Role_32x32.png}" 
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Roles}"/>
-                    </dxr:RibbonPageGroup>
-
-                </dxr:RibbonPage>
-            </dxr:RibbonPageCategory>
-        </dxr:RibbonControl>
+        <UniformGrid Rows="1" Grid.Row="0">
+            <Button Height="70"
+                Style="{StaticResource MaterialDesignFlatButton}"
+                ToolTip="Организации"
+                Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Organizations}">
+                <StackPanel >
+                    <materialDesign:PackIcon Kind="BriefcaseOutline" Height="30" Width="30" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Организации"/>
+                </StackPanel>
+            </Button>
+            <Button Height="70"
+                Style="{StaticResource MaterialDesignFlatButton}"
+                ToolTip="Специальности"
+                Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}">
+                <StackPanel >
+                    <materialDesign:PackIcon Kind="AccountTieOutline" Height="30" Width="30" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Специальности"/>
+                </StackPanel>
+            </Button>
+            <Button Height="70"
+                Style="{StaticResource MaterialDesignFlatButton}"
+                ToolTip="Статусы"
+                Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}">
+                <StackPanel >
+                    <materialDesign:PackIcon Kind="AccountstarOutline" Height="30" Width="30" HorizontalAlignment="Center" />
+                    <TextBlock Text="Статусы"/>
+                </StackPanel>
+            </Button>
+            <Button Height="70"
+                Style="{StaticResource MaterialDesignFlatButton}"
+                ToolTip="Роли"
+                Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Roles}">
+                <StackPanel>
+                    <materialDesign:PackIcon Kind="DramaMasks"  Height="30" Width="30" HorizontalAlignment="Center" />
+                    <TextBlock Text="Роли"/>
+                </StackPanel>
+            </Button>
+            
+        </UniformGrid>
 
         <Frame Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch"               
                Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" 
