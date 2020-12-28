@@ -4,7 +4,7 @@ using Dental.Models;
 
 namespace Dental.ViewModels
 {
-    public class SheduleViewModel
+   class SheduleViewModel
     {
 
         public virtual ObservableCollection<Doctor> Doctors { get; set; }

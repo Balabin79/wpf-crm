@@ -17,7 +17,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    public class Employee //: IDataErrorInfo
+    class Employee //: IDataErrorInfo
     {
 
         public static Employee Create()

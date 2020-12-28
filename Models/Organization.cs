@@ -1,9 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using Dental.Infrastructures.Commands.Base;
+using Dental.ViewModels;
+using DevExpress.Xpf.Core;
+using Dental.Repositories;
 
 namespace Dental.Models
 {
-    public class Organization
-    {
+    class Organization : ViewModelBase
+    { 
         //Общая инф-ция
         public string Inn { get; set; } // Инн
         public string Kpp { get; set; } // Кпп
@@ -30,5 +38,52 @@ namespace Dental.Models
         // Служебные поля
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+
+        private ObservableCollection<Organization> listOrganizations;
+        public ObservableCollection<Organization> ListOrganisations {
+            get
+            {
+                if (listOrganizations == null)
+                {
+                    listOrganizations = OrganisationRepository.GetFakeOrganizations();
+                    return listOrganizations;
+                }
+                return listOrganizations;
+            }
+            set
+            {
+                Set(ref listOrganizations, value);
+            }
+        }
+
+        public Organization()
+        {
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+        }
+
+
+        public ICommand DeleteCommand { get; }
+        private bool CanDeleteCommandExecute(object p) => true;
+        private void OnDeleteCommandExecuted(object p)
+        {
+            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
+            try
+            {
+                
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Вы уверены что хотите удалить организацию?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+                if (response.ToString() == "Yes") {
+                    Organization org = (Organization)p;
+                    ListOrganisations.Remove(org);
+                }
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                int c = 0;
+            }
+
+        }
     }
 }

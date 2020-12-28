@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Dental.Models
 {
-    public class Doctor
+    class Doctor
     {
         public static Doctor Create()
         {
