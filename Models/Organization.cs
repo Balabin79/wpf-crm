@@ -69,21 +69,19 @@ namespace Dental.Models
         {
             //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
             try
-            {
-                
+            {             
                 var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Вы уверены что хотите удалить организацию?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
                 if (response.ToString() == "Yes") {
                     Organization org = (Organization)p;
                     ListOrganisations.Remove(org);
                 }
-                int x = 0;
             }
             catch (Exception e)
             {
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
-                int c = 0;
             }
 
         }
+
     }
 }

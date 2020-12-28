@@ -1,27 +1,62 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Dental.ViewModels;
+using Dental.Repositories;
+using System.Windows.Input;
+using Dental.Infrastructures.Commands.Base;
+using System.Windows;
+using DevExpress.Xpf.Core;
+using System;
 
 namespace Dental.Models
 {
-    public class Speciality
+    class Speciality : ViewModelBase
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
 
-        public List<Speciality> FakeListSpecialistes
+        private ObservableCollection<Speciality> listSpecialies;
+        public ObservableCollection<Speciality> ListSpecialities
         {
             get
             {
-                return new List<Speciality>
+                if (listSpecialies == null)
                 {
-                    new Speciality() {Name="Терапевт", Description="", IsActive=true},
-                    new Speciality() {Name="Ортодонт", Description="", IsActive=true},
-                    new Speciality() {Name="Хирург", Description="", IsActive=true},
-                    new Speciality() {Name="Протезист", Description="", IsActive=true},
-                    new Speciality() {Name="Рентгенолог", Description="", IsActive=true},
-                    new Speciality() {Name="Анестезиолог", Description="", IsActive=true}
-                };
+                    listSpecialies = SpecialityRepository.GetFakeSpecialities();
+                    return listSpecialies;
+                }
+                return listSpecialies;
+            }
+            set
+            {
+                Set(ref listSpecialies, value);
+            }
+
+        }
+
+        public Speciality()
+        {
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+        }
+
+        public ICommand DeleteCommand { get; }
+        private bool CanDeleteCommandExecute(object p) => true;
+        private void OnDeleteCommandExecuted(object p)
+        {
+            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Вы уверены что хотите удалить специальность?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+                if (response.ToString() == "Yes")
+                {
+                    Speciality sp = (Speciality)p;
+                    ListSpecialities.Remove(sp);
+                }
+            }
+            catch (Exception e)
+            {
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }
 
         }

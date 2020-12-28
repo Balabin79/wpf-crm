@@ -23,8 +23,24 @@ namespace Dental.Behaviors
         void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var _FocucedRow = (e.Source as TableView).FocusedRow;
-            var vm = AssociatedObject.DataContext as Organization;
-            vm.DeleteCommand.Execute(_FocucedRow);
+            string nameClass = _FocucedRow.GetType().Name;
+
+            switch(nameClass) 
+            { 
+                case "Organization" : ((Organization)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
+                case "Role" : ((Role)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
+                case "Speciality" : ((Speciality)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
+                case "EmployeeStatus" : ((EmployeeStatus)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
+            }
+
+
+
+
+
+
+            //vm.DeleteCommand.Execute(_FocucedRow);
         }
+
+
     }
 }

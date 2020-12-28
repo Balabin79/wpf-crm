@@ -6,6 +6,9 @@
       xmlns:local="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:models ="clr-namespace:Dental.Models"
+      xmlns:b ="clr-namespace:Dental.Behaviors" 
+      xmlns:i="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Roles">
@@ -17,11 +20,15 @@
         <dxg:GridControl AutoGenerateColumns="None" 
                  EnableSmartColumnsGeneration="False"
                       
-                 ItemsSource="{Binding FakeListRoles}">
+                 ItemsSource="{Binding ListRoles}">
             <dxg:GridControl.View>
                 <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True"  AutoWidth="True" 
                                BestFitModeOnSourceChange="VisibleRows" ShowUpdateRowButtons="OnCellEditorOpen"
-                               NewItemRowPosition="Bottom" AllowDragDrop="True" ShowDataNavigator="True"/>
+                               NewItemRowPosition="Bottom" AllowDragDrop="True" ShowDataNavigator="True">
+                    <dxmvvm:Interaction.Behaviors>
+                        <b:DeleteRowDataGridBehaviors/>
+                    </dxmvvm:Interaction.Behaviors>
+                </dxg:TableView>
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Name"  Header="Наименование"/>
             <dxg:GridColumn FieldName="Description"  Header="Описание"/>
