@@ -13,22 +13,14 @@ using DevExpress.Mvvm.UI.Interactivity;
 namespace Dental.Behaviors
 {
 
-    public class CurrentEventBehavior : Behavior<TableView>
+    public class FullActionDataGridBehavior : DeleteRowDataGridBehaviors
     {
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.DeleteFocusedRow, OnDeleteExecuted));
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EndEditFocusedRow, OnEditExecuted));
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.AddNewRow, OnAddNewExecuted));
-        }
-
-        void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            var _FocucedRow = (e.Source as TableView).FocusedRow;
-            var vm = AssociatedObject.DataContext as Organization;
-            vm.DeleteCommand.Execute(_FocucedRow);
         }
 
         void OnEditExecuted(object sender, ExecutedRoutedEventArgs e)

@@ -36,7 +36,7 @@
                                >
 
                     <dxmvvm:Interaction.Behaviors>
-                        <b:CurrentEventBehavior/>
+                        <b:FullActionDataGridBehavior/>
                     </dxmvvm:Interaction.Behaviors>
 
 
