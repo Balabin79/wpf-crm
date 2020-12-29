@@ -11,8 +11,10 @@ using Dental.Repositories;
 namespace Dental.Models
 {
     class Organization : ViewModelBase
-    { 
+    {
         //Общая инф-ция
+        public string Logo { get; set; } // Логотип
+
         public string Inn { get; set; } // Инн
         public string Kpp { get; set; } // Кпп
         public string Name { get; set; } // Наименование орг-ции

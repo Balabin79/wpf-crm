@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+            xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:models ="clr-namespace:Dental.Models"
@@ -19,7 +20,7 @@
         <Grid.DataContext>
             <models:Organization/>
         </Grid.DataContext>
-        <dxg:GridControl AutoGenerateColumns="None"  x:Name="GridOrganisation" 
+        <dxg:GridControl AutoGenerateColumns="None"  x:Name="GridOrganisation" dx:ThemeManager.ThemeName="Office2019White"
                  EnableSmartColumnsGeneration="True" 
                  ItemsSource="{Binding ListOrganisations, Mode=TwoWay}">
             

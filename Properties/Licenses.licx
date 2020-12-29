@@ -10,3 +10,5 @@ DevExpress.Xpf.Navigation.TileNavPane, DevExpress.Xpf.Controls.v20.1, Version=20
 DevExpress.Xpf.WindowsUI.AppBar, DevExpress.Xpf.Controls.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
 DevExpress.Xpf.Docking.DockLayoutManager, DevExpress.Xpf.Docking.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
 DevExpress.Xpf.Bars.BarManager, DevExpress.Xpf.Core.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.LayoutControl.LayoutControl, DevExpress.Xpf.LayoutControl.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.Xpf.LayoutControl.LayoutGroup, DevExpress.Xpf.LayoutControl.v20.1, Version=20.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
