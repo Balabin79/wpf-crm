@@ -1,29 +1,77 @@
-﻿<Page
+﻿<Page xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       x:Class="Dental.Views.HandbooksPages.NewOrganization"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="NewOrganization">
 
-    <Grid>
+    <Grid dx:ThemeManager.ThemeName="Office2019White">
 
-        <dxlc:LayoutControl HorizontalAlignment="Stretch" VerticalAlignment="Top" >
-
-            <dxlc:LayoutGroup Header="{Binding}"                      
-                          View="GroupBox"
-                          Height="235"                            
+        <dxlc:LayoutControl  VerticalAlignment="Top" Orientation="Vertical" >
+            <dxlc:LayoutControl  VerticalAlignment="Top" Orientation="Horizontal" >
+                <dxlc:LayoutGroup Header="Контактная информация" Orientation="Vertical"                  
+                          View="GroupBox"                                                     
                           ItemSpace="10"
-                          dxlc:LayoutControl.AllowVerticalSizing="True">
-                <Image Source="{Binding Logo}" HorizontalAlignment="Left" />
-                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
-            </dxlc:LayoutGroup>
+                          dxlc:LayoutControl.AllowVerticalSizing="True"  ></dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Общая информация" Orientation="Vertical"                  
+                          View="GroupBox"                                                     
+                          ItemSpace="10"
+                          dxlc:LayoutControl.AllowVerticalSizing="True"  >
+                    <dxlc:LayoutGroup VerticalAlignment="Top" Orientation="Horizontal" View="Group">
+                        <dxe:TextEdit NullText="ИНН" MaxLength="10" MaskType="Numeric"  />
+                        <dxe:TextEdit NullText="КПП" MaxLength="9"  MaskType="Numeric"  />
+                    </dxlc:LayoutGroup>
+                    
+                    <dxe:TextEdit NullText="Название организации" />
+                    <dxe:TextEdit NullText="Краткое название" />
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
+            
+            
+            <dxlc:LayoutControl  VerticalAlignment="Top" Orientation="Horizontal" >
+                <dxlc:LayoutGroup Header="Контактная информация" Orientation="Vertical"                  
+                          View="GroupBox"                                                     
+                          ItemSpace="10"
+                          dxlc:LayoutControl.AllowVerticalSizing="True"  >
+                    <dxlc:LayoutGroup VerticalAlignment="Top" Orientation="Horizontal" View="Group">
+                        <dxe:TextEdit NullText="Телефон" MaxLength="9"  />
+                        <dxe:TextEdit NullText="Email" />
+                    </dxlc:LayoutGroup>
+                    <dxe:MemoEdit NullText="Адрес" MaxLength="10" ShowIcon="False"  />
+                </dxlc:LayoutGroup>
+                <dxlc:LayoutGroup Header="Банковские реквизиты" Orientation="Vertical"                  
+                          View="GroupBox"                                                     
+                          ItemSpace="10"
+                          dxlc:LayoutControl.AllowVerticalSizing="True"  >
+                    <dxe:TextEdit NullText="Наименование" MaxLength="10" MaskType="Numeric"  />
+                    <dxlc:LayoutGroup VerticalAlignment="Top" Orientation="Horizontal" View="Group">
+                        <dxe:TextEdit NullText="БИК" MaxLength="9"  MaskType="Numeric"  />
+                        <dxe:TextEdit NullText="Расчетный счет" />
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
 
-         
+            <dxlc:LayoutControl  VerticalAlignment="Top" Orientation="Horizontal" >
+                <dxlc:LayoutGroup Header="Регистрационная информация" Orientation="Vertical"                  
+                          View="GroupBox"                                                     
+                          ItemSpace="10"
+                          dxlc:LayoutControl.AllowVerticalSizing="True"  >
+                    <dxlc:LayoutGroup VerticalAlignment="Top" Orientation="Horizontal" View="Group">
+                        <dxe:TextEdit NullText="Свидетельство"   />
+                        <dxe:TextEdit NullText="ОГРН" />
+                    </dxlc:LayoutGroup>
+                    <dxe:TextEdit NullText="Генеральный директор" />
+                    <dxe:TextEdit NullText="Лицензия"   />
+                    <dxe:MemoEdit NullText="Кем выдана" ShowIcon="False"/>
+                </dxlc:LayoutGroup>
+            </dxlc:LayoutControl>
+
         </dxlc:LayoutControl>
     </Grid>
 </Page>
