@@ -1,7 +1,4 @@
-using Dental.Models.Share;
 using DevExpress.Mvvm.POCO;
-using System;
-using System.Linq;
 
 namespace Dental.Models
 {

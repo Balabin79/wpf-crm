@@ -1,19 +1,14 @@
+using DevExpress.Mvvm.POCO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Collections.ObjectModel;
-using DevExpress.Mvvm;
-using DevExpress.Mvvm.POCO;
 /*using DevExpress.Mvvm.DataModel;
 using DevExpress.Mvvm.ViewModel;
 using DevExpress.DevAV.DevAVDbDataModel;
 using DevExpress.DevAV.Common;
 using DevExpress.DevAV;*/
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {

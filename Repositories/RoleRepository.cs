@@ -1,5 +1,5 @@
-﻿using System.Collections.ObjectModel;
-using Dental.Models;
+﻿using Dental.Models;
+using System.Collections.ObjectModel;
 
 
 namespace Dental.Repositories

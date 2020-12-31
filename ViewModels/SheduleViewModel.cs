@@ -1,10 +1,10 @@
+using Dental.Models;
 using System;
 using System.Collections.ObjectModel;
-using Dental.Models;
 
 namespace Dental.ViewModels
 {
-   class SheduleViewModel
+    class SheduleViewModel
     {
 
         public virtual ObservableCollection<Doctor> Doctors { get; set; }

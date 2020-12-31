@@ -1,11 +1,11 @@
-using System;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Views.HandbooksPages;
-using System.Windows.Input;
-using System.Threading;
+using System;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Dental.ViewModels
 {

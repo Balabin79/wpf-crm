@@ -1,13 +1,7 @@
-﻿using DevExpress.Xpf.Grid;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Dental.Models;
-using System.Windows;
+﻿using Dental.Models;
 using DevExpress.Mvvm.UI.Interactivity;
+using DevExpress.Xpf.Grid;
+using System.Windows.Input;
 
 namespace Dental.Behaviors
 {

@@ -1,11 +1,11 @@
-using System.Collections.ObjectModel;
-using Dental.ViewModels;
-using Dental.Repositories;
-using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
-using System.Windows;
+using Dental.Repositories;
+using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Dental.Models
 {
