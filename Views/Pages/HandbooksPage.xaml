@@ -83,7 +83,7 @@
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Прайсы">
-                    <dxr:RibbonPageGroup >
+                    <dxr:RibbonPageGroup Caption="Прайсы">
                         <dxb:BarButtonItem Content="Прайс-лист" Glyph="{dx:DXImage Images/Content/TextBox_32x32.png}"
                                            LargeGlyph="{dx:DXImage Images/Content/TextBox_32x32.png}" Margin="0 0 20 0"/>
                         <dxb:BarButtonItem Content="Прайс-лист тех.лабораторий"

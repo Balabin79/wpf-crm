@@ -54,14 +54,13 @@ namespace Dental.Models
         public string HomePhone { get; set; }
 
 
-        public string Status { get; set; } // статус (работает, уволен и т.д.)
+        public EmployeeStatus Status { get; set; } // статус (работает, уволен и т.д.)
         [Display(Name = "Hire Date")]
         public DateTime? HireDate { get; set; } // дата приема на работу
         public DateTime? DismissalDate { get; set; } // дата увольнения
         public string Inn { get; set; }
         public ICollection<Organization> Organizations { get; set; }  // Организации (в которых работает)
         public ICollection<Speciality> Specialities { get; set; }
-        public string EmployeeStatus { get; set; }
         public ICollection<Role> Roles { get; set; }
 
         public string Login { get; set; }
