@@ -1,7 +1,11 @@
-﻿
+﻿using Dental.Models;
+using Dental.ViewModels;
+using Dental.Views.HandbooksPages;
 using DevExpress.Xpf.Grid;
+using DevExpress.XtraPrinting;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace Dental.Behaviors
 {
@@ -12,26 +16,24 @@ namespace Dental.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EndEditFocusedRow, OnEditExecuted));
+            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EditFocusedRow, OnEditExecuted));
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.AddNewRow, OnAddNewExecuted));
         }
 
         void OnEditExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("OnEditExecuted");
-
             var _FocucedRow = (e.Source as TableView).FocusedRow;
-            //var vm = AssociatedObject.DataContext as ViewModel1;
-            //vm.EditCommand.Execute(_FocucedRow);
+            string nameClass = _FocucedRow.GetType().Name;
+
+            switch (nameClass)
+            {
+                case "Organization": ((Organization)AssociatedObject.DataContext).EditCommand.Execute(_FocucedRow); break;
+            }
         }
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("OnAddNewExecuted");
-
-            // what do we need to do else ? I want to show Inline Form.  
-
-            (e.Source as TableView).ShowEditor();
+             ((Organization)AssociatedObject.DataContext).AddCommand.Execute(sender);
         }
     }
 }

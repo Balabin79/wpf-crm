@@ -31,7 +31,7 @@
                 <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" AutoWidth="True" 
                                BestFitModeOnSourceChange="VisibleRows"
                                ShowUpdateRowButtons="OnCellEditorOpen" x:Name="view"
-                               NewItemRowPosition="Bottom" 
+                               NewItemRowPosition="None" 
                                AllowDragDrop="True" ShowDataNavigator="True"
                             
                                >

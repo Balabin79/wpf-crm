@@ -1,6 +1,7 @@
 using Dental.Infrastructures.Commands.Base;
 using Dental.Repositories;
 using Dental.ViewModels;
+using Dental.Views.HandbooksPages;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.ObjectModel;
@@ -61,6 +62,8 @@ namespace Dental.Models
         public Organization()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+            EditCommand = new LambdaCommand(OnEditCommandExecuted, CanEditCommandExecute);
+            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
         }
 
 
@@ -76,6 +79,39 @@ namespace Dental.Models
                     Organization org = (Organization)p;
                     ListOrganisations.Remove(org);
                 }
+            }
+            catch (Exception e)
+            {
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+            }
+
+        }
+
+        public ICommand EditCommand { get; }
+        private bool CanEditCommandExecute(object p) => true;
+        private void OnEditCommandExecuted(object p)
+        {
+            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Редактирование", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+            }
+            catch (Exception e)
+            {
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+            }
+
+        }
+
+        public ICommand AddCommand { get; }
+        private bool CanAddCommandExecute(object p) => true;
+        private void OnAddCommandExecuted(object p)
+        {
+            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
+            try
+            {
+                HandbooksViewModel vm = (HandbooksViewModel)Application.Current.Windows[0].Resources["viewModel"];
+                vm.LeftMenuClick.Execute((new NewOrganization()).GetType());
             }
             catch (Exception e)
             {

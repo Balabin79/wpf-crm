@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Dental.Views.Pages
@@ -10,6 +11,8 @@ namespace Dental.Views.Pages
         public HandbooksPage()
         {
             InitializeComponent();
+            this.DataContext = Application.Current.Windows[0].Resources["viewModel"];
+
         }
     }
 }

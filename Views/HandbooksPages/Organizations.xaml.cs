@@ -14,7 +14,7 @@ namespace Dental.Views.HandbooksPages
         public Organizations()
         {
             InitializeComponent();
-       //     this.deleteRowItem.ItemClick += deleteRowItemX;
+
         }
 
 

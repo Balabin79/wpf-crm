@@ -10,9 +10,8 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
     xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz">
 
-    
-
     <dx:ThemedWindow.Resources>
+        <viewModels:HandbooksViewModel x:Key="viewModel"/>
         <Storyboard x:Key="MenuOpen">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="70" />
@@ -99,15 +98,6 @@
                         <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12">ПАЦИЕНТЫ</TextBlock>
                     </Grid>
                 </Button>
-
-                <Button Foreground="#5c6bc0" Height="40" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Прайсы" Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:PriceListPage}">
-
-                    <Grid Width="200" Margin="5,0,0,0">
-                        <materialDesign:PackIcon Kind="CardText" Width="25" Height="25" VerticalAlignment="Center" />
-                        <TextBlock VerticalAlignment="Center" Margin="40,4,0,0" FontSize="12">ПРАЙСЫ</TextBlock>
-                    </Grid>
-                </Button>
-
                 <Button Foreground="#5c6bc0" Height="40" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Отчеты" Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:ReportListPage}">
 
                     <Grid Width="200" Margin="5,0,0,0">
