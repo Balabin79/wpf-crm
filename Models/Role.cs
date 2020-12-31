@@ -4,6 +4,7 @@ using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,18 +12,21 @@ namespace Dental.Models
 {
     class Role : ViewModelBase
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
         private ObservableCollection<Role> listRoles;
+        
+        [NotMapped]
         public ObservableCollection<Role> ListRoles
         {
             get
             {
                 if (listRoles == null)
                 {
-                    listRoles = RoleRepository.GetFakeRoles();
+                    listRoles = RoleRepository.GetRoles();
                     return listRoles;
                 }
                 return listRoles;

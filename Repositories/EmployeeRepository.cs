@@ -14,7 +14,7 @@ namespace Dental.Repositories
         {
             return new ObservableCollection<Employee>
                 {
-                    new Employee() {FirstName="Александр", LastName="Иванов", MiddleName="Иванович", BirthDate = new DateTime(1980, 7, 20),
+                   /* new Employee() {FirstName="Александр", LastName="Иванов", MiddleName="Иванович", BirthDate = new DateTime(1980, 7, 20),
                         Email = "ivanov@ya.ru", Skype = "gfregrgg", Address = "", MobilePhone = "", HomePhone = "",
                         Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
                         Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
@@ -82,7 +82,7 @@ namespace Dental.Repositories
                         Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
                         Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
                         Roles = new List<Role>(), Login = "", Password = ""
-                    }
+                    }*/
 
                 };
         }
