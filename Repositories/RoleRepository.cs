@@ -27,5 +27,36 @@ namespace Dental.Repositories
             db.Roles.Load();
             return db.Roles.Local;
         }
+
+        public static void Add(Role role)
+        {
+            ApplicationContext db = new ApplicationContext();
+            db.Roles.Add(role);
+            db.SaveChanges();
+        }
+
+        public static void Update(Role role)
+        {
+            ApplicationContext db = new ApplicationContext();
+
+            var result = db.Roles.Find(role.Id);
+            if (result != null)
+            {
+                result.Name = role.Name;
+                result.Description = role.Description;
+                result.IsActive = role.IsActive;
+
+                db.Entry(result).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public static void Delete(Role role)
+        {
+            ApplicationContext db = new ApplicationContext();
+            db.Entry(role).State = EntityState.Deleted;
+            db.Roles.Remove(role);
+           int cnt = db.SaveChanges();
+        }
     }
 }

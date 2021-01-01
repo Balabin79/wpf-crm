@@ -16,11 +16,11 @@ namespace Dental.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EditFocusedRow, OnEditExecuted));
+            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EditFocusedRow, OnUpdateRowExecuted));
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.AddNewRow, OnAddNewExecuted));
         }
 
-        void OnEditExecuted(object sender, ExecutedRoutedEventArgs e)
+        void OnUpdateRowExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var _FocucedRow = (e.Source as TableView).FocusedRow;
             string nameClass = _FocucedRow.GetType().Name;
@@ -33,6 +33,7 @@ namespace Dental.Behaviors
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            int x = 0;
              ((Organization)AssociatedObject.DataContext).AddCommand.Execute(sender);
         }
     }

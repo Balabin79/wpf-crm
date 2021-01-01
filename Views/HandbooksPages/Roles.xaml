@@ -19,21 +19,24 @@
             <models:Role/>
         </Grid.DataContext>
         <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
-                 EnableSmartColumnsGeneration="False"
+                 EnableSmartColumnsGeneration="False" 
                       
                  ItemsSource="{Binding ListRoles}">
             <dxg:GridControl.View>
                 <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True"  AutoWidth="True" 
                                BestFitModeOnSourceChange="VisibleRows" ShowUpdateRowButtons="OnCellEditorOpen"
-                               NewItemRowPosition="Bottom" AllowDragDrop="True" ShowDataNavigator="True">
+                               NewItemRowPosition="Bottom" AllowDragDrop="True" ShowDataNavigator="True"     
+                               RowUpdated="TableView_RowUpdated"                           
+                               >
                     <dxmvvm:Interaction.Behaviors>
-                        <b:DeleteRowDataGridBehaviors/>
+                        <b:FullActionDataGridBehavior/>
                     </dxmvvm:Interaction.Behaviors>
                 </dxg:TableView>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Name"  Header="Наименование"/>
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" />
             <dxg:GridColumn FieldName="Description"  Header="Описание"/>
             <dxg:GridColumn FieldName="IsActive" Header="Активность"/>
+            
 
         </dxg:GridControl>
     </Grid>

@@ -4,6 +4,7 @@ using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows;
 using System.Windows.Input;
@@ -13,12 +14,16 @@ namespace Dental.Models
     class Role : ViewModelBase
     {
         public int Id { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [Display(Name="Наименование")]
         public string Name { get; set; }
+        [Display(Description = "Описание")]
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
-        private ObservableCollection<Role> listRoles;
-        
+        private ObservableCollection<Role> listRoles;       
         [NotMapped]
         public ObservableCollection<Role> ListRoles
         {
@@ -54,11 +59,13 @@ namespace Dental.Models
                 if (response.ToString() == "Yes")
                 {
                     Role role = (Role)p;
-                    ListRoles.Remove(role);
+                    RoleRepository.Delete(role);
+                    //ListRoles.Remove(role);
                 }
             }
             catch (Exception e)
             {
+
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }
 

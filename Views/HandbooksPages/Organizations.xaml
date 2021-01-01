@@ -32,7 +32,9 @@
                                BestFitModeOnSourceChange="VisibleRows"
                                ShowUpdateRowButtons="OnCellEditorOpen" x:Name="view"
                                NewItemRowPosition="None" 
-                               AllowDragDrop="True" ShowDataNavigator="True"
+                               AllowDragDrop="True" ShowDataNavigator="True" ShowEditFormOnDoubleClick="False"
+                               ShowEditFormOnEnterKey="False" ShowEditFormOnF2Key="False"
+                               
                             
                                >
 
