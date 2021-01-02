@@ -19,7 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Images\Employes\" />
+    <Folder Include="Images\Patients\" />
+    <Folder Include="Images\Logos\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="Recources\Icons\" />
     <Folder Include="Repositories\Fakes\" />
     <Folder Include="Resources\" />
     <Folder Include="Views\Controls\MainWindow\" />

@@ -33,7 +33,7 @@
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Name"  Header="Наименование"/>
             <dxg:GridColumn FieldName="Description"  Header="Описание"/>
-            <dxg:GridColumn FieldName="IsActive" Header="Активность"/>
+            <dxg:GridColumn FieldName="ShowInShedule" Header="Активность"/>
         </dxg:GridControl>
     </Grid>
 </Page>

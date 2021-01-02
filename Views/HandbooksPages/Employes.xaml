@@ -3,25 +3,221 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-      xmlns:local="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-      xmlns:dxi="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-      xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
-      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
-      xmlns:dxrudex="http://schemas.devexpress.com/winfx/2008/xaml/reports/userdesignerextensions"
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-
+      xmlns:models ="clr-namespace:Dental.Models"
+      xmlns:b ="clr-namespace:Dental.Behaviors" 
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
       x:Class="Dental.Views.HandbooksPages.Employes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Employes">
 
-    <Grid >
+    <Grid  dx:ThemeManager.ThemeName="Office2019White">
+        <Grid.DataContext>
+            <models:Employee/>
+        </Grid.DataContext>
+        <dxg:GridControl AutoGenerateColumns="None"  x:Name="GridEmployee"
+                 EnableSmartColumnsGeneration="True" 
+                 ItemsSource="{Binding ListEmployes, Mode=TwoWay}">
+
+            <dxg:GridControl.View >
+
+            <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" AutoWidth="True" 
+                               BestFitModeOnSourceChange="VisibleRows"
+                                x:Name="view"
+                               NewItemRowPosition="Bottom" 
+                               AllowDragDrop="True" ShowDataNavigator="True" 
+                               AllowEditing="True"
+                               NavigationStyle="Row"
+                               EditFormShowMode="Inline" 
+                               
+                               >
+                <dxmvvm:Interaction.Behaviors>
+                    <b:DeleteRowDataGridBehaviors/>
+                </dxmvvm:Interaction.Behaviors>
 
 
+                    <dxg:TableView.EditFormTemplate> 
+                        <DataTemplate >
+
+
+                            <Grid dx:ThemeManager.ThemeName="Office2019White">
+
+
+
+                                <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutGroup Orientation="Vertical">
+                                            <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
+                                                <dxlc:LayoutGroup Orientation="Vertical">
+                                                    <dxlc:LayoutItem Label="First Name" AddColonToLabel="True">
+                                                        <dxe:TextEdit EditValue="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Last Name" AddColonToLabel="True">
+                                                        <dxe:TextEdit EditValue="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Full Name" AddColonToLabel="True">
+                                                        <dxe:TextEdit EditValue="{Binding Path=FullName, Mode=OneWay}" IsReadOnly="True" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Birth Date" AddColonToLabel="True">
+                                                        <dxe:DateEdit EditValue="{Binding Path=BirthDate, Mode=TwoWay}" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                                        <dxlc:LayoutItem Label="Title" AddColonToLabel="True">
+                                                            <dxe:TextEdit EditValue="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                        </dxlc:LayoutItem>
+                                                        <dxlc:LayoutItem Label="Prefix" HorizontalAlignment="Right" AddColonToLabel="True">
+                                                            <dxe:ComboBoxEdit EditValue="{Binding Path=Prefix, Mode=TwoWay}" MinWidth="75"
+                                                      IsTextEditable="False" ApplyItemTemplateToSelectedItem="True">
+                                                                <dxe:ComboBoxEdit.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <DockPanel>
+                                                                            <dx:DXImage Source="{Binding Path=Image}"
+                                                                Width="16" Height="16"
+                                                                VerticalAlignment="Center"
+                                                                DockPanel.Dock="Left"/>
+                                                                            <TextBlock Text="{Binding Path=Name}"
+                                                               Margin="5,0,0,0"
+                                                               VerticalAlignment="Center"/>
+                                                                        </DockPanel>
+                                                                    </DataTemplate>
+                                                                </dxe:ComboBoxEdit.ItemTemplate>
+                                                                <dxmvvm:Interaction.Behaviors>
+                                                                    <dxmvvm:EnumItemsSourceBehavior  AllowImages="False"/>
+                                                                </dxmvvm:Interaction.Behaviors>
+                                                            </dxe:ComboBoxEdit>
+                                                        </dxlc:LayoutItem>
+                                                    </dxlc:LayoutGroup>
+                                                </dxlc:LayoutGroup>
+                                                <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                    <dxe:ImageEdit EditValue="{Binding Path=Photo, Mode=TwoWay}" Height="128" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
+                                                <dxlc:LayoutItem Label="Address" AddColonToLabel="True">
+                                                    <dxe:TextEdit EditValue="" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="City" AddColonToLabel="True">
+                                                    <dxe:TextEdit EditValue="" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutGroup Orientation="Horizontal">
+                                                    <dxlc:LayoutItem Label="State" AddColonToLabel="True">
+                                                        <dxe:ComboBoxEdit EditValue=""
+                                                  ItemsSource=""
+                                                  ValueMember="Value"
+                                                  DisplayMember="Name" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="ZIP code" AddColonToLabel="True">
+                                                        <dxe:TextEdit MaskType="Simple" Mask="00000" EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                                    </dxlc:LayoutItem>
+                                                </dxlc:LayoutGroup>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
+                                                <dxlc:LayoutItem Label="Home Phone" AddColonToLabel="True">
+                                                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=HomePhone, Mode=TwoWay}">
+                                                        <dxe:ImageButtonInfo
+                                    Glyph="/DevExpress.Images.v20.1;component/SvgImages/Outlook Inspired/Glyph_Phone.svg"/>
+                                                    </dxe:ButtonEdit>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Mobile Phone" AddColonToLabel="True">
+                                                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=MobilePhone, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                                        <dxe:ImageButtonInfo
+                                    Glyph="/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Electronics_PhoneIphone.svg"/>
+                                                    </dxe:ButtonEdit>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
+                                                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True">
+                                                        <dxe:ImageButtonInfo
+                                    Glyph="/DevExpress.Images.v20.1;component/SvgImages/Outlook Inspired/Glyph_Mail.svg"/>
+                                                    </dxe:ButtonEdit>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Skype" AddColonToLabel="True">
+                                                    <dxe:ButtonEdit IsTextEditable="True" AllowDefaultButton="False" EditValue="{Binding Path=Skype, Mode=TwoWay}">
+                                                        <dxe:ImageButtonInfo
+                                    Glyph="/DevExpress.Images.v20.1;component/SvgImages/HybridDemoIcons/Editors/HybridDemo_Skype.svg"/>
+                                                    </dxe:ButtonEdit>
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                        </dxlc:LayoutGroup>
+                                        <dxlc:LayoutGroup Orientation="Vertical">
+                                            <dxlc:LayoutGroup Orientation="Vertical" Margin="0,5">
+                                                <dxlc:LayoutItem Label="Department" AddColonToLabel="True">
+                                                    <dxe:ComboBoxEdit EditValue="{Binding Path=Department, Mode=TwoWay}"
+                                              ItemsSource=""
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Status" AddColonToLabel="True">
+                                                    <dxe:ComboBoxEdit EditValue="{Binding Path=Status, Mode=TwoWay}"
+                                              ItemsSource=""
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Hire Date" AddColonToLabel="True">
+                                                    <dxe:DateEdit EditValue="{Binding Path=HireDate, Mode=TwoWay}" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutItem Label="Evaluations" LabelPosition="Top" VerticalAlignment="Top" Margin="0,5">
+                                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="223">
+                                                    <dxg:GridControl.Columns>
+                                                        <dxg:GridColumn FieldName="CreatedOn" FixedWidth="True">
+                                                            <dxg:GridColumn.CellStyle>
+                                                                <Style>
+                                                                    <Setter Property="TextBlock.FontWeight" Value="Bold" />
+                                                                </Style>
+                                                            </dxg:GridColumn.CellStyle>
+                                                        </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="Subject" />
+                                                        <dxg:GridColumn FieldName="Manager" />
+                                                    </dxg:GridControl.Columns>
+                                                    <dxg:GridControl.View>
+                                                        <dxg:TableView ShowGroupPanel="False"
+                                               NavigationStyle="Row"
+                                               AutoWidth="True"
+                                               AllowEditing="False"
+                                               ShowVerticalLines="False"
+                                               ShowHorizontalLines="False"
+                                               UseEvenRowBackground="True"
+                                               ShowIndicator="False" />
+                                                    </dxg:GridControl.View>
+                                                </dxg:GridControl>
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutGroup>
+                                </dxlc:LayoutControl>
+
+                            </Grid>
+                            
+                        </DataTemplate>
+                    </dxg:TableView.EditFormTemplate>
+
+                </dxg:TableView>
+        </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True"/>
+            
+            
+            
+        </dxg:GridControl>
 
     </Grid>
 </Page>

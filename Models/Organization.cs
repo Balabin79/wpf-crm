@@ -110,8 +110,8 @@ namespace Dental.Models
             //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
             try
             {
-                HandbooksViewModel vm = (HandbooksViewModel)Application.Current.Windows[0].Resources["viewModel"];
-                vm.LeftMenuClick.Execute((new NewOrganization()).GetType());
+                //HandbooksViewModel vm = (HandbooksViewModel)Application.Current.Windows[0].Resources["viewModel"];
+               // vm.LeftMenuClick.Execute((new NewOrganization()).GetType());
             }
             catch (Exception e)
             {

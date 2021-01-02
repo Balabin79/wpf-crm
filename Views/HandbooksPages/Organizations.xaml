@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-            xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:models ="clr-namespace:Dental.Models"
@@ -23,31 +23,43 @@
         <dxg:GridControl AutoGenerateColumns="None"  x:Name="GridOrganisation" dx:ThemeManager.ThemeName="Office2019White"
                  EnableSmartColumnsGeneration="True" 
                  ItemsSource="{Binding ListOrganisations, Mode=TwoWay}">
-            
-            
+
+
 
             <dxg:GridControl.View >
 
                 <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True" AutoWidth="True" 
                                BestFitModeOnSourceChange="VisibleRows"
-                               ShowUpdateRowButtons="OnCellEditorOpen" x:Name="view"
-                               NewItemRowPosition="None" 
-                               AllowDragDrop="True" ShowDataNavigator="True" ShowEditFormOnDoubleClick="False"
-                               ShowEditFormOnEnterKey="False" ShowEditFormOnF2Key="False"
-                               
-                            
+                                x:Name="view"
+                               NewItemRowPosition="Bottom" 
+                               AllowDragDrop="True" ShowDataNavigator="True" 
+                               AllowEditing="True"
+                               NavigationStyle="Row"
+                               EditFormShowMode="Inline" 
+                               EditFormColumnCount="2"
+                               EditFormPostConfirmation="YesNo"
                                >
-
                     <dxmvvm:Interaction.Behaviors>
-                        <b:FullActionDataGridBehavior/>
+                        <b:DeleteRowDataGridBehaviors/>
                     </dxmvvm:Interaction.Behaviors>
-
 
                 </dxg:TableView>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Name" Header="Наименование"/>
+            <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Name" Header="Наименование" ShowValidationAttributeErrors="True"/>
+            <dxg:GridColumn FieldName="ShortName" Header="Краткое наименование" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Inn" Header="ИНН" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Kpp" Header="КПП" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
             <dxg:GridColumn FieldName="Phone" Header="Телефон"/>
             <dxg:GridColumn FieldName="Email" Header="Email"/>
+            <dxg:GridColumn FieldName="Address" Header="Адрес" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="BankName" Header="Название банка" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Bik" Header="БИК" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="AccountNumber" Header="Расчетный счет" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Сertificate" Header="Свидетельство" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Ogrn" Header="ОГРН" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="License" Header="Лицензия" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="WhoIssuedBy" Header="Кем выдана" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
             <dxg:GridColumn FieldName="GeneralDirector" Header="Гендиректор"/>
         </dxg:GridControl>
 

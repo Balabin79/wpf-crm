@@ -1,9 +1,11 @@
 using DevExpress.Mvvm.POCO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
+using Dental.Repositories;
 /*using DevExpress.Mvvm.DataModel;
 using DevExpress.Mvvm.ViewModel;
 using DevExpress.DevAV.DevAVDbDataModel;
@@ -12,33 +14,8 @@ using DevExpress.DevAV;*/
 
 namespace Dental.Models
 {
-    class Employee //: IDataErrorInfo
+    class Employee : User 
     {
-
-        public static Employee Create()
-        {
-            return ViewModelSource.Create(() => new Employee());
-        }
-        //public Employee();
-
-        [Key]
-        public long Id { get; set; }
-
-        // Общая информация
-        [NotMapped]
-        public Image Photo { get; set; }
-        [Display(Name = "First Name")]
-        [Required]
-        public string FirstName { get; set; }
-        [Display(Name = "Last Name")]
-        [Required]
-        public string LastName { get; set; }
-        [Display(Name = "Middle Name")]
-        public string MiddleName { get; set; }
-        [Display(Name = "Birth Date")]
-        public DateTime? BirthDate { get; set; }
-        public string Gender { get; set; }
-
         // Контактная информация
         [EmailAddress]
         [Required]
@@ -84,6 +61,23 @@ namespace Dental.Models
         }
 
 
+        private ObservableCollection<Employee> listEmployes;
+        public ObservableCollection<Employee> ListEmployes
+        {
+            get
+            {
+                if (listEmployes == null)
+                {
+                    listEmployes = EmployeeRepository.GetFakeListEmployee();
+                    return listEmployes;
+                }
+                return listEmployes;
+            }
+            set
+            {
+                Set(ref listEmployes, value);
+            }
+        }
 
 
 

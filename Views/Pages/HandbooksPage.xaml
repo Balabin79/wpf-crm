@@ -32,41 +32,33 @@
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Основные" >
                     <dxr:RibbonPageGroup Caption="Сотрудники" >
-                        <dxb:BarButtonItem Content="Список сотрудников" RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}"  Margin="0 0 20 0"                                       
+                        <dxb:BarButtonItem Content="Сотрудники" RibbonStyle="Default" 
+                                           LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}" 
+                                           Margin="10 0 10 0"                                       
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"
                                            Glyph="{dx:DXImage Images/People/UserGroup_32x32.png}" MediumGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}"/>
                         
-                        <dxb:BarButtonItem Content="Новый сотрудник" RibbonStyle="Default" 
-                                           Margin="0 0 20 0"
-                                           LargeGlyph="{dx:DXImage Images/People/Customer_32x32.png}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"
-                                           Glyph="{dx:DXImage Images/People/Customer_32x32.png}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Справочники">
                         <dxb:BarButtonItem Content="Специальности" LargeGlyph="{dx:DXImage Images/People/Female_32x32.png}"
-                                            Margin="0 0 20 0" Glyph="{dx:DXImage Images/People/Female_32x32.png}"
+                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/People/Female_32x32.png}"
                                             ToolTip="Специальности"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
                         <dxb:BarButtonItem Content="Роли" LargeGlyph="{dx:DXImage Images/Business Objects/BORole_32x32.png}"
-                                            Margin="0 0 20 0" Glyph="{dx:DXImage Images/Business Objects/BORole_32x32.png}"
+                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Business Objects/BORole_32x32.png}"
                                             ToolTip="Роли"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Roles}"/>
                         <dxb:BarButtonItem Content="Статусы сотрудников" LargeGlyph="{dx:DXImage Images/Business Objects/BODetails_32x32.png}"
-                                            Margin="0 0 20 0" Glyph="{dx:DXImage Images/Business Objects/BODetails_32x32.png}"
+                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Business Objects/BODetails_32x32.png}"
                                             ToolTip="Статусы сотрудников"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Организации">
-                        <dxb:BarButtonItem Content="Список организаций" LargeGlyph="{dx:DXImage Images/Programming/Project_32x32.png}"
-                                            Margin="0 0 20 0" Glyph="{dx:DXImage Images/Programming/Project_32x32.png}"
+                        <dxb:BarButtonItem Content="Организации" LargeGlyph="{dx:DXImage Images/Programming/Project_32x32.png}"
+                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Programming/Project_32x32.png}"
                                            ToolTip="Список организаций"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Organizations}"/>
-                        <dxb:BarButtonItem Content="Добавить организацию"
-                                            Margin="0 0 20 0" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
-                                           LargeGlyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
-                                           ToolTip="Добавить организацию"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:NewOrganization}"/>
+
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 

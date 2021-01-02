@@ -26,14 +26,14 @@
                 <dxg:TableView AllowPerPixelScrolling="True" ShowTotalSummary="True"  AutoWidth="True" 
                                BestFitModeOnSourceChange="VisibleRows" ShowUpdateRowButtons="OnCellEditorOpen"
                                NewItemRowPosition="Bottom" AllowDragDrop="True" ShowDataNavigator="True"     
-                               RowUpdated="TableView_RowUpdated"                           
+                               RowUpdated="TableView_RowUpdated" 
                                >
                     <dxmvvm:Interaction.Behaviors>
-                        <b:FullActionDataGridBehavior/>
+                        <b:DeleteRowDataGridBehaviors/>
                     </dxmvvm:Interaction.Behaviors>
                 </dxg:TableView>
             </dxg:GridControl.View>
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" />
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" ShowValidationAttributeErrors="True"/>
             <dxg:GridColumn FieldName="Description"  Header="Описание"/>
             <dxg:GridColumn FieldName="IsActive" Header="Активность"/>
             
