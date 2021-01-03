@@ -18,29 +18,47 @@ namespace Dental.Models
     {
         // Контактная информация
         [EmailAddress]
-        [Required]
         public string Email { get; set; }
+
         public string Skype { get; set; }
+
+        [Display(Name = "Адрес")]
         public string Address { get; set; }
-        [Display(Name = "Mobile Phone")]
+
+        [Display(Name = "Моб.телефон")]
         [Phone]
         [Required]
         public string MobilePhone { get; set; }
-        [Display(Name = "Home Phone")]
+
+        [Display(Name = "Дом.телефон")]
         [Phone]
         public string HomePhone { get; set; }
 
-
+        [Display(Name = "Статус")]
         public EmployeeStatus Status { get; set; } // статус (работает, уволен и т.д.)
-        [Display(Name = "Hire Date")]
+
+        [Display(Name = "Дата приема")]
         public DateTime? HireDate { get; set; } // дата приема на работу
+
+        [Display(Name = "Дата увольнения")]
         public DateTime? DismissalDate { get; set; } // дата увольнения
+
+        [Display(Name = "ИНН")]
         public string Inn { get; set; }
+
+        [Display(Name = "Организации")]
         public ICollection<Organization> Organizations { get; set; }  // Организации (в которых работает)
+
+        [Display(Name = "Специальности")]
         public ICollection<Speciality> Specialities { get; set; }
+
+        [Display(Name = "Роли")]
         public ICollection<Role> Roles { get; set; }
 
+        [Display(Name = "Логин")]
         public string Login { get; set; }
+
+        [Display(Name = "Пароль")]
         public string Password { get; set; }
 
 

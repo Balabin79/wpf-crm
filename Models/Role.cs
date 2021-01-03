@@ -13,6 +13,7 @@ namespace Dental.Models
 {
     class Role : ViewModelBase
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

@@ -23,8 +23,8 @@ namespace Dental.Models
         [Key]
         public int Id { get; set; }
         // Общая информация
-        [NotMapped]
-        public Image Photo { get; set; }
+        [Display(Name = "Фото")]
+        public Image Image { get; set; }
 
         [Display(Name = "Имя")]
         [Required]

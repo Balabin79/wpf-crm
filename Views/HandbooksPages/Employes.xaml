@@ -53,16 +53,16 @@
                                         <dxlc:LayoutGroup Orientation="Vertical">
                                             <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
                                                 <dxlc:LayoutGroup Orientation="Vertical">
-                                                    <dxlc:LayoutItem Label="First Name" AddColonToLabel="True">
+                                                    <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
                                                         <dxe:TextEdit EditValue="{Binding Path=FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                                     </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Last Name" AddColonToLabel="True">
+                                                    <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
                                                         <dxe:TextEdit EditValue="{Binding Path=LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                                     </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Full Name" AddColonToLabel="True">
-                                                        <dxe:TextEdit EditValue="{Binding Path=FullName, Mode=OneWay}" IsReadOnly="True" />
+                                                    <dxlc:LayoutItem Label="Отчество" AddColonToLabel="True">
+                                                        <dxe:TextEdit EditValue="{Binding Path=MiddleName,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  />
                                                     </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Birth Date" AddColonToLabel="True">
+                                                    <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
                                                         <dxe:DateEdit EditValue="{Binding Path=BirthDate, Mode=TwoWay}" />
                                                     </dxlc:LayoutItem>
                                                     <dxlc:LayoutGroup Orientation="Horizontal">
