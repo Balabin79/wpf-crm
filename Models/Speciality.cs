@@ -6,15 +6,33 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Dental.Models
 {
     class Speciality : ViewModelBase
     {
+        [Key]
         public int Id { get; set; }
+
+        [Required]
+        [MaxLength(255)]
+        [Display(Name = "Название")]
         public string Name { get; set; }
-        public string Description { get; set; }
+
+        [Display(Name = "Тип персонала")]
+        public string SpecialityType { get; set; }
+
         public bool ShowInShedule { get; set; }
+
+        [Display(Name = "Описание")]
+        public string Description { get; set; }
+
+        [NotMapped]
+        public List<string> SpecialityTypeList { get => new List<string> { "Младший персонал", "Старший персонал" }; }
 
 
         private ObservableCollection<Speciality> listSpecialies;

@@ -32,8 +32,9 @@
 
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Name"  Header="Наименование"/>
+            <dxg:GridColumn FieldName="SpecialityType"  Header="Тип персонала"/>
             <dxg:GridColumn FieldName="Description"  Header="Описание"/>
-            <dxg:GridColumn FieldName="ShowInShedule" Header="Активность"/>
+            <dxg:GridColumn FieldName="ShowInShedule" Header="В расписании"/>
         </dxg:GridControl>
     </Grid>
 </Page>

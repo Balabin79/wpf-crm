@@ -20,9 +20,9 @@ namespace Dental.Models
         [MaxLength(255)]
         [Display(Name="Наименование")]
         public string Name { get; set; }
+
         [Display(Description = "Описание")]
         public string Description { get; set; }
-        public bool IsActive { get; set; }
 
         private ObservableCollection<Role> listRoles;       
         [NotMapped]
