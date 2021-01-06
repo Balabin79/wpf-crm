@@ -65,13 +65,21 @@
                 <dxr:RibbonPage Caption="Шаблоны">
                     <dxr:RibbonPageGroup >
                         <dxb:BarButtonItem Content="Диагноз" Glyph="{dx:DXImage Images/Content/TextBox_32x32.png}"
-                                           LargeGlyph="{dx:DXImage Images/Content/TextBox_32x32.png}" Margin="0 0 20 0"/>
+                                           LargeGlyph="{dx:DXImage Images/Content/TextBox_32x32.png}" Margin="0 0 20 0"
+                                           ToolTip="Шаблоны диагнозов"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Diagnoses}"/>
                         <dxb:BarButtonItem Content="Дневник" Glyph="{dx:DXImage Images/Function Library/MoreFunctions_32x32.png}"
-                                           LargeGlyph="{dx:DXImage Images/Function Library/MoreFunctions_32x32.png}" Margin="0 0 20 0"/>
+                                           LargeGlyph="{dx:DXImage Images/Function Library/MoreFunctions_32x32.png}" Margin="0 0 20 0"
+                                           ToolTip="Шаблоны дневников"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Diary}"/>
                         <dxb:BarButtonItem Content="Первичный осмотр" Glyph="{dx:DXImage Images/Spreadsheet/FunctionsCompatibility_32x32.png}" 
-                                           LargeGlyph="{dx:DXImage Images/Spreadsheet/FunctionsCompatibility_32x32.png}" Margin="0 0 20 0"/>
+                                           LargeGlyph="{dx:DXImage Images/Spreadsheet/FunctionsCompatibility_32x32.png}" Margin="0 0 20 0"
+                                           ToolTip="Первичный осмотр"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:InitialInspection}"/>
                         <dxb:BarButtonItem Content="План лечения" Glyph="{dx:DXImage Images/Edit/Paste_32x32.png}" 
-                                           LargeGlyph="{dx:DXImage Images/Edit/Paste_32x32.png}" Margin="0 0 20 0"/>
+                                           LargeGlyph="{dx:DXImage Images/Edit/Paste_32x32.png}" Margin="0 0 20 0"
+                                           ToolTip="План лечения"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:TreatmentPlan}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Прайсы">

@@ -12,12 +12,12 @@ namespace Dental.Repositories
 
             return new ObservableCollection<Role>
                 {
-                    new Role() {Name="Admin", Description="", IsActive=true},
-                    new Role() {Name="Doctor", Description="", IsActive=true},
-                    new Role() {Name="Employee", Description="", IsActive=true},
-                    new Role() {Name="Guest", Description="", IsActive=true},
-                    new Role() {Name="User", Description="", IsActive=true},
-                    new Role() {Name="Patient", Description="", IsActive=true}
+                    new Role() {Name="Admin", Description=""},
+                    new Role() {Name="Doctor", Description=""},
+                    new Role() {Name="Employee", Description=""},
+                    new Role() {Name="Guest", Description=""},
+                    new Role() {Name="User", Description=""},
+                    new Role() {Name="Patient", Description=""}
                 };
         }
 
@@ -44,7 +44,6 @@ namespace Dental.Repositories
             {
                 result.Name = role.Name;
                 result.Description = role.Description;
-                result.IsActive = role.IsActive;
 
                 db.Entry(result).State = EntityState.Modified;
                 db.SaveChanges();

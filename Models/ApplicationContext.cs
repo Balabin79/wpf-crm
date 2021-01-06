@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dental.Models.Template;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -13,5 +14,9 @@ namespace Dental.Models
         {
         }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Diagnos> Diagnoses { get; set; }
+        public DbSet<Diary> Diaries { get; set; }
+        public DbSet<TreatmentPlan> TreatmentPlanes { get; set; }
+        public DbSet<InitialInspection> InitialInspectiones { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace Dental.Repositories
         {
             return new ObservableCollection<EmployeeStatus>
                 {
-                    new EmployeeStatus() {Name="Работает", Description="", IsActive=true},
-                    new EmployeeStatus() {Name="Уволен", Description="", IsActive=true},
-                    new EmployeeStatus() {Name="В отпуске", Description="", IsActive=true}
+                    new EmployeeStatus() {Name="Работает", Description=""},
+                    new EmployeeStatus() {Name="Уволен", Description=""},
+                    new EmployeeStatus() {Name="В отпуске", Description=""}
                 };
         }
     }
