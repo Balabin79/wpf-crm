@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Repositories.Template;
-using Dental.ViewModels;
-using DevExpress.Xpf.Core;
-using System.Collections.ObjectModel;
+﻿using Dental.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Dental.Models.Template
 {
     [Table("Diagnoses")]
-    class Diagnos : ViewModelBase
+    class Diagnos : ViewModelBase, ITemplate
     {
         [Key]
         [Column("Id")]
@@ -30,30 +20,9 @@ namespace Dental.Models.Template
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
-
-        //public ObservableCollection<DiagnosDetail> DiagnosesDetails { get; set; }
-
-
-
-        private ObservableCollection<Diagnos> listDiagnoses;
-        [NotMapped]
-        public ObservableCollection<Diagnos> ListDiagnoses
-        {
-            get
-            {
-                if (listDiagnoses == null)
-                {
-                    listDiagnoses = DiagnosRepository.GetDiagnoses();
-                    return listDiagnoses;
-                }
-                return listDiagnoses;
-            }
-            set
-            {
-                Set(ref listDiagnoses, value);
-            }
-
-        }
+        [Column("Dir")]
+        [Display(Name = "Директория")]
+        public int Dir { get; set; }
 
         public Diagnos()
         {

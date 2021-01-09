@@ -16,7 +16,7 @@ using System.Windows.Input;
 namespace Dental.Models.Template
 {
     [Table("Diary")]
-    class Diary : ViewModelBase
+    class Diary : ViewModelBase, ITemplate
     {
         [Key]
         [Column("Id")]
@@ -30,30 +30,48 @@ namespace Dental.Models.Template
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
+        [Column("Dir")]
+        [Display(Name = "Директория")]
+        public int Dir { get; set; }
 
-        //public ObservableCollection<DiagnosDetail> DiagnosesDetails { get; set; }
-
-
-
-        private ObservableCollection<Diary> listDiaries;
         [NotMapped]
-        public ObservableCollection<Diary> ListDiaries
+        public string ImageSource
         {
-            get
-            {
-                if (listDiaries == null)
-                {
-                    listDiaries = DiaryRepository.GetDiaries();
-                    return listDiaries;
-                }
-                return listDiaries;
+            get { 
+               // return @"..\Resources\Icons\Closed_Folder_32.png";
+                return "pack://application:,,,/Resources/Icons/Closed_Folder_32.png";
+                
             }
+
             set
             {
-                Set(ref listDiaries, value);
+                imageSource = value;
+            }
+        }
+        private string imageSource;
+
+        private ObservableCollection<Diary> diaryList;
+
+        [NotMapped]
+        public ObservableCollection<Diary> DiaryList { 
+            get
+            {
+                if (diaryList == null)
+                {
+                    diaryList = DiaryRepository.Diary;
+                }
+                return diaryList;
+            } 
+       
+            set
+            {
+                diaryList = value;
             }
 
         }
+
+
+
 
         public Diary()
         {

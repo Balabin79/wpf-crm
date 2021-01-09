@@ -16,7 +16,7 @@ using System.Windows.Input;
 namespace Dental.Models.Template
 {
     [Table("TreatmentPlan")]
-    class TreatmentPlan : ViewModelBase
+    class TreatmentPlan : ViewModelBase, ITemplate
     {
         [Key]
         [Column("Id")]
@@ -30,12 +30,15 @@ namespace Dental.Models.Template
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
+        [Column("Dir")]
+        [Display(Name = "Директория")]
+        public int Dir { get; set; }
 
         //public ObservableCollection<DiagnosDetail> DiagnosesDetails { get; set; }
 
 
 
-  
+
 
         /*
         public ICommand DeleteCommand { get; }
@@ -58,6 +61,6 @@ namespace Dental.Models.Template
 
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }}*/
-  
+
     }
 }

@@ -29,6 +29,7 @@
 
             <dxg:GridControl.View   >
                 <dxg:TreeListView KeyFieldName="Id" x:Name="view"
+                                  ShowDataNavigator="True" 
                                   ParentFieldName="ParentId"
                                   AutoWidth="True"
                                   AllowPerPixelScrolling="True"
@@ -42,9 +43,7 @@
                                   ExpandCollapseNodesOnNavigation="True"
                                   AutoExpandAllNodes="False">
          
-                    <dxmvvm:Interaction.Triggers>
-                        <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding Commands.ExpandAllNodes, ElementName=view}" />
-                    </dxmvvm:Interaction.Triggers>
+
 
                 </dxg:TreeListView>
 

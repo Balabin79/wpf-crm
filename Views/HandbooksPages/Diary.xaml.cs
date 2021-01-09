@@ -24,7 +24,7 @@ namespace Dental.Views.HandbooksPages
     {
         public Diary()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
     }
 }
