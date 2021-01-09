@@ -13,6 +13,12 @@
     <None Remove="Resources\Icons\folder_closed_gnone_32.png" />
     <None Remove="Resources\Icons\folder_open_32.png" />
     <None Remove="Resources\Icons\folder_open_gnone_32.png" />
+    <None Remove="Resources\Icons\Template\diagnos.png" />
+    <None Remove="Resources\Icons\Template\diary.png" />
+    <None Remove="Resources\Icons\Template\initial.png" />
+    <None Remove="Resources\Icons\Template\lime.png" />
+    <None Remove="Resources\Icons\Template\plan.png" />
+    <None Remove="Resources\Icons\Template\red.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +104,10 @@
     <Resource Include="Resources\Icons\folder_closed_gnone_32.png" />
     <Resource Include="Resources\Icons\folder_open_32.png" />
     <Resource Include="Resources\Icons\folder_open_gnone_32.png" />
+    <Resource Include="Resources\Icons\Template\diagnos.png" />
+    <Resource Include="Resources\Icons\Template\diary.png" />
+    <Resource Include="Resources\Icons\Template\initial.png" />
+    <Resource Include="Resources\Icons\Template\plan.png" />
   </ItemGroup>
 
   <ItemGroup>

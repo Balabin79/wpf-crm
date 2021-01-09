@@ -1,11 +1,13 @@
 using Dental.Infrastructures.Commands.Base;
 using Dental.Views.HandbooksPages;
 using System;
+using System.Drawing;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Dental.ViewModels
 {
@@ -81,5 +83,38 @@ namespace Dental.ViewModels
 
         private Page currentPage;
         private Double frameOpacity;
+
+        public BitmapImage DiaryImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/diary.png"));
+            }
+        }
+
+        public BitmapImage DiagnosImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/diagnos.png"));
+            }
+        }
+
+        public BitmapImage PlanImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/plan.png"));
+            }
+        }
+
+        public BitmapImage InitialImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/initial.png"));
+            }
+        }
     }
 }
+
