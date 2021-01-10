@@ -2,6 +2,7 @@
 using Dental.Models;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System;
 
 namespace Dental.Repositories.Template
 {
@@ -12,10 +13,19 @@ namespace Dental.Repositories.Template
 
         public static ObservableCollection<Diagnos> GetDiagnoses()
         {
-            ApplicationContext db = new ApplicationContext();
-            db.Diagnoses.Load();
-            var x = db.Diagnoses.Local;
-            return x;
+            try
+            {
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    db.Diagnoses.Load();
+                    return db.Diagnoses.Local;
+                }
+            }
+            catch (Exception e)
+            {
+                return new ObservableCollection<Diagnos>();
+            }
+
         }
     }
 }

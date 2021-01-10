@@ -35,7 +35,7 @@
 
 
 
-        <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0">
+        <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Основные" >
                     <dxr:RibbonPageGroup Caption="Сотрудники" >
@@ -73,26 +73,32 @@
                     <dxr:RibbonPageGroup >
                         <dxb:BarButtonItem Content="Диагноз" 
                                            Glyph="{Binding Path=DiagnosImage}"
-                                           LargeGlyph="{Binding Path=DiagnosImage}" 
-                                           Margin="0 0 20 0"
+                                           LargeGlyph="{Binding Path=DiagnosImage}"                                        
+                                           Padding="9"
                                            ToolTip="Шаблоны диагнозов"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Diagnoses}"/>
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="{x:Type pages:Diagnoses}"
+                                           ItemClick="BarButtonItem_ItemClick"
+                                           >
+                        </dxb:BarButtonItem>
                         <dxb:BarButtonItem Content="Дневник" 
                                             Glyph="{Binding Path=DiaryImage}"
                                            LargeGlyph="{Binding Path=DiaryImage}" 
-                                           Margin="0 0 20 0"
+                                           Padding="9"
                                            ToolTip="Шаблоны дневников"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Diary}"/>
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="{x:Type pages:Diary}"
+                                           />
                         <dxb:BarButtonItem Content="Первичный осмотр" 
                                             Glyph="{Binding Path=InitialImage}"
                                            LargeGlyph="{Binding Path=InitialImage}" 
-                                           Margin="0 0 20 0"
+                                           Padding="9"
                                            ToolTip="Первичный осмотр"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:InitialInspection}"/>
                         <dxb:BarButtonItem Content="План лечения" 
                                            Glyph="{Binding Path=PlanImage}"
                                            LargeGlyph="{Binding Path=PlanImage}"
-                                           Margin="0 0 20 0"
+                                           Padding="9"
                                            ToolTip="План лечения"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:TreatmentPlan}"/>
                     </dxr:RibbonPageGroup>

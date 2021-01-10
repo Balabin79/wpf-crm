@@ -50,10 +50,10 @@ namespace Dental.Models.Template
         }
         private string imageSource;
 
-        private ObservableCollection<Diary> diaryList;
+        private static ObservableCollection<Diary> diaryList;
 
         [NotMapped]
-        public ObservableCollection<Diary> DiaryList { 
+        public static ObservableCollection<Diary> DiaryList { 
             get
             {
                 if (diaryList == null)

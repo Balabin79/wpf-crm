@@ -41,8 +41,11 @@
                                   AllowPrintColumnHeaderImage="True" 
                                   TreeDerivationMode="Selfreference" 
                                   ExpandCollapseNodesOnNavigation="True"
-                                  AutoExpandAllNodes="False">
-        
+                                  AutoExpandAllNodes="False"
+                                  NewItemRowPosition="Bottom" 
+                                  EditFormShowMode="Dialog"
+                                  >
+                                   
 
                 </dxg:TreeListView>
 

@@ -40,13 +40,9 @@
                 </dxmvvm:Interaction.Behaviors>
 
 
-                    <dxg:TableView.EditFormTemplate> 
+                    <dxg:TableView.EditFormTemplate>
                         <DataTemplate >
-
-
                             <Grid dx:ThemeManager.ThemeName="Office2019White">
-
-
 
                                 <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
                                     <dxlc:LayoutGroup Orientation="Horizontal">

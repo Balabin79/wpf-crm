@@ -27,11 +27,11 @@
     <Grid>
 
         <Grid.DataContext>
-            <models:Diary/>
+            <rep:DiaryRepository/>
         </Grid.DataContext>
 
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
-                             ItemsSource="{Binding DiaryList}"  ShowBorder="False">
+                             ItemsSource="{Binding Diary}"  ShowBorder="False">
 
             <dxg:GridControl.Resources>
                 <Image Source="{Binding Path=ImageSource, Converter={StaticResource ImageConverter}}" Width="15" Height="15" x:Key="ClosedFolder" />
@@ -48,35 +48,76 @@
                                   AllowScrollAnimation="True"
                                   UseLegacyFilterPanel="True"
                                   AllowPrintColumnHeaderImage="True" 
-                                  TreeDerivationMode="Selfreference" 
-  
+                                  TreeDerivationMode="Selfreference"   
                                   PrintNodeImages="True"
                                   ShowNodeImages="True"
                                   NodeImageSize="15,15"
+                                  EditFormShowMode="Dialog"
+                                  AllowEditing="True"
+                                  EditFormColumnCount="1" 
+                                  PrintAutoWidth="True"
+                                  
                                   >
+
+
+
+
                     <dxg:TreeListView.NodeImageSelector>
                         <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}"
-                                                         Open="{dx:DXImage Image=Open_32x32.png}" />
+                                                                     Open="{dx:DXImage Image=Open_32x32.png}" />
                     </dxg:TreeListView.NodeImageSelector>
 
                 </dxg:TreeListView>
                 
-
-
             </dxg:GridControl.View>
 
             <dxg:GridControl.Columns>
 
-                <dxg:GridColumn FieldName="Name" Header="Наименование" Image="{Binding Path=ImageSource}"
-                                >
+                <dxg:GridColumn 
+                    FieldName="Name" Header="Наименование"
+                    Image="{Binding Path=ImageSource}" EditFormCaption="" 
+                    AllowAutoFilter="True" 
+                    AllowSearchPanel="True"
+                    
+                    >
+
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="25"></Setter>
                             <Setter Property="Margin" Value="5,5,5,5"></Setter>
                         </Style>
                     </dxg:GridColumn.HeaderImageStyle>
-                    
-                    
+
+                    <dxg:GridColumn.EditFormTemplate >
+                      
+                        <DataTemplate>
+                          
+                            <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap" 
+                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap">
+                                <dxe:MemoEdit.EditTemplate>
+                                    <ControlTemplate>
+                                        <dxe:MemoEdit 
+            
+                                            ShowIcon="False" 
+                                            EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
+                                                       
+                                        </dxe:MemoEdit>
+                                    </ControlTemplate>
+                                    
+                                            </dxe:MemoEdit.EditTemplate>
+                                        </dxe:MemoEdit>
+                                  
+                            
+                        </DataTemplate>
+                    </dxg:GridColumn.EditFormTemplate>
+
                 </dxg:GridColumn>
 
             </dxg:GridControl.Columns>

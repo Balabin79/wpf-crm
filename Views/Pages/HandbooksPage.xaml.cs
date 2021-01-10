@@ -14,5 +14,10 @@ namespace Dental.Views.Pages
             this.DataContext = Application.Current.Windows[0].Resources["viewModel"];
 
         }
+
+        private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            int x = 0;
+        }
     }
 }

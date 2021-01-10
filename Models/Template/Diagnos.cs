@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
+using Dental.Repositories.Template;
 
 namespace Dental.Models.Template
 {
