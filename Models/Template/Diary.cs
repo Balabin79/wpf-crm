@@ -39,7 +39,7 @@ namespace Dental.Models.Template
         {
             get { 
                // return @"..\Resources\Icons\Closed_Folder_32.png";
-                return "pack://application:,,,/Resources/Icons/Closed_Folder_32.png";
+                return "pack://application:,,,/Resources/Icons/Template/diary.png";
                 
             }
 

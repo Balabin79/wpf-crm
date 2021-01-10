@@ -3,20 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
-      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       mc:Ignorable="d" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Diagnoses"
-      xmlns:models ="clr-namespace:Dental.Models.Template" 
+      Title="Diagnoses" 
       xmlns:rep ="clr-namespace:Dental.Repositories.Template" 
-      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-      xmlns:sys="clr-namespace:System;assembly=System.Runtime"
-      >
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList">
 
     <Grid>
 
@@ -27,33 +21,65 @@
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
                              ItemsSource="{Binding TreatmentPlan}"  ShowBorder="False">
 
-            <dxg:GridControl.View   >
-                <dxg:TreeListView KeyFieldName="Id" x:Name="view" 
+            <dxg:GridControl.View>
+                <dxg:TreeListView KeyFieldName="Id" 
+                                  x:Name="view"
                                   ShowDataNavigator="True" 
                                   ParentFieldName="ParentId"
                                   AutoWidth="True"
                                   AllowPerPixelScrolling="True"
                                   ShowFixedTotalSummary="True"
-                                  ShowNodeImages="True"
                                   AllowScrollAnimation="True"
-                                  PrintNodeImages="True"
                                   UseLegacyFilterPanel="True"
                                   AllowPrintColumnHeaderImage="True" 
-                                  TreeDerivationMode="Selfreference" 
-                                  ExpandCollapseNodesOnNavigation="True"
-                                  AutoExpandAllNodes="False">
+                                  TreeDerivationMode="Selfreference"   
+                                  PrintNodeImages="True"
+                                  ShowNodeImages="True"
+                                  NodeImageSize="15,15"
+                                  EditFormShowMode="Dialog"
+                                  AllowEditing="True"
+                                  EditFormColumnCount="1" 
+                                  PrintAutoWidth="True">
 
+                    <dxg:TreeListView.NodeImageSelector>
+                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                    </dxg:TreeListView.NodeImageSelector>
                 </dxg:TreeListView>
 
-
             </dxg:GridControl.View>
-
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Name" Header="Наименование" GroupIndex="0"/>
-
+                <dxg:GridColumn 
+                    FieldName="Name" Header="Наименование" EditFormCaption="" 
+                    AllowAutoFilter="True" AllowSearchPanel="True">
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+                    <dxg:GridColumn.HeaderImageStyle>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="25"></Setter>
+                            <Setter Property="Margin" Value="5,5,5,5"></Setter>
+                        </Style>
+                    </dxg:GridColumn.HeaderImageStyle>
+                    <dxg:GridColumn.EditFormTemplate >
+                        <DataTemplate>
+                            <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap" 
+                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap">
+                                <dxe:MemoEdit.EditTemplate>
+                                    <ControlTemplate>
+                                        <dxe:MemoEdit            
+                                            ShowIcon="False" 
+                                            EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
+                                        </dxe:MemoEdit>
+                                    </ControlTemplate>
+                                </dxe:MemoEdit.EditTemplate>
+                            </dxe:MemoEdit>
+                        </DataTemplate>
+                    </dxg:GridColumn.EditFormTemplate>
+                </dxg:GridColumn>
             </dxg:GridControl.Columns>
-
-
             <dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem FieldName="{Binding Name}" SummaryType="Count" Alignment="Right"/>
             </dxg:GridControl.TotalSummary>
