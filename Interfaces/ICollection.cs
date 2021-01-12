@@ -10,7 +10,7 @@ namespace Dental.Interfaces
         int Dir { get; set; }
         int Id { get; set; }
         string Name { get; set; }
-        ObservableCollection<ITreeViewCollection> Collection { get; set; }
+       // ObservableCollection<ITreeViewCollection> Collection { get; set; }
         ICommand DeleteCommand { get; }
     }
 }

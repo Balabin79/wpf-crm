@@ -20,7 +20,8 @@ namespace Dental.Repositories.Template
                 ApplicationContext db = new ApplicationContext();
                 
                     db.Diagnoses.Load();
-                    return db.Diagnoses.Local;
+                    var x = db.Diagnoses.Local;
+                return x;
             
             }
             catch (Exception e)
@@ -41,15 +42,18 @@ namespace Dental.Repositories.Template
         public int DeleteDir(ITreeViewCollection diagnos)
         {
             ApplicationContext db = new ApplicationContext();
-            db.Entry(diagnos).State = EntityState.Deleted;
-            db.Diagnoses.Remove(diagnos);
+            var query = db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id);
+            query.ToList().ForEach(p => db.Entry(diagnos).State = EntityState.Deleted);
+            query.ToList().ForEach(p => db.Diagnoses.Remove(p));
+
+            //db.Diagnoses.Remove(diagnos);
             return db.SaveChanges();
         }
 
         public  int ChildExists(ITreeViewCollection diagnos)
         {
             ApplicationContext db = new ApplicationContext();
-            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id).Count();
+            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id).Count();
         }
     }
 }
