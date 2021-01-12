@@ -60,16 +60,20 @@ namespace Dental.Models.Template
         }
 
         [NotMapped]
-        public ObservableCollection<Diagnos> Collection {
-            get {
-                if (_diagnoses == null) _diagnoses = GetDiagnoses();
-                return _diagnoses;
-            }
-            set {
-                Set(ref _diagnoses, value); 
-            }
-        }
-        private ObservableCollection<Diagnos>  _diagnoses;
+        public static ObservableCollection<Diagnos> Collection
+        {
+            /* get {
+                 if (_diagnoses == null) _diagnoses = GetDiagnoses();
+                 return _diagnoses;
+             }
+             set {
+                 Set(ref _diagnoses, value); 
+             }*/
+            get; set;
+        } = GetDiagnoses();
+
+
+       // private ObservableCollection<Diagnos>  _diagnoses;
 
 
         public int Delete(ITreeViewCollection diagnos)
@@ -77,7 +81,7 @@ namespace Dental.Models.Template
             Diagnos model = (Diagnos)diagnos;
             ApplicationContext db = new ApplicationContext();
             db.Entry(diagnos).State = EntityState.Deleted;
-            db.Diagnoses.Remove(model);
+            Collection.Remove(model);
             return db.SaveChanges();
         }
 
@@ -85,18 +89,24 @@ namespace Dental.Models.Template
         {
             Diagnos model = (Diagnos)diagnos;
             ApplicationContext db = new ApplicationContext();
-            var query = db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id);
-            query.ToList().ForEach(p => db.Entry(diagnos).State = EntityState.Deleted);
-            query.ToList().ForEach(p => db.Diagnoses.Remove(p));
+            //db.Diagnoses.RemoveRange(db.Diagnoses.Where(d => d.ParentId == model.Id || d.Id == model.Id));
 
-            //db.Diagnoses.Remove(diagnos);
-            return db.SaveChanges();
+
+            var query = db.Diagnoses.Where(d => d.ParentId == diagnos.Id || d.Id == diagnos.Id );
+            query.ToList().ForEach(d => db.Entry(d).State = EntityState.Deleted);
+           
+            query.ToList().ForEach(d => Collection.Remove(d));
+            query.ToList().ForEach(d => db.Diagnoses.Remove(d));
+
+            //Diagnoses.Remove(diagnos);
+            int t = db.SaveChanges();
+            return t;
         }
 
         public int ChildExists(ITreeViewCollection diagnos)
         {
             ApplicationContext db = new ApplicationContext();
-            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id).Count();
+            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id).Count();
         }
 
 

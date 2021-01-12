@@ -21,7 +21,7 @@
         </Grid.DataContext>
 
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
-                             ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}"  ShowBorder="False">
+                             ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ShowBorder="False">
 
             <dxg:GridControl.View>
                 <dxg:TreeListView KeyFieldName="Id" 
