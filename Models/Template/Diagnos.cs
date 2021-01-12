@@ -13,6 +13,7 @@ using System.Linq;
 using DevExpress.Data.Linq.Helpers;
 using Dental.Repositories;
 using Dental.Interfaces;
+using Dental.Infrastructures.Collection;
 
 namespace Dental.Models.Template
 {
@@ -50,7 +51,15 @@ namespace Dental.Models.Template
         private bool CanDeleteCommandExecute(object p) => true;
         private void OnDeleteCommandExecuted(object p)
         {
-           
+            try
+            {
+                (new DeleteStrategy((ITreeViewCollection)p)).run();
+            }
+            catch (Exception e)
+            {
+
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+            }
         }
 
         [NotMapped]
