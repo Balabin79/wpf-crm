@@ -17,11 +17,11 @@
     <Grid>
 
         <Grid.DataContext>
-            <model:DiagnosRepository/>
+            <model:Diagnos/>
         </Grid.DataContext>
 
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
-                             ItemsSource="{Binding Diagnoses, UpdateSourceTrigger=PropertyChanged}"  ShowBorder="False">
+                             ItemsSource="{Binding Collection, UpdateSourceTrigger=PropertyChanged}"  ShowBorder="False">
 
             <dxg:GridControl.View>
                 <dxg:TreeListView KeyFieldName="Id" 

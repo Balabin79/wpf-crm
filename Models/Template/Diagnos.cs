@@ -7,11 +7,6 @@ using Dental.Repositories.Template;
 using Dental.Infrastructures.Commands.Base;
 using DevExpress.Xpf.Core;
 using System;
-using System.Windows;
-using System.Data.Entity;
-using System.Linq;
-using DevExpress.Data.Linq.Helpers;
-using Dental.Repositories;
 using Dental.Interfaces;
 using Dental.Infrastructures.Collection;
 
@@ -38,7 +33,7 @@ namespace Dental.Models.Template
 
         public IRepositoryCollection ClassRepository 
         {
-            get => new Template.DiagnosRepository();
+            get => new DiagnosRepository();
         }
 
         public Diagnos()
@@ -63,7 +58,7 @@ namespace Dental.Models.Template
         }
 
         [NotMapped]
-        public ObservableCollection<ITreeViewCollection> Diagnoses {
+        public ObservableCollection<ITreeViewCollection> Collection {
             get {
                 if (_diagnoses == null) _diagnoses = DiagnosRepository.GetDiagnoses();
                 return _diagnoses;
