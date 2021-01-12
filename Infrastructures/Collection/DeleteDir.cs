@@ -14,9 +14,9 @@ namespace Dental.Infrastructures.Collection
 
             if (response.ToString() == "Yes")
             {
-                IRepositoryCollection repository = model.ClassRepository;
-                if (repository.ChildExists(model) < 1) return repository.Delete(model);
-                return repository.DeleteDir(model);
+               // IRepositoryCollection repository = model.ClassRepository;
+                if (model.ChildExists(model) < 1) return model.Delete(model);
+                return model.DeleteDir(model);
             }
             return 0;
         }

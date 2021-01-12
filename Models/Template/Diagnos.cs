@@ -9,6 +9,8 @@ using DevExpress.Xpf.Core;
 using System;
 using Dental.Interfaces;
 using Dental.Infrastructures.Collection;
+using System.Linq;
+using System.Data.Entity;
 
 namespace Dental.Models.Template
 {
@@ -31,10 +33,10 @@ namespace Dental.Models.Template
         [Display(Name = "Директория")]
         public int Dir { get; set; }
 
-        public IRepositoryCollection ClassRepository 
+       /* public IRepositoryCollection ClassRepository 
         {
             get => new DiagnosRepository();
-        }
+        }*/
 
         public Diagnos()
         {
@@ -58,16 +60,64 @@ namespace Dental.Models.Template
         }
 
         [NotMapped]
-        public ObservableCollection<ITreeViewCollection> Collection {
+        public ObservableCollection<Diagnos> Collection {
             get {
-                if (_diagnoses == null) _diagnoses = DiagnosRepository.GetDiagnoses();
+                if (_diagnoses == null) _diagnoses = GetDiagnoses();
                 return _diagnoses;
             }
             set {
                 Set(ref _diagnoses, value); 
             }
         }
-        private ObservableCollection<ITreeViewCollection>  _diagnoses;
+        private ObservableCollection<Diagnos>  _diagnoses;
+
+
+        public int Delete(ITreeViewCollection diagnos)
+        {
+            Diagnos model = (Diagnos)diagnos;
+            ApplicationContext db = new ApplicationContext();
+            db.Entry(diagnos).State = EntityState.Deleted;
+            db.Diagnoses.Remove(model);
+            return db.SaveChanges();
+        }
+
+        public int DeleteDir(ITreeViewCollection diagnos)
+        {
+            Diagnos model = (Diagnos)diagnos;
+            ApplicationContext db = new ApplicationContext();
+            var query = db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id);
+            query.ToList().ForEach(p => db.Entry(diagnos).State = EntityState.Deleted);
+            query.ToList().ForEach(p => db.Diagnoses.Remove(p));
+
+            //db.Diagnoses.Remove(diagnos);
+            return db.SaveChanges();
+        }
+
+        public int ChildExists(ITreeViewCollection diagnos)
+        {
+            ApplicationContext db = new ApplicationContext();
+            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id && d.Id != diagnos.Id).Count();
+        }
+
+
+
+        public static ObservableCollection<Diagnos> GetDiagnoses()
+        {
+            try
+            {
+                ApplicationContext db = new ApplicationContext();
+
+                db.Diagnoses.Load();
+                return db.Diagnoses.Local;
+
+
+            }
+            catch (Exception e)
+            {
+                return new ObservableCollection<Diagnos>();
+            }
+
+        }
 
     }
 }
