@@ -10,7 +10,9 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Diagnoses" 
       xmlns:rep ="clr-namespace:Dental.Repositories.Template" 
-      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList">
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:b ="clr-namespace:Dental.Behaviors" 
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <Grid>
 
@@ -40,6 +42,9 @@
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
                                   PrintAutoWidth="True">
+                    <dxmvvm:Interaction.Behaviors>
+                        <b:DeleteNodeTreeViewBehaviors/>
+                    </dxmvvm:Interaction.Behaviors>
 
                     <dxg:TreeListView.NodeImageSelector>
                         <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />

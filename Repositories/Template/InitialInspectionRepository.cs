@@ -2,11 +2,13 @@
 using Dental.Models;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using Dental.Interfaces;
 
 namespace Dental.Repositories.Template
 {
     class InitialInspectionRepository
     {
+
 
         public static ObservableCollection<InitialInspection> InitialInspection { get => GetInitialInspectiones(); }
 
@@ -17,5 +19,6 @@ namespace Dental.Repositories.Template
             var x = db.InitialInspectiones.Local;
             return x;
         }
+
     }
 }

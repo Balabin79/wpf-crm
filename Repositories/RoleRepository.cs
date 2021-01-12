@@ -1,10 +1,11 @@
-﻿using Dental.Models;
+﻿using Dental.Interfaces;
+using Dental.Models;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 
 namespace Dental.Repositories
 {
-    static class RoleRepository
+    class RoleRepository
     {
 
         public static ObservableCollection<Role> GetFakeRoles()
@@ -50,12 +51,14 @@ namespace Dental.Repositories
             }
         }
 
-        public static void Delete(Role role)
+       /* public int Delete(IModel model)
         {
+
+            Role role = (Role)model;
             ApplicationContext db = new ApplicationContext();
             db.Entry(role).State = EntityState.Deleted;
             db.Roles.Remove(role);
-           int cnt = db.SaveChanges();
-        }
+            return db.SaveChanges();
+        }*/
     }
 }

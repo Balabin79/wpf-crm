@@ -3,6 +3,7 @@ using Dental.Models;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System;
+using Dental.Interfaces;
 
 namespace Dental.Repositories.Template
 {
@@ -25,5 +26,7 @@ namespace Dental.Repositories.Template
                 return new ObservableCollection<Diary>();
             }
         }
+
+        
     }
 }

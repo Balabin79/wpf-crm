@@ -4,12 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dental.Interfaces;
 using Dental.Models;
 
 namespace Dental.Repositories
 {
-    static class EmployeeRepository
+    class EmployeeRepository
     {
+        
+
         public static ObservableCollection<Employee> GetFakeListEmployee()
         {
             return new ObservableCollection<Employee>

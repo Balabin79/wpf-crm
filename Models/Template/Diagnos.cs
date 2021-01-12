@@ -4,11 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using Dental.Repositories.Template;
+using Dental.Infrastructures.Commands.Base;
+using DevExpress.Xpf.Core;
+using System;
+using System.Windows;
+using System.Data.Entity;
+using System.Linq;
+using DevExpress.Data.Linq.Helpers;
+using Dental.Repositories;
+using Dental.Interfaces;
 
 namespace Dental.Models.Template
 {
     [Table("Diagnoses")]
-    class Diagnos : ViewModelBase, ITemplate
+    class DiagnosRepository : ViewModelBase, ITreeViewCollection
     {
         [Key]
         [Column("Id")]
@@ -26,32 +35,35 @@ namespace Dental.Models.Template
         [Display(Name = "Директория")]
         public int Dir { get; set; }
 
-        public Diagnos()
+        public IRepositoryCollection ClassRepository 
         {
-           // DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+            get => new Template.DiagnosRepository();
         }
 
-        /*
+        public DiagnosRepository()
+        {
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+        }
+
+        
         public ICommand DeleteCommand { get; }
         private bool CanDeleteCommandExecute(object p) => true;
         private void OnDeleteCommandExecuted(object p)
         {
-            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
-            try
-            {
-                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Вы уверены что хотите удалить роль?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
-                if (response.ToString() == "Yes")
-                {
-                    Role role = (Role)p;
-                    RoleRepository.Delete(role);
-                    //ListRoles.Remove(role);
-                }
-            }
-            catch (Exception e)
-            {
+           
+        }
 
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
-            }}*/
-  
+        [NotMapped]
+        public ObservableCollection<ITreeViewCollection> Diagnoses {
+            get {
+                if (_diagnoses == null) _diagnoses = DiagnosRepository.GetDiagnoses();
+                return _diagnoses;
+            }
+            set {
+                Set(ref _diagnoses, value); 
+            }
+        }
+        private ObservableCollection<ITreeViewCollection>  _diagnoses;
+
     }
 }

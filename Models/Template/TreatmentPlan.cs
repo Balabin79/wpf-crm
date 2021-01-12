@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Repositories.Template;
+﻿
+using Dental.Interfaces;
 using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System.Collections.ObjectModel;
@@ -16,7 +11,7 @@ using System.Windows.Input;
 namespace Dental.Models.Template
 {
     [Table("TreatmentPlan")]
-    class TreatmentPlan : ViewModelBase, ITemplate
+    class TreatmentPlan : ViewModelBase
     {
         [Key]
         [Column("Id")]

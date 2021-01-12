@@ -60,7 +60,7 @@ namespace Dental.Models
                 if (response.ToString() == "Yes")
                 {
                     Role role = (Role)p;
-                    RoleRepository.Delete(role);
+                    //RoleRepository.Delete(role);
                     //ListRoles.Remove(role);
                 }
             }

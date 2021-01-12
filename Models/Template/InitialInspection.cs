@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Repositories.Template;
+﻿
 using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System.Collections.ObjectModel;
@@ -12,11 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows;
 using System.Windows.Input;
+using Dental.Interfaces;
 
 namespace Dental.Models.Template
 {
     [Table("InitialInspection")]
-    class InitialInspection : ViewModelBase, ITemplate
+    class InitialInspection : ViewModelBase
     {
         [Key]
         [Column("Id")]

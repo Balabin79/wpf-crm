@@ -1,10 +1,11 @@
-﻿using Dental.Models;
+﻿using Dental.Interfaces;
+using Dental.Models;
 using System.Collections.ObjectModel;
 
 
 namespace Dental.Repositories
 {
-    static class EmployeeStatusRepository
+    class EmployeeStatusRepository
     {
         public static ObservableCollection<EmployeeStatus> GetFakeEmployeeStatuses()
         {
@@ -15,5 +16,6 @@ namespace Dental.Repositories
                     new EmployeeStatus() {Name="В отпуске", Description=""}
                 };
         }
+        
     }
 }

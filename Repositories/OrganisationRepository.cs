@@ -1,9 +1,10 @@
-﻿using Dental.Models;
+﻿using Dental.Interfaces;
+using Dental.Models;
 using System.Collections.ObjectModel;
 
 namespace Dental.Repositories
 {
-    static class OrganisationRepository
+    class OrganisationRepository
     {
         public static ObservableCollection<Organization> GetFakeOrganizations()
         {
@@ -45,5 +46,6 @@ namespace Dental.Repositories
                     }
                 };
         }
+
     }
 }

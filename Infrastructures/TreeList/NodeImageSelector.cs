@@ -7,6 +7,7 @@ using System.Windows.Media;
 using DevExpress.Xpf.Grid;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Dental.Interfaces;
 
 namespace Dental.Infrastructures.TreeList
 {
@@ -24,7 +25,7 @@ namespace Dental.Infrastructures.TreeList
             File = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/document_gnome_32.png"));
 
 
-            var template = rowData.Row as Dental.Models.Template.ITemplate;
+            var template = rowData.Row as ICollection;
 
             if (rowData == null || template?.Dir == 0) return File;
 

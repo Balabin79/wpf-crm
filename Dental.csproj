@@ -37,7 +37,6 @@
     <Folder Include="Images\Employes\" />
     <Folder Include="Images\Patients\" />
     <Folder Include="Images\Logos\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Repositories\Fakes\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\Controls\" />

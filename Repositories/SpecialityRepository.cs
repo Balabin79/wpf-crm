@@ -1,11 +1,12 @@
 ﻿
+using Dental.Interfaces;
 using Dental.Models;
 using System.Collections.ObjectModel;
 
 
 namespace Dental.Repositories
 {
-    static class SpecialityRepository
+    class SpecialityRepository 
     {
         public static ObservableCollection<Speciality> GetFakeSpecialities()
         {
@@ -19,5 +20,6 @@ namespace Dental.Repositories
                     new Speciality() {Name="Анестезиолог", Description="", ShowInShedule=false }
                 };
         }
+
     }
 }

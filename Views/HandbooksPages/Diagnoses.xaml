@@ -9,17 +9,19 @@
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Diagnoses"
-      xmlns:rep ="clr-namespace:Dental.Repositories.Template" 
-      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList">
+      xmlns:model ="clr-namespace:Dental.Models.Template" 
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:b ="clr-namespace:Dental.Behaviors" 
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <Grid>
 
         <Grid.DataContext>
-            <rep:DiagnosRepository/>
+            <model:DiagnosRepository/>
         </Grid.DataContext>
 
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
-                             ItemsSource="{Binding Diagnoses}"  ShowBorder="False">
+                             ItemsSource="{Binding Diagnoses, UpdateSourceTrigger=PropertyChanged}"  ShowBorder="False">
 
             <dxg:GridControl.View>
                 <dxg:TreeListView KeyFieldName="Id" 
@@ -39,7 +41,12 @@
                                   EditFormShowMode="Dialog"
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
-                                  PrintAutoWidth="True">
+                                  PrintAutoWidth="True"
+                                  
+                                  >
+                    <dxmvvm:Interaction.Behaviors>
+                        <b:DeleteNodeTreeViewBehaviors/>
+                    </dxmvvm:Interaction.Behaviors>
 
                     <dxg:TreeListView.NodeImageSelector>
                         <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
