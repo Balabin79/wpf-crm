@@ -18,7 +18,7 @@ using Dental.Infrastructures.Collection;
 namespace Dental.Models.Template
 {
     [Table("Diagnoses")]
-    class DiagnosRepository : ViewModelBase, ITreeViewCollection
+    class Diagnos : ViewModelBase, ITreeViewCollection
     {
         [Key]
         [Column("Id")]
@@ -41,7 +41,7 @@ namespace Dental.Models.Template
             get => new Template.DiagnosRepository();
         }
 
-        public DiagnosRepository()
+        public Diagnos()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
         }
