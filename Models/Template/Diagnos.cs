@@ -61,19 +61,8 @@ namespace Dental.Models.Template
 
         [NotMapped]
         public static ObservableCollection<Diagnos> Collection
-        {
-            /* get {
-                 if (_diagnoses == null) _diagnoses = GetDiagnoses();
-                 return _diagnoses;
-             }
-             set {
-                 Set(ref _diagnoses, value); 
-             }*/
-            get; set;
-        } = GetDiagnoses();
+        { get; set; } = GetDiagnoses();
 
-
-       // private ObservableCollection<Diagnos>  _diagnoses;
 
 
         public int Delete(ITreeViewCollection diagnos)
@@ -89,18 +78,9 @@ namespace Dental.Models.Template
         {
             Diagnos model = (Diagnos)diagnos;
             ApplicationContext db = new ApplicationContext();
-            //db.Diagnoses.RemoveRange(db.Diagnoses.Where(d => d.ParentId == model.Id || d.Id == model.Id));
-
-
-            var query = db.Diagnoses.Where(d => d.ParentId == diagnos.Id || d.Id == diagnos.Id );
-            query.ToList().ForEach(d => db.Entry(d).State = EntityState.Deleted);
-           
-            query.ToList().ForEach(d => Collection.Remove(d));
-            query.ToList().ForEach(d => db.Diagnoses.Remove(d));
-
-            //Diagnoses.Remove(diagnos);
-            int t = db.SaveChanges();
-            return t;
+            db.Diagnoses.RemoveRange(db.Diagnoses.Where(d => d.ParentId == model.Id || d.Id == model.Id));
+            Collection.Where(d => d.ParentId == model.Id || d.Id == model.Id).ToList().ForEach(d => Collection.Remove(d));
+            return db.SaveChanges(); 
         }
 
         public int ChildExists(ITreeViewCollection diagnos)
