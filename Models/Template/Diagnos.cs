@@ -80,10 +80,10 @@ namespace Dental.Models.Template
             Diagnos model = (Diagnos)diagnos;
             ApplicationContext db = new ApplicationContext();
 
-            db.Diagnoses.RemoveRange(db.Diagnoses.Where(d => d.ParentId == model.Id || d.Id == model.Id));
+            var list = Recusion(model, new List<Diagnos>() {model});
 
-            var list = Recusion(model, new List<Diagnos>());
-
+            list.ToList().ForEach(d => list.ToList().Remove(d));
+            list.ToList().ForEach(d => Collection.Remove(d));
             //List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id || d.Id == model.Id).ToList();
             //if (list.Count > 1) list = Recusion(model);   
 
@@ -103,8 +103,9 @@ namespace Dental.Models.Template
                 {
                     if (item.ParentId != item.Id && item.Dir == 1) Recusion(item, nodes);
                     nodes.Add(item);
+
                 }
-                return nodes;
+
             }
             return nodes;
         }
