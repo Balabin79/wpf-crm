@@ -25,7 +25,7 @@ namespace Dental.Infrastructures.TreeList
             File = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/document_gnome_32.png"));
 
 
-            var template = rowData.Row as ICollection;
+            var template = rowData.Row as ITreeViewCollection;
 
             if (rowData == null || template?.Dir == 0) return File;
 

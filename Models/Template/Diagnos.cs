@@ -11,6 +11,7 @@ using Dental.Interfaces;
 using Dental.Infrastructures.Collection;
 using System.Linq;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace Dental.Models.Template
 {
@@ -78,10 +79,36 @@ namespace Dental.Models.Template
         {
             Diagnos model = (Diagnos)diagnos;
             ApplicationContext db = new ApplicationContext();
+
             db.Diagnoses.RemoveRange(db.Diagnoses.Where(d => d.ParentId == model.Id || d.Id == model.Id));
-            Collection.Where(d => d.ParentId == model.Id || d.Id == model.Id).ToList().ForEach(d => Collection.Remove(d));
+
+            var list = Recusion(model, new List<Diagnos>());
+
+            //List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id || d.Id == model.Id).ToList();
+            //if (list.Count > 1) list = Recusion(model);   
+
+            //.ForEach(d => Collection.Remove(d));
+
+
             return db.SaveChanges(); 
         }
+
+        public List<Diagnos> Recusion(Diagnos model, List<Diagnos> nodes)
+        {  
+            List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id).ToList();
+           
+            if (list.Count>0)
+            {
+                foreach (Diagnos item in list)
+                {
+                    if (item.ParentId != item.Id && item.Dir == 1) Recusion(item, nodes);
+                    nodes.Add(item);
+                }
+                return nodes;
+            }
+            return nodes;
+        }
+
 
         public int ChildExists(ITreeViewCollection diagnos)
         {
