@@ -12,46 +12,73 @@ using Dental.Infrastructures.Collection;
 using System.Linq;
 using System.Data.Entity;
 using System.Collections.Generic;
+using Dental.Models.Base;
 
 namespace Dental.Models.Template
 {
     [Table("Diagnoses")]
-    class Diagnos : ViewModelBase, ITreeViewCollection
+    class Diagnos : TreeModelBase, ITreeViewCollection
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
-
-        [Column("ParentId")]
-        public int? ParentId { get; set; }
-
-        [Required]
-        [Column("Name")]
-        [Display(Name = "Наименование")]
-        public string Name { get; set; }
-
-        [Column("Dir")]
-        [Display(Name = "Директория")]
-        public int Dir { get; set; }
-
-       /* public IRepositoryCollection ClassRepository 
-        {
-            get => new DiagnosRepository();
-        }*/
 
         public Diagnos()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
         }
 
         
         public ICommand DeleteCommand { get; }
+        public ICommand AddCommand { get; }
         private bool CanDeleteCommandExecute(object p) => true;
+        private bool CanAddCommandExecute(object p) => true;
         private void OnDeleteCommandExecuted(object p)
         {
             try
             {
-                (new DeleteStrategy((ITreeViewCollection)p)).run();
+                Diagnos model = (Diagnos)p;
+                if (new DeleteInTree().run(model.Dir)) Delete(model);
+
+            }
+            catch (Exception e)
+            {
+
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+            }
+        }
+        private void OnAddCommandExecuted(object p)
+        {
+            try
+            {
+                Diagnos model = (Diagnos)p;
+
+                if (model.Id == model.ParentId && model.Dir == 0)
+                {
+                    // это корневой файл
+                    // показываем форму с выбором корневой и обычной папки и файла
+                    int x = 0;
+                }
+                if (model.Id == model.ParentId && model.Dir == 1 )
+                {
+                    // это корневая папка 
+                    // показываем форму с выбором корневой и обычной папки и файла
+                    int x = 0;
+                }
+
+                else if (model.Dir == 1 && model.ParentId != model.Id)
+                {
+                    // это вложенная папка, 
+                    // показываем форму с выбором файла и обычной папки, присваиваем записи ParentId = текущему Id
+                    int x = 0;
+                }
+
+
+                if (model.Dir == 0 && model.ParentId != 0)
+                {
+                    // это файл в папке
+                    // показываем форму с выбором файла и обычной папки, присваиваем записи ParentId = текущему ParentId
+                    int x = 0;
+                }
+
             }
             catch (Exception e)
             {
@@ -61,39 +88,23 @@ namespace Dental.Models.Template
         }
 
         [NotMapped]
-        public static ObservableCollection<Diagnos> Collection
-        { get; set; } = GetDiagnoses();
+        public static ObservableCollection<Diagnos> Collection{ get; set; } = GetDiagnoses();
 
 
-
-        public int Delete(ITreeViewCollection diagnos)
+        public int Delete(Diagnos diagnos)
         {
             Diagnos model = (Diagnos)diagnos;
-            ApplicationContext db = new ApplicationContext();
-            db.Entry(diagnos).State = EntityState.Deleted;
-            Collection.Remove(model);
-            return db.SaveChanges();
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var list = Recursion(model, new List<Diagnos>() { model });
+
+                list.ToList().ForEach(d => list.ToList().Remove(d));
+                list.ToList().ForEach(d => Collection.Remove(d));
+                return db.SaveChanges();
+            }
         }
 
-        public int DeleteDir(ITreeViewCollection diagnos)
-        {
-            Diagnos model = (Diagnos)diagnos;
-            ApplicationContext db = new ApplicationContext();
-
-            var list = Recusion(model, new List<Diagnos>() {model});
-
-            list.ToList().ForEach(d => list.ToList().Remove(d));
-            list.ToList().ForEach(d => Collection.Remove(d));
-            //List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id || d.Id == model.Id).ToList();
-            //if (list.Count > 1) list = Recusion(model);   
-
-            //.ForEach(d => Collection.Remove(d));
-
-
-            return db.SaveChanges(); 
-        }
-
-        public List<Diagnos> Recusion(Diagnos model, List<Diagnos> nodes)
+        public List<Diagnos> Recursion(Diagnos model, List<Diagnos> nodes)
         {  
             List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id).ToList();
            
@@ -101,22 +112,12 @@ namespace Dental.Models.Template
             {
                 foreach (Diagnos item in list)
                 {
-                    if (item.ParentId != item.Id && item.Dir == 1) Recusion(item, nodes);
+                    if (item.ParentId != item.Id && item.Dir == 1) Recursion(item, nodes);
                     nodes.Add(item);
-
                 }
-
             }
             return nodes;
         }
-
-
-        public int ChildExists(ITreeViewCollection diagnos)
-        {
-            ApplicationContext db = new ApplicationContext();
-            return db.Diagnoses.Where(d => d.ParentId == diagnos.Id).Count();
-        }
-
 
 
         public static ObservableCollection<Diagnos> GetDiagnoses()
@@ -124,11 +125,8 @@ namespace Dental.Models.Template
             try
             {
                 ApplicationContext db = new ApplicationContext();
-
-                db.Diagnoses.Load();
-                return db.Diagnoses.Local;
-
-
+                    db.Diagnoses.Load();
+                    return db.Diagnoses.Local;
             }
             catch (Exception e)
             {

@@ -14,12 +14,18 @@ namespace Dental.Behaviors
         {
             base.OnAttached();
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.DeleteFocusedRow, OnDeleteExecuted));
+            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.AddNewRow, OnAddNewExecuted));
         }
 
         void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var _FocucedRow = (e.Source as TreeListView).FocusedRow;
             ((ITreeViewCollection)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow);
+        }
+
+        void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ((ITreeViewCollection)AssociatedObject.DataContext).AddCommand.Execute((e.Source as TreeListView).FocusedRow);
         }
 
 
