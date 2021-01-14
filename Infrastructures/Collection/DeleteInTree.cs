@@ -1,12 +1,17 @@
-﻿using DevExpress.Xpf.Core;
+﻿using Dental.Interfaces;
+using Dental.Models;
+using Dental.Models.Template;
+using DevExpress.Utils;
+using DevExpress.Xpf.Core;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace Dental.Infrastructures.Collection
 {
     class DeleteInTree
-    {
-
+    {              
         public bool run(int category)
         {
             try
@@ -41,5 +46,7 @@ namespace Dental.Infrastructures.Collection
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }
         }
+
+       
     }
 }

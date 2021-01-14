@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
+using Dental.Interfaces;
 
 
 namespace Dental.Models.Base

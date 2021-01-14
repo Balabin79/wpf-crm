@@ -1,4 +1,5 @@
-﻿using Dental.Interfaces;
+﻿using Dental.Infrastructures.Collection;
+using Dental.Interfaces;
 using Dental.Models;
 using Dental.Models.Template;
 using DevExpress.Mvvm.UI.Interactivity;
@@ -20,7 +21,9 @@ namespace Dental.Behaviors
         void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var _FocucedRow = (e.Source as TreeListView).FocusedRow;
+            //new DeleteInTree().run((Diagnos)_FocucedRow);
             ((ITreeViewCollection)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow);
+            //((ITreeViewCollection)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow);
         }
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
