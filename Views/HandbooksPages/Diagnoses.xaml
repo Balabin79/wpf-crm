@@ -31,7 +31,7 @@
                 <dxg:TreeListView 
                                   x:Name="view"
                                   ShowDataNavigator="True" 
-                                  KeyFieldName="Id" 
+                                  KeyFieldName="Id"
                                   ParentFieldName="ParentId"
                                   AutoWidth="True"
                                   AllowPerPixelScrolling="True"
@@ -66,6 +66,7 @@
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить"
                                            GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                     </dxg:TreeListView.RowCellMenuCustomizations>
+                    
                     <dxmvvm:Interaction.Behaviors>
                         <b:DeleteNodeTreeViewBehaviors/>
                     </dxmvvm:Interaction.Behaviors>
@@ -77,8 +78,8 @@
 
             </dxg:GridControl.View>
             <dxg:GridControl.Columns>
-                <dxg:GridColumn 
-                    FieldName="Name" Header="Наименование" EditFormCaption="" 
+                <dxg:GridColumn
+                    FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
                     AllowAutoFilter="True" AllowSearchPanel="True">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
@@ -93,18 +94,37 @@
                         </Style>
                     </dxg:GridColumn.HeaderImageStyle>
                     <dxg:GridColumn.EditFormTemplate >
-                        <DataTemplate>
-                            <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap" 
+                        <DataTemplate  >
+        
+                            <StackPanel>
+
+                                <dxe:ListBoxEdit ShowBorder="False" Background="{x:Null}" 
+                                 SelectedIndex="{Binding Path=RowData.Source.View.FocusedRow.Dir}"
+                                                 x:Name="lbButtonIndex" Margin="0,0,0,5">
+                                    <dxe:ListBoxEditItem Content="Текстовой фрагмент" />
+                                    <dxe:ListBoxEditItem Content="Директория"  Margin="6,0,0,0"/>
+                                    
+                                    <dxe:ListBoxEdit.StyleSettings>
+                                        <dxe:RadioListBoxEditStyleSettings />
+                                    </dxe:ListBoxEdit.StyleSettings>
+                                    <dxe:ListBoxEdit.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </dxe:ListBoxEdit.ItemsPanel>
+                                </dxe:ListBoxEdit>
+                                <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap" 
                                            ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap">
                                 <dxe:MemoEdit.EditTemplate>
                                     <ControlTemplate>
-                                        <dxe:MemoEdit            
+                                        <dxe:MemoEdit Name="MemoEditName"       
                                             ShowIcon="False" 
                                             EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
                                         </dxe:MemoEdit>
                                     </ControlTemplate>
                                 </dxe:MemoEdit.EditTemplate>
                             </dxe:MemoEdit>
+                            </StackPanel>
                         </DataTemplate>
                     </dxg:GridColumn.EditFormTemplate>
                 </dxg:GridColumn>
