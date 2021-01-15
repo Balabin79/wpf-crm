@@ -42,8 +42,7 @@
                         <dxb:BarButtonItem Content="Сотрудники" RibbonStyle="Default" 
                                            LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}" 
                                            Margin="10 0 10 0"                                       
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"
-                                           Glyph="{dx:DXImage Images/People/UserGroup_32x32.png}" MediumGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" MediumGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}" Glyph="{dx:DXImage Images/Actions/UserGroup_32x32.png}"/>
                         
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Справочники">
