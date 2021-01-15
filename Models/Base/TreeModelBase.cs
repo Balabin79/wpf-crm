@@ -23,6 +23,14 @@ namespace Dental.Models.Base
         [Column("Dir")]
         [Display(Name = "Директория")]
         public int Dir { get; set; }
+        
+        [NotMapped]
+        public bool IsExpanded { 
+            get {
+                if (Id == 0) return true;
+                return false;
+            } 
+        }
 
     }
 }

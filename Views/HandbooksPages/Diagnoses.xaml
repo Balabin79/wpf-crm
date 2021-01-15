@@ -53,6 +53,7 @@
                                   SearchPanelAllowFilter="True"    
                                   PasteMode="Append"
                                   PasteAsChildNodes="True"
+                                  ExpandStateBinding="{Binding Path=IsExpanded}"
                                   
                                   >
                     <dxg:TreeListView.RowCellMenuCustomizations>
@@ -82,7 +83,7 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       TextWrapping="Wrap"/>
+                                       TextWrapping="Wrap" />
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
                     <dxg:GridColumn.HeaderImageStyle>
