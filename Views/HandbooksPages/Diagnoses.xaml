@@ -42,6 +42,12 @@
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
                                   PrintAutoWidth="True"
+                                  ShowSearchPanelMode="Always"
+                                  ExpandNodesOnFiltering="True"
+                                  FilterMode="Extended"
+                                  SearchPanelAllowFilter="True"    
+                                  PasteMode="Append"
+                                  PasteAsChildNodes="True"
                                   
                                   >
                     <dxmvvm:Interaction.Behaviors>
