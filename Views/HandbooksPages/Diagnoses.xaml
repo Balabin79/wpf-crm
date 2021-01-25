@@ -12,10 +12,11 @@
       xmlns:model ="clr-namespace:Dental.Models.Template" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
       xmlns:b ="clr-namespace:Dental.Behaviors" 
-      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars">
+      xmlns:s ="clr-namespace:Dental.Services" 
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" >
 
     <Grid>
-
         <Grid.DataContext>
             <model:Diagnos/>
         </Grid.DataContext>
@@ -23,11 +24,13 @@
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          ShowBorder="False">
+
             <dxg:GridControl.ContextMenu>
                 <ContextMenu x:Name="ContextMenuTree"/>
             </dxg:GridControl.ContextMenu>
 
             <dxg:GridControl.View>
+
                 <dxg:TreeListView 
                                   x:Name="view"
                                   ShowDataNavigator="True" 
@@ -43,19 +46,24 @@
                                   PrintNodeImages="True"
                                   ShowNodeImages="True"
                                   NodeImageSize="15,15"
-                                  EditFormShowMode="Dialog"
+                                  EditFormShowMode="Dialog"                  
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
                                   PrintAutoWidth="True"
                                   ShowSearchPanelMode="Always"
                                   ExpandNodesOnFiltering="True"
                                   FilterMode="Extended"
-                                  SearchPanelAllowFilter="True"    
-                                  PasteMode="Append"
-                                  PasteAsChildNodes="True"
-                                  ExpandStateBinding="{Binding Path=IsExpanded}"
-                                  
+                                  SearchPanelAllowFilter="True"                        
+                                  ExpandStateBinding="{Binding Path=IsExpanded}"  
+
+
                                   >
+
+                    <dxmvvm:Interaction.Behaviors>
+                        <b:DeleteNodeTreeViewBehaviors/>
+                        <dxmvvm:EventToCommand  EventName="NodeUpdated" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
+                    </dxmvvm:Interaction.Behaviors>
+
                     <dxg:TreeListView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
                                             Name="addRow" Content="Добавить" />
@@ -66,44 +74,50 @@
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить"
                                            GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                     </dxg:TreeListView.RowCellMenuCustomizations>
-                    
-                    <dxmvvm:Interaction.Behaviors>
-                        <b:DeleteNodeTreeViewBehaviors/>
-                    </dxmvvm:Interaction.Behaviors>
+
+
+ 
 
                     <dxg:TreeListView.NodeImageSelector>
                         <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
                     </dxg:TreeListView.NodeImageSelector>
+
+
+
                 </dxg:TreeListView>
 
             </dxg:GridControl.View>
+
             <dxg:GridControl.Columns>
                 <dxg:GridColumn
                     FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
-                    AllowAutoFilter="True" AllowSearchPanel="True">
+                    AllowAutoFilter="True" AllowSearchPanel="True" >
+
+
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       TextWrapping="Wrap" />
+                                       TextWrapping="Wrap"/>
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
+
                     <dxg:GridColumn.HeaderImageStyle>
                         <Style TargetType="Image">
                             <Setter Property="Width" Value="25"></Setter>
                             <Setter Property="Margin" Value="5,5,5,5"></Setter>
                         </Style>
                     </dxg:GridColumn.HeaderImageStyle>
-                    <dxg:GridColumn.EditFormTemplate >
-                        <DataTemplate  >
-        
-                            <StackPanel>
 
+
+                    <dxg:GridColumn.EditFormTemplate>
+                        <DataTemplate >
+                            <StackPanel>
                                 <dxe:ListBoxEdit ShowBorder="False" Background="{x:Null}" 
-                                 SelectedIndex="{Binding Path=RowData.Source.View.FocusedRow.Dir}"
+                                 SelectedIndex="{Binding Path=RowData.Source.Row.Dir}"
                                                  x:Name="lbButtonIndex" Margin="0,0,0,5">
                                     <dxe:ListBoxEditItem Content="Текстовой фрагмент" />
                                     <dxe:ListBoxEditItem Content="Директория"  Margin="6,0,0,0"/>
-                                    
+
                                     <dxe:ListBoxEdit.StyleSettings>
                                         <dxe:RadioListBoxEditStyleSettings />
                                     </dxe:ListBoxEdit.StyleSettings>
@@ -113,24 +127,30 @@
                                         </ItemsPanelTemplate>
                                     </dxe:ListBoxEdit.ItemsPanel>
                                 </dxe:ListBoxEdit>
-                                <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap" 
-                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap">
-                                <dxe:MemoEdit.EditTemplate>
-                                    <ControlTemplate>
-                                        <dxe:MemoEdit Name="MemoEditName"       
+
+                                <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap"                                               
+           
+                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap"  >
+                                    <dxe:MemoEdit.EditTemplate>
+                                        <ControlTemplate>
+                                            <dxe:MemoEdit Name="MemoEditName" 
                                             ShowIcon="False" 
-                                            EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
-                                        </dxe:MemoEdit>
-                                    </ControlTemplate>
-                                </dxe:MemoEdit.EditTemplate>
-                            </dxe:MemoEdit>
+                                            EditValue="{Binding Path=Source.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
+                                            </dxe:MemoEdit>
+                                        </ControlTemplate>
+                                    </dxe:MemoEdit.EditTemplate>
+                                </dxe:MemoEdit>
+
                             </StackPanel>
                         </DataTemplate>
                     </dxg:GridColumn.EditFormTemplate>
+
+
                 </dxg:GridColumn>
+
             </dxg:GridControl.Columns>
             <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem FieldName="{Binding Name}" SummaryType="Count" Alignment="Right"/>
+                <dxg:GridSummaryItem FieldName="{Binding Id}" SummaryType="Count" Alignment="Right"/>
             </dxg:GridControl.TotalSummary>
         </dxg:GridControl>
     </Grid>

@@ -13,7 +13,7 @@ namespace Dental.Models.Base
         public int Id { get; set; }
 
         [Column("ParentId")]
-        public int? ParentId { get; set; }
+        public int ParentId { get; set; }
 
         [Required]
         [Column("Name")]
@@ -23,14 +23,26 @@ namespace Dental.Models.Base
         [Column("Dir")]
         [Display(Name = "Директория")]
         public int Dir { get; set; }
-        
+
+        [Column("IsSys")]
+        [Display(Name = "Системные значения")]
+        public int IsSys { get; set; }
+
+        [Column("IsDelete")]
+        [Display(Name = "Удалено")]
+        public int IsDelete { get; set; }
+
         [NotMapped]
         public bool IsExpanded { 
             get {
-                if (Id == 0) return true;
-                return false;
+                if (Id == 1) { _isExpanded = true; }
+                return _isExpanded;
             } 
+
+            set => Set(ref _isExpanded, value);
         }
+
+        private bool _isExpanded = false;
 
     }
 }

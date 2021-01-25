@@ -27,7 +27,8 @@ namespace Dental.Infrastructures.TreeList
 
             var template = rowData.Row as ITreeViewCollection;
 
-            if (rowData == null || template?.Dir == 0) return File;
+            if (rowData == null || rowData.Node == null || template?.Dir == 0) return File;
+
 
 
             return rowData.Node.IsExpanded ? Open : Closed;

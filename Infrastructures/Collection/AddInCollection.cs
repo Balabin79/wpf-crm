@@ -11,7 +11,7 @@ namespace Dental.Infrastructures.Collection
     {
         public int run(ITreeViewCollection model)
         {
-            if (model.Id == model.ParentId && model.Dir == 0)
+           /* if (model.Id == model.ParentId && model.Dir == 0)
             {
                 // это корневой файл
                 // показываем форму с выбором корневой и обычной папки и файла
@@ -41,7 +41,9 @@ namespace Dental.Infrastructures.Collection
                 // показываем форму с выбором файла и обычной папки, присваиваем записи ParentId = текущему ParentId
                 int x = 0;
                 return 0;
-            }
+            }*/
+
+
             return 0;
         }
     }

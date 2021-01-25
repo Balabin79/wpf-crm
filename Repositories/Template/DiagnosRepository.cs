@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System;
 using System.Linq;
 using Dental.Interfaces;
-
+using DevExpress.Xpf.Grid;
 
 namespace Dental.Repositories.Template
 {
@@ -27,6 +27,33 @@ namespace Dental.Repositories.Template
             {
                 return new ObservableCollection<Diagnos>();
             }
+        }
+
+
+        public static void Add(TreeListView tree)
+        {
+            Diagnos model = (Diagnos)tree.FocusedNode.Content;           
+            TreeListNode node = new TreeListNode() { Content = new Diagnos() { Dir = 0, Name = "Новый", IsSys = 0 }};
+           
+            if (model.Dir == 1) // директория
+            {  
+                tree.FocusedNode.Nodes.Add(node);
+            }
+               
+            else
+            {
+                tree.FocusedNode.ParentNode.Nodes.Add(node);
+            }
+           
+            tree.FocusedNode = node;
+            tree.ShowEditForm();
+        }
+
+
+        public static void Update(Diagnos model)
+        {
+            int x = 0;
+
         }
 
 
