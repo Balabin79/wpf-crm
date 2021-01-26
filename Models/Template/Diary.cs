@@ -21,17 +21,19 @@ namespace Dental.Models.Template
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
+            CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
         }
 
 
         public ICommand DeleteCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
+        public ICommand CopyCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanAddCommandExecute(object p) => true;
         private bool CanUpdateCommandExecute(object p) => true;
-
+        private bool CanCopyCommandExecute(object p) => true;
 
         private void OnDeleteCommandExecuted(object p)
         {
@@ -73,6 +75,23 @@ namespace Dental.Models.Template
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
                 if (tree == null) return;
                 Diary model = (Diary)tree.FocusedRow;
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+
+                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+            }
+        }
+
+        private void OnCopyCommandExecuted(object p)
+        {
+            try
+            {
+                var tree = p as DevExpress.Xpf.Grid.TreeListView;
+                if (tree == null) return;
+                Diagnos model = (Diagnos)tree.FocusedRow;
                 int x = 0;
 
             }

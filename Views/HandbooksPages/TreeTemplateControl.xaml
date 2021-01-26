@@ -10,13 +10,13 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:b ="clr-namespace:Dental.Behaviors" 
-             xmlns:s ="clr-namespace:Dental.Services" 
+             xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              >
     <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         ShowBorder="False" >
+                         ShowBorder="False">
 
         <dxg:GridControl.ContextMenu>
             <ContextMenu x:Name="ContextMenuTree"/>
@@ -50,6 +50,7 @@
                                   ExpandStateBinding="{Binding Path=IsExpanded}"  
                                   >
 
+
                 <dxmvvm:Interaction.Behaviors>
                     <b:DeleteNodeTreeViewBehaviors/>
                     <dxmvvm:EventToCommand  EventName="NodeUpdated" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
@@ -57,12 +58,12 @@
 
                 <dxg:TreeListView.RowCellMenuCustomizations>
                     <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
-                                            Name="addRow" Content="Добавить" />
+                                            Name="addRow" Content="Добавить" Command="{x:Static dxg:GridCommands.AddNewRow}" CommandParameter="{Binding ElementName=view}"/>
                     <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
-                            Name="editRow" Content="Редактировать" />
-                    <dxb:BarButtonItem Name="copyRow" Content="Копировать" 
+                            Name="editRow" Content="Редактировать" Command="{x:Static dxg:GridCommands.EditFocusedRow}" CommandParameter="{Binding ElementName=view}"/>
+                    <dxb:BarButtonItem Name="copyRow" Content="Копировать"  Command="{x:Static local_com:TreeCommands.CopyRowCommand}" CommandParameter="{Binding ElementName=view}"
                                            GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
-                    <dxb:BarButtonItem Name="deleteRow" Content="Удалить"
+                    <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
                                            GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                 </dxg:TreeListView.RowCellMenuCustomizations>
 

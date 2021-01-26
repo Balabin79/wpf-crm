@@ -1,7 +1,5 @@
-﻿using Dental.Infrastructures.Collection;
+﻿using Dental.Infrastructures.Commands;
 using Dental.Interfaces;
-using Dental.Models;
-using Dental.Models.Template;
 using DevExpress.Mvvm.UI.Interactivity;
 using DevExpress.Xpf.Grid;
 using System.Windows.Input;
@@ -17,13 +15,8 @@ namespace Dental.Behaviors
             
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.DeleteFocusedRow, OnDeleteExecuted));
             AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.AddNewRow, OnAddNewExecuted));
-            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EditFocusedRow, OnEditExecuted));
-          //  AssociatedObject.CommandBindings.Add(new CommandBinding(((TreeListView)AssociatedObject)., OnEditExecuted));
-       
-
-
-
-
+            AssociatedObject.CommandBindings.Add(new CommandBinding(GridCommands.EditFocusedRow, OnEditExecuted));              
+            AssociatedObject.CommandBindings.Add(new CommandBinding(TreeCommands.CopyRowCommand, OnCopyExecuted));              
         }
 
         void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -38,7 +31,12 @@ namespace Dental.Behaviors
 
         void OnEditExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ((ITreeViewCollection)AssociatedObject.DataContext).UpdateCommand.Execute((e.Source as TreeListView).FocusedRow);
+            ((ITreeViewCollection)AssociatedObject.DataContext).UpdateCommand.Execute(e.Source);
+        }
+
+        void OnCopyExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ((ITreeViewCollection)AssociatedObject.DataContext).CopyCommand.Execute(e.Source);
         }
 
 
