@@ -26,11 +26,13 @@ namespace Dental.Models.Base
 
         [Column("IsSys")]
         [Display(Name = "Системные значения")]
-        public int IsSys { get; set; }
+        [NotMapped]
+        public int? IsSys { get; set; }
 
         [Column("IsDelete")]
         [Display(Name = "Удалено")]
-        public int IsDelete { get; set; }
+        [NotMapped]
+        public int? IsDelete { get; set; }
 
         [NotMapped]
         public bool IsExpanded { 

@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="Dental.Views.HandbooksPages.TreeTemplateControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:b ="clr-namespace:Dental.Behaviors" 
+             xmlns:s ="clr-namespace:Dental.Services" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             >
+    <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
+                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         ShowBorder="False" >
+
+        <dxg:GridControl.ContextMenu>
+            <ContextMenu x:Name="ContextMenuTree"/>
+        </dxg:GridControl.ContextMenu>
+
+        <dxg:GridControl.View>
+
+            <dxg:TreeListView 
+                                  x:Name="view"
+                                  ShowDataNavigator="True" 
+                                  KeyFieldName="Id"
+                                  ParentFieldName="ParentId"
+                                  AutoWidth="True"
+                                  AllowPerPixelScrolling="True"
+                                  ShowFixedTotalSummary="True"
+                                  AllowScrollAnimation="True"
+                                  UseLegacyFilterPanel="True"
+                                  AllowPrintColumnHeaderImage="True" 
+                                  TreeDerivationMode="Selfreference"   
+                                  PrintNodeImages="True"
+                                  ShowNodeImages="True"
+                                  NodeImageSize="15,15"
+                                  EditFormShowMode="Dialog"                  
+                                  AllowEditing="True"
+                                  EditFormColumnCount="1" 
+                                  PrintAutoWidth="True"
+                                  ShowSearchPanelMode="Always"
+                                  ExpandNodesOnFiltering="True"
+                                  FilterMode="Extended"
+                                  SearchPanelAllowFilter="True"                        
+                                  ExpandStateBinding="{Binding Path=IsExpanded}"  
+                                  >
+
+                <dxmvvm:Interaction.Behaviors>
+                    <b:DeleteNodeTreeViewBehaviors/>
+                    <dxmvvm:EventToCommand  EventName="NodeUpdated" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
+                </dxmvvm:Interaction.Behaviors>
+
+                <dxg:TreeListView.RowCellMenuCustomizations>
+                    <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
+                                            Name="addRow" Content="Добавить" />
+                    <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
+                            Name="editRow" Content="Редактировать" />
+                    <dxb:BarButtonItem Name="copyRow" Content="Копировать" 
+                                           GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
+                    <dxb:BarButtonItem Name="deleteRow" Content="Удалить"
+                                           GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                </dxg:TreeListView.RowCellMenuCustomizations>
+
+
+
+
+                <dxg:TreeListView.NodeImageSelector>
+                    <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                </dxg:TreeListView.NodeImageSelector>
+
+
+
+            </dxg:TreeListView>
+
+        </dxg:GridControl.View>
+
+        <dxg:GridControl.Columns>
+            <dxg:GridColumn
+                    FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
+                    AllowAutoFilter="True" AllowSearchPanel="True" >
+
+
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+
+                <dxg:GridColumn.HeaderImageStyle>
+                    <Style TargetType="Image">
+                        <Setter Property="Width" Value="25"></Setter>
+                        <Setter Property="Margin" Value="5,5,5,5"></Setter>
+                    </Style>
+                </dxg:GridColumn.HeaderImageStyle>
+
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dxe:ListBoxEdit ShowBorder="False" Background="{x:Null}" 
+                                 SelectedIndex="{Binding Path=RowData.Source.Row.Dir}"
+                                                 x:Name="lbButtonIndex" Margin="0,0,0,5">
+                                <dxe:ListBoxEditItem Content="Текстовой фрагмент" />
+                                <dxe:ListBoxEditItem Content="Директория"  Margin="6,0,0,0"/>
+
+                                <dxe:ListBoxEdit.StyleSettings>
+                                    <dxe:RadioListBoxEditStyleSettings />
+                                </dxe:ListBoxEdit.StyleSettings>
+                                <dxe:ListBoxEdit.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </dxe:ListBoxEdit.ItemsPanel>
+                            </dxe:ListBoxEdit>
+
+                            <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap"                                               
+           
+                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap"  >
+                                <dxe:MemoEdit.EditTemplate>
+                                    <ControlTemplate>
+                                        <dxe:MemoEdit Name="MemoEditName" 
+                                            ShowIcon="False" 
+                                            EditValue="{Binding Path=Source.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
+                                        </dxe:MemoEdit>
+                                    </ControlTemplate>
+                                </dxe:MemoEdit.EditTemplate>
+                            </dxe:MemoEdit>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+
+
+            </dxg:GridColumn>
+
+        </dxg:GridControl.Columns>
+        <dxg:GridControl.TotalSummary>
+            <dxg:GridSummaryItem FieldName="{Binding Id}" SummaryType="Count" Alignment="Right"/>
+        </dxg:GridControl.TotalSummary>
+    </dxg:GridControl>
+</UserControl>

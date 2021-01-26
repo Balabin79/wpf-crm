@@ -27,9 +27,8 @@ namespace Dental.Behaviors
         }
 
         void OnDeleteExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            var _FocucedRow = (e.Source as TreeListView).FocusedRow;
-            ((ITreeViewCollection)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow);
+        {            
+            ((ITreeViewCollection)AssociatedObject.DataContext).DeleteCommand.Execute(e.Source);
         }
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)

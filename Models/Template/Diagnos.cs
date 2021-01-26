@@ -3,7 +3,6 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using System;
 using Dental.Interfaces;
-using Dental.Infrastructures.Collection;
 using Dental.Models.Base;
 using Dental.Repositories.Template;
 using System.Collections.ObjectModel;
@@ -38,8 +37,10 @@ namespace Dental.Models.Template
         {
             try
             {
-                 Diagnos model = (Diagnos)p;
-                 if (new DeleteInTree().run(model.Dir)) DiagnosRepository.Delete(model);
+                
+                var tree = p as TreeListView;
+                if (tree == null) return;
+                DiagnosRepository.Delete(tree);
 
             }
             catch (Exception e)
