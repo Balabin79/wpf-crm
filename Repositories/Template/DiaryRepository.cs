@@ -75,7 +75,7 @@ namespace Dental.Repositories.Template
                 list.ToList().ForEach(d => Collection.Remove(d));
                 return db.SaveChanges();*/
 
-                var list = (new DeleteItemsInTree(tree, model)).run();
+               // var list = (new DeleteItemsInTree(tree, model)).run();
 
 
                 return db.SaveChanges();

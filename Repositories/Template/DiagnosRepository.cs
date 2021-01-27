@@ -8,7 +8,6 @@ using System.Linq;
 using Dental.Interfaces;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
-using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection.Tree;
 
 namespace Dental.Repositories.Template
@@ -75,10 +74,10 @@ namespace Dental.Repositories.Template
                 list.ToList().ForEach(d => Collection.Remove(d));
                 return db.SaveChanges();*/
 
-                var list = (new DeleteItemsInTree(tree, model)).run();
+                var list = (new NodeChildren(tree.FocusedNode)).run();
 
-
-                return db.SaveChanges();
+                return 1;
+                //return db.SaveChanges();
             }
         }
 
