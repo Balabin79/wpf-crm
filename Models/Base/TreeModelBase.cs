@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
-using Dental.Interfaces;
 
 
 namespace Dental.Models.Base
 {
-    abstract class TreeModelBase : ViewModelBase
+    abstract class TreeModelBase
     {
         [Key]
         [Column("Id")]
@@ -41,7 +40,7 @@ namespace Dental.Models.Base
                 return _isExpanded;
             } 
 
-            set => Set(ref _isExpanded, value);
+            //set => Set(ref _isExpanded, value);
         }
 
         private bool _isExpanded = false;

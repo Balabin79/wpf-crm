@@ -1,7 +1,6 @@
 using Dental.Infrastructures.Commands.Base;
 using Dental.Views.HandbooksPages;
 using System;
-using System.Drawing;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,7 +45,7 @@ namespace Dental.ViewModels
             //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
             try
             {
-                Page instance = (Page)Assembly.GetExecutingAssembly().CreateInstance(p.ToString());
+                Page instance = CreatePage(p);
                 SlowOpacity(instance);
             }
             catch (Exception e)
@@ -57,6 +56,11 @@ namespace Dental.ViewModels
 
         }
 
+
+        private Page CreatePage(object page)
+        {
+            return (Page)Assembly.GetExecutingAssembly().CreateInstance(page.ToString());
+        }
 
 
         /// <summary>

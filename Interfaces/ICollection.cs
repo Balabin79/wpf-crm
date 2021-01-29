@@ -7,10 +7,5 @@ namespace Dental.Interfaces
         int Dir { get; set; }
         int Id { get; set; }
         string Name { get; set; }
-
-        ICommand DeleteCommand { get; }
-        ICommand AddCommand { get; }
-        ICommand UpdateCommand { get; }
-        ICommand CopyCommand { get; }
     }
 }

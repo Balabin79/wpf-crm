@@ -5,26 +5,31 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System;
 using System.Linq;
-using Dental.Interfaces;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Collection.Tree;
+using System.Threading.Tasks;
+using DevExpress.Mvvm.Native;
+using Dental.Enums;
 
 namespace Dental.Repositories.Template
 {
-    class DiagnosRepository : IRepository
+    
+
+    class DiagnosRepository
     {
+        public ObservableCollection<Diagnos> Collection { get; set; } = GetAllAsync().Result;
 
-        public static ObservableCollection<Diagnos> Collection { get; set; } = GetDiagnoses();
-        public static TreeListView Tree { get; set; }
 
-        public static ObservableCollection<Diagnos> GetDiagnoses()
+        public static async Task<ObservableCollection<Diagnos>> GetAllAsync()
         {
             try
             {
-                ApplicationContext db = new ApplicationContext();
-                db.Diagnoses.Load();
-                return db.Diagnoses.Local;
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    await db.Diagnoses.LoadAsync();
+                    return db.Diagnoses.Local;
+                }
             }
             catch (Exception e)
             {
@@ -35,27 +40,63 @@ namespace Dental.Repositories.Template
 
         public static void Add(TreeListView tree)
         {
-            Diagnos model = (Diagnos)tree.FocusedNode.Content;           
-            TreeListNode node = new TreeListNode() { Content = new Diagnos() { Dir = 0, Name = "Новый", IsSys = 0 }};
-           
-            if (model.Dir == 1) // директория
-            {  
-                tree.FocusedNode.Nodes.Add(node);
-            }
-               
-            else
+            try
             {
-                tree.FocusedNode.ParentNode.Nodes.Add(node);
+                Diagnos model = (Diagnos)tree.FocusedNode.Content;
+                
+                int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
+                Diagnos diagnos = new Diagnos() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    db.Diagnoses.Add(diagnos);
+                    //db.Entry(diagnos).State = EntityState.Added;
+                    db.SaveChanges();
+                }
+
+                TreeListNode node = new TreeListNode() { Content = diagnos };
+
+                if (model.Dir == (int)TypeItem.Directory) // директория
+                {
+                    ((Diagnos)node.Content).ParentId = ParentId;
+                    tree.FocusedNode.Nodes.Insert(0, node);
+                }
+                else
+                {
+                    ((Diagnos)node.Content).ParentId = ParentId;
+                    
+                    tree.FocusedNode.ParentNode.Nodes.Insert(0, node);
+                }
+
+                tree.FocusedRowHandle = node.RowHandle;
+                //   tree.ShowEditForm();
             }
-           
-            tree.FocusedNode = node;
-            tree.ShowEditForm();
+            catch (Exception e)
+            {
+
+            }
+            
         }
 
 
-        public static void Update(Diagnos model)
+        public static void Update(TreeListView tree)
         {
-            int x = 0;
+            try
+            {
+                Diagnos model = (Diagnos)tree.FocusedNode.Content;             
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
+                    item.Name = model.Name;
+                    item.ParentId = model.ParentId;
+                    db.Entry(item).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            } 
+            catch(Exception e)
+            {
+
+            }
 
         }
 

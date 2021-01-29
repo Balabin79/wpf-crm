@@ -12,13 +12,14 @@
              xmlns:b ="clr-namespace:Dental.Behaviors" 
              xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
              >
+    
     <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          ShowBorder="False">
 
-        <dxg:GridControl.ContextMenu>
+        <dxg:GridControl.ContextMenu >
             <ContextMenu x:Name="ContextMenuTree"/>
         </dxg:GridControl.ContextMenu>
 
@@ -39,7 +40,7 @@
                                   PrintNodeImages="True"
                                   ShowNodeImages="True"
                                   NodeImageSize="15,15"
-                                  EditFormShowMode="Dialog"                  
+                                  EditFormShowMode="Inline"                  
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
                                   PrintAutoWidth="True"
@@ -48,13 +49,17 @@
                                   FilterMode="Extended"
                                   SearchPanelAllowFilter="True"                        
                                   ExpandStateBinding="{Binding Path=IsExpanded}"  
+                                  NavigationStyle="Row"
+                                  EditFormPostConfirmation ="YesNoCancel"
+                                  EnableDynamicLoading="True"
                                   >
-
 
                 <dxmvvm:Interaction.Behaviors>
                     <b:DeleteNodeTreeViewBehaviors/>
-                    <dxmvvm:EventToCommand  EventName="NodeUpdated" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
+                    <dxmvvm:EventToCommand  EventName="ValidateNode" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
                 </dxmvvm:Interaction.Behaviors>
+
+
 
                 <dxg:TreeListView.RowCellMenuCustomizations>
                     <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
@@ -81,9 +86,9 @@
         </dxg:GridControl.View>
 
         <dxg:GridControl.Columns>
-            <dxg:GridColumn
+            <dxg:GridColumn VirtualizingPanel.VirtualizationMode="Standard"
                     FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
-                    AllowAutoFilter="True" AllowSearchPanel="True" >
+                    AllowAutoFilter="True" AllowSearchPanel="True">
 
 
                 <dxg:GridColumn.CellTemplate>
@@ -127,7 +132,7 @@
                                     <ControlTemplate>
                                         <dxe:MemoEdit Name="MemoEditName" 
                                             ShowIcon="False" 
-                                            EditValue="{Binding Path=Source.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" >
+                                            >
                                         </dxe:MemoEdit>
                                     </ControlTemplate>
                                 </dxe:MemoEdit.EditTemplate>

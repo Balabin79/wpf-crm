@@ -7,11 +7,12 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Diagnoses"
       xmlns:model ="clr-namespace:Dental.Models.Template" 
+      xmlns:vm ="clr-namespace:Dental.ViewModels" 
       xmlns:local ="clr-namespace:Dental.Views.HandbooksPages" >
 
     <Grid>
         <Grid.DataContext>
-            <model:Diagnos/>
+            <vm:DiagnosViewModel/>
         </Grid.DataContext>
         <local:TreeTemplateControl/>
     </Grid>

@@ -37,12 +37,11 @@
     <Folder Include="Images\Employes\" />
     <Folder Include="Images\Patients\" />
     <Folder Include="Images\Logos\" />
-    <Folder Include="Interfaces\Template\" />
+    <Folder Include="Infrastructures\Pages\" />
     <Folder Include="Repositories\Fakes\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\Controls\" />
     <Folder Include="Views\Employee\" />
-    <Folder Include="Enums\" />
   </ItemGroup>
 
   <ItemGroup>
