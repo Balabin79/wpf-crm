@@ -1,22 +1,17 @@
-﻿using Dental.Interfaces;
-using Dental.Models;
-using Dental.Models.Template;
-using DevExpress.Utils;
+﻿using Dental.Enums;
 using DevExpress.Xpf.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 
 namespace Dental.Infrastructures.Collection
 {
-    class DeleteInTree
+    class ConfirDeleteInCollection
     {              
         public bool run(int category)
         {
             try
             {
-                if (category == 1)
+                if (category == (int)TypeItem.Directory)
                 {
                     var response = ThemedMessageBox.Show(title: "Подтверждение действия",
                         text: "Вы уверены что хотите удалить директорию? Всё содержимое этой директории также будет удалено",

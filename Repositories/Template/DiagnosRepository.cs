@@ -11,28 +11,25 @@ using Dental.Infrastructures.Collection.Tree;
 using System.Threading.Tasks;
 using DevExpress.Mvvm.Native;
 using Dental.Enums;
+using Dental.Infrastructures.Logs;
 
 namespace Dental.Repositories.Template
 {
-    
+
 
     class DiagnosRepository
     {
-        public ObservableCollection<Diagnos> Collection { get; set; } = GetAllAsync().Result;
-
-
-        public static async Task<ObservableCollection<Diagnos>> GetAllAsync()
+        public static ObservableCollection<Diagnos> GetAll()
         {
             try
             {
-                using (ApplicationContext db = new ApplicationContext())
-                {
-                    await db.Diagnoses.LoadAsync();
-                    return db.Diagnoses.Local;
-                }
+                ApplicationContext db = new ApplicationContext();
+                db.Diagnoses.OrderBy( d=> d.Name).Load();
+                return db.Diagnoses.Local;           
             }
             catch (Exception e)
             {
+                new RepositoryLog(e).run();
                 return new ObservableCollection<Diagnos>();
             }
         }
@@ -43,14 +40,13 @@ namespace Dental.Repositories.Template
             try
             {
                 Diagnos model = (Diagnos)tree.FocusedNode.Content;
-                
+
                 int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
                 Diagnos diagnos = new Diagnos() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     db.Diagnoses.Add(diagnos);
-                    //db.Entry(diagnos).State = EntityState.Added;
                     db.SaveChanges();
                 }
 
@@ -64,18 +60,15 @@ namespace Dental.Repositories.Template
                 else
                 {
                     ((Diagnos)node.Content).ParentId = ParentId;
-                    
                     tree.FocusedNode.ParentNode.Nodes.Insert(0, node);
                 }
-
                 tree.FocusedRowHandle = node.RowHandle;
                 //   tree.ShowEditForm();
             }
             catch (Exception e)
             {
-
+                new RepositoryLog(e).run();
             }
-            
         }
 
 
@@ -83,61 +76,77 @@ namespace Dental.Repositories.Template
         {
             try
             {
-                Diagnos model = (Diagnos)tree.FocusedNode.Content;             
+                Diagnos model = (Diagnos)tree.FocusedNode.Content;
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
+                    if (item == null) return;
                     item.Name = model.Name;
                     item.ParentId = model.ParentId;
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-            } 
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
-
-            }
-
-        }
-
-
-        public static int Delete(TreeListView tree)
-        {
-            TreeListView Tree = tree;
-            var model = tree.FocusedRow as Diagnos;
-            if (model == null || !new DeleteInTree().run(model.Dir)) return 0;
-
-            using (ApplicationContext db = new ApplicationContext())
-            {/*
-                var list = Recursion(model, new List<Diagnos>() { model });
-
-                list.ToList().ForEach(d => list.ToList().Remove(d));
-                list.ToList().ForEach(d => Collection.Remove(d));
-                return db.SaveChanges();*/
-
-                var list = (new NodeChildren(tree.FocusedNode)).run();
-
-                return 1;
-                //return db.SaveChanges();
+                new RepositoryLog(e).run();
             }
         }
 
-        public static List<Diagnos> Recursion(Diagnos model, List<Diagnos> nodes)
-        {
-            /* List<Diagnos> list = Collection.Where(d => d.ParentId == model.Id).ToList();
 
-             if (list.Count > 0)
-             {
-                 foreach (Diagnos item in list)
-                 {
-                     if (item.ParentId != item.Id && item.Dir == 1) Recursion(item, nodes);
-                     nodes.Add(item);
-                 }
-             }
-             return nodes;*/
+        public static void Delete(TreeListView tree, Delegate deleteItemsInCollection)
+        {
+            try {
+                var model = tree.FocusedRow as Diagnos;
+                if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
+                var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<Diagnos>()
+                    .ToList().Select(d => d.Id).ToList();
             
-            //Where(d => d.ParentId == model.Id).ToList();
-            return nodes;
+                var db = new ApplicationContext();
+                var ListForRemove = db.Diagnoses.Where(d => listNodesIds.Contains(d.Id)).ToList();
+                       
+                foreach (var item in ListForRemove)
+                {
+                    db.Diagnoses.Remove(item);
+                }
+          
+                db.SaveChanges();
+                deleteItemsInCollection.DynamicInvoke(listNodesIds);            
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }          
+        }
+
+        public static void Copy(TreeListView tree)
+        {
+            try
+            {
+                Diagnos model = (Diagnos)tree.FocusedNode.Content;
+                var db = new ApplicationContext();
+                Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
+                if (item == null) return;
+                Diagnos newModel = new Diagnos()
+                {
+                    Dir = item.Dir,
+                    Name = item.Name,
+                    IsSys = item.IsSys,
+                    ParentId = item.ParentId,
+                    IsDelete = item.IsDelete
+                };
+                
+                db.Diagnoses.Add(newModel);
+                db.SaveChanges();
+                
+                TreeListNode node = new TreeListNode() { Content = newModel };               
+                tree.FocusedNode.ParentNode.Nodes.Insert(0, node);
+                tree.FocusedRowHandle = node.RowHandle;
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
         }
     }
 }

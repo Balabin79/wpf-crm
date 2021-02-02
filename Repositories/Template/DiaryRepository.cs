@@ -65,7 +65,7 @@ namespace Dental.Repositories.Template
         {
             TreeListView Tree = tree;
             var model = tree.FocusedRow as Diary;
-            if (model == null || !new DeleteInTree().run(model.Dir)) return 0;
+            if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return 0;
 
             using (ApplicationContext db = new ApplicationContext())
             {/*

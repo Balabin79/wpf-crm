@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Interfaces;
@@ -38,15 +40,25 @@ namespace Dental.ViewModels
         {
             try
             {
-
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.Delete(tree);
+                DeleteItemsInCollection del = deleteItems;
+                DiagnosRepository.Delete(tree, del);
 
+
+                //var rem = Collection.Where(d => list.Contains(d.Id)).ToList();
+
+
+               /* foreach (var item in rem)
+                {
+                    Collection.Remove(item);
+                }*/
+                //var rem = Collection.Where(d => d.Id == 2).FirstOrDefault();
+                //if (rem != null) Collection.Remove(rem);
             }
             catch (Exception e)
             {
-
+                int x = 0;
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }
         }
@@ -88,9 +100,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
                 if (tree == null) return;
-                Diagnos model = (Diagnos)tree.FocusedRow;
-                int x = 0;
-
+                DiagnosRepository.Copy(tree);
             }
             catch (Exception e)
             {
@@ -99,13 +109,24 @@ namespace Dental.ViewModels
             }
         }
 
+        delegate void DeleteItemsInCollection(List<int> list);       
+
+        private void deleteItems(List<int> list)
+        {
+            var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
+            foreach (var item in itemsForRemove)
+            {
+                Collection.Remove(item);
+            }
+            
+        }
 
         private ObservableCollection<Diagnos> _Collection;
 
         [NotMapped]
         public  ObservableCollection<Diagnos> Collection { 
             get {
-                if (_Collection == null) _Collection = DiagnosRepository.GetAllAsync().Result;
+                if (_Collection == null) _Collection = DiagnosRepository.GetAll();
                 return _Collection; }
             set => Set(ref _Collection, value);
         }

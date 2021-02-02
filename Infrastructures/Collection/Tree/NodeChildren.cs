@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dental.Infrastructures.Collection.Tree
 {
-    class NodeChildren
+    class NodeChildren : IDisposable
     {
         private TreeListNode Model { get; set; }
 
@@ -16,8 +16,9 @@ namespace Dental.Infrastructures.Collection.Tree
 
         public List<TreeListNode> run()
         {
-            return FindAllNodeChildren(new List <TreeListNode>(), Model);
-
+            var list = FindAllNodeChildren(new List <TreeListNode>(), Model);
+            list.Add(Model);
+            return list;
         }
 
         public List<TreeListNode> FindAllNodeChildren(List<TreeListNode>nodes, TreeListNode node)
@@ -31,6 +32,19 @@ namespace Dental.Infrastructures.Collection.Tree
                 }
             }
             return nodes;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private bool _Disposed;
+
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (!Disposing || _Disposed) return;
+            _Disposed = true;
         }
     }
 }
