@@ -24,7 +24,7 @@ namespace Dental.Behaviors
                 case "Organization" : ((Organization)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
                 case "Role" : ((Role)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
                 case "Speciality" : ((Speciality)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
-                case "EmployeeStatus" : ((EmployeeStatus)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
+                //case "EmployeeStatus" : ((EmployeeStatus)AssociatedObject.DataContext).DeleteCommand.Execute(_FocucedRow); break;
             }
 
 

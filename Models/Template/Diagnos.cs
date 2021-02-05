@@ -6,8 +6,7 @@ namespace Dental.Models.Template
 {
     [Table("Diagnoses")]
     class Diagnos : TreeModelBase, ITreeViewCollection
-    {
-     
+    {   
        
     }
 }

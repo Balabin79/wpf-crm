@@ -6,11 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using Dental.Repositories;
-/*using DevExpress.Mvvm.DataModel;
-using DevExpress.Mvvm.ViewModel;
-using DevExpress.DevAV.DevAVDbDataModel;
-using DevExpress.DevAV.Common;
-using DevExpress.DevAV;*/
+
 
 namespace Dental.Models
 {
