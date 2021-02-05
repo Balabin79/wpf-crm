@@ -7,9 +7,7 @@ using System.Windows.Input;
 using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
-using Dental.Interfaces;
 using Dental.Interfaces.Template;
-using Dental.Models.Base;
 using Dental.Models.Template;
 using Dental.Repositories.Template;
 using DevExpress.Xpf.Grid;
@@ -24,6 +22,8 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
+            DiagnosRepository.AddModel += addItem;
+            DiagnosRepository.DeleteModel += deleteItems;
         }
 
         public ICommand DeleteCommand { get; }
@@ -43,7 +43,6 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.DeleteModel += deleteItems;
                 DiagnosRepository.Delete(tree);
             }
             catch (Exception e)
@@ -58,7 +57,6 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.AddModel += addItem;
                 DiagnosRepository.Add(tree);
             }
             catch (Exception e)
@@ -66,7 +64,6 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
 
         private void OnUpdateCommandExecuted(object p)
         {
@@ -87,7 +84,7 @@ namespace Dental.ViewModels
             try
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
-                if (tree == null) return;
+                if (tree == null) return;               
                 DiagnosRepository.Copy(tree);
             }
             catch (Exception e)
@@ -115,7 +112,6 @@ namespace Dental.ViewModels
             }
         }
 
-
         private void deleteItems(List<int> list)
         {
             var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
@@ -130,7 +126,7 @@ namespace Dental.ViewModels
         [NotMapped]
         public  ObservableCollection<Diagnos> Collection { 
             get {
-                if (_Collection == null) _Collection = DiagnosRepository.GetAll();
+                if (_Collection == null) _Collection = DiagnosRepository.GetAll().Result;
                 return _Collection; }
             set => Set(ref _Collection, value);
         }

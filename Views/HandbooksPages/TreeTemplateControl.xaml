@@ -60,7 +60,7 @@
                     <KeyBinding Key="Delete"         
                                 Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
                                 CommandParameter="{Binding ElementName=view}"/>
-                    <KeyBinding Key="C"  
+                    <KeyBinding Key="D"  
                                 Modifiers="Ctrl"
                                 Command="{x:Static local_com:TreeCommands.CopyRowCommand}" 
                                 CommandParameter="{Binding ElementName=view}"/>
@@ -80,7 +80,7 @@
                     <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать" Command="{x:Static dxg:GridCommands.EditFocusedRow}" CommandParameter="{Binding ElementName=view}"/>
                     <dxb:BarButtonItem Name="copyRow" Content="Копировать"  Command="{x:Static local_com:TreeCommands.CopyRowCommand}" CommandParameter="{Binding ElementName=view}"
-                                            KeyGesture="Ctrl+C" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
+                                            KeyGesture="Ctrl+D" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
                     <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                 </dxg:TreeListView.RowCellMenuCustomizations>

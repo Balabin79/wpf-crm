@@ -15,27 +15,20 @@ using Dental.Infrastructures.Logs;
 
 namespace Dental.Repositories.Template
 {
-
-
     class DiagnosRepository
     {
         public static Action<(Diagnos, TreeListView)> AddModel;
         public static void RegisterAddModel(Action<(Diagnos, TreeListView)> action) => AddModel += action;
 
-        public static Action<(Diagnos, TreeListView)> UpdateModel;
-        public static void RegisterUpdateModel(Action<(Diagnos, TreeListView)> action) => UpdateModel += action;
-
         public static Action<List<int>> DeleteModel;
         public static void RegisterDeleteModel(Action<List<int>> action) => DeleteModel += action;
 
-
-
-        public static ObservableCollection<Diagnos> GetAll()
+        public static async Task<ObservableCollection<Diagnos>> GetAll()
         {
             try
             {
                 ApplicationContext db = new ApplicationContext();
-                db.Diagnoses.OrderBy( d=> d.Name).Load();
+                await db.Diagnoses.OrderBy( d=> d.Name).LoadAsync();
                 return db.Diagnoses.Local;           
             }
             catch (Exception e)
@@ -44,7 +37,6 @@ namespace Dental.Repositories.Template
                 return new ObservableCollection<Diagnos>();
             }
         }
-
 
         public static void Add(TreeListView tree)
         {
@@ -69,7 +61,6 @@ namespace Dental.Repositories.Template
                 new RepositoryLog(e).run();
             }
         }
-
 
         public static void Update(TreeListView tree)
         {
@@ -96,9 +87,7 @@ namespace Dental.Repositories.Template
                 new RepositoryLog(e).run();
             }
         }
-
-       
-
+    
         public static void Delete(TreeListView tree)
         {
             try {
@@ -128,24 +117,21 @@ namespace Dental.Repositories.Template
             try
             {
                 Diagnos model = (Diagnos)tree.FocusedNode.Content;
+                if (model == null || !new ConfirCopyInCollection().run(model.Dir)) return;
                 var db = new ApplicationContext();
                 Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
                 if (item == null) return;
                 Diagnos newModel = new Diagnos()
                 {
                     Dir = item.Dir,
-                    Name = item.Name,
+                    Name = item.Name + " Копия",
                     IsSys = item.IsSys,
                     ParentId = item.ParentId,
                     IsDelete = item.IsDelete
-                };
-                
+                };               
                 db.Diagnoses.Add(newModel);
                 db.SaveChanges();
-                
-                TreeListNode node = new TreeListNode() { Content = newModel };               
-                tree.FocusedNode.ParentNode.Nodes.Insert(0, node);
-                tree.FocusedRowHandle = node.RowHandle;
+                if (AddModel != null) AddModel((diagnos: newModel, tree: tree));
             }
             catch (Exception e)
             {

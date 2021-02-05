@@ -1,4 +1,3 @@
-using Dental.Repositories.CouchDb;
 using System.Windows;
 
 namespace Dental
