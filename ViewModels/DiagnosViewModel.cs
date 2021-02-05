@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Windows.Input;
+using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
+using Dental.Infrastructures.Logs;
 using Dental.Interfaces;
 using Dental.Interfaces.Template;
 using Dental.Models.Base;
@@ -24,7 +26,6 @@ namespace Dental.ViewModels
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
         }
 
-
         public ICommand DeleteCommand { get; }
         public ICommand AddCommand { get; }
         public ICommand UpdateCommand { get; }
@@ -42,24 +43,12 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DeleteItemsInCollection del = deleteItems;
-                DiagnosRepository.Delete(tree, del);
-
-
-                //var rem = Collection.Where(d => list.Contains(d.Id)).ToList();
-
-
-               /* foreach (var item in rem)
-                {
-                    Collection.Remove(item);
-                }*/
-                //var rem = Collection.Where(d => d.Id == 2).FirstOrDefault();
-                //if (rem != null) Collection.Remove(rem);
+                DiagnosRepository.DeleteModel += deleteItems;
+                DiagnosRepository.Delete(tree);
             }
             catch (Exception e)
             {
-                int x = 0;
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                (new ViewModelLog(e)).run();
             }
         }
 
@@ -69,12 +58,12 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
+                DiagnosRepository.AddModel += addItem;
                 DiagnosRepository.Add(tree);
             }
             catch (Exception e)
             {
-
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                (new ViewModelLog(e)).run();
             }
         }
 
@@ -89,8 +78,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                (new ViewModelLog(e)).run();
             }
         }
 
@@ -104,12 +92,29 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
+                (new ViewModelLog(e)).run();
+            }
+        }        
+        
+        private void addItem((Diagnos, TreeListView) c)
+        {
+            Collection.Add(c.Item1);
+            TreeListNode node;
+            if (((Diagnos)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
+            {
+                node = c.Item2.FocusedNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
+            } else
+            {
+                node = c.Item2.FocusedNode.ParentNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
+            }
+            if (node != null)
+            {
+                c.Item2.FocusedNode = node;
+                c.Item2.ScrollIntoView(node.RowHandle);
+                //c.Item2.ShowEditForm();
             }
         }
 
-        delegate void DeleteItemsInCollection(List<int> list);       
 
         private void deleteItems(List<int> list)
         {
@@ -117,8 +122,7 @@ namespace Dental.ViewModels
             foreach (var item in itemsForRemove)
             {
                 Collection.Remove(item);
-            }
-            
+            }           
         }
 
         private ObservableCollection<Diagnos> _Collection;

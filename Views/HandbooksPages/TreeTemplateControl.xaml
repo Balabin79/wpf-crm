@@ -30,10 +30,8 @@
                                   ShowDataNavigator="True" 
                                   KeyFieldName="Id"
                                   ParentFieldName="ParentId"
-                                  AutoWidth="True"
-                                  AllowPerPixelScrolling="True"
-                                  ShowFixedTotalSummary="True"
-                                  AllowScrollAnimation="True"
+                                  AutoWidth="True"                                
+                                  ShowFixedTotalSummary="True"                                
                                   UseLegacyFilterPanel="True"
                                   AllowPrintColumnHeaderImage="True" 
                                   TreeDerivationMode="Selfreference"   
@@ -50,8 +48,7 @@
                                   SearchPanelAllowFilter="True"                        
                                   ExpandStateBinding="{Binding Path=IsExpanded}"  
                                   NavigationStyle="Row"
-                                  EditFormPostConfirmation ="YesNoCancel"
-                                  EnableDynamicLoading="True"
+                                  AllowScrollToFocusedRow="True"
                                   >
 
                 <dxmvvm:Interaction.Behaviors>
