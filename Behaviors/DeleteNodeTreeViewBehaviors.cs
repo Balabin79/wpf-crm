@@ -39,7 +39,5 @@ namespace Dental.Behaviors
         {
             ((ICollectionCommand)AssociatedObject.DataContext).CopyCommand.Execute(e.Source);
         }
-
-
     }
 }
