@@ -1,4 +1,5 @@
-﻿using Dental.Infrastructures.Collection;
+﻿using Dental.Enums;
+using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Logs;
 using Dental.Interfaces;
 using Dental.Models;
@@ -15,10 +16,10 @@ namespace Dental.Repositories
     class EmployeeStatusRepository
     {
         public static Action<(EmployeeStatus, TableView)> AddModel;
-        public static void RegisterAddModel(Action<(EmployeeStatus, TableView)> action) => AddModel += action;
+        public static Action<EmployeeStatus> DeleteModel;
+        public static Action<(EmployeeStatus, TableView)> UpdateModel;
+        public static Action<(EmployeeStatus, TableView)> CopyModel;
 
-        public static Action<List<int>> DeleteModel;
-        public static void RegisterDeleteModel(Action<List<int>> action) => DeleteModel += action;
 
         public static async Task<ObservableCollection<EmployeeStatus>> GetAll()
         {
@@ -34,23 +35,22 @@ namespace Dental.Repositories
                 return new ObservableCollection<EmployeeStatus>();
             }
         }
-        /*
-        public static void Add(TableView tree)
+        
+        public static void Add(TableView table)
         {
             try
             {
-                EmployeeStatus model = (EmployeeStatus)tree.FocusedRow;
-                String NameDir = (model.Dir == 1) ? model.Name : ((EmployeeStatus)tree.FocusedNode.ParentNode.Content).Name;
+                EmployeeStatus model = (EmployeeStatus)table.FocusedRow;
 
-                if (model == null || !new ConfirmAddNewInCollection().run(NameDir)) return;
-                int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((EmployeeStatus)tree.FocusedNode.ParentNode.Content).Id;
-                Diary item = new Diary() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                if (model == null || !new ConfirmAddNewInCollection().run()) return;
+
+                EmployeeStatus item = new EmployeeStatus() {Name = "Новый элемент", Description = "" };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     db.EmployeeStatuses.Add(item);
                     db.SaveChanges();
-                    if (AddModel != null) AddModel((item, tree));
+                    if (AddModel != null) AddModel((item, table));
                 }
             }
             catch (Exception e)
@@ -58,25 +58,86 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
-
-        public static void Update(TableView tree)
+      
+        public static void Update(TableView table)
         {
             try
             {
-                EmployeeStatus model = (EmployeeStatus)tree.FocusedNode.Content;
+                EmployeeStatus model = (EmployeeStatus)table.FocusedRow;
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).First();
+                    EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).FirstOrDefault();
                     if (model == null || item == null) return;
 
                     if (item.Name != model.Name)
                     {
-                        if (!new ConfirUpdateInCollection().run()) return;
+                        if (!new ConfirUpdateInCollection().run() && UpdateModel != null)
+                        {
+                            UpdateModel((item, table));
+                            return;
+                        } 
+                        else
+                        {
+                            item.Name = model.Name;
+                            item.Description = model.Description;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
                     }
-                    item.Name = model.Name;
-                    item.ParentId = model.ParentId;
-                    db.Entry(item).State = EntityState.Modified;
+                    if (UpdateModel != null) UpdateModel((item, table));
+                }
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
+        }
+
+        public static void Delete(TableView table)
+        {
+            try
+            {
+                var model = table.FocusedRow as EmployeeStatus;
+                if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
+
+                var db = new ApplicationContext();
+                var row = db.EmployeeStatuses.Where(d => d.Id == model.Id).FirstOrDefault();
+                if (row != null) db.Entry(row).State = EntityState.Deleted;
+                db.SaveChanges();
+                DeleteModel(model);
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
+        }
+       
+        public static void Copy(TableView table)
+        {
+            try
+            {
+                EmployeeStatus model = (EmployeeStatus)table.FocusedRow;
+                var db = new ApplicationContext();
+                EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).FirstOrDefault();
+
+                if (model == null || !new ConfirCopyInCollection().run() || CopyModel == null || item == null)
+                {
+                    CopyModel((item, table));
+                    return;
+                }
+                else
+                {
+                    EmployeeStatus newModel = new EmployeeStatus()
+                    {
+                        Name = item.Name + " Копия",
+                        Description = item.Description
+                    };
+                    db.EmployeeStatuses.Add(newModel);
                     db.SaveChanges();
+                    if (CopyModel != null) 
+                    {
+                        CopyModel((newModel, table));
+                    }                   
                 }
             }
             catch (Exception e)
@@ -84,58 +145,6 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
-
-        public static void Delete(TableView tree)
-        {
-            try
-            {
-                var model = tree.FocusedRow as EmployeeStatus;
-                if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
-                var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<EmployeeStatus>()
-                    .ToList().Select(d => d.Id).ToList();
-
-                var db = new ApplicationContext();
-                var ListForRemove = db.EmployeeStatuses.Where(d => listNodesIds.Contains(d.Id)).ToList();
-
-                foreach (var item in ListForRemove)
-                {
-                    db.Entry(item).State = EntityState.Deleted;
-                }
-                db.SaveChanges();
-                DeleteModel(listNodesIds);
-            }
-            catch (Exception e)
-            {
-                new RepositoryLog(e).run();
-            }
-        }
-
-        public static void Copy(TableView tree)
-        {
-            try
-            {
-                EmployeeStatus model = (EmployeeStatus)tree.FocusedNode.Content;
-                if (model == null || !new ConfirCopyInCollection().run(model.Dir)) return;
-                var db = new ApplicationContext();
-                EmployeeStatus item = db.Diaries.Where(i => i.Id == model.Id).First();
-                if (item == null) return;
-                EmployeeStatus newModel = new EmployeeStatus()
-                {
-                    Dir = item.Dir,
-                    Name = item.Name + " Копия",
-                    IsSys = item.IsSys,
-                    ParentId = item.ParentId,
-                    IsDelete = item.IsDelete
-                };
-                db.EmployeeStatuses.Add(newModel);
-                db.SaveChanges();
-                if (AddModel != null) AddModel((newModel, tree));
-            }
-            catch (Exception e)
-            {
-                new RepositoryLog(e).run();
-            }
-        }*/
 
     }
 }

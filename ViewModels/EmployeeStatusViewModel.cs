@@ -22,8 +22,51 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            EmployeeStatusRepository.AddModel += addItem;
-            EmployeeStatusRepository.DeleteModel += deleteItems;
+
+            EmployeeStatusRepository.CopyModel += ((EmployeeStatus, TableView) c) => {
+                var copiedRow = Collection.Where(d => d.Id == ((EmployeeStatus)c.Item2.FocusedRow)?.Id).FirstOrDefault(); 
+                if (copiedRow != null)
+                {
+                    int index = Collection.IndexOf(copiedRow) + 1;
+                    Collection.Insert(index, c.Item1);
+                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                    if (row != null)
+                    {
+                        c.Item2.FocusedRow = row;
+                        c.Item2.ScrollIntoView(c.Item1);
+                        c.Item2.FocusedRow = c.Item1;
+                        //c.Item2.ShowEditForm();
+                    }
+                }
+            };
+            EmployeeStatusRepository.UpdateModel += ((EmployeeStatus, TableView) c) => {               
+                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                if (row != null)
+                {
+                    int index = Collection.IndexOf(row);
+                    Collection.Remove(row);
+                    Collection.Insert(index, c.Item1);
+                    c.Item2.FocusedRow = row;
+                    c.Item2.ScrollIntoView(c.Item1);
+                    c.Item2.FocusedRow = c.Item1;
+                    //c.Item2.ShowEditForm();
+                }
+            };
+            EmployeeStatusRepository.AddModel += ((EmployeeStatus, TableView) c) => {
+                Collection.Add(c.Item1);
+                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+            
+                if (row != null)
+                {
+                    c.Item2.FocusedRow = row;
+                    c.Item2.ScrollIntoView(row);
+                    //c.Item2.ShowEditForm();
+                }
+            };
+            EmployeeStatusRepository.DeleteModel += (EmployeeStatus model) => {
+                var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
+                if (item != null) Collection.Remove(item);               
+            };
         }
 
         public ICommand DeleteCommand { get; }
@@ -43,7 +86,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                //EmployeeStatusRepository.Delete(table);
+                EmployeeStatusRepository.Delete(table);
             }
             catch (Exception e)
             {
@@ -57,7 +100,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                //EmployeeStatusRepository.Add(table);
+                EmployeeStatusRepository.Add(table);
             }
             catch (Exception e)
             {
@@ -71,7 +114,7 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                //EmployeeStatusRepository.Update(table);
+                EmployeeStatusRepository.Update(table);
             }
             catch (Exception e)
             {
@@ -85,40 +128,11 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                //EmployeeStatusRepository.Copy(table);
+                EmployeeStatusRepository.Copy(table);
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void addItem((EmployeeStatus, TableView) c)
-        {
-            Collection.Add(c.Item1);
-            /*TreeListNode node;
-            if (((Diary)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
-            {
-                node = c.Item2.FocusedNode.Nodes.Where(d => ((Diary)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            }
-            else
-            {
-                node = c.Item2.FocusedNode.ParentNode.Nodes.Where(d => ((Diary)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            }
-            if (node != null)
-            {
-                c.Item2.FocusedNode = node;
-                c.Item2.ScrollIntoView(node.RowHandle);
-                //c.Item2.ShowEditForm();
-            }*/
-        }
-
-        private void deleteItems(List<int> list)
-        {
-            var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
-            foreach (var item in itemsForRemove)
-            {
-                Collection.Remove(item);
             }
         }
 

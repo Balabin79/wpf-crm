@@ -75,11 +75,14 @@ namespace Dental.Repositories.Template
                     if (item.Name != model.Name)
                     { 
                         if (!new ConfirUpdateInCollection().run()) return;
+                        else
+                        {
+                            item.Name = model.Name;
+                            item.ParentId = model.ParentId;
+                            db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
                     } 
-                    item.Name = model.Name;
-                    item.ParentId = model.ParentId;
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
                 }
             }
             catch (Exception e)
