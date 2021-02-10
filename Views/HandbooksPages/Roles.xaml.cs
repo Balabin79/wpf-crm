@@ -13,22 +13,5 @@ namespace Dental.Views.HandbooksPages
         {
             InitializeComponent();
         }
-
-        private void TableView_RowUpdated(object sender, DevExpress.Xpf.Grid.RowEventArgs e)
-        {
-
-            var role = e.Row as Role;
-            if (role != null && role.Id == 0)
-            {
-                RoleRepository.Add(role);  
-            }
-            else if (role != null && role.Id != 0)
-            {
-                RoleRepository.Update(role);
-            }
-
-        }
-
-
     }
 }
