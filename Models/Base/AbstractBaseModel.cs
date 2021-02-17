@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace Dental.Models.Base
 {
-    abstract class AbstractBaseModel
+    abstract class AbstractBaseModel : IModel
     {
         [Key]
         [Column("Id")]

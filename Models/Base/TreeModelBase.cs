@@ -5,12 +5,8 @@ using System.Windows.Input;
 
 namespace Dental.Models.Base
 {
-    abstract class TreeModelBase
+    abstract class TreeModelBase : AbstractBaseModel
     {
-        [Key]
-        [Column("Id")]
-        public int Id { get; set; }
-
         [Column("ParentId")]
         public int ParentId { get; set; }
 

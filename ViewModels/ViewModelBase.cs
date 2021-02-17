@@ -1,3 +1,4 @@
+using Dental.Models.Base;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

@@ -12,26 +12,26 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class RoleRepository
+    class OrganizationRepository
     {
-        public static Action<(Role, TableView)> AddModel;
-        public static Action<Role> DeleteModel;
-        public static Action<(Role, TableView)> UpdateModel;
-        public static Action<(Role, TableView)> CopyModel;
+        public static Action<(Organization, TableView)> AddModel;
+        public static Action<Organization> DeleteModel;
+        public static Action<(Organization, TableView)> UpdateModel;
+        public static Action<(Organization, TableView)> CopyModel;
 
 
-        public static async Task<ObservableCollection<Role>> GetAll()
+        public static async Task<ObservableCollection<Organization>> GetAll()
         {
             try
             {
                 ApplicationContext db = new ApplicationContext();
-                await db.Roles.OrderBy(d => d.Name).LoadAsync();
-                return db.Roles.Local;
+                await db.Organizations.OrderBy(d => d.Name).LoadAsync();
+                return db.Organizations.Local;
             }
             catch (Exception e)
             {
                 new RepositoryLog(e).run();
-                return new ObservableCollection<Role>();
+                return new ObservableCollection<Organization>();
             }
         }
         
@@ -41,11 +41,15 @@ namespace Dental.Repositories
             {
                 if (!new ConfirmAddNewInCollection().run()) return;
 
-                Role item = new Role() {Name = "Новый элемент", Description = "" };
+                Organization item = new Organization() {
+                    Name = "Новая организация", ShortName = "", Inn = "", Kpp = "", Logo = "", Address = "", Phone = "+71111111111",
+                    Email = "example@company.com", Bik = "", AccountNumber = "", BankName = "", Сertificate = "", Ogrn = "", GeneralDirector = "",
+                    License = "", WhoIssuedBy = ""
+                };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    db.Roles.Add(item);
+                    db.Organizations.Add(item);
                     db.SaveChanges();
                     if (AddModel != null) AddModel((item, table));
                 }
@@ -60,32 +64,35 @@ namespace Dental.Repositories
         {
             try
             {
-                Role model = (Role)table.FocusedRow;
+                Organization model = (Organization)table.FocusedRow;
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    Role item = db.Roles.Where(i => i.Id == model.Id).FirstOrDefault();
+                    Organization item = db.Organizations.Where(i => i.Id == model.Id).FirstOrDefault();
                     if (model == null || item == null) return;
 
-                    PropertyInfo[] properties = typeof(Role).GetProperties();
+
+                    PropertyInfo[] properties = typeof(Organization).GetProperties();
 
                     bool needUpdate = false;
                     foreach (PropertyInfo property in properties)
                     {
-                        if (!model[property, item]) needUpdate = true;
-
-                    }
-
+                        if (! model[property, item]) needUpdate = true;
+                                                      
+                    }    
+                    
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
-                        if (UpdateModel != null) UpdateModel((item, table));
-                        return;
+                         if (UpdateModel != null) UpdateModel((item, table));
+                         return;
                     }
                     item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
+                    int x = db.SaveChanges();
 
                     if (UpdateModel != null) UpdateModel((item, table));
                 }
+                    
+                
             }
             catch (Exception e)
             {
@@ -97,11 +104,11 @@ namespace Dental.Repositories
         {
             try
             {
-                var model = table.FocusedRow as Role;
+                var model = table.FocusedRow as Organization;
                 if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
                 var db = new ApplicationContext();
-                var row = db.Roles.Where(d => d.Id == model.Id).FirstOrDefault();
+                var row = db.Organizations.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
                 DeleteModel(model);
@@ -116,9 +123,9 @@ namespace Dental.Repositories
         {
             try
             {
-                Role model = (Role)table.FocusedRow;
+                Organization model = (Organization)table.FocusedRow;
                 var db = new ApplicationContext();
-                Role item = db.Roles.Where(i => i.Id == model.Id).FirstOrDefault();
+                Organization item = db.Organizations.Where(i => i.Id == model.Id).FirstOrDefault();
 
                 if (model == null || !new ConfirCopyInCollection().run() || CopyModel == null || item == null)
                 {
@@ -127,12 +134,26 @@ namespace Dental.Repositories
                 }
                 else
                 {
-                    Role newModel = new Role()
+                    Organization newModel = new Organization()
                     {
-                        Name = item.Name + " Копия",
-                        Description = item.Description
-                    };
-                    db.Roles.Add(newModel);
+                        Name = item.Name + " Копия",        
+                        ShortName = item.ShortName,
+                        Inn = item.Inn,
+                        Kpp = item.Kpp,
+                        Logo = item.Logo,
+                        Address = item.Address,
+                        Phone = item.Phone,
+                        Email = item.Email,
+                        Bik = item.Bik,
+                        AccountNumber = item.AccountNumber,
+                        BankName = item.BankName,
+                        Сertificate = item.Сertificate,
+                        Ogrn = item.Ogrn,
+                        GeneralDirector = item.GeneralDirector,
+                        License = item.License,
+                        WhoIssuedBy = item.WhoIssuedBy
+                };
+                    db.Organizations.Add(newModel);
                     db.SaveChanges();
                     if (CopyModel != null) 
                     {
@@ -145,6 +166,8 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
+
+
 
     }
 }

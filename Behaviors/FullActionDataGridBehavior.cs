@@ -27,14 +27,14 @@ namespace Dental.Behaviors
 
             switch (nameClass)
             {
-                case "Organization": ((Organization)AssociatedObject.DataContext).EditCommand.Execute(_FocucedRow); break;
+                //case "Organization": ((Organization)AssociatedObject.DataContext).EditCommand.Execute(_FocucedRow); break;
             }
         }
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             int x = 0;
-             ((Organization)AssociatedObject.DataContext).AddCommand.Execute(sender);
+           //  ((Organization)AssociatedObject.DataContext).AddCommand.Execute(sender);
         }
     }
 }

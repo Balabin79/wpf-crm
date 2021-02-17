@@ -1,16 +1,12 @@
-using Dental.ViewModels;
+using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Windows.Input;
 
 namespace Dental.Models
 {
     [Table("EmployeeStatus")]
-    class EmployeeStatus : ViewModelBase
+    class EmployeeStatus : AbstractBaseModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [MaxLength(255)]
         [Display(Name = "Название")]

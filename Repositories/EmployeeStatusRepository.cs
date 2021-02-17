@@ -40,9 +40,7 @@ namespace Dental.Repositories
         {
             try
             {
-                EmployeeStatus model = (EmployeeStatus)table.FocusedRow;
-
-                if (model == null || !new ConfirmAddNewInCollection().run()) return;
+                if (!new ConfirmAddNewInCollection().run()) return;
 
                 EmployeeStatus item = new EmployeeStatus() {Name = "Новый элемент", Description = "" };
 
