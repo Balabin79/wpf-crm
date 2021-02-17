@@ -38,6 +38,7 @@
     <Folder Include="Images\Patients\" />
     <Folder Include="Images\Logos\" />
     <Folder Include="Infrastructures\Pages\" />
+    <Folder Include="Models\Actions\" />
     <Folder Include="Repositories\Fakes\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\Controls\" />

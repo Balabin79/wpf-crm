@@ -2,6 +2,7 @@
 using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.ObjectModel;
@@ -12,14 +13,8 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class RoleRepository
+    class RoleRepository : AbstractTableViewActionRepository
     {
-        public static Action<(Role, TableView)> AddModel;
-        public static Action<Role> DeleteModel;
-        public static Action<(Role, TableView)> UpdateModel;
-        public static Action<(Role, TableView)> CopyModel;
-
-
         public static async Task<ObservableCollection<Role>> GetAll()
         {
             try
@@ -64,27 +59,27 @@ namespace Dental.Repositories
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     Role item = db.Roles.Where(i => i.Id == model.Id).FirstOrDefault();
-                    if (model == null || item == null) return;
-
+                                                         
                     PropertyInfo[] properties = typeof(Role).GetProperties();
+
+                    if (model == null || item == null) return;
 
                     bool needUpdate = false;
                     foreach (PropertyInfo property in properties)
                     {
                         if (!model[property, item]) needUpdate = true;
-
                     }
 
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
-                        if (UpdateModel != null) UpdateModel((item, table));
+                        UpdateModel?.Invoke((item, table));
                         return;
                     }
-                    item.Copy(model);
+                    item.Copy(model, "");
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    if (UpdateModel != null) UpdateModel((item, table));
+                    UpdateModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -120,25 +115,16 @@ namespace Dental.Repositories
                 var db = new ApplicationContext();
                 Role item = db.Roles.Where(i => i.Id == model.Id).FirstOrDefault();
 
-                if (model == null || !new ConfirCopyInCollection().run() || CopyModel == null || item == null)
+                if (!new ConfirCopyInCollection().run())
                 {
-                    CopyModel((item, table));
+                    CopyModel?.Invoke((item, table));
                     return;
                 }
-                else
-                {
-                    Role newModel = new Role()
-                    {
-                        Name = item.Name + " Копия",
-                        Description = item.Description
-                    };
-                    db.Roles.Add(newModel);
-                    db.SaveChanges();
-                    if (CopyModel != null) 
-                    {
-                        CopyModel((newModel, table));
-                    }                   
-                }
+                Role newModel = new Role();
+                newModel.Copy(model);
+                db.Roles.Add(newModel);
+                db.SaveChanges();
+                CopyModel?.Invoke((newModel, table));              
             }
             catch (Exception e)
             {

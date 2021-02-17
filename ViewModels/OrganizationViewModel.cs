@@ -9,6 +9,7 @@ using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models;
+using Dental.Models.Base;
 using Dental.Repositories;
 using DevExpress.Xpf.Grid;
 
@@ -23,12 +24,12 @@ namespace Dental.ViewModels
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
 
-            OrganizationRepository.CopyModel += ((Organization, TableView) c) => {
+            OrganizationRepository.CopyModel += ((IModel, TableView) c) => {
                 var copiedRow = Collection.Where(d => d.Id == ((Organization)c.Item2.FocusedRow)?.Id).FirstOrDefault();
                 if (copiedRow != null)
                 {
                     int index = Collection.IndexOf(copiedRow) + 1;
-                    Collection.Insert(index, c.Item1);
+                    Collection.Insert(index, (Organization)c.Item1);
                     var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                     if (row != null)
                     {
@@ -39,21 +40,21 @@ namespace Dental.ViewModels
                     }
                 }
             };
-            OrganizationRepository.UpdateModel += ((Organization, TableView) c) => {
+            OrganizationRepository.UpdateModel += ((IModel, TableView) c) => {
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                 if (row != null)
                 {
                     int index = Collection.IndexOf(row);
                     Collection.Remove(row);
-                    Collection.Insert(index, c.Item1);
+                    Collection.Insert(index, (Organization)c.Item1);
                     c.Item2.FocusedRow = row;
                     c.Item2.ScrollIntoView(c.Item1);
                     c.Item2.FocusedRow = c.Item1;
                     //c.Item2.ShowEditForm();
                 }
             };
-            OrganizationRepository.AddModel += ((Organization, TableView) c) => {
-                Collection.Add(c.Item1);
+            OrganizationRepository.AddModel += ((IModel, TableView) c) => {
+                Collection.Add((Organization)c.Item1);
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
 
                 if (row != null)
@@ -63,7 +64,7 @@ namespace Dental.ViewModels
                     //c.Item2.ShowEditForm();
                 }
             };
-            OrganizationRepository.DeleteModel += (Organization model) => {
+            OrganizationRepository.DeleteModel += (IModel model) => {
                 var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (item != null) Collection.Remove(item);
             };

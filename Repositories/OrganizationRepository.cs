@@ -12,14 +12,8 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class OrganizationRepository
+    class OrganizationRepository : AbstractTableViewActionRepository
     {
-        public static Action<(Organization, TableView)> AddModel;
-        public static Action<Organization> DeleteModel;
-        public static Action<(Organization, TableView)> UpdateModel;
-        public static Action<(Organization, TableView)> CopyModel;
-
-
         public static async Task<ObservableCollection<Organization>> GetAll()
         {
             try
@@ -51,7 +45,7 @@ namespace Dental.Repositories
                 {
                     db.Organizations.Add(item);
                     db.SaveChanges();
-                    if (AddModel != null) AddModel((item, table));
+                    AddModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -82,14 +76,14 @@ namespace Dental.Repositories
                     
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
-                         if (UpdateModel != null) UpdateModel((item, table));
+                         UpdateModel?.Invoke((item, table));
                          return;
                     }
                     item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
                     int x = db.SaveChanges();
 
-                    if (UpdateModel != null) UpdateModel((item, table));
+                    UpdateModel?.Invoke((item, table));
                 }
                     
                 
@@ -105,13 +99,13 @@ namespace Dental.Repositories
             try
             {
                 var model = table.FocusedRow as Organization;
-                if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
+                if (!new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
                 var db = new ApplicationContext();
                 var row = db.Organizations.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
-                DeleteModel(model);
+                DeleteModel?.Invoke(model);
             }
             catch (Exception e)
             {
@@ -127,9 +121,9 @@ namespace Dental.Repositories
                 var db = new ApplicationContext();
                 Organization item = db.Organizations.Where(i => i.Id == model.Id).FirstOrDefault();
 
-                if (model == null || !new ConfirCopyInCollection().run() || CopyModel == null || item == null)
+                if (!new ConfirCopyInCollection().run())
                 {
-                    CopyModel((item, table));
+                    CopyModel?.Invoke((item, table));
                     return;
                 }
                 else
@@ -155,10 +149,8 @@ namespace Dental.Repositories
                 };
                     db.Organizations.Add(newModel);
                     db.SaveChanges();
-                    if (CopyModel != null) 
-                    {
-                        CopyModel((newModel, table));
-                    }                   
+                    CopyModel?.Invoke((newModel, table));
+                 
                 }
             }
             catch (Exception e)

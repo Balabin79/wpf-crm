@@ -33,10 +33,10 @@ namespace Dental.Models
             }
         }
 
-        public void Copy(Role copy)
+        public void Copy(Role copy, string postfix = " Копия")
         {
             Id = copy.Id;
-            Name = copy.Name;
+            Name = (postfix.Length < 1) ? copy.Name : copy.Name + postfix;
             Description = copy.Description;
         }
     }

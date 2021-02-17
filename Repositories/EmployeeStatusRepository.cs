@@ -9,18 +9,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class EmployeeStatusRepository
+    class EmployeeStatusRepository : AbstractTableViewActionRepository
     {
-        public static Action<(EmployeeStatus, TableView)> AddModel;
-        public static Action<EmployeeStatus> DeleteModel;
-        public static Action<(EmployeeStatus, TableView)> UpdateModel;
-        public static Action<(EmployeeStatus, TableView)> CopyModel;
-
-
         public static async Task<ObservableCollection<EmployeeStatus>> GetAll()
         {
             try
@@ -65,24 +60,27 @@ namespace Dental.Repositories
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).FirstOrDefault();
+
+                    PropertyInfo[] properties = typeof(EmployeeStatus).GetProperties();
+
                     if (model == null || item == null) return;
 
-                    if (item.Name != model.Name)
+                    bool needUpdate = false;
+                    foreach (PropertyInfo property in properties)
                     {
-                        if (!new ConfirUpdateInCollection().run() && UpdateModel != null)
-                        {
-                            UpdateModel((item, table));
-                            return;
-                        } 
-                        else
-                        {
-                            item.Name = model.Name;
-                            item.Description = model.Description;
-                            db.Entry(item).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
+                        if (!model[property, item]) needUpdate = true;
                     }
-                    if (UpdateModel != null) UpdateModel((item, table));
+
+                    if (!needUpdate || !new ConfirUpdateInCollection().run())
+                    {
+                        UpdateModel?.Invoke((item, table));
+                        return;
+                    }
+                    item.Copy(model);
+                    db.Entry(item).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    UpdateModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -118,9 +116,9 @@ namespace Dental.Repositories
                 var db = new ApplicationContext();
                 EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).FirstOrDefault();
 
-                if (model == null || !new ConfirCopyInCollection().run() || CopyModel == null || item == null)
+                if (model == null || !new ConfirCopyInCollection().run() || item == null)
                 {
-                    CopyModel((item, table));
+                    CopyModel?.Invoke((item, table));
                     return;
                 }
                 else
