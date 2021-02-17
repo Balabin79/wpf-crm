@@ -126,32 +126,13 @@ namespace Dental.Repositories
                     CopyModel?.Invoke((item, table));
                     return;
                 }
-                else
-                {
-                    Organization newModel = new Organization()
-                    {
-                        Name = item.Name + " Копия",        
-                        ShortName = item.ShortName,
-                        Inn = item.Inn,
-                        Kpp = item.Kpp,
-                        Logo = item.Logo,
-                        Address = item.Address,
-                        Phone = item.Phone,
-                        Email = item.Email,
-                        Bik = item.Bik,
-                        AccountNumber = item.AccountNumber,
-                        BankName = item.BankName,
-                        Сertificate = item.Сertificate,
-                        Ogrn = item.Ogrn,
-                        GeneralDirector = item.GeneralDirector,
-                        License = item.License,
-                        WhoIssuedBy = item.WhoIssuedBy
-                };
-                    db.Organizations.Add(newModel);
-                    db.SaveChanges();
-                    CopyModel?.Invoke((newModel, table));
-                 
-                }
+
+                Organization newModel = new Organization();
+                newModel.Copy(model);
+                newModel.Name += " Копия";
+                db.Organizations.Add(newModel);
+                db.SaveChanges();
+                CopyModel?.Invoke((newModel, table));                               
             }
             catch (Exception e)
             {

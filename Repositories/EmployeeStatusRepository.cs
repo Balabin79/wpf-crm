@@ -116,25 +116,17 @@ namespace Dental.Repositories
                 var db = new ApplicationContext();
                 EmployeeStatus item = db.EmployeeStatuses.Where(i => i.Id == model.Id).FirstOrDefault();
 
-                if (model == null || !new ConfirCopyInCollection().run() || item == null)
+                if (!new ConfirCopyInCollection().run())
                 {
                     CopyModel?.Invoke((item, table));
                     return;
                 }
-                else
-                {
-                    EmployeeStatus newModel = new EmployeeStatus()
-                    {
-                        Name = item.Name + " Копия",
-                        Description = item.Description
-                    };
-                    db.EmployeeStatuses.Add(newModel);
-                    db.SaveChanges();
-                    if (CopyModel != null) 
-                    {
-                        CopyModel((newModel, table));
-                    }                   
-                }
+                EmployeeStatus newModel = new EmployeeStatus();
+                newModel.Copy(model);
+                newModel.Name += " Копия";
+                db.EmployeeStatuses.Add(newModel);
+                db.SaveChanges();
+                CopyModel?.Invoke((newModel, table));
             }
             catch (Exception e)
             {

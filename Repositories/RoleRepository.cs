@@ -75,7 +75,7 @@ namespace Dental.Repositories
                         UpdateModel?.Invoke((item, table));
                         return;
                     }
-                    item.Copy(model, "");
+                    item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -122,6 +122,7 @@ namespace Dental.Repositories
                 }
                 Role newModel = new Role();
                 newModel.Copy(model);
+                newModel.Name += " Копия";
                 db.Roles.Add(newModel);
                 db.SaveChanges();
                 CopyModel?.Invoke((newModel, table));              
