@@ -8,6 +8,7 @@ using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
+using Dental.Models.Base;
 using Dental.Models.Template;
 using Dental.Repositories.Template;
 using DevExpress.Xpf.Grid;
@@ -22,8 +23,28 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            DiagnosRepository.AddModel += addItem;
-            DiagnosRepository.DeleteModel += deleteItems;
+            DiagnosRepository.AddModel += ((IModel, TreeListView) c) => {
+                Collection.Add((Diagnos)c.Item1);
+                TreeListNode node;
+                if (((Diagnos)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
+                {
+                    node = c.Item2.FocusedNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
+                }
+                else
+                {
+                    node = c.Item2.FocusedNode.ParentNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
+                }
+                if (node != null)
+                {
+                    c.Item2.FocusedNode = node;
+                    c.Item2.ScrollIntoView(node.RowHandle);
+                    //c.Item2.ShowEditForm();
+                }
+            };
+            DiagnosRepository.DeleteModel += (List<int> list) => {
+                var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
+                foreach (var item in itemsForRemove) Collection.Remove(item);               
+            };
         }
 
         public ICommand DeleteCommand { get; }
@@ -91,35 +112,7 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        }        
-        
-        private void addItem((Diagnos, TreeListView) c)
-        {
-            Collection.Add(c.Item1);
-            TreeListNode node;
-            if (((Diagnos)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
-            {
-                node = c.Item2.FocusedNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            } else
-            {
-                node = c.Item2.FocusedNode.ParentNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            }
-            if (node != null)
-            {
-                c.Item2.FocusedNode = node;
-                c.Item2.ScrollIntoView(node.RowHandle);
-                //c.Item2.ShowEditForm();
-            }
-        }
-
-        private void deleteItems(List<int> list)
-        {
-            var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
-            foreach (var item in itemsForRemove)
-            {
-                Collection.Remove(item);
-            }           
-        }
+        }               
 
         private ObservableCollection<Diagnos> _Collection;
 

@@ -12,16 +12,14 @@ using System.Threading.Tasks;
 using DevExpress.Mvvm.Native;
 using Dental.Enums;
 using Dental.Infrastructures.Logs;
+using Dental.Models.Base;
 
 namespace Dental.Repositories.Template
 {
     class TreatmentPlanRepository
     {
-        public static Action<(TreatmentPlan, TreeListView)> AddModel;
-        public static void RegisterAddModel(Action<(TreatmentPlan, TreeListView)> action) => AddModel += action;
-
+        public static Action<(IModel, TreeListView)> AddModel;
         public static Action<List<int>> DeleteModel;
-        public static void RegisterDeleteModel(Action<List<int>> action) => DeleteModel += action;
 
         public static async Task<ObservableCollection<TreatmentPlan>> GetAll()
         {
@@ -53,7 +51,7 @@ namespace Dental.Repositories.Template
                 {
                     db.TreatmentPlanes.Add(item);
                     db.SaveChanges();
-                    if (AddModel != null) AddModel((item, tree));
+                    AddModel?.Invoke((item, tree));
                 }
             }
             catch (Exception e)
@@ -72,16 +70,13 @@ namespace Dental.Repositories.Template
                     TreatmentPlan item = db.TreatmentPlanes.Where(i => i.Id == model.Id).First();
                     if (model == null || item == null) return;
 
-                    if (item.Name != model.Name)
-                    {
-                        if (!new ConfirUpdateInCollection().run()) return;
-                        else
-                        {
-                            item.Name = model.Name;
-                            item.ParentId = model.ParentId;
-                            db.Entry(item).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
+                    if (item.Name != model.Name || item.Dir != model.Dir)
+                    {                       
+                        item.Name = model.Name;
+                        item.ParentId = model.ParentId;
+                        item.Dir = model.Dir;
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();                        
                     }
 
                 }
@@ -109,7 +104,7 @@ namespace Dental.Repositories.Template
                     db.Entry(item).State = EntityState.Deleted;
                 }
                 db.SaveChanges();
-                DeleteModel(listNodesIds);
+                DeleteModel?.Invoke(listNodesIds);
             }
             catch (Exception e)
             {
@@ -136,7 +131,7 @@ namespace Dental.Repositories.Template
                 };
                 db.TreatmentPlanes.Add(newModel);
                 db.SaveChanges();
-                if (AddModel != null) AddModel((newModel, tree));
+                AddModel?.Invoke((newModel, tree));
             }
             catch (Exception e)
             {

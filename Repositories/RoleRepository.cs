@@ -13,8 +13,12 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class RoleRepository : AbstractTableViewActionRepository
+    class RoleRepository
     {
+        public static Action<(IModel, TableView)> AddModel;
+        public static Action<IModel> DeleteModel;
+        public static Action<(IModel, TableView)> UpdateModel;
+        public static Action<(IModel, TableView)> CopyModel;
         public static async Task<ObservableCollection<Role>> GetAll()
         {
             try
@@ -70,7 +74,7 @@ namespace Dental.Repositories
                         if (!model[property, item]) needUpdate = true;
                     }
 
-                    if (!needUpdate || !new ConfirUpdateInCollection().run())
+                    if (!needUpdate)
                     {
                         UpdateModel?.Invoke((item, table));
                         return;

@@ -12,16 +12,14 @@ using System.Threading.Tasks;
 using DevExpress.Mvvm.Native;
 using Dental.Enums;
 using Dental.Infrastructures.Logs;
+using Dental.Models.Base;
 
 namespace Dental.Repositories.Template
 {
     class DiagnosRepository
     {
-        public static Action<(Diagnos, TreeListView)> AddModel;
-        public static void RegisterAddModel(Action<(Diagnos, TreeListView)> action) => AddModel += action;
-
+        public static Action<(IModel, TreeListView)> AddModel;
         public static Action<List<int>> DeleteModel;
-        public static void RegisterDeleteModel(Action<List<int>> action) => DeleteModel += action;
 
         public static async Task<ObservableCollection<Diagnos>> GetAll()
         {
@@ -66,23 +64,20 @@ namespace Dental.Repositories.Template
         {
             try
             {
-                Diagnos model = (Diagnos)tree.FocusedNode.Content;                
+                Diagnos model = (Diagnos)tree.FocusedNode.Content;
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
                     if (model == null || item == null) return;
 
-                    if (item.Name != model.Name)
-                    { 
-                        if (!new ConfirUpdateInCollection().run()) return;
-                        else
-                        {
-                            item.Name = model.Name;
-                            item.ParentId = model.ParentId;
-                            db.Entry(item).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-                    } 
+                    if (item.Name != model.Name || item.Dir != model.Dir)
+                    {                       
+                        item.Name = model.Name;
+                        item.ParentId = model.ParentId;
+                        item.Dir = model.Dir;
+                        db.Entry(item).State = EntityState.Modified;
+                        db.SaveChanges();                        
+                    }
                 }
             }
             catch (Exception e)
@@ -96,6 +91,7 @@ namespace Dental.Repositories.Template
             try {
                 var model = tree.FocusedRow as Diagnos;
                 if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
+
                 var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<Diagnos>()
                     .ToList().Select(d => d.Id).ToList();
             
@@ -107,7 +103,7 @@ namespace Dental.Repositories.Template
                     db.Entry(item).State = EntityState.Deleted;
                 }         
                 db.SaveChanges();
-                DeleteModel(listNodesIds);            
+                DeleteModel?.Invoke(listNodesIds);            
             }
             catch (Exception e)
             {
@@ -134,7 +130,7 @@ namespace Dental.Repositories.Template
                 };               
                 db.Diagnoses.Add(newModel);
                 db.SaveChanges();
-                if (AddModel != null) AddModel((diagnos: newModel, tree: tree));
+                AddModel?.Invoke((newModel, tree));
             }
             catch (Exception e)
             {

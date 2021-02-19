@@ -2,6 +2,7 @@
 using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.ObjectModel;
@@ -12,8 +13,12 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class OrganizationRepository : AbstractTableViewActionRepository
+    class OrganizationRepository
     {
+        public static Action<(IModel, TableView)> AddModel;
+        public static Action<IModel> DeleteModel;
+        public static Action<(IModel, TableView)> UpdateModel;
+        public static Action<(IModel, TableView)> CopyModel;
         public static async Task<ObservableCollection<Organization>> GetAll()
         {
             try
@@ -74,14 +79,14 @@ namespace Dental.Repositories
                                                       
                     }    
                     
-                    if (!needUpdate || !new ConfirUpdateInCollection().run())
+                    if (!needUpdate)
                     {
                          UpdateModel?.Invoke((item, table));
                          return;
                     }
                     item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
-                    int x = db.SaveChanges();
+                    db.SaveChanges();
 
                     UpdateModel?.Invoke((item, table));
                 }

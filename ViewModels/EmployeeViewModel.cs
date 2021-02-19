@@ -22,8 +22,8 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            DiaryRepository.AddModel += addItem;
-            DiaryRepository.DeleteModel += deleteItems;
+            //DiaryRepository.AddModel += addItem;
+            //DiaryRepository.DeleteModel += deleteItems;
         }
 
         public ICommand DeleteCommand { get; }
