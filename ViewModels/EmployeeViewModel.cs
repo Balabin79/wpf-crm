@@ -9,6 +9,7 @@ using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models.Template;
+using Dental.Repositories;
 using Dental.Repositories.Template;
 using DevExpress.Xpf.Grid;
 
@@ -22,6 +23,8 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
+
+            Repository = new EmployeeRepository();
             //DiaryRepository.AddModel += addItem;
             //DiaryRepository.DeleteModel += deleteItems;
         }
@@ -43,7 +46,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiaryRepository.Delete(tree);
+               // Repository.Delete(tree);
             }
             catch (Exception e)
             {
@@ -57,7 +60,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiaryRepository.Add(tree);
+               // Repository.Add(tree);
             }
             catch (Exception e)
             {
@@ -71,7 +74,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
                 if (tree == null) return;
-                DiaryRepository.Update(tree);
+                //Repository.Update(tree);
             }
             catch (Exception e)
             {
@@ -85,7 +88,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
                 if (tree == null) return;
-                DiaryRepository.Copy(tree);
+                //Repository.Copy(tree);
             }
             catch (Exception e)
             {
@@ -122,6 +125,8 @@ namespace Dental.ViewModels
             }
         }
 
+        EmployeeRepository Repository { get; set;  }
+
         private ObservableCollection<Diary> _Collection;
 
         [NotMapped]
@@ -129,7 +134,7 @@ namespace Dental.ViewModels
         {
             get
             {
-                if (_Collection == null) _Collection = DiaryRepository.GetAll().Result;
+               // if (_Collection == null) _Collection = Repository.GetAll().Result;
                 return _Collection;
             }
             set => Set(ref _Collection, value);

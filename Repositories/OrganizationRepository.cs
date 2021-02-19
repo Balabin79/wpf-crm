@@ -2,7 +2,6 @@
 using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.ObjectModel;
@@ -13,13 +12,9 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class OrganizationRepository
+    class OrganizationRepository : AbstractTableViewActionRepository
     {
-        public static Action<(IModel, TableView)> AddModel;
-        public static Action<IModel> DeleteModel;
-        public static Action<(IModel, TableView)> UpdateModel;
-        public static Action<(IModel, TableView)> CopyModel;
-        public static async Task<ObservableCollection<Organization>> GetAll()
+        public async Task<ObservableCollection<Organization>> GetAll()
         {
             try
             {
@@ -34,7 +29,7 @@ namespace Dental.Repositories
             }
         }
         
-        public static void Add(TableView table)
+        public void Add(TableView table)
         {
             try
             {
@@ -59,7 +54,7 @@ namespace Dental.Repositories
             }
         }
       
-        public static void Update(TableView table)
+        public void Update(TableView table)
         {
             try
             {
@@ -79,7 +74,7 @@ namespace Dental.Repositories
                                                       
                     }    
                     
-                    if (!needUpdate)
+                    if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
                          UpdateModel?.Invoke((item, table));
                          return;
@@ -99,7 +94,7 @@ namespace Dental.Repositories
             }
         }
 
-        public static void Delete(TableView table)
+        public void Delete(TableView table)
         {
             try
             {
@@ -118,7 +113,7 @@ namespace Dental.Repositories
             }
         }
        
-        public static void Copy(TableView table)
+        public void Copy(TableView table)
         {
             try
             {

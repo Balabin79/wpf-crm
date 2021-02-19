@@ -32,7 +32,6 @@ namespace Dental.Models
 
         public void Copy(EmployeeStatus copy)
         {
-            Id = copy.Id;
             Name = copy.Name;
             Description = copy.Description;
         }

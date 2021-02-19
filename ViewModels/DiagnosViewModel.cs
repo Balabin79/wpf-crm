@@ -23,7 +23,10 @@ namespace Dental.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            DiagnosRepository.AddModel += ((IModel, TreeListView) c) => {
+
+            Repository = new DiagnosRepository();
+            Repository.AddModel += ((IModel, TreeListView) c) =>
+            {
                 Collection.Add((Diagnos)c.Item1);
                 TreeListNode node;
                 if (((Diagnos)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
@@ -41,11 +44,38 @@ namespace Dental.ViewModels
                     //c.Item2.ShowEditForm();
                 }
             };
-            DiagnosRepository.DeleteModel += (List<int> list) => {
+            Repository.DeleteModel += (List<int> list) =>
+            {
                 var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
-                foreach (var item in itemsForRemove) Collection.Remove(item);               
+                foreach (var item in itemsForRemove) Collection.Remove(item);
+            };
+            Repository.CopyModel += ((IModel, TreeListView) c) =>
+            {
+                var copiedRow = Collection.Where(d => d.Id == ((Diagnos)c.Item2.FocusedRow)?.Id).FirstOrDefault();
+                if (copiedRow != null)
+                {
+                    int index = Collection.IndexOf(copiedRow) + 1;
+                    Collection.Insert(index, (Diagnos)c.Item1);
+                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                    if (row != null)
+                    {
+                        c.Item2.FocusedRow = row;
+                        c.Item2.ScrollIntoView(c.Item1);
+                        c.Item2.FocusedRow = c.Item1;
+                        //c.Item2.ShowEditForm();
+                    }
+                }
+            };
+            Repository.UpdateModel += ((IModel, TreeListView) c) => {
+                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                if (row != null)
+                {
+                    int index = Collection.IndexOf(row);
+                    Collection[index] = (Diagnos)c.Item1;
+                }
             };
         }
+            
 
         public ICommand DeleteCommand { get; }
         public ICommand AddCommand { get; }
@@ -64,7 +94,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.Delete(tree);
+                Repository.Delete(tree);
             }
             catch (Exception e)
             {
@@ -78,7 +108,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.Add(tree);
+                Repository.Add(tree);
             }
             catch (Exception e)
             {
@@ -92,7 +122,7 @@ namespace Dental.ViewModels
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
                 if (tree == null) return;
-                DiagnosRepository.Update(tree);
+                Repository.Update(tree);
             }
             catch (Exception e)
             {
@@ -105,21 +135,23 @@ namespace Dental.ViewModels
             try
             {
                 var tree = p as DevExpress.Xpf.Grid.TreeListView;
-                if (tree == null) return;               
-                DiagnosRepository.Copy(tree);
+                if (tree == null) return;
+                Repository.Copy(tree);
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
-        }               
+        }
+
+        DiagnosRepository Repository { get; set; }
 
         private ObservableCollection<Diagnos> _Collection;
 
         [NotMapped]
         public  ObservableCollection<Diagnos> Collection { 
             get {
-                if (_Collection == null) _Collection = DiagnosRepository.GetAll().Result;
+                if (_Collection == null) _Collection = Repository.GetAll().Result;
                 return _Collection; }
             set => Set(ref _Collection, value);
         }

@@ -107,7 +107,6 @@ namespace Dental.Models
 
         public void Copy(Organization copy)
         {
-             Id = copy.Id;
              Name = copy.Name;
              ShortName = copy.ShortName;
              Inn = copy.Inn;

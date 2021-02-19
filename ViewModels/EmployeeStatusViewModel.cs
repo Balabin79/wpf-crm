@@ -24,7 +24,9 @@ namespace Dental.ViewModels
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
 
-            EmployeeStatusRepository.CopyModel += ((IModel, TableView) c) => {
+            Repository = new EmployeeStatusRepository();
+
+            Repository.CopyModel += ((IModel, TableView) c) => {
                 var copiedRow = Collection.Where(d => d.Id == ((EmployeeStatus)c.Item2.FocusedRow)?.Id).FirstOrDefault(); 
                 if (copiedRow != null)
                 {
@@ -40,20 +42,15 @@ namespace Dental.ViewModels
                     }
                 }
             };
-            EmployeeStatusRepository.UpdateModel += ((IModel, TableView) c) => {               
+            Repository.UpdateModel += ((IModel, TableView) c) => {               
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                 if (row != null)
                 {
                     int index = Collection.IndexOf(row);
-                    Collection.Remove(row);
-                    Collection.Insert(index, (EmployeeStatus)c.Item1);
-                    c.Item2.FocusedRow = row;
-                    c.Item2.ScrollIntoView(c.Item1);
-                    c.Item2.FocusedRow = c.Item1;
-                    //c.Item2.ShowEditForm();
+                    Collection[index] = (EmployeeStatus)c.Item1;
                 }
             };
-            EmployeeStatusRepository.AddModel += ((IModel, TableView) c) => {
+            Repository.AddModel += ((IModel, TableView) c) => {
                 Collection.Add((EmployeeStatus)c.Item1);
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
             
@@ -64,7 +61,7 @@ namespace Dental.ViewModels
                     //c.Item2.ShowEditForm();
                 }
             };
-            EmployeeStatusRepository.DeleteModel += (IModel model) => {
+            Repository.DeleteModel += (IModel model) => {
                 var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (item != null) Collection.Remove(item);               
             };
@@ -87,7 +84,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                EmployeeStatusRepository.Delete(table);
+                Repository.Delete(table);
             }
             catch (Exception e)
             {
@@ -101,7 +98,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                EmployeeStatusRepository.Add(table);
+                Repository.Add(table);
             }
             catch (Exception e)
             {
@@ -115,7 +112,7 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                EmployeeStatusRepository.Update(table);
+                Repository.Update(table);
             }
             catch (Exception e)
             {
@@ -129,13 +126,15 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                EmployeeStatusRepository.Copy(table);
+                Repository.Copy(table);
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
         }
+
+        EmployeeStatusRepository Repository { get; set; }
 
         private ObservableCollection<EmployeeStatus> _Collection;
 
@@ -144,7 +143,7 @@ namespace Dental.ViewModels
         {
             get
             {
-                if (_Collection == null) _Collection = EmployeeStatusRepository.GetAll().Result;
+                if (_Collection == null) _Collection = new EmployeeStatusRepository().GetAll().Result;
                 return _Collection;
             }
             set => Set(ref _Collection, value);

@@ -35,7 +35,6 @@ namespace Dental.Models
 
         public void Copy(Role copy)
         {
-            Id = copy.Id;
             Name = copy.Name;
             Description = copy.Description;
         }

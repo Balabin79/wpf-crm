@@ -8,9 +8,9 @@ namespace Dental.Repositories
 {
     abstract class AbstractTableViewActionRepository : IRepository
     {
-        public static Action<(IModel, TableView)> AddModel;
-        public static Action<IModel> DeleteModel;
-        public static Action<(IModel, TableView)> UpdateModel;
-        public static Action<(IModel, TableView)> CopyModel;
+        public Action<(IModel, TableView)> AddModel;
+        public Action<IModel> DeleteModel;
+        public Action<(IModel, TableView)> UpdateModel;
+        public Action<(IModel, TableView)> CopyModel;
     }
 }

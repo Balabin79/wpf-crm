@@ -82,7 +82,7 @@ namespace Dental.Models
             {
                 if (listEmployes == null)
                 {
-                    listEmployes = EmployeeRepository.GetFakeListEmployee();
+                    //listEmployes = EmployeeRepository.GetFakeListEmployee();
                     return listEmployes;
                 }
                 return listEmployes;

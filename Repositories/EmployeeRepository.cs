@@ -13,7 +13,7 @@ namespace Dental.Repositories
     {
         
 
-        public static ObservableCollection<Employee> GetFakeListEmployee()
+        public ObservableCollection<Employee> GetAll()
         {
             return new ObservableCollection<Employee>
                 {

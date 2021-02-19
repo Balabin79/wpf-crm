@@ -16,12 +16,9 @@ using Dental.Models.Base;
 
 namespace Dental.Repositories.Template
 {
-    class InitialInspectionRepository
+    class InitialInspectionRepository : AbstractTreeViewActionRepository
     {
-        public static Action<(IModel, TreeListView)> AddModel;
-        public static Action<List<int>> DeleteModel;
-
-        public static async Task<ObservableCollection<InitialInspection>> GetAll()
+        public async Task<ObservableCollection<InitialInspection>> GetAll()
         {
             try
             {
@@ -36,7 +33,7 @@ namespace Dental.Repositories.Template
             }
         }
 
-        public static void Add(TreeListView tree)
+        public void Add(TreeListView tree)
         {
             try
             {
@@ -60,7 +57,7 @@ namespace Dental.Repositories.Template
             }
         }
 
-        public static void Update(TreeListView tree)
+        public void Update(TreeListView tree)
         {
             try
             {
@@ -68,16 +65,20 @@ namespace Dental.Repositories.Template
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     InitialInspection item = db.InitialInspectiones.Where(i => i.Id == model.Id).First();
-                    if (model == null || item == null) return;
-
                     if (item.Name != model.Name || item.Dir != model.Dir)
                     {
+                        if (!new ConfirUpdateInCollection().run())
+                        {
+                            UpdateModel?.Invoke((item, tree));
+                            return;
+                        }
                         item.Name = model.Name;
                         item.ParentId = model.ParentId;
                         item.Dir = model.Dir;
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
                     }
+                    UpdateModel?.Invoke((item, tree));
                 }
             }
             catch (Exception e)
@@ -86,7 +87,7 @@ namespace Dental.Repositories.Template
             }
         }
 
-        public static void Delete(TreeListView tree)
+        public void Delete(TreeListView tree)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace Dental.Repositories.Template
             }
         }
 
-        public static void Copy(TreeListView tree)
+        public void Copy(TreeListView tree)
         {
             try
             {
@@ -130,7 +131,7 @@ namespace Dental.Repositories.Template
                 };
                 db.InitialInspectiones.Add(newModel);
                 db.SaveChanges();
-                AddModel?.Invoke((newModel, tree));
+                CopyModel?.Invoke((newModel, tree));
             }
             catch (Exception e)
             {

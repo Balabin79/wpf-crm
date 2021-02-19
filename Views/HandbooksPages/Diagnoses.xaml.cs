@@ -11,5 +11,6 @@ namespace Dental.Views.HandbooksPages
         {
             InitializeComponent();
         }
+
     }
 }

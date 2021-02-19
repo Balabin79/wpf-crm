@@ -24,7 +24,9 @@ namespace Dental.ViewModels
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
 
-            OrganizationRepository.CopyModel += ((IModel, TableView) c) => {
+            Repository = new OrganizationRepository();
+
+            Repository.CopyModel += ((IModel, TableView) c) => {
                 var copiedRow = Collection.Where(d => d.Id == ((Organization)c.Item2.FocusedRow)?.Id).FirstOrDefault();
                 if (copiedRow != null)
                 {
@@ -40,20 +42,15 @@ namespace Dental.ViewModels
                     }
                 }
             };
-            OrganizationRepository.UpdateModel += ((IModel, TableView) c) => {
+            Repository.UpdateModel += ((IModel, TableView) c) => {
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                 if (row != null)
                 {
                     int index = Collection.IndexOf(row);
-                    Collection.Remove(row);
-                    Collection.Insert(index, (Organization)c.Item1);
-                    c.Item2.FocusedRow = row;
-                    c.Item2.ScrollIntoView(c.Item1);
-                    c.Item2.FocusedRow = c.Item1;
-                    //c.Item2.ShowEditForm();
+                    Collection[index] = (Organization)c.Item1;
                 }
             };
-            OrganizationRepository.AddModel += ((IModel, TableView) c) => {
+            Repository.AddModel += ((IModel, TableView) c) => {
                 Collection.Add((Organization)c.Item1);
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
 
@@ -64,7 +61,7 @@ namespace Dental.ViewModels
                     //c.Item2.ShowEditForm();
                 }
             };
-            OrganizationRepository.DeleteModel += (IModel model) => {
+            Repository.DeleteModel += (IModel model) => {
                 var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (item != null) Collection.Remove(item);
             };
@@ -87,7 +84,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                OrganizationRepository.Delete(table);
+                Repository.Delete(table);
             }
             catch (Exception e)
             {
@@ -101,7 +98,7 @@ namespace Dental.ViewModels
             {
                 var table = p as TableView;
                 if (table == null) return;
-                OrganizationRepository.Add(table);
+                Repository.Add(table);
             }
             catch (Exception e)
             {
@@ -115,7 +112,7 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                OrganizationRepository.Update(table);
+                Repository.Update(table);
             }
             catch (Exception e)
             {
@@ -129,7 +126,7 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                OrganizationRepository.Copy(table);
+                Repository.Copy(table);
             }
             catch (Exception e)
             {
@@ -137,13 +134,15 @@ namespace Dental.ViewModels
             }
         }
 
+        OrganizationRepository Repository { get; set; }
+
         private ObservableCollection<Organization> _Collection;
 
         public ObservableCollection<Organization> Collection
         {
             get
             {
-                if (_Collection == null) _Collection = OrganizationRepository.GetAll().Result;
+                if (_Collection == null) _Collection = Repository.GetAll().Result;
                 return _Collection;
             }
             set => Set(ref _Collection, value);
