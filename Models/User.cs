@@ -13,15 +13,14 @@ using System.Windows.Input;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
+using Dental.Models.Base;
 
 namespace Dental.Models
 {
 
 
-    class User : ViewModelBase
+    class User : AbstractBaseModel
     {
-        [Key]
-        public int Id { get; set; }
         // Общая информация
         [Display(Name = "Фото")]
         public Image Image { get; set; }

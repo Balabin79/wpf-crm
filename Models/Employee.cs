@@ -73,27 +73,5 @@ namespace Dental.Models
                 return LastName + " " + FirstName + " " + MiddleName;
             }
         }
-
-
-        private ObservableCollection<Employee> listEmployes;
-        public ObservableCollection<Employee> ListEmployes
-        {
-            get
-            {
-                if (listEmployes == null)
-                {
-                    //listEmployes = EmployeeRepository.GetFakeListEmployee();
-                    return listEmployes;
-                }
-                return listEmployes;
-            }
-            set
-            {
-                Set(ref listEmployes, value);
-            }
-        }
-
-
-
     }
 }

@@ -1,83 +1,43 @@
-using Dental.Infrastructures.Commands.Base;
-using Dental.Repositories;
-using Dental.ViewModels;
-using DevExpress.Xpf.Core;
-using System;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+using Dental.Models.Base;
+using System.Reflection;
+using Dental.Interfaces;
 
 namespace Dental.Models
 {
-    class Speciality : ViewModelBase
+    [Table("Specialities")]
+    class Speciality : TreeModelBase, ITreeViewCollection
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        [Display(Name = "Название")]
-        public string Name { get; set; }
-
-        [Display(Name = "Тип персонала")]
-        public string SpecialityType { get; set; }
-
-        public bool ShowInShedule { get; set; }
-
-        [Display(Name = "Описание")]
-        public string Description { get; set; }
+        [Display(Name = "В расписании")]
+        public int? ShowInShedule { get; set; }
 
         [NotMapped]
-        public List<string> SpecialityTypeList { get => new List<string> { "Младший персонал", "Старший персонал" }; }
+        public bool IsEnabledShowInSheduleField { get => Dir != 1; }
 
-
-        private ObservableCollection<Speciality> listSpecialies;
-        public ObservableCollection<Speciality> ListSpecialities
+        public bool this[PropertyInfo prop, Speciality item]
         {
             get
             {
-                if (listSpecialies == null)
+                switch (prop.Name)
                 {
-                    listSpecialies = SpecialityRepository.GetFakeSpecialities();
-                    return listSpecialies;
-                }
-                return listSpecialies;
-            }
-            set
-            {
-                Set(ref listSpecialies, value);
-            }
-
-        }
-
-        public Speciality()
-        {
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-        }
-
-        public ICommand DeleteCommand { get; }
-        private bool CanDeleteCommandExecute(object p) => true;
-        private void OnDeleteCommandExecuted(object p)
-        {
-            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
-            try
-            {
-                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Вы уверены что хотите удалить специальность?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
-                if (response.ToString() == "Yes")
-                {
-                    Speciality sp = (Speciality)p;
-                    ListSpecialities.Remove(sp);
+                    case "Id": return item.Id == Id;
+                    case "Name": return item.Name == Name;
+                    case "ParentId": return item.ParentId == ParentId;
+                    case "ShowInShedule": return item.ShowInShedule == ShowInShedule;
+                    default: return true;
                 }
             }
-            catch (Exception e)
-            {
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
-            }
+        }
 
+        public void Copy(Speciality copy)
+        {
+            Name = copy.Name;
+            ShowInShedule = copy.ShowInShedule;
+            ParentId = copy.ParentId;
+            Dir = copy.Dir;
+            IsSys = copy.IsSys;
+            IsDelete = copy.IsDelete;
         }
     }
 }
