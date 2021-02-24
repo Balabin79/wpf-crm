@@ -20,10 +20,7 @@
       xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" 
       Title="HandbooksPage">
     
-    <Page.Resources>
-        <conv:ImageConverter x:Key="ImageConverter" />
-        <Image Source="pack://application:,,,/Resources/Icons/Template/red.png"  x:Key="DiaryImage"/>
-    </Page.Resources>
+
 
 
     <Grid Margin="10" dx:ThemeManager.ThemeName="Office2019White">
@@ -35,86 +32,6 @@
 
 
 
-        <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
-            <dxr:RibbonDefaultPageCategory>
-                <dxr:RibbonPage Caption="Основные" >
-                    <dxr:RibbonPageGroup Caption="Сотрудники" >
-                        <dxb:BarButtonItem Content="Сотрудники" RibbonStyle="Default" 
-                                           LargeGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}" 
-                                           Margin="10 0 10 0"                                       
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" MediumGlyph="{dx:DXImage Images/People/UserGroup_32x32.png}" Glyph="{dx:DXImage Images/Actions/UserGroup_32x32.png}"/>
-                        
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Справочники">
-                        <dxb:BarButtonItem Content="Специальности" LargeGlyph="{dx:DXImage Images/People/Female_32x32.png}"
-                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/People/Female_32x32.png}"
-                                            ToolTip="Специальности"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
-                        <dxb:BarButtonItem Content="Роли" LargeGlyph="{dx:DXImage Images/Business Objects/BORole_32x32.png}"
-                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Business Objects/BORole_32x32.png}"
-                                            ToolTip="Роли"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Roles}"/>
-                        <dxb:BarButtonItem Content="Статусы сотрудников" LargeGlyph="{dx:DXImage Images/Business Objects/BODetails_32x32.png}"
-                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Business Objects/BODetails_32x32.png}"
-                                            ToolTip="Статусы сотрудников"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Организации">
-                        <dxb:BarButtonItem Content="Организации" LargeGlyph="{dx:DXImage Images/Programming/Project_32x32.png}"
-                                            Margin="10 0 10 0" Glyph="{dx:DXImage Images/Programming/Project_32x32.png}"
-                                           ToolTip="Список организаций"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Organizations}"/>
-
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-
-                <dxr:RibbonPage Caption="Шаблоны">
-                    <dxr:RibbonPageGroup >
-                        <dxb:BarButtonItem Content="Диагноз" 
-                                           Glyph="{Binding Path=DiagnosImage}"
-                                           LargeGlyph="{Binding Path=DiagnosImage}"                                        
-                                           Padding="9"
-                                           ToolTip="Шаблоны диагнозов"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Diagnoses}"
-                                           ItemClick="BarButtonItem_ItemClick"
-                                           >
-                        </dxb:BarButtonItem>
-                        <dxb:BarButtonItem Content="Дневник" 
-                                            Glyph="{Binding Path=DiaryImage}"
-                                           LargeGlyph="{Binding Path=DiaryImage}" 
-                                           Padding="9"
-                                           ToolTip="Шаблоны дневников"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Diary}"
-                                           />
-                        <dxb:BarButtonItem Content="Первичный осмотр" 
-                                            Glyph="{Binding Path=InitialImage}"
-                                           LargeGlyph="{Binding Path=InitialImage}" 
-                                           Padding="9"
-                                           ToolTip="Первичный осмотр"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:InitialInspection}"/>
-                        <dxb:BarButtonItem Content="План лечения" 
-                                           Glyph="{Binding Path=PlanImage}"
-                                           LargeGlyph="{Binding Path=PlanImage}"
-                                           Padding="9"
-                                           ToolTip="План лечения"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:TreatmentPlan}"/>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-                <dxr:RibbonPage Caption="Прайсы">
-                    <dxr:RibbonPageGroup Caption="Прайсы">
-                        <dxb:BarButtonItem Content="Прайс-лист" 
-                                           Glyph="{Binding Path=DiaryImage}"
-                                           LargeGlyph="{Binding Path=DiaryImage}" 
-                                           Margin="0 0 20 0"/>
-                        <dxb:BarButtonItem Content="Прайс-лист тех.лабораторий"
-                                           LargeGlyph="{dx:DXImage Images/Function Library/Financial_32x32.png}" Margin="0 0 20 0" Glyph="{dx:DXImage Images/Function Library/Financial_32x32.png}"/>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-            </dxr:RibbonDefaultPageCategory>
-
-        </dxr:RibbonControl>
 
 
         <Frame Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch"               

@@ -11,7 +11,7 @@ namespace Dental
         {
             InitializeComponent();
         }
-
+        /*
         private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
         {
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -22,6 +22,6 @@ namespace Dental
         {
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
             ButtonCloseMenu.Visibility = Visibility.Visible;
-        }
+        }*/
     }
 }

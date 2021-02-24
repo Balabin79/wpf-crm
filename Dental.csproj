@@ -13,12 +13,44 @@
     <None Remove="Resources\Icons\folder_closed_gnone_32.png" />
     <None Remove="Resources\Icons\folder_open_32.png" />
     <None Remove="Resources\Icons\folder_open_gnone_32.png" />
+    <None Remove="Resources\Icons\Nomenclature\.png" />
+    <None Remove="Resources\Icons\Nomenclature\Advertising.png" />
+    <None Remove="Resources\Icons\Nomenclature\Angel.png" />
+    <None Remove="Resources\Icons\Nomenclature\Calculator-Black.png" />
+    <None Remove="Resources\Icons\Nomenclature\Calculator-Edit.png" />
+    <None Remove="Resources\Icons\Nomenclature\Coins-In-Hand.png" />
+    <None Remove="Resources\Icons\Nomenclature\comp.png" />
+    <None Remove="Resources\Icons\Nomenclature\Computer-Key.png" />
+    <None Remove="Resources\Icons\Nomenclature\emp.png" />
+    <None Remove="Resources\Icons\Nomenclature\employee.png" />
+    <None Remove="Resources\Icons\Nomenclature\employee_status.png" />
+    <None Remove="Resources\Icons\Nomenclature\Group-Key.png" />
+    <None Remove="Resources\Icons\Nomenclature\org2.png" />
+    <None Remove="Resources\Icons\Nomenclature\organization.png" />
+    <None Remove="Resources\Icons\Nomenclature\organization2.png" />
+    <None Remove="Resources\Icons\Nomenclature\organizations.png" />
+    <None Remove="Resources\Icons\Nomenclature\Participation-Rate.png" />
+    <None Remove="Resources\Icons\Nomenclature\Private.png" />
+    <None Remove="Resources\Icons\Nomenclature\Profiles.png" />
+    <None Remove="Resources\Icons\Nomenclature\Reseller-Account.png" />
+    <None Remove="Resources\Icons\Nomenclature\role2.png" />
+    <None Remove="Resources\Icons\Nomenclature\role3.png" />
+    <None Remove="Resources\Icons\Nomenclature\Shedule.png" />
+    <None Remove="Resources\Icons\Nomenclature\speciality.png" />
+    <None Remove="Resources\Icons\Nomenclature\status10.png" />
+    <None Remove="Resources\Icons\Nomenclature\status11.png" />
+    <None Remove="Resources\Icons\Nomenclature\status6.png" />
+    <None Remove="Resources\Icons\Nomenclature\status9.png" />
+    <None Remove="Resources\Icons\Nomenclature\User-Add.png" />
+    <None Remove="Resources\Icons\Nomenclature\Vcard.png" />
     <None Remove="Resources\Icons\Template\diagnos.png" />
     <None Remove="Resources\Icons\Template\diary.png" />
+    <None Remove="Resources\Icons\Template\init.png" />
     <None Remove="Resources\Icons\Template\initial.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
     <None Remove="Resources\Icons\Template\plan.png" />
     <None Remove="Resources\Icons\Template\red.png" />
+    <None Remove="Resources\Icons\Template\Report.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,10 +136,37 @@
     <Resource Include="Resources\Icons\folder_closed_gnone_32.png" />
     <Resource Include="Resources\Icons\folder_open_32.png" />
     <Resource Include="Resources\Icons\folder_open_gnone_32.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Advertising.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Angel.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Calculator-Black.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Calculator-Edit.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Coins-In-Hand.png" />
+    <Resource Include="Resources\Icons\Nomenclature\comp.png" />
+    <Resource Include="Resources\Icons\Nomenclature\emp.png" />
+    <Resource Include="Resources\Icons\Nomenclature\employee.png" />
+    <Resource Include="Resources\Icons\Nomenclature\employee_status.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Group-Key.png" />
+    <Resource Include="Resources\Icons\Nomenclature\org2.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Participation-Rate.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Private.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Profiles.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Reseller-Account.png" />
+    <Resource Include="Resources\Icons\Nomenclature\role2.png" />
+    <Resource Include="Resources\Icons\Nomenclature\role3.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Shedule.png" />
+    <Resource Include="Resources\Icons\Nomenclature\speciality.png" />
+    <Resource Include="Resources\Icons\Nomenclature\status10.png" />
+    <Resource Include="Resources\Icons\Nomenclature\status11.png" />
+    <Resource Include="Resources\Icons\Nomenclature\status6.png" />
+    <Resource Include="Resources\Icons\Nomenclature\status9.png" />
+    <Resource Include="Resources\Icons\Nomenclature\User-Add.png" />
+    <Resource Include="Resources\Icons\Nomenclature\Vcard.png" />
     <Resource Include="Resources\Icons\Template\diagnos.png" />
     <Resource Include="Resources\Icons\Template\diary.png" />
+    <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\initial.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
+    <Resource Include="Resources\Icons\Template\Report.png" />
   </ItemGroup>
 
   <ItemGroup>

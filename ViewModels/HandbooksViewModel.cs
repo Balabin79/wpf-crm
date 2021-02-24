@@ -92,7 +92,7 @@ namespace Dental.ViewModels
         {
             get
             {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/diary.png"));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Report.png"));
             }
         }
 
@@ -116,9 +116,114 @@ namespace Dental.ViewModels
         {
             get
             {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/initial.png"));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/init.png"));
             }
         }
+
+        public BitmapImage OrganizationImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/org2.png"));
+            }
+        }
+
+        public BitmapImage   StatusEmployeeImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/status11.png"));
+            }
+        }
+
+        public BitmapImage RoleImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Private.png"));
+            }
+        }
+
+        public BitmapImage SpecialityImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Participation-Rate.png"));
+            }
+        }
+
+        public BitmapImage EmployeeImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Reseller-Account.png"));
+            }
+        }
+
+        public BitmapImage UsersImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/emp.png"));
+            }
+        }
+
+        public BitmapImage AccessImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/comp.png"));
+            }
+        }
+
+        public BitmapImage LoyalityImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Coins-In-Hand.png"));
+            }
+        }
+
+        public BitmapImage AdvertisingImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Advertising.png"));
+            }
+        }
+
+        public BitmapImage BonusImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Profiles.png"));
+            }
+        }
+
+        public BitmapImage NewPatientImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/User-Add.png"));
+            }
+        }
+
+        public BitmapImage ListPatientsImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/emp.png"));
+            }
+        }
+
+        public BitmapImage SheduleImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Shedule.png"));
+            }
+        }
+
     }
 }
 
