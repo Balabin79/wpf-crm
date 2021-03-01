@@ -85,14 +85,9 @@
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                 </dxg:TreeListView.RowCellMenuCustomizations>
 
-
-
-
                 <dxg:TreeListView.NodeImageSelector>
                     <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
                 </dxg:TreeListView.NodeImageSelector>
-
-
 
             </dxg:TreeListView>
 

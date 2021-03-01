@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class SpecialityRepository : AbstractTableViewActionRepository
+    class AdvertisingRepository : AbstractTableViewActionRepository
     {
-        public async Task<ObservableCollection<Speciality>> GetAll()
+        public async Task<ObservableCollection<Advertising>> GetAll()
         {
             try
             {
                 ApplicationContext db = new ApplicationContext();
-                await db.Specialities.OrderBy(d => d.Name).LoadAsync();
-                return db.Specialities.Local;
+                await db.Advertising.OrderBy(d => d.Name).LoadAsync();
+                return db.Advertising.Local;
             }
             catch (Exception e)
             {
                 new RepositoryLog(e).run();
-                return new ObservableCollection<Speciality>();
+                return new ObservableCollection<Advertising>();
             }
         }
         
@@ -35,11 +35,11 @@ namespace Dental.Repositories
             {
                 if (!new ConfirmAddNewInCollection().run()) return;
 
-                Speciality item = new Speciality() {Name = "Новый элемент", ShowInShedule = 0 };
+                Advertising item = new Advertising() {Name = "Новый элемент", Description = "" };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    db.Specialities.Add(item);
+                    db.Advertising.Add(item);
                     db.SaveChanges();
                     if (AddModel != null) AddModel((item, table));
                 }
@@ -54,12 +54,12 @@ namespace Dental.Repositories
         {
             try
             {
-                Speciality model = (Speciality)table.FocusedRow;
+                Advertising model = (Advertising)table.FocusedRow;
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    Speciality item = db.Specialities.Where(i => i.Id == model.Id).FirstOrDefault();
+                    Advertising item = db.Advertising.Where(i => i.Id == model.Id).FirstOrDefault();
                                                          
-                    PropertyInfo[] properties = typeof(Speciality).GetProperties();
+                    PropertyInfo[] properties = typeof(Advertising).GetProperties();
 
                     if (model == null || item == null) return;
 
@@ -91,11 +91,11 @@ namespace Dental.Repositories
         {
             try
             {
-                var model = table.FocusedRow as Speciality;
+                var model = table.FocusedRow as Advertising;
                 if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
                 var db = new ApplicationContext();
-                var row = db.Specialities.Where(d => d.Id == model.Id).FirstOrDefault();
+                var row = db.Advertising.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
                 DeleteModel(model);
@@ -110,19 +110,19 @@ namespace Dental.Repositories
         {
             try
             {
-                Speciality model = (Speciality)table.FocusedRow;
+                Advertising model = (Advertising)table.FocusedRow;
                 var db = new ApplicationContext();
-                Speciality item = db.Specialities.Where(i => i.Id == model.Id).FirstOrDefault();
+                Advertising item = db.Advertising.Where(i => i.Id == model.Id).FirstOrDefault();
 
                 if (!new ConfirCopyInCollection().run())
                 {
                     CopyModel?.Invoke((item, table));
                     return;
                 }
-                Speciality newModel = new Speciality() {Name = model.Name + " Копия", ShowInShedule = model.ShowInShedule };
-                db.Specialities.Add(newModel);
+                Advertising newModel = new Advertising() {Name = model.Name + " Копия", Description  = model.Description };
+                db.Advertising.Add(newModel);
                 db.SaveChanges();
-                Speciality newItem = db.Specialities.Where(i => i.Id == newModel.Id).FirstOrDefault();
+                Advertising newItem = db.Advertising.Where(i => i.Id == newModel.Id).FirstOrDefault();
                 CopyModel?.Invoke((newItem, table));              
             }
             catch (Exception e)

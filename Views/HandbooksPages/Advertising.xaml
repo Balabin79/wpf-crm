@@ -1,4 +1,4 @@
-﻿<Page x:Class="Dental.Views.HandbooksPages.Specialities"
+﻿<Page x:Class="Dental.Views.HandbooksPages.Advertising"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,14 +24,16 @@
 
     <Grid>
         <Grid.DataContext>
-            <vm:SpecialityViewModel/>
+            <vm:AdvertisingViewModel/>
         </Grid.DataContext>
 
-        <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
-                 EnableSmartColumnsGeneration="True" Name="grid"
+        <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
+                 EnableSmartColumnsGeneration="True" Name="grid" 
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            
+            
             <dxg:GridControl.View>
-                <dxg:TableView 
+                <dxg:TableView                   
                     x:Name="view"
                     AllowPerPixelScrolling="True" 
                     ShowTotalSummary="True" 
@@ -50,6 +52,13 @@
                     EditFormColumnCount="1" 
                     EditFormPostConfirmation="YesNo"                   
                     >
+                    <dxg:TableView.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Path=AdvertisingImage}" Height="22" Width="22" Margin="0 0 3 0"/>
+                        <TextBlock Text="Рекламные источники" FontSize="15" />
+                        </StackPanel>
+                    </dxg:TableView.Header>
+
                     <dxg:TableView.InputBindings>
                         <KeyBinding Key="Delete"         
                                 Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
@@ -98,8 +107,8 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" />
                                     <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                    <TextBlock Text="В расписании: " Grid.Row="1" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="ShowInShedule" Grid.Row="1" Grid.Column="1" Margin="2"/>
+                                    <TextBlock Text="Описание: " Grid.Row="1" Grid.Column="0" />
+                                    <dxg:EditFormEditor FieldName="Description" Grid.Row="1" Grid.Column="1" Margin="2"/>
 
                                     <StackPanel  Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                                         <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
@@ -111,26 +120,27 @@
                     </dxg:TableView.EditFormTemplate>
 
                 </dxg:TableView>
-                
-                
+
+
             </dxg:GridControl.View>
 
 
 
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  />
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  Width="*"/>
 
-            <dxg:GridColumn FieldName="ShowInShedule"  Header="В расписании" Name="ShowInShedule" >
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" Width="3*">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <dxe:CheckEdit Name="PART_Editor" IsChecked="{Binding RowData.Source.Row.ShowInShedule, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
+                        <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
 
                 <dxg:GridColumn.EditFormTemplate>
                     <DataTemplate >
-                        <dxe:CheckEdit Name="PART_Editor"  IsChecked="{Binding RowData.Row.Source.ShowInShedule, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"  />
+                        <dxe:MemoEdit Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}"  Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" MemoTextWrapping="Wrap" PrintTextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.EditFormTemplate>
             </dxg:GridColumn>

@@ -5,19 +5,18 @@ using System.Reflection;
 
 namespace Dental.Models
 {
-    [Table("Specialities")]
-    class Speciality : AbstractBaseModel
+    [Table("Advertising")]
+    class Advertising : AbstractBaseModel
     {
         [Required]
-        [MaxLength(255)]
         [Display(Name = "Название")]
-        public string Name {get; set; }
+        public string Name { get; set; }
 
-        [Display(Name = "В расписании")]
-        public int ShowInShedule { get; set; }
+        [Display(Name = "Описание")]
+        public string Description { get; set; }
 
 
-        public bool this[PropertyInfo prop, Speciality item]
+        public bool this[PropertyInfo prop, Advertising item]
         {
             get
             {
@@ -25,16 +24,16 @@ namespace Dental.Models
                 {
                     case "Id": return item.Id == Id;
                     case "Name": return item.Name == Name;
-                    case "ShowInShedule": return item.ShowInShedule == ShowInShedule;                 
+                    case "Description": return item.Description == Description;                 
                     default: return true;
                 }
             }
         }
 
-        public void Copy(Speciality copy)
+        public void Copy(Advertising copy)
         {
             Name = copy.Name;
-            ShowInShedule = copy.ShowInShedule;
+            Description = copy.Description;
         }
     }
 }

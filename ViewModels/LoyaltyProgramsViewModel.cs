@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
@@ -15,22 +16,22 @@ using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class SpecialityViewModel : ViewModelBase, ICollectionCommand
+    class LoyaltyProgramsViewModel : ViewModelBase, ICollectionCommand
     {
 
-        public SpecialityViewModel()
+        public LoyaltyProgramsViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
             UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            Repository = new SpecialityRepository();
+            Repository = new LoyaltyProgramsRepository();
             Repository.CopyModel += ((IModel, TableView) c) => {
-                var copiedRow = Collection.Where(d => d.Id == ((Speciality)c.Item2.FocusedRow)?.Id).FirstOrDefault();
+                var copiedRow = Collection.Where(d => d.Id == ((LoyaltyPrograms)c.Item2.FocusedRow)?.Id).FirstOrDefault();
                 if (copiedRow != null)
                 {
                     int index = Collection.IndexOf(copiedRow) + 1;
-                    Collection.Insert(index, (Speciality)c.Item1);
+                    Collection.Insert(index, (LoyaltyPrograms)c.Item1);
                     var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                     if (row != null)
                     {
@@ -46,11 +47,11 @@ namespace Dental.ViewModels
                 if (row != null)
                 {
                     int index = Collection.IndexOf(row);
-                    Collection[index] = (Speciality)c.Item1;
+                    Collection[index] = (LoyaltyPrograms)c.Item1;
                 }
             };
             Repository.AddModel += ((IModel, TableView) c) => {
-                Collection.Add((Speciality)c.Item1);
+                Collection.Add((LoyaltyPrograms)c.Item1);
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
 
                 if (row != null)
@@ -133,12 +134,12 @@ namespace Dental.ViewModels
             }
         }
 
-        SpecialityRepository Repository { get; set; }
+        LoyaltyProgramsRepository Repository { get; set; }
 
-        private ObservableCollection<Speciality> _Collection;
+        private ObservableCollection<LoyaltyPrograms> _Collection;
 
         [NotMapped]
-        public ObservableCollection<Speciality> Collection
+        public ObservableCollection<LoyaltyPrograms> Collection
         {
             get
             {
@@ -146,6 +147,14 @@ namespace Dental.ViewModels
                 return _Collection;
             }
             set => Set(ref _Collection, value);
+        }
+
+        public BitmapImage LoyalityImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Coins-In-Hand.png"));
+            }
         }
     }
 }

@@ -11,6 +11,9 @@ namespace Dental.Models
         {
         }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Advertising> Advertising { get; set; }
+        public DbSet<DiscountGroups> DiscountGroups { get; set; }
+        public DbSet<LoyaltyPrograms> LoyaltyPrograms { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Diagnos> Diagnoses { get; set; }

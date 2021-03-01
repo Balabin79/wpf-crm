@@ -173,6 +173,18 @@
     <Compile Update="Views\HandbooksPages\InitialInspection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\HandbooksPages\Advertising.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HandbooksPages\DiscountGroups.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HandbooksPages\LoyaltyPrograms.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\HandbooksPages\Specialities.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\HandbooksPages\TreatmentPlan.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -193,6 +205,22 @@
 
   <ItemGroup>
     <Page Update="Views\HandbooksPages\InitialInspection.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HandbooksPages\Advertising.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HandbooksPages\DiscountGroups.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HandbooksPages\LoyaltyPrograms.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HandbooksPages\Specialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

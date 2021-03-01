@@ -1,7 +1,5 @@
 using Dental.Models;
 using Dental.Repositories;
-using DevExpress.SpreadsheetSource.Implementation;
-using DevExpress.Xpf.Grid;
 using System.Windows.Controls;
 
 namespace Dental.Views.HandbooksPages
@@ -9,11 +7,12 @@ namespace Dental.Views.HandbooksPages
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class Specialities : Page
+    public partial class Advertising : Page
     {
-        public Specialities()
+        public Advertising()
         {
             InitializeComponent();
         }
+
     }
 }

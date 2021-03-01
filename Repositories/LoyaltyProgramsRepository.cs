@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class SpecialityRepository : AbstractTableViewActionRepository
+    class LoyaltyProgramsRepository : AbstractTableViewActionRepository
     {
-        public async Task<ObservableCollection<Speciality>> GetAll()
+        public async Task<ObservableCollection<LoyaltyPrograms>> GetAll()
         {
             try
             {
                 ApplicationContext db = new ApplicationContext();
-                await db.Specialities.OrderBy(d => d.Name).LoadAsync();
-                return db.Specialities.Local;
+                await db.LoyaltyPrograms.OrderBy(d => d.Name).LoadAsync();
+                return db.LoyaltyPrograms.Local;
             }
             catch (Exception e)
             {
                 new RepositoryLog(e).run();
-                return new ObservableCollection<Speciality>();
+                return new ObservableCollection<LoyaltyPrograms>();
             }
         }
         
@@ -35,11 +35,12 @@ namespace Dental.Repositories
             {
                 if (!new ConfirmAddNewInCollection().run()) return;
 
-                Speciality item = new Speciality() {Name = "Новый элемент", ShowInShedule = 0 };
+                LoyaltyPrograms item = new LoyaltyPrograms() {Name = "Новый элемент", Description = "", 
+                    PeriodTo = DateTime.Now.ToShortDateString().ToString() };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    db.Specialities.Add(item);
+                    db.LoyaltyPrograms.Add(item);
                     db.SaveChanges();
                     if (AddModel != null) AddModel((item, table));
                 }
@@ -54,12 +55,12 @@ namespace Dental.Repositories
         {
             try
             {
-                Speciality model = (Speciality)table.FocusedRow;
+                LoyaltyPrograms model = (LoyaltyPrograms)table.FocusedRow;
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    Speciality item = db.Specialities.Where(i => i.Id == model.Id).FirstOrDefault();
+                    LoyaltyPrograms item = db.LoyaltyPrograms.Where(i => i.Id == model.Id).FirstOrDefault();
                                                          
-                    PropertyInfo[] properties = typeof(Speciality).GetProperties();
+                    PropertyInfo[] properties = typeof(LoyaltyPrograms).GetProperties();
 
                     if (model == null || item == null) return;
 
@@ -91,11 +92,11 @@ namespace Dental.Repositories
         {
             try
             {
-                var model = table.FocusedRow as Speciality;
+                var model = table.FocusedRow as LoyaltyPrograms;
                 if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
                 var db = new ApplicationContext();
-                var row = db.Specialities.Where(d => d.Id == model.Id).FirstOrDefault();
+                var row = db.LoyaltyPrograms.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
                 DeleteModel(model);
@@ -110,19 +111,20 @@ namespace Dental.Repositories
         {
             try
             {
-                Speciality model = (Speciality)table.FocusedRow;
+                LoyaltyPrograms model = (LoyaltyPrograms)table.FocusedRow;
                 var db = new ApplicationContext();
-                Speciality item = db.Specialities.Where(i => i.Id == model.Id).FirstOrDefault();
+                LoyaltyPrograms item = db.LoyaltyPrograms.Where(i => i.Id == model.Id).FirstOrDefault();
 
                 if (!new ConfirCopyInCollection().run())
                 {
                     CopyModel?.Invoke((item, table));
                     return;
                 }
-                Speciality newModel = new Speciality() {Name = model.Name + " Копия", ShowInShedule = model.ShowInShedule };
-                db.Specialities.Add(newModel);
+                LoyaltyPrograms newModel = new LoyaltyPrograms() {Name = model.Name + " Копия", 
+                    Description  = model.Description, PeriodTo = model.PeriodTo };
+                db.LoyaltyPrograms.Add(newModel);
                 db.SaveChanges();
-                Speciality newItem = db.Specialities.Where(i => i.Id == newModel.Id).FirstOrDefault();
+                LoyaltyPrograms newItem = db.LoyaltyPrograms.Where(i => i.Id == newModel.Id).FirstOrDefault();
                 CopyModel?.Invoke((newItem, table));              
             }
             catch (Exception e)

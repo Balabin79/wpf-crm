@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace Dental.Views.HandbooksPages
     {
         public TableViewTemplateControl()
         {
-            InitializeComponent();
+            InitializeComponent();         
         }
     }
 }

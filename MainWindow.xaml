@@ -152,9 +152,9 @@
                                            Glyph="{Binding Path=LoyalityImage}"
                                            MediumGlyph="{Binding Path=LoyalityImage}" 
                                            LargeGlyph="{Binding Path=LoyalityImage}" 
-                                           ToolTip="Роли"
+                                           ToolTip="Программы лояльности"
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Roles}"/>
+                                           CommandParameter="{x:Type pages:LoyaltyPrograms}"/>
                         
                         <dxb:BarButtonItem Content="Рекламные источники"
                                            Glyph="{Binding Path=AdvertisingImage}"
@@ -162,7 +162,7 @@
                                            LargeGlyph="{Binding Path=AdvertisingImage}" 
                                            ToolTip="Рекламные источники"
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Roles}"/>
+                                           CommandParameter="{x:Type pages:Advertising}"/>
                         
                         <dxb:BarButtonItem Content="Группы скидок"
                                            Glyph="{Binding Path=BonusImage}"
@@ -170,7 +170,7 @@
                                            LargeGlyph="{Binding Path=BonusImage}" 
                                            ToolTip="Группы скидок"
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Roles}"/>
+                                           CommandParameter="{x:Type pages:DiscountGroups}"/>
 
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
