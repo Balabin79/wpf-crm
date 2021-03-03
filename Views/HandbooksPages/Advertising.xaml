@@ -54,8 +54,12 @@
                     >
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Path=AdvertisingImage}" Height="22" Width="22" Margin="0 0 3 0"/>
-                        <TextBlock Text="Рекламные источники" FontSize="15" />
+                            <Image Height="22" Width="22" Margin="0 5 3 0">
+                                <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/Advertising.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Рекламные источники" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
 
@@ -126,9 +130,22 @@
 
 
 
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  Width="*"/>
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  MinWidth="200" Width="*">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
+            </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" Width="3*">
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description"  MinWidth="200" Width="5*">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 

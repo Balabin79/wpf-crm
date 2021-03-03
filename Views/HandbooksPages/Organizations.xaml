@@ -12,8 +12,7 @@
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands"
-     >
+      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
 
     <Grid>
         <Grid.DataContext>
@@ -37,7 +36,7 @@
                     BestFitModeOnSourceChange="VisibleRows"            
                     AllowDragDrop="True"
                     AllowEditing="True"
-                    EditFormShowMode="Inline"
+                    EditFormShowMode="InlineHideRow"
                     ShowDataNavigator="True"
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True"                 
@@ -73,24 +72,142 @@
                     <b:DeleteRowDataGridBehaviors/>
                     <dxmvvm:EventToCommand  EventName="ValidateRow" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
                 </dxmvvm:Interaction.Behaviors>
-            </dxg:TableView>
+
+                    <dxg:TableView.EditFormTemplate>
+                        <DataTemplate>
+                            <GroupBox Header="Редактирование позиции" Margin="10" Padding="10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.5*" />
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="0.7*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="Наименование: " Grid.Row="0" Grid.Column="0" />
+                                    <TextBlock Text="Сокращенное наименование: " Grid.Row="1" Grid.Column="0" />
+                                    <TextBlock Text="Юридический адрес: " Grid.RowSpan="2" Grid.Row="2" Grid.Column="0" />
+                                    
+                                    <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                    <dxg:EditFormEditor FieldName="ShortName" Grid.Row="1" Grid.Column="1" Margin="2" />
+                                    <dxg:EditFormEditor FieldName="Address" Grid.Row="2" Grid.Column="1" Margin="2" />
+
+
+                                    <TextBlock Text="ИНН: " Grid.Row="0" Grid.Column="2" Margin="20 2 2 2"/>
+                                    <TextBlock Text="КПП: " Grid.Row="1" Grid.Column="2" Margin="20 2 2 2"/>
+                                    <TextBlock Text="Телефон: " Grid.Row="2" Grid.Column="2" Margin="20 2 2 2"/>
+                                    <TextBlock Text="Email: " Grid.Row="3" Grid.Column="2" Margin="20 2 2 2"/>
+                                    
+                                    <dxg:EditFormEditor FieldName="Inn"  Grid.Row="0" Grid.Column="3" Margin="2" />
+                                    <dxg:EditFormEditor FieldName="Kpp" Grid.Row="1" Grid.Column="3" Margin="2" />
+                                    <dxg:EditFormEditor FieldName="Phone" Grid.Row="2" Grid.Column="3" Margin="2" />
+                                    <dxg:EditFormEditor FieldName="Email" Grid.Row="3" Grid.Column="3" Margin="2" />
+
+
+                                    <StackPanel  Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                                        <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
+                                        <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2"/>
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
+                        </DataTemplate>
+                    </dxg:TableView.EditFormTemplate>
+
+
+                </dxg:TableView>
         </dxg:GridControl.View>
+            
+            
+            
 
             <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="Name" Header="Наименование" ShowValidationAttributeErrors="True"/>
+            
             <dxg:GridColumn FieldName="ShortName" Header="Краткое наименование" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
-            <dxg:GridColumn FieldName="Inn" Header="ИНН" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
-            <dxg:GridColumn FieldName="Kpp" Header="КПП" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
-            <dxg:GridColumn FieldName="Phone" Header="Телефон"/>
+
+            <dxg:GridColumn FieldName="Inn" Header="ИНН" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:TextEdit Mask="d" MaskType="Numeric"  Name="PART_Editor" Text="{Binding RowData.Source.Row.Inn, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <dxe:TextEdit Mask="d" MaskType="Numeric" Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.Inn, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Text="{Binding RowData.Source.Row.Inn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Kpp" Header="КПП" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:TextEdit Mask="d" MaskType="Numeric"  Name="PART_Editor" Text="{Binding RowData.Source.Row.Kpp, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <dxe:TextEdit Mask="d" MaskType="Numeric" Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.Kpp, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Text="{Binding RowData.Source.Row.Kpp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Phone" Header="Телефон" >
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:TextEdit MaskType="Simple" Mask="(999) 000-0000" MaskUseAsDisplayFormat="True"  Name="PART_Editor" 
+                               Text="{Binding RowData.Source.Row.Phone, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}">
+
+                        </dxe:TextEdit>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <dxe:TextEdit MaskType="Simple"  Mask="(999) 000-0000" MaskUseAsDisplayFormat="True"
+                                      
+                               EditValue="{Binding Path=RowData.Source.Row.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        </dxe:TextEdit>
+
+
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+            </dxg:GridColumn>
+
             <dxg:GridColumn FieldName="Email" Header="Email"/>
+            
             <dxg:GridColumn FieldName="Address" Header="Адрес" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="BankName" Header="Название банка" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="Bik" Header="БИК" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="AccountNumber" Header="Расчетный счет" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="Сertificate" Header="Свидетельство" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="Ogrn" Header="ОГРН" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="License" Header="Лицензия" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="WhoIssuedBy" Header="Кем выдана" ShowValidationAttributeErrors="True"  Visible="False" EditFormVisible="True"/>
+            
             <dxg:GridColumn FieldName="GeneralDirector" Header="Гендиректор"/>
 
     </dxg:GridControl>

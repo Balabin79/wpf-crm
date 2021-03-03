@@ -105,6 +105,8 @@
                                     Glyph="/DevExpress.Images.v20.1;component/SvgImages/Outlook Inspired/Glyph_Phone.svg"/>
                                                     </dxe:ButtonEdit>
                                                 </dxlc:LayoutItem>
+                                                
+                                                
                                                 <dxlc:LayoutItem Label="Моб. телефон" AddColonToLabel="True">
                                                     <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
@@ -116,6 +118,8 @@
                                     Glyph="/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Electronics_PhoneIphone.svg"/>
                                                     </dxe:ButtonEdit>
                                                 </dxlc:LayoutItem>
+                                                
+                                                
                                                 <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
                                                     <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"

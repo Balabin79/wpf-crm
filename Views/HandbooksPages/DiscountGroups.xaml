@@ -54,8 +54,12 @@
                     >
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Path=BonusImage}" Height="22" Width="22" Margin="0 0 3 0"/>
-                            <TextBlock Text="Группы скидок" FontSize="15" />
+                            <Image Height="22" Width="22" Margin="0 5 3 0">
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/Profiles.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Группы скидок" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
 
@@ -134,11 +138,26 @@
 
 
 
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  />
-            <dxg:GridColumn FieldName="DiscountGroupType"  Header="Вид скидки" Name="DiscountGroupType"  >
-                <dxg:GridColumn.EditFormTemplate>
-                    <DataTemplate >
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="*">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
 
+                </dxg:GridColumn.HeaderTemplate>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="DiscountGroupType"  Header="Вид скидки" Name="DiscountGroupType"   MinWidth="200" Width="5*">
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate>
                         <dxe:ComboBoxEdit Name="PART_Editor" IsTextEditable="False"
                                       ShowSizeGrip="False"  SelectedItem="{Binding Path=DiscountGroupType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                           EditValue="{Binding DiscountGroupType}">
@@ -149,17 +168,29 @@
                                 <dxe:RadioComboBoxStyleSettings />
                             </dxe:ComboBoxEdit.StyleSettings>
                         </dxe:ComboBoxEdit>
-
-
-
-                        
                     </DataTemplate>
                 </dxg:GridColumn.EditFormTemplate>
-                
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="AmountDiscount"  Header="Размер скидки" Name="AmountDiscount" Width="60">
+
+            <dxg:GridColumn FieldName="AmountDiscount"   Name="AmountDiscount"  MinWidth="200" Width="*">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/Sale-Discount.ico" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Размер скидки" Margin="3 0 0 0"/> 
+                        </StackPanel>
+                    </DataTemplate>
+
+                </dxg:GridColumn.HeaderTemplate>
+
+
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
+                        
                         <dxe:TextEdit Mask="f" MaskType="Numeric"  Name="PART_Editor" Text="{Binding RowData.Source.Row.AmountDiscount, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged}" />
                     </DataTemplate>
@@ -175,7 +206,8 @@
                 
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" >
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*">
+                
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 

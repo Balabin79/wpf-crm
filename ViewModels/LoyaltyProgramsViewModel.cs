@@ -148,13 +148,5 @@ namespace Dental.ViewModels
             }
             set => Set(ref _Collection, value);
         }
-
-        public BitmapImage LoyalityImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Coins-In-Hand.png"));
-            }
-        }
     }
 }

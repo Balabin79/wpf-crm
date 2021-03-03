@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
@@ -146,6 +147,14 @@ namespace Dental.ViewModels
                 return _Collection;
             }
             set => Set(ref _Collection, value);
+        }
+
+        public BitmapImage BonusImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Profiles.png"));
+            }
         }
     }
 }

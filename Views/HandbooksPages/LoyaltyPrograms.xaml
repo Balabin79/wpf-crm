@@ -54,8 +54,12 @@
                     >
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding Path=LoyalityImage}" Height="22" Width="22" Margin="0 0 3 0"/>
-                            <TextBlock Text="Программы лояльности" FontSize="15" />
+                            <Image Height="22" Width="22" Margin="0 5 3 0">
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/Coins-In-Hand.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Программы лояльности" FontSize="15" Margin="0 5 0 0"/>
                         </StackPanel>
                     </dxg:TableView.Header>
 
@@ -130,9 +134,22 @@
 
 
 
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name"  Width="*"/>
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="*" >
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
+            </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" Width="3*">
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*" >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
@@ -148,7 +165,19 @@
                 </dxg:GridColumn.EditFormTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="PeriodTo"  Header="Действует до" Name="PeriodTo">
+            <dxg:GridColumn FieldName="PeriodTo"  Header="Действует до" Name="PeriodTo" MinWidth="200" Width="1*" >
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/Time.ico" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Действует до" Margin="3 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:TextEdit Mask="DateTime" Name="PART_Editor" Text="{Binding RowData.Source.Row.PeriodTo, Mode=TwoWay, 
