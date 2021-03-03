@@ -37,7 +37,7 @@ namespace Dental.Repositories
 
                 Organization item = new Organization() {
                     Name = "Новая организация", ShortName = "", Inn = "", Kpp = "", Logo = "", Address = "", Phone = "+71111111111",
-                    Email = "example@company.com", Bik = "", AccountNumber = "", BankName = "", Сertificate = "", Ogrn = "", GeneralDirector = "",
+                    Email = "example@company.com", Bik = "", AccountNumber = "", BankName = "", RegisterDate = "", Ogrn = "", GeneralDirector = "",
                     License = "", WhoIssuedBy = ""
                 };
 

@@ -150,7 +150,6 @@
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>
-
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
 

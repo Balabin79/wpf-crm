@@ -31,8 +31,11 @@ namespace Dental.Models
         public string Logo { get; set; }
 
         // Контактная инф-ция
-        [Display(Name = "Юридический адрес")]
+        [Display(Name = "Фактический адрес")]
         public string Address { get; set; }
+
+        [Display(Name = "Юридический адрес")]
+        public string LegalAddress { get; set; }
 
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [Phone]
@@ -59,13 +62,13 @@ namespace Dental.Models
         public string BankName { get; set; }
 
         // Регистрационная информация
-        [Display(Name = "Свидетельство")]
-        public string Сertificate { get; set; }
-
         [Display(Name = "ОГРН")]
         [MaxLength(13, ErrorMessage = "Длина не более 13 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         public string Ogrn { get; set; }
+
+        [Display(Name = "Дата регистрации")]
+        public string RegisterDate { get; set; }
 
         [Display(Name = "Генеральный директор")]
         public string GeneralDirector { get; set; } 
@@ -90,12 +93,13 @@ namespace Dental.Models
                     case "Kpp": return item.Kpp == Kpp;
                     case "Logo" : return item.Logo == Logo;
                     case "Address": return item.Address == Address;
+                    case "LegalAddress": return item.LegalAddress == LegalAddress;
                     case "Phone": return item.Phone == Phone;
                     case "Email": return item.Email == Email;
                     case "Bik": return item.Bik == Bik;
                     case "AccountNumber": return item.AccountNumber == AccountNumber;
                     case "BankName": return item.BankName == BankName;
-                    case "Сertificate": return item.Сertificate == Сertificate;
+                    case "Сertificate": return item.RegisterDate == RegisterDate;
                     case "Ogrn": return item.Ogrn == Ogrn;
                     case "GeneralDirector": return item.GeneralDirector == GeneralDirector;
                     case "License": return item.License == License;
@@ -113,12 +117,13 @@ namespace Dental.Models
              Kpp = copy.Kpp;
              Logo = copy.Logo;
              Address = copy.Address;
+            LegalAddress = copy.LegalAddress;
              Phone = copy.Phone;
              Email = copy.Email;
              Bik = copy.Bik;
              AccountNumber = copy.AccountNumber;
              BankName = copy.BankName;
-             Сertificate = copy.Сertificate;
+             RegisterDate = copy.RegisterDate;
              Ogrn = copy.Ogrn;
              GeneralDirector = copy.GeneralDirector;
              License = copy.License;

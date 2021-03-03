@@ -148,13 +148,5 @@ namespace Dental.ViewModels
             }
             set => Set(ref _Collection, value);
         }
-
-        public BitmapImage BonusImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Profiles.png"));
-            }
-        }
     }
 }
