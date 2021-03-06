@@ -1,93 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Dental.Enums;
+using Dental.Infrastructures.Collection;
+using Dental.Infrastructures.Logs;
 using Dental.Interfaces;
 using Dental.Models;
+using DevExpress.Xpf.Grid;
 
 namespace Dental.Repositories
 {
-    class EmployeeRepository
+    class EmployeeRepository : AbstractTableViewActionRepository
     {
-        
-
-        public ObservableCollection<Employee> GetAll()
+        public async Task<ObservableCollection<Employee>> GetAll()
         {
-            return new ObservableCollection<Employee>
+            try
+            {
+                ApplicationContext db = new ApplicationContext();
+                await db.Employes.OrderBy(d => d.LastName).LoadAsync();
+                return db.Employes.Local;
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+                return new ObservableCollection<Employee>();
+            }
+        }
+
+        public void Add(TableView table)
+        {
+            try
+            {
+                if (!new ConfirmAddNewInCollection().run()) return;
+
+                Employee item = new Employee();
+
+                using (ApplicationContext db = new ApplicationContext())
                 {
-                   /* new Employee() {FirstName="Александр", LastName="Иванов", MiddleName="Иванович", BirthDate = new DateTime(1980, 7, 20),
-                        Email = "ivanov@ya.ru", Skype = "gfregrgg", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                    db.Employes.Add(item);
+                    db.SaveChanges();
+                    AddModel?.Invoke((item, table));
+                }
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
+        }
 
-                    new Employee() {FirstName="Анатолий", LastName="Парфенов", MiddleName="Сергеевич", BirthDate = new DateTime(1972, 12, 01),
-                        Email = "fdsfdf45@ya.ru", Skype = "rgrgrg", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+        public void Update(TableView table)
+        {
+            try
+            {
+                Employee model = (Employee)table.FocusedRow;
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    Employee item = db.Employes.Where(i => i.Id == model.Id).FirstOrDefault();
+                    if (model == null || item == null) return;
 
-                    new Employee() {FirstName="Сергей", LastName="Пивоваров", MiddleName="Алексеевич", BirthDate = new DateTime(1977, 04, 05),
-                        Email = "pivovarov@ya.ru", Skype = "grgrgrgr", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
 
-                    new Employee() {FirstName="Светлана", LastName="Светлакова", MiddleName="Сергеевна", BirthDate = new DateTime(1983, 06, 06),
-                        Email = "dwdwdww@ya.ru", Skype = "rgrgrgrgr", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                    PropertyInfo[] properties = typeof(Employee).GetProperties();
 
-                    new Employee() {FirstName="Марина", LastName="Кравитц", MiddleName="Андреевна", BirthDate = new DateTime(1997, 10, 10),
-                        Email = "dwdwdwdw@ya.ru", Skype = "rgrgrg", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                    bool needUpdate = false;
+                    foreach (PropertyInfo property in properties)
+                    {
+                        if (!model[property, item]) needUpdate = true;
+                    }
 
-                    new Employee() {FirstName="Игорь", LastName="Сечин", MiddleName="Иванович", BirthDate = new DateTime(1992, 02, 20),
-                        Email = "", Skype = "fwewwfwfw", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                    if (!needUpdate || !new ConfirUpdateInCollection().run())
+                    {
+                        UpdateModel?.Invoke((item, table));
+                        return;
+                    }
+                    item.Copy(model);
+                    db.Entry(item).State = EntityState.Modified;
+                    db.SaveChanges();
 
-                    new Employee() {FirstName="Виталий", LastName="Милонов", MiddleName="Сергеевич", BirthDate = new DateTime(1992, 12, 20),
-                        Email = "262grgrgrg@ya.ru", Skype = "wefwfefef", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                    UpdateModel?.Invoke((item, table));
+                }
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
+        }
 
-                    new Employee() {FirstName="Семен", LastName="Слепаков", MiddleName="Семенович", BirthDate = new DateTime(1987, 12, 20),
-                        Email = "fd2f662dff@ya.ru", Skype = "fwefwefwef", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+        public void Delete(TableView table)
+        {
+            try
+            {
+                var model = table.FocusedRow as Employee;
+                if (!new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
-                    new Employee() {FirstName="Александр", LastName="Разенбаум", MiddleName="Александрович", BirthDate = new DateTime(1982, 12, 20),
-                        Email = "fefefefeff@ya.ru", Skype = "wqefefwefwfwe", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    },
+                var db = new ApplicationContext();
+                var row = db.Employes.Where(d => d.Id == model.Id).FirstOrDefault();
+                if (row != null) db.Entry(row).State = EntityState.Deleted;
+                db.SaveChanges();
+                DeleteModel?.Invoke(model);
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
+        }
 
-                    new Employee() {FirstName="Андрей", LastName="Губин", MiddleName="Тимофеевич", BirthDate = new DateTime(1977, 12, 20),
-                        Email = "dfwewwww@ya.ru", Skype = "dawwd", Address = "", MobilePhone = "", HomePhone = "",
-                        Status = new EmployeeStatus(), HireDate = new DateTime(2019, 7, 20), DismissalDate = new DateTime(),
-                        Inn = "1234567890", Organizations = new List<Organization>(), Specialities = new List<Speciality>(),
-                        Roles = new List<Role>(), Login = "", Password = ""
-                    }*/
+        public void Copy(TableView table)
+        {
+            try
+            {
+                Employee model = (Employee)table.FocusedRow;
+                var db = new ApplicationContext();
+                Employee item = db.Employes.Where(i => i.Id == model.Id).FirstOrDefault();
 
-                };
+                if (!new ConfirCopyInCollection().run())
+                {
+                    CopyModel?.Invoke((item, table));
+                    return;
+                }
+
+                Employee newModel = new Employee();
+                newModel.Copy(model);
+                newModel.LastName += " Копия";
+                db.Employes.Add(newModel);
+                db.SaveChanges();
+                CopyModel?.Invoke((newModel, table));
+            }
+            catch (Exception e)
+            {
+                new RepositoryLog(e).run();
+            }
         }
     }
 }

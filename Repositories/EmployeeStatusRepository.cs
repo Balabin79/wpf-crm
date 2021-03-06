@@ -18,9 +18,12 @@ namespace Dental.Repositories
         {
             try
             {
-                ApplicationContext db = new ApplicationContext();
-                await db.EmployeeStatuses.OrderBy(d => d.Name).LoadAsync();
-                return db.EmployeeStatuses.Local;
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    await db.EmployeeStatuses.OrderBy(d => d.Name).LoadAsync();
+                    return db.EmployeeStatuses.Local;
+                }
+                    
             }
             catch (Exception e)
             {
@@ -35,7 +38,7 @@ namespace Dental.Repositories
             {
                 if (!new ConfirmAddNewInCollection().run()) return;
 
-                EmployeeStatus item = new EmployeeStatus() {Name = "Новый элемент", Description = "" };
+                EmployeeStatus item = new EmployeeStatus() { Name = "Новый элемент", Description = "" };
 
                 using (ApplicationContext db = new ApplicationContext())
                 {

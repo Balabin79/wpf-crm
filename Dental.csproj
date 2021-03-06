@@ -9,6 +9,8 @@
   <ItemGroup>
     <None Remove="Resources\Icons\Closed_Folder_32.png" />
     <None Remove="Resources\Icons\document_gnome_32.png" />
+    <None Remove="Resources\Icons\example\33333.jpg" />
+    <None Remove="Resources\Icons\example\cyprus.jpg" />
     <None Remove="Resources\Icons\fa\Bank.ico" />
     <None Remove="Resources\Icons\fa\Dossier.ico" />
     <None Remove="Resources\Icons\fa\Edit_Property.ico" />
@@ -151,6 +153,8 @@
 
   <ItemGroup>
     <Resource Include="Resources\Icons\document_gnome_32.png" />
+    <Resource Include="Resources\Icons\example\33333.jpg" />
+    <Resource Include="Resources\Icons\example\cyprus.jpg" />
     <Resource Include="Resources\Icons\fa\Bank.ico" />
     <Resource Include="Resources\Icons\fa\Dossier.ico" />
     <Resource Include="Resources\Icons\fa\Edit_Property.ico" />

@@ -13,9 +13,13 @@
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol">
+      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands"
+      xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions"
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol">
     <Page.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:ImageToStringConverter x:Key="imageToString" />
     </Page.Resources>
     
     <Grid>
@@ -131,9 +135,8 @@
                                     <dxg:EditFormEditor FieldName="Phone"  Grid.Row="2" Grid.Column="3" Margin="2"/>
                                     <dxg:EditFormEditor FieldName="Email" Grid.Row="3" Grid.Column="3" Margin="2"/>
 
-                                    <dxe:ImageEdit EditValue="{Binding Path=Logo, Mode=TwoWay}" Width="74" Height="74" Grid.Row="0"  Grid.RowSpan="3" Grid.Column="4" 
-                                                   VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                                   />
+                                        <dxg:EditFormEditor FieldName="Logo" Width="74" Height="74" Grid.Row="0"  Grid.RowSpan="3" Grid.Column="4" 
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
 
                                         <TextBlock Text="Логотип " Grid.Row="3" Grid.Column="4" HorizontalAlignment="Center"  />
                                     </Grid>
@@ -210,11 +213,20 @@
 
                 </dxg:TableView>
         </dxg:GridControl.View>
-            
-            
-            
 
-            <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True"/>
+            <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True" >
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <ext:ImageEditEx x:Name="_image" Validate="_image_Validate"                       
+                           OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"
+                             ImagePath = "{Binding RowData.Source.Row.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource imageToString}}" 
+                           
+                                         />
+                      
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+   
+            </dxg:GridColumn>
 
             <dxg:GridColumn FieldName="Name" Header="Наименование" ShowValidationAttributeErrors="True">
                 <dxg:GridColumn.HeaderTemplate>

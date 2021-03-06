@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
-using Dental.Models.Template;
+using Dental.Models;
+using Dental.Models.Base;
 using Dental.Repositories;
-using Dental.Repositories.Template;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
@@ -25,8 +22,46 @@ namespace Dental.ViewModels
             CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
 
             Repository = new EmployeeRepository();
-            //DiaryRepository.AddModel += addItem;
-            //DiaryRepository.DeleteModel += deleteItems;
+
+            Repository.CopyModel += ((IModel, TableView) c) => {
+                var copiedRow = Collection.Where(d => d.Id == ((Employee)c.Item2.FocusedRow)?.Id).FirstOrDefault();
+                if (copiedRow != null)
+                {
+                    int index = Collection.IndexOf(copiedRow) + 1;
+                    Collection.Insert(index, (Employee)c.Item1);
+                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                    if (row != null)
+                    {
+                        c.Item2.FocusedRow = row;
+                        c.Item2.ScrollIntoView(c.Item1);
+                        c.Item2.FocusedRow = c.Item1;
+                        //c.Item2.ShowEditForm();
+                    }
+                }
+            };
+            Repository.UpdateModel += ((IModel, TableView) c) => {
+                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                if (row != null)
+                {
+                    int index = Collection.IndexOf(row);
+                    Collection[index] = (Employee)c.Item1;
+                }
+            };
+            Repository.AddModel += ((IModel, TableView) c) => {
+                Collection.Add((Employee)c.Item1);
+                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+
+                if (row != null)
+                {
+                    c.Item2.FocusedRow = row;
+                    c.Item2.ScrollIntoView(row);
+                    //c.Item2.ShowEditForm();
+                }
+            };
+            Repository.DeleteModel += (IModel model) => {
+                var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
+                if (item != null) Collection.Remove(item);
+            };
         }
 
         public ICommand DeleteCommand { get; }
@@ -44,9 +79,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                var tree = p as TreeListView;
-                if (tree == null) return;
-               // Repository.Delete(tree);
+                var table = p as TableView;
+                if (table == null) return;
+                Repository.Delete(table);
             }
             catch (Exception e)
             {
@@ -58,9 +93,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                var tree = p as TreeListView;
-                if (tree == null) return;
-               // Repository.Add(tree);
+                var table = p as TableView;
+                if (table == null) return;
+                Repository.Add(table);
             }
             catch (Exception e)
             {
@@ -72,9 +107,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                var tree = p as DevExpress.Xpf.Grid.TreeListView;
-                if (tree == null) return;
-                //Repository.Update(tree);
+                var table = p as DevExpress.Xpf.Grid.TableView;
+                if (table == null) return;
+                Repository.Update(table);
             }
             catch (Exception e)
             {
@@ -86,9 +121,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                var tree = p as DevExpress.Xpf.Grid.TreeListView;
-                if (tree == null) return;
-                //Repository.Copy(tree);
+                var table = p as DevExpress.Xpf.Grid.TableView;
+                if (table == null) return;
+                Repository.Copy(table);
             }
             catch (Exception e)
             {
@@ -96,45 +131,15 @@ namespace Dental.ViewModels
             }
         }
 
-        private void addItem((Diary, TreeListView) c)
-        {
-            Collection.Add(c.Item1);
-            TreeListNode node;
-            if (((Diary)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
-            {
-                node = c.Item2.FocusedNode.Nodes.Where(d => ((Diary)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            }
-            else
-            {
-                node = c.Item2.FocusedNode.ParentNode.Nodes.Where(d => ((Diary)d.Content).Id == c.Item1.Id).FirstOrDefault();
-            }
-            if (node != null)
-            {
-                c.Item2.FocusedNode = node;
-                c.Item2.ScrollIntoView(node.RowHandle);
-                //c.Item2.ShowEditForm();
-            }
-        }
+        EmployeeRepository Repository { get; set; }
 
-        private void deleteItems(List<int> list)
-        {
-            var itemsForRemove = Collection.Where(d => list.Contains(d.Id)).ToList();
-            foreach (var item in itemsForRemove)
-            {
-                Collection.Remove(item);
-            }
-        }
+        private ObservableCollection<Employee> _Collection;
 
-        EmployeeRepository Repository { get; set;  }
-
-        private ObservableCollection<Diary> _Collection;
-
-        [NotMapped]
-        public ObservableCollection<Diary> Collection
+        public ObservableCollection<Employee> Collection
         {
             get
             {
-               // if (_Collection == null) _Collection = Repository.GetAll().Result;
+                if (_Collection == null) _Collection = Repository.GetAll().Result;
                 return _Collection;
             }
             set => Set(ref _Collection, value);

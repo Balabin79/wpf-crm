@@ -35,11 +35,7 @@ namespace Dental.Repositories
             {
                 if (!new ConfirmAddNewInCollection().run()) return;
 
-                Organization item = new Organization() {
-                    Name = "Новая организация", ShortName = "", Inn = "", Kpp = "", Logo = "", Address = "", Phone = "+71111111111",
-                    Email = "example@company.com", Bik = "", AccountNumber = "", BankName = "", RegisterDate = "", Ogrn = "", GeneralDirector = "",
-                    License = "", WhoIssuedBy = ""
-                };
+                Organization item = new Organization();
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
@@ -70,8 +66,7 @@ namespace Dental.Repositories
                     bool needUpdate = false;
                     foreach (PropertyInfo property in properties)
                     {
-                        if (! model[property, item]) needUpdate = true;
-                                                      
+                        if (! model[property, item]) needUpdate = true;                                                     
                     }    
                     
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
@@ -84,9 +79,7 @@ namespace Dental.Repositories
                     db.SaveChanges();
 
                     UpdateModel?.Invoke((item, table));
-                }
-                    
-                
+                }                                   
             }
             catch (Exception e)
             {
@@ -139,8 +132,5 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
-
-
-
     }
 }

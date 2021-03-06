@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Dental.Models
 {
-    [Table("EmployeeStatus")]
+    [Table("employee_statuses")]
     class EmployeeStatus : AbstractBaseModel
     {
         [Required]
