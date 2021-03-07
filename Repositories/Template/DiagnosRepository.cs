@@ -37,18 +37,27 @@ namespace Dental.Repositories.Template
         {
             try
             {
-                Diagnos model = (Diagnos)tree.FocusedNode.Content;
-                String NameDir = (model.Dir == 1) ? model.Name : ((Diagnos)tree.FocusedNode.ParentNode.Content).Name;
-
-                if (model == null || !new ConfirmAddNewInCollection().run(NameDir)) return;
-                int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
-                Diagnos diagnos = new Diagnos() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                Diagnos item;
+                Diagnos model = (Diagnos)tree.FocusedNode?.Content;
+                if (model == null)
+                {
+                    model = new Diagnos() { Dir = 1, Name = "Диагноз", IsSys = 1, ParentId = 0 };
+                    if (!new ConfirmAddNewInCollection().run(model.Name)) return;
+                    item = model;
+                }
+                else
+                {
+                    string NameDir = (model.Dir == 1) ? model.Name : ((Diagnos)tree.FocusedNode.ParentNode.Content).Name;
+                    if (!new ConfirmAddNewInCollection().run(NameDir)) return;
+                    int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
+                    item = new Diagnos() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                }
 
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    db.Diagnoses.Add(diagnos);
+                    db.Diagnoses.Add(item);
                     db.SaveChanges();
-                    if(AddModel != null) AddModel((diagnos:diagnos, tree:tree));
+                    if(AddModel != null) AddModel((diagnos: item, tree:tree));
                 }            
             }
             catch (Exception e)

@@ -95,7 +95,6 @@
     <Folder Include="Repositories\Fakes\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\Controls\" />
-    <Folder Include="Views\Employee\" />
   </ItemGroup>
 
   <ItemGroup>

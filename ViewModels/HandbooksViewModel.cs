@@ -15,7 +15,7 @@ namespace Dental.ViewModels
         public HandbooksViewModel()
         {
             FrameOpacity = 1;
-            CurrentPage = new Organizations();
+            CurrentPage = new Employes();
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
         }
 

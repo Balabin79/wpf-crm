@@ -7,12 +7,178 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Diagnoses"
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
-      xmlns:local ="clr-namespace:Dental.Views.HandbooksPages" >
+      xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"    
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      xmlns:b ="clr-namespace:Dental.Behaviors" 
+      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" 
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+      >
 
-    <Grid>
+    <Grid >
         <Grid.DataContext>
             <vm:DiagnosViewModel/>
         </Grid.DataContext>
         <local:TreeTemplateControl/>
+
+        <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
+                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         ShowBorder="False">
+
+            <dxg:GridControl.ContextMenu >
+                <ContextMenu x:Name="ContextMenuTree"/>
+            </dxg:GridControl.ContextMenu>
+
+            <dxg:GridControl.View>
+
+                <dxg:TreeListView 
+                                  x:Name="view"
+                                  ShowDataNavigator="True" 
+                                  KeyFieldName="Id"
+                                  ParentFieldName="ParentId"
+                                  AutoWidth="True"                                
+                                  ShowFixedTotalSummary="True"                                
+                                  UseLegacyFilterPanel="True"
+                                  AllowPrintColumnHeaderImage="True" 
+                                  TreeDerivationMode="Selfreference"   
+                                  PrintNodeImages="True"
+                                  ShowNodeImages="True"
+                                  NodeImageSize="15,15"
+                                  EditFormShowMode="InlineHideRow"                  
+                                  AllowEditing="True"
+                                  EditFormColumnCount="1" 
+                                  PrintAutoWidth="True"
+                                  ShowSearchPanelMode="Always"
+                                  ExpandNodesOnFiltering="True"
+                                  FilterMode="Extended"
+                                  SearchPanelAllowFilter="True"                        
+                                  ExpandStateBinding="{Binding Path=IsExpanded}"  
+                                  NavigationStyle="Row"
+                                  AllowScrollToFocusedRow="True"
+                                  >
+                    <dxg:TreeListView.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Height="22" Width="22" Margin="0 5 3 5">
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/diagnos.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Диагнозы" FontSize="15" Margin="0 5 0 0" />
+                        </StackPanel>
+                    </dxg:TreeListView.Header>
+
+
+
+                    <dxmvvm:Interaction.Behaviors>
+                        <b:DeleteNodeTreeViewBehaviors/>
+                        <dxmvvm:EventToCommand  EventName="ValidateNode" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}"/>
+                    </dxmvvm:Interaction.Behaviors>
+
+                    <dxg:TreeListView.InputBindings>
+                        <KeyBinding Key="Delete"         
+                                Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                CommandParameter="{Binding ElementName=view}"/>
+                        <KeyBinding Key="D"  
+                                Modifiers="Ctrl"
+                                Command="{x:Static local_com:TreeCommands.CopyRowCommand}" 
+                                CommandParameter="{Binding ElementName=view}"/>
+                        <KeyBinding Key="N"     
+                                Modifiers="Ctrl"
+                                Command="{x:Static dxg:GridCommands.AddNewRow}"
+                                CommandParameter="{Binding ElementName=view}"/>
+                        <KeyBinding Key="E"     
+                                Modifiers="Ctrl"
+                                Command="{x:Static dxg:GridCommands.EditFocusedRow}"
+                                CommandParameter="{Binding ElementName=view}"/>
+                    </dxg:TreeListView.InputBindings>
+
+                    <dxg:TreeListView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить" Command="{x:Static dxg:GridCommands.AddNewRow}" CommandParameter="{Binding ElementName=view}"/>
+                        <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
+                            Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать" Command="{x:Static dxg:GridCommands.EditFocusedRow}" CommandParameter="{Binding ElementName=view}"/>
+                        <dxb:BarButtonItem Name="copyRow" Content="Копировать"  Command="{x:Static local_com:TreeCommands.CopyRowCommand}" CommandParameter="{Binding ElementName=view}"
+                                            KeyGesture="Ctrl+D" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
+                        <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                    </dxg:TreeListView.RowCellMenuCustomizations>
+
+                    <dxg:TreeListView.NodeImageSelector>
+                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                    </dxg:TreeListView.NodeImageSelector>
+
+                </dxg:TreeListView>
+
+            </dxg:GridControl.View>
+
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn VirtualizingPanel.VirtualizationMode="Standard"
+                    FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
+                    AllowAutoFilter="True" AllowSearchPanel="True">
+
+
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+
+                    <dxg:GridColumn.HeaderImageStyle>
+                        <Style TargetType="Image">
+                            <Setter Property="Width" Value="25"></Setter>
+                            <Setter Property="Margin" Value="5,5,5,5"></Setter>
+                        </Style>
+                    </dxg:GridColumn.HeaderImageStyle>
+
+
+                    <dxg:GridColumn.EditFormTemplate>
+                        <DataTemplate >
+                            <StackPanel>
+                                <dxe:ListBoxEdit ShowBorder="False" Background="{x:Null}" 
+                                 SelectedIndex="{Binding Path=RowData.Source.Row.Dir}"
+                                                 x:Name="lbButtonIndex" Margin="0,0,0,5">
+                                    <dxe:ListBoxEditItem Content="Текстовой фрагмент" />
+                                    <dxe:ListBoxEditItem Content="Директория"  Margin="6,0,0,0"/>
+
+                                    <dxe:ListBoxEdit.StyleSettings>
+                                        <dxe:RadioListBoxEditStyleSettings />
+                                    </dxe:ListBoxEdit.StyleSettings>
+                                    <dxe:ListBoxEdit.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </dxe:ListBoxEdit.ItemsPanel>
+                                </dxe:ListBoxEdit>
+
+                                <dxe:MemoEdit  Name="PART_Editor" MemoTextWrapping="Wrap"                                               
+           
+                                           ShowIcon="False" TextWrapping="Wrap" PrintTextWrapping="Wrap"  >
+                                    <dxe:MemoEdit.EditTemplate>
+                                        <ControlTemplate>
+                                            <dxe:MemoEdit Name="MemoEditName" 
+                                            ShowIcon="False" 
+                                            >
+                                            </dxe:MemoEdit>
+                                        </ControlTemplate>
+                                    </dxe:MemoEdit.EditTemplate>
+                                </dxe:MemoEdit>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </dxg:GridColumn.EditFormTemplate>
+
+
+                </dxg:GridColumn>
+
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem FieldName="{Binding Id}" SummaryType="Count" Alignment="Right"/>
+            </dxg:GridControl.TotalSummary>
+        </dxg:GridControl>
+
     </Grid>
 </Page>

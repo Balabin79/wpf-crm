@@ -35,12 +35,21 @@ namespace Dental.Repositories.Template
         {
             try
             {
-                TreatmentPlan model = (TreatmentPlan)tree.FocusedNode.Content;
-                String NameDir = (model.Dir == 1) ? model.Name : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Name;
-
-                if (model == null || !new ConfirmAddNewInCollection().run(NameDir)) return;
-                int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Id;
-                TreatmentPlan item = new TreatmentPlan() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                TreatmentPlan item;
+                TreatmentPlan model = (TreatmentPlan)tree.FocusedNode?.Content;
+                if (model == null)
+                {
+                    model = new TreatmentPlan() { Dir = 1, Name = "План лечения", IsSys = 1, ParentId = 0 };
+                    if (!new ConfirmAddNewInCollection().run(model.Name)) return;
+                    item = model;
+                }
+                else
+                {
+                    string NameDir = (model.Dir == 1) ? model.Name : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Name;
+                    if (!new ConfirmAddNewInCollection().run(NameDir)) return;
+                    int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Id;
+                    item = new TreatmentPlan() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                }
 
                 using (ApplicationContext db = new ApplicationContext())
                 {

@@ -26,7 +26,7 @@ namespace Dental.Models
         [Phone]
         public string HomePhone { get; set; } = "9111111111";
 
-        public int EmployeeStatusId { get; set; }
+        public int? EmployeeStatusId { get; set; }
         public EmployeeStatus EmployeeStatus { get; set; } // статус (работает, уволен и т.д.)
 
         [Display(Name = "Дата приема")]

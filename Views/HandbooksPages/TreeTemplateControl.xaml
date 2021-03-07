@@ -38,7 +38,7 @@
                                   PrintNodeImages="True"
                                   ShowNodeImages="True"
                                   NodeImageSize="15,15"
-                                  EditFormShowMode="Inline"                  
+                                  EditFormShowMode="InlineHideRow"                  
                                   AllowEditing="True"
                                   EditFormColumnCount="1" 
                                   PrintAutoWidth="True"
@@ -50,6 +50,7 @@
                                   NavigationStyle="Row"
                                   AllowScrollToFocusedRow="True"
                                   >
+             
 
                 <dxmvvm:Interaction.Behaviors>
                     <b:DeleteNodeTreeViewBehaviors/>
