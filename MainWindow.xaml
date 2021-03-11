@@ -131,7 +131,14 @@
                                             ToolTip="Специальности"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
 
-                        </dxr:RibbonPageGroup >
+                        <dxb:BarButtonItem Content="Профессии сотрудников"
+                                           RibbonStyle="Default" 
+                                           Glyph="{Binding Path=SpecialityImage}"
+                                           MediumGlyph="{Binding Path=SpecialityImage}" 
+                                           LargeGlyph="{Binding Path=SpecialityImage}"   
+                                            ToolTip="Профессии сотрудников"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesSpecialities}"/>
+                    </dxr:RibbonPageGroup >
 
                     <dxr:RibbonPageGroup Caption="Прочее" >
 

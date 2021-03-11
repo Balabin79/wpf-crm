@@ -22,5 +22,6 @@ namespace Dental.Models
         public DbSet<TreatmentPlan> TreatmentPlanes { get; set; }
         public DbSet<InitialInspection> InitialInspectiones { get; set; }
         public DbSet<EmployeeStatus> EmployeeStatuses { get; set; }
+        public DbSet<EmployesSpecialities> EmployesSpecialities { get; set; }
     }
 }

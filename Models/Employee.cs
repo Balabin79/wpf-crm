@@ -44,6 +44,11 @@ namespace Dental.Models
         [Display(Name = "Пароль")]
         public string Password { get; set; } = "";
 
+        [NotMapped]
+        public string FullName { get => (string.IsNullOrEmpty(MiddleName)) 
+                ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;  
+        }
+
 
         public bool this[PropertyInfo prop, Employee item]
         {
