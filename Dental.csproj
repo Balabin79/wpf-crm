@@ -244,6 +244,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\HandbooksPages\EmployesInOrganizations.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -281,6 +284,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\HandbooksPages\EmployesInOrganizations.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\HandbooksPages\EmployesSpecialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

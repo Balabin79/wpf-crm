@@ -23,5 +23,6 @@ namespace Dental.Models
         public DbSet<InitialInspection> InitialInspectiones { get; set; }
         public DbSet<EmployeeStatus> EmployeeStatuses { get; set; }
         public DbSet<EmployesSpecialities> EmployesSpecialities { get; set; }
+        public DbSet<EmployesInOrganizations> EmployesInOrganizations { get; set; }
     }
 }

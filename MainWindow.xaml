@@ -152,7 +152,7 @@
                                            MediumGlyph="{Binding Path=OrganizationEmployeeImage}" 
                                            LargeGlyph="{Binding Path=OrganizationEmployeeImage}"   
                                             ToolTip="Сотрудники организаций"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesSpecialities}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
 
                     </dxr:RibbonPageGroup >
 
