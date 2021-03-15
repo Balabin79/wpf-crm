@@ -148,7 +148,23 @@ namespace Dental.ViewModels
         {
             get
             {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Participation-Rate.png"));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Participation-Rate.png"));
+            }
+        }
+
+        public BitmapImage SpecialityEmployeeImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Client-Account-Template.png"));
+            }
+        }
+
+        public BitmapImage OrganizationEmployeeImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Reseller-Account.png"));
             }
         }
 
@@ -156,7 +172,23 @@ namespace Dental.ViewModels
         {
             get
             {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Reseller-Account.png"));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Reseller-Programm.png"));
+            }
+        }
+
+        public BitmapImage EmployeeAddImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/User-Add.png"));
+            }
+        }
+
+        public BitmapImage InsuranceCompanyImage
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/License-Management.png"));
             }
         }
 

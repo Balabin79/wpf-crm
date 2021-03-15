@@ -117,7 +117,18 @@
                 <dxg:GridColumn VirtualizingPanel.VirtualizationMode="Standard"
                     FieldName="Name" Header="Наименование" EditFormCaption="" Name="ColumnDataB"
                     AllowAutoFilter="True" AllowSearchPanel="True">
-
+                    <dxg:GridColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="15" Height="15" >
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </dxg:GridColumn.HeaderTemplate>
 
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>

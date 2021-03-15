@@ -2,8 +2,11 @@
 using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Models.Base;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Grid;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -12,8 +15,13 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class EmployesSpecialitiesRepository : AbstractTableViewActionRepository
+    class EmployesSpecialitiesRepository
     {
+        public Action<(IModel, TableView)> AddModel;
+        public Action<IModel> DeleteModel;
+        public Action<(List<EmployesSpecialities>, TableView)> UpdateModel;
+        public Action<(IModel, TableView)> CopyModel;
+
         public async Task<ObservableCollection<EmployesSpecialities>> GetAll()
         {
             try
@@ -41,7 +49,8 @@ namespace Dental.Repositories
                 {
                     db.EmployesSpecialities.Add(item);
                     db.SaveChanges();
-                    if (AddModel != null) AddModel((item, table));
+                    if (AddModel != null) 
+                        AddModel((item, table));
                 }
             }
             catch (Exception e)
@@ -50,35 +59,45 @@ namespace Dental.Repositories
             }
         }
       
-        public void Update(TableView table)
+        public void Update(TableView table, object employee, object specialities)
         {
             try
             {
-                EmployesSpecialities model = (EmployesSpecialities)table.FocusedRow;
+                if (employee == null || specialities == null) return;
+                if (!int.TryParse(employee.ToString(), out int employeeId)) return;
+                var list = (List<object>)specialities;
+                var specialitiesIds = new List<int>();
+
+                foreach (var i in list)
+                {
+                    specialitiesIds.Add((int)i);
+                }
+                
                 using (ApplicationContext db = new ApplicationContext())
                 {
-                    EmployesSpecialities item = db.EmployesSpecialities.Where(i => i.Id == model.Id).FirstOrDefault();
-                                                         
-                    PropertyInfo[] properties = typeof(Advertising).GetProperties();
+                    var specialitiesIdsFromDb = db.EmployesSpecialities.Where(i => i.EmployeeId == employeeId).
+                        Select(i => i.SpecialityId).ToList();
+                    
+                    var noDuplicateValues = specialitiesIds.Except(specialitiesIdsFromDb).ToList();
 
-                    if (model == null || item == null) return;
-
-                    bool needUpdate = false;
-                    foreach (PropertyInfo property in properties)
+                    if (noDuplicateValues.Count == 0 || !new ConfirUpdateInCollection().run())
                     {
-                        if (!model[property, item]) needUpdate = true;
-                    }
-
-                    if (!needUpdate || !new ConfirUpdateInCollection().run())
-                    {
-                        UpdateModel?.Invoke((item, table));
                         return;
                     }
-                    item.Copy(model);
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
 
-                    UpdateModel?.Invoke((item, table));
+                    List<EmployesSpecialities> collection = new List<EmployesSpecialities>();
+                    foreach(var i in noDuplicateValues)
+                    {
+                        var ob = new EmployesSpecialities() { EmployeeId = employeeId, SpecialityId = i };              
+                        db.EmployesSpecialities.Add(ob);
+                        db.SaveChanges();
+                        var last = db.EmployesSpecialities.Where(v => v.Id == ob.Id).Include("Speciality").Include("Employee").First();
+                        collection.Add(last);
+                    }
+                    // эл-т, который создается при создании первой позиции.
+                    db.EmployesSpecialities.Where(v => v.EmployeeId == null).ToList().ForEach(v => db.EmployesSpecialities.Remove(v));
+
+                    UpdateModel?.Invoke((collection, table));
                 }
             }
             catch (Exception e)
@@ -95,10 +114,10 @@ namespace Dental.Repositories
                 if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
                 var db = new ApplicationContext();
-                var row = db.Advertising.Where(d => d.Id == model.Id).FirstOrDefault();
-                if (row != null) db.Entry(row).State = EntityState.Deleted;
+                var row = db.EmployesSpecialities.Where(d => d.Id == model.Id).FirstOrDefault();
+                    db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
-                DeleteModel(model);
+                DeleteModel?.Invoke(model);
             }
             catch (Exception e)
             {
@@ -106,30 +125,21 @@ namespace Dental.Repositories
             }
         }
        
-        public void Copy(TableView table)
+        public ObservableCollection<EmployesSpecialities> GetEmployeeSpecialities(object EmployeeId)
         {
             try
             {
-                EmployesSpecialities model = (EmployesSpecialities)table.FocusedRow;
-                var db = new ApplicationContext();
-                EmployesSpecialities item = db.EmployesSpecialities.Where(i => i.Id == model.Id).FirstOrDefault();
-
-                if (!new ConfirCopyInCollection().run())
-                {
-                    CopyModel?.Invoke((item, table));
-                    return;
-                }
-                EmployesSpecialities newModel = new EmployesSpecialities() {EmployeeId = model.EmployeeId, SpecialityId  = model.SpecialityId };
-                db.EmployesSpecialities.Add(newModel);
-                db.SaveChanges();
-                EmployesSpecialities newItem = db.EmployesSpecialities.Where(i => i.Id == newModel.Id).FirstOrDefault();
-                CopyModel?.Invoke((newItem, table));              
+                var _EmployeeId = (int)EmployeeId;
+                ApplicationContext db = new ApplicationContext();
+                db.EmployesSpecialities.Where(i => i.EmployeeId == _EmployeeId).OrderBy(d => d.Id).Include("Speciality").LoadAsync();
+                return db.EmployesSpecialities.Local;
             }
             catch (Exception e)
             {
                 new RepositoryLog(e).run();
+                return new ObservableCollection<EmployesSpecialities>();
             }
         }
-        
+
     }
 }

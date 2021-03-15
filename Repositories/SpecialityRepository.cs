@@ -130,6 +130,5 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
-
     }
 }

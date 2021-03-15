@@ -54,10 +54,10 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 0">
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/Participation-Rate.png" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Sections/Participation-Rate.png" />
                                 </Image.Source>
                             </Image>
-                            <TextBlock Text="Профессии" FontSize="15" Margin="0 5 0 0" />
+                            <TextBlock Text="Список профессий" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
                     
@@ -134,7 +134,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Width="15" Height="15" >
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
                                 </Image.Source>
                             </Image>
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>

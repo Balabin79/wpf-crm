@@ -19,7 +19,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
      >
     <Page.Resources>
-        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:ObjectIntConverter x:Key="objectConverter" />
         <vm:SpecialityViewModel x:Key="speciality"/>
         <vm:EmployeeViewModel x:Key="employee"/>
         <vm:EmployesSpecialitiesViewModel x:Key="ese"/>
@@ -31,7 +31,7 @@
         </Grid.DataContext>
 
         <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
-                 EnableSmartColumnsGeneration="True" Name="grid" 
+                 EnableSmartColumnsGeneration="True" Name="grid" DataContext="{StaticResource ese}"
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             
             
@@ -59,7 +59,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 0">
                                 <Image.Source>
-                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/Advertising.png" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Sections/Client-Account-Template.png" />
                                 </Image.Source>
                             </Image>
                             <TextBlock Text="Профессии сотрудников" FontSize="15" Margin="0 5 0 0" />
@@ -88,8 +88,6 @@
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Добавить" Command="{x:Static dxg:GridCommands.AddNewRow}" CommandParameter="{Binding ElementName=view}"/>
                         <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать" Command="{x:Static dxg:GridCommands.EditFocusedRow}" CommandParameter="{Binding ElementName=view}"/>
-                        <dxb:BarButtonItem Name="copyRow" Content="Копировать"  Command="{x:Static local_com:TreeCommands.CopyRowCommand}" CommandParameter="{Binding ElementName=view}"
-                                            KeyGesture="Ctrl+D" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                     </dxg:TableView.RowCellMenuCustomizations>
@@ -113,17 +111,21 @@
                                         <ColumnDefinition Width ="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Сотрудник: " Grid.Row="0" Grid.Column="0" />
-                                    <dxe:ComboBoxEdit DataContext="{StaticResource employee}"  ItemsSource="{Binding Path=Collection}" DisplayMember="FullName" 
-                                                       Grid.Row="0" Grid.Column="1" Margin="2" NullText="Выберите сотрудника" AutoComplete="True">
+                                    <dxe:ComboBoxEdit Loaded="ComboBoxEditSettings_Loaded" DataContext="{StaticResource ese}" ItemsSource="{Binding Path=GetEmployeeList}" 
+                                                       Grid.Row="0" Grid.Column="1" Margin="2" NullText="Выберите сотрудника" AutoComplete="True"
+                                                       EditValue="{Binding SetEmployee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                       ValueMember="Id" DisplayMember="FullName"  
+                                                       
+                                                      >
                                         <dxe:ComboBoxEdit.StyleSettings>
                                             <dxe:RadioComboBoxStyleSettings/>
                                         </dxe:ComboBoxEdit.StyleSettings>
                                     </dxe:ComboBoxEdit>
 
                                     <TextBlock Text="Специальность: " Grid.Row="1" Grid.Column="0" />
-                                    <dxe:ComboBoxEdit DataContext="{StaticResource ese}"  ItemsSource="{Binding Path=GetSpecialityList}"  
+                                    <dxe:ComboBoxEdit DataContext="{StaticResource ese}"  ItemsSource="{Binding Path=GetSpecialityListEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                                        Grid.Row="1" Grid.Column="1" Margin="2" NullText="Выберите специальности" AutoComplete="True"
-                                                      EditValue="{Binding SetSpecialityList, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                                      EditValue="{Binding SetSpecialityList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                            ValueMember="Id" DisplayMember="Name"
                                                       >
                                         <dxe:ComboBoxEdit.StyleSettings>
@@ -133,7 +135,7 @@
 
 
                                     <StackPanel  Grid.Row="3" Grid.Column="1" Orientation="Horizontal" DataContext="{StaticResource ese}">
-                                        <dx:SimpleButton Content="Применить"  Command="{Binding UpdateCommand}" CommandParameter="{Binding ElementName=view}" Margin="2" Click="ComboBoxEditSettings_Loaded" />
+                                        <dx:SimpleButton Content="Применить"  Command="{Binding UpdateCommand}" CommandParameter="{Binding ElementName=view}" Margin="2" />
                                         <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2" />
                                     </StackPanel>
                                 </Grid>
@@ -154,10 +156,10 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Width="15" Height="15" >
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/User-folder.ico" />
                                 </Image.Source>
                             </Image>
-                            <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                            <TextBlock Text="ФИО" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
@@ -170,10 +172,6 @@
                             UpdateSourceTrigger=PropertyChanged}" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
-
-
-
-
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>

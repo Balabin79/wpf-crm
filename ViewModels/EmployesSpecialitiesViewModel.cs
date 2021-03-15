@@ -12,6 +12,7 @@ using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
 using Dental.Repositories;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
@@ -23,34 +24,18 @@ namespace Dental.ViewModels
         {
             Repository = new EmployesSpecialitiesRepository();
             AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
-             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
               
-              UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
-              CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
+            UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);      
 
-              Repository.CopyModel += ((IModel, TableView) c) => {
-                  var copiedRow = Collection.Where(d => d.Id == ((EmployesSpecialities)c.Item2.FocusedRow)?.Id).FirstOrDefault();
-                  if (copiedRow != null)
+              Repository.UpdateModel += ((List<EmployesSpecialities>, TableView table) c) => {
+                   
+                  foreach (var i in c.Item1)
                   {
-                      int index = Collection.IndexOf(copiedRow) + 1;
-                      Collection.Insert(index, (EmployesSpecialities)c.Item1);
-                      var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                      if (row != null)
-                      {
-                          c.Item2.FocusedRow = row;
-                          c.Item2.ScrollIntoView(c.Item1);
-                          c.Item2.FocusedRow = c.Item1;
-                          //c.Item2.ShowEditForm();
-                      }
+                      Collection.Add(i);
                   }
-              };
-              Repository.UpdateModel += ((IModel, TableView) c) => {
-                  var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                  if (row != null)
-                  {
-                      int index = Collection.IndexOf(row);
-                      Collection[index] = (EmployesSpecialities)c.Item1;
-                  }
+                  Collection?.Where(v => v.EmployeeId == null).ToList().ForEach(v => Collection.Remove(v));
+                  c.Item2.CloseEditForm();
               };
               Repository.AddModel += ((IModel, TableView) c) => {
                   Collection.Add((EmployesSpecialities)c.Item1);
@@ -77,7 +62,6 @@ namespace Dental.ViewModels
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanAddCommandExecute(object p) => true;
         private bool CanUpdateCommandExecute(object p) => true;
-        private bool CanCopyCommandExecute(object p) => true;
 
 
         private void OnDeleteCommandExecuted(object p)
@@ -114,21 +98,7 @@ namespace Dental.ViewModels
             {
                 var table = p as DevExpress.Xpf.Grid.TableView;
                 if (table == null) return;
-                Repository.Update(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnCopyCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Copy(table);
+                Repository.Update(table, SetEmployee, SetSpecialityList);
             }
             catch (Exception e)
             {
@@ -151,12 +121,51 @@ namespace Dental.ViewModels
             set => Set(ref _Collection, value);
         }
 
+        private object _SetSpecialityList;
         [NotMapped]
-        public object SetSpecialityList { get; set; }
+        public object SetSpecialityList {
+            get => _SetSpecialityList;
+            set => Set(ref _SetSpecialityList, value);
+        }
+
+        private object _SetEmployee;
+        [NotMapped]
+        public object SetEmployee {
+            get => _SetEmployee;
+            set
+            {
+                Set(ref _SetEmployee, value);
+                if (_SetEmployee != null) setFields(Repository.GetEmployeeSpecialities(_SetEmployee));
+            }
+        }
+
+        private ObservableCollection<Speciality> _GetSpecialityListEmployee;
+        [NotMapped]
+        public ObservableCollection<Speciality> GetSpecialityListEmployee { 
+            get => new SpecialityRepository().GetAll().Result;
+            set => Set(ref _GetSpecialityListEmployee, value);
+        }
 
         [NotMapped]
-        public ObservableCollection<Speciality> GetSpecialityList { 
-            get => new SpecialityRepository().GetAll().Result;
+        public ObservableCollection<Employee> GetEmployeeList
+        {
+            get => new EmployeeRepository().GetAll().Result;
+        }
+
+        private void setFields(object result)
+        {
+            try
+            {
+                ObservableCollection<EmployesSpecialities> Specialities = (ObservableCollection<EmployesSpecialities>)result;
+                var query = Specialities.Where(i => i.EmployeeId == (int)SetEmployee);             
+                SetSpecialityList = query.Select(i => i.SpecialityId).ToList();
+                query.Select(i => i.Speciality).ToList().ForEach(i => GetSpecialityListEmployee.Add(i));
+          
+            } catch (Exception e)
+            {
+                int y = 0; 
+            }
+            
         }
     }
 }

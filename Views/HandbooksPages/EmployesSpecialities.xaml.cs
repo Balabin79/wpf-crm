@@ -16,7 +16,8 @@ namespace Dental.Views.HandbooksPages
 
         private void ComboBoxEditSettings_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            int x = 0;
+            ((DevExpress.Xpf.Editors.ComboBoxEdit)sender).SelectedIndex = ((Dental.Models.EmployesSpecialities)view.FocusedRow).EmployeeId;
+            ((DevExpress.Xpf.Editors.ComboBoxEdit)sender).EditValue = ((Dental.Models.EmployesSpecialities)view.FocusedRow).EmployeeId;
         }
     }
 }

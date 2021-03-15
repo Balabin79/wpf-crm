@@ -234,7 +234,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Width="15" Height="15" >
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
                                 </Image.Source>
                             </Image>
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
