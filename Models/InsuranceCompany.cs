@@ -28,7 +28,7 @@ namespace Dental.Models
         [Display(Name = "Лицензия")]
         public string License { get; set; } = "";
 
-        [Display(Name = "Дата начала")]
+        [Display(Name = "Дата выдачи")]
         public string StartDateLicense { get; set; } = DateTime.Now.ToShortDateString().ToString();
 
         [Display(Name = "Дата окончания")]

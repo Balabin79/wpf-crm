@@ -262,6 +262,9 @@
     <Compile Update="Views\HandbooksPages\LoyaltyPrograms.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\HandbooksPages\InsuranceCompany.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\HandbooksPages\Specialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -305,6 +308,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\HandbooksPages\LoyaltyPrograms.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\HandbooksPages\InsuranceCompany.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
