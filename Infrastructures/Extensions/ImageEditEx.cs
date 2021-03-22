@@ -41,8 +41,7 @@ namespace Dental.Infrastructures.Extensions
                 return;
 
             ImageSource image = LoadImage();
-            if (image != null)
-                EditStrategy.SetImage(image);
+            if (image != null) EditStrategy.SetImage(image);
         }
 
         private ImageSource LoadImage()
@@ -56,17 +55,12 @@ namespace Dental.Infrastructures.Extensions
                     if (stream is FileStream)
                     {
                         ImagePath = ((FileStream)stream).Name;
-                        Source = new BitmapImage(new Uri(ImagePath));
-                        
-                    }
-                        
-                    
-
+                        Source = new BitmapImage(new Uri(ImagePath));                       
+                    }                                           
                     var ms = new MemoryStream(stream.GetDataFromStream());
                     return ImageHelper.CreateImageFromStream(ms);
                 }
             }
-
             return null;
         }
     }

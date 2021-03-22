@@ -256,6 +256,14 @@ namespace Dental.ViewModels
             }
         }
 
+        public BitmapImage ClientCalling
+        {
+            get
+            {
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Fax.png"));
+            }
+        }
+
     }
 }
 

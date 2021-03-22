@@ -80,9 +80,12 @@
     <None Remove="Resources\Icons\Sections\Curriculum-Vitae.png" />
     <None Remove="Resources\Icons\Sections\Directory-Listing.png" />
     <None Remove="Resources\Icons\Sections\Education.ico" />
+    <None Remove="Resources\Icons\Sections\Fax.png" />
     <None Remove="Resources\Icons\Sections\Health.png" />
     <None Remove="Resources\Icons\Sections\Injection.png" />
+    <None Remove="Resources\Icons\Sections\Iphone.png" />
     <None Remove="Resources\Icons\Sections\License-Management.png" />
+    <None Remove="Resources\Icons\Sections\Nokia-S60.png" />
     <None Remove="Resources\Icons\Sections\Participation-Rate.png" />
     <None Remove="Resources\Icons\Sections\Reseller-Account-Template.png" />
     <None Remove="Resources\Icons\Sections\Reseller-Account.png" />
@@ -226,9 +229,12 @@
     <Resource Include="Resources\Icons\Sections\Client-Account-Template.png" />
     <Resource Include="Resources\Icons\Sections\Curriculum-Vitae.png" />
     <Resource Include="Resources\Icons\Sections\Directory-Listing.png" />
+    <Resource Include="Resources\Icons\Sections\Fax.png" />
     <Resource Include="Resources\Icons\Sections\Health.png" />
     <Resource Include="Resources\Icons\Sections\Injection.png" />
+    <Resource Include="Resources\Icons\Sections\Iphone.png" />
     <Resource Include="Resources\Icons\Sections\License-Management.png" />
+    <Resource Include="Resources\Icons\Sections\Nokia-S60.png" />
     <Resource Include="Resources\Icons\Sections\Participation-Rate.png" />
     <Resource Include="Resources\Icons\Sections\Reseller-Account-Template.png" />
     <Resource Include="Resources\Icons\Sections\Reseller-Account.png" />

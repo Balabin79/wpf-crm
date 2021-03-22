@@ -42,7 +42,7 @@
 
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
-            
+
                 <dxr:RibbonPage Caption="Основное" >
                     <dxr:RibbonPageGroup Caption="Основной раздел">
                         <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
@@ -66,9 +66,19 @@
                                            MediumGlyph="{Binding Path=ListPatientsImage}" 
                                            LargeGlyph="{Binding Path=ListPatientsImage}"                                       
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
-                        
+
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Маркетинг">
+                        <dxb:BarButtonItem Content="Журнал обзвона" RibbonStyle="Default" 
+                                           ToolTip="Журнал обзвона"
+                                           Glyph="{Binding Path=ClientCalling}"
+                                           MediumGlyph="{Binding Path=ClientCalling}" 
+                                           LargeGlyph="{Binding Path=ClientCalling}"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
+
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
+ 
 
                 <dxr:RibbonPage Caption="Основные справочники">
 
@@ -178,7 +188,7 @@
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Маркетинг и реклама">
                     <dxr:RibbonPageGroup Caption="Справочники">
-                        <dxb:BarButtonItem Content="Программы лояльности"
+                        <dxb:BarButtonItem Content="Справочник программ лояльности"
                                            Glyph="{Binding Path=LoyalityImage}"
                                            MediumGlyph="{Binding Path=LoyalityImage}" 
                                            LargeGlyph="{Binding Path=LoyalityImage}" 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,28 +13,37 @@ namespace Dental.Infrastructures.Converters
 {
     public class ImageToStringConverter : IValueConverter
     {
+
         public object Convert(
             object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value == null || value == "") return null;
+        { try
+            {
+                if (string.IsNullOrEmpty(value.ToString())) return null;
+                return new BitmapImage(new Uri(value.ToString()));
+            } catch(Exception e)
+            {
+                return null;
+            }
 
-            /* BitmapImage img = (BitmapImage)imageEdit.Source;
-             MemoryStream str = (MemoryStream)img.StreamSource;
-             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
-             str.WriteTo(fs);
-             fs.Close();*/
-            //string uri = value?.ToString() ?? "";
-            //return new BitmapImage(new Uri(uri));
-            if (string.IsNullOrEmpty(value.ToString())) 
-                return "";
-            return value.ToString();   
         }
 
         public object ConvertBack(
             object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (string.IsNullOrEmpty(value.ToString())) return "";
-            return new BitmapImage(new Uri(value.ToString()));    
+            try
+            {
+                if (string.IsNullOrEmpty(value.ToString())) return null;
+                var img = Image.FromFile(value.ToString());
+                using (var stream = new MemoryStream())
+                {
+                    img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                    return stream.ToArray();
+                }
+            } catch (Exception e)
+            {
+                return null;
+            }
+
         }
     }
 }

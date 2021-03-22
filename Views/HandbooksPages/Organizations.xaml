@@ -44,10 +44,11 @@
                     BestFitModeOnSourceChange="VisibleRows"            
                     AllowDragDrop="True"
                     AllowEditing="True"
-                    EditFormShowMode="InlineHideRow"
+                    EditFormShowMode="Dialog"
                     ShowDataNavigator="True"
                     NavigationStyle="Row"
-                    AllowScrollToFocusedRow="True" >
+                    AllowScrollToFocusedRow="True" 
+                >
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 0">
@@ -118,10 +119,10 @@
                                         <TextBlock Text="Юридический адрес: " Grid.Row="2" Grid.Column="0" Margin="0 3 0 0" />
                                         <TextBlock Text="Фактический адрес: " Grid.Row="3" Grid.Column="0" Margin="0 3 0 0" />
                                     
-                                    <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                    <dxg:EditFormEditor FieldName="ShortName" Grid.Row="1" Grid.Column="1" Margin="2" />
-                                    <dxg:EditFormEditor FieldName="LegalAddress" Grid.Row="2" Grid.Column="1" Margin="2"/>
-                                    <dxg:EditFormEditor FieldName="Address" Grid.Row="3" Grid.Column="1" Margin="2"/>
+                                        <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                        <dxg:EditFormEditor FieldName="ShortName" Grid.Row="1" Grid.Column="1" Margin="2" />
+                                        <dxg:EditFormEditor FieldName="LegalAddress" Grid.Row="2" Grid.Column="1" Margin="2"/>
+                                        <dxg:EditFormEditor FieldName="Address" Grid.Row="3" Grid.Column="1" Margin="2"/>
 
 
                                     <TextBlock Text="ИНН: " Grid.Row="0" Grid.Column="2" Margin="20 3 2 2"/>
@@ -136,7 +137,9 @@
                                     <dxg:EditFormEditor FieldName="Email" Grid.Row="3" Grid.Column="3" Margin="2"/>
 
                                         <dxg:EditFormEditor FieldName="Logo" Width="74" Height="74" Grid.Row="0"  Grid.RowSpan="3" Grid.Column="4" 
-                                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                                   VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                            
+                                        </dxg:EditFormEditor>
 
                                         <TextBlock Text="Логотип " Grid.Row="3" Grid.Column="4" HorizontalAlignment="Center"  />
                                     </Grid>
@@ -197,13 +200,7 @@
                                         <dxg:EditFormEditor FieldName="WhoIssuedBy" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="3" Margin="2"  />
                                     </Grid>
                                 </GroupBox>
-
-                                <StackPanel   Orientation="Horizontal" Margin="10 0 10 10" HorizontalAlignment="Right">
-                                    <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
-                                    <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2"/>
-                                </StackPanel>
-                                
-                                
+    
                             </StackPanel>
 
 
@@ -214,18 +211,18 @@
                 </dxg:TableView>
         </dxg:GridControl.View>
 
-            <dxg:GridColumn FieldName="Logo" Header="Логотип" Visible="False" EditFormVisible="True" >
+            <dxg:GridColumn FieldName="Logo"  Header="Логотип" Name="Logo" EditFormVisible="True" ShowValidationAttributeErrors="False"  Visible="False">
+
                 <dxg:GridColumn.EditFormTemplate>
                     <DataTemplate >
-                        <ext:ImageEditEx x:Name="_image" Validate="_image_Validate"                       
-                           OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"
-                             ImagePath = "{Binding RowData.Source.Row.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource imageToString}}" 
-                           
+                        <ext:ImageEditEx x:Name="PART_Editor"                        
+                           OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                         ImagePath = "{Binding RowData.Source.Row.Logo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"  
+                                   ConvertEditValue="PART_Editor_ConvertEditValue"
                                          />
-                      
                     </DataTemplate>
                 </dxg:GridColumn.EditFormTemplate>
-   
+
             </dxg:GridColumn>
 
             <dxg:GridColumn FieldName="Name" Header="Наименование" ShowValidationAttributeErrors="True">

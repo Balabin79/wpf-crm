@@ -28,8 +28,20 @@ namespace Dental.Models
         [Display(Name = "КПП")]
         public string Kpp { get; set; } = "";
 
+        private string _Logo;
+
         [Display(Name = "Лого")]
-        public string Logo { get; set;}
+        public string Logo {
+            get { 
+                return _Logo; 
+            }
+            set
+            {
+                _Logo = value;
+            }
+        }
+
+        
 
         // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
@@ -41,7 +53,7 @@ namespace Dental.Models
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [Phone]
         [Display(Name = "Телефон")]
-        public string Phone { get; set; } = "9111111111";
+        public string Phone { get; set; } = "89111111111";
 
         [MaxLength(255)]
         [EmailAddress]

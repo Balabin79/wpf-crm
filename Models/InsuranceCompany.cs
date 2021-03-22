@@ -34,10 +34,25 @@ namespace Dental.Models
         [Display(Name = "Дата окончания")]
         public string EndDateLicense { get; set; } = DateTime.Now.ToShortDateString().ToString();
 
-        public Phone Phone { get; set; }
-        public Phone AdditionalPhone { get; set; }
-        public Phone Fax { get; set; }
-        public Emails Email { get; set; }
+        [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
+        [Phone]
+        [Display(Name = "Телефон")]
+        public string Phone { get; set; } = "89111111111";
+
+        [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
+        [Phone]
+        [Display(Name = "Дополнительный телефон")]
+        public string AdditionalPhone { get; set; } = "88001000000";
+
+        [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
+        [Phone]
+        [Display(Name = "Факс")]
+        public string Fax { get; set; } = "89111111111";
+
+        [MaxLength(255)]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; } = "example@company.com";
 
 
         public bool this[PropertyInfo prop, InsuranceCompany item]

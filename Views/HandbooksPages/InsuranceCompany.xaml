@@ -24,7 +24,7 @@
     
     <Grid>
         <Grid.DataContext>
-            <vm:OrganizationViewModel/>
+            <vm:InsuranceCompanyViewModel/>
         </Grid.DataContext>
 
 
