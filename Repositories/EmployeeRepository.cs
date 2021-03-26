@@ -22,7 +22,11 @@ namespace Dental.Repositories
             try
             {
                 ApplicationContext db = new ApplicationContext();
-                await db.Employes.OrderBy(d => d.LastName).LoadAsync();
+                await db.Employes.OrderBy(d => d.LastName).Include(b => b.EmployesInOrganizations)
+                    .Include(b => b.EmployesSpecialities)
+                    .Include("EmployesSpecialities.Speciality")
+                    .Include("EmployesInOrganizations.Organization")
+                    .LoadAsync();
                 return db.Employes.Local;
             }
             catch (Exception e)

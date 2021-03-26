@@ -1,14 +1,13 @@
 using System.Windows.Controls;
-using DevExpress.Xpf.WindowsUI;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental
 {
     /// <summary>
     /// Логика взаимодействия для Employes.xaml
     /// </summary>
-    public partial class Employes : UserControl
+    public partial class Employes1
     {
-        public Employes()
+        public Employes1()
         {
             InitializeComponent();
         }

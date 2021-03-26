@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="Dental.Views.HandbooksPages.EmployeePage"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+                      xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+                      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+                      xmlns:vm ="clr-namespace:Dental.ViewModels"
+                      mc:Ignorable="d"
+                      d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.DataContext>
+        <vm:EmployeeViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemHeaderTemplate">
+            <Grid>
+                <TextBlock Text="{Binding FirstName}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemContentTemplate">
+            <Grid x:Name="Grid_Content" Margin="100, 0, 100, 0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="Black" BorderThickness="0" Margin="0">
+                        <Image Margin="1" Source="{Binding Photo}" Stretch="None" />
+                    </Border>
+
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding FullName}" TextWrapping="Wrap" Grid.Row="1" FontFamily="Times New Roman" FontSize="22.667" Foreground="#FF1059A3" Margin="0,15,0,5" />
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Job Title:" Grid.Column="0" Grid.Row="0"/>
+                        <TextBlock Text="City:" Grid.Column="0" Grid.Row="1"/>
+                        <TextBlock Text="Country:" Grid.Column="0" Grid.Row="2"/>
+                        <TextBlock Text="E-mail:" Grid.Column="0" Grid.Row="3"/>
+                        <TextBlock Text="Birth Date:" Grid.Column="0" Grid.Row="4"/>
+                        <TextBlock Text="Hire Date:" Grid.Column="0" Grid.Row="5"/>
+                        <TextBlock Text="Martial Status:" Grid.Column="0" Grid.Row="6"/>
+                        <TextBlock Text="{Binding JobTitle}" TextWrapping="Wrap"  Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding City}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="1"/>
+                        <TextBlock Text="{Binding CountryRegionName}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="2"/>
+                        <TextBlock Text="{Binding EmailAddress}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="3"/>
+                        <TextBlock Text="{Binding BirthDate}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="4"/>
+                        <TextBlock Text="{Binding HireDate}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="5"/>
+                        <TextBlock Text="{Binding MaritalStatus}" TextWrapping="Wrap" Foreground="#FF1059A3" Margin="10,0" Grid.Column="1" Grid.Row="6"/>
+                    </Grid>
+                    <Grid Grid.Row="3" Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Rectangle Fill="#FFA4A7BD" StrokeThickness="0" Height="1" Margin="0" VerticalAlignment="Top" />
+                        <TextBlock Margin="10" Grid.Row="1" TextWrapping="Wrap" Foreground="#FF3B3D60" Text="{Binding Phone}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <dxwui:PageView AnimationType="SlideHorizontal" Header="Page View" ItemsSource="{Binding DataSource}" ItemTemplate="{StaticResource ItemHeaderTemplate}" ContentTemplate="{StaticResource ItemContentTemplate}"/>
+    </Grid>
+</UserControl>

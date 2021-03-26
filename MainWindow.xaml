@@ -125,13 +125,13 @@
                                            MediumGlyph="{Binding Path=EmployeeAddImage}" 
                                            LargeGlyph="{Binding Path=EmployeeAddImage}" 
                                            ToolTip="Добавить нового сотрудника"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" />
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployeePage}" />
 
                         <dxb:BarButtonItem Content="Список сотрудников" RibbonStyle="Default" 
                                            Glyph="{Binding Path=EmployeeImage}"
                                            MediumGlyph="{Binding Path=EmployeeImage}" 
                                            LargeGlyph="{Binding Path=EmployeeImage}"                                                
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}" />
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesPage}" />
 
                         <dxb:BarButtonItem Content="Статусы сотрудников"
                                            Glyph="{Binding Path=StatusEmployeeImage}"
