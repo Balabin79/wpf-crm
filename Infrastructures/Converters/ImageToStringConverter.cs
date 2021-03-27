@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Dental.Infrastructures.Converters
@@ -18,8 +19,8 @@ namespace Dental.Infrastructures.Converters
             object value, Type targetType, object parameter, CultureInfo culture)
         { try
             {
-                if (string.IsNullOrEmpty(value.ToString())) return null;
-                return new BitmapImage(new Uri(value.ToString()));
+                if (string.IsNullOrEmpty(value.ToString())) return "";
+                return value.ToString();
             } catch(Exception e)
             {
                 return null;
@@ -33,12 +34,7 @@ namespace Dental.Infrastructures.Converters
             try
             {
                 if (string.IsNullOrEmpty(value.ToString())) return null;
-                var img = Image.FromFile(value.ToString());
-                using (var stream = new MemoryStream())
-                {
-                    img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-                    return stream.ToArray();
-                }
+                return new ImageSourceConverter().ConvertFromString(value.ToString()) as ImageSource;
             } catch (Exception e)
             {
                 return null;

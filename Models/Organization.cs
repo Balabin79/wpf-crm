@@ -2,7 +2,10 @@ using Dental.Models.Base;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Reflection;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Dental.Models
 {
@@ -28,22 +31,54 @@ namespace Dental.Models
         [Display(Name = "КПП")]
         public string Kpp { get; set; } = "";
 
-        private string _Logo;
+        public string Logo { get; set; }
 
-        [Display(Name = "Лого")]
-        public string Logo {
-            get { 
-                return _Logo; 
-            }
-            set
-            {
-                _Logo = value;
-            }
+        /*
+        ImageSource image = new BitmapImage(new Uri("c:\\Users\\user\\source\\repos\\Dental\\Resources\\Icons\\example\\cyprus.jpg"));
+        [NotMapped]
+        public ImageSource Logo {
+            get => image;
+            set => image = value; 
         }
+        */
 
-        
 
-        // Контактная инф-ция
+
+            byte[] imageData;
+
+            [NotMapped]
+            public byte[] ImageData { 
+                get => !String.IsNullOrEmpty(Logo) ? File.ReadAllBytes(Logo) : File.ReadAllBytes("c:\\Users\\user\\source\\repos\\Dental\\Resources\\Icons\\example\\cyprus.jpg");
+                set => imageData = value;
+              }
+
+            private BitmapImage imageSource;
+
+            [NotMapped]
+            public BitmapImage LogoEdit
+            {
+                get
+                {
+                    if (imageSource == null) SetImageSource();
+                    return imageSource;                
+                }
+                set
+                {
+                    imageSource = value;
+                }
+            }
+            void SetImageSource()
+            {
+                var stream = new MemoryStream(ImageData);
+                imageSource = new BitmapImage();
+                imageSource.BeginInit();
+                imageSource.StreamSource = stream;
+                imageSource.EndInit();
+            }
+
+
+
+            // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
         public string Address { get; set; } = "";
 

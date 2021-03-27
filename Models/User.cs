@@ -29,10 +29,9 @@ namespace Dental.Models
         [Display(Name = "Дата рождения")]
         public string BirthDate { get; set; } = DateTime.Now.ToShortDateString().ToString();
 
-        [Display(Name = "Пол")]
-        public string Gender { get; set; } = "Мужской";
+        //[Display(Name = "Пол")]
+        //public int? GenderId { get; set; } = 2;
 
     }
 
-    public enum Gender { Мужчина, Женщина }
 }

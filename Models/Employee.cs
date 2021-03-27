@@ -79,7 +79,7 @@ namespace Dental.Models
                     case "LastName": return item.LastName == LastName;
                     case "MiddleName": return item.MiddleName == MiddleName;
                     case "BirthDate": return item.BirthDate == BirthDate;
-                    case "Gender": return item.Gender == Gender;
+                   // case "GenderId": return item.GenderId == GenderId;
                     case "Inn": return item.Inn == Inn;
                     case "Email": return item.Email == Email;
                     case "Skype": return item.Skype == Skype;
@@ -105,7 +105,7 @@ namespace Dental.Models
              LastName = copy.LastName;
              MiddleName = copy.MiddleName;
              BirthDate = copy.BirthDate;
-             Gender = copy.Gender;
+           //  GenderId = copy.GenderId;
              Inn = copy.Inn;
              Email = copy.Email;
              Skype = copy.Skype;

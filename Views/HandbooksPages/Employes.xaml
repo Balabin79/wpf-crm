@@ -18,7 +18,8 @@
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
-       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
                        d:DesignWidth="800">
 
 

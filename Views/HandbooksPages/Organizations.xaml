@@ -217,9 +217,9 @@
                     <DataTemplate >
                         <ext:ImageEditEx x:Name="PART_Editor"                        
                            OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
-                                         ImagePath = "{Binding RowData.Source.Row.Logo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"  
-                                   ConvertEditValue="PART_Editor_ConvertEditValue"
-                                         />
+                                  ImagePath = "{Binding RowData.Source.Row.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                  EditValue = "{Binding RowData.Source.Row.ImageData, Mode=TwoWay}"                                 
+                                   ConvertEditValue="PART_Editor_ConvertEditValue"      />
                     </DataTemplate>
                 </dxg:GridColumn.EditFormTemplate>
 
