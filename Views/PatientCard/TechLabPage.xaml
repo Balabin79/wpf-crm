@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="Dental.Views.PatientCard.TechLabPage"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+                      xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+                      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+                      xmlns:vm ="clr-namespace:Dental.ViewModels"
+                      mc:Ignorable="d"
+                      d:DesignHeight="300" d:DesignWidth="300"
+                      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                      dx:ThemeManager.ThemeName="Office2019White">
+
+    <UserControl.DataContext>
+        <vm:EmployeeViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemHeaderTemplateOne">
+            <Grid>
+                <TextBlock Text="One"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ItemContentTemplateOne">
+            <Grid x:Name="Grid_Content" Margin="100, 0, 100, 0">
+                <Grid>
+                    <TextBlock Text="One"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <dxwui:PageAdornerControl  Grid.Row="0">
+            <dxwui:PageAdornerControl.Header>
+                <TextBlock Text="Техническая лаборатория" FontSize="22"/>
+            </dxwui:PageAdornerControl.Header>
+            <dxwui:PageAdornerControl.HeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <ContentPresenter Content="{Binding}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Список пациентов" NavigateTo="PatientsList"/>
+                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Aдминистративная" NavigateTo="MainInfoPage"/>
+                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Врачебная" NavigateTo="MedicalPage"/>
+                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Ортодонтическая" NavigateTo="OrtoPage"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </dxwui:PageAdornerControl.HeaderTemplate>
+        </dxwui:PageAdornerControl>
+        <Border Background="Green" Grid.Row="1">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="textBlock1" Text="Use the back button or navigation buttons to move through the views"/>
+        </Border>
+    </Grid>
+</UserControl>

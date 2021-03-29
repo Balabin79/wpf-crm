@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Dental" 
     xmlns:viewModels="clr-namespace:Dental.ViewModels" 
     xmlns:pages="clr-namespace:Dental.Views.HandbooksPages" 
+    xmlns:pcpages="clr-namespace:Dental.Views.PatientCard" 
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
@@ -65,7 +66,7 @@
                                            Glyph="{Binding Path=ListPatientsImage}"
                                            MediumGlyph="{Binding Path=ListPatientsImage}" 
                                            LargeGlyph="{Binding Path=ListPatientsImage}"                                       
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
 
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Маркетинг">

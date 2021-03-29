@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Dental.Models.Base;
 
 namespace Dental.Models
@@ -29,8 +30,11 @@ namespace Dental.Models
         [Display(Name = "Дата рождения")]
         public string BirthDate { get; set; } = DateTime.Now.ToShortDateString().ToString();
 
-        //[Display(Name = "Пол")]
-        //public int? GenderId { get; set; } = 2;
+        [NotMapped]
+        public string FullName
+        {
+            get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+        }
 
     }
 

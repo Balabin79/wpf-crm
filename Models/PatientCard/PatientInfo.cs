@@ -67,9 +67,11 @@ namespace Dental.Models.PatientCard
         [Display(Name = "Осложнения основного")]
         public string ComplicationsMainDiagnosis { get; set; }   // осложнения основного 
 
+        [NotMapped]
         [Display(Name = "Полис ОМС")]
         public MedicalPolicy PolisOMS { get; set; } // Полис ОМС
 
+        [NotMapped]
         [Display(Name = "Место регистрации")]
         public UserLocation Location { get; set; } // Место проживания
     }

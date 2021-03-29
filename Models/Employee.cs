@@ -47,11 +47,6 @@ namespace Dental.Models
         public string Password { get; set; } = "";
 
         [NotMapped]
-        public string FullName { get => (string.IsNullOrEmpty(MiddleName)) 
-                ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;  
-        }
-
-        [NotMapped]
         public string SpecialitiesName
         {
             get => EmployesSpecialities.Count < 1 ? "": String.Join(", ", EmployesSpecialities.Select(d => d.Speciality?.Name).ToList());

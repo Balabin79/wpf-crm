@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Models.PatientCard
 {
-    [Table("UserQuestionary")]
+    [Table("Questionary")]
     class Questionary : AbstractBaseModel
     {
         public int? ParentId { get; set; }
