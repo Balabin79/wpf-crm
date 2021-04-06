@@ -108,6 +108,47 @@
     <None Remove="Resources\Icons\Template\plan.png" />
     <None Remove="Resources\Icons\Template\red.png" />
     <None Remove="Resources\Icons\Template\Report.png" />
+    <None Remove="Resources\PatientCard\1.png" />
+    <None Remove="Resources\PatientCard\2.jpg" />
+    <None Remove="Resources\PatientCard\3.png" />
+    <None Remove="Resources\PatientCard\4.png" />
+    <None Remove="Resources\PatientCard\5.png" />
+    <None Remove="Resources\PatientCard\6.png" />
+    <None Remove="Resources\PatientCard\7.jpg" />
+    <None Remove="Resources\PatientCard\8.png" />
+    <None Remove="Resources\PatientCard\9.jpg" />
+    <None Remove="Resources\PatientCard\tooth\11.png" />
+    <None Remove="Resources\PatientCard\tooth\12.png" />
+    <None Remove="Resources\PatientCard\tooth\13.png" />
+    <None Remove="Resources\PatientCard\tooth\14.png" />
+    <None Remove="Resources\PatientCard\tooth\15.png" />
+    <None Remove="Resources\PatientCard\tooth\16.png" />
+    <None Remove="Resources\PatientCard\tooth\17.png" />
+    <None Remove="Resources\PatientCard\tooth\18.png" />
+    <None Remove="Resources\PatientCard\tooth\21.png" />
+    <None Remove="Resources\PatientCard\tooth\22.png" />
+    <None Remove="Resources\PatientCard\tooth\23.png" />
+    <None Remove="Resources\PatientCard\tooth\24.png" />
+    <None Remove="Resources\PatientCard\tooth\25.png" />
+    <None Remove="Resources\PatientCard\tooth\26.png" />
+    <None Remove="Resources\PatientCard\tooth\27.png" />
+    <None Remove="Resources\PatientCard\tooth\28.png" />
+    <None Remove="Resources\PatientCard\tooth\31.png" />
+    <None Remove="Resources\PatientCard\tooth\32.png" />
+    <None Remove="Resources\PatientCard\tooth\33.png" />
+    <None Remove="Resources\PatientCard\tooth\34.png" />
+    <None Remove="Resources\PatientCard\tooth\35.png" />
+    <None Remove="Resources\PatientCard\tooth\36.png" />
+    <None Remove="Resources\PatientCard\tooth\37.png" />
+    <None Remove="Resources\PatientCard\tooth\38.png" />
+    <None Remove="Resources\PatientCard\tooth\41.png" />
+    <None Remove="Resources\PatientCard\tooth\42.png" />
+    <None Remove="Resources\PatientCard\tooth\43.png" />
+    <None Remove="Resources\PatientCard\tooth\44.png" />
+    <None Remove="Resources\PatientCard\tooth\45.png" />
+    <None Remove="Resources\PatientCard\tooth\46.png" />
+    <None Remove="Resources\PatientCard\tooth\47.png" />
+    <None Remove="Resources\PatientCard\tooth\48.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,6 +167,8 @@
     <Folder Include="Infrastructures\Pages\" />
     <Folder Include="Models\Actions\" />
     <Folder Include="Repositories\Fakes\" />
+    <Folder Include="Resources\PatientCard\Новая папка1\" />
+    <Folder Include="Resources\PatientCard\Новая папка\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\HandbooksPages\MedicalCard\" />
   </ItemGroup>
@@ -257,6 +300,47 @@
     <Resource Include="Resources\Icons\Template\initial.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
     <Resource Include="Resources\Icons\Template\Report.png" />
+    <Resource Include="Resources\PatientCard\1.png" />
+    <Resource Include="Resources\PatientCard\2.jpg" />
+    <Resource Include="Resources\PatientCard\3.png" />
+    <Resource Include="Resources\PatientCard\4.png" />
+    <Resource Include="Resources\PatientCard\5.png" />
+    <Resource Include="Resources\PatientCard\6.png" />
+    <Resource Include="Resources\PatientCard\7.jpg" />
+    <Resource Include="Resources\PatientCard\8.png" />
+    <Resource Include="Resources\PatientCard\9.jpg" />
+    <Resource Include="Resources\PatientCard\tooth\11.png" />
+    <Resource Include="Resources\PatientCard\tooth\12.png" />
+    <Resource Include="Resources\PatientCard\tooth\13.png" />
+    <Resource Include="Resources\PatientCard\tooth\14.png" />
+    <Resource Include="Resources\PatientCard\tooth\15.png" />
+    <Resource Include="Resources\PatientCard\tooth\16.png" />
+    <Resource Include="Resources\PatientCard\tooth\17.png" />
+    <Resource Include="Resources\PatientCard\tooth\18.png" />
+    <Resource Include="Resources\PatientCard\tooth\21.png" />
+    <Resource Include="Resources\PatientCard\tooth\22.png" />
+    <Resource Include="Resources\PatientCard\tooth\23.png" />
+    <Resource Include="Resources\PatientCard\tooth\24.png" />
+    <Resource Include="Resources\PatientCard\tooth\25.png" />
+    <Resource Include="Resources\PatientCard\tooth\26.png" />
+    <Resource Include="Resources\PatientCard\tooth\27.png" />
+    <Resource Include="Resources\PatientCard\tooth\28.png" />
+    <Resource Include="Resources\PatientCard\tooth\31.png" />
+    <Resource Include="Resources\PatientCard\tooth\32.png" />
+    <Resource Include="Resources\PatientCard\tooth\33.png" />
+    <Resource Include="Resources\PatientCard\tooth\34.png" />
+    <Resource Include="Resources\PatientCard\tooth\35.png" />
+    <Resource Include="Resources\PatientCard\tooth\36.png" />
+    <Resource Include="Resources\PatientCard\tooth\37.png" />
+    <Resource Include="Resources\PatientCard\tooth\38.png" />
+    <Resource Include="Resources\PatientCard\tooth\41.png" />
+    <Resource Include="Resources\PatientCard\tooth\42.png" />
+    <Resource Include="Resources\PatientCard\tooth\43.png" />
+    <Resource Include="Resources\PatientCard\tooth\44.png" />
+    <Resource Include="Resources\PatientCard\tooth\45.png" />
+    <Resource Include="Resources\PatientCard\tooth\46.png" />
+    <Resource Include="Resources\PatientCard\tooth\47.png" />
+    <Resource Include="Resources\PatientCard\tooth\48.png" />
   </ItemGroup>
 
   <ItemGroup>

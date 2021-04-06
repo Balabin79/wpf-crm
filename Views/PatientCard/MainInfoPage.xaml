@@ -66,15 +66,6 @@
         <Border  Grid.Row="1">
 
 
-
-
-
-
-
-
-
-
-
             <dxlc:LayoutControl  Orientation="Vertical" StretchContentVertically="False" Background="Transparent">
                 <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
                     <dxlc:LayoutGroup.GroupBoxStyle>
@@ -103,7 +94,7 @@
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
-                                    <Grid Grid.Row="0" Margin="0 0 0 10">
+                                    <Grid Grid.Row="0" Margin="0 0 0 5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
@@ -120,7 +111,7 @@
                                         <dxe:ImageEdit Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="0 0 8 8"/>
           
 
-                                        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 8">
+                                        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
                                                 <ColumnDefinition/>
@@ -138,7 +129,7 @@
                                             </dxlc:LayoutItem>
                                         </Grid>
 
-                                        <Grid Grid.Row="1" Grid.Column="1"  Margin="0 0 0 8">
+                                        <Grid Grid.Row="1" Grid.Column="1"  Margin="0 0 0 5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*"/>
                                                 <ColumnDefinition Width="1*"/>
@@ -160,7 +151,7 @@
                                             </dxlc:LayoutItem>
                                         </Grid>
 
-                                        <Grid Grid.Row="2" Grid.Column="1"  Margin="0 0 0 8">
+                                        <Grid Grid.Row="2" Grid.Column="1"  Margin="0 0 0 5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
                                                 <ColumnDefinition />
@@ -242,6 +233,7 @@
                                                         <ColumnDefinition />
                                                         <ColumnDefinition/>
                                                         <ColumnDefinition/>
+                                                        <ColumnDefinition Width="3*"/>
                                                     </Grid.ColumnDefinitions>
                                                     <dxlc:LayoutItem Label="Дом:" Name="House" LabelPosition="Top" Grid.Column="0">
                                                         <dxe:TextEdit Margin="0 0 8 0" />
@@ -250,9 +242,19 @@
                                                         <dxe:TextEdit Margin="0 0 8 0"/>
                                                     </dxlc:LayoutItem>
                                                     <dxlc:LayoutItem Label="Квартира:" Name="Apartment" LabelPosition="Top" Grid.Column="2">
-                                                        <dxe:TextEdit />
+                                                            <dxe:TextEdit Margin="0 0 8 0"/>
                                                     </dxlc:LayoutItem>
-                                                </Grid>
+                                                        <dxlc:LayoutItem Label="Местность:" Name="Area" LabelPosition="Top" Grid.Column="3">
+                                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=AreaList}"  
+                                                         NullText="Местность" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name"
+                                                      >
+                                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                                    <dxe:RadioComboBoxStyleSettings/>
+                                                                </dxe:ComboBoxEdit.StyleSettings>
+                                                            </dxe:ComboBoxEdit>
+                                                        </dxlc:LayoutItem>
+                                                    </Grid>
                                             </Grid>
                                         </GroupBox>
                                     </Grid>
@@ -299,7 +301,7 @@
                                             </Grid>
                                         </GroupBox>
 
-                                        <GroupBox Header="Льготы и оплата" Grid.Row="0" Grid.Column="1" Margin="8 0 0 0">
+                                        <GroupBox Header="Льготы и оплата" Grid.Row="0" Grid.Column="1" Margin="5 0 0 0">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition/>
@@ -328,7 +330,7 @@
                                                 </dxlc:LayoutItem>
                                             </Grid>
                                         </GroupBox>
-                                        <GroupBox Header="К кому обращаться в случае необходимости" Grid.Row="1" Grid.Column="0" Margin="0 8 0 8">
+                                        <GroupBox Header="К кому обращаться в случае необходимости" Grid.Row="1" Grid.Column="0" Margin="0 8 0 5">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="3*"/>
@@ -342,11 +344,21 @@
                                                 </dxlc:LayoutItem>
                                             </Grid>
                                         </GroupBox>
-                                        <GroupBox Header="Должность и место работы" Grid.Row="1" Grid.Column="1" Margin="8 8 0 8">
-                                            <Grid>
+                                    
+                                            <Grid Grid.Row="1" Grid.Column="1" Margin="8 8 0 5">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="0 0 0 8">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="2.5*"/>
+                                                    <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <dxlc:LayoutItem Label="Должность:" Name="Apar2tyym6e5net" LabelPosition="Top"  Grid.Column="0" Margin="0 0 8 0">
                                                     <dxe:TextEdit />
@@ -355,7 +367,42 @@
                                                     <dxe:TextEdit />
                                                 </dxlc:LayoutItem>
                                             </Grid>
-                                        </GroupBox>
+
+                                            <dxlc:LayoutItem Label="Семейное положение:" Name="MaritalStatus" LabelPosition="Top"  Grid.Row="1" 
+                                                             Grid.Column="0">
+                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=MaritalStatusList}"  
+                                                         NullText="Семейное положение" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 8 0"
+                                                      >
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings/>
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+
+                                            <dxlc:LayoutItem Label="Образование:" Name="Education" LabelPosition="Top" Grid.Column="1"  Grid.Row="1">
+                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EducationList}"  
+                                                         NullText="Образование" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 8 0"
+                                                      >
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings/>
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+
+                                            <dxlc:LayoutItem Label="Занятость:" Name="Employment" LabelPosition="Top" Grid.Column="2"  Grid.Row="1">
+                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EmploymentList}"  
+                                                         NullText="Занятость" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name" 
+                                                      >
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings/>
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+                                        </Grid>
+                                    
                                     </Grid>
                             </dxlc:LayoutGroup>
                             </StackPanel>
@@ -383,7 +430,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                            
-                            <dxlc:LayoutGroup Header="Программы лояльности" Grid.Row="0" Margin="0 0 0 10"
+                            <dxlc:LayoutGroup Header="Программы лояльности" Grid.Row="0" Margin="0 0 0 8"
                                       Name="layoutGroup45"
                                       View="GroupBox"
                                       Orientation="Vertical"
@@ -393,7 +440,7 @@
                                         <Grid></Grid>
                                     </dxlc:LayoutGroup>
 
-                                    <dxlc:LayoutGroup Header="Реклама" Grid.Row="1" Margin="0 0 0 10"
+                                    <dxlc:LayoutGroup Header="Реклама" Grid.Row="1" Margin="0 0 0 8"
                                       Name="layoutGroup646"
                                       View="GroupBox"
                                       Orientation="Vertical"

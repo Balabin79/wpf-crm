@@ -74,7 +74,7 @@
 
 
                     <dx:DXTabControl>
-                        <dx:DXTabItem Header="Page 1">
+                        <dx:DXTabItem Header="Диагноз, анамнез">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -83,73 +83,18 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                            <GroupBox Header="Персональная информация для ортодонтической карты" Margin="0 0 8 8"
-                                              Name="layoutGroup1"  Grid.Column="0" Grid.Row="0">
-                                <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                             <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <dxlc:LayoutItem Label="Местность:" Name="Area" LabelPosition="Top" Grid.Column="0" Grid.Row="0">
-                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=AreaList}"  
-                                                         NullText="Местность" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 10 0"
-                                                      >
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings/>
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
-                                        </dxlc:LayoutItem>
+                                <Grid Grid.Column="0"  Grid.Row="0" Grid.RowSpan="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
 
-                                        <dxlc:LayoutItem Label="Семейное положение:" Name="MaritalStatus" LabelPosition="Top"  Grid.Row="0" Grid.Column="1">
-                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=MaritalStatusList}"  
-                                                         NullText="Семейное положение" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 0 0"
-                                                      >
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings/>
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
-                                        </dxlc:LayoutItem>
-
-                                        <dxlc:LayoutItem Label="Образование:" Name="Education" LabelPosition="Top" Grid.Column="0"  Grid.Row="1">
-                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EducationList}"  
-                                                         NullText="Образование" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 10 0"
-                                                      >
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings/>
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
-                                        </dxlc:LayoutItem>
-
-                                        <dxlc:LayoutItem Label="Занятость:" Name="Employment" LabelPosition="Top" Grid.Column="1"  Grid.Row="1">
-                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EmploymentList}"  
-                                                         NullText="Занятость" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" 
-                                                      >
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings/>
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
-                                        </dxlc:LayoutItem>
-                         
-
-                                    
-
-                                </Grid>
-                            </GroupBox>
-
-
-                                <GroupBox Header="Диагноз направившей медицинской организации"
-                                              Name="layoutGroup2" Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2">
-                                    <Grid >
+                                    <GroupBox Header="Диагноз направившей медицинской организации"
+                                              Name="layoutGroup2"  Grid.Row="0" >
+                                        <Grid >
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
@@ -160,64 +105,29 @@
                                                 <ColumnDefinition Width="150"/>
 
                                             </Grid.ColumnDefinitions>
-                                        <dxlc:LayoutItem Label="Направлен медицинской организацией:" Name="Ar" LabelPosition="Top" 
+                                            <dxlc:LayoutItem Label="Направлен медицинской организацией:" Name="Ar" LabelPosition="Top" 
                                                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
-                                            <dxe:TextEdit Margin="0 0 0 8"/>
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Основной:" Name="MainDiagnos" LabelPosition="Top" Grid.Column="0" Grid.Row="1" >
-                                            <dxe:MemoEdit Margin="0 0 10 8" />
+                                                <dxe:TextEdit Margin="0 0 0 5"/>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Основной:" Name="MainDiagnos" LabelPosition="Top" Grid.Column="0" Grid.Row="1" >
+                                                <dxe:MemoEdit Margin="0 0 8 5" />
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Код по МКБ-10:" Name="MKB10" LabelPosition="Top" Grid.Column="1"  Grid.Row="1"
                                                              >
-                                            <dxe:TextEdit Margin="0 0 0 8" />
+                                                <dxe:TextEdit Margin="0 0 0 5" />
                                             </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Осложнения основного:" Name="Diag" LabelPosition="Top" Grid.ColumnSpan="2" Grid.Row="2">
-                                            <dxe:MemoEdit />
-                                        </dxlc:LayoutItem>
-                                    </Grid>
-                         
-                                </GroupBox>
-                                <GroupBox Header="Жалобы" Margin="0 0 8 0"
-                                              Name="layoutGroup27" Grid.Column="0"  Grid.Row="1" >
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                    </Grid>
-                                </GroupBox>
+                                            <dxlc:LayoutItem Label="Осложнения основного:" Name="Diag" LabelPosition="Top" Grid.ColumnSpan="2" Grid.Row="2">
+                                                <dxe:MemoEdit />
+                                            </dxlc:LayoutItem>
+                                        </Grid>
 
-                            </Grid>
-
-
-                        </dx:DXTabItem>
-                        <dx:DXTabItem Header="Page 2">
-
-
-
-
-                            <dxlc:LayoutGroup Header="Дополнительная информация" Name="layoutGroup33" View="GroupBox">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <Grid Grid.Row="0"  Margin="0 0 0 10">
-
-                                    </Grid>
-
-
-
-
-
-                                    <GroupBox Header="Жалобы:" Grid.Row="2">
+                                    </GroupBox>
+                                    <GroupBox Header="Жалобы"
+                                              Name="layoutGroup27"   Grid.Row="2" >
                                         <Grid >
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
                                                 <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="8*"/>
 
                                             </Grid.ColumnDefinitions>
                                             <dxlc:LayoutItem Label="Жалобы:" Name="ExeCategory" LabelPosition="Top" Grid.Column="0">
@@ -238,6 +148,124 @@
                                     </GroupBox>
 
 
+
+                                </Grid>
+                                
+
+                                <GroupBox Header="Анамнез" Margin="8 0 0 8"
+                                              Name="layoutGroup551"  Grid.Column="1" Grid.Row="0">
+                                    <StackPanel>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="0.5*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <dxlc:LayoutItem Label="Нарушение здоровья матери (триместр беременности):" Margin="0 0 10 0" Grid.Row="0"
+                                                     Name="ExeCaaaegorys" LabelPosition="Top" Grid.Column="0">
+                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=СomplaintsList}"  
+                                                         NullText="Нарушение здоровья матери" AutoComplete="True"                                                     
+                                                          ValueMember="Id" DisplayMember="Name"                                                         
+                                                      >
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings/>
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+
+                                        <dxlc:LayoutItem Label="Рожден:" Name="ExeCaaafegorys" LabelPosition="Top" Grid.Column="1"  Grid.Row="0">
+                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=BornList}"  
+                                                         NullText="Рожден" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name"
+                                                      >
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings/>
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+
+                                        <dxlc:LayoutItem Label="Вид вскармливания:" Name="ExeCaaafegtorys" LabelPosition="Top" Grid.Column="0" 
+                                                         Grid.Row="1" Margin="0 8 0 0">
+                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=TypeFeedingList}"  
+                                                         NullText="Вид вскармливания" AutoComplete="True"                                                     
+                                                           ValueMember="Id" DisplayMember="Name"
+                                                      >
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings/>
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+                                    </Grid>
+
+                                     <dxlc:LayoutItem Label="Начало прорезывания первых временных зубов (мес):"  LabelPosition="Left"  Grid.ColumnSpan="3" 
+                                                      Grid.Row="2" VerticalAlignment="Center" Margin="0 3 0 0">
+                                                <dxe:TextEdit Name="PolкisOMSSessfria"  Margin="10 8 0 8" />
+                                            </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Начало смены передних зубов (лет):"  LabelPosition="Left"  Grid.ColumnSpan="3" Grid.Row="3"
+                                                         VerticalAlignment="Center" Margin="0 3 0 0">
+                                                <dxe:TextEdit Name="PolкisOMSSef44srifa"  Margin="10 0 0 0" />
+                                            </dxlc:LayoutItem>
+                                        <Grid Grid.Row="4" Margin="0 8 0 0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.9*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <dxlc:LayoutItem Label="Наличие вредных привычек:" Name="ExeCafaafegtorys" LabelPosition="Top" Grid.Column="0"
+                                                             >
+                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=BadHabitsList}" 
+                                                             NullText="Наличие вредных привычек" AutoComplete="True"                                                     
+                                                               ValueMember="Id" DisplayMember="Name"
+                                                          Margin="0 0 8 0">
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings/>
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+
+                                            <dxlc:LayoutItem Label="Наличие врожденных аномалий развития челюстно-лицевой области:" Name="ExeCafaafegttorys" LabelPosition="Top" Grid.Column="1"
+                                                             >
+                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=BadHabitsList}" 
+                                                             NullText="Наличие вредных привычек" AutoComplete="True"                                                     
+                                                               ValueMember="Id" DisplayMember="Name"
+                                                          >
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings/>
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+                                        </Grid>
+                                    </StackPanel>
+                                </GroupBox>
+
+                            </Grid>
+
+
+                        </dx:DXTabItem>
+                        <dx:DXTabItem Header="Осмотр лица">
+
+
+
+
+                            <dxlc:LayoutGroup Header="Осмотр лица. Кефалометрия" Name="layoutGroup33" View="GroupBox">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+
+ 
+
+
+
+
                                     <GroupBox Header="Анамнез:" Grid.Row="3">
                                         <Grid>
                                             <Grid.RowDefinitions>
@@ -249,39 +277,7 @@
                                                 <ColumnDefinition Width="150"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <dxlc:LayoutItem Label="Нарушение здоровья матери (триместр беременности):" Margin="0 0 10 0" Grid.Row="0"
-                                                     Name="ExeCaaaegorys" LabelPosition="Top" Grid.Column="0">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=СomplaintsList}"  
-                                                         NullText="Нарушение здоровья матери" AutoComplete="True"                                                     
-                                                          ValueMember="Id" DisplayMember="Name"                                                         
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
-
-                                            <dxlc:LayoutItem Label="Рожден:" Name="ExeCaaafegorys" LabelPosition="Top" Grid.Column="1"  Margin="0 0 10 0"  Grid.Row="0">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=BornList}"  
-                                                         NullText="Рожден" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name"
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
-
-                                            <dxlc:LayoutItem Label="Вид вскармливания:" Name="ExeCaaafegtorys" LabelPosition="Top" Grid.Column="2"  Grid.Row="0">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=TypeFeedingList}"  
-                                                         NullText="Вид вскармливания" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name"
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
+                                          
 
 
                                             <Grid Grid.Row="1" Margin="0 10 0 0" Grid.ColumnSpan="3">
@@ -292,23 +288,7 @@
 
                                                 </Grid.ColumnDefinitions>
 
-                                                <dxlc:LayoutItem Label="Начало прорезывания первых временных зубов (мес):"  LabelPosition="Left"  Grid.Column="0" >
-                                                    <dxe:TextEdit Name="PolкisOMSSessria"  Margin="10 0 30 0" />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Начало смены передних зубов (лет):"  LabelPosition="Left"  Grid.Column="1" >
-                                                    <dxe:TextEdit Name="PolкisOMSSe44sria"  Margin="10 0 10 0" />
-                                                </dxlc:LayoutItem>
 
-                                                <dxlc:LayoutItem Label="Наличие вредных привычек:" Name="ExeCafaafegtorys" LabelPosition="Left" Grid.Column="2">
-                                                    <dxe:ComboBoxEdit   ItemsSource="{Binding Path=BadHabitsList}"  Margin="10 0 0 0" 
-                                                         NullText="Наличие вредных привычек" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name"
-                                                      >
-                                                        <dxe:ComboBoxEdit.StyleSettings>
-                                                            <dxe:RadioComboBoxStyleSettings/>
-                                                        </dxe:ComboBoxEdit.StyleSettings>
-                                                    </dxe:ComboBoxEdit>
-                                                </dxlc:LayoutItem>
 
                                             </Grid>
 
