@@ -149,6 +149,12 @@
     <None Remove="Resources\PatientCard\tooth\46.png" />
     <None Remove="Resources\PatientCard\tooth\47.png" />
     <None Remove="Resources\PatientCard\tooth\48.png" />
+    <None Remove="Resources\PatientCard\tooth\green.png" />
+    <None Remove="Resources\PatientCard\tooth\green180.png" />
+    <None Remove="Resources\PatientCard\tooth\red.png" />
+    <None Remove="Resources\PatientCard\tooth\red180.png" />
+    <None Remove="Resources\PatientCard\tooth\yellow.png" />
+    <None Remove="Resources\PatientCard\tooth\yellow180.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -341,6 +347,12 @@
     <Resource Include="Resources\PatientCard\tooth\46.png" />
     <Resource Include="Resources\PatientCard\tooth\47.png" />
     <Resource Include="Resources\PatientCard\tooth\48.png" />
+    <Resource Include="Resources\PatientCard\tooth\green.png" />
+    <Resource Include="Resources\PatientCard\tooth\green180.png" />
+    <Resource Include="Resources\PatientCard\tooth\red.png" />
+    <Resource Include="Resources\PatientCard\tooth\red180.png" />
+    <Resource Include="Resources\PatientCard\tooth\yellow.png" />
+    <Resource Include="Resources\PatientCard\tooth\yellow180.png" />
   </ItemGroup>
 
   <ItemGroup>
