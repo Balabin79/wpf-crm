@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
-    public partial class TreatmentPlan : Page
+    public partial class TreatmentPlan : UserControl
     {
         public TreatmentPlan()
         {

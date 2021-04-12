@@ -1,11 +1,10 @@
-﻿<Page x:Class="Dental.Views.HandbooksPages.Diagnoses"
+﻿<UserControl x:Class="Dental.Views.Nomenclatures.TreatmentPlan"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Diagnoses"
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
       xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"    
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -15,14 +14,13 @@
       xmlns:b ="clr-namespace:Dental.Behaviors" 
       xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" 
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"  
       >
 
-    <Grid >
+    <Grid>
         <Grid.DataContext>
-            <vm:DiagnosViewModel/>
+            <vm:TreatmentPlanViewModel/>
         </Grid.DataContext>
-        <local:TreeTemplateControl/>
 
         <dxg:GridControl Name="treeListView1" dx:ThemeManager.ThemeName="Office2019White" 
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -63,10 +61,10 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 5">
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/diagnos.png" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/plan.png" />
                                 </Image.Source>
                             </Image>
-                            <TextBlock Text="Диагнозы" FontSize="15" Margin="0 5 0 0" />
+                            <TextBlock Text="План лечения" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TreeListView.Header>
 
@@ -192,4 +190,4 @@
         </dxg:GridControl>
 
     </Grid>
-</Page>
+</UserControl>

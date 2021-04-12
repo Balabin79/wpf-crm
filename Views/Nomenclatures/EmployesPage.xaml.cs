@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
     /// <summary>
     /// Логика взаимодействия для EmployesPage.xaml
@@ -22,7 +22,7 @@ namespace Dental.Views.HandbooksPages
     //[CodeFile("Modules/Views/SlideViewEmployeesDetailsView.xaml.(cs)")]
    // [CodeFile("Modules/Views/SlideViewEmployeesView.xaml")]
     //[CodeFile("Modules/Views/SlideViewEmployeesView.xaml.(cs)")]
-    public partial class EmployesPage : Page
+    public partial class EmployesPage : UserControl
     {
         public EmployesPage()
         {

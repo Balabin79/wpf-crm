@@ -1,0 +1,214 @@
+﻿<UserControl x:Class="Dental.Views.Nomenclatures.Menu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+             xmlns:local="clr-namespace:Dental.Views.Nomenclatures" 
+             xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+             xmlns:hp ="clr-namespace:Dental.Views.HandbooksPages" 
+             mc:Ignorable="d" >
+
+    <UserControl.Resources>
+
+        <!-- Create a grid background to highlight the
+         coordinate system. -->
+            <DrawingBrush x:Key="GridDrawingBrushResource" 
+      Viewport="0,0,10,10" 
+      ViewportUnits="Absolute" TileMode="Tile">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <DrawingGroup.Children>
+                            <GeometryDrawing Brush="White">
+                                <GeometryDrawing.Geometry>
+                                    <RectangleGeometry Rect="0,0,1,1" />
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                            <GeometryDrawing Geometry="M0,0 L1,0 1,0.1, 0,0.1Z" Brush="#CCCCFF" />
+                            <GeometryDrawing Geometry="M0,0 L0,1 0.1,1, 0.1,0Z" Brush="#CCCCFF" />
+                        </DrawingGroup.Children>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+
+            <!-- Create a graph paper style border to frame the rectangles. -->
+            <Style x:Key="GraphPaperBorderStyle" TargetType="{x:Type Border}">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="Background" 
+        Value="{StaticResource GridDrawingBrushResource}" />
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="Width" Value="190" />
+                <Setter Property="Height" Value="90" />
+            </Style>
+
+    </UserControl.Resources>
+    
+    
+    
+    <Grid>
+
+        
+        <lc:TileLayoutControl Orientation="Horizontal">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+
+
+                <TextBlock Text="Сотрудники" FontSize="18" Grid.Row="0" Foreground="Gray"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="EmployeePage" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Curriculum-Vitae.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Добавить сотрудника" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="EmployesPage" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Список сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Specialities" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Список профессий" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Statuses" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Статусы сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+                </StackPanel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <TextBlock Text="Шаблоны" FontSize="18" Grid.Row="2" Foreground="Gray" Margin="0 20 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3">
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Diagnoses" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/diagnos.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Foreground="Gray" TextWrapping="Wrap" Text="Диагнозы" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Diary" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Report.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Foreground="Gray" TextWrapping="Wrap" Text="Дневники" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="InitialInspection" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/init.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Первичный осмотр" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="TreatmentPlan" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/plan.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Foreground="Gray" TextWrapping="Wrap" Text="План лечения" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+                </StackPanel>
+
+
+            </Grid>
+
+        </lc:TileLayoutControl>
+        
+        
+       
+    </Grid>
+</UserControl>

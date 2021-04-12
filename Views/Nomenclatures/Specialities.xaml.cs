@@ -4,12 +4,12 @@ using DevExpress.SpreadsheetSource.Implementation;
 using DevExpress.Xpf.Grid;
 using System.Windows.Controls;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class Specialities : Page
+    public partial class Specialities : UserControl
     {
         public Specialities()
         {

@@ -1,4 +1,4 @@
-﻿<Page x:Class="Dental.Views.HandbooksPages.Statuses"
+﻿<UserControl x:Class="Dental.Views.Nomenclatures.Statuses"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -162,4 +162,4 @@
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>
-</Page>
+</UserControl>

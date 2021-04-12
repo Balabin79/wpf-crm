@@ -1,8 +1,8 @@
 ﻿using System.Windows.Controls;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
-    public partial class Diary : Page
+    public partial class Diary : UserControl
     {
         public Diary()
         {

@@ -1,6 +1,4 @@
-﻿using Dental.Models.Template;
-using DevExpress.Xpf.Grid;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
     /// <summary>
-    /// Логика взаимодействия для Diagnoses.xaml
+    /// Логика взаимодействия для Menu.xaml
     /// </summary>
-    public partial class InitialInspection : Page
+    public partial class Menu : UserControl
     {
-        public InitialInspection()
+        public Menu()
         {
             InitializeComponent();
         }

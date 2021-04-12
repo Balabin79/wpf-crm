@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:Dental" 
     xmlns:viewModels="clr-namespace:Dental.ViewModels" 
     xmlns:pages="clr-namespace:Dental.Views.HandbooksPages" 
+    xmlns:nomen="clr-namespace:Dental.Views.Nomenclatures" 
     xmlns:pcpages="clr-namespace:Dental.Views.PatientCard" 
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -31,7 +32,7 @@
 
 <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
     <Grid.RowDefinitions>
-        <RowDefinition Height="200" />
+        <RowDefinition Height="140" />
         <RowDefinition Height="*" />
         <RowDefinition Height="10" />
     </Grid.RowDefinitions>
@@ -83,72 +84,10 @@
 
                 <dxr:RibbonPage Caption="Основные справочники">
 
-                    <dxr:RibbonPageGroup Caption="Шаблоны">
-                        <dxb:BarButtonItem Content="Диагноз" 
-                                           RibbonStyle="Default"                                          
-                                           Glyph="{Binding Path=DiagnosImage}"
-                                           MediumGlyph="{Binding Path=DiagnosImage}"
-                                           LargeGlyph="{Binding Path=DiagnosImage}"                                        
-                                           ToolTip="Шаблоны диагнозов"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Diagnoses}"                                       
-                                           >
-                        </dxb:BarButtonItem>
-                        <dxb:BarButtonItem Content="Дневник" 
-                                           RibbonStyle="Default" 
-                                           Glyph="{Binding Path=DiaryImage}"
-                                           MediumGlyph="{Binding Path=DiaryImage}"
-                                           LargeGlyph="{Binding Path=DiaryImage}" 
-                                           ToolTip="Шаблоны дневников"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Diary}"
-                                           />
-                        <dxb:BarButtonItem Content="Первичный осмотр"
-                                           RibbonStyle="Default" 
-                                           Glyph="{Binding Path=InitialImage}"
-                                           MediumGlyph="{Binding Path=InitialImage}"
-                                           LargeGlyph="{Binding Path=InitialImage}" 
-                                           ToolTip="Первичный осмотр"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:InitialInspection}"/>
-                        <dxb:BarButtonItem Content="План лечения"  
-                                           RibbonStyle="Default" 
-                                           Glyph="{Binding Path=PlanImage}"
-                                           MediumGlyph="{Binding Path=PlanImage}"
-                                           LargeGlyph="{Binding Path=PlanImage}"
-                                           ToolTip="План лечения"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:TreatmentPlan}"/>
-                    </dxr:RibbonPageGroup>
+                   
 
 
                     <dxr:RibbonPageGroup Caption="Кадровые справочники" >
-                        <dxb:BarButtonItem Content="Добавить сотрудника" RibbonStyle="Default" 
-                                           Glyph="{Binding Path=EmployeeImage}"
-                                           MediumGlyph="{Binding Path=EmployeeAddImage}" 
-                                           LargeGlyph="{Binding Path=EmployeeAddImage}" 
-                                           ToolTip="Добавить нового сотрудника"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployeePage}" />
-
-                        <dxb:BarButtonItem Content="Список сотрудников" RibbonStyle="Default" 
-                                           Glyph="{Binding Path=EmployeeImage}"
-                                           MediumGlyph="{Binding Path=EmployeeImage}" 
-                                           LargeGlyph="{Binding Path=EmployeeImage}"                                                
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesPage}" />
-
-                        <dxb:BarButtonItem Content="Статусы сотрудников"
-                                           Glyph="{Binding Path=StatusEmployeeImage}"
-                                           MediumGlyph="{Binding Path=StatusEmployeeImage}" 
-                                           LargeGlyph="{Binding Path=StatusEmployeeImage}" 
-                                           ToolTip="Статусы сотрудников"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Statuses}"/>
-                        
-                        <dxb:BarButtonItem Content="Список профессий"
-                                           RibbonStyle="Default" 
-                                           Glyph="{Binding Path=SpecialityImage}"
-                                           MediumGlyph="{Binding Path=SpecialityImage}" 
-                                           LargeGlyph="{Binding Path=SpecialityImage}"   
-                                           ToolTip="Все специальности компании"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Specialities}"/>
-
                         <dxb:BarButtonItem Content="Профессии сотрудников"
                                            RibbonStyle="Default" 
                                            Glyph="{Binding Path=SpecialityEmployeeImage}"
@@ -257,7 +196,12 @@
 
                 <dxr:RibbonPage Caption="О программе">
                     <dxr:RibbonPageGroup Caption="О программе">
-                        
+                        <dxb:BarButtonItem Content="Справочники" RibbonStyle="Default" 
+                                           ToolTip="Справочники"
+                                           Glyph="{Binding Path=AccessImage}"
+                                           MediumGlyph="{Binding Path=AccessImage}" 
+                                           LargeGlyph="{Binding Path=AccessImage}"                                    
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                     </dxr:RibbonPageGroup>
 
 

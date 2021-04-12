@@ -100,14 +100,21 @@
     <None Remove="Resources\Icons\Sections\Vcard-Add.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
+    <None Remove="Resources\Icons\Template\Client-Account-Template.png" />
+    <None Remove="Resources\Icons\Template\Curriculum-Vitae.png" />
     <None Remove="Resources\Icons\Template\diagnos.png" />
     <None Remove="Resources\Icons\Template\diary.png" />
+    <None Remove="Resources\Icons\Template\Document-Mark-As-Final.ico" />
+    <None Remove="Resources\Icons\Template\emp.png" />
     <None Remove="Resources\Icons\Template\init.png" />
     <None Remove="Resources\Icons\Template\initial.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
+    <None Remove="Resources\Icons\Template\Participation-Rate.png" />
     <None Remove="Resources\Icons\Template\plan.png" />
     <None Remove="Resources\Icons\Template\red.png" />
     <None Remove="Resources\Icons\Template\Report.png" />
+    <None Remove="Resources\Icons\Template\Reseller-Account.png" />
+    <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\PatientCard\1.png" />
     <None Remove="Resources\PatientCard\2.jpg" />
     <None Remove="Resources\PatientCard\3.png" />
@@ -300,12 +307,16 @@
     <Resource Include="Resources\Icons\Sections\Reseller-Programm.png" />
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
     <Resource Include="Resources\Icons\Sections\User-Add.png" />
+    <Resource Include="Resources\Icons\Template\Client-Account-Template.png" />
+    <Resource Include="Resources\Icons\Template\Curriculum-Vitae.png" />
     <Resource Include="Resources\Icons\Template\diagnos.png" />
-    <Resource Include="Resources\Icons\Template\diary.png" />
+    <Resource Include="Resources\Icons\Template\emp.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
-    <Resource Include="Resources\Icons\Template\initial.png" />
+    <Resource Include="Resources\Icons\Template\Participation-Rate.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
     <Resource Include="Resources\Icons\Template\Report.png" />
+    <Resource Include="Resources\Icons\Template\Reseller-Account.png" />
+    <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\PatientCard\1.png" />
     <Resource Include="Resources\PatientCard\2.jpg" />
     <Resource Include="Resources\PatientCard\3.png" />
@@ -365,7 +376,7 @@
     <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\InitialInspection.xaml.cs">
+    <Compile Update="Views\Nomenclatures\InitialInspection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\HandbooksPages\Advertising.xaml.cs">
@@ -380,13 +391,13 @@
     <Compile Update="Views\HandbooksPages\InsuranceCompany.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\Specialities.xaml.cs">
+    <Compile Update="Views\Nomenclatures\Specialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\TreatmentPlan.xaml.cs">
+    <Compile Update="Views\Nomenclatures\TreatmentPlan.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\Diary.xaml.cs">
+    <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -420,7 +431,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\InitialInspection.xaml">
+    <Page Update="Views\Nomenclatures\InitialInspection.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -440,15 +451,15 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\Specialities.xaml">
+    <Page Update="Views\Nomenclatures\Specialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\TreatmentPlan.xaml">
+    <Page Update="Views\Nomenclatures\TreatmentPlan.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\Diary.xaml">
+    <Page Update="Views\Nomenclatures\Diary.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

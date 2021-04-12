@@ -1,11 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
     /// <summary>
     /// Логика взаимодействия для Diagnoses.xaml
     /// </summary>
-    public partial class Diagnoses : Page
+    public partial class Diagnoses : UserControl
     {
         public Diagnoses()
         {
