@@ -107,14 +107,35 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
-                                    <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="0" Margin="0 0 0 5" 
-                                            HorizontalAlignment="Center">
+                                        <StackPanel Width="36">
+                                            <Border BorderThickness="1" BorderBrush="Black">
+                                                <Canvas x:Name="ddd"  Height="56" Width="36" >
+
+                                                    <Polygon Fill="LightPink" Points="10 26, 26 26, 36 36, 0 36" Stroke="Gray" ButtonBase.Click="Polygon_Click"></Polygon>
+
+                                                    <Polyline Fill="Green" Points="0 0, 10 10, 10 26, 0 36" Stroke="Gray"/>
+                                                    <Polyline Fill="Yellow" Points="0 0, 36 0, 26 10, 10 10" Stroke="Gray"/>
+                                                    <Polyline Fill="OrangeRed" Points="26 10, 36 0, 36 36, 26 26" Stroke="Gray"/>
+
+                                                    <Polyline Fill="Violet" Points="10 10, 18 10, 18 26, 10 26" Stroke="Gray"/>
+                                                    <Polyline Fill="Aqua" Points="18 10, 26 10, 26 26, 18 26" Stroke="Gray"/>
+
+                                                    <Polyline Fill="Blue" Points="4 36, 18 36, 11 56" Stroke="Gray"/>
+                                                    <Polyline Fill="Blue" Points="18 36, 30 36, 24 56" Stroke="Gray"/>
+                                                </Canvas>
+                                            </Border>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="0" Margin="0 0 0 5" 
+                                            HorizontalAlignment="Center" Padding="2">
                                         <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
+
+                                                <!--<Rectangle Width="30" Height="30" Stroke="Gray">-->
+                                                    
+                                                <!--</Rectangle>-->
                                                 <TextBlock Text="18" FontSize="18"/>
                                                 <Image Source="pack://application:,,,/Resources/PatientCard/tooth/18.png" Height="70" Width="20"/>
                                             </StackPanel>
                                     </Button>
+                                        </StackPanel>
                                         <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="1" Margin="0 0 0 5"  
                                             HorizontalAlignment="Center">
                                             <StackPanel>

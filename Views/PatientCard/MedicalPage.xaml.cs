@@ -13,5 +13,20 @@ namespace Dental.Views.PatientCard
         {
             InitializeComponent();
         }
+
+        private void Polyline_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private void StackPanel_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private void Polygon_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
     }
 }
