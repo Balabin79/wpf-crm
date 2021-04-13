@@ -79,7 +79,7 @@
                         <Button  dxwuin:Navigation.NavigateTo="EmployeePage" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="pack://application:,,,/Resources/Icons/fa/Guest.png" Height="15" Width="15" Margin="0 0 5 0"/>
-                                <TextBlock Text="Медицинская карта пациента" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="Карта сотрудника" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>
 
                         </Button>

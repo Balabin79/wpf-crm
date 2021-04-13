@@ -32,7 +32,7 @@
 
 <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
     <Grid.RowDefinitions>
-        <RowDefinition Height="140" />
+        <RowDefinition Height="165" />
         <RowDefinition Height="*" />
         <RowDefinition Height="10" />
     </Grid.RowDefinitions>
@@ -49,35 +49,52 @@
                     <dxr:RibbonPageGroup Caption="Основной раздел">
                         <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
                                            ToolTip="Расписание"
-                                           Glyph="{Binding Path=SheduleImage}"
-                                           MediumGlyph="{Binding Path=SheduleImage}" 
-                                           LargeGlyph="{Binding Path=SheduleImage}"                                        
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
 
 
                         <dxb:BarButtonItem Content="Новый пациент" RibbonStyle="Default" 
                                            ToolTip="Новый пациент"
-                                           Glyph="{Binding Path=NewPatientImage}"
-                                           MediumGlyph="{Binding Path=NewPatientImage}" 
-                                           LargeGlyph="{Binding Path=NewPatientImage}"                                        
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
 
                         <dxb:BarButtonItem Content="Список пациентов" RibbonStyle="Default" 
                                            ToolTip="Список пациентов"
-                                           Glyph="{Binding Path=ListPatientsImage}"
-                                           MediumGlyph="{Binding Path=ListPatientsImage}" 
-                                           LargeGlyph="{Binding Path=ListPatientsImage}"                                       
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/people.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/people.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/people.png"                                      
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
-
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Маркетинг">
                         <dxb:BarButtonItem Content="Журнал обзвона" RibbonStyle="Default" 
                                            ToolTip="Журнал обзвона"
-                                           Glyph="{Binding Path=ClientCalling}"
-                                           MediumGlyph="{Binding Path=ClientCalling}" 
-                                           LargeGlyph="{Binding Path=ClientCalling}"                                        
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Fax.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Fax.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Fax.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
+                    </dxr:RibbonPageGroup>
 
+                    <dxr:RibbonPageGroup Caption="Маркетинг">
+                        <dxb:BarButtonItem Content="Рекламные кампании" RibbonStyle="Default" 
+                                           ToolTip="Рекламные кампании"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Radio-2.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Radio-2.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Radio-2.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
+                        <dxb:BarButtonItem Content="Программы лояльности" RibbonStyle="Default" 
+                                           ToolTip="Программы лояльности"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
+                        <dxb:BarButtonItem Content="Email и СМС рассылка" RibbonStyle="Default" 
+                                           ToolTip="Email и СМС рассылка"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
  
@@ -126,35 +143,7 @@
 
                     
                 </dxr:RibbonPage>
-                <dxr:RibbonPage Caption="Маркетинг и реклама">
-                    <dxr:RibbonPageGroup Caption="Справочники">
-                        <dxb:BarButtonItem Content="Справочник программ лояльности"
-                                           Glyph="{Binding Path=LoyalityImage}"
-                                           MediumGlyph="{Binding Path=LoyalityImage}" 
-                                           LargeGlyph="{Binding Path=LoyalityImage}" 
-                                           ToolTip="Программы лояльности"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:LoyaltyPrograms}"/>
-                        
-                        <dxb:BarButtonItem Content="Рекламные источники"
-                                           Glyph="{Binding Path=AdvertisingImage}"
-                                           MediumGlyph="{Binding Path=AdvertisingImage}" 
-                                           LargeGlyph="{Binding Path=AdvertisingImage}" 
-                                           ToolTip="Рекламные источники"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Advertising}"/>
-                        
-                        <dxb:BarButtonItem Content="Группы скидок"
-                                           Glyph="{Binding Path=BonusImage}"
-                                           MediumGlyph="{Binding Path=BonusImage}" 
-                                           LargeGlyph="{Binding Path=BonusImage}" 
-                                           ToolTip="Группы скидок"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:DiscountGroups}"/>
-
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-
+            
                 <dxr:RibbonPage Caption="Номенклатура">
                 <dxr:RibbonPageGroup Caption="Прайсы">
                     <dxb:BarButtonItem Content="Прайс-лист" 
@@ -166,33 +155,7 @@
                 </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 
-                <dxr:RibbonPage Caption="Настройки">
-                    <dxr:RibbonPageGroup Caption="Администрирование">
-                        
-                        <dxb:BarButtonItem Content="Роли"
-                                           Glyph="{Binding Path=RoleImage}"
-                                           MediumGlyph="{Binding Path=RoleImage}" 
-                                           LargeGlyph="{Binding Path=RoleImage}" 
-                                           ToolTip="Роли"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Roles}"/>
-
-                        <dxb:BarButtonItem Content="Пользователи"
-                                           Glyph="{Binding Path=UsersImage}"
-                                           MediumGlyph="{Binding Path=UsersImage}" 
-                                           LargeGlyph="{Binding Path=UsersImage}" 
-                                           ToolTip="Пользователи"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="{x:Type pages:Roles}"/>
-
-                        <dxb:BarButtonItem Content="Права" RibbonStyle="Default" 
-                                           ToolTip="Права"
-                                           Glyph="{Binding Path=AccessImage}"
-                                           MediumGlyph="{Binding Path=AccessImage}" 
-                                           LargeGlyph="{Binding Path=AccessImage}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:Employes}"/>
-                        </dxr:RibbonPageGroup>
-                    </dxr:RibbonPage>
+              
 
                 <dxr:RibbonPage Caption="О программе">
                     <dxr:RibbonPageGroup Caption="О программе">

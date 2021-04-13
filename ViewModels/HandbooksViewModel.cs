@@ -89,37 +89,7 @@ namespace Dental.ViewModels
         private Page currentPage;
         private Double frameOpacity;
 
-        public BitmapImage DiaryImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Report.png"));
-            }
-        }
 
-        public BitmapImage DiagnosImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/diagnos.png"));
-            }
-        }
-
-        public BitmapImage PlanImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/plan.png"));
-            }
-        }
-
-        public BitmapImage InitialImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/init.png"));
-            }
-        }
 
         public BitmapImage OrganizationImage
         {
@@ -129,21 +99,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public BitmapImage   StatusEmployeeImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/status11.png"));
-            }
-        }
 
-        public BitmapImage RoleImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Private.png"));
-            }
-        }
 
         public BitmapImage SpecialityImage
         {
@@ -177,13 +133,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public BitmapImage EmployeeAddImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/User-Add.png"));
-            }
-        }
+
 
         public BitmapImage InsuranceCompanyImage
         {
@@ -193,77 +143,8 @@ namespace Dental.ViewModels
             }
         }
 
-        public BitmapImage UsersImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/emp.png"));
-            }
-        }
 
-        public BitmapImage AccessImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/comp.png"));
-            }
-        }
 
-        public BitmapImage LoyalityImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Coins-In-Hand.png"));
-            }
-        }
-
-        public BitmapImage AdvertisingImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Advertising.png"));
-            }
-        }
-
-        public BitmapImage BonusImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Profiles.png"));
-            }
-        }
-
-        public BitmapImage NewPatientImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/User-Add.png"));
-            }
-        }
-
-        public BitmapImage ListPatientsImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/emp.png"));
-            }
-        }
-
-        public BitmapImage SheduleImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/Shedule.png"));
-            }
-        }
-
-        public BitmapImage ClientCalling
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Fax.png"));
-            }
-        }
 
     }
 }

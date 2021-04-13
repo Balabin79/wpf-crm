@@ -51,10 +51,17 @@
     <Grid>
 
         
-        <lc:TileLayoutControl Orientation="Horizontal">
+        <lc:TileLayoutControl Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="45"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -63,8 +70,8 @@
 
 
 
-                <TextBlock Text="Сотрудники" FontSize="18" Grid.Row="0" Foreground="Gray"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1">
+                <TextBlock Text="Сотрудники" FontSize="18" Grid.Row="0" Grid.Column="0"  Foreground="Gray"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
 
                     <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="EmployeePage" 
                      Background="Transparent"  Margin="0 10 10 10"
@@ -110,10 +117,12 @@
                             </StackPanel>
                         </Border>
                     </lc:Tile>
+                </StackPanel>
 
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Statuses" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
+                <TextBlock Text="Роли и права" FontSize="18" Grid.Row="0" Grid.Column="2"  Foreground="Gray"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2">
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Roles" 
+                     Background="Transparent"  Margin="0 10 10 10">
                         <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
                             <StackPanel HorizontalAlignment="Center" >
                                 <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
@@ -121,7 +130,22 @@
                                         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
                                     </Image.Source>
                                 </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Статусы сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Роли сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Access" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/comp.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Права в системе" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Border>
                     </lc:Tile>
@@ -129,18 +153,73 @@
 
 
 
+                
+                
+                
+                
+                
+
+
+
+
+                <TextBlock Text="Маркетинг и реклама" FontSize="18" Grid.Row="2" Grid.Column="0" Foreground="Gray" Margin="0 20 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="0">
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="LoyaltyPrograms" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Foreground="Gray" TextWrapping="Wrap" Text="Программы лояльности" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Advertising" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Advertising.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Foreground="Gray" TextWrapping="Wrap" Text="Рекламные источники" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="DiscountGroups" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40" Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Profiles.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Группы скидок" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                  
+                </StackPanel>
 
 
 
 
 
 
-
-
-
-
-                <TextBlock Text="Шаблоны" FontSize="18" Grid.Row="2" Foreground="Gray" Margin="0 20 0 0"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3">
+                <TextBlock Text="Шаблоны" FontSize="18" Grid.Row="2" Grid.Column="2" Foreground="Gray" Margin="0 20 0 0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2">
 
                     <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Diagnoses" 
                      Background="Transparent"  Margin="0 10 10 10"

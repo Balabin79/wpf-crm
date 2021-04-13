@@ -13,6 +13,9 @@ namespace Dental.Models
        [Display(Name = "Фото")]
        public string Photo { get; set; }
 
+        [NotMapped]
+        public DevExpress.XtraPrinting.Drawing.ImageSource  Image{ get; set; }
+
         [Display(Name = "Имя")]
         [Required]
         [MaxLength(255)]

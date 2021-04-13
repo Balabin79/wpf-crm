@@ -100,21 +100,34 @@
     <None Remove="Resources\Icons\Sections\Vcard-Add.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
+    <None Remove="Resources\Icons\Template\Advertising.png" />
+    <None Remove="Resources\Icons\Template\Blackberry-White.png" />
     <None Remove="Resources\Icons\Template\Client-Account-Template.png" />
+    <None Remove="Resources\Icons\Template\Coins-In-Hand.png" />
+    <None Remove="Resources\Icons\Template\comp.png" />
     <None Remove="Resources\Icons\Template\Curriculum-Vitae.png" />
     <None Remove="Resources\Icons\Template\diagnos.png" />
     <None Remove="Resources\Icons\Template\diary.png" />
     <None Remove="Resources\Icons\Template\Document-Mark-As-Final.ico" />
     <None Remove="Resources\Icons\Template\emp.png" />
+    <None Remove="Resources\Icons\Template\Fax.png" />
+    <None Remove="Resources\Icons\Template\Group.png" />
     <None Remove="Resources\Icons\Template\init.png" />
     <None Remove="Resources\Icons\Template\initial.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
+    <None Remove="Resources\Icons\Template\Mail-Server-Setting.png" />
     <None Remove="Resources\Icons\Template\Participation-Rate.png" />
+    <None Remove="Resources\Icons\Template\people.png" />
     <None Remove="Resources\Icons\Template\plan.png" />
+    <None Remove="Resources\Icons\Template\Profiles.png" />
+    <None Remove="Resources\Icons\Template\Radio-2.png" />
     <None Remove="Resources\Icons\Template\red.png" />
     <None Remove="Resources\Icons\Template\Report.png" />
     <None Remove="Resources\Icons\Template\Reseller-Account.png" />
+    <None Remove="Resources\Icons\Template\Ribbon.png" />
+    <None Remove="Resources\Icons\Template\Shedule.png" />
     <None Remove="Resources\Icons\Template\status11.png" />
+    <None Remove="Resources\Icons\Template\User-Add.png" />
     <None Remove="Resources\PatientCard\1.png" />
     <None Remove="Resources\PatientCard\2.jpg" />
     <None Remove="Resources\PatientCard\3.png" />
@@ -268,13 +281,10 @@
     <Resource Include="Resources\Icons\folder_closed_gnone_32.png" />
     <Resource Include="Resources\Icons\folder_open_32.png" />
     <Resource Include="Resources\Icons\folder_open_gnone_32.png" />
-    <Resource Include="Resources\Icons\Nomenclature\Advertising.png" />
     <Resource Include="Resources\Icons\Nomenclature\Angel.png" />
     <Resource Include="Resources\Icons\Nomenclature\Calculator-Black.png" />
     <Resource Include="Resources\Icons\Nomenclature\Calculator-Edit.png" />
     <Resource Include="Resources\Icons\Nomenclature\Coins-In-Hand.png" />
-    <Resource Include="Resources\Icons\Nomenclature\comp.png" />
-    <Resource Include="Resources\Icons\Nomenclature\emp.png" />
     <Resource Include="Resources\Icons\Nomenclature\employee.png" />
     <Resource Include="Resources\Icons\Nomenclature\employee_status.png" />
     <Resource Include="Resources\Icons\Nomenclature\Group-Key.png" />
@@ -287,10 +297,8 @@
     <Resource Include="Resources\Icons\Nomenclature\Shedule.png" />
     <Resource Include="Resources\Icons\Nomenclature\speciality.png" />
     <Resource Include="Resources\Icons\Nomenclature\status10.png" />
-    <Resource Include="Resources\Icons\Nomenclature\status11.png" />
     <Resource Include="Resources\Icons\Nomenclature\status6.png" />
     <Resource Include="Resources\Icons\Nomenclature\status9.png" />
-    <Resource Include="Resources\Icons\Nomenclature\User-Add.png" />
     <Resource Include="Resources\Icons\Nomenclature\Vcard.png" />
     <Resource Include="Resources\Icons\Sections\Client-Account-Template.png" />
     <Resource Include="Resources\Icons\Sections\Curriculum-Vitae.png" />
@@ -306,17 +314,28 @@
     <Resource Include="Resources\Icons\Sections\Reseller-Account.png" />
     <Resource Include="Resources\Icons\Sections\Reseller-Programm.png" />
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
-    <Resource Include="Resources\Icons\Sections\User-Add.png" />
+    <Resource Include="Resources\Icons\Template\Advertising.png" />
+    <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
     <Resource Include="Resources\Icons\Template\Client-Account-Template.png" />
+    <Resource Include="Resources\Icons\Template\Coins-In-Hand.png" />
+    <Resource Include="Resources\Icons\Template\comp.png" />
     <Resource Include="Resources\Icons\Template\Curriculum-Vitae.png" />
     <Resource Include="Resources\Icons\Template\diagnos.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
+    <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
+    <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
     <Resource Include="Resources\Icons\Template\Participation-Rate.png" />
+    <Resource Include="Resources\Icons\Template\people.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
+    <Resource Include="Resources\Icons\Template\Profiles.png" />
+    <Resource Include="Resources\Icons\Template\Radio-2.png" />
     <Resource Include="Resources\Icons\Template\Report.png" />
     <Resource Include="Resources\Icons\Template\Reseller-Account.png" />
+    <Resource Include="Resources\Icons\Template\Ribbon.png" />
+    <Resource Include="Resources\Icons\Template\Shedule.png" />
     <Resource Include="Resources\Icons\Template\status11.png" />
+    <Resource Include="Resources\Icons\Template\User-Add.png" />
     <Resource Include="Resources\PatientCard\1.png" />
     <Resource Include="Resources\PatientCard\2.jpg" />
     <Resource Include="Resources\PatientCard\3.png" />
@@ -379,16 +398,19 @@
     <Compile Update="Views\Nomenclatures\InitialInspection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\Advertising.xaml.cs">
+    <Compile Update="Views\Nomenclatures\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\DiscountGroups.xaml.cs">
+    <Compile Update="Views\Nomenclatures\DiscountGroups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\LoyaltyPrograms.xaml.cs">
+    <Compile Update="Views\Nomenclatures\LoyaltyPrograms.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\HandbooksPages\InsuranceCompany.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Nomenclatures\Access.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\Specialities.xaml.cs">
@@ -435,19 +457,23 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\Advertising.xaml">
+    <Page Update="Views\Nomenclatures\Advertising.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\DiscountGroups.xaml">
+    <Page Update="Views\Nomenclatures\DiscountGroups.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\LoyaltyPrograms.xaml">
+    <Page Update="Views\Nomenclatures\LoyaltyPrograms.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\HandbooksPages\InsuranceCompany.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\Access.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.Nomenclatures.Statuses"
+﻿<UserControl x:Class="Dental.Views.Nomenclatures.DiscountGroups"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,10 +18,13 @@
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       d:DesignHeight="450" d:DesignWidth="800"
      >
+    <UserControl.Resources>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <Grid.DataContext>
-            <vm:EmployeeStatusViewModel/>
+            <vm:DiscountGroupsViewModel/>
         </Grid.DataContext>
 
         <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
@@ -53,10 +56,10 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 0">
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Nomenclature/status11.png" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Profiles.png" />
                                 </Image.Source>
                             </Image>
-                            <TextBlock Text="Статусы сотрудников" FontSize="15" Margin="0 5 0 0" />
+                            <TextBlock Text="Группы скидок" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
 
@@ -109,10 +112,17 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" />
                                     <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
+                                    
+                                    <TextBlock Text="Вид скидки: " Grid.Row="1" Grid.Column="0" />
+                                    <dxg:EditFormEditor FieldName="DiscountGroupType" Grid.Row="1" Grid.Column="1" Margin="2"/>
 
-                                    <TextBlock Text="Описание: " Grid.Row="1" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="Description" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                                    <StackPanel  Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                    <TextBlock Text="Размер скидки: " Grid.Row="2" Grid.Column="0" />
+                                    <dxg:EditFormEditor FieldName="AmountDiscount" Grid.Row="2" Grid.Column="1" Margin="2"/>
+
+                                    <TextBlock Text="Описание: " Grid.Row="3" Grid.Column="0" />
+                                    <dxg:EditFormEditor FieldName="Description" Grid.Row="3" Grid.Column="1" Margin="2"/>
+
+                                    <StackPanel  Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
                                         <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
                                         <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2"/>
                                     </StackPanel>
@@ -134,7 +144,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Image Width="15" Height="15" >
                                 <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
                                 </Image.Source>
                             </Image>
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
@@ -143,8 +153,60 @@
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*">
+            <dxg:GridColumn FieldName="DiscountGroupType"  Header="Вид скидки" Name="DiscountGroupType"   MinWidth="200" Width="5*">
 
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate>
+                        <dxe:ComboBoxEdit Name="PART_Editor" IsTextEditable="False"
+                                      ShowSizeGrip="False"  SelectedItem="{Binding Path=DiscountGroupType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          EditValue="{Binding DiscountGroupType}">
+                            <dxe:ComboBoxEditItem>Процент</dxe:ComboBoxEditItem>
+                            <dxe:ComboBoxEditItem>Фиксированная сумма</dxe:ComboBoxEditItem>
+
+                            <dxe:ComboBoxEdit.StyleSettings>
+                                <dxe:RadioComboBoxStyleSettings />
+                            </dxe:ComboBoxEdit.StyleSettings>
+                        </dxe:ComboBoxEdit>
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="AmountDiscount"   Name="AmountDiscount"  MinWidth="200" Width="*">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="15" Height="15" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="Размер скидки" Margin="3 0 0 0"/> 
+                        </StackPanel>
+                    </DataTemplate>
+
+                </dxg:GridColumn.HeaderTemplate>
+
+
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        
+                        <dxe:TextEdit Mask="f" MaskType="Numeric"  Name="PART_Editor" Text="{Binding RowData.Source.Row.AmountDiscount, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+
+                <dxg:GridColumn.EditFormTemplate>
+                    <DataTemplate >
+                        <dxe:TextEdit Mask="f" MaskType="Numeric" Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.AmountDiscount, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}" Text="{Binding RowData.Source.Row.AmountDiscount, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.EditFormTemplate>
+                
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*">
+                
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 

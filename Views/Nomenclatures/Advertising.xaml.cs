@@ -2,16 +2,17 @@ using Dental.Models;
 using Dental.Repositories;
 using System.Windows.Controls;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Nomenclatures
 {
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class DiscountGroups : Page
+    public partial class Advertising : UserControl
     {
-        public DiscountGroups()
+        public Advertising()
         {
             InitializeComponent();
         }
+
     }
 }
