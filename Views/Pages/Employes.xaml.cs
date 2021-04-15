@@ -1,7 +1,7 @@
 using System.Windows.Controls;
 using DevExpress.Xpf.WindowsUI;
 
-namespace Dental.Views.HandbooksPages
+namespace Dental.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Employes.xaml

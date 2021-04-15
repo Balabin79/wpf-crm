@@ -25,7 +25,7 @@ namespace Dental.ViewModels
         public MainWindowViewModel()
         {
             FrameOpacity = 1;
-            CurrentPage = new MainPage();
+            //CurrentPage = new MainPage();
 
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecute);
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);

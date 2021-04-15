@@ -13,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Nomenclatures
+namespace Dental.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для EmployesPage.xaml
+    /// Логика взаимодействия для Employee.xaml
     /// </summary>
-    ///     [CodeFile("Modules/Views/SlideViewEmployeesDetailsView.xaml")]
-    //[CodeFile("Modules/Views/SlideViewEmployeesDetailsView.xaml.(cs)")]
-   // [CodeFile("Modules/Views/SlideViewEmployeesView.xaml")]
-    //[CodeFile("Modules/Views/SlideViewEmployeesView.xaml.(cs)")]
-    public partial class EmployesPage : UserControl
+    public partial class Employee : UserControl
     {
-        public EmployesPage()
+        public Employee()
         {
             InitializeComponent();
         }
     }
-
-
 }
