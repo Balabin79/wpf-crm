@@ -73,54 +73,6 @@
                 <TextBlock Text="Сотрудники" FontSize="18" Grid.Row="0" Grid.Column="0"  Foreground="Gray"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
 
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="EmployeePage" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Curriculum-Vitae.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Добавить сотрудника" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
-
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="EmployesPage" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Список сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
-
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Specialities" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Список профессий" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
-                </StackPanel>
-
-                <TextBlock Text="Роли и права" FontSize="18" Grid.Row="0" Grid.Column="2"  Foreground="Gray"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2">
                     <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Roles" 
                      Background="Transparent"  Margin="0 10 10 10">
                         <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
@@ -149,6 +101,70 @@
                             </StackPanel>
                         </Border>
                     </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Specialities" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Список профессий" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+                </StackPanel>
+
+                <TextBlock Text="Подразделения" FontSize="18" Grid.Row="0" Grid.Column="2"  Foreground="Gray"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="2">
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Roles" 
+                     Background="Transparent"  Margin="0 10 10 10">
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/License-Management.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Организация" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Access" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/org.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Филиалы" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Access" 
+                     Background="Transparent"  Margin="0 10 10 10"
+                    >
+                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
+                            <StackPanel HorizontalAlignment="Center" >
+                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Отделы" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </lc:Tile>
+
+
                 </StackPanel>
 
 

@@ -139,7 +139,7 @@
                                             MaskUseAsDisplayFormat="True"
                                             EditValue="{Binding Path=HomePhone, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/tooth.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Mobile Phone" AddColonToLabel="True">
@@ -150,7 +150,7 @@
                                             MaskUseAsDisplayFormat="True"
                                             EditValue="{Binding Path=MobilePhone, Mode=TwoWay, ValidatesOnDataErrors=True}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/tooth.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
@@ -161,13 +161,13 @@
                                             EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/tooth.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Skype" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True" AllowDefaultButton="False" EditValue="{Binding Path=Skype, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/tooth.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/skype.svg"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>

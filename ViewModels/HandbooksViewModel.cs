@@ -89,63 +89,6 @@ namespace Dental.ViewModels
         private Page currentPage;
         private Double frameOpacity;
 
-
-
-        public BitmapImage OrganizationImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Nomenclature/org2.png"));
-            }
-        }
-
-
-
-        public BitmapImage SpecialityImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Participation-Rate.png"));
-            }
-        }
-
-        public BitmapImage SpecialityEmployeeImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Client-Account-Template.png"));
-            }
-        }
-
-        public BitmapImage OrganizationEmployeeImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Reseller-Account.png"));
-            }
-        }
-
-        public BitmapImage EmployeeImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/Reseller-Programm.png"));
-            }
-        }
-
-
-
-        public BitmapImage InsuranceCompanyImage
-        {
-            get
-            {
-                return new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Sections/License-Management.png"));
-            }
-        }
-
-
-
-
     }
 }
 
