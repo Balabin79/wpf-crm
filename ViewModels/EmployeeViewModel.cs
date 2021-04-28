@@ -9,140 +9,157 @@ using Dental.Models;
 using Dental.Models.Base;
 using Dental.Repositories;
 using DevExpress.Xpf.Grid;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm;
+using System.Windows.Media.Imaging;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Windows;
 
 namespace Dental.ViewModels
 {
-    class EmployeeViewModel : ViewModelBase, ICollectionCommand
+    class EmployeeViewModel : ViewModelBase
     {
-        public EmployeeViewModel()
+
+        public EmployeeViewModel() : this(0){}
+
+        public EmployeeViewModel(int employeeId = 0)
         {
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
-            UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
-            CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
+            CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
+            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
-            Repository = new EmployeeRepository();
+            db = new ApplicationContext();
+            context = db.Employes;
+            VisibleErrors = Visibility.Collapsed;
 
-            Repository.CopyModel += ((IModel, TableView) c) => {
-                var copiedRow = Collection.Where(d => d.Id == ((Employee)c.Item2.FocusedRow)?.Id).FirstOrDefault();
-                if (copiedRow != null)
+            try
+            {
+                Employee = employeeId == 0 ? new Employee() : context.Where(i => i.Id == employeeId).First();
+            } 
+            catch (Exception e)
+            {
+                Employee = new Employee();
+                (new ViewModelLog(e)).run();
+                Errors = new List<string>(){"Ошибка при загрузке данных сотрудника. " +
+                    "Возможно данные повреждены или удалены." +
+                    "Вернитесь к списку сотрудников и повторите попытку." +
+                    "При повторении ошибки, обратитесь за помощью к администратору или в тех.поддержку" };
+            }           
+        }
+
+        public ICommand CancelCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand OpenCommand { get; }
+
+        private bool CanCancelCommandExecute(object p) => true;
+        private bool CanSaveCommandExecute(object p) => true;
+        private bool CanOpenCommandExecute(object p) => true;
+
+        private void OnCancelCommandExecuted(object p)
+        {
+            try
+            {
+
+               // Repository.Delete(table);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSaveCommandExecuted(object p)
+        {
+            try
+            {
+                Errors = null;
+                VisibleErrors = Visibility.Collapsed;
+                if (Employee.Id == 0)
                 {
-                    int index = Collection.IndexOf(copiedRow) + 1;
-                    Collection.Insert(index, (Employee)c.Item1);
-                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                    if (row != null)
-                    {
-                        c.Item2.FocusedRow = row;
-                        c.Item2.ScrollIntoView(c.Item1);
-                        c.Item2.FocusedRow = c.Item1;
-                        //c.Item2.ShowEditForm();
-                    }
+                    context.Add(Employee);
+                    db.SaveChanges();
+                    return;
                 }
-            };
-            Repository.UpdateModel += ((IModel, TableView) c) => {
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                if (row != null)
-                {
-                    int index = Collection.IndexOf(row);
-                    Collection[index] = (Employee)c.Item1;
+
+                db.Entry(Employee).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                int k = 0;
+                var errors = ex.EntityValidationErrors.First().ValidationErrors.Select(f => f.ErrorMessage);
+
+                if (errors.Count() > 0) { 
+                    Errors = errors;
+                    VisibleErrors = Visibility.Visible;
                 }
-            };
-            Repository.AddModel += ((IModel, TableView) c) => {
-                Collection.Add((Employee)c.Item1);
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                int x = 0;
 
-                if (row != null)
-                {
-                    c.Item2.FocusedRow = row;
-                    c.Item2.ScrollIntoView(row);
-                    //c.Item2.ShowEditForm();
-                }
-            };
-            Repository.DeleteModel += (IModel model) => {
-                var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
-                if (item != null) Collection.Remove(item);
-            };
+            }
+            catch (Exception e)
+            {
+                int x = 0;
+                /*
+                var error = e.EntityValidationErrors.First().ValidationErrors.First();
+                this.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);*/
+            }
         }
 
-        public ICommand DeleteCommand { get; }
-        public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public ICommand CopyCommand { get; }
-
-        private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanAddCommandExecute(object p) => true;
-        private bool CanUpdateCommandExecute(object p) => true;
-        private bool CanCopyCommandExecute(object p) => true;
-
-
-        private void OnDeleteCommandExecuted(object p)
+        private void OnOpenCommandExecuted(object p)
         {
+            int x = 0;
             try
             {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Delete(table);
+
+                //Repository.Update(table);
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
         }
+ 
+    
+        public Employee Employee { get; set; } = new Employee();
 
-        private void OnAddCommandExecuted(object p)
+        private readonly ApplicationContext db;
+        private readonly DbSet<Employee> context;
+        private IEnumerable<string> errors;
+        public object visibleErrors;
+
+        public DbSet<Employee> Context => context;
+
+        public object VisibleErrors
         {
-            try
-            {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Add(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+            get => visibleErrors;
+            set => Set(ref visibleErrors, value);
         }
 
-        private void OnUpdateCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Update(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+
+
+        public IEnumerable<string> Errors {
+            get => errors;
+            set => Set(ref errors, value);
         }
 
-        private void OnCopyCommandExecuted(object p)
+
+
+
+        
+        
+        [ServiceProperty(Key = "NotificationService")]
+        protected virtual INotificationService AppNotificationService { get { return null; } }
+   
+        public void ShowNotification()
         {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Copy(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+            INotification notification = AppNotificationService.CreatePredefinedNotification("DevAV Tips & Tricks",
+                "Take user where they want to go with", "DevExpress Map Controls.",
+                new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/status11.png", UriKind.Absolute)));
+            notification.ShowAsync();
         }
 
-        EmployeeRepository Repository { get; set; }
-
-        private ObservableCollection<Employee> _Collection;
-
-        public ObservableCollection<Employee> Collection
-        {
-            get
-            {
-                if (_Collection == null) _Collection = Repository.GetAll().Result;
-                return _Collection;
-            }
-            set => Set(ref _Collection, value);
         }
-    }
 }

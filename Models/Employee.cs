@@ -1,3 +1,4 @@
+using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,25 +9,25 @@ using System.Reflection;
 namespace Dental.Models
 {
     [Table("Employes")]
-    class Employee : User
+    class Employee : User, System.ComponentModel.IDataErrorInfo
     {
         // Контактная информация
         [EmailAddress]
-        public string Email { get; set; } = "example@company.com";
+        public string Email { get; set; }
 
-        public string Skype { get; set; } = "";
+        public string Skype { get; set; }
 
         [Display(Name = "Адрес")]
-        public string Address { get; set; } = "";
+        public string Address { get; set; }
 
         [Display(Name = "Моб.телефон")]
         [Phone]
-        [Required]
-        public string MobilePhone { get; set; } = "9111111111";
+        [Required(ErrorMessage = @"Поле ""Мобильный телефон"" обязательно для заполнения")]
+        public string MobilePhone { get; set; }
 
         [Display(Name = "Дом.телефон")]
         [Phone]
-        public string HomePhone { get; set; } = "9111111111";
+        public string HomePhone { get; set; }
 
         public int? EmployeeStatusId { get; set; }
         public EmployeeStatus EmployeeStatus { get; set; } // статус (работает, уволен и т.д.)
@@ -38,13 +39,13 @@ namespace Dental.Models
         public string DismissalDate { get; set; } = DateTime.Now.ToShortDateString().ToString(); // дата увольнения
 
         [Display(Name = "ИНН")]
-        public string Inn { get; set; } = "";
+        public string Inn { get; set; }
 
         [Display(Name = "Логин")]
-        public string Login { get; set; } = "";
+        public string Login { get; set; }
 
         [Display(Name = "Пароль")]
-        public string Password { get; set; } = "";
+        public string Password { get; set; }
 
         [NotMapped]
         public string SpecialitiesName
@@ -114,5 +115,23 @@ namespace Dental.Models
              Login = copy.Login;
              Password = copy.Password;
         }
+
+        public string Error
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                return IDataErrorInfoHelper.GetErrorText(this, columnName);
+            }
+        }
+
+
     }
 }

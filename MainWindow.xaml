@@ -20,8 +20,7 @@
     xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters">
 
     <dx:ThemedWindow.Resources>
-    <conv:ImageConverter x:Key="ImageConverter" />
-    
+        <conv:ImageConverter x:Key="ImageConverter" />
         <viewModels:HandbooksViewModel x:Key="viewModel"/>
     </dx:ThemedWindow.Resources>
 
@@ -31,7 +30,8 @@
 </dx:ThemedWindow.DataContext>
 
 
-<Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
+
+    <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
     <Grid.RowDefinitions>
         <RowDefinition Height="165" />
         <RowDefinition Height="*" />
@@ -106,7 +106,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Sheduled-Task.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Sheduled-Task.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Sheduled-Task.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:TaskLog}"/>
                         <dxb:BarButtonItem Content="Уведомления" RibbonStyle="Default" 
                                            ToolTip="Уведомления"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Bell.png"
@@ -116,10 +116,7 @@
                     </dxr:RibbonPageGroup>
 
                 </dxr:RibbonPage>
-
-                
-                
-                
+           
                 
                 <dxr:RibbonPage Caption="Администрирование">
                     <dxr:RibbonPageGroup Caption="Кадры" >

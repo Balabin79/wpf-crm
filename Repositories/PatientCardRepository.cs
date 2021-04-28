@@ -85,7 +85,7 @@ namespace Dental.Repositories
                     bool needUpdate = false;
                     foreach (PropertyInfo property in properties)
                     {
-                        if (!model[property, item]) needUpdate = true;
+                       // if (!model[property, item]) needUpdate = true;
                     }
 
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
