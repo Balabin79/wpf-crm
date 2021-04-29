@@ -37,10 +37,20 @@ namespace Dental.ViewModels
 
             try
             {
-                Employee = employeeId == 0 ? new Employee() : context.Where(i => i.Id == employeeId).First();
+                if (employeeId == 0)
+                {
+                    Employee = new Employee();
+                    Title = "Новый сотрудник";
+                }
+                else
+                {
+                    Employee = context.Where(i => i.Id == employeeId).First();
+                    Title = Employee.FullName;
+                }
             } 
             catch (Exception e)
             {
+                Title = "Новый сотрудник";
                 Employee = new Employee();
                 (new ViewModelLog(e)).run();
                 Errors = new List<string>(){"Ошибка при загрузке данных сотрудника. " +
@@ -89,15 +99,12 @@ namespace Dental.ViewModels
             }
             catch (DbEntityValidationException ex)
             {
-                int k = 0;
                 var errors = ex.EntityValidationErrors.First().ValidationErrors.Select(f => f.ErrorMessage);
 
                 if (errors.Count() > 0) { 
                     Errors = errors;
                     VisibleErrors = Visibility.Visible;
                 }
-                int x = 0;
-
             }
             catch (Exception e)
             {
@@ -143,6 +150,12 @@ namespace Dental.ViewModels
         public IEnumerable<string> Errors {
             get => errors;
             set => Set(ref errors, value);
+        }
+
+        private string title;
+        public string Title {
+            get => title; 
+            set => Set(ref title, value);
         }
 
 

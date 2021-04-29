@@ -12,7 +12,7 @@ namespace Dental.Models
     class Employee : User, System.ComponentModel.IDataErrorInfo
     {
         // Контактная информация
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email { get; set; }
 
         public string Skype { get; set; }
@@ -21,12 +21,12 @@ namespace Dental.Models
         public string Address { get; set; }
 
         [Display(Name = "Моб.телефон")]
-        [Phone]
+        [Phone(ErrorMessage = @"В поле ""Мобильный телефон"" введено некорректное значение")]
         [Required(ErrorMessage = @"Поле ""Мобильный телефон"" обязательно для заполнения")]
         public string MobilePhone { get; set; }
 
         [Display(Name = "Дом.телефон")]
-        [Phone]
+        [Phone(ErrorMessage = @"В поле ""Домашний телефон"" введено некорректное значение")]
         public string HomePhone { get; set; }
 
         public int? EmployeeStatusId { get; set; }
@@ -39,6 +39,9 @@ namespace Dental.Models
         public string DismissalDate { get; set; } = DateTime.Now.ToShortDateString().ToString(); // дата увольнения
 
         [Display(Name = "ИНН")]
+        [MaxLength(12, ErrorMessage = @"Длина строки в поле ""ИНН"" не более 12 цифр")]
+        [MinLength(12, ErrorMessage = @"Длина строки в поле ""ИНН"" не менее 12 цифр")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         public string Inn { get; set; }
 
         [Display(Name = "Логин")]

@@ -12,8 +12,8 @@
                       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
                       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                      xmlns:app="clr-namespace:Dental" 
-                      mc:Ignorable="d"
+                      xmlns:app="clr-namespace:Dental" xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             mc:Ignorable="d"
                       dx:ThemeManager.ThemeName="Office2019White" 
                       d:DesignHeight="300" d:DesignWidth="300">
 
@@ -34,15 +34,24 @@
                  <ColumnDefinition Width="Auto" />
                  <ColumnDefinition />
              </Grid.ColumnDefinitions>
-                        
-                       <TextBlock Grid.Column="0" Grid.Row="0" Margin="15 10 15 0" Text="Новый сотрудник" FontSize="20" />
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" >
-                            <Button FontSize="14" Margin="10, 0, 0, 0" Content="К списку сотрудников" 
-                                    Command="{Binding CancelCommand}"/>
-                            <Button FontSize="14" Margin="10, 0, 0, 0" Content="Сохранить"
-                                     Command="{Binding SaveCommand}"/>
-            </StackPanel>
+                <StackPanel Grid.Column="0" Grid.Row="0" Margin="5 0 15 0" Orientation="Horizontal">
+                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/user-nurse.svg" Height="25" Margin="10 0 0 0" />
+                    <TextBlock  Text="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="20" Margin="5 3 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" >
+                    <Button FontSize="14" Margin="10, 0, 0, 0" Padding="7" Command="{Binding CancelCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="12" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">К списку сотрудников</TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button FontSize="14" Margin="10, 0, 0, 0" Padding="7" Command="{Binding SaveCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/save.svg" Height="12" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Сохранить</TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </Grid>
             
         </StackPanel>
@@ -80,19 +89,19 @@
                                         <dxe:TextEdit EditValue="{Binding Path=Employee.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
-                                        <dxe:DateEdit EditValue="{Binding Path=BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <dxe:DateEdit EditValue="{Binding Path=Employee.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem Label="Логин" AddColonToLabel="True">
-                                            <dxe:TextEdit EditValue="{Binding Path=Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                            <dxe:TextEdit EditValue="{Binding Path=Employee.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem Label="Пароль" AddColonToLabel="True">
-                                            <dxe:TextEdit EditValue="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                            <dxe:TextEdit EditValue="{Binding Path=Employee.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <dxe:ImageEdit EditValue="{Binding Path=Photo, Mode=TwoWay}" Height="128" />
+                                    <dxe:ImageEdit EditValue="{Binding Path=Employee.Photo, Mode=TwoWay}" Height="128" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
@@ -121,9 +130,9 @@
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=HomePhone, Mode=TwoWay}">
+                                            EditValue="{Binding Path=Employee.HomePhone, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg"  Margin="0 2 3 2"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Моб. телефон" AddColonToLabel="True">
@@ -132,9 +141,9 @@
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=MobilePhone, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, ValidatesOnDataErrors=True}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
@@ -145,13 +154,13 @@
                                             EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Skype" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True" AllowDefaultButton="False" EditValue="{Binding Path=Skype, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/skype.svg"/>
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/skype.svg"  Margin="0 2 2 2"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
@@ -173,7 +182,7 @@
                                               DisplayMember="Name" />
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Hire Date" AddColonToLabel="True">
-                                    <dxe:DateEdit EditValue="{Binding Path=HireDate, Mode=TwoWay}" />
+                                    <dxe:DateEdit EditValue="{Binding Path=HEmployee.HireDate, Mode=TwoWay}" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
                             <dxlc:LayoutItem Label="Evaluations" LabelPosition="Top" VerticalAlignment="Top" Margin="0,5">

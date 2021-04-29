@@ -19,16 +19,16 @@ namespace Dental.Models
 
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = "Максимальная длина строки не более 255 символов")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string FirstName { get; set; }
 
         [Display(Name = "Фамилия")]
         [Required(ErrorMessage = @"Поле ""Фамилия"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = "Максимальная длина строки не более 255 символов")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Фамилия"" не более 255 символов")]
         public string LastName { get; set; }
 
         [Display(Name = "Отчество")]
-        [MaxLength(255, ErrorMessage = "Максимальная длина строки не более 255 символов")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Отчество"" не более 255 символов")]
         public string MiddleName { get; set; }
 
         [Display(Name = "Дата рождения")]

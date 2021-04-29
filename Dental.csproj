@@ -101,11 +101,14 @@
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
+    <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
+    <None Remove="Resources\Icons\svg\save.svg" />
     <None Remove="Resources\Icons\svg\Skype.png" />
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\tooth.svg" />
+    <None Remove="Resources\Icons\svg\user-nurse.svg" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
@@ -153,6 +156,7 @@
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
+    <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\PatientCard\1.png" />
     <None Remove="Resources\PatientCard\2.jpg" />
     <None Remove="Resources\PatientCard\3.png" />
@@ -205,6 +209,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SharpVectors" Version="1.7.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -339,10 +344,13 @@
     <Resource Include="Resources\Icons\Sections\Reseller-Programm.png" />
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
+    <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
+    <Resource Include="Resources\Icons\svg\save.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\tooth.svg" />
+    <Resource Include="Resources\Icons\svg\user-nurse.svg" />
     <Resource Include="Resources\Icons\Template\Account-Balances.png" />
     <Resource Include="Resources\Icons\Template\Advertising.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />
@@ -383,6 +391,7 @@
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
+    <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\PatientCard\1.png" />
     <Resource Include="Resources\PatientCard\2.jpg" />
     <Resource Include="Resources\PatientCard\3.png" />
