@@ -104,25 +104,83 @@
                                     <dxe:ImageEdit EditValue="{Binding Path=Employee.Photo, Mode=TwoWay}" Height="128" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
-                                <dxlc:LayoutItem Label="Address" AddColonToLabel="True">
-                                    <dxe:TextEdit EditValue="{Binding Path=Address.Line, Mode=TwoWay}" />
-                                </dxlc:LayoutItem>
-                                <dxlc:LayoutItem Label="City" AddColonToLabel="True">
-                                    <dxe:TextEdit EditValue="{Binding Path=Address.City, Mode=TwoWay}" />
-                                </dxlc:LayoutItem>
                                 <dxlc:LayoutGroup Orientation="Horizontal">
-                                    <dxlc:LayoutItem Label="State" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Address.State, Mode=TwoWay}"
-                                                
-                                                  ValueMember="Value"
-                                                  DisplayMember="Name" />
+ 
+                                    <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
+                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.CountryId, Mode=TwoWay}"                                            
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
                                     </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="ZIP code" AddColonToLabel="True">
-                                        <dxe:TextEdit MaskType="Simple" Mask="00000" EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+
+                                    <dxlc:LayoutItem Label="Регион" AddColonToLabel="True">
+                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.RegionId, Mode=TwoWay}"                                            
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
+
+
+                                <dxlc:LayoutGroup Orientation="Horizontal">
+
+                                    <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
+                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.AreaId, Mode=TwoWay}"                                            
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
+                                    </dxlc:LayoutItem>
+
+                                    <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
+                                        <dxe:TextEdit EditValue="{Binding Path=Address.City, Mode=TwoWay}" />
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+
+
+                                <dxlc:LayoutGroup Orientation="Horizontal">
+                                    <dxlc:LayoutItem Label="Улица" AddColonToLabel="True" Grid.Column="0">
+                                        <dxe:TextEdit EditValue="{Binding Path=Address.City, Mode=TwoWay}" />
+                                    </dxlc:LayoutItem>
+
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Дом" AddColonToLabel="True" Grid.Column="1">
+                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem Label="Корпус" AddColonToLabel="True" Grid.Column="2">
+                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem Label="Кварт." AddColonToLabel="True" Grid.Column="3">
+                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                    </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+
+
+                                </dxlc:LayoutGroup>
+                                
                             </dxlc:LayoutGroup>
+                            
+                            
+                            
+                            
+                            
+                            
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
                                 <dxlc:LayoutItem Label="Дом. телефон" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True"
@@ -168,8 +226,7 @@
                         <dxlc:LayoutGroup Orientation="Vertical">
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="0,5">
                                 <dxlc:LayoutItem Label="Department" AddColonToLabel="True">
-                                    <dxe:ComboBoxEdit EditValue="{Binding Path=Department, Mode=TwoWay}"
-                                             
+                                    <dxe:ComboBoxEdit EditValue="{Binding Path=Department, Mode=TwoWay}"                                            
                                               IsTextEditable="False"
                                               ValueMember="Value"
                                               DisplayMember="Name" />

@@ -17,8 +17,8 @@ namespace Dental.Models
 
         public string Skype { get; set; }
 
-        [Display(Name = "Адрес")]
-        public string Address { get; set; }
+        public int? AddressId { get; set; }
+        public  Address Address { get; set; }
 
         [Display(Name = "Моб.телефон")]
         [Phone(ErrorMessage = @"В поле ""Мобильный телефон"" введено некорректное значение")]
