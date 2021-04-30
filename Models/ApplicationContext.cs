@@ -1,6 +1,7 @@
 ﻿using Dental.Interfaces;
 using Dental.Models.Template;
 using Dental.Models.PatientCard;
+using Dental.Models.Share;
 using System.Data.Entity;
 
 
@@ -28,5 +29,8 @@ namespace Dental.Models
         public DbSet<InsuranceCompany> InsuranceCompany { get; set; }
         public DbSet<PatientInfo> PatientInfo { get; set; }
         public DbSet<Questionary> Questionary { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<Region> Region { get; set; }
+        public DbSet<City> City { get; set; }
     }
 }

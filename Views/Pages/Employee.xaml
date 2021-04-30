@@ -20,6 +20,7 @@
 
     <UserControl.Resources>
         <vm:EmployeeViewModel x:Key="vm"/>
+        <vm:AddressViewModel x:Key="address"/>
     </UserControl.Resources>
 
     <Grid DataContext="{StaticResource vm}">
@@ -105,47 +106,37 @@
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+                     
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
                                 <dxlc:LayoutGroup Orientation="Horizontal">
  
                                     <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.CountryId, Mode=TwoWay}"                                            
+                                        <dxe:ComboBoxEdit ItemsSource="{Binding Source={StaticResource address}, Path=Countries}"
+                                                          DisplayMember="TitleRu"
+                                                          ValueMember="CountryId"
+                                                          SelectedItem="{Binding Source={StaticResource address}, Path=SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False"
-                                              ValueMember="Value"
-                                              DisplayMember="Name" />
+                                               />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Регион" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.RegionId, Mode=TwoWay}"                                            
+                                        <dxe:ComboBoxEdit 
+                                              ItemsSource="{Binding Source={StaticResource address}, Path=Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
                                               IsTextEditable="False"
-                                              ValueMember="Value"
-                                              DisplayMember="Name" />
+                                              ValueMember="RegionId"
+                                              DisplayMember="TitleRu" 
+                                              SelectedItem="{Binding Source={StaticResource address}, Path=SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
-
 
                                 <dxlc:LayoutGroup Orientation="Horizontal">
 
                                     <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
-                                        <dxe:ComboBoxEdit EditValue="{Binding Path=Employee.Address.AreaId, Mode=TwoWay}"                                            
+                                        <dxe:ComboBoxEdit
+                                        ItemsSource="{Binding Source={StaticResource address}, Path=Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                               IsTextEditable="False"
-                                              ValueMember="Value"
-                                              DisplayMember="Name" />
+                                          />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
