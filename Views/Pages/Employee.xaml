@@ -126,6 +126,7 @@
                                               ValueMember="RegionId"
                                               DisplayMember="TitleRu" 
                                               SelectedItem="{Binding Source={StaticResource address}, Path=SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
@@ -134,13 +135,21 @@
 
                                     <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
                                         <dxe:ComboBoxEdit
-                                        ItemsSource="{Binding Source={StaticResource address}, Path=Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
-                                              IsTextEditable="False"
-                                          />
+                                            ItemsSource="{Binding Source={StaticResource address}, Path=Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            IsTextEditable="False"
+                                            SelectedItem="{Binding Source={StaticResource address}, Path=SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
-                                        <dxe:TextEdit EditValue="{Binding Path=Address.City, Mode=TwoWay}" />
+                                        <dxe:ComboBoxEdit
+                                            ItemsSource="{Binding Source={StaticResource address}, Path=Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            IsTextEditable="True"
+                                            SelectedItem="{Binding Source={StaticResource address}, Path=SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            EditValue="{Binding Source={StaticResource address}, Path=SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
 

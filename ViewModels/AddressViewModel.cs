@@ -26,8 +26,12 @@ namespace Dental.ViewModels
 
         public AddressViewModel()
         {
-            db = new ApplicationContext();  
-            Regions = db.Region.Where(f => f.CountryId == 0).ToList();
+            db = new ApplicationContext();
+
+            Regions = null;
+            Cities = null;
+            Area = null;
+            Locality = null;
         }
 
         private readonly ApplicationContext db;
@@ -42,7 +46,7 @@ namespace Dental.ViewModels
         public IEnumerable<Region> Regions
         {
             get => regions; 
-            set => Set(ref regions, value); 
+            set{ Set(ref regions, value); }
         }
 
         private IEnumerable<string> area;
@@ -59,6 +63,13 @@ namespace Dental.ViewModels
             set => Set(ref cities, value);
         }
 
+        private IEnumerable<string> locality;
+        public IEnumerable<string> Locality
+        {
+            get => locality;
+            set => Set(ref locality, value);
+        }
+
 
         private object selectedCountry;
         public object SelectedCountry
@@ -67,8 +78,22 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedCountry, value);
+
+                Regions = null;
+
                 Regions = db.Region.Where(f => f.CountryId == ((Country)selectedCountry).CountryId)
                     .OrderBy(f => f.TitleRu).ToList();
+
+                Area = null;
+                Locality = null;
+
+                SelectedRegion = null;
+                SelectedArea = null;
+                SelectedLocality = null;
+
+                IsEnabledRegionField = true;
+                IsEnabledAreaField = false;
+                IsEnabledLocalityField = false;
             }
         }
 
@@ -79,8 +104,19 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedRegion, value);
-                Cities = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId && f.AreaRu == "").
-                    OrderBy(f => f.AreaRu).ToList();
+                if (selectedRegion == null) return;
+
+                SelectedArea = null;
+                SelectedLocality = null;
+
+                Area = null;
+                Locality = null;
+
+                Locality = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId && f.AreaRu == "")
+                    .Select(f => f.TitleRu)
+                    .Distinct()
+                    .OrderBy(f => f)
+                    .ToList(); 
 
                 Area = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId && f.AreaRu != ""
                 && f.AreaRu.Contains(" район"))
@@ -88,6 +124,10 @@ namespace Dental.ViewModels
                     .Distinct()   
                     .OrderBy(f => f)
                     .ToList();
+
+                IsEnabledRegionField = true;
+                IsEnabledAreaField = true;
+                IsEnabledLocalityField = true;
             }
         }
 
@@ -98,8 +138,46 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedArea, value);
-                Cities = db.City.Where(f => f.CountryId == ((Country)selectedCountry).CountryId).ToList();
+                if (selectedArea == null) return;
+                var areaName = SelectedArea?.ToString() ?? "";
+                Locality = null;
+                SelectedLocality = null;
+                Locality = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId &&
+                f.AreaRu != "" && f.AreaRu.Contains(areaName))
+                    .Select(f => f.TitleRu)
+                    .Distinct()
+                    .OrderBy(f => f)
+                    .ToList();
             }
         }
+
+        private object selectedLocality;
+        public object SelectedLocality 
+        { 
+            get => selectedLocality;
+            set => Set(ref selectedLocality, value); 
+        }
+
+        private bool isEnabledRegionField = false;
+        public bool IsEnabledRegionField 
+        {
+            get => isEnabledRegionField;
+            set => Set(ref isEnabledRegionField, value);
+        }
+
+        private bool isEnabledAreaField = false;
+        public bool IsEnabledAreaField
+        {
+            get => isEnabledAreaField;
+            set => Set(ref isEnabledAreaField, value);
+        }
+
+        private bool isEnabledLocalityField = false;
+        public bool IsEnabledLocalityField
+        {
+            get => isEnabledLocalityField;
+            set => Set(ref isEnabledLocalityField, value);
+        }
+
     }
 }
