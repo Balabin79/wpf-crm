@@ -110,7 +110,7 @@
                 <Setter Property="ToolTipService.HasDropShadow" Value="False" />
                 <Setter Property="ToolTipService.ToolTip">
                     <Setter.Value>
-                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" Tag="Transparent" MaxWidth="600" />
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" Tag="Transparent" MaxWidth="700" />
                     </Setter.Value>
                 </Setter>
             </Style.Setters>
@@ -122,21 +122,27 @@
 
     <DockPanel>
 
-        <dxdo:DockLayoutManager   x:Name="DemoDockContainer" dx:WorkspaceManager.IsEnabled="True"
-                   DockPanel.Dock="Right"        ClosedPanelsBarVisibility="Auto" AutoHideExpandMode="MouseDown" >
+        <dxdo:DockLayoutManager   x:Name="DemoDockContainer" 
+                                  dx:WorkspaceManager.IsEnabled="True"
+                                  DockPanel.Dock="Right"        
+                                  ClosedPanelsBarVisibility="Auto" 
+                                  AutoHideExpandMode="MouseDown" 
+                                  
+                                  >
 
                     <dxdo:DockLayoutManager.AutoHideGroups >
 
-                        <dxdo:AutoHideGroup DockType="Right" AllowClose="False" AllowMove="False">
-                            <dxdo:LayoutPanel Caption="Настройки">
+                        <dxdo:AutoHideGroup DockType="Right">
+
+                    <dxdo:LayoutPanel Caption="Настройки" AllowClose="False" AllowMove="False" AllowDrag="False" 
+                                      AllowDrop="False" AllowFloat="False" ShowCloseButton="False">
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto" 
-                      dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                      Focusable="False"
-                      >
-                                    <StackPanel Margin="12,5,12,12" MinWidth="250">
-                                        <GroupBox Header="Row Template">
-                                            <dxe:ListBoxEdit Background="{x:Null}"
+                                               VerticalScrollBarVisibility="Auto" 
+                                               dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"                                             
+                                               AllowDrop="False" Focusable="False">
+                                    
+                                <GroupBox Header="Настройка списка" Margin="5">
+                                    <dxe:ListBoxEdit Background="{x:Null}"  Width="150"                                                
                                      Margin="0,0,0,0"
                                      ShowBorder="False"
                                      DisplayMember="DisplayName"
@@ -146,14 +152,14 @@
                                                     <dxe:RadioListBoxEditStyleSettings />
                                                 </dxe:ListBoxEdit.StyleSettings>
                                                 <dxe:ListBoxEdit.Items>
-                                                    <extens:RowTemplateSelectorItem DisplayName="Animated Details" DetailTemplate="{StaticResource expandableRowDetailTemplate}" />
-                                                    <extens:RowTemplateSelectorItem DisplayName="Expanded Details" DetailTemplate="{StaticResource rowDetailTemplate}" />
-                                                    <extens:RowTemplateSelectorItem DisplayName="Tooltip" RowStyle="{StaticResource rowToolTipStyle}" />
+                                                    <extens:RowTemplateSelectorItem DisplayName="Анимированный" DetailTemplate="{StaticResource expandableRowDetailTemplate}" />
+                                                    <extens:RowTemplateSelectorItem DisplayName="Раскрытый" DetailTemplate="{StaticResource rowDetailTemplate}" />
+                                                    <extens:RowTemplateSelectorItem DisplayName="При наведении" RowStyle="{StaticResource rowToolTipStyle}" />
                                                 </dxe:ListBoxEdit.Items>
                                             </dxe:ListBoxEdit>
                                         </GroupBox>
 
-                                    </StackPanel>
+                                    
                                 </ScrollViewer>
                             </dxdo:LayoutPanel>
 
