@@ -1,11 +1,22 @@
 ﻿<Application x:Class="Dental.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Dental"
+             xmlns:local="clr-namespace:Dental" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
+        <dxmvvm:DispatcherService x:Key="BackgroundDispatcherService" DispatcherPriority="Background" />
 
-        </ResourceDictionary>
+        <dxmvvm:DispatcherService x:Key="DispatcherService" DispatcherPriority="Normal" />
+
+        <dx:DXMessageBoxService x:Key="MessageBoxService" />
+
+        <dxwui:WinUIMessageBoxService x:Key="WinUIMessageBoxService" />
+
+        <dxmvvm:NotificationService x:Key="NotificationService" UseWin8NotificationsIfAvailable="False"  
+                                PredefinedNotificationTemplate="ShortHeaderAndLongText"  
+                                CustomNotificationPosition="BottomRight" />
     </Application.Resources>
 </Application>

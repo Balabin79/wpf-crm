@@ -94,6 +94,11 @@ namespace Dental.ViewModels
                 IsEnabledRegionField = true;
                 IsEnabledAreaField = false;
                 IsEnabledLocalityField = false;
+
+                var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
+                notificationService.CreatePredefinedNotification("Opa", "Это оповещение", "Трам - пам - пам").ShowAsync();
+                notificationService.CreateCustomNotification(this).ShowAsync();
+                int x = 0;
             }
         }
 
@@ -178,6 +183,9 @@ namespace Dental.ViewModels
             get => isEnabledLocalityField;
             set => Set(ref isEnabledLocalityField, value);
         }
+
+
+
 
     }
 }

@@ -19,8 +19,9 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
        xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                       d:DesignWidth="800">
+       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+              d:DesignWidth="800">
 
 
     <UserControl.DataContext>
@@ -118,9 +119,18 @@
         <!--#endregion-->
     </UserControl.Resources>
 
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Background="White" Margin="0 10 0 0">
+            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/users.svg" Height="25" Margin="10 0 0 0" />
+            <TextBlock  Text="Список сотрудников" FontSize="20" Margin="5 3 0 0"/>
+        </StackPanel>  
 
 
-    <DockPanel>
+    <DockPanel Grid.Row="1">
 
         <dxdo:DockLayoutManager   x:Name="DemoDockContainer" 
                                   dx:WorkspaceManager.IsEnabled="True"
@@ -207,5 +217,5 @@
     </DockPanel>
 
     <!--#endregion-->
-
+    </Grid>
 </UserControl>

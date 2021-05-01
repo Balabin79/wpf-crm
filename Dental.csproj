@@ -109,6 +109,7 @@
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\tooth.svg" />
     <None Remove="Resources\Icons\svg\user-nurse.svg" />
+    <None Remove="Resources\Icons\svg\users.svg" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
@@ -351,6 +352,7 @@
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\tooth.svg" />
     <Resource Include="Resources\Icons\svg\user-nurse.svg" />
+    <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\Template\Account-Balances.png" />
     <Resource Include="Resources\Icons\Template\Advertising.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />

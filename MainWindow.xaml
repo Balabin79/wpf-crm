@@ -17,7 +17,7 @@
     xmlns:img="clr-namespace:Dental.Resources.Icons"
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"      
-    xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters">
+    xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" dx:ThemeManager.ThemeName="Office2019White">
 
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />
@@ -33,7 +33,7 @@
 
     <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
     <Grid.RowDefinitions>
-        <RowDefinition Height="165" />
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
         <RowDefinition Height="10" />
     </Grid.RowDefinitions>
