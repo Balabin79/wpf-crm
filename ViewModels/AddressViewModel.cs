@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Models.Share;
+using DevExpress.Mvvm.UI;
 
 namespace Dental.ViewModels
 {
@@ -96,8 +97,10 @@ namespace Dental.ViewModels
                 IsEnabledLocalityField = false;
 
                 var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
-                notificationService.CreatePredefinedNotification("Opa", "Это оповещение", "Трам - пам - пам").ShowAsync();
-                notificationService.CreateCustomNotification(this).ShowAsync();
+                //((NotificationService)notificationService).Sound = PredefinedSound.Notification_Default;
+                System.Media.SystemSounds.Exclamation.Play();
+                notificationService.CreatePredefinedNotification("Opa", "Это оповещение", "Трам - пам - пам").ShowAsync();             
+       
                 int x = 0;
             }
         }
