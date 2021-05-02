@@ -157,22 +157,5 @@ namespace Dental.ViewModels
             get => title; 
             set => Set(ref title, value);
         }
-
-
-
-
-        
-        
-        [ServiceProperty(Key = "NotificationService")]
-        protected virtual INotificationService AppNotificationService { get { return null; } }
-   
-        public void ShowNotification()
-        {
-            INotification notification = AppNotificationService.CreatePredefinedNotification("DevAV Tips & Tricks",
-                "Take user where they want to go with", "DevExpress Map Controls.",
-                new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/status11.png", UriKind.Absolute)));
-            notification.ShowAsync();
-        }
-
-        }
+    }
 }

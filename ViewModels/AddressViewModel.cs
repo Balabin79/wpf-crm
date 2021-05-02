@@ -19,6 +19,8 @@ using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Models.Share;
 using DevExpress.Mvvm.UI;
+using System.IO;
+using System.Reflection;
 
 namespace Dental.ViewModels
 {
@@ -96,13 +98,27 @@ namespace Dental.ViewModels
                 IsEnabledAreaField = false;
                 IsEnabledLocalityField = false;
 
-                var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
-                //((NotificationService)notificationService).Sound = PredefinedSound.Notification_Default;
-                System.Media.SystemSounds.Exclamation.Play();
-                notificationService.CreatePredefinedNotification("Opa", "Это оповещение", "Трам - пам - пам").ShowAsync();             
-       
-                int x = 0;
+
+               var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
+                var sri = Application.GetResourceStream(
+                    new Uri(@"pack://application:,,,/Dental;component/Resources/Sounds/Notifications/success.wav")
+                    );
+                if ((sri != null))
+                {
+                    using (var s = sri.Stream)
+                    {
+                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(s);
+                        player.Load();
+                        player.Play();
+                    }
+                }
+                notificationService.CreatePredefinedNotification("Уведомление", "Новый сотрудник успешно записан в базу данных!", "Трам - пам - пам", ImageNotification).ShowAsync();
             }
+        }
+
+        public System.Windows.Media.ImageSource ImageNotification
+        {
+            get => new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/error-item.png"));
         }
 
         private object selectedRegion;

@@ -101,6 +101,7 @@
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
+    <None Remove="Resources\Icons\svg\exclamation.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
@@ -110,6 +111,7 @@
     <None Remove="Resources\Icons\svg\tooth.svg" />
     <None Remove="Resources\Icons\svg\user-nurse.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
+    <None Remove="Resources\Icons\Template\.png" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
@@ -126,7 +128,12 @@
     <None Remove="Resources\Icons\Template\Document-Signature.png" />
     <None Remove="Resources\Icons\Template\Draw-Clone.png" />
     <None Remove="Resources\Icons\Template\emp.png" />
+    <None Remove="Resources\Icons\Template\error-item.png" />
+    <None Remove="Resources\Icons\Template\Error-Symbol.png" />
+    <None Remove="Resources\Icons\Template\Exclamation.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
+    <None Remove="Resources\Icons\Template\floppy-disk.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
     <None Remove="Resources\Icons\Template\Info-Rhombus.png" />
     <None Remove="Resources\Icons\Template\init.png" />
@@ -205,6 +212,9 @@
     <None Remove="Resources\PatientCard\tooth\red180.png" />
     <None Remove="Resources\PatientCard\tooth\yellow.png" />
     <None Remove="Resources\PatientCard\tooth\yellow180.png" />
+    <None Remove="Resources\Sounds\Notifications\scs.wav" />
+    <None Remove="Resources\Sounds\Notifications\success.mp3" />
+    <None Remove="Resources\Sounds\Notifications\success.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -398,7 +408,9 @@
     <Resource Include="Resources\Icons\Template\Document-Signature.png" />
     <Resource Include="Resources\Icons\Template\Draw-Clone.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
+    <Resource Include="Resources\Icons\Template\error-item.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
+    <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\Key.png" />
@@ -472,6 +484,8 @@
     <Resource Include="Resources\PatientCard\tooth\red180.png" />
     <Resource Include="Resources\PatientCard\tooth\yellow.png" />
     <Resource Include="Resources\PatientCard\tooth\yellow180.png" />
+    <Resource Include="Resources\Sounds\Notifications\scs.wav" />
+    <Resource Include="Resources\Sounds\Notifications\success.wav" />
   </ItemGroup>
 
   <ItemGroup>

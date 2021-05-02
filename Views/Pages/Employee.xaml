@@ -48,7 +48,11 @@
                     </Button>
                     <Button FontSize="14" Margin="10, 0, 0, 0" Padding="7" Command="{Binding SaveCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/save.svg" Height="12" Margin="0 0 5 0"/>
+                            <Image  Margin="0 0 2 0" Height="20" Width="20" >
+                                <Image.Source>
+                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/floppy-disk.png"  />
+                                </Image.Source>
+                            </Image>
                             <TextBlock VerticalAlignment="Center">Сохранить</TextBlock>
                         </StackPanel>
                     </Button>
@@ -64,14 +68,47 @@
 
 
         <Border  Grid.Row="2">
+
+
+
+
             <StackPanel>
-                <ListBox BorderThickness="0" Background="{x:Null}" 
+                
+                
+                
+                
+                
+                
+                
+                <ListView BorderThickness="0" Background="{x:Null}"  SelectionMode="Extended"
                          ItemsSource="{Binding Errors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
                          Grid.ColumnSpan="2" Visibility="{Binding VisibleErrors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Margin="10 0 0 0" FontStyle="Italic" Foreground="red"
+                         Margin="10 0 0 0" FontStyle="Italic" Foreground="Crimson"
                          >
-                    
-                </ListBox>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image  Margin="0 2 4 0" Height="4" Width="4" >
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/error-item.png"  />
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Text="{Binding}" FontSize="12" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
 
                 <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
                     <dxlc:LayoutGroup Orientation="Horizontal">
