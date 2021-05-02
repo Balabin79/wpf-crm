@@ -133,6 +133,7 @@
     <None Remove="Resources\Icons\Template\Exclamation.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
     <None Remove="Resources\Icons\Template\Info-Rhombus.png" />
@@ -411,6 +412,7 @@
     <Resource Include="Resources\Icons\Template\error-item.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\Key.png" />

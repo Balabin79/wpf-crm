@@ -25,6 +25,6 @@ namespace Dental.Views.Pages
         public Employee()
         {
             InitializeComponent();
-        }    
+        }
     }
 }

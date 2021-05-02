@@ -12,7 +12,10 @@
                       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
                       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                      xmlns:app="clr-namespace:Dental" xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+                      xmlns:app="clr-namespace:Dental" 
+                      xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions" 
+             xmlns:local ="clr-namespace:Dental.Views.Pages"  
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d"
                       dx:ThemeManager.ThemeName="Office2019White" 
                       d:DesignHeight="300" d:DesignWidth="300">
@@ -22,6 +25,10 @@
         <vm:EmployeeViewModel x:Key="vm"/>
         <vm:AddressViewModel x:Key="address"/>
     </UserControl.Resources>
+
+
+
+
 
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
@@ -73,13 +80,13 @@
 
 
             <StackPanel>
-                
-                
-                
-                
-                
-                
-                
+
+
+
+
+
+
+
                 <ListView BorderThickness="0" Background="{x:Null}"  SelectionMode="Extended"
                          ItemsSource="{Binding Errors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
                          Grid.ColumnSpan="2" Visibility="{Binding VisibleErrors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -142,11 +149,11 @@
                                     <dxe:ImageEdit EditValue="{Binding Path=Employee.Photo, Mode=TwoWay}" Height="128" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
-                            
-                     
+
+
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
                                 <dxlc:LayoutGroup Orientation="Horizontal">
- 
+
                                     <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
                                         <dxe:ComboBoxEdit ItemsSource="{Binding Source={StaticResource address}, Path=Countries}"
                                                           DisplayMember="TitleRu"
@@ -198,26 +205,26 @@
 
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem Label="Дом" AddColonToLabel="True" Grid.Column="1">
-                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="Корпус" AddColonToLabel="True" Grid.Column="2">
-                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="Кварт." AddColonToLabel="True" Grid.Column="3">
-                                        <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
-                                    </dxlc:LayoutItem>
+                                            <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Корпус" AddColonToLabel="True" Grid.Column="2">
+                                            <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Кварт." AddColonToLabel="True" Grid.Column="3">
+                                            <dxe:TextEdit  EditValue="{Binding Path=Address.ZipCode, Mode=TwoWay}" />
+                                        </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
 
                                 </dxlc:LayoutGroup>
-                                
+
                             </dxlc:LayoutGroup>
-                            
-                            
-                            
-                            
-                            
-                            
+
+
+
+
+
+
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
                                 <dxlc:LayoutItem Label="Дом. телефон" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True"

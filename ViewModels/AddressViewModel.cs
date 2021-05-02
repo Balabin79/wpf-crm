@@ -21,6 +21,7 @@ using Dental.Models.Share;
 using DevExpress.Mvvm.UI;
 using System.IO;
 using System.Reflection;
+using DevExpress.Mvvm.POCO;
 
 namespace Dental.ViewModels
 {
@@ -100,6 +101,7 @@ namespace Dental.ViewModels
 
 
                var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
+               
                 var sri = Application.GetResourceStream(
                     new Uri(@"pack://application:,,,/Dental;component/Resources/Sounds/Notifications/success.wav")
                     );
@@ -112,13 +114,23 @@ namespace Dental.ViewModels
                         player.Play();
                     }
                 }
-                notificationService.CreatePredefinedNotification("Уведомление", "Новый сотрудник успешно записан в базу данных!", "Трам - пам - пам", ImageNotification).ShowAsync();
+                 //notificationService.CreatePredefinedNotification("Уведомление", "Новый сотрудник успешно записан в базу данных!", "", ImageNotification).ShowAsync();
+               
+                notificationService.CreateCustomNotification(this).ShowAsync();
             }
         }
 
+        public string Caption { get; set; } = "Уведомление";
+        public string Content { get; set; } = "Новый сотрудник успешно записан в базу данных!";
+ 
+
         public System.Windows.Media.ImageSource ImageNotification
         {
-            get => new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/error-item.png"));
+            get 
+            {
+               var img = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Gnome-Document-Save-64.png"));
+                return img;
+            } 
         }
 
         private object selectedRegion;
