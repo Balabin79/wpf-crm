@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dental.Models.Base;
+using System.Windows.Media;
 
 namespace Dental.Models
 {
@@ -15,7 +16,7 @@ namespace Dental.Models
        public string Photo { get; set; }
 
         [NotMapped]
-        public DevExpress.XtraPrinting.Drawing.ImageSource  Image{ get; set; }
+        public ImageSource  Image{ get; set; }
 
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]

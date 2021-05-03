@@ -22,6 +22,7 @@ using DevExpress.Mvvm.UI;
 using System.IO;
 using System.Reflection;
 using DevExpress.Mvvm.POCO;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
@@ -97,40 +98,8 @@ namespace Dental.ViewModels
 
                 IsEnabledRegionField = true;
                 IsEnabledAreaField = false;
-                IsEnabledLocalityField = false;
-
-
-               var notificationService = ServiceContainer.Default.GetService<INotificationService>("NotificationService");
-               
-                var sri = Application.GetResourceStream(
-                    new Uri(@"pack://application:,,,/Dental;component/Resources/Sounds/Notifications/success.wav")
-                    );
-                if ((sri != null))
-                {
-                    using (var s = sri.Stream)
-                    {
-                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(s);
-                        player.Load();
-                        player.Play();
-                    }
-                }
-                 //notificationService.CreatePredefinedNotification("Уведомление", "Новый сотрудник успешно записан в базу данных!", "", ImageNotification).ShowAsync();
-               
-                notificationService.CreateCustomNotification(this).ShowAsync();
+                IsEnabledLocalityField = false;         
             }
-        }
-
-        public string Caption { get; set; } = "Уведомление";
-        public string Content { get; set; } = "Новый сотрудник успешно записан в базу данных!";
- 
-
-        public System.Windows.Media.ImageSource ImageNotification
-        {
-            get 
-            {
-               var img = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Gnome-Document-Save-64.png"));
-                return img;
-            } 
         }
 
         private object selectedRegion;
@@ -214,9 +183,5 @@ namespace Dental.ViewModels
             get => isEnabledLocalityField;
             set => Set(ref isEnabledLocalityField, value);
         }
-
-
-
-
     }
 }

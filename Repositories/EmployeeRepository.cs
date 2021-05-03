@@ -16,7 +16,7 @@ using DevExpress.Xpf.Grid;
 namespace Dental.Repositories
 {
     class EmployeeRepository
-    {
+    {/*
         public async Task<ObservableCollection<Employee>> GetAll()
         {
             try
@@ -114,6 +114,6 @@ namespace Dental.Repositories
             {
                 new RepositoryLog(e).run();
             }
-        }
+        }*/
     }
 }

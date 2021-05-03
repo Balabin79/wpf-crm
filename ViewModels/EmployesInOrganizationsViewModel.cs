@@ -145,12 +145,12 @@ namespace Dental.ViewModels
             get => new OrganizationRepository().GetAll().Result;
             set => Set(ref _GetOrgListEmployee, value);
         }
-
+        /*
         [NotMapped]
         public ObservableCollection<Employee> GetEmployeeList
         {
             get => new EmployeeRepository().GetAll().Result;
-        }
+        }*/
 
         private void setFields(object result)
         {

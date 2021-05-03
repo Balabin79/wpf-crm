@@ -15,6 +15,7 @@
                       xmlns:app="clr-namespace:Dental" 
                       xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions" 
              xmlns:local ="clr-namespace:Dental.Views.Pages"  
+             xmlns:uc ="clr-namespace:Dental.Views.Pages.UserControls"  
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              mc:Ignorable="d"
                       dx:ThemeManager.ThemeName="Office2019White" 
@@ -27,9 +28,6 @@
     </UserControl.Resources>
 
 
-
-
-
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -38,10 +36,10 @@
 
         <StackPanel Grid.Row="0" Margin="0 10 15 0">
             <Grid>
-            <Grid.ColumnDefinitions>
-                 <ColumnDefinition Width="Auto" />
-                 <ColumnDefinition />
-             </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Grid.Row="0" Margin="5 0 15 0" Orientation="Horizontal">
                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/user-nurse.svg" Height="25" Margin="10 0 0 0" />
                     <TextBlock  Text="{Binding Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontSize="20" Margin="5 3 0 0"/>
@@ -65,58 +63,11 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            
         </StackPanel>
-        
-                   
-
-
-
-
 
         <Border  Grid.Row="2">
-
-
-
-
             <StackPanel>
-
-
-
-
-
-
-
-                <ListView BorderThickness="0" Background="{x:Null}"  SelectionMode="Extended"
-                         ItemsSource="{Binding Errors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  
-                         Grid.ColumnSpan="2" Visibility="{Binding VisibleErrors, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         Margin="10 0 0 0" FontStyle="Italic" Foreground="Crimson"
-                         >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Image  Margin="0 2 4 0" Height="4" Width="4" >
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/error-item.png"  />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock Text="{Binding}" FontSize="12" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <ContentPresenter/>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                </ListView>
-
+                <uc:ListViewErrors Margin="5 0 0 0"/>
                 <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
                     <dxlc:LayoutGroup Orientation="Horizontal">
                         <dxlc:LayoutGroup Orientation="Vertical">
@@ -145,32 +96,70 @@
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
-                                    <dxe:ImageEdit EditValue="{Binding Path=Employee.Photo, Mode=TwoWay}" Height="128" />
+                                    <ext:ImageEditEx                       
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                      ImagePath = "{Binding Employee.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding Employee.Image, Mode=TwoWay}"                                 
+                                      Height="128"  />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
 
 
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
                                 <dxlc:LayoutGroup Orientation="Horizontal">
 
                                     <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit ItemsSource="{Binding Source={StaticResource address}, Path=Countries}"
+                                        <dxe:ComboBoxEdit ItemsSource="{Binding Countries}"
                                                           DisplayMember="TitleRu"
                                                           ValueMember="CountryId"
-                                                          SelectedItem="{Binding Source={StaticResource address}, Path=SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False"
                                                />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Регион" AddColonToLabel="True">
                                         <dxe:ComboBoxEdit 
-                                              ItemsSource="{Binding Source={StaticResource address}, Path=Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
+                                              ItemsSource="{Binding Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
                                               IsTextEditable="False"
                                               ValueMember="RegionId"
                                               DisplayMember="TitleRu" 
-                                              SelectedItem="{Binding Source={StaticResource address}, Path=SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                              SelectedItem="{Binding SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsEnabled="{Binding IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
@@ -179,20 +168,21 @@
 
                                     <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
                                         <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Source={StaticResource address}, Path=Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            ItemsSource="{Binding Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                             IsTextEditable="False"
-                                            SelectedItem="{Binding Source={StaticResource address}, Path=SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                            IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            SelectedItem="{Binding SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            EditValue="{Binding SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                          
+                                            IsEnabled="{Binding IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
                                         <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Source={StaticResource address}, Path=Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            ItemsSource="{Binding Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                             IsTextEditable="True"
-                                            SelectedItem="{Binding Source={StaticResource address}, Path=SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            EditValue="{Binding Source={StaticResource address}, Path=SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            IsEnabled="{Binding Source={StaticResource address}, Path=IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            SelectedItem="{Binding SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            EditValue="{Binding SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            IsEnabled="{Binding IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>

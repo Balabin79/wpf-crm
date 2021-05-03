@@ -17,16 +17,19 @@ using System.Windows.Media.Imaging;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Windows;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
-    class EmployeeViewModel : ViewModelBase
+    class EmployeeViewModel : AddressViewModel
     {
 
         public EmployeeViewModel() : this(0){}
 
-        public EmployeeViewModel(int employeeId = 0)
+        public EmployeeViewModel(int employeeId = 0) : base()
         {
+           
+
             CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
@@ -91,11 +94,11 @@ namespace Dental.ViewModels
                 {
                     context.Add(Employee);
                     db.SaveChanges();
+                    new NotificationCreatingEmployee().run();
                     return;
                 }
-
                 db.Entry(Employee).State = EntityState.Modified;
-                db.SaveChanges();
+                db.SaveChanges();            
             }
             catch (DbEntityValidationException ex)
             {
@@ -157,5 +160,6 @@ namespace Dental.ViewModels
             get => title; 
             set => Set(ref title, value);
         }
+
     }
 }

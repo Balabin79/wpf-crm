@@ -49,22 +49,22 @@ namespace Dental.Models
 
         [Display(Name = "Пароль")]
         public string Password { get; set; }
-
+        /*
         [NotMapped]
         public string SpecialitiesName
         {
             get => EmployesSpecialities.Count < 1 ? "": String.Join(", ", EmployesSpecialities.Select(d => d.Speciality?.Name).ToList());
         }
-
+        
         [NotMapped]
         public string OrganizationsName
         {
             get => EmployesInOrganizations.Count < 1 ? "" : String.Join(", ", EmployesInOrganizations.Select(d => d.Organization?.Name).ToList());
         }
-
+        
         public List<EmployesInOrganizations> EmployesInOrganizations { get; set; }
         public List<EmployesSpecialities> EmployesSpecialities { get; set; }
-
+        */
 
         public bool this[PropertyInfo prop, Employee item]
         {

@@ -26,5 +26,15 @@ namespace Dental.Views.Pages
         {
             InitializeComponent();
         }
+
+        private void ImageEdit_ToolTipOpening(object sender, ToolTipEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private void ImageEdit_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            int x = 0;
+        }
     }
 }
