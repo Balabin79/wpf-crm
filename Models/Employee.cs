@@ -33,15 +33,13 @@ namespace Dental.Models
         public EmployeeStatus EmployeeStatus { get; set; } // статус (работает, уволен и т.д.)
 
         [Display(Name = "Дата приема")]
-        public string HireDate { get; set; } = DateTime.Now.ToShortDateString().ToString(); // дата приема на работу
+        public string HireDate { get; set; } // дата приема на работу
 
         [Display(Name = "Дата увольнения")]
-        public string DismissalDate { get; set; } = DateTime.Now.ToShortDateString().ToString(); // дата увольнения
+        public string DismissalDate { get; set; } //= DateTime.Now.ToShortDateString().ToString(); // дата увольнения
 
         [Display(Name = "ИНН")]
-        [MaxLength(12, ErrorMessage = @"Длина строки в поле ""ИНН"" не более 12 цифр")]
-        [MinLength(12, ErrorMessage = @"Длина строки в поле ""ИНН"" не менее 12 цифр")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
+        [RegularExpression(@"^\d{12}$", ErrorMessage = @"Формат ""ИНН""- 12 цифр")]
         public string Inn { get; set; }
 
         [Display(Name = "Логин")]

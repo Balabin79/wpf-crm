@@ -183,5 +183,7 @@ namespace Dental.ViewModels
             get => isEnabledLocalityField;
             set => Set(ref isEnabledLocalityField, value);
         }
+
+
     }
 }

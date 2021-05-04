@@ -6,11 +6,8 @@ using System.Windows.Media;
 
 namespace Dental.Models
 {
-
-
     abstract class User : AbstractBaseModel
     {
-
         // Общая информация
        [Display(Name = "Фото")]
        public string Photo { get; set; }
@@ -33,14 +30,12 @@ namespace Dental.Models
         public string MiddleName { get; set; }
 
         [Display(Name = "Дата рождения")]
-        public string BirthDate { get; set; } = DateTime.Now.ToShortDateString().ToString();
+        public string BirthDate { get; set; }
 
         [NotMapped]
         public string FullName
         {
             get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
         }
-
     }
-
 }

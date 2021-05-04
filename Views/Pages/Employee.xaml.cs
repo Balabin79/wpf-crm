@@ -1,40 +1,40 @@
-﻿using DevExpress.Mvvm.UI;
+﻿using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Dental.ViewModels;
 
 namespace Dental.Views.Pages
 {
     /// <summary>
     /// Логика взаимодействия для Employee.xaml
     /// </summary>
-    public partial class Employee : UserControl
+    public partial class Employee : UserControl, DevExpress.Xpf.WindowsUI.Navigation.INavigationAware
     {
         public Employee()
         {
             InitializeComponent();
         }
 
-        private void ImageEdit_ToolTipOpening(object sender, ToolTipEventArgs e)
+        public void NavigatedFrom(NavigationEventArgs e)
         {
-            int x = 0;
+            throw new System.NotImplementedException();
         }
 
-        private void ImageEdit_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        public void NavigatedTo(NavigationEventArgs e)
         {
-            int x = 0;
+            try
+            {
+                this.MainGrid.DataContext = e.Parameter == null ? new EmployeeViewModel() : this.MainGrid.DataContext = new EmployeeViewModel((int)e.Parameter);
+            } 
+            catch(Exception ex)
+            {
+                this.MainGrid.DataContext = new EmployeeViewModel();
+            }
+        }
+
+        public void NavigatingFrom(NavigatingEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

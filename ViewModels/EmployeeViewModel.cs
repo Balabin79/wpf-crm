@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
+using System.IO;
 
 namespace Dental.ViewModels
 {
@@ -48,6 +49,7 @@ namespace Dental.ViewModels
                 else
                 {
                     Employee = context.Where(i => i.Id == employeeId).First();
+                    Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
                     Title = Employee.FullName;
                 }
             } 

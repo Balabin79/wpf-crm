@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Infrastructures.Logs;
-using Dental.Interfaces.Template;
 using Dental.Models;
-using Dental.Models.Base;
-using Dental.Repositories;
-using DevExpress.Xpf.Grid;
 using System.Data.Entity;
 using System.Collections;
 using System.Windows.Media.Imaging;
@@ -29,8 +21,6 @@ namespace Dental.ViewModels
 
         protected DbSet<Employee> Context { get => db.Employes; }
 
-
-
         public IEnumerable Employees
         {
             get 
@@ -40,7 +30,5 @@ namespace Dental.ViewModels
                 return Context.Local;
             }
         }
-
-
     }
 }
