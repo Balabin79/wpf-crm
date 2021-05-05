@@ -161,18 +161,18 @@
 
                                 <dxlc:LayoutGroup Orientation="Horizontal">
                                     <dxlc:LayoutItem Label="Улица" AddColonToLabel="True" Grid.Column="0">
-                                        <dxe:TextEdit EditValue="{Binding Path=Employee.Address.Street, Mode=TwoWay}" />
+                                        <dxe:TextEdit EditValue="{Binding Path=Employee.Street, Mode=TwoWay}" />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem Label="Дом" AddColonToLabel="True" Grid.Column="1">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Address.House, Mode=TwoWay}" />
+                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.House, Mode=TwoWay}" />
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem Label="Корпус" AddColonToLabel="True" Grid.Column="2">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Address.Housing, Mode=TwoWay}" />
+                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Housing, Mode=TwoWay}" />
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem Label="Кварт." AddColonToLabel="True" Grid.Column="3">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Address.Apartment, Mode=TwoWay}" />
+                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Apartment, Mode=TwoWay}" />
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
@@ -196,7 +196,7 @@
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
                                         <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                                     </dxe:ButtonEdit>

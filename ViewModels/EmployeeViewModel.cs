@@ -19,6 +19,9 @@ using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
+using Dental.Models.Share;
+using System.Threading;
+using DevExpress.Data.ODataLinq.Helpers;
 
 namespace Dental.ViewModels
 {
@@ -48,9 +51,11 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    Employee = context.Where(i => i.Id == employeeId).First();
+                    Employee = context.Where(i => i.Id == employeeId).First();                   
                     Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
                     Title = Employee.FullName;
+                 
+
                 }
             } 
             catch (Exception e)
@@ -92,10 +97,12 @@ namespace Dental.ViewModels
             {
                 Errors = null;
                 VisibleErrors = Visibility.Collapsed;
+
                 if (Employee.Id == 0)
                 {
                     context.Add(Employee);
                     db.SaveChanges();
+
                     new NotificationCreatingEmployee().run();
                     return;
                 }

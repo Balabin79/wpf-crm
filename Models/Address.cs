@@ -1,9 +1,7 @@
 using Dental.Models.Base;
-using Dental.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
-using System.Windows.Input;
 
 namespace Dental.Models
 {
@@ -17,10 +15,10 @@ namespace Dental.Models
         public int? RegionId { get; set; }
 
         [Display(Name = "Район")]
-        public int? AreaId { get; set; }
+        public string Area { get; set; }
 
         [Display(Name = "Населенный пункт")]
-        public int? CityId { get; set; }
+        public string Locality { get; set; }
 
         [Display(Name = "Улица")]
         public string Street { get; set; }
@@ -44,8 +42,8 @@ namespace Dental.Models
                     case "Id": return item.Id == Id;
                     case "CountryId": return item.CountryId == CountryId;
                     case "RegionId": return item.RegionId == RegionId;
-                    case "AreaId": return item.AreaId == AreaId;                 
-                    case "CityId": return item.CityId == CityId;                 
+                    case "AreaId": return item.Area == Area;                 
+                    case "CityId": return item.Locality == Locality;                 
                     case "Street": return item.Street == Street;                 
                     case "House": return item.House == House;                 
                     case "Housing": return item.Housing == Housing;                 
@@ -59,8 +57,8 @@ namespace Dental.Models
         {
             CountryId = copy.CountryId;
             RegionId = copy.RegionId;
-            AreaId = copy.AreaId;
-            CityId = copy.CityId;
+            Area = copy.Area;
+            Locality = copy.Locality;
             Street = copy.Street;
             House = copy.House;
             Housing = copy.Housing;

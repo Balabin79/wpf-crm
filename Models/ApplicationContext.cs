@@ -32,5 +32,6 @@ namespace Dental.Models
         public DbSet<Country> Country { get; set; }
         public DbSet<Region> Region { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

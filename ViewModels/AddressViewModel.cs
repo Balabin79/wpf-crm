@@ -37,14 +37,15 @@ namespace Dental.ViewModels
             Cities = null;
             Area = null;
             Locality = null;
+            countries = db.Country.OrderBy(f => f.CountryId).ToList();
         }
 
         private readonly ApplicationContext db;
-        
 
+        private readonly IEnumerable<Country> countries;
         public IEnumerable<Country> Countries 
-        { 
-            get => db.Country.OrderBy(f => f.CountryId).ToList(); 
+        {
+            get => countries;
         }
 
         private IEnumerable<Region> regions;
@@ -83,9 +84,8 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedCountry, value);
-
+       
                 Regions = null;
-
                 Regions = db.Region.Where(f => f.CountryId == ((Country)selectedCountry).CountryId)
                     .OrderBy(f => f.TitleRu).ToList();
 

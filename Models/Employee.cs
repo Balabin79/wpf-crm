@@ -1,3 +1,4 @@
+using Dental.Models.Share;
 using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,6 @@ namespace Dental.Models
         public string Email { get; set; }
 
         public string Skype { get; set; }
-
-        public int? AddressId { get; set; }
-        public  Address Address { get; set; }
 
         [Display(Name = "Моб.телефон")]
         [Phone(ErrorMessage = @"В поле ""Мобильный телефон"" введено некорректное значение")]
@@ -47,6 +45,33 @@ namespace Dental.Models
 
         [Display(Name = "Пароль")]
         public string Password { get; set; }
+
+
+        [Display(Name = "Страна")]
+        public int? CountryId { get; set; }
+        public Country Country { get; set; }
+
+        [Display(Name = "Область, край, республика")]
+        public int? RegionId { get; set; }
+        public Region Region { get; set; }
+
+        [Display(Name = "Район")]
+        public string Area { get; set; }
+
+        [Display(Name = "Населенный пункт")]
+        public string Locality { get; set; }
+
+        [Display(Name = "Улица")]
+        public string Street { get; set; }
+
+        [Display(Name = "Дом")]
+        public string House { get; set; }
+
+        [Display(Name = "Корпус")]
+        public string Housing { get; set; }
+
+        [Display(Name = "Квартира")]
+        public string Apartment { get; set; }
         /*
         [NotMapped]
         public string SpecialitiesName
@@ -80,7 +105,6 @@ namespace Dental.Models
                     case "Inn": return item.Inn == Inn;
                     case "Email": return item.Email == Email;
                     case "Skype": return item.Skype == Skype;
-                    case "Address": return item.Address == Address;
                     case "MobilePhone": return item.MobilePhone == MobilePhone;
                     case "HomePhone": return item.HomePhone == HomePhone;
                     case "Status": return item.EmployeeStatus == EmployeeStatus;
@@ -106,7 +130,6 @@ namespace Dental.Models
              Inn = copy.Inn;
              Email = copy.Email;
              Skype = copy.Skype;
-             Address = copy.Address;
              MobilePhone = copy.MobilePhone;
              HomePhone = copy.HomePhone;
              EmployeeStatus = copy.EmployeeStatus;
