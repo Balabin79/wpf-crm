@@ -1,48 +1,29 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Infrastructures.Logs;
-using Dental.Interfaces.Template;
+﻿using System.Linq;
 using Dental.Models;
-using Dental.Models.Base;
-using Dental.Repositories;
-using DevExpress.Xpf.Grid;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using DevExpress.Mvvm.DataAnnotations;
-using DevExpress.Mvvm;
-using System.Windows.Media.Imaging;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
-using System.Windows;
 using Dental.Models.Share;
-using DevExpress.Mvvm.UI;
-using System.IO;
-using System.Reflection;
-using DevExpress.Mvvm.POCO;
-using Dental.Infrastructures.Extensions.Notifications;
+using MoreLinq;
 
 namespace Dental.ViewModels
 {
     class AddressViewModel : ViewModelBase
-    {
-
-        public AddressViewModel()
+    {    
+        public AddressViewModel(Employee employee)
         {
             db = new ApplicationContext();
+            countries = db.Country.OrderBy(f => f.TitleRu).ToList();
 
-            Regions = null;
-            Cities = null;
-            Area = null;
-            Locality = null;
-            countries = db.Country.OrderBy(f => f.CountryId).ToList();
+            Employee = employee;
+            SelectedCountry = (Employee.CountryId != null ) ? db.Country.Where(f => f.CountryId == Employee.CountryId).FirstOrDefault() : null;
+            SelectedRegion = (Employee.RegionId != null) ? db.Region.Where(f => f.RegionId == Employee.RegionId).FirstOrDefault() : null;
+            SelectedArea = !string.IsNullOrEmpty(Employee.Area) && Employee.RegionId != null ? db.City.Where(f => f.AreaRu.Contains(Employee.Area) && f.RegionId == Employee.RegionId).FirstOrDefault() : null;
+            SelectedLocality = Employee.CityId != null && Employee.RegionId != null ? db.City.Where(f => f.CityId == Employee.CityId).FirstOrDefault() : null;
         }
 
+        private Employee Employee { get; set; }
         private readonly ApplicationContext db;
-
         private readonly IEnumerable<Country> countries;
+
         public IEnumerable<Country> Countries 
         {
             get => countries;
@@ -55,8 +36,8 @@ namespace Dental.ViewModels
             set{ Set(ref regions, value); }
         }
 
-        private IEnumerable<string> area;
-        public IEnumerable<string> Area
+        private IEnumerable<City> area;
+        public IEnumerable<City> Area
         {
             get => area;
             set => Set(ref area, value);
@@ -69,8 +50,8 @@ namespace Dental.ViewModels
             set => Set(ref cities, value);
         }
 
-        private IEnumerable<string> locality;
-        public IEnumerable<string> Locality
+        private IEnumerable<City> locality;
+        public IEnumerable<City> Locality
         {
             get => locality;
             set => Set(ref locality, value);
@@ -84,13 +65,10 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedCountry, value);
-       
-                Regions = null;
+                if (selectedCountry == null) return;
+                Employee.CountryId = ((Country)selectedCountry).CountryId;
                 Regions = db.Region.Where(f => f.CountryId == ((Country)selectedCountry).CountryId)
                     .OrderBy(f => f.TitleRu).ToList();
-
-                Area = null;
-                Locality = null;
 
                 SelectedRegion = null;
                 SelectedArea = null;
@@ -110,24 +88,18 @@ namespace Dental.ViewModels
             {
                 Set(ref selectedRegion, value);
                 if (selectedRegion == null) return;
-
+                Employee.RegionId = ((Region)selectedRegion).RegionId;
                 SelectedArea = null;
                 SelectedLocality = null;
-
-                Area = null;
-                Locality = null;
-
                 Locality = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId && f.AreaRu == "")
-                    .Select(f => f.TitleRu)
-                    .Distinct()
-                    .OrderBy(f => f)
+                    .DistinctBy(f => f.TitleRu)
+                    .OrderBy(f => f.TitleRu)
                     .ToList(); 
 
                 Area = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId && f.AreaRu != ""
                 && f.AreaRu.Contains(" район"))
-                    .Select(f => f.AreaRu)
-                    .Distinct()   
-                    .OrderBy(f => f)
+                    .DistinctBy(f => f.AreaRu)   
+                    .OrderBy(f => f.AreaRu)
                     .ToList();
 
                 IsEnabledRegionField = true;
@@ -143,15 +115,15 @@ namespace Dental.ViewModels
             set
             {
                 Set(ref selectedArea, value);
-                if (selectedArea == null) return;
-                var areaName = SelectedArea?.ToString() ?? "";
-                Locality = null;
+                if (selectedArea == null || selectedRegion == null) return;
+                Employee.Area = ((City)selectedArea).AreaRu;
+
                 SelectedLocality = null;
+
                 Locality = db.City.Where(f => f.RegionId == ((Region)selectedRegion).RegionId &&
-                f.AreaRu != "" && f.AreaRu.Contains(areaName))
-                    .Select(f => f.TitleRu)
-                    .Distinct()
-                    .OrderBy(f => f)
+                     f.AreaRu != "" && f.AreaRu.Contains(((City)selectedArea).AreaRu))
+                    .DistinctBy(f => f.TitleRu)
+                    .OrderBy(f => f.TitleRu)
                     .ToList();
             }
         }
@@ -160,7 +132,12 @@ namespace Dental.ViewModels
         public object SelectedLocality 
         { 
             get => selectedLocality;
-            set => Set(ref selectedLocality, value); 
+            set
+            {
+                Set(ref selectedLocality, value);
+                if (selectedLocality == null) return;
+                Employee.CityId = ((City)selectedLocality).CityId;
+            } 
         }
 
         private bool isEnabledRegionField = false;
@@ -183,7 +160,5 @@ namespace Dental.ViewModels
             get => isEnabledLocalityField;
             set => Set(ref isEnabledLocalityField, value);
         }
-
-
     }
 }

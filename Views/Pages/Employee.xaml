@@ -24,7 +24,6 @@
 
     <UserControl.Resources>
         <vm:EmployeeViewModel x:Key="vm"/>
-        <vm:AddressViewModel x:Key="address"/>
     </UserControl.Resources>
 
 
@@ -115,22 +114,21 @@
                                 <dxlc:LayoutGroup Orientation="Horizontal">
 
                                     <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit ItemsSource="{Binding Countries}"
+                                        <dxe:ComboBoxEdit ItemsSource="{Binding Address.Countries}"
                                                           DisplayMember="TitleRu"
-                                                          ValueMember="CountryId"
-                                                          SelectedItem="{Binding SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding Address.SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False"
                                                />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Регион" AddColonToLabel="True">
                                         <dxe:ComboBoxEdit 
-                                              ItemsSource="{Binding Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
+                                              ItemsSource="{Binding Address.Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
                                               IsTextEditable="False"
                                               ValueMember="RegionId"
                                               DisplayMember="TitleRu" 
-                                              SelectedItem="{Binding SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsEnabled="{Binding IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                              SelectedItem="{Binding Address.SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsEnabled="{Binding Address.IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
@@ -139,21 +137,24 @@
 
                                     <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
                                         <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            ItemsSource="{Binding Address.Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                             IsTextEditable="False"
-                                            SelectedItem="{Binding SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                            EditValue="{Binding SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                          
-                                            IsEnabled="{Binding IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            DisplayMember="AreaRu" 
+                                            SelectedItem="{Binding Address.SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            EditValue="{Binding Address.SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                          
+                                            IsEnabled="{Binding Address.IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
                                         <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
+                                            ItemsSource="{Binding Address.Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                             IsTextEditable="True"
-                                            SelectedItem="{Binding SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            EditValue="{Binding SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            IsEnabled="{Binding IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            SelectedItem="{Binding Address.SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                     
+                                            IsEnabled="{Binding Address.IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
+                                            DisplayMember="TitleRu" 
+                                            ValueMember="CityId" 
                                             />
                                     </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>

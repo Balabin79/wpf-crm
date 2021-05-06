@@ -55,6 +55,10 @@ namespace Dental.Models
         public int? RegionId { get; set; }
         public Region Region { get; set; }
 
+        [Display(Name = "Населенный пункт")]
+        public int? CityId { get; set; }
+        public City City { get; set; }
+
         [Display(Name = "Район")]
         public string Area { get; set; }
 

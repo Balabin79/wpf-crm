@@ -1,39 +1,27 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
-using Dental.Interfaces.Template;
 using Dental.Models;
-using Dental.Models.Base;
-using Dental.Repositories;
-using DevExpress.Xpf.Grid;
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using DevExpress.Mvvm.DataAnnotations;
-using DevExpress.Mvvm;
 using System.Windows.Media.Imaging;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
-using Dental.Models.Share;
-using System.Threading;
 using DevExpress.Data.ODataLinq.Helpers;
 
 namespace Dental.ViewModels
 {
-    class EmployeeViewModel : AddressViewModel
+    class EmployeeViewModel : ViewModelBase
     {
 
         public EmployeeViewModel() : this(0){}
 
-        public EmployeeViewModel(int employeeId = 0) : base()
+        public EmployeeViewModel(int employeeId = 0)
         {
-           
-
             CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
@@ -41,6 +29,7 @@ namespace Dental.ViewModels
             db = new ApplicationContext();
             context = db.Employes;
             VisibleErrors = Visibility.Collapsed;
+
 
             try
             {
@@ -55,8 +44,9 @@ namespace Dental.ViewModels
                     Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
                     Title = Employee.FullName;
                  
-
                 }
+                Address = new AddressViewModel(Employee);
+
             } 
             catch (Exception e)
             {
@@ -67,6 +57,7 @@ namespace Dental.ViewModels
                     "Возможно данные повреждены или удалены." +
                     "Вернитесь к списку сотрудников и повторите попытку." +
                     "При повторении ошибки, обратитесь за помощью к администратору или в тех.поддержку" };
+                VisibleErrors = true;
             }           
         }
 
@@ -142,7 +133,8 @@ namespace Dental.ViewModels
         }
  
     
-        public Employee Employee { get; set; } = new Employee();
+        public Employee Employee { get; set; }
+        public AddressViewModel Address { get; set; }
 
         private readonly ApplicationContext db;
         private readonly DbSet<Employee> context;
