@@ -28,5 +28,15 @@ namespace Dental.Views.PatientCard
         {
             int x = 0;
         }
+
+        private void Polygon_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
     }
 }

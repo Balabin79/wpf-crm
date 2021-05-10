@@ -17,7 +17,6 @@ namespace Dental.ViewModels
 {
     class EmployeeViewModel : ViewModelBase
     {
-
         public EmployeeViewModel() : this(0){}
 
         public EmployeeViewModel(int employeeId = 0)
@@ -30,7 +29,6 @@ namespace Dental.ViewModels
             context = db.Employes;
             VisibleErrors = Visibility.Collapsed;
 
-
             try
             {
                 if (employeeId == 0)
@@ -42,11 +40,9 @@ namespace Dental.ViewModels
                 {
                     Employee = context.Where(i => i.Id == employeeId).First();                   
                     Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
-                    Title = Employee.FullName;
-                 
+                    Title = Employee.FullName;                 
                 }
                 Address = new AddressViewModel(Employee);
-
             } 
             catch (Exception e)
             {
@@ -61,13 +57,33 @@ namespace Dental.ViewModels
             }           
         }
 
+        public Employee Employee { get; set; }
+        public AddressViewModel Address { get; set; }
+        public DbSet<Employee> Context => context;
+
+        public object VisibleErrors
+        {
+            get => visibleErrors;
+            set => Set(ref visibleErrors, value);
+        }
+
+        public IEnumerable<string> Errors
+        {
+            get => errors;
+            set => Set(ref errors, value);
+        }
+
+        public string Title
+        {
+            get => title;
+            set => Set(ref title, value);
+        }
+
+
         public ICommand CancelCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenCommand { get; }
 
-        private bool CanCancelCommandExecute(object p) => true;
-        private bool CanSaveCommandExecute(object p) => true;
-        private bool CanOpenCommandExecute(object p) => true;
 
         private void OnCancelCommandExecuted(object p)
         {
@@ -109,13 +125,7 @@ namespace Dental.ViewModels
                     VisibleErrors = Visibility.Visible;
                 }
             }
-            catch (Exception e)
-            {
-                int x = 0;
-                /*
-                var error = e.EntityValidationErrors.First().ValidationErrors.First();
-                this.ModelState.AddModelError(error.PropertyName, error.ErrorMessage);*/
-            }
+            catch (Exception e){}
         }
 
         private void OnOpenCommandExecuted(object p)
@@ -132,35 +142,14 @@ namespace Dental.ViewModels
             }
         }
  
-    
-        public Employee Employee { get; set; }
-        public AddressViewModel Address { get; set; }
-
         private readonly ApplicationContext db;
         private readonly DbSet<Employee> context;
         private IEnumerable<string> errors;
-        public object visibleErrors;
-
-        public DbSet<Employee> Context => context;
-
-        public object VisibleErrors
-        {
-            get => visibleErrors;
-            set => Set(ref visibleErrors, value);
-        }
-
-
-
-        public IEnumerable<string> Errors {
-            get => errors;
-            set => Set(ref errors, value);
-        }
-
         private string title;
-        public string Title {
-            get => title; 
-            set => Set(ref title, value);
-        }
+        private object visibleErrors;
 
+        private bool CanCancelCommandExecute(object p) => true;
+        private bool CanSaveCommandExecute(object p) => true;
+        private bool CanOpenCommandExecute(object p) => true;
     }
 }

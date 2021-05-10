@@ -150,8 +150,7 @@
                                         <dxe:ComboBoxEdit
                                             ItemsSource="{Binding Address.Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
                                             IsTextEditable="True"
-                                            SelectedItem="{Binding Address.SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                     
+                                            SelectedItem="{Binding Address.SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"                                                     
                                             IsEnabled="{Binding Address.IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
                                             DisplayMember="TitleRu" 
                                             ValueMember="CityId" 

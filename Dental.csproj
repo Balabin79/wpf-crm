@@ -272,6 +272,7 @@
     <Folder Include="Resources\PatientCard\Новая папка\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\HandbooksPages\MedicalCard\" />
+    <Folder Include="Views\IDS\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -531,6 +532,24 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\Teeth\BottomSimpleOneRoot.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\Teeth\TopSimpleOneRoot.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\Teeth\TopOneRoot.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\Teeth\BottomOneRoot.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\Teeth\TopThreeRoots.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\Teeth\TopTwoRoots.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -616,6 +635,30 @@
     </Page>
     <Page Update="Views\PatientCard\MainList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\BottomSimpleOneRoot.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\TopSimpleOneRoot.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\TopOneRoot.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\BottomOneRoot.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\TopThreeRoots.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Teeth\TopTwoRoots.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

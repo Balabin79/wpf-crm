@@ -1,0 +1,240 @@
+﻿<Page x:Class="Dental.Views.Pages.IDS"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Dental.Views.Pages"
+      xmlns:vm ="clr-namespace:Dental.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="IDS">
+
+    <Grid >
+        <Grid.DataContext>
+            <vm:DiagnosViewModel/>
+        </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid HorizontalAlignment="Stretch" Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Background="White" Margin="0 10 0 0">
+                <Image Height="25" Width="25" Margin="15 5 5 5">
+                    <Image.Source>
+                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Document-Signature.png" />
+                    </Image.Source>
+                </Image>
+                <TextBlock  Text="Информированные добровольные согласия, рекомендации, прочие документы" FontSize="20" Margin="0 3 0 0"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" >
+            <FlowDocumentScrollViewer>
+                <FlowDocument>
+                    <List>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на инъекционную анестезию</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на лечение кариеса и иных болезней твердых тканей зубов</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на неотложную помощь</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem >
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на ортодонтическое лечение</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на ортопедическое лечение</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на отказ от гарантий (как временная мера)</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на парадонтологическое лечение</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на проведение диагностических манипуляций (рентгендиагностику)</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на проведение операции наращивания кости на участке верхнечелюстной пазухи (синус-лифтинг)</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на проведение операций по реконструкции альвеолярного отростка</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на проведение хирургической операции (удаление зуба, резекция)</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на процедуру отбеливания зубов</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на установку имплантата</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на хирургическое лечение и имплантацию</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>ИДС на эндодонтическое лечение</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Лист ИДС</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога по после отбеливания зубов</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после имплантации</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после лечения кариеса и пульпита</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после протезированием  сьемными протезами</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после протезирования коронками  и мостовидными ортопедическими конструкциями</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после профессиональной гигиены полости рта</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога после удаления зуба</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Рекомендации стоматолога по уходу за брекетами</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+
+
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Приходный кассовый ордер</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Договор об оказании стоматологических услуг</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Договор Поручитель</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+                        <ListItem Margin="0 5 0 5">
+                            <Paragraph>
+                                <Hyperlink>
+                                    <Run>Договор рассрочки</Run>
+                                </Hyperlink>
+                            </Paragraph>
+                        </ListItem>
+    
+                    </List>
+                </FlowDocument>
+            </FlowDocumentScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

@@ -166,7 +166,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Document-Signature.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Document-Signature.png"   
                                             ToolTip="Документы, ИДС"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:IDS}"/>
 
                         <dxb:BarButtonItem Content="Настройки"
                                            RibbonStyle="Default" 

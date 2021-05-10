@@ -7,10 +7,11 @@
                       xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
                       xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
                       xmlns:vm ="clr-namespace:Dental.ViewModels"
+                      xmlns:teeth ="clr-namespace:Dental.Views.PatientCard.Teeth"
                       mc:Ignorable="d"
                       d:DesignHeight="300" d:DesignWidth="300"
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              dx:ThemeManager.ThemeName="Office2019White"
              >
 
@@ -107,155 +108,140 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Width="36">
-                                            <Border BorderThickness="1" BorderBrush="Black">
-                                                <Canvas x:Name="ddd"  Height="56" Width="36" >
+                                    
 
-                                                    <Polygon Fill="LightPink" Points="10 26, 26 26, 36 36, 0 36" Stroke="Gray" ButtonBase.Click="Polygon_Click"></Polygon>
-
-                                                    <Polyline Fill="Green" Points="0 0, 10 10, 10 26, 0 36" Stroke="Gray"/>
-                                                    <Polyline Fill="Yellow" Points="0 0, 36 0, 26 10, 10 10" Stroke="Gray"/>
-                                                    <Polyline Fill="OrangeRed" Points="26 10, 36 0, 36 36, 26 26" Stroke="Gray"/>
-
-                                                    <Polyline Fill="Violet" Points="10 10, 18 10, 18 26, 10 26" Stroke="Gray"/>
-                                                    <Polyline Fill="Aqua" Points="18 10, 26 10, 26 26, 18 26" Stroke="Gray"/>
-
-                                                    <Polyline Fill="Blue" Points="4 36, 18 36, 11 56" Stroke="Gray"/>
-                                                    <Polyline Fill="Blue" Points="18 36, 30 36, 24 56" Stroke="Gray"/>
-                                                </Canvas>
-                                            </Border>
-                                            <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="0" Margin="0 0 0 5" 
-                                            HorizontalAlignment="Center" Padding="2">
-                                        <StackPanel>
-
-                                                <!--<Rectangle Width="30" Height="30" Stroke="Gray">-->
-                                                    
-                                                <!--</Rectangle>-->
-                                                <TextBlock Text="18" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/18.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                    </Button>
+                                        <StackPanel Grid.Row="0" Grid.Column="0"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/18.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="18" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
                                         </StackPanel>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="1" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="17" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/17.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="2" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="16" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/16.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="3" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="15" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/15.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="4" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="14" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/14.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="5" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="13" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/13.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="6" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="12" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/12.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="7" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="11" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/11.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="9" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="21" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/21.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="10" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="22" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/22.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="11" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="23" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/23.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="12" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="24" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/24.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="13" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="25" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/25.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="14" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="26" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/26.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="15" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="27" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/27.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="0" Grid.Column="16" Margin="0 0 0 5"  
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green.png" Height="17"/>
-                                                <TextBlock Text="28" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/28.png" Height="70" Width="20"/>
-                                            </StackPanel>
-                                        </Button >
+
+                                        <StackPanel Grid.Row="0" Grid.Column="1"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/17.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="17" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="0" Grid.Column="2"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/16.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="16" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="0" Grid.Column="3"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/15.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="15" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="4"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/12.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="12" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopTwoRoots/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="5"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/13.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="13" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="6"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/12.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="12" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopSimpleOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="7"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/11.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="11" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopSimpleOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="9"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/21.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="21" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopSimpleOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="10"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/22.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="22" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopSimpleOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="11"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/23.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="23" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopOneRoot/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="0" Grid.Column="12"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/24.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="24" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopTwoRoots/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="13"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/25.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="25" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopOneRoot/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="14"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/26.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="26" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="15"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/27.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="27" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="0" Grid.Column="16"   Margin="0 0 0 5" HorizontalAlignment="Center">
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/28.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                            <TextBlock Text="28" FontSize="18" HorizontalAlignment="Center"/>
+                                            <teeth:TopThreeRoots/>
+                                        </StackPanel>
 
 
 
@@ -266,134 +252,145 @@
 
 
 
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="0" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/48.png" Height="70" Width="20"/>
-                                                <TextBlock Text="48" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="1" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/47.png" Height="70" Width="20"/>
-                                                <TextBlock Text="47" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="2" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/46.png" Height="70" Width="20"/>
-                                                <TextBlock Text="46" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="3" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/45.png" Height="70" Width="20"/>
-                                                <TextBlock Text="45" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="4" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/44.png" Height="70" Width="20"/>
-                                                <TextBlock Text="44" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="5" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/43.png" Height="70" Width="20"/>
-                                                <TextBlock Text="43" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="6" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/42.png" Height="70" Width="20"/>
-                                                <TextBlock Text="42" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="7" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/41.png" Height="70" Width="20"/>
-                                                <TextBlock Text="41" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="9" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/31.png" Height="70" Width="20"/>
-                                                <TextBlock Text="31" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="10" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/32.png" Height="70" Width="20"/>
-                                                <TextBlock Text="32" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="11" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/33.png" Height="70" Width="20"/>
-                                                <TextBlock Text="33" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="12" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/34.png" Height="70" Width="20"/>
-                                                <TextBlock Text="34" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="13" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/35.png" Height="70" Width="20"/>
-                                                <TextBlock Text="35" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="14" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/36.png" Height="70" Width="20"/>
-                                                <TextBlock Text="36" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="15" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/37.png" Height="70" Width="20"/>
-                                                <TextBlock Text="37" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button BorderBrush="Transparent" BorderThickness="0" Grid.Row="2" Grid.Column="16" Margin="0 5 0 0" 
-                                            HorizontalAlignment="Center">
-                                            <StackPanel>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/38.png" Height="70" Width="20"/>
-                                                <TextBlock Text="38" FontSize="18"/>
-                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/green180.png" Height="17"/>
-                                            </StackPanel>
-                                        </Button>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="0"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="48" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/48.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="1"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="47" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/47.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="2"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="46" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/46.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+
+                                        <StackPanel Grid.Row="2" Grid.Column="3"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="45" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/45.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="4"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="44" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/44.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="5"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="43" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/43.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="6"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomSimpleOneRoot/>
+                                            <TextBlock Text="42" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/42.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="7"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomSimpleOneRoot/>
+                                            <TextBlock Text="41" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/41.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="9"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomSimpleOneRoot/>
+                                            <TextBlock Text="31" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/31.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="10"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomSimpleOneRoot/>
+                                            <TextBlock Text="32" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/32.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Row="2" Grid.Column="11"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="33" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/33.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="12"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="34" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/34.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="13"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomOneRoot/>
+                                            <TextBlock Text="35" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/35.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="14"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="36" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/36.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="15"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                            <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="37" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/37.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Row="2" Grid.Column="16"   Margin="0 5 0 0" HorizontalAlignment="Center">
+                                                <teeth:BottomTwoRoots/>
+                                            <TextBlock Text="38" FontSize="18" HorizontalAlignment="Center"/>
+                                            <Button BorderBrush="Transparent" BorderThickness="0" >
+                                                <Image Source="pack://application:,,,/Resources/PatientCard/tooth/38.png" Height="40" Width="20" 
+                                                       VerticalAlignment="Top"/>
+                                            </Button>
+                                        </StackPanel>
+                                       
                                     
                             </Grid>
                                 </dxlc:LayoutGroup>
