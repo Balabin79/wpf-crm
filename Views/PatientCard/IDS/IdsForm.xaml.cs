@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Pages
+namespace Dental.Views.PatientCard.IDS
 {
     /// <summary>
-    /// Логика взаимодействия для IDS.xaml
+    /// Логика взаимодействия для IdsOnInjection.xaml
     /// </summary>
-    public partial class IDS : Page
+    public partial class IdsForm : Window
     {
-        public IDS()
+        public IdsForm()
         {
             InitializeComponent();
         }

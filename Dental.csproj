@@ -225,10 +225,14 @@
     <PackageReference Include="DevExpress.Wpf.Carousel" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Charts" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Charts.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Core.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Diagram" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Diagram.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Dialogs" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Dialogs.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.DocumentViewer.Core" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.DocumentViewer.Core.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Grid" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Grid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Layout" Version="20.1.4" />
@@ -244,6 +248,8 @@
     <PackageReference Include="DevExpress.Wpf.PropertyGrid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Reporting" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Reporting.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.RichEdit" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.RichEdit.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduler" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting" Version="20.1.4" />
@@ -258,7 +264,6 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
-    <PackageReference Include="WPF-Kanban" Version="1.5.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,8 @@
                       xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
                       xmlns:vm ="clr-namespace:Dental.ViewModels" 
                       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-                      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:sys="clr-namespace:System;assembly=netstandard"
+                      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+                      xmlns:sys="clr-namespace:System;assembly=netstandard"
                       mc:Ignorable="d"
                       d:DesignHeight="300" d:DesignWidth="300"
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -19,6 +20,7 @@
         <vm:PatientCardViewModel/>
     </UserControl.DataContext>
     <UserControl.Resources>
+        <vm:IdsViewModel x:Key="Ids"/>
         <converter:DateToStringConverter x:Key="dateToString" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
@@ -67,7 +69,7 @@
         <Border  Grid.Row="1">
 
 
-            <dxlc:LayoutControl  Orientation="Vertical" StretchContentVertically="False" Background="Transparent">
+            <dxlc:LayoutControl  Orientation="Vertical" StretchContentVertically="False" Background="Transparent" Margin="0,23,0,-23">
                 <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
                     <dxlc:LayoutGroup.GroupBoxStyle>
                         <Style TargetType="dxlc:GroupBox">
@@ -466,15 +468,221 @@
 
 
 
-                        <dx:DXTabItem Header="Документы">
-                            <dxlc:LayoutGroup Header="Документы"
+                        <dx:DXTabItem Header="ИДС, Документы">
+                            <dxlc:LayoutGroup Header="ИДС, Документы"
                               Name="layoutGroup4"
                               View="GroupBox"
                               Orientation="Vertical"
                               ItemLabelsAlignment="Local"
                               IsCollapsible="True">
 
-                                <Grid></Grid>
+                                <Grid DataContext="{StaticResource ResourceKey=Ids}">
+                                    <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
+                                        <FlowDocument>
+                                            <List FontSize="12">
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IdsOnInjection">
+                                                            <Run>ИДС на инъекционную анестезию</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink NavigateUri="pack://application:,,,/Views/PatientCard/IDS/IdsForm.xaml">
+                                                            <Run>ИДС на лечение кариеса и иных болезней твердых тканей зубов</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на неотложную помощь</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem >
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на ортодонтическое лечение</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на ортопедическое лечение</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на отказ от гарантий (как временная мера)</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на парадонтологическое лечение</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на проведение диагностических манипуляций (рентгендиагностику)</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на проведение операции наращивания кости на участке верхнечелюстной пазухи (синус-лифтинг)</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на проведение операций по реконструкции альвеолярного отростка</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на проведение хирургической операции (удаление зуба, резекция)</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на процедуру отбеливания зубов</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на установку имплантата</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на хирургическое лечение и имплантацию</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>ИДС на эндодонтическое лечение</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Лист ИДС</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога по после отбеливания зубов</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после имплантации</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после лечения кариеса и пульпита</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после протезированием  сьемными протезами</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после протезирования коронками  и мостовидными ортопедическими конструкциями</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после профессиональной гигиены полости рта</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога после удаления зуба</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Рекомендации стоматолога по уходу за брекетами</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+
+
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Приходный кассовый ордер</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Договор об оказании стоматологических услуг</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Договор Поручитель</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+                                                <ListItem Margin="0 5 0 5">
+                                                    <Paragraph>
+                                                        <Hyperlink>
+                                                            <Run>Договор рассрочки</Run>
+                                                        </Hyperlink>
+                                                    </Paragraph>
+                                                </ListItem>
+
+                                            </List>
+                                        </FlowDocument>
+                                    </FlowDocumentScrollViewer>
+                                </Grid>
                             </dxlc:LayoutGroup>
                         </dx:DXTabItem>
 
