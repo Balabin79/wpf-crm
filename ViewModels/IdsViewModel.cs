@@ -13,6 +13,11 @@ using Dental.Models.Base;
 using Dental.Repositories;
 using DevExpress.Xpf.Grid;
 using Dental.Views.PatientCard.IDS;
+using System.Windows.Documents;
+using Dental.Reports;
+using DevExpress.XtraReports.UI;
+using DevExpress.Xpf.Printing;
+using System.Windows;
 
 namespace Dental.ViewModels
 {
@@ -32,8 +37,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                var window = new IdsForm();
-                window.Show();
+                var report = new XtraReport2();
+                PrintHelper.ShowPrintPreview(new Window(), report);
             }
             catch (Exception e)
             {
@@ -41,9 +46,17 @@ namespace Dental.ViewModels
             }
         }
 
-        public string DocumentSource { get; set; } 
-            
-            //pack://application:,,,/WpfApplication1;component/Document.docx
-       
+        public string DocumentSource { get; set; }
+        public string OrganizationName { get; set; }
+        public string PatientFullNameName { get; set; }
+        public string EmployeeFullNameName { get; set; }
+
+        public string employeeFullNameName;
+
+
+
+
+
+
     }
 }

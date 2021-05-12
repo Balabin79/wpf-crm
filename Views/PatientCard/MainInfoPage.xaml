@@ -477,6 +477,7 @@
                               IsCollapsible="True">
 
                                 <Grid DataContext="{StaticResource ResourceKey=Ids}">
+
                                     <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
                                         <FlowDocument>
                                             <List FontSize="12">

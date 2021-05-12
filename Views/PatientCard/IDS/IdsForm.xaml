@@ -6,16 +6,21 @@
         xmlns:local="clr-namespace:Dental.Views.PatientCard.IDS" 
         xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
         xmlns:vm ="clr-namespace:Dental.ViewModels" 
+        xmlns:reports ="clr-namespace:Dental.Reports" 
        mc:Ignorable="d" 
-       d:DesignHeight="450" d:DesignWidth="800"
-       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-       Title="ИДС, Документы" 
+       d:DesignHeight="1200" d:DesignWidth="800"
+       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dxrud="http://schemas.devexpress.com/winfx/2008/xaml/reports/userdesigner"
+        Title="ИДС, Документы" 
        dx:ThemeManager.ThemeName="Office2019White">
 
-    <Grid>
+    <Grid Margin="30">
         <Grid.DataContext>
             <vm:IdsViewModel/>
         </Grid.DataContext>
-        <dxre:RichEditControl CommandBarStyle="Ribbon" DocumentSource="{Binding Path=DocumentSource}"/>
+       
+
+
+
     </Grid>
 </Window>

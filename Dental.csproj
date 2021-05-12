@@ -224,23 +224,19 @@
     <PackageReference Include="DevExpress.Pdf.Drawing.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Carousel" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Charts" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Charts.Designer" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Charts.Designer.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Charts.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Core" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Core.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Diagram" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Diagram.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Dialogs" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Dialogs.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.DocumentViewer.Core" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.DocumentViewer.Core.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Grid" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Grid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Layout" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Layout.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Navigation" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Navigation.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.PdfViewer" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.PdfViewer.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Printing" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Printing.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="20.1.4" />
@@ -251,6 +247,8 @@
     <PackageReference Include="DevExpress.Wpf.RichEdit" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.RichEdit.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduler" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Scheduler.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Scheduling" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
@@ -325,6 +323,9 @@
     </Reference>
     <Reference Include="DevExpress.Xpf.Scheduling.v20.1">
       
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.1">
+      <HintPath>..\..\..\..\..\Program Files (x86)\DevExpress 20.1\Components\Bin\Framework\DevExpress.XtraReports.v20.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraScheduler.v20.1.Core">
       
