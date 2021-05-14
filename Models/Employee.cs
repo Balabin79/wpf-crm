@@ -10,7 +10,7 @@ using System.Reflection;
 namespace Dental.Models
 {
     [Table("Employes")]
-    class Employee : User, System.ComponentModel.IDataErrorInfo
+    public class Employee : User, System.ComponentModel.IDataErrorInfo
     {
         // Контактная информация
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]

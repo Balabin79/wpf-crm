@@ -275,7 +275,6 @@
     <Folder Include="Resources\PatientCard\Новая папка\" />
     <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\HandbooksPages\MedicalCard\" />
-    <Folder Include="Views\IDS\" />
   </ItemGroup>
 
   <ItemGroup>

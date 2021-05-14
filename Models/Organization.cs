@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 namespace Dental.Models
 {
     [Table("Organizations")]
-    class Organization : AbstractBaseModel
+    public class Organization : AbstractBaseModel
     {
         [Required]
         [MaxLength(255)]

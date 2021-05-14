@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models.Share
 {
     [Table("Region")]
-    class Region
+    public class Region
     {
         [Column("country_id")]
         public int? CountryId { get; set; }

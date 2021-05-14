@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel6.Text" xml:space="preserve">
+    <value>Врач:        ___________________          _____________________          ________________________________
+                               (Дата)                                     (Подпись)                                                  (ФИО)</value>
+  </data>
+  <data name="xrLabel2.Text" xml:space="preserve">
+    <value>Пациент: ___________________          _____________________          ________________________________
+                               (Дата)                                     (Подпись)                                                  (ФИО)
+</value>
+  </data>
+  <data name="xrLabel4.Text" xml:space="preserve">
+    <value>Проинформирован(а) о необходимости применения местной анестезии. Местная инъекционная анестезия имеет своей целью обезболить медицинские манипуляции. 
+Местная инъекционная анестезия проводится в области выполняемой манипуляции и предусматривает одну или несколько инъекций (уколов) для введения анестезирующего вещества с целью обеспечения эффекта обезболивания. Длительность эффекта может варьировать от 15 минут до нескольких часов в зависимости от вида анестетика и индивидуальной восприимчивости организма. 
+Последствиями отказа от данной операции могут быть: невозможность выполнения медицинской манипуляции, прогрессирование заболевания, развитие инфекционных осложнений, появление болевых ощущений, а также обострение системных заболеваний организма. Инъекционная анестезия приводит к временной потере болевой, тактильной и температурной чувствительности в области обезболивания, а также временному ощущению припухлости этой области.
+Мне разъяснено, что применение местной анестезии может привести к аллергическим реакциям организма на медикаментозные препараты, обмороку, коллапсу, шоку, травматизации нервных окончаний и сосудов, проявляющимися потерей чувствительности, невритами, невралгиями и постинъекционными гематомами.
+Я информирован(а) также об основных преимуществах, сложностях и риске инъекционной анестезии, включая вероятность осложнений. Основные осложнения инъекционной анестезии обусловлены, в первую очередь, введением в ткани организма специального раствора и реакцией организма на него (учащение сердцебиения, повышение артериального давления, аллергический шок, обморок, коллапс). Введение раствора проводится при помощи иглы, что травмирует мягкие ткани и может вызвать образование внутреннего кровотечения и гематомы, отечность десны в области инъекции, тризм (ограниченное открывание рта), которые могут сохраняться в течение нескольких дней или дольше. Обезболивание затруднено при выраженном стрессе, в области существующего воспаления, в области моляров нижней челюсти, после употребления алкогольных или наркотических веществ. 
+При этом я информирован(а), что в ряде конкретных случаях вид медицинские вмешательства без анестезии невозможны. Альтернативой является отказ от лечения. 
+Современные анестетики, применяемые с использованием одноразовых игл и карпул, обычно не дают осложнений. Однако при наличии опасений рекомендуется провести предварительные пробы на совместимость. 
+Я подтверждаю, что в Анкете анамнеза назвал(а) все известные имеющиеся у меня болезни, недуги и состояния. 
+Я подтверждаю, что добросовестно ответил(а) на все вопросы специалистов, не скрыв никакой информации о состоянии своего здоровья. 
+При проведении местной инъекционной анестезии результат не гарантирован, однако гарантировано проведение лечения специалистом соответствующей квалификации, применением им качественных материалов и инструментов с соблюдением соответствующих методик и правил санитарно-эпидемиологического режима.
+Я имел(а) возможность задавать все интересующие меня вопросы и получил(а) исчерпывающие ответы на них. 
+Я внимательно ознакомился (лась) с данным документом и понимаю, что последнее является юридическим документом и влечет для меня правовые последствия. Настоящий документ является неотъемлемой частью моей медицинской карты. Я подтверждаю согласие на проведение мне местной инъекционной анестезии.
+</value>
+  </data>
+  <data name="xrLabel5.Text" xml:space="preserve">
+    <value>Я, [PatientInfo.FullName], [PatientInfo.BirthDate] г. рождения
+Паспорт серия и номер: [PatientInfo.SerialNumberPassport] [PatientInfo.NumberPassport]
+Выданный: [PatientInfo.DateIssuedPassport]
+Проживающий(ая) по адресу: [PatientInfo.FullAddress]</value>
+  </data>
+</root>

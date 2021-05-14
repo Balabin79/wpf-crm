@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Dental.Models
 {
-    abstract class User : AbstractBaseModel
+    public abstract class User : AbstractBaseModel
     {
         // Общая информация
        [Display(Name = "Фото")]

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models.Share
 {
     [Table("Country")]
-    class Country
+    public class Country
     {
         [Column("country_id")]
         public int? CountryId { get; set; }

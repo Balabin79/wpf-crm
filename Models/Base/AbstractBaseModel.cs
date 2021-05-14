@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Base
 {
-    abstract class AbstractBaseModel : IModel
+    public abstract class AbstractBaseModel : IModel
     {
         [Key]
         [Column("Id")]

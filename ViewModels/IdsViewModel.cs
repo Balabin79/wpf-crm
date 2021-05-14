@@ -22,6 +22,8 @@ using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.Expressions;
 using DevExpress.DataAccess.ObjectBinding;
 using System.Drawing;
+using Dental.Reports.IDS;
+using Dental.Models.PatientCard;
 
 namespace Dental.ViewModels
 {
@@ -41,13 +43,25 @@ namespace Dental.ViewModels
         {
             try
             {
-                var data = new SourceReportData() { 
-                    OrganizationName = "Елки - палки",
-                    PatientFullNameName = "Иванов Иван Иванович",
-                    EmployeeFullNameName = "Петров Петр Петрович"
+                var data = new SourceReportData() {
+                    Organization = new Organization() {
+                        Name = "Дентал-плюс",
+                        License = "ЛСУ-345-12-23 от 13 марта 2012 г.",
+                    },
+                    PatientInfo = new PatientInfo()
+                    {
+                        FirstName = "Иван",
+                        LastName = "Иванов",
+                        MiddleName = "Иванович",
+                        BirthDate = "12.02.1985",
+                        SerialNumberPassport = "6303",
+                        NumberPassport = "987885",
+                        DateIssuedPassport = "12.02.2012",
+                        FullAddress = "Саратовская область, Хвалынский район, с.Подлесное, ул. Лесная, 15"
+                    }
                 };
-
-                var report = new XtraReport1();
+                
+                var report = new IDSInjection();
                 ObjectDataSource objectDataSource = new ObjectDataSource();
                 objectDataSource.Name = "Report";
                 objectDataSource.DataSource = new DataSource(data);
@@ -57,20 +71,7 @@ namespace Dental.ViewModels
                 objectDataSource.EndUpdate();
                 objectDataSource.Fill();
                 report.DataSource = objectDataSource;
-
-
-
-
-
-
-
-
-                // var s = new Dental.Reports.SourceReportData();
-               
-               /* DevExpress.DataAccess.ObjectBinding.ObjectDataSource objds = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource();
-                objds.Name = "ObjectDataSource1";
-                objds.DataSource = typeof(SourceReportData);
-                objds.Fill();*/
+                
 
 
                 PrintHelper.ShowPrintPreview(new Window(), report);

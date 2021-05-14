@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models.PatientCard
 {
     [Table("PatientInfo")]
-    class PatientInfo : User
+    public class PatientInfo : User
     {
         [Phone]
         [Display(Name = "Телефон")]
@@ -74,5 +74,9 @@ namespace Dental.Models.PatientCard
         [NotMapped]
         [Display(Name = "Место регистрации")]
         public UserLocation Location { get; set; } // Место проживания
+
+        [NotMapped]
+        [Display(Name = "Адрес")]
+        public string FullAddress{ get; set; } 
     }
 }

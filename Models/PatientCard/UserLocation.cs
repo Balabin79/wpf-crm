@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Dental.Models.PatientCard
 {
     [Table("UserLocation")]
-    class UserLocation : AbstractBaseModel
+    public class UserLocation : AbstractBaseModel
     {
         [Required]
         public int UserId { get; set; } 

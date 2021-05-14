@@ -4,11 +4,11 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace Dental.Reports
+namespace Dental.Reports.IDS
 {
-    public partial class XtraReport1 : DevExpress.XtraReports.UI.XtraReport
+    public partial class IDSInjection : DevExpress.XtraReports.UI.XtraReport
     {
-        public XtraReport1()
+        public IDSInjection()
         {
             InitializeComponent();
         }

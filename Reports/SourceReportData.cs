@@ -5,15 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.DataAccess.ObjectBinding;
 using System.ComponentModel;
+using Dental.Models;
+using Dental.Models.PatientCard;
 
 namespace Dental.Reports
 {
     public class SourceReportData
     {
-        public string DocumentSource { get; set; }
-        public string OrganizationName { get; set; } = "dsadadasds";
-        public string PatientFullNameName { get; set; }
-        public string EmployeeFullNameName { get; set; }
+        public Organization Organization { get; set; }
+        public Employee Employee { get; set; }
+        public PatientInfo PatientInfo { get; set; }
+
+        public string AditionalString1 { get; set; }
+        public string AditionalString2 { get; set; }
+        public string AditionalString3 { get; set; }
+        public string AditionalDateTime1 { get; set; }
+        public string AditionalDateTime2 { get; set; }
+        public string AditionalDateTime3 { get; set; }
+        public string AditionalTime1 { get; set; }
+        public string AditionalTime2 { get; set; }
+        public string AditionalTime3 { get; set; }
     }
 
     [DisplayName("ReportData")]

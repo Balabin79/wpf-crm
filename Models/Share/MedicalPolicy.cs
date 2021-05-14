@@ -1,6 +1,6 @@
 namespace Dental.Models.Share
 {
-    class MedicalPolicy
+    public class MedicalPolicy
     {
 
         public string SerialNumber { get; set; } // серия
