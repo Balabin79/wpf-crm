@@ -43,9 +43,32 @@ namespace Dental.ViewModels
         {
             try
             {
+                string param = p as string;
+                XtraReport report = null;
+                switch (param)
+                {
+                    case "IDSOnInjection" : report = new IDSInjection(); break;
+                    case "IDSCariesTreatment" : report = new IDSCariesTreatment(); break;
+                    case "IDSUrgentHelp": report = new IDSUrgentHelp(); break;
+                    case "IDSOrthodonticTreatment": report = new IDSOrthodonticTreatment(); break;
+                    case "IDSOrthopedicTreatment": report = new IDSOrthopedicTreatment(); break;
+                        /* case "IDSDisclaimerGuarantees": report = new IDSDisclaimerGuarantees(); break;
+                        case "IDSParadonticTreatment": report = new IDSParadonticTreatment(); break;
+                        case "IDSDiagnosticManipulations": report = new IDSDiagnosticManipulations(); break;
+                        case "IDSBoneAugmentation": report = new IDSBoneAugmentation(); break;
+                        case "IDSProcessReconstruction": report = new IDSProcessReconstruction(); break;
+                        case "IDSSurgery": report = new IDSSurgery(); break;
+                        case "IDSTeethWhitening": report = new IDSTeethWhitening(); break;
+                        case "IDSImplantPlacement": report = new IDSImplantPlacement(); break;
+                        case "IDSTreatmentAndImplantation": report = new IDSTreatmentAndImplantation(); break;
+                        case "IDSEndodonticTreatment": report = new IDSEndodonticTreatment(); break;*/
+                }
+
+                if (report == null) return;
+
                 var data = new SourceReportData() {
                     Organization = new Organization() {
-                        Name = "Дентал-плюс",
+                        Name = "Дентал-люкс",
                         License = "ЛСУ-345-12-23 от 13 марта 2012 г.",
                     },
                     PatientInfo = new PatientInfo()
@@ -61,7 +84,7 @@ namespace Dental.ViewModels
                     }
                 };
                 
-                var report = new IDSInjection();
+             
                 ObjectDataSource objectDataSource = new ObjectDataSource();
                 objectDataSource.Name = "Report";
                 objectDataSource.DataSource = new DataSource(data);

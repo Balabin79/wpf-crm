@@ -31,6 +31,8 @@ namespace Dental.Reports.IDS
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IDSInjection));
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
@@ -38,8 +40,6 @@ namespace Dental.Reports.IDS
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
-            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // Detail
@@ -48,10 +48,34 @@ namespace Dental.Reports.IDS
             this.xrLabel6,
             this.xrLabel2,
             this.xrLabel4});
-            this.Detail.HeightF = 957.1667F;
+            this.Detail.HeightF = 902.1252F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // xrLabel6
+            // 
+            this.xrLabel6.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 860.3335F);
+            this.xrLabel6.Multiline = true;
+            this.xrLabel6.Name = "xrLabel6";
+            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel6.SizeF = new System.Drawing.SizeF(690F, 37.87488F);
+            this.xrLabel6.StylePriority.UseFont = false;
+            this.xrLabel6.Text = resources.GetString("xrLabel6.Text");
+            // 
+            // xrLabel2
+            // 
+            this.xrLabel2.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0.0001271566F, 805.0836F);
+            this.xrLabel2.Multiline = true;
+            this.xrLabel2.Name = "xrLabel2";
+            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(690F, 39.66663F);
+            this.xrLabel2.StylePriority.UseFont = false;
+            this.xrLabel2.Text = "Пациент: _________________    __________________    _____________________________" +
+    "_\r\n                            (Дата)                           (Подпись)       " +
+    "                              (ФИО)\r\n";
             // 
             // xrLabel4
             // 
@@ -60,7 +84,7 @@ namespace Dental.Reports.IDS
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel4.SizeF = new System.Drawing.SizeF(650F, 837.4165F);
+            this.xrLabel4.SizeF = new System.Drawing.SizeF(690F, 780.1249F);
             this.xrLabel4.StylePriority.UseFont = false;
             this.xrLabel4.Text = resources.GetString("xrLabel4.Text");
             // 
@@ -78,7 +102,7 @@ namespace Dental.Reports.IDS
             this.xrLabel1.Multiline = true;
             this.xrLabel1.Name = "xrLabel1";
             this.xrLabel1.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel1.SizeF = new System.Drawing.SizeF(649.9999F, 39.66665F);
+            this.xrLabel1.SizeF = new System.Drawing.SizeF(690F, 39.66665F);
             this.xrLabel1.StylePriority.UseFont = false;
             this.xrLabel1.StylePriority.UseTextAlignment = false;
             this.xrLabel1.Text = "[Organization.Name]\r\n[Organization.License]";
@@ -86,7 +110,7 @@ namespace Dental.Reports.IDS
             // 
             // BottomMargin
             // 
-            this.BottomMargin.HeightF = 78F;
+            this.BottomMargin.HeightF = 80F;
             this.BottomMargin.Name = "BottomMargin";
             this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
@@ -107,38 +131,20 @@ namespace Dental.Reports.IDS
             this.xrLabel5.Multiline = true;
             this.xrLabel5.Name = "xrLabel5";
             this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel5.SizeF = new System.Drawing.SizeF(650F, 74.04167F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(690F, 74.04167F);
             this.xrLabel5.StylePriority.UseFont = false;
             this.xrLabel5.Text = resources.GetString("xrLabel5.Text");
             // 
             // xrLabel3
             // 
             this.xrLabel3.Font = new System.Drawing.Font("Times New Roman", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0.0001271566F, 76.04166F);
+            this.xrLabel3.LocationFloat = new DevExpress.Utils.PointFloat(0.0001271566F, 76.04165F);
             this.xrLabel3.Name = "xrLabel3";
-            this.xrLabel3.SizeF = new System.Drawing.SizeF(650F, 27.49999F);
+            this.xrLabel3.SizeF = new System.Drawing.SizeF(689.9999F, 27.49999F);
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
             this.xrLabel3.Text = "Информированное добровольное согласие на инъекционную анестезию";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
-            // 
-            // xrLabel2
-            // 
-            this.xrLabel2.LocationFloat = new DevExpress.Utils.PointFloat(0F, 858.2085F);
-            this.xrLabel2.Multiline = true;
-            this.xrLabel2.Name = "xrLabel2";
-            this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(649.9999F, 39.66663F);
-            this.xrLabel2.Text = resources.GetString("xrLabel2.Text");
-            // 
-            // xrLabel6
-            // 
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 909.2919F);
-            this.xrLabel6.Multiline = true;
-            this.xrLabel6.Name = "xrLabel6";
-            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 96F);
-            this.xrLabel6.SizeF = new System.Drawing.SizeF(649.9999F, 37.87488F);
-            this.xrLabel6.Text = resources.GetString("xrLabel6.Text");
             // 
             // IDSInjection
             // 
@@ -147,7 +153,7 @@ namespace Dental.Reports.IDS
             this.TopMargin,
             this.BottomMargin,
             this.ReportHeader});
-            this.Margins = new System.Drawing.Printing.Margins(80, 80, 80, 78);
+            this.Margins = new System.Drawing.Printing.Margins(80, 80, 80, 80);
             this.Version = "20.1";
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
 

@@ -35,9 +35,6 @@
             </Grid>
         </DataTemplate>
 
-
-
-
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -477,118 +474,118 @@
                               IsCollapsible="True">
 
                                 <Grid DataContext="{StaticResource ResourceKey=Ids}">
-
+    
                                     <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
                                         <FlowDocument>
                                             <List FontSize="12">
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IdsOnInjection">
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOnInjection">
                                                             <Run>ИДС на инъекционную анестезию</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink NavigateUri="pack://application:,,,/Views/PatientCard/IDS/IdsForm.xaml">
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSCariesTreatment">
                                                             <Run>ИДС на лечение кариеса и иных болезней твердых тканей зубов</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSUrgentHelp">
                                                             <Run>ИДС на неотложную помощь</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem >
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthodonticTreatment">
                                                             <Run>ИДС на ортодонтическое лечение</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthopedicTreatment">
                                                             <Run>ИДС на ортопедическое лечение</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDisclaimerGuarantees">
                                                             <Run>ИДС на отказ от гарантий (как временная мера)</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSParadonticTreatment">
                                                             <Run>ИДС на парадонтологическое лечение</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDiagnosticManipulations">
                                                             <Run>ИДС на проведение диагностических манипуляций (рентгендиагностику)</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSBoneAugmentation">
                                                             <Run>ИДС на проведение операции наращивания кости на участке верхнечелюстной пазухи (синус-лифтинг)</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSProcessReconstruction">
                                                             <Run>ИДС на проведение операций по реконструкции альвеолярного отростка</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSSurgery">
                                                             <Run>ИДС на проведение хирургической операции (удаление зуба, резекция)</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTeethWhitening">
                                                             <Run>ИДС на процедуру отбеливания зубов</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSImplantPlacement">
                                                             <Run>ИДС на установку имплантата</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTreatmentAndImplantation">
                                                             <Run>ИДС на хирургическое лечение и имплантацию</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSEndodonticTreatment">
                                                             <Run>ИДС на эндодонтическое лечение</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSList">
                                                             <Run>Лист ИДС</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
