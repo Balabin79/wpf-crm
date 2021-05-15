@@ -52,16 +52,16 @@ namespace Dental.ViewModels
                     case "IDSUrgentHelp": report = new IDSUrgentHelp(); break;
                     case "IDSOrthodonticTreatment": report = new IDSOrthodonticTreatment(); break;
                     case "IDSOrthopedicTreatment": report = new IDSOrthopedicTreatment(); break;
-                        /* case "IDSDisclaimerGuarantees": report = new IDSDisclaimerGuarantees(); break;
-                        case "IDSParadonticTreatment": report = new IDSParadonticTreatment(); break;
-                        case "IDSDiagnosticManipulations": report = new IDSDiagnosticManipulations(); break;
-                        case "IDSBoneAugmentation": report = new IDSBoneAugmentation(); break;
-                        case "IDSProcessReconstruction": report = new IDSProcessReconstruction(); break;
-                        case "IDSSurgery": report = new IDSSurgery(); break;
-                        case "IDSTeethWhitening": report = new IDSTeethWhitening(); break;
-                        case "IDSImplantPlacement": report = new IDSImplantPlacement(); break;
-                        case "IDSTreatmentAndImplantation": report = new IDSTreatmentAndImplantation(); break;
-                        case "IDSEndodonticTreatment": report = new IDSEndodonticTreatment(); break;*/
+                    case "IDSDisclaimerGuarantees": report = new IDSDisclaimerGuarantees(); break;
+                    case "IDSParadonticTreatment": report = new IDSParadonticTreatment(); break;
+                    case "IDSDiagnosticManipulations": report = new IDSDiagnosticManipulations(); break;
+                    case "IDSBoneAugmentation": report = new IDSBoneAugmentation(); break;
+                    case "IDSProcessReconstruction": report = new IDSProcessReconstruction(); break;
+                    case "IDSSurgery": report = new IDSSurgery(); break;
+                    case "IDSTeethWhitening": report = new IDSTeethWhitening(); break;
+                    case "IDSImplantPlacement": report = new IDSImplantPlacement(); break;
+                    case "IDSTreatmentAndImplantation": report = new IDSTreatmentAndImplantation(); break;
+                    case "IDSEndodonticTreatment": report = new IDSEndodonticTreatment(); break;
                 }
 
                 if (report == null) return;

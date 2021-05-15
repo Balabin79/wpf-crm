@@ -1,7 +1,7 @@
 ﻿
 namespace Dental.Reports.IDS
 {
-    partial class IDSUrgentHelp
+    partial class IDSBoneAugmentation
     {
         /// <summary>
         /// Required designer variable.
@@ -30,18 +30,18 @@ namespace Dental.Reports.IDS
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IDSUrgentHelp));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IDSBoneAugmentation));
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
             this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
+            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
-            this.objectDataSource1 = new DevExpress.DataAccess.ObjectBinding.ObjectDataSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.objectDataSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -61,13 +61,13 @@ namespace Dental.Reports.IDS
             this.xrLabel6,
             this.xrLabel4,
             this.xrLabel2});
-            this.Detail.HeightF = 271.4584F;
+            this.Detail.HeightF = 738.3332F;
             this.Detail.Name = "Detail";
             // 
             // xrLabel6
             // 
             this.xrLabel6.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0F, 233.5835F);
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(0.0001430511F, 678.1667F);
             this.xrLabel6.Multiline = true;
             this.xrLabel6.Name = "xrLabel6";
             this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -78,7 +78,7 @@ namespace Dental.Reports.IDS
             // xrLabel4
             // 
             this.xrLabel4.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(0F, 175.3334F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(0.0001430511F, 607.6251F);
             this.xrLabel4.Multiline = true;
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
@@ -95,9 +95,15 @@ namespace Dental.Reports.IDS
             this.xrLabel2.Multiline = true;
             this.xrLabel2.Name = "xrLabel2";
             this.xrLabel2.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
-            this.xrLabel2.SizeF = new System.Drawing.SizeF(689.9999F, 151.4584F);
+            this.xrLabel2.SizeF = new System.Drawing.SizeF(689.9999F, 576.8749F);
             this.xrLabel2.StylePriority.UseFont = false;
             this.xrLabel2.Text = resources.GetString("xrLabel2.Text");
+            // 
+            // objectDataSource1
+            // 
+            this.objectDataSource1.DataMember = "GetData";
+            this.objectDataSource1.DataSource = typeof(Dental.Reports.DataSource);
+            this.objectDataSource1.Name = "objectDataSource1";
             // 
             // ReportHeader
             // 
@@ -105,7 +111,7 @@ namespace Dental.Reports.IDS
             this.xrLabel5,
             this.xrLabel3,
             this.xrLabel1});
-            this.ReportHeader.HeightF = 251.0417F;
+            this.ReportHeader.HeightF = 249.375F;
             this.ReportHeader.Name = "ReportHeader";
             // 
             // xrLabel5
@@ -127,8 +133,8 @@ namespace Dental.Reports.IDS
             this.xrLabel3.SizeF = new System.Drawing.SizeF(689.9999F, 45.20833F);
             this.xrLabel3.StylePriority.UseFont = false;
             this.xrLabel3.StylePriority.UseTextAlignment = false;
-            this.xrLabel3.Text = "Информированное добровольное согласие на неотложное лечение (оказание помощи при " +
-    "острой боли)";
+            this.xrLabel3.Text = "Информированное добровольное согласие на проведение операции наращивания кости на" +
+    " участке верхнечелюстной пазухи (синус-лифтинг)";
             this.xrLabel3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
             // 
             // xrLabel1
@@ -144,13 +150,7 @@ namespace Dental.Reports.IDS
             this.xrLabel1.Text = "[Organization.Name]\r\n[Organization.License]";
             this.xrLabel1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopRight;
             // 
-            // objectDataSource1
-            // 
-            this.objectDataSource1.DataMember = "GetData";
-            this.objectDataSource1.DataSource = typeof(Dental.Reports.DataSource);
-            this.objectDataSource1.Name = "objectDataSource1";
-            // 
-            // IDSUrgentHelp
+            // IDSBoneAugmentation
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.TopMargin,
