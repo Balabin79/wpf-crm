@@ -12,7 +12,6 @@ using Dental.Models;
 using Dental.Models.Base;
 using Dental.Repositories;
 using DevExpress.Xpf.Grid;
-using Dental.Views.PatientCard.IDS;
 using System.Windows.Documents;
 using Dental.Reports;
 using DevExpress.XtraReports.UI;
@@ -23,6 +22,7 @@ using DevExpress.XtraReports.Expressions;
 using DevExpress.DataAccess.ObjectBinding;
 using System.Drawing;
 using Dental.Reports.IDS;
+using Dental.Reports.Recommendations;
 using Dental.Models.PatientCard;
 
 namespace Dental.ViewModels
@@ -63,18 +63,18 @@ namespace Dental.ViewModels
                     case "IDSTreatmentAndImplantation": report = new IDSTreatmentAndImplantation(); break;
                     case "IDSEndodonticTreatment": report = new IDSEndodonticTreatment(); break;
                         /*case "IDSList": report = new IDSList(); break;*/
-                        /*case "TeethWhiteningRecommendations": report = new TeethWhiteningRecommendations(); break;*/
-                        /*case "RecommendationsAfterImplantation": report = new RecommendationsAfterImplantation(); break;*/
-                        /*case "AfterCariesAndPulpitis": report = new AfterCariesAndPulpitis(); break;*/
-                        /*case "AfterProstheticsWithDentures": report = new AfterProstheticsWithDentures(); break;*/
-                        /*case "AfterProstheticsWithCrowns": report = new AfterProstheticsWithCrowns(); break;*/
-                        /*case "AfterProfOralHygiene": report = new AfterProfOralHygiene(); break;*/
-                        /*case "AfterToothExtraction": report = new AfterToothExtraction(); break;*/
-                        /*case "ForCareBraces": report = new ForCareBraces(); break;*/
-                        /*case "ReceiptCashOrder": report = new ReceiptCashOrder(); break;*/
-                        /*case "DentalServicesAgreement": report = new DentalServicesAgreement(); break;*/
-                        /*case "ContractGuarantor": report = new ContractGuarantor(); break;*/
-                        /*case "InstallmentAgreement": report = new InstallmentAgreement(); break;*/
+                    case "TeethWhiteningRecommendations": report = new TeethWhiteningRecommendations(); break;
+                    case "RecommendationsAfterImplantation": report = new RecommendationsAfterImplantation(); break;
+                    case "AfterCariesAndPulpitis": report = new AfterCariesAndPulpitis(); break;
+                    case "AfterProstheticsWithDentures": report = new AfterProstheticsWithDentures(); break;
+                    case "AfterProstheticsWithCrowns": report = new AfterProstheticsWithCrowns(); break;
+                    case "AfterProfOralHygiene": report = new AfterProfOralHygiene(); break;
+                    case "AfterToothExtraction": report = new AfterToothExtraction(); break;
+                    case "ForCareBraces": report = new ForCareBraces(); break;
+                    /*case "ReceiptCashOrder": report = new ReceiptCashOrder(); break;
+                    case "DentalServicesAgreement": report = new DentalServicesAgreement(); break;
+                    case "ContractGuarantor": report = new ContractGuarantor(); break;
+                    case "InstallmentAgreement": report = new InstallmentAgreement(); break;*/
                 }
 
                 if (report == null) return;
