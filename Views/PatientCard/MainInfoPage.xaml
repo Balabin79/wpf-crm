@@ -592,56 +592,56 @@
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="TeethWhiteningRecommendations">
                                                             <Run>Рекомендации стоматолога по после отбеливания зубов</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="RecommendationsAfterImplantation">
                                                             <Run>Рекомендации стоматолога после имплантации</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterCariesAndPulpitis">
                                                             <Run>Рекомендации стоматолога после лечения кариеса и пульпита</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithDentures">
                                                             <Run>Рекомендации стоматолога после протезированием  сьемными протезами</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithCrowns">
                                                             <Run>Рекомендации стоматолога после протезирования коронками  и мостовидными ортопедическими конструкциями</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProfOralHygiene">
                                                             <Run>Рекомендации стоматолога после профессиональной гигиены полости рта</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterToothExtraction">
                                                             <Run>Рекомендации стоматолога после удаления зуба</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ForCareBraces">
                                                             <Run>Рекомендации стоматолога по уходу за брекетами</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
@@ -650,28 +650,28 @@
 
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ReceiptCashOrder">
                                                             <Run>Приходный кассовый ордер</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="DentalServicesAgreement">
                                                             <Run>Договор об оказании стоматологических услуг</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ContractGuarantor">
                                                             <Run>Договор Поручитель</Run>
                                                         </Hyperlink>
                                                     </Paragraph>
                                                 </ListItem>
                                                 <ListItem Margin="0 5 0 5">
                                                     <Paragraph>
-                                                        <Hyperlink>
+                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="InstallmentAgreement">
                                                             <Run>Договор рассрочки</Run>
                                                         </Hyperlink>
                                                     </Paragraph>

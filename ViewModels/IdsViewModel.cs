@@ -62,6 +62,19 @@ namespace Dental.ViewModels
                     case "IDSImplantPlacement": report = new IDSImplantPlacement(); break;
                     case "IDSTreatmentAndImplantation": report = new IDSTreatmentAndImplantation(); break;
                     case "IDSEndodonticTreatment": report = new IDSEndodonticTreatment(); break;
+                        /*case "IDSList": report = new IDSList(); break;*/
+                        /*case "TeethWhiteningRecommendations": report = new TeethWhiteningRecommendations(); break;*/
+                        /*case "RecommendationsAfterImplantation": report = new RecommendationsAfterImplantation(); break;*/
+                        /*case "AfterCariesAndPulpitis": report = new AfterCariesAndPulpitis(); break;*/
+                        /*case "AfterProstheticsWithDentures": report = new AfterProstheticsWithDentures(); break;*/
+                        /*case "AfterProstheticsWithCrowns": report = new AfterProstheticsWithCrowns(); break;*/
+                        /*case "AfterProfOralHygiene": report = new AfterProfOralHygiene(); break;*/
+                        /*case "AfterToothExtraction": report = new AfterToothExtraction(); break;*/
+                        /*case "ForCareBraces": report = new ForCareBraces(); break;*/
+                        /*case "ReceiptCashOrder": report = new ReceiptCashOrder(); break;*/
+                        /*case "DentalServicesAgreement": report = new DentalServicesAgreement(); break;*/
+                        /*case "ContractGuarantor": report = new ContractGuarantor(); break;*/
+                        /*case "InstallmentAgreement": report = new InstallmentAgreement(); break;*/
                 }
 
                 if (report == null) return;
