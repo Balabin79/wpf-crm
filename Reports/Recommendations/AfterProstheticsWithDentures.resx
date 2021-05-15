@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="xrLabel2.Text" xml:space="preserve">
+    <value>Период адаптации к ортопедической конструкции:
+1. Перед началом использования ортопедической конструкции поупражняйтесь перед зеркалом в правильности ее одевания. Снимайте и одевайте ортопедическую конструкцию только так, как показал лечащий врач.
+2. На начальном этапе эксплуатации съемной ортопедической конструкции ярко выражены ощущения чужеродности, неловкости, отмечается обильное слюнотечение, приступы тошноты, изменение вкусовых ощущений – нельзя пугаться, так как это обычные ощущения, сопровождающие период адаптации к частичным съемным зубным протезам. Они постепенно пройдут (период привыкания от 1 до 4 недель).
+3. В период привыкания к съемным протезам могут отмечаться нарушения артикуляции речи. Без специальных упражнений это проходит в течение нескольких недель, но возможно ускорить восстановление артикуляции путем выполнения несложных упражнений чтение вслух, произношение скороговорок.
+4. В первые дни при приеме пищи ортопедическая конструкция может давить на некоторые участки десны (на слизистой могут появиться потертости). Для устранения избыточного давления на отдельные участки слизистой необходимо незамедлительно обратиться к лечащему врачу, надев зубные протезы за несколько часов до визита (даже если это вызывает боль) для того, чтобы врач мог определить места надавливания и провести коррекцию. Съемная ортопедическая конструкция должна прилегать к десне таким образом, чтобы вы не ощущали дискомфорта во время приема пищи и ведения беседы.
+5. Эксплуатация съемной ортопедической конструкции может вызывать чувство тошноты. В этом случае рекомендуется делать чаще глотательные движение, сосать леденцы. В случае длительно сохраняющихся неприятных ощущений необходимо обратиться к лечащему врачу.
+6. Для ускорения процесса привыкания к съемной ортопедической конструкции в первые недели зубной протез можно носить постоянно, не снимая на ночь. После полной адаптации съемную ортопедическую конструкции рекомендуется снимать на время ночного сна.
+7. Для улучшения адаптации к съемной ортопедической конструкции можно использовать адгезивные средства, рекомендованные лечащим врачом. Советуем прочитать статью Адгезивное протезирование зубов.
+8. Необходимо помнить, что период адаптации к съемной ортопедической конструкции трудный процесс, требующий особого внимания и усилий, поэтому правильным является постоянное ношение зубных протезов, до полного привыкания. В случае перерыва в ношении зубных протезов процесс привыкания нужно будет начинать заново с нуля.
+9. Даже при постоянной эксплуатации под базисом съемной ортопедической конструкции происходит старение зубочелюстной системы, вследствие чего между зубным протезом и десной возникает пустота и не происходит перераспределения жевательной нагрузки между опорными зубами и слизистой. Для устранения этих негативных моментов необходимо обратиться к лечащему врачу с целью проведения перебазировки протеза на место образовавшейся вследствие атрофии костной ткани пустоты накладывается пластмасса и восстанавливается плотное прилегание протеза к десне.
+10. Средний срок службы съемной ортопедической конструкции составляет 4-5 лет, после чего она подлежит замене в результате анатомических изменений, связанных со старением зубочелюстной системы.
+
+
+Правила ухода за съемной ортопедической конструкцией и гигиена полости рта:
+1. Съемную ортопедическую конструкцию необходимо очищать вне полости рта зубной щеткой с пастой два раза в день (утром после приема пищи и вечером перед сном), а также после каждого приема пищи по мере возможности.
+2. Для очищения пластмассовых частей зубного протеза предпочтительней зубная щетка средней жесткости, для металлических жесткая. Для очищения нейлоновых съемных протезов лучше использовать специальные средства, созданные для чистки именно таких ортопедических конструкций.
+3. По мере образования жесткого зубного налета на зубных протезах их необходимо очищать специальными средствами, которые продаются в аптеках.
+4. Недопустимо мыть зубной протез горячей водой - это может повлиять на его форму.
+
+
+Правила хранения съемной ортопедической конструкции:
+1. После полной адаптации съемную ортопедическую конструкцию рекомендуется снимать на время ночного сна (слизистая полости рта должна отдыхать от давления протеза).
+2. Съемная ортопедическая конструкция должна храниться в герметично закрывающейся емкости, завернутая во влажную салфетку.
+3. Не рекомендуется хранить зубной протез в воде, так как это ведет к изменению его прочности и внешнего вида.
+4. Правила приема пищи при эксплуатации съемной ортопедической конструкции:
+5. Исключить из ежедневного рациона твердые продукты: орехи, семечки, сухарики, сушки и другие. При употреблении фруктов и овощей рекомендовано их разрезание (с целью предотвращения образования сколов и трещин на ортопедической конструкции).
+6. Исключить употребление очень горячей пищи и напитков с целью предотвращения образования трещин на ортопедической конструкции.
+7. Если Вам изготовили полный съемный протез, то для ускорения привыкания к протезу в первое время рекомендуется откусывать пищу боковой, а не центральной группой зубов.
+
+
+Дополнительные рекомендации:
+1. Съемная ортопедическая конструкция должна постоянно эксплуатироваться по своему назначению, в противном случае, она станет непригодной для восстановления жевательной функции зубочелюстной системы (не будет одеваться, будет спадать).
+2. Во избежание поломки нельзя допускать падение ортопедической конструкции на кафельный пол, в раковину и на другие твердые поверхности.
+3. Ни при каких обстоятельствах нельзя самостоятельно пытаться провести исправление, починку или другие воздействия на съемную ортопедическую конструкцию.
+4. Состояния, при которых необходимо незамедлительно обратиться к лечащему врачу:
+5. При нарушении фиксации съемного протеза – балансирование, тугая или слабая фиксация;
+6. В случае поломки или возникновения трещины в базисе съемного протеза.
+7. При возникновении дискомфорта, чувства «тисков» при эксплуатации съемной ортопедической конструкции.
+8. При появлении подвижности опорных зубов, удалению одного или нескольких зубов.</value>
+  </data>
+  <metadata name="objectDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+</root>
