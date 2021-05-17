@@ -71,6 +71,7 @@ namespace Dental.ViewModels
                     case "AfterProfOralHygiene": report = new AfterProfOralHygiene(); break;
                     case "AfterToothExtraction": report = new AfterToothExtraction(); break;
                     case "ForCareBraces": report = new ForCareBraces(); break;
+
                     /*case "ReceiptCashOrder": report = new ReceiptCashOrder(); break;
                     case "DentalServicesAgreement": report = new DentalServicesAgreement(); break;
                     case "ContractGuarantor": report = new ContractGuarantor(); break;
