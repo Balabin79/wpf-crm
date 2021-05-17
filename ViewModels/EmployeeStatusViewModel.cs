@@ -12,6 +12,7 @@ using Dental.Models;
 using Dental.Models.Base;
 using Dental.Repositories;
 using DevExpress.Xpf.Grid;
+using Dental.Models;
 
 namespace Dental.ViewModels
 {

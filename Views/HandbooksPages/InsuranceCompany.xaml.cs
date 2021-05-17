@@ -9,7 +9,7 @@ namespace Dental.Views.HandbooksPages
     {
         public InsuranceCompany()
         {
-            InitializeComponent();
+           // InitializeComponent();
         }
 
     }

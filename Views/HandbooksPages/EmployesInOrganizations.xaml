@@ -148,11 +148,7 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="15" Height="15" >
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/User-folder.ico" />
-                                </Image.Source>
-                            </Image>
+
                             <TextBlock Text="ФИО" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>

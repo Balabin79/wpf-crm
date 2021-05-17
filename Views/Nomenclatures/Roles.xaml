@@ -15,17 +15,19 @@
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             d:DesignHeight="450" d:DesignWidth="800"
      >
+    <UserControl.Resources>
+        <vm:EmployeeStatusViewModel x:Key="vm"/>
+    </UserControl.Resources>
 
-    <Grid>
-        <Grid.DataContext>
-            <vm:EmployeeStatusViewModel/>
-        </Grid.DataContext>
+    <Grid DataContext="{StaticResource vm}">
+
 
         <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
-                 EnableSmartColumnsGeneration="True" Name="grid" 
+                 EnableSmartColumnsGeneration="True" Name="grid"  
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
 
@@ -41,14 +43,13 @@
                     PrintAutoWidth="True"
                     BestFitModeOnSourceChange="VisibleRows"            
                     AllowDragDrop="True"
-                    AllowEditing="True"
-                    EditFormShowMode="Inline"
-                    ShowDataNavigator="True"
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     EditFormColumnCount="1" 
-                    EditFormPostConfirmation="YesNo"                   
+                    EditFormPostConfirmation="YesNo" 
+                    VerticalScrollbarVisibility="Auto"
                     >
+
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
                             <Image Height="22" Width="22" Margin="0 5 3 0">
@@ -59,6 +60,18 @@
                             <TextBlock Text="Статусы сотрудников" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
+                    <dxg:TableView.FooterTemplate>
+                        <ItemContainerTemplate>
+                            <dxe:HyperlinkEdit HorizontalAlignment="Right"
+                                               FontSize="14"
+                                               ToolTip="Создать новый элемент"
+                                               FontWeight="DemiBold"
+                                DataContext="{Binding Source={StaticResource vm} }" 
+                                Command="{Binding UpdateCommand}">
+                                 Добавить новый элемент
+                            </dxe:HyperlinkEdit>
+                        </ItemContainerTemplate>
+                    </dxg:TableView.FooterTemplate>
 
                     <dxg:TableView.InputBindings>
                         <KeyBinding Key="Delete"         
@@ -91,39 +104,7 @@
                         <b:DeleteRowDataGridBehaviors/>
                         <dxmvvm:EventToCommand  EventName="ValidateRow" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}" />
                     </dxmvvm:Interaction.Behaviors>
-
-                    <dxg:TableView.EditFormTemplate>
-                        <DataTemplate>
-                            <GroupBox Header="Редактирование позиции" Margin="10" Padding="10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.3*" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-
-                                    <TextBlock Text="Описание: " Grid.Row="1" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="Description" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                                    <StackPanel  Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                                        <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
-                                        <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2"/>
-                                    </StackPanel>
-                                </Grid>
-                            </GroupBox>
-                        </DataTemplate>
-                    </dxg:TableView.EditFormTemplate>
-
                 </dxg:TableView>
-
-
             </dxg:GridControl.View>
 
 
@@ -132,33 +113,29 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="15" Height="15" >
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
-                                </Image.Source>
-                            </Image>
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*">
-
+            <dxg:GridColumn Width="auto"  >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button DataContext="{Binding Source={StaticResource vm} }" Command="{Binding UpdateCommand}"
+                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2" ToolTip="Редактировать">
+                                <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/edit.svg" Height="13" />
+                            </Button>
+                            <Button DataContext="{Binding Source={StaticResource vm} }" Command="{Binding UpdateCommand}" 
+                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2"  ToolTip="Удалить">
+                                <svgc:SvgViewbox    Source="pack://application:,,,/Resources/Icons/svg/trash-alt.svg" Height="13" />
+                            </Button>
+                        </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
-
-                <dxg:GridColumn.EditFormTemplate>
-                    <DataTemplate >
-                        <dxe:MemoEdit Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" MemoTextWrapping="Wrap" PrintTextWrapping="Wrap"/>
-                    </DataTemplate>
-                </dxg:GridColumn.EditFormTemplate>
+          
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>
