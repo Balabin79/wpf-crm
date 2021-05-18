@@ -2,11 +2,12 @@ using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
     [Table("employee_statuses")]
-    public class EmployeeStatus : AbstractBaseModel
+    public class EmployeeStatus : AbstractBaseModel, System.ComponentModel.IDataErrorInfo
     {
         [Required]
         [MaxLength(255)]
@@ -34,6 +35,22 @@ namespace Dental.Models
         {
             Name = copy.Name;
             Description = copy.Description;
+        }
+
+        public string Error
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        public string this[string columnName]
+        {
+            get
+            {
+                return IDataErrorInfoHelper.GetErrorText(this, columnName);
+            }
         }
     }
 }

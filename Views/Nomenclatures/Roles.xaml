@@ -67,7 +67,7 @@
                                                ToolTip="Создать новый элемент"
                                                FontWeight="DemiBold"
                                 DataContext="{Binding Source={StaticResource vm} }" 
-                                Command="{Binding UpdateCommand}">
+                                Command="{Binding OpenFormCommand}">
                                  Добавить новый элемент
                             </dxe:HyperlinkEdit>
                         </ItemContainerTemplate>
@@ -83,12 +83,14 @@
                                 CommandParameter="{Binding ElementName=view}"/>
                         <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
-                                Command="{x:Static dxg:GridCommands.AddNewRow}"
-                                CommandParameter="{Binding ElementName=view}"/>
+                                Command="{Binding OpenFormCommand}"/>
                         <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
                                 Command="{x:Static dxg:GridCommands.EditFocusedRow}"
                                 CommandParameter="{Binding ElementName=view}"/>
+                        <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding OpenFormCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                     </dxg:TableView.InputBindings>
                     <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
@@ -100,10 +102,6 @@
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
                     </dxg:TableView.RowCellMenuCustomizations>
-                    <dxmvvm:Interaction.Behaviors>
-                        <b:DeleteRowDataGridBehaviors/>
-                        <dxmvvm:EventToCommand  EventName="ValidateRow" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}" />
-                    </dxmvvm:Interaction.Behaviors>
                 </dxg:TableView>
             </dxg:GridControl.View>
 
@@ -119,16 +117,19 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
-
-            <dxg:GridColumn Width="auto"  >
+            <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button DataContext="{Binding Source={StaticResource vm} }" Command="{Binding UpdateCommand}"
+                            <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                     Padding="0" Height="20" Width="20" Margin="2 2 2 2" ToolTip="Редактировать">
                                 <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/edit.svg" Height="13" />
                             </Button>
-                            <Button DataContext="{Binding Source={StaticResource vm} }" Command="{Binding UpdateCommand}" 
+                            <Button DataContext="{Binding Source={StaticResource vm} }"
+                                    Command="{Binding DeleteCommand}" 
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                     Padding="0" Height="20" Width="20" Margin="2 2 2 2"  ToolTip="Удалить">
                                 <svgc:SvgViewbox    Source="pack://application:,,,/Resources/Icons/svg/trash-alt.svg" Height="13" />
                             </Button>

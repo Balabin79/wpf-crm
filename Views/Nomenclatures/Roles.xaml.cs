@@ -11,5 +11,7 @@ namespace Dental.Views.Nomenclatures
         {
             InitializeComponent();
         }
+
+
     }
 }
