@@ -149,7 +149,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png" 
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png"   
-                                            ToolTip="Справочники"
+                                           ToolTip="Справочники"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
 
                         <dxb:BarButtonItem Content="Интеграции"
@@ -188,14 +188,14 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Book-Keeping.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Book-Keeping.png"   
                                             ToolTip="Склады"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Storage}"/>
                         <dxb:BarButtonItem Content="Номенклатура"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Pill.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Pill.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Pill.png"   
                                             ToolTip="Номенклатура"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Nomenclature}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Складские операции">
                         <dxb:BarButtonItem Content="Заказы"
@@ -244,23 +244,7 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png"                                    
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                     </dxr:RibbonPageGroup>
-
-
-
-
-
-
-
-
-
-
-
-
                 </dxr:RibbonPage>
-            
-            
-            
-
             </dxr:RibbonDefaultPageCategory>
 
     </dxr:RibbonControl>

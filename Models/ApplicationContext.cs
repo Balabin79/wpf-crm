@@ -23,7 +23,6 @@ namespace Dental.Models
         public DbSet<Diary> Diaries { get; set; }
         public DbSet<TreatmentPlan> TreatmentPlanes { get; set; }
         public DbSet<InitialInspection> InitialInspectiones { get; set; }
-        public DbSet<EmployeeStatus> EmployeeStatuses { get; set; }
         public DbSet<EmployesSpecialities> EmployesSpecialities { get; set; }
         public DbSet<EmployesInOrganizations> EmployesInOrganizations { get; set; }
         public DbSet<InsuranceCompany> InsuranceCompany { get; set; }
@@ -33,5 +32,11 @@ namespace Dental.Models
         public DbSet<Region> Region { get; set; }
         public DbSet<City> City { get; set; }
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Nomenclature> Nomenclature { get; set; }
+        public DbSet<NomenclatureGroup> NomenclatureGroup { get; set; }
+        public DbSet<Unit> Unit { get; set; }
+
+        public DbSet<Storage> Storage { get; set; }
     }
 }

@@ -73,6 +73,7 @@
     <None Remove="Resources\Icons\Sections\Vcard-Add.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
+    <None Remove="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <None Remove="Resources\Icons\svg\edit.svg" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
@@ -359,6 +360,7 @@
     <Resource Include="Resources\Icons\Sections\Reseller-Account.png" />
     <Resource Include="Resources\Icons\Sections\Reseller-Programm.png" />
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
+    <Resource Include="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\eye.svg" />
@@ -513,6 +515,9 @@
     <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -586,6 +591,9 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Nomenclatures\Storage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Nomenclatures\Specialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -595,6 +603,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\Diary.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

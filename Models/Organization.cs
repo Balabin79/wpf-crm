@@ -33,16 +33,6 @@ namespace Dental.Models
 
         public string Logo { get; set; }
 
-        /*
-        ImageSource image = new BitmapImage(new Uri("c:\\Users\\user\\source\\repos\\Dental\\Resources\\Icons\\example\\cyprus.jpg"));
-        [NotMapped]
-        public ImageSource Logo {
-            get => image;
-            set => image = value; 
-        }
-        */
-
-
 
             byte[] imageData;
 
@@ -80,10 +70,10 @@ namespace Dental.Models
 
             // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
-        public string Address { get; set; } = "";
+        public string Address { get; set; }
 
         [Display(Name = "Юридический адрес")]
-        public string LegalAddress { get; set; } = "";
+        public string LegalAddress { get; set; }
 
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [Phone]
@@ -99,33 +89,33 @@ namespace Dental.Models
         // Банковские реквизиты
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Bik { get; set; } = "";
+        public string Bik { get; set; }
 
         [Display(Name = "Расчетный счет")]
         [MaxLength(20, ErrorMessage = "Длина не более 20 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string AccountNumber { get; set; } = "";
+        public string AccountNumber { get; set; }
 
         [Display(Name = "Наименование банка")]
-        public string BankName { get; set; } = "";
+        public string BankName { get; set; }
 
         // Регистрационная информация
         [Display(Name = "ОГРН")]
         [MaxLength(13, ErrorMessage = "Длина не более 13 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Ogrn { get; set; } = "";
+        public string Ogrn { get; set; }
 
         [Display(Name = "Дата регистрации")]
         public string RegisterDate { get; set; } = DateTime.Now.ToShortDateString().ToString();
 
         [Display(Name = "Генеральный директор")]
-        public string GeneralDirector { get; set; } = "";
+        public string GeneralDirector { get; set; }
 
         [Display(Name = "Лицензия")]
-        public string License { get; set; } = "";
+        public string License { get; set; }
 
         [Display(Name = "Кем выдана")]
-        public string WhoIssuedBy { get; set; } = "";
+        public string WhoIssuedBy { get; set; }
 
 
         public bool this[PropertyInfo prop, Organization item]

@@ -65,34 +65,7 @@
                 <TextBlock Text="Сотрудники" FontSize="18" Grid.Row="0" Grid.Column="0"  Foreground="Gray"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="1" Grid.Column="0">
 
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Roles" 
-                     Background="Transparent"  Margin="0 10 10 10">
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Роли сотрудников" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
 
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Access" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/comp.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Права в системе" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
 
                     <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Specialities" 
                      Background="Transparent"  Margin="0 10 10 10">
@@ -207,34 +180,6 @@
 
                 <TextBlock Text="Склад" FontSize="18" Grid.Row="2" Grid.Column="2"  Foreground="Gray" Margin="0 20 0 0"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2">
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="OrderStatuses" 
-                     Background="Transparent"  Margin="0 10 10 10">
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Статусы заказов" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
-
-                    <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="Units" 
-                     Background="Transparent"  Margin="0 10 10 10"
-                    >
-                        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="3">
-                            <StackPanel HorizontalAlignment="Center" >
-                                <Image Height="40"  Margin="5 10 5 5" HorizontalAlignment="Center">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/comp.png" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock TextWrapping="Wrap" Foreground="Gray" Text="Единицы измерения" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </lc:Tile>
 
                     <lc:Tile Size="Small" Height="100" Width="90" dxwuin:Navigation.NavigateTo="NomenclatureGroups" 
                      Background="Transparent"  Margin="0 10 10 10"

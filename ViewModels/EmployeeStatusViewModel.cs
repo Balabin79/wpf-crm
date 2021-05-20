@@ -20,6 +20,7 @@ using DevExpress.Mvvm.Native;
 using DevExpress.CodeParser;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Dental.Infrastructures.Collection;
 
 namespace Dental.ViewModels
 {
@@ -31,64 +32,19 @@ namespace Dental.ViewModels
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
+            //CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
             db = new ApplicationContext();
-            Collection = db.EmployeeStatuses.OrderBy(d => d.Name).ToObservableCollection();
-
-            /*
-                        Repository.CopyModel += ((IModel, TableView) c) => {
-                            var copiedRow = Collection.Where(d => d.Id == ((EmployeeStatus)c.Item2.FocusedRow)?.Id).FirstOrDefault(); 
-                            if (copiedRow != null)
-                            {
-                                int index = Collection.IndexOf(copiedRow) + 1;
-                                Collection.Insert(index, (EmployeeStatus)c.Item1);
-                                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                                if (row != null)
-                                {
-                                    c.Item2.FocusedRow = row;
-                                    c.Item2.ScrollIntoView(c.Item1);
-                                    c.Item2.FocusedRow = c.Item1;
-                                    //c.Item2.ShowEditForm();
-                                }
-                            }
-                        };
-                        Repository.UpdateModel += ((IModel, TableView) c) => {               
-                            var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                            if (row != null)
-                            {
-                                int index = Collection.IndexOf(row);
-                                Collection[index] = (EmployeeStatus)c.Item1;
-                            }
-                        };
-                        Repository.AddModel += ((IModel, TableView) c) => {
-                            Collection.Add((EmployeeStatus)c.Item1);
-                            var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-
-                            if (row != null)
-                            {
-                                c.Item2.FocusedRow = row;
-                                c.Item2.ScrollIntoView(row);
-                                //c.Item2.ShowEditForm();
-                            }
-                        };
-                        Repository.DeleteModel += (IModel model) => {
-                            var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
-                            if (item != null) Collection.Remove(item);               
-                        };*/
-
+         //   Collection = GetCollection();         
         }
 
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
-        public ICommand CopyCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
-        private bool CanCopyCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
 
@@ -97,23 +53,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                var table = p as TableView;
-                if (table == null) return;
-               // Repository.Delete(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
+                if (p == null) return;
+             //   var model = db.EmployeeStatuses?.Where(f => f.Id == (int)p).FirstOrDefault();
+              //  if (model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
 
-        private void OnCopyCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                //Repository.Copy(table);
+              //  db.Entry(model).State = EntityState.Deleted;
+                db.SaveChanges();
+              //  Collection = GetCollection();
             }
             catch (Exception e)
             {
@@ -125,20 +71,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (EmployeeStatus.Id == 0)
-                {
-                    db.EmployeeStatuses.Add(EmployeeStatus);
-                    db.SaveChanges();
-                    Collection.Add(EmployeeStatus);
-                    EmployeeStatusWindow.Close();
-                } 
-                else
-                {
-                    db.Entry(EmployeeStatus).State = EntityState.Modified;
-                    db.SaveChanges();
-                    Collection = db.EmployeeStatuses.OrderBy(d => d.Name).ToObservableCollection();
-                    EmployeeStatusWindow.Close();
-                }
+               // if (EmployeeStatus.Id == 0) db.EmployeeStatuses.Add(EmployeeStatus);
+                //else db.Entry(EmployeeStatus).State = EntityState.Modified;
+   
+                db.SaveChanges();
+              //  Collection = GetCollection();
+               // EmployeeStatusWindow.Close();             
             }
             catch (Exception e)
             {
@@ -150,13 +88,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                EmployeeStatusWindow = new EmployeeStatusWindow();
-                EmployeeStatusWindow.Title = "Cтатус coтрудника";
-                EmployeeStatusWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/status11.png"));
+               // EmployeeStatusWindow = new EmployeeStatusWindow();
+               // EmployeeStatusWindow.Title = "Cтатус coтрудника";
+              //  EmployeeStatusWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/status11.png"));
 
                 if (p != null)
                 {
-                    EmployeeStatus = db.EmployeeStatuses.Where(f => f.Id == (int)p).FirstOrDefault();
+                  //  EmployeeStatus = db.EmployeeStatuses.Where(f => f.Id == (int)p).FirstOrDefault();
                     WindowTitle = "Редактировать статус";
                 }
                 else
@@ -164,8 +102,8 @@ namespace Dental.ViewModels
                     EmployeeStatus = new EmployeeStatus();
                     WindowTitle = "Создать новый статус";
                 }
-                EmployeeStatusWindow.DataContext = this;
-                EmployeeStatusWindow.ShowDialog();
+               // EmployeeStatusWindow.DataContext = this;
+               // EmployeeStatusWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -173,8 +111,7 @@ namespace Dental.ViewModels
             }
         }
 
-
-        private void OnCancelFormCommandExecuted(object p) => EmployeeStatusWindow.Close();
+        //private void OnCancelFormCommandExecuted(object p) => EmployeeStatusWindow.Close();
 
         public ObservableCollection<EmployeeStatus> Collection
         {
@@ -185,6 +122,7 @@ namespace Dental.ViewModels
         public EmployeeStatus EmployeeStatus { get; set; }
         public string WindowTitle { get; set; }
         private ObservableCollection<EmployeeStatus> _Collection;
-        private EmployeeStatusWindow EmployeeStatusWindow;
+        //private EmployeeStatusWindow EmployeeStatusWindow;
+       // private ObservableCollection<EmployeeStatus> GetCollection() => db.EmployeeStatuses.OrderBy(d => d.Name).ToObservableCollection();
     }
 }

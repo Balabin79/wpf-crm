@@ -27,11 +27,11 @@ namespace Dental.Models
         [Phone(ErrorMessage = @"В поле ""Домашний телефон"" введено некорректное значение")]
         public string HomePhone { get; set; }
 
-        public int? EmployeeStatusId { get; set; }
-        public EmployeeStatus EmployeeStatus { get; set; } // статус (работает, уволен и т.д.)
-
         [Display(Name = "Дата приема")]
         public string HireDate { get; set; } // дата приема на работу
+
+        [Display(Name = "Уволен")]
+        public int IsDismissed { get; set; }
 
         [Display(Name = "Дата увольнения")]
         public string DismissalDate { get; set; } //= DateTime.Now.ToShortDateString().ToString(); // дата увольнения
@@ -111,8 +111,6 @@ namespace Dental.Models
                     case "Skype": return item.Skype == Skype;
                     case "MobilePhone": return item.MobilePhone == MobilePhone;
                     case "HomePhone": return item.HomePhone == HomePhone;
-                    case "Status": return item.EmployeeStatus == EmployeeStatus;
-                    case "EmployeeStatusId": return item.EmployeeStatusId == EmployeeStatusId;
                     case "HireDate": return item.HireDate == HireDate;
                     case "DismissalDate": return item.DismissalDate == DismissalDate;
                     case "Login": return item.Login == Login;
@@ -136,8 +134,6 @@ namespace Dental.Models
              Skype = copy.Skype;
              MobilePhone = copy.MobilePhone;
              HomePhone = copy.HomePhone;
-             EmployeeStatus = copy.EmployeeStatus;
-             EmployeeStatusId = copy.EmployeeStatusId;
              HireDate = copy.HireDate;
              DismissalDate = copy.DismissalDate;
              Login = copy.Login;
