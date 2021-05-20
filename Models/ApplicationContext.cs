@@ -38,5 +38,7 @@ namespace Dental.Models
         public DbSet<Unit> Unit { get; set; }
 
         public DbSet<Storage> Storage { get; set; }
+        public DbSet<Contractor> Contractors { get; set; }
+        public DbSet<ContractorGroup> ContractorsGroup { get; set; }
     }
 }

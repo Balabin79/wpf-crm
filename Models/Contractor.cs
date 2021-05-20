@@ -33,12 +33,11 @@ namespace Dental.Models
 
         [Display(Name = "Моб.телефон")]
         [Phone(ErrorMessage = @"В поле ""Мобильный телефон"" введено некорректное значение")]
-        [Required(ErrorMessage = @"Поле ""Мобильный телефон"" обязательно для заполнения")]
         public string MobilePhone { get; set; }
 
         [Display(Name = "Раб.телефон")]
-        [Phone(ErrorMessage = @"В поле ""Домашний телефон"" введено некорректное значение")]
-        public string HomePhone { get; set; }
+        [Phone(ErrorMessage = @"В поле ""Рабочий телефон"" введено некорректное значение")]
+        public string WorkPhone { get; set; }
 
         public string ActualAddress { get; set; } // Фактический адрес
         public string LegalAddress { get; set; } // Юридический адрес

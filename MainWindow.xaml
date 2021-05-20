@@ -180,7 +180,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png"   
                                             ToolTip="Контрагенты"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Contractor}"/>
 
                         <dxb:BarButtonItem Content="Склады"
                                            RibbonStyle="Default" 
