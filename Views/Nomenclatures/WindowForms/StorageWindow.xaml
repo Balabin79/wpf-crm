@@ -8,32 +8,55 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         mc:Ignorable="d"
-        Title="Склад" Height="250" Width="800"
+        Title="Склад" Height="280" Width="800"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Book-Keeping.png" />
     </Window.Icon>
     <Grid>
-        
-        <GroupBox Margin="10" Padding="10" BorderBrush="LightGray" BorderThickness="1">
+        <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+           
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-
                 <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
 
-                <TextBlock  Grid.Row="1" Text="Наименование:" VerticalAlignment="Center" Margin="0,0,8,8" />
-                <dxe:TextEdit  Grid.Row="2" Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+                <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
+                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
 
-                <StackPanel  Grid.Row="3"  Orientation="Horizontal" HorizontalAlignment="Right">
-                    <dx:SimpleButton Content="Сохранить" Command="{Binding SaveCommand}" Margin="2"/>
-                    <dx:SimpleButton Content="Закрыть" Command="{Binding CancelFormCommand}" Margin="2 2 0 2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
+                        <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="Ответственнное лицо:"  Margin="0,0,8,3" />
+                        <dxe:TextEdit  Grid.Row="1" Grid.Column="1"  Text="{Binding Model.Employee.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+
+                        <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Описание:"  Margin="0,0,8,3" />
+                        <dxe:MemoEdit Grid.ColumnSpan="2" MemoTextWrapping="Wrap" ShowIcon="False" Grid.Row="3"  Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+
+                    </Grid>
+                </GroupBox>
+
+
+                <StackPanel Height="25" Grid.Row="4" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                    <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                 </StackPanel>
             </Grid>
         </GroupBox>

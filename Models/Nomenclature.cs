@@ -27,6 +27,11 @@ namespace Dental.Models
         public int? NomenclatureGroupId { get; set; }
         public NomenclatureGroup NomenclatureGroup { get; set; }
 
+        public int? NumberInPack { get; set; } // кол-во в упаковке
+
+        [Display(Name = "Штрих-Код")]
+        public string BarCode { get; set; }
+
         public int? UnitId { get; set; }
         public Unit Unit { get; set; }
 

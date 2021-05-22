@@ -43,7 +43,7 @@ namespace Dental.Models
         public string LegalAddress { get; set; } // Юридический адрес
 
         // Юридическая информация
-        [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
+        [MinLength(10, ErrorMessage = "Длина не менее 10 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         [Display(Name = "ИНН")]
         public string Inn { get; set; }
@@ -65,6 +65,7 @@ namespace Dental.Models
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         public string Ogrn { get; set; }
 
+        [Display(Name = "Номер свидетельства")]
         public string СertificateNumber { get; set; }
 
 
