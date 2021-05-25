@@ -3,9 +3,9 @@ using System.Windows.Controls;
 namespace Dental.Views.Nomenclatures
 {
 
-    public partial class NomenclatureGroups : Page
+    public partial class ContractorGroups : Page
     {
-        public NomenclatureGroups()
+        public ContractorGroups()
         {
             InitializeComponent();
         }

@@ -111,12 +111,14 @@
     <None Remove="Resources\Icons\Template\Document-Mark-As-Final.ico" />
     <None Remove="Resources\Icons\Template\Document-Signature.png" />
     <None Remove="Resources\Icons\Template\Draw-Clone.png" />
+    <None Remove="Resources\Icons\Template\Drawer-Open.png" />
     <None Remove="Resources\Icons\Template\emp.png" />
     <None Remove="Resources\Icons\Template\error-item.png" />
     <None Remove="Resources\Icons\Template\Error-Symbol.png" />
     <None Remove="Resources\Icons\Template\Exclamation.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
@@ -141,6 +143,7 @@
     <None Remove="Resources\Icons\Template\Radio-2.png" />
     <None Remove="Resources\Icons\Template\red.png" />
     <None Remove="Resources\Icons\Template\Report.png" />
+    <None Remove="Resources\Icons\Template\Reseller-Account-Template.png" />
     <None Remove="Resources\Icons\Template\Reseller-Account.png" />
     <None Remove="Resources\Icons\Template\Ribbon.png" />
     <None Remove="Resources\Icons\Template\Sallary-Deferrais.png" />
@@ -393,10 +396,12 @@
     <Resource Include="Resources\Icons\Template\diagnos.png" />
     <Resource Include="Resources\Icons\Template\Document-Signature.png" />
     <Resource Include="Resources\Icons\Template\Draw-Clone.png" />
+    <Resource Include="Resources\Icons\Template\Drawer-Open.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
     <Resource Include="Resources\Icons\Template\error-item.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Hotjobs.png" />
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
@@ -415,6 +420,7 @@
     <Resource Include="Resources\Icons\Template\Profiles.png" />
     <Resource Include="Resources\Icons\Template\Radio-2.png" />
     <Resource Include="Resources\Icons\Template\Report.png" />
+    <Resource Include="Resources\Icons\Template\Reseller-Account-Template.png" />
     <Resource Include="Resources\Icons\Template\Reseller-Account.png" />
     <Resource Include="Resources\Icons\Template\Ribbon.png" />
     <Resource Include="Resources\Icons\Template\Sallary-Deferrais.png" />
@@ -515,7 +521,16 @@
     <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Nomenclatures\WindowForms\NomenclatureGroupWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\ContractorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Nomenclatures\WindowForms\ContractorGroupWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Nomenclatures\WindowForms\UnitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml.cs">
@@ -598,6 +613,17 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Nomenclatures\ContractorGroups.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\Units.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\NomenclatureGroups.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Nomenclatures\Storage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
@@ -613,7 +639,19 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Nomenclatures\WindowForms\NomenclatureGroupWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Nomenclatures\WindowForms\ContractorWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\WindowForms\ContractorGroupWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\WindowForms\UnitWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

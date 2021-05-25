@@ -17,6 +17,9 @@ namespace Dental.Models
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
+        [Display(Name = "Количество")]
+        public string Count { get; set; }
+
         public string Error
         {
             get
