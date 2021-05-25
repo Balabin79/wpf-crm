@@ -220,7 +220,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/emp.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/emp.png"   
                                             ToolTip="Группы контрагентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Contractor}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:ContractorGroups}"/>
 
                         <dxb:BarButtonItem Content="Группы номенклатур"
                                            RibbonStyle="Default" 
@@ -228,14 +228,14 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png"   
                                             ToolTip="Группы номенклатур"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Nomenclature}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:NomenclatureGroups}"/>
                         <dxb:BarButtonItem Content="Единицы измерений"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"   
                                             ToolTip="Единицы измерений"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Nomenclature}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Units}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 
