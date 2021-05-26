@@ -56,7 +56,7 @@
                                     <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png" />
                                 </Image.Source>
                             </Image>
-                            <TextBlock Text="Список групп номенклатур" FontSize="15" Margin="0 5 0 0" />
+                            <TextBlock Text="Группы номенклатур" FontSize="15" Margin="0 5 0 0" />
                         </StackPanel>
                     </dxg:TableView.Header>
 
@@ -64,10 +64,10 @@
                         <DataTemplate>
                             <dxe:HyperlinkEdit HorizontalAlignment="Right"                                              
                                 FontSize="14"
-                                ToolTip="Создать новый элемент"
+                                ToolTip="Создать группу номенклатур"
                                 DataContext="{Binding Source={StaticResource vm} }" 
                                 Command="{Binding OpenFormCommand}">
-                                Создать новый элемент
+                                Создать группу номенклатур
                             </dxe:HyperlinkEdit>
           
                         </DataTemplate>

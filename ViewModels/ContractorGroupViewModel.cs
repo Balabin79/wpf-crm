@@ -86,7 +86,7 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = CreateNewModel();
-                    Title = "Создать новую группу контрагентов";
+                    Title = "Создать группу контрагентов";
                 }
                 Window.DataContext = this;
                 Window.ShowDialog();

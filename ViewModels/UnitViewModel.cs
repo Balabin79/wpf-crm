@@ -86,7 +86,7 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = CreateNewModel();
-                    Title = "Создать новую единицу измерения";
+                    Title = "Создать единицу измерения";
                 }
                 Window.DataContext = this;
                 Window.ShowDialog();

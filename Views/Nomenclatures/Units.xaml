@@ -19,6 +19,7 @@
       xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
       xmlns:dxwuii="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal"
       xmlns:internal="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:UnitViewModel x:Key="vm"/>
@@ -43,8 +44,7 @@
                     AllowScrollToFocusedRow="True" 
                     EditFormColumnCount="1" 
                     EditFormPostConfirmation="YesNo" 
-                    VerticalScrollbarVisibility="Auto"
-                    >
+                    VerticalScrollbarVisibility="Auto">
 
                     <dxg:TableView.Header>
                         <StackPanel Orientation="Horizontal">
@@ -61,10 +61,10 @@
                         <DataTemplate>
                             <dxe:HyperlinkEdit HorizontalAlignment="Right"                                              
                                 FontSize="14"
-                                ToolTip="Создать новый элемент"
+                                ToolTip="Создать единицу измерения"
                                 DataContext="{Binding Source={StaticResource vm} }" 
                                 Command="{Binding OpenFormCommand}">
-                                Создать новый элемент
+                                Создать единицу измерения
                             </dxe:HyperlinkEdit>
           
                         </DataTemplate>
@@ -113,8 +113,8 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
-                            <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/balance-scale-right.svg" Height="11"  />
+                            <TextBlock Text="Количество" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>

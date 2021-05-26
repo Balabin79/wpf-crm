@@ -81,12 +81,12 @@ namespace Dental.ViewModels
                 if (p != null)
                 {
                     Model = GetModelById((int)p);
-                    Title = "Редактировать элемент";
+                    Title = "Редактировать номенклатуру";
                 }
                 else
                 {
                     Model = CreateNewModel();
-                    Title = "Создать новый элемент";
+                    Title = "Создать номенклатуру";
                 }
                 Window.DataContext = this;
                 Window.ShowDialog();
@@ -98,6 +98,10 @@ namespace Dental.ViewModels
         }
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
+
+        public ICollection<Unit> Units  => db.Unit.OrderBy(d => d.Name).ToList(); 
+        public ICollection<NomenclatureGroup> NomenclatureGroups => db.NomenclatureGroup.OrderBy(d => d.Name).ToList(); 
+
 
         /******************************************************/
         public ObservableCollection<Nomenclature> Collection

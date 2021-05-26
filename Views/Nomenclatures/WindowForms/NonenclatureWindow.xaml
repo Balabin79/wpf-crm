@@ -7,10 +7,15 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:vm ="clr-namespace:Dental.ViewModels"
         mc:Ignorable="d"
         Title="Номенклатура" Height="330" Width="800"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:UnitViewModel x:Key="units"/>
+        <vm:NomenclatureGroupViewModel x:Key="ng"/>
+    </Window.Resources>
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Pill.png" />
     </Window.Icon>
@@ -43,9 +48,15 @@
 
                         <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
                         <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                        
                         <TextBlock  Grid.Row="0" Grid.Column="1" Text="Группа:"  Margin="0,0,8,3" />
-                        <dxe:TextEdit  Grid.Row="1" Grid.Column="1"  Text="{Binding Model.NomenclatureGroup.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-                        <TextBlock  Grid.Row="0" Grid.Column="2" Text="Код:"  Margin="0,0,8,3" />
+                            <dxe:ComboBoxEdit ItemsSource="{Binding Source={StaticResource ng}, Path=Collection}"
+                                                          DisplayMember="Name"
+                                                          SelectedItem="{Binding Model.NomenclatureGroup.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,8,8"
+                                               />
+                        
+                            <TextBlock  Grid.Row="0" Grid.Column="2" Text="Код:"  Margin="0,0,8,3" />
                             <dxe:TextEdit  Grid.Row="1" Grid.Column="2"  Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
                         </Grid>
                     <Grid>
@@ -64,11 +75,21 @@
 
                         <TextBlock  Grid.Row="0" Grid.Column="0" Text="Артикул:"  Margin="0,0,8,3" />
                         <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.VendorCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-                            <TextBlock  Grid.Row="0" Grid.Column="1" Text="Штрих - код:"  Margin="0,0,8,3" />
+                            
+                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="Штрих - код:"  Margin="0,0,8,3" />
                         <dxe:TextEdit  Grid.Row="1" Grid.Column="1"  Text="{Binding Model.BarCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-                            <TextBlock  Grid.Row="0" Grid.Column="2" Text="Единица измерения:"  Margin="0,0,8,3" />
-                        <dxe:TextEdit  Grid.Row="1" Grid.Column="2"  Text="{Binding Model.Unit.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-                            <TextBlock  Grid.Row="0" Grid.Column="3" Text="Количество в упаковке:"  Margin="0,0,0,3" />
+                            
+                        <TextBlock  Grid.Row="0" Grid.Column="2" Text="Единица измерения:"  Margin="0,0,8,3" />
+                        <dxe:ComboBoxEdit ItemsSource="{Binding Path=Units}" 
+                                                          DisplayMember="Name"
+                                                          SelectedItem="{Binding Model.Unit.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsTextEditable="False" Grid.Row="1" Grid.Column="2"  Margin="0,0,8,8"
+                                               />
+
+                            
+                                                
+                        
+                        <TextBlock  Grid.Row="0" Grid.Column="3" Text="Количество:"  Margin="0,0,0,3" />
                             <dxe:TextEdit  Grid.Row="1" Grid.Column="3"  Text="{Binding Model.NumberInPack, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
                     </Grid>
                         <Grid>

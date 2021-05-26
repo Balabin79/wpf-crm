@@ -81,12 +81,12 @@ namespace Dental.ViewModels
                 if (p != null)
                 {
                     Model = GetModelById((int)p);
-                    Title = "Редактировать элемент";
+                    Title = "Редактировать склад";
                 }
                 else
                 {
                     Model = CreateNewModel();
-                    Title = "Создать новый элемент";
+                    Title = "Создать склад";
                 }
                 Window.DataContext = this;
                 Window.ShowDialog();

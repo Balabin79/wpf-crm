@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
+    <StartupObject>Dental.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -74,6 +75,7 @@
     <None Remove="Resources\Icons\Sections\Vcard.ico" />
     <None Remove="Resources\Icons\Sections\Vcard.png" />
     <None Remove="Resources\Icons\svg\arrow-alt-circle-up.svg" />
+    <None Remove="Resources\Icons\svg\balance-scale-right.svg" />
     <None Remove="Resources\Icons\svg\edit.svg" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
@@ -244,6 +246,7 @@
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.TypedStyles.ru" Version="20.1.4" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -364,6 +367,7 @@
     <Resource Include="Resources\Icons\Sections\Reseller-Programm.png" />
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
     <Resource Include="Resources\Icons\svg\arrow-alt-circle-up.svg" />
+    <Resource Include="Resources\Icons\svg\balance-scale-right.svg" />
     <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\eye.svg" />
@@ -487,6 +491,12 @@
   <ItemGroup>
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ViewModels\ContractorGroupViewModel.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="ViewModels\NomenclatureGroupViewModel.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Views\HandbooksPages\EmployesInOrganizations.xaml.cs">
       <SubType>Code</SubType>
