@@ -99,8 +99,6 @@
                 </dxg:TableView>
             </dxg:GridControl.View>
 
-
-
             <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="*">
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
@@ -111,6 +109,25 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
+            <dxg:GridColumn Header="Группа" Name="NomenclatureGroup" MinWidth="200" Width="*">
+                <dxg:GridColumn.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
+                            <TextBlock Text="Группа" Margin="3 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dxg:GridColumn.HeaderTemplate>
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Source={StaticResource vm}, Path=Model.NomenclatureGroup.Name}"/>
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+            </dxg:GridColumn>
+            
+            
+            
+            
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>

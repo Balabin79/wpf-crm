@@ -20,7 +20,9 @@ namespace Dental.ViewModels
     {
 
         private readonly ApplicationContext db;
-        public UnitViewModel()
+        public UnitViewModel() : this(null){}
+
+        public UnitViewModel(int? id)
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -28,6 +30,7 @@ namespace Dental.ViewModels
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
             db = new ApplicationContext();
             Collection = GetCollection();
+            if (id != null) SelectedUnit = Collection.Where(f => f.Id == id).FirstOrDefault();
         }
 
         public ICommand DeleteCommand { get; }
@@ -99,6 +102,9 @@ namespace Dental.ViewModels
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
+
+        /************* Специфика этой ViewModel ******************/
+        public object SelectedUnit { get; set; }
         /******************************************************/
         public ObservableCollection<Unit> Collection
         {

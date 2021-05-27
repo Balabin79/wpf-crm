@@ -20,7 +20,10 @@ namespace Dental.ViewModels
     {
 
         private readonly ApplicationContext db;
-        public NomenclatureGroupViewModel()
+
+        public NomenclatureGroupViewModel() : this(null){}
+
+        public NomenclatureGroupViewModel(int? id)
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -28,7 +31,12 @@ namespace Dental.ViewModels
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
             db = new ApplicationContext();
             Collection = GetCollection();
+
+            if (id != null) SelectedNomenclatureGroup = Collection.Where(f => f.Id == id).FirstOrDefault();
         }
+
+
+
 
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
@@ -99,6 +107,13 @@ namespace Dental.ViewModels
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
+
+        /************* Специфика этой ViewModel ******************/
+        private object selectedNomenclatureGroup;
+        public object SelectedNomenclatureGroup {
+            get => selectedNomenclatureGroup;
+            set => Set(ref selectedNomenclatureGroup, value);
+        }
         /******************************************************/
         public ObservableCollection<NomenclatureGroup> Collection
         {
