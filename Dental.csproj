@@ -76,17 +76,23 @@
     <None Remove="Resources\Icons\Sections\Vcard.png" />
     <None Remove="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <None Remove="Resources\Icons\svg\balance-scale-right.svg" />
+    <None Remove="Resources\Icons\svg\document.svg" />
     <None Remove="Resources\Icons\svg\edit.svg" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
     <None Remove="Resources\Icons\svg\eye.svg" />
+    <None Remove="Resources\Icons\svg\file-alt.svg" />
+    <None Remove="Resources\Icons\svg\file.svg" />
+    <None Remove="Resources\Icons\svg\folder.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
+    <None Remove="Resources\Icons\svg\opened_folder.svg" />
     <None Remove="Resources\Icons\svg\pen-alt.svg" />
     <None Remove="Resources\Icons\svg\pencil-alt.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
     <None Remove="Resources\Icons\svg\plus-square.svg" />
+    <None Remove="Resources\Icons\svg\print.svg" />
     <None Remove="Resources\Icons\svg\save.svg" />
     <None Remove="Resources\Icons\svg\Skype.png" />
     <None Remove="Resources\Icons\svg\skype.svg" />
@@ -368,9 +374,13 @@
     <Resource Include="Resources\Icons\Sections\Sallary-Deferrais.png" />
     <Resource Include="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <Resource Include="Resources\Icons\svg\balance-scale-right.svg" />
+    <Resource Include="Resources\Icons\svg\document.svg" />
     <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\eye.svg" />
+    <Resource Include="Resources\Icons\svg\file-alt.svg" />
+    <Resource Include="Resources\Icons\svg\file.svg" />
+    <Resource Include="Resources\Icons\svg\folder.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
@@ -378,6 +388,7 @@
     <Resource Include="Resources\Icons\svg\pencil-alt.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
     <Resource Include="Resources\Icons\svg\plus-square.svg" />
+    <Resource Include="Resources\Icons\svg\print.svg" />
     <Resource Include="Resources\Icons\svg\save.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\tooth.svg" />
@@ -494,9 +505,6 @@
     </Compile>
     <Compile Update="ViewModels\ContractorGroupViewModel.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="ViewModels\NomenclatureGroupViewModel.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Views\HandbooksPages\EmployesInOrganizations.xaml.cs">
       <SubType>Code</SubType>
@@ -630,9 +638,6 @@
     <Page Update="Views\Nomenclatures\Units.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\NomenclatureGroups.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Nomenclatures\Storage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

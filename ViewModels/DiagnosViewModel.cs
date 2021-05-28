@@ -29,7 +29,7 @@ namespace Dental.ViewModels
             {
                 Collection.Add((Diagnos)c.Item1);
                 TreeListNode node;
-                if (((Diagnos)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
+                if (((Diagnos)c.Item2.FocusedNode.Content).IsDir == (int)TypeItem.Directory)
                 {
                     node = c.Item2.FocusedNode.Nodes.Where(d => ((Diagnos)d.Content).Id == c.Item1.Id).FirstOrDefault();
                 }

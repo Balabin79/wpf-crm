@@ -8,7 +8,7 @@ namespace Dental.Models.Base
     abstract class TreeModelBase : AbstractBaseModel
     {
         [Column("ParentId")]
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
 
         [Required]
         [Column("Name")]
@@ -17,7 +17,7 @@ namespace Dental.Models.Base
 
         [Column("Dir")]
         [Display(Name = "Директория")]
-        public int Dir { get; set; }
+        public int IsDir { get; set; }
 
         [Column("IsSys")]
         [Display(Name = "Системные значения")]

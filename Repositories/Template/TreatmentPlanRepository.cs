@@ -39,16 +39,16 @@ namespace Dental.Repositories.Template
                 TreatmentPlan model = (TreatmentPlan)tree.FocusedNode?.Content;
                 if (model == null)
                 {
-                    model = new TreatmentPlan() { Dir = 1, Name = "План лечения", IsSys = 1, ParentId = 0 };
+                    model = new TreatmentPlan() { IsDir = 1, Name = "План лечения", IsSys = 1, ParentId = 0 };
                     if (!new ConfirmAddNewInCollection().run(model.Name)) return;
                     item = model;
                 }
                 else
                 {
-                    string NameDir = (model.Dir == 1) ? model.Name : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Name;
+                    string NameDir = (model.IsDir == 1) ? model.Name : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Name;
                     if (!new ConfirmAddNewInCollection().run(NameDir)) return;
-                    int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Id;
-                    item = new TreatmentPlan() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                    int ParentId = (model.IsDir == (int)TypeItem.Directory) ? model.Id : ((TreatmentPlan)tree.FocusedNode.ParentNode.Content).Id;
+                    item = new TreatmentPlan() { IsDir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
                 }
 
                 using (ApplicationContext db = new ApplicationContext())
@@ -72,7 +72,7 @@ namespace Dental.Repositories.Template
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     TreatmentPlan item = db.TreatmentPlanes.Where(i => i.Id == model.Id).First();
-                    if (item.Name != model.Name || item.Dir != model.Dir)
+                    if (item.Name != model.Name || item.IsDir != model.IsDir)
                     {
                         if (!new ConfirUpdateInCollection().run())
                         {
@@ -81,7 +81,7 @@ namespace Dental.Repositories.Template
                         }
                         item.Name = model.Name;
                         item.ParentId = model.ParentId;
-                        item.Dir = model.Dir;
+                        item.IsDir = model.IsDir;
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -100,7 +100,7 @@ namespace Dental.Repositories.Template
             try
             {
                 var model = tree.FocusedRow as TreatmentPlan;
-                if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirDeleteInCollection().run(model.IsDir)) return;
                 var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<TreatmentPlan>()
                     .ToList().Select(d => d.Id).ToList();
 
@@ -125,13 +125,13 @@ namespace Dental.Repositories.Template
             try
             {
                 TreatmentPlan model = (TreatmentPlan)tree.FocusedNode.Content;
-                if (model == null || !new ConfirCopyInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirCopyInCollection().run(model.IsDir)) return;
                 var db = new ApplicationContext();
                 TreatmentPlan item = db.TreatmentPlanes.Where(i => i.Id == model.Id).First();
                 if (item == null) return;
                 TreatmentPlan newModel = new TreatmentPlan()
                 {
-                    Dir = item.Dir,
+                    IsDir = item.IsDir,
                     Name = item.Name + " Копия",
                     IsSys = item.IsSys,
                     ParentId = item.ParentId,

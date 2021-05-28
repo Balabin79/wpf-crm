@@ -34,7 +34,6 @@ namespace Dental.Models
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Nomenclature> Nomenclature { get; set; }
-        public DbSet<NomenclatureGroup> NomenclatureGroup { get; set; }
         public DbSet<Unit> Unit { get; set; }
 
         public DbSet<Storage> Storage { get; set; }

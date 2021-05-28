@@ -41,16 +41,16 @@ namespace Dental.Repositories.Template
                 InitialInspection model = (InitialInspection)tree.FocusedNode?.Content;
                 if (model == null)
                 {
-                    model = new InitialInspection() { Dir = 1, Name = "Первичный осмотр", IsSys = 1, ParentId = 0 };
+                    model = new InitialInspection() { IsDir = 1, Name = "Первичный осмотр", IsSys = 1, ParentId = 0 };
                     if (!new ConfirmAddNewInCollection().run(model.Name)) return;
                     item = model;
                 }
                 else
                 {
-                    string NameDir = (model.Dir == 1) ? model.Name : ((InitialInspection)tree.FocusedNode.ParentNode.Content).Name;
+                    string NameDir = (model.IsDir == 1) ? model.Name : ((InitialInspection)tree.FocusedNode.ParentNode.Content).Name;
                     if (!new ConfirmAddNewInCollection().run(NameDir)) return;
-                    int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((InitialInspection)tree.FocusedNode.ParentNode.Content).Id;
-                    item = new InitialInspection() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                    int ParentId = (model.IsDir == (int)TypeItem.Directory) ? model.Id : ((InitialInspection)tree.FocusedNode.ParentNode.Content).Id;
+                    item = new InitialInspection() { IsDir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
                 }
 
 
@@ -76,7 +76,7 @@ namespace Dental.Repositories.Template
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     InitialInspection item = db.InitialInspectiones.Where(i => i.Id == model.Id).First();
-                    if (item.Name != model.Name || item.Dir != model.Dir)
+                    if (item.Name != model.Name || item.IsDir != model.IsDir)
                     {
                         if (!new ConfirUpdateInCollection().run())
                         {
@@ -85,7 +85,7 @@ namespace Dental.Repositories.Template
                         }
                         item.Name = model.Name;
                         item.ParentId = model.ParentId;
-                        item.Dir = model.Dir;
+                        item.IsDir = model.IsDir;
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -103,7 +103,7 @@ namespace Dental.Repositories.Template
             try
             {
                 var model = tree.FocusedRow as InitialInspection;
-                if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirDeleteInCollection().run(model.IsDir)) return;
                 var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<InitialInspection>()
                     .ToList().Select(d => d.Id).ToList();
 
@@ -128,13 +128,13 @@ namespace Dental.Repositories.Template
             try
             {
                 InitialInspection model = (InitialInspection)tree.FocusedNode.Content;
-                if (model == null || !new ConfirCopyInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirCopyInCollection().run(model.IsDir)) return;
                 var db = new ApplicationContext();
                 InitialInspection item = db.InitialInspectiones.Where(i => i.Id == model.Id).First();
                 if (item == null) return;
                 InitialInspection newModel = new InitialInspection()
                 {
-                    Dir = item.Dir,
+                    IsDir = item.IsDir,
                     Name = item.Name + " Копия",
                     IsSys = item.IsSys,
                     ParentId = item.ParentId,

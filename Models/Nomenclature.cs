@@ -4,11 +4,12 @@ using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations;
 using DevExpress.Mvvm;
 using System.Reflection;
+using Dental.Interfaces;
 
 namespace Dental.Models
 {
     [Table("Nomenclature")]
-    class Nomenclature : AbstractBaseModel, IDataErrorInfo
+    class Nomenclature : AbstractBaseModel, IDataErrorInfo, ITreeViewCollection
     {
         [Required]
         [MaxLength(255)]
@@ -24,8 +25,8 @@ namespace Dental.Models
         [Display(Name = "Артикул")]
         public string VendorCode { get; set; }
 
-        public int? NomenclatureGroupId { get; set; }
-        public NomenclatureGroup NomenclatureGroup { get; set; }
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
 
         public int? UnitId { get; set; }
         public Unit Unit { get; set; }
@@ -50,7 +51,8 @@ namespace Dental.Models
                     case "Description": return item.Description == Description;
                     case "Code": return item.Code == Code;
                     case "VendorCode": return item.VendorCode == VendorCode;
-                    case "NomenclatureGroup": return item.NomenclatureGroup == NomenclatureGroup;
+                    case "ParentId": return item.ParentId == ParentId;
+                    case "IsDir": return item.IsDir == IsDir;
                     case "Unit": return item.Unit == Unit;
                     default: return true;
                 }
@@ -63,7 +65,8 @@ namespace Dental.Models
             Description = copy.Description;
             Code = copy.Code;
             VendorCode = copy.VendorCode;
-            NomenclatureGroup = copy.NomenclatureGroup;
+            ParentId = copy.ParentId;
+            IsDir = copy.IsDir;
             Unit = copy.Unit;
         }
 
@@ -82,5 +85,5 @@ namespace Dental.Models
                 return IDataErrorInfoHelper.GetErrorText(this, columnName);
             }
         }
-    }
+    }  
 }

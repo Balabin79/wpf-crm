@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,7 @@ using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Collection;
+using Dental.Interfaces;
 
 namespace Dental.ViewModels
 {
@@ -63,7 +65,6 @@ namespace Dental.ViewModels
             try
             {
                 if (Unit?.SelectedUnit != null) Model.UnitId = ((Unit)Unit.SelectedUnit).Id;
-                if (NomenclatureGroup?.SelectedNomenclatureGroup != null) Model.NomenclatureGroupId = ((NomenclatureGroup)NomenclatureGroup.SelectedNomenclatureGroup).Id;
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
                 Collection = GetCollection();
@@ -80,20 +81,43 @@ namespace Dental.ViewModels
             try
             {
                 CreateNewWindow();
-                if (p != null)
+
+                int param;
+                int.TryParse(p.ToString(), out param);
+                if (param == -3) return;
+
+                switch (param)
                 {
-                    Model = GetModelById((int)p);
-                    Title = "Редактировать номенклатуру";
-                    NomenclatureGroup = new NomenclatureGroupViewModel(Model?.NomenclatureGroup?.Id);
-                    Unit = new UnitViewModel(Model?.Unit?.Id);
+                    case -1: 
+                        Model = CreateNewModel();
+                        Unit = new UnitViewModel();
+                        Model.IsDir = 0;
+                        Title = "Создать номенклатуру";
+                        VisibleItemForm();
+                        break;
+                    case -2:
+                        Model = CreateNewModel();
+                        Unit = new UnitViewModel();
+                        Title = "Создать номенклатурную группу";
+                        Model.IsDir = 1;
+                        VisibleItemGroup();
+                        break;
+                    default:
+                        Model = GetModelById(param);
+                        Unit = new UnitViewModel(Model?.Unit?.Id);
+                        if (Model.IsDir == 0)
+                        {
+                            Title = "Редактировать номенклатуру";
+                            VisibleItemForm();
+                        }
+                        else
+                        {
+                            Title = "Редактировать номенклатурную группу";
+                            VisibleItemGroup();
+                        }
+                        break;
                 }
-                else
-                {
-                    Model = CreateNewModel();
-                    Title = "Создать номенклатуру";
-                    NomenclatureGroup = new NomenclatureGroupViewModel();
-                    Unit = new UnitViewModel();
-                }
+
                 Window.DataContext = this;
                 Window.ShowDialog();
             }
@@ -106,8 +130,6 @@ namespace Dental.ViewModels
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
         /************* Специфика этой ViewModel ******************/
-
-        public NomenclatureGroupViewModel NomenclatureGroup { get; set; }
         public UnitViewModel Unit { get; set; }
 
         /******************************************************/
@@ -117,18 +139,39 @@ namespace Dental.ViewModels
             set => Set(ref _Collection, value);
         }
         public Nomenclature Model { get; set; }
-        public string Title { get; set; }       
+        public string Title { get; set; }
+        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
+        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
+
+        private void VisibleItemForm() 
+        {
+            IsVisibleItemForm = Visibility.Visible;
+            IsVisibleGroupForm = Visibility.Hidden;
+            Window.Height = 330;
+        }
+        private void VisibleItemGroup() 
+        {
+            IsVisibleItemForm = Visibility.Hidden;
+            IsVisibleGroupForm = Visibility.Visible;
+            Window.Height = 280;
+        }
+
         private ObservableCollection<Nomenclature> _Collection;
         private NomenclatureWindow Window;       
-        private ObservableCollection<Nomenclature> GetCollection() => db.Nomenclature.OrderBy(d => d.Name).Include(b => b.NomenclatureGroup).ToObservableCollection();      
+        private ObservableCollection<Nomenclature> GetCollection() => db.Nomenclature.OrderBy(d => d.Name).ToObservableCollection();      
         private void CreateNewWindow() => Window = new NomenclatureWindow(); 
         private Nomenclature CreateNewModel() => new Nomenclature();
-        private Nomenclature GetModelById(int id) => db.Nomenclature.Where(f => f.Id == id).Include(b => b.NomenclatureGroup).Include(b => b.Unit).FirstOrDefault();
-              
+
+        private Nomenclature GetModelById(int id) 
+        {
+            return Collection.Where(f => f.Id == id).FirstOrDefault();
+
+        }
+            
+        //db.Nomenclature.Where(f => f.Id == id).Include(b => b.Unit).FirstOrDefault();
+
         private void Add() => db.Nomenclature.Add(Model);
         private void Update() => db.Entry(Model).State = EntityState.Modified;
-        private void Delete() => db.Entry(Model).State = EntityState.Deleted;
-
-        
+        private void Delete() => db.Entry(Model).State = EntityState.Deleted;       
     }
 }

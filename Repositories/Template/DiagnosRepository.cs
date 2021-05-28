@@ -41,16 +41,16 @@ namespace Dental.Repositories.Template
                 Diagnos model = (Diagnos)tree.FocusedNode?.Content;
                 if (model == null)
                 {
-                    model = new Diagnos() { Dir = 1, Name = "Диагноз", IsSys = 1, ParentId = 0 };
+                    model = new Diagnos() { IsDir = 1, Name = "Диагноз", IsSys = 1, ParentId = 0 };
                     if (!new ConfirmAddNewInCollection().run(model.Name)) return;
                     item = model;
                 }
                 else
                 {
-                    string NameDir = (model.Dir == 1) ? model.Name : ((Diagnos)tree.FocusedNode.ParentNode.Content).Name;
+                    string NameDir = (model.IsDir == 1) ? model.Name : ((Diagnos)tree.FocusedNode.ParentNode.Content).Name;
                     if (!new ConfirmAddNewInCollection().run(NameDir)) return;
-                    int ParentId = (model.Dir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
-                    item = new Diagnos() { Dir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
+                    int ParentId = (model.IsDir == (int)TypeItem.Directory) ? model.Id : ((Diagnos)tree.FocusedNode.ParentNode.Content).Id;
+                    item = new Diagnos() { IsDir = 0, Name = "Новый элемент", IsSys = 0, ParentId = ParentId };
                 }
 
                 using (ApplicationContext db = new ApplicationContext())
@@ -74,7 +74,7 @@ namespace Dental.Repositories.Template
                 using (ApplicationContext db = new ApplicationContext())
                 {
                     Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
-                    if (item.Name != model.Name || item.Dir != model.Dir)
+                    if (item.Name != model.Name || item.IsDir != model.IsDir)
                     {
                         if (!new ConfirUpdateInCollection().run()) {
                             UpdateModel?.Invoke((item, tree));
@@ -82,7 +82,7 @@ namespace Dental.Repositories.Template
                         } 
                         item.Name = model.Name;
                         item.ParentId = model.ParentId;
-                        item.Dir = model.Dir;
+                        item.IsDir = model.IsDir;
                         db.Entry(item).State = EntityState.Modified;
                         db.SaveChanges();                       
                     }
@@ -99,7 +99,7 @@ namespace Dental.Repositories.Template
         {
             try {
                 var model = tree.FocusedRow as Diagnos;
-                if (model == null || !new ConfirDeleteInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirDeleteInCollection().run(model.IsDir)) return;
 
                 var listNodesIds = (new NodeChildren(tree.FocusedNode)).run().Select(d => d.Content).OfType<Diagnos>()
                     .ToList().Select(d => d.Id).ToList();
@@ -125,13 +125,13 @@ namespace Dental.Repositories.Template
             try
             {
                 Diagnos model = (Diagnos)tree.FocusedNode.Content;
-                if (model == null || !new ConfirCopyInCollection().run(model.Dir)) return;
+                if (model == null || !new ConfirCopyInCollection().run(model.IsDir)) return;
                 var db = new ApplicationContext();
                 Diagnos item = db.Diagnoses.Where(i => i.Id == model.Id).First();
                 if (item == null) return;
                 Diagnos newModel = new Diagnos()
                 {
-                    Dir = item.Dir,
+                    IsDir = item.IsDir,
                     Name = item.Name + " Копия",
                     IsSys = item.IsSys,
                     ParentId = item.ParentId,

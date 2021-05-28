@@ -15,7 +15,7 @@
       xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands" 
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui">
+      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" xmlns:svgc="http://sharpvectors.codeplex.com/svgc/">
 
     <Grid >
         <Grid.DataContext>
@@ -142,11 +142,7 @@
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="15" Height="15" >
-                                    <Image.Source>
-                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/List.ico" />
-                                    </Image.Source>
-                                </Image>
+                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
                                 <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>

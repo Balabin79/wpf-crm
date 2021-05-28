@@ -28,7 +28,7 @@ namespace Dental.ViewModels
             Repository.AddModel += ((IModel, TreeListView) c) => {
                 Collection.Add((InitialInspection)c.Item1);
                 TreeListNode node;
-                if (((InitialInspection)c.Item2.FocusedNode.Content).Dir == (int)TypeItem.Directory)
+                if (((InitialInspection)c.Item2.FocusedNode.Content).IsDir == (int)TypeItem.Directory)
                 {
                     node = c.Item2.FocusedNode.Nodes.Where(d => ((InitialInspection)d.Content).Id == c.Item1.Id).FirstOrDefault();
                 }

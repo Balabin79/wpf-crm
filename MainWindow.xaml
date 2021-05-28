@@ -196,6 +196,14 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Pill.png"   
                                             ToolTip="Номенклатура"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Nomenclature}"/>
+                        <dxb:BarButtonItem Content="Единицы измерений"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"   
+                                            ToolTip="Единицы измерений"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Units}"/>
+
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Складские операции">
                         <dxb:BarButtonItem Content="Заказы"
@@ -213,30 +221,7 @@
                                             ToolTip="Товары на складе"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Дополнительные характеристики">
-                        <dxb:BarButtonItem Content="Группы контрагентов"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/emp.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/emp.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/emp.png"   
-                                            ToolTip="Группы контрагентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:ContractorGroups}"/>
 
-                        <dxb:BarButtonItem Content="Группы номенклатур"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Drawer-Open.png"   
-                                            ToolTip="Группы номенклатур"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:NomenclatureGroups}"/>
-                        <dxb:BarButtonItem Content="Единицы измерений"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png"   
-                                            ToolTip="Единицы измерений"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Units}"/>
-                    </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 
                 <dxr:RibbonPage Caption="Отчеты" >
