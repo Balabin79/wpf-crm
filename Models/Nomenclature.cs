@@ -9,7 +9,7 @@ using Dental.Interfaces;
 namespace Dental.Models
 {
     [Table("Nomenclature")]
-    class Nomenclature : AbstractBaseModel, IDataErrorInfo, ITreeViewCollection
+    class Nomenclature : AbstractBaseModel, ITreeModel, IDataErrorInfo, ITreeViewCollection
     {
         [Required]
         [MaxLength(255)]

@@ -15,6 +15,7 @@ using DevExpress.Mvvm.Native;
 using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Collection;
 using Dental.Interfaces;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -65,9 +66,11 @@ namespace Dental.ViewModels
             try
             {
                 if (Unit?.SelectedUnit != null) Model.UnitId = ((Unit)Unit.SelectedUnit).Id;
+                if (SelectedNomenclatureGroup != null) Model.ParentId = ((Nomenclature)SelectedNomenclatureGroup).Id;
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
-                Collection = GetCollection();
+                //Collection.Add(Model);
+                SelectedNomenclatureGroup = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -81,18 +84,19 @@ namespace Dental.ViewModels
             try
             {
                 CreateNewWindow();
-
+                if (p == null) return;
                 int param;
                 int.TryParse(p.ToString(), out param);
                 if (param == -3) return;
 
                 switch (param)
                 {
-                    case -1: 
+                    case -1:
                         Model = CreateNewModel();
                         Unit = new UnitViewModel();
                         Model.IsDir = 0;
                         Title = "Создать номенклатуру";
+                        NomenclatureGroup = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
                         VisibleItemForm();
                         break;
                     case -2:
@@ -100,10 +104,15 @@ namespace Dental.ViewModels
                         Unit = new UnitViewModel();
                         Title = "Создать номенклатурную группу";
                         Model.IsDir = 1;
+                        NomenclatureGroup = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
                         VisibleItemGroup();
                         break;
                     default:
                         Model = GetModelById(param);
+                        NomenclatureGroup = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                            .GetDirectories().OfType<Nomenclature>().ToObservableCollection();
+                        
+                        SelectedNomenclatureGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
                         Unit = new UnitViewModel(Model?.Unit?.Id);
                         if (Model.IsDir == 0)
                         {
@@ -120,6 +129,7 @@ namespace Dental.ViewModels
 
                 Window.DataContext = this;
                 Window.ShowDialog();
+                SelectedNomenclatureGroup = null;
             }
             catch (Exception e)
             {
@@ -132,6 +142,20 @@ namespace Dental.ViewModels
         /************* Специфика этой ViewModel ******************/
         public UnitViewModel Unit { get; set; }
 
+        public ICollection<Nomenclature> NomenclatureGroup
+        {
+            get; set;
+
+        }
+
+        private object _SelectedNomenclatureGroup;
+        public object SelectedNomenclatureGroup
+        {
+            get => _SelectedNomenclatureGroup;
+            set => Set(ref _SelectedNomenclatureGroup, value); 
+        }
+
+
         /******************************************************/
         public ObservableCollection<Nomenclature> Collection
         {
@@ -142,6 +166,7 @@ namespace Dental.ViewModels
         public string Title { get; set; }
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
+
 
         private void VisibleItemForm() 
         {
@@ -167,11 +192,20 @@ namespace Dental.ViewModels
             return Collection.Where(f => f.Id == id).FirstOrDefault();
 
         }
-            
-        //db.Nomenclature.Where(f => f.Id == id).Include(b => b.Unit).FirstOrDefault();
 
-        private void Add() => db.Nomenclature.Add(Model);
-        private void Update() => db.Entry(Model).State = EntityState.Modified;
+        private void Add() 
+        { 
+            db.Entry(Model).State = EntityState.Added;
+            db.SaveChanges();
+            Collection.Add(Model);
+        }
+        private void Update() 
+        { 
+            db.Entry(Model).State = EntityState.Modified;
+            db.SaveChanges();
+            var index = Collection.IndexOf(Model);
+            if (index != -1) Collection[index] = Model;
+        }
         private void Delete() => db.Entry(Model).State = EntityState.Deleted;       
     }
 }

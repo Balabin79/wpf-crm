@@ -41,6 +41,8 @@
                     </Image>
                     <TextBlock Text="Номенклатура" FontSize="15" />
                 </StackPanel>
+                
+                
                 <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
                     <Button DataContext="{Binding Source={StaticResource vm} }" 
                                     Command="{Binding OpenFormCommand}" 
@@ -66,6 +68,8 @@
                 </StackPanel>
             </Grid>
         </Border>
+        
+        
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" Name="grid"  
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Margin="2"
@@ -102,7 +106,14 @@
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"/>
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-1"  
+                                    />
+                        <KeyBinding Key="G"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-2"  
+                                    />
                         <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
                                 Command="{Binding OpenFormCommand}"
@@ -111,9 +122,13 @@
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                     </dxg:TreeListView.InputBindings>
+                    
+                    
                     <dxg:TreeListView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}"/>
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
+                                            Name="addGroup" KeyGesture="Ctrl+G" Content="Добавить группу"  Command="{Binding OpenFormCommand}" CommandParameter="-2"/>
                         <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"

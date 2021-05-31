@@ -49,9 +49,9 @@
                             <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
 
                             <TextBlock  Grid.Row="0" Grid.Column="1" Text="Группа:"  Margin="0,0,8,3" />
-                            <dxe:ComboBoxEdit ItemsSource="{Binding NomenclatureGroup.Collection}"
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Path=NomenclatureGroup }"
                                                           DisplayMember="Name"
-                                                          SelectedItem="{Binding NomenclatureGroup.SelectedNomenclatureGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedNomenclatureGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,8,8"
                                                />
 
@@ -141,9 +141,9 @@
                                 <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
 
                                 <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding NomenclatureGroup.Collection}"
+                                <dxe:ComboBoxEdit ItemsSource="{Binding NomenclatureGroup}"
                                                           DisplayMember="Name"
-                                                          SelectedItem="{Binding NomenclatureGroup.SelectedNomenclatureGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedNomenclatureGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
                                                />
                             </Grid>
