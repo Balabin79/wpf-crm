@@ -15,33 +15,44 @@ namespace Dental.Infrastructures.Collection
     {
         public RecursionByCollection(ObservableCollection<ITreeModel> _Collection, ITreeModel _Model)
         {
-            Collection = (ObservableCollection <ITreeModel>)_Collection;
+            Collection = (ObservableCollection<ITreeModel>)_Collection;
             Model = _Model;
         }
 
-        public ObservableCollection<ITreeModel> GetDirectories() 
+        public ObservableCollection<ITreeModel> GetItemChilds()
         {
-            FindDirectories(Collection, Model); 
+            FindItemChilds(Collection, Model);
+            return Collection.Where(f => Child.Contains(f.Id)).Distinct().ToObservableCollection();
+        }
+
+
+        public ObservableCollection<ITreeModel> GetDirectories()
+        {
+            IsOnlyFindDir = true;
+            FindItemChilds(Collection, Model);
             return Collection.Where(f => f.IsDir == 1 && !Child.Contains(f.Id)).ToObservableCollection();
         }
 
-        
-        public void FindDirectories(ObservableCollection<ITreeModel> collection, ITreeModel model)
+        private void FindItemChilds(ObservableCollection<ITreeModel> collection, ITreeModel model)
         {
             var childs = collection.Where(f => f.ParentId == model.Id).ToList();
 
             foreach (var item in childs)
             {
-                if (item.IsDir == 1) FindDirectories(collection, item);
+                if (item.IsDir == 1 && IsOnlyFindDir) FindItemChilds(collection, item);
+                else
+                {
+                    Child.Add(model.Id);
+                    FindItemChilds(collection, item);
+                }
             }
-           
             Child.Add(model.Id);
         }
 
-        private List<int> Child { get; set;} = new List<int>();
+        private List<int> Child { get; set; } = new List<int>();
         private ObservableCollection<ITreeModel> Collection { get; set; }
-        private ObservableCollection<ITreeModel> Result { get; set; } = new ObservableCollection<ITreeModel>();
         private ITreeModel Model { get; set; }
+        private bool IsOnlyFindDir {get; set;} = false;
  
     }
 }

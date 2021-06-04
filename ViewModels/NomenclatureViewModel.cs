@@ -22,7 +22,7 @@ namespace Dental.ViewModels
     class NomenclatureViewModel : ViewModelBase
     {
 
-        ApplicationContext db;
+        readonly ApplicationContext db;
         public NomenclatureViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -50,10 +50,12 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run((int)TypeItem.File)) return;
-                Delete();
+                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
+
+                if (Model.IsDir == 0) Delete(new ObservableCollection<Nomenclature>(){Model});
+                else Delete (new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                            .GetItemChilds().OfType<Nomenclature>().ToObservableCollection());
                 db.SaveChanges();
-                Collection = GetCollection();
             }
             catch (Exception e)
             {
@@ -64,12 +66,23 @@ namespace Dental.ViewModels
         private void OnSaveCommandExecuted(object p)
         {
             try
-            {
+            {                 
                 if (Unit?.SelectedUnit != null) Model.UnitId = ((Unit)Unit.SelectedUnit).Id;
+
+                //ищем совпадающий элемент
+                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
+
                 if (SelectedNomenclatureGroup != null) Model.ParentId = ((Nomenclature)SelectedNomenclatureGroup).Id;
+
+                if (matchingItem.Count()>0 &&  matchingItem.Any(f => f.ParentId == Model.ParentId))
+                {
+                    new TryingCreatingDuplicate().run(Model.IsDir);
+                    return;
+                }               
+
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
-                //Collection.Add(Model);
+
                 SelectedNomenclatureGroup = null;
                 Window.Close();
             }
@@ -85,8 +98,7 @@ namespace Dental.ViewModels
             {
                 CreateNewWindow();
                 if (p == null) return;
-                int param;
-                int.TryParse(p.ToString(), out param);
+                int.TryParse(p.ToString(), out int param);
                 if (param == -3) return;
 
                 switch (param)
@@ -142,11 +154,7 @@ namespace Dental.ViewModels
         /************* Специфика этой ViewModel ******************/
         public UnitViewModel Unit { get; set; }
 
-        public ICollection<Nomenclature> NomenclatureGroup
-        {
-            get; set;
-
-        }
+        public ICollection<Nomenclature> NomenclatureGroup { get; set; }
 
         private object _SelectedNomenclatureGroup;
         public object SelectedNomenclatureGroup
@@ -190,7 +198,6 @@ namespace Dental.ViewModels
         private Nomenclature GetModelById(int id) 
         {
             return Collection.Where(f => f.Id == id).FirstOrDefault();
-
         }
 
         private void Add() 
@@ -206,6 +213,11 @@ namespace Dental.ViewModels
             var index = Collection.IndexOf(Model);
             if (index != -1) Collection[index] = Model;
         }
-        private void Delete() => db.Entry(Model).State = EntityState.Deleted;       
+
+        private void Delete(ObservableCollection<Nomenclature> collection)
+        {
+            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+            collection.ForEach(f => Collection.Remove(f));
+        }    
     }
 }
