@@ -125,7 +125,7 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<Nomenclature>().ToObservableCollection();
                         
                         SelectedNomenclatureGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-                        Unit = new UnitViewModel(Model?.Unit?.Id);
+                        Unit = new UnitViewModel(Model?.UnitId);
                         if (Model.IsDir == 0)
                         {
                             Title = "Редактировать номенклатуру";
