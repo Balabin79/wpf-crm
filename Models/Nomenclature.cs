@@ -11,7 +11,7 @@ namespace Dental.Models
     [Table("Nomenclature")]
     class Nomenclature : AbstractBaseModel, ITreeModel, IDataErrorInfo, ITreeViewCollection
     {
-        [Required]
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255)]
         [Display(Name = "Название")]
         public string Name { get; set; }
@@ -31,7 +31,9 @@ namespace Dental.Models
         public int? UnitId { get; set; }
         public Unit Unit { get; set; }
 
-        public int? NumberInPack { get; set; } // кол-во в упаковке
+        [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
+        [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
+        public string NumberInPack { get; set; } // кол-во в упаковке
 
         [Display(Name = "Штрих-Код")]
         public string BarCode { get; set; }

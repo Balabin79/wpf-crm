@@ -19,7 +19,6 @@
     <Page.Resources>
         <vm:NomenclatureViewModel x:Key="vm"/>
         <vm:HandbooksViewModel x:Key="menu" />
-   
     </Page.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
@@ -98,8 +97,6 @@
                     ExpandNodesOnFiltering="True"
                     FilterMode="Extended"                 
                     >
-
-
                     <dxg:TreeListView.InputBindings>
                         <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
@@ -122,8 +119,8 @@
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                     </dxg:TreeListView.InputBindings>
-                    
-                    
+
+
                     <dxg:TreeListView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>

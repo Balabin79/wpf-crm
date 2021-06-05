@@ -31,7 +31,7 @@ namespace Dental.Models
         public string HireDate { get; set; } // дата приема на работу
 
         [Display(Name = "Уволен")]
-        public int IsDismissed { get; set; }
+        public int? IsDismissed { get; set; }
 
         [Display(Name = "Дата увольнения")]
         public string DismissalDate { get; set; } //= DateTime.Now.ToShortDateString().ToString(); // дата увольнения

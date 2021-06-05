@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Collection;
 using Dental.Interfaces;
 using Dental.Models.Base;
+using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
@@ -29,8 +30,17 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-            db = new ApplicationContext();
-            Collection = GetCollection();
+
+            try
+            {
+                db = new ApplicationContext();
+                Collection = GetCollection();
+            } catch (Exception)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+
         }
 
         public ICommand DeleteCommand { get; }

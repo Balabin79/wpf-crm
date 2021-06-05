@@ -539,9 +539,6 @@
     <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\NomenclatureGroupWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\ContractorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -651,10 +648,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\Diary.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\NomenclatureGroupWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
