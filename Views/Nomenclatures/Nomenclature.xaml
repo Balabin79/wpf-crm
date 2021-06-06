@@ -151,9 +151,6 @@
             <dxg:GridColumn FieldName="Code"  Header="Код" Width="1*"/>
             <dxg:GridColumn FieldName="VendorCode"  Header="Артикул" Width="1*" />
 
-
-
-
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>

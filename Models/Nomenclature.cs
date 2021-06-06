@@ -12,7 +12,7 @@ namespace Dental.Models
     class Nomenclature : AbstractBaseModel, ITreeModel, IDataErrorInfo, ITreeViewCollection
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
-        [MaxLength(255)]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -38,39 +38,7 @@ namespace Dental.Models
         [Display(Name = "Штрих-Код")]
         public string BarCode { get; set; }
 
-
-
         // код, артикул, номенклатурная группа , ед.изм., кол-во при выборе некоторых полей,
-
-        public bool this[PropertyInfo prop, Nomenclature item]
-        {
-            get
-            {
-                switch (prop.Name)
-                {
-                    case "Id": return item.Id == Id;
-                    case "Name": return item.Name == Name;
-                    case "Description": return item.Description == Description;
-                    case "Code": return item.Code == Code;
-                    case "VendorCode": return item.VendorCode == VendorCode;
-                    case "ParentId": return item.ParentId == ParentId;
-                    case "IsDir": return item.IsDir == IsDir;
-                    case "Unit": return item.Unit == Unit;
-                    default: return true;
-                }
-            }
-        }
-
-        public void Copy(Nomenclature copy)
-        {
-            Name = copy.Name;
-            Description = copy.Description;
-            Code = copy.Code;
-            VendorCode = copy.VendorCode;
-            ParentId = copy.ParentId;
-            IsDir = copy.IsDir;
-            Unit = copy.Unit;
-        }
 
         public string Error
         {

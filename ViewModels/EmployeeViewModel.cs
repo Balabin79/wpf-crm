@@ -12,6 +12,8 @@ using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
 using DevExpress.Data.ODataLinq.Helpers;
+using System.Collections.ObjectModel;
+using DevExpress.Mvvm.Native;
 
 namespace Dental.ViewModels
 {
@@ -19,7 +21,7 @@ namespace Dental.ViewModels
     {
         public EmployeeViewModel() : this(0){}
 
-        public EmployeeViewModel(int employeeId = 0)
+        public EmployeeViewModel(int? employeeId = 0)
         {
             CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -27,11 +29,12 @@ namespace Dental.ViewModels
 
             db = new ApplicationContext();
             context = db.Employes;
+            Collection = GetCollection();
             VisibleErrors = Visibility.Collapsed;
 
             try
             {
-                if (employeeId == 0)
+                if (employeeId == 0 || employeeId == null)
                 {
                     Employee = new Employee();
                     Title = "Новый сотрудник";
@@ -151,5 +154,15 @@ namespace Dental.ViewModels
         private bool CanCancelCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenCommandExecute(object p) => true;
+
+
+        private ObservableCollection<Employee> _Collection;
+        public ObservableCollection<Employee> Collection
+        {
+            get => _Collection;
+            set => Set(ref _Collection, value);
+        }
+
+        private ObservableCollection<Employee> GetCollection() => db.Employes.OrderBy(d => d.LastName).ToObservableCollection();
     }
 }

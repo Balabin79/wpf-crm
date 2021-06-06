@@ -4,59 +4,29 @@ using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations;
 using DevExpress.Mvvm;
 using System.Reflection;
+using Dental.Interfaces;
 
 namespace Dental.Models
 {
     [Table("Storage")]
-    class Storage : AbstractBaseModel, IDataErrorInfo
+    class Storage : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
-        [Required]
-        [MaxLength(255)]
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
-        public int? EmployeeId { get; set; }
+        public int? EmployeeId { get; set; } // Ответственное лицо
         public Employee Employee { get; set; }
 
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
 
-        public bool this[PropertyInfo prop, Storage item]
-        {
-            get
-            {
-                switch (prop.Name)
-                {
-                    case "Id": return item.Id == Id;
-                    case "Name": return item.Name == Name;
-                    case "Description": return item.Description == Description;
-                    default: return true;
-                }
-            }
-        }
+        public string Error{ get => string.Empty; }
 
-        public void Copy(Storage copy)
-        {
-            Name = copy.Name;
-            Description = copy.Description;
-            Employee = copy.Employee;
-        }
-
-        public string Error
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                return IDataErrorInfoHelper.GetErrorText(this, columnName);
-            }
-        }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

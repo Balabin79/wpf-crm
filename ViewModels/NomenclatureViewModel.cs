@@ -40,7 +40,6 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-
         }
 
         public ICommand DeleteCommand { get; }
