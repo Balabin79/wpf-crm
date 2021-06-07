@@ -1,14 +1,17 @@
 using Dental.Models.Base;
+using Dental.Interfaces;
+using DevExpress.Mvvm;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
 
 namespace Dental.Models
 {
     [Table("Advertising")]
-    class Advertising : AbstractBaseModel
+    class Advertising : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
-        [Required]
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -16,24 +19,10 @@ namespace Dental.Models
         public string Description { get; set; }
 
 
-        public bool this[PropertyInfo prop, Advertising item]
-        {
-            get
-            {
-                switch (prop.Name)
-                {
-                    case "Id": return item.Id == Id;
-                    case "Name": return item.Name == Name;
-                    case "Description": return item.Description == Description;                 
-                    default: return true;
-                }
-            }
-        }
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
 
-        public void Copy(Advertising copy)
-        {
-            Name = copy.Name;
-            Description = copy.Description;
-        }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

@@ -28,7 +28,7 @@ namespace Dental.Repositories
                 return new ObservableCollection<LoyaltyPrograms>();
             }
         }
-        
+        /*
         public void Add(TableView table)
         {
             try
@@ -132,6 +132,6 @@ namespace Dental.Repositories
                 new RepositoryLog(e).run();
             }
         }
-
+        */
     }
 }

@@ -7,83 +7,64 @@ using System.Windows.Input;
 using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
-using Dental.Interfaces.Template;
 using Dental.Models;
+using Dental.Views.Nomenclatures.WindowForms;
+using System.Data.Entity;
+using DevExpress.Mvvm.Native;
+using System.Windows.Media.Imaging;
+using Dental.Infrastructures.Collection;
+using DevExpress.Xpf.Core;
+using System.Windows;
 using Dental.Models.Base;
-using Dental.Repositories;
-using DevExpress.Xpf.Grid;
+using Dental.Interfaces;
+using Dental.Models.Template;
 
 namespace Dental.ViewModels
 {
-    class RoleViewModel : ViewModelBase, ICollectionCommand
+    class RoleViewModel : ViewModelBase
     {
-
+        private readonly ApplicationContext db;
         public RoleViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
-            UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
-            CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
-            Repository = new RoleRepository();
-            Repository.CopyModel += ((IModel, TableView) c) => {
-                var copiedRow = Collection.Where(d => d.Id == ((Role)c.Item2.FocusedRow)?.Id).FirstOrDefault();
-                if (copiedRow != null)
-                {
-                    int index = Collection.IndexOf(copiedRow) + 1;
-                    Collection.Insert(index, (Role)c.Item1);
-                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                    if (row != null)
-                    {
-                        c.Item2.FocusedRow = row;
-                        c.Item2.ScrollIntoView(c.Item1);
-                        c.Item2.FocusedRow = c.Item1;
-                        //c.Item2.ShowEditForm();
-                    }
-                }
-            };
-            Repository.UpdateModel += ((IModel, TableView) c) => {
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                if (row != null)
-                {
-                    int index = Collection.IndexOf(row);
-                    Collection[index] = (Role)c.Item1;
-                }
-            };
-            Repository.AddModel += ((IModel, TableView) c) => {
-                Collection.Add((Role)c.Item1);
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
+            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
 
-                if (row != null)
-                {
-                    c.Item2.FocusedRow = row;
-                    c.Item2.ScrollIntoView(row);
-                    //c.Item2.ShowEditForm();
-                }
-            };
-            Repository.DeleteModel += (IModel model) => {
-                var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
-                if (item != null) Collection.Remove(item);
-            };
+            try
+            {
+                db = new ApplicationContext();
+                Collection = GetCollection();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
         }
 
         public ICommand DeleteCommand { get; }
-        public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public ICommand CopyCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand OpenFormCommand { get; }
+        public ICommand CancelFormCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanAddCommandExecute(object p) => true;
-        private bool CanUpdateCommandExecute(object p) => true;
-        private bool CanCopyCommandExecute(object p) => true;
-
+        private bool CanSaveCommandExecute(object p) => true;
+        private bool CanOpenFormCommandExecute(object p) => true;
+        private bool CanCancelFormCommandExecute(object p) => true;
 
         private void OnDeleteCommandExecuted(object p)
         {
             try
             {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Delete(table);
+                if (p == null) return;
+                Model = GetModelById((int)p);
+                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
+
+                if (Model.IsDir == 0) Delete(new ObservableCollection<Role>() { Model });
+                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                            .GetItemChilds().OfType<Role>().ToObservableCollection());
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -91,13 +72,26 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAddCommandExecuted(object p)
+        private void OnSaveCommandExecuted(object p)
         {
             try
             {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Add(table);
+                //ищем совпадающий элемент
+                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
+
+                if (SelectedGroup != null) Model.ParentId = ((Role)SelectedGroup).Id;
+
+                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
+                {
+                    new TryingCreatingDuplicate().run(Model.IsDir);
+                    return;
+                }
+
+                if (Model.Id == 0) Add(); else Update();
+                db.SaveChanges();
+
+                SelectedGroup = null;
+                Window.Close();
             }
             catch (Exception e)
             {
@@ -105,13 +99,54 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnUpdateCommandExecuted(object p)
+        private void OnOpenFormCommandExecuted(object p)
         {
             try
             {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Update(table);
+                CreateNewWindow();
+                if (p == null) return;
+                int.TryParse(p.ToString(), out int param);
+                if (param == -3) return;
+
+                switch (param)
+                {
+                    case -1:
+                        Model = CreateNewModel();
+                        Model.IsDir = 0;
+                        Title = "Создать роль";
+                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        VisibleItemForm();
+                        break;
+                    case -2:
+                        Model = CreateNewModel();
+                        Title = "Создать группу";
+                        Model.IsDir = 1;
+                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        VisibleItemGroup();
+                        break;
+                    default:
+                        Model = GetModelById(param);
+                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                            .GetDirectories().OfType<Role>().ToObservableCollection();
+
+                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
+
+                        if (Model.IsDir == 0)
+                        {
+                            Title = "Редактировать роль";
+                            VisibleItemForm();
+                        }
+                        else
+                        {
+                            Title = "Редактировать группу";
+                            VisibleItemGroup();
+                        }
+                        break;
+                }
+
+                Window.DataContext = this;
+                Window.ShowDialog();
+                SelectedGroup = null;
             }
             catch (Exception e)
             {
@@ -119,33 +154,72 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCopyCommandExecuted(object p)
+        private void OnCancelFormCommandExecuted(object p) => Window.Close();
+
+        /************* Специфика этой ViewModel ******************/
+        public ICollection<Role> Group { get; set; }
+
+        private object _SelectedGroup;
+        public object SelectedGroup
         {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Copy(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+            get => _SelectedGroup;
+            set => Set(ref _SelectedGroup, value);
         }
 
-        RoleRepository Repository { get; set; }
-
-        private ObservableCollection<Role> _Collection;
-
-        [NotMapped]
+        /******************************************************/
         public ObservableCollection<Role> Collection
         {
-            get
-            {
-                if (_Collection == null) _Collection = Repository.GetAll().Result;
-                return _Collection;
-            }
+            get => _Collection;
             set => Set(ref _Collection, value);
+        }
+        public Role Model { get; set; }
+        public string Title { get; set; }
+        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
+        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
+
+
+        private void VisibleItemForm()
+        {
+            IsVisibleItemForm = Visibility.Visible;
+            IsVisibleGroupForm = Visibility.Hidden;
+            Window.Height = 330;
+        }
+        private void VisibleItemGroup()
+        {
+            IsVisibleItemForm = Visibility.Hidden;
+            IsVisibleGroupForm = Visibility.Visible;
+            Window.Height = 280;
+        }
+
+        private ObservableCollection<Role> _Collection;
+        private RoleWindow Window;
+        private ObservableCollection<Role> GetCollection() => db.Roles.OrderBy(d => d.Name).ToObservableCollection();
+        private void CreateNewWindow() => Window = new RoleWindow();
+        private Role CreateNewModel() => new Role();
+
+        private Role GetModelById(int id)
+        {
+            return Collection.Where(f => f.Id == id).FirstOrDefault();
+        }
+
+        private void Add()
+        {
+            db.Entry(Model).State = EntityState.Added;
+            db.SaveChanges();
+            Collection.Add(Model);
+        }
+        private void Update()
+        {
+            db.Entry(Model).State = EntityState.Modified;
+            db.SaveChanges();
+            var index = Collection.IndexOf(Model);
+            if (index != -1) Collection[index] = Model;
+        }
+
+        private void Delete(ObservableCollection<Role> collection)
+        {
+            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+            collection.ForEach(f => Collection.Remove(f));
         }
     }
 }

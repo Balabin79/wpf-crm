@@ -76,7 +76,7 @@ namespace Dental.ViewModels
         {
             try
             {                 
-                if (Unit?.SelectedUnit != null) Model.UnitId = ((Unit)Unit.SelectedUnit).Id;
+                //if (Unit?.SelectedUnit != null) Model.UnitId = ((Unit)Unit.SelectedUnit).Id;
 
                 //ищем совпадающий элемент
                 var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
@@ -134,7 +134,7 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<Nomenclature>().ToObservableCollection();
                         
                         SelectedNomenclatureGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-                        Unit = new UnitViewModel(Model?.UnitId);
+                       // Unit = new UnitViewModel(Model?.UnitId);
                         if (Model.IsDir == 0)
                         {
                             Title = "Редактировать номенклатуру";

@@ -1,15 +1,17 @@
 using Dental.Models.Base;
-using System;
+using Dental.Interfaces;
+using DevExpress.Mvvm;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
 
 namespace Dental.Models
 {
     [Table("LoyaltyPrograms")]
-    class LoyaltyPrograms : AbstractBaseModel
+    class LoyaltyPrograms : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
-        [Required]
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -19,27 +21,10 @@ namespace Dental.Models
         [Display(Name = "Действует до")]
         public string PeriodTo { get; set; }
 
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
 
-        public bool this[PropertyInfo prop, LoyaltyPrograms item]
-        {
-            get
-            {
-                switch (prop.Name)
-                {
-                    case "Id": return item.Id == Id;
-                    case "Name": return item.Name == Name;
-                    case "Description": return item.Description == Description;                 
-                    case "PeriodTo": return item.PeriodTo == PeriodTo;                 
-                    default: return true;
-                }
-            }
-        }
-
-        public void Copy(LoyaltyPrograms copy)
-        {
-            Name = copy.Name;
-            Description = copy.Description;
-            PeriodTo = copy.PeriodTo;
-        }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

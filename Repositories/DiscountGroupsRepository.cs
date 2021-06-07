@@ -64,17 +64,14 @@ namespace Dental.Repositories
                     if (model == null || item == null) return;
 
                     bool needUpdate = false;
-                    foreach (PropertyInfo property in properties)
-                    {
-                        if (!model[property, item]) needUpdate = true;
-                    }
+
 
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
                         UpdateModel?.Invoke((item, table));
                         return;
                     }
-                    item.Copy(model);
+     
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 

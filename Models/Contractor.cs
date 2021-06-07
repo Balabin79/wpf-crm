@@ -1,18 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel;
-using Dental.Models.Base;
-using System.ComponentModel.DataAnnotations;
+﻿using Dental.Models.Base;
+using Dental.Interfaces;
 using DevExpress.Mvvm;
-using System.Reflection;
-using Dental.Models.Share;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Dental.Models
 {
     [Table("Contractors")]
-    class Contractor : AbstractBaseModel, IDataErrorInfo
+    class Contractor : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
-        [Required]
-        [MaxLength(255)]
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
@@ -21,10 +21,6 @@ namespace Dental.Models
 
         [Display(Name = "Код")]
         public string Code { get; set; }
-
-        [Display(Name = "Групппа контрагентов")]
-        public int? ContractorsGroupId { get; set; }
-        public ContractorGroup ContractorsGroup { get; set; }
 
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email { get; set; }
@@ -88,20 +84,10 @@ namespace Dental.Models
         public string BankName { get; set; }
 
 
-        public string Error
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
 
-        public string this[string columnName]
-        {
-            get
-            {
-                return IDataErrorInfoHelper.GetErrorText(this, columnName);
-            }
-        }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

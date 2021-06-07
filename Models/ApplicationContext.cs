@@ -24,7 +24,6 @@ namespace Dental.Models
         public DbSet<TreatmentPlan> TreatmentPlanes { get; set; }
         public DbSet<InitialInspection> InitialInspectiones { get; set; }
         public DbSet<EmployesSpecialities> EmployesSpecialities { get; set; }
-        public DbSet<EmployesInOrganizations> EmployesInOrganizations { get; set; }
         public DbSet<InsuranceCompany> InsuranceCompany { get; set; }
         public DbSet<PatientInfo> PatientInfo { get; set; }
         public DbSet<Questionary> Questionary { get; set; }
@@ -38,6 +37,7 @@ namespace Dental.Models
 
         public DbSet<Storage> Storage { get; set; }
         public DbSet<Contractor> Contractors { get; set; }
-        public DbSet<ContractorGroup> ContractorsGroup { get; set; }
+        public DbSet<Branche> Branches { get; set; }
+        public DbSet<Departament> Departaments { get; set; }
     }
 }

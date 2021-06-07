@@ -158,7 +158,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Server-Connect.png"
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Server-Connect.png"   
                                             ToolTip="Интеграции"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
 
                         <dxb:BarButtonItem Content="Настройки"
                                            RibbonStyle="Default" 
@@ -166,7 +166,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Setting-Tools.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Setting-Tools.png"   
                                             ToolTip="Настройки"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                     </dxr:RibbonPageGroup>
 
                     
@@ -212,14 +212,14 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Barcode.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Barcode.png"   
                                             ToolTip="Заказы"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                         <dxb:BarButtonItem Content="Товары на складе"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Box-Open.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Box-Open.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Box-Open.png"   
                                             ToolTip="Товары на складе"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pages:EmployesInOrganizations}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                     </dxr:RibbonPageGroup>
 
                 </dxr:RibbonPage>

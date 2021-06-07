@@ -110,10 +110,10 @@ namespace Dental.ViewModels
        
         private ObservableCollection<Contractor> _Collection;
         private ContractorWindow Window;       
-        private ObservableCollection<Contractor> GetCollection() => db.Contractors.OrderBy(d => d.Name).Include(b => b.ContractorsGroup).ToObservableCollection();      
+        private ObservableCollection<Contractor> GetCollection() => db.Contractors.OrderBy(d => d.Name).ToObservableCollection();      
         private void CreateNewWindow() => Window = new ContractorWindow(); 
         private Contractor CreateNewModel() => new Contractor();
-        private Contractor GetModelById(int id) => db.Contractors.Where(f => f.Id == id).Include(b => b.ContractorsGroup).FirstOrDefault();
+        private Contractor GetModelById(int id) => db.Contractors.Where(f => f.Id == id).FirstOrDefault();
         private void Add() => db.Contractors.Add(Model);
         private void Update() => db.Entry(Model).State = EntityState.Modified;
         private void Delete() => db.Entry(Model).State = EntityState.Deleted;

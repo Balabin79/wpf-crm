@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DevExpress.Mvvm;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Input;
 
 
 namespace Dental.Models.Base
 {
-    abstract class TreeModelBase : AbstractBaseModel
+    abstract class TreeModelBase : AbstractBaseModel, ITreeModel, IDataErrorInfo
     {
         [Column("ParentId")]
         public int? ParentId { get; set; }
@@ -38,6 +40,9 @@ namespace Dental.Models.Base
 
             //set => Set(ref _isExpanded, value);
         }
+
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         private bool _isExpanded = false;
 

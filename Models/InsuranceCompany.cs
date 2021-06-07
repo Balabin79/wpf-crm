@@ -1,18 +1,21 @@
 using Dental.Models.Base;
-using System;
+using Dental.Interfaces;
+using DevExpress.Mvvm;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using System;
 
 namespace Dental.Models
 {
     [Table("InsuranceCompanies")]
-    class InsuranceCompany : AbstractBaseModel
+    class InsuranceCompany : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
-        [Required]
-        [MaxLength(255)]
-        [Display(Name = "Наименование")]
-        public string Name { get; set; } = "Новая cтраховая компания";
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
+        [Display(Name = "Название")]
+        public string Name { get; set; }
 
         [MaxLength(255)]
         [Display(Name = "Код")]
@@ -53,6 +56,12 @@ namespace Dental.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } = "example@company.com";
+
+        public int? ParentId { get; set; }
+        public int IsDir { get; set; }
+
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
 
         public bool this[PropertyInfo prop, InsuranceCompany item]

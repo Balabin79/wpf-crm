@@ -40,20 +40,7 @@ namespace Dental.Models
 
         // код, артикул, номенклатурная группа , ед.изм., кол-во при выборе некоторых полей,
 
-        public string Error
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                return IDataErrorInfoHelper.GetErrorText(this, columnName);
-            }
-        }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }  
 }
