@@ -2,7 +2,7 @@
 
 namespace Dental.Views.Nomenclatures
 {
-    public partial class Diary : UserControl
+    public partial class Diary : Page
     {
         public Diary()
         {

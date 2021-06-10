@@ -224,6 +224,45 @@
 
                 </dxr:RibbonPage>
 
+                <dxr:RibbonPage Caption="Документы, шаблоны">
+                    <dxr:RibbonPageGroup Caption="Шаблоны">
+                        <dxb:BarButtonItem Content="Диагнозы"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/diagnos.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/diagnos.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/diagnos.png"   
+                                            ToolTip="Диагнозы"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Diagnoses}"/>
+
+                        <dxb:BarButtonItem Content="Дневники"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Report.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Report.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Report.png"   
+                                            ToolTip="Дневники"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Diary}"/>
+                        <dxb:BarButtonItem Content="План лечения"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/plan.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/plan.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/plan.png"   
+                                            ToolTip="План лечения"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:TreatmentPlan}"/>
+                        <dxb:BarButtonItem Content="Первичный осмотр"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/init.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/init.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/init.png"   
+                                            ToolTip="Первичный осмотр"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:InitialInspection}"/>
+
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="ИДС">
+                       
+                    </dxr:RibbonPageGroup>
+
+                </dxr:RibbonPage>
+
                 <dxr:RibbonPage Caption="Отчеты" >
                     <dxr:RibbonPageGroup Caption="Раздел 1">
 

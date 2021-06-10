@@ -20,7 +20,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Diagnoses.xaml
     /// </summary>
-    public partial class InitialInspection : UserControl
+    public partial class InitialInspection : Page
     {
         public InitialInspection()
         {

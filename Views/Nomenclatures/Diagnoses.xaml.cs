@@ -5,7 +5,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Diagnoses.xaml
     /// </summary>
-    public partial class Diagnoses : UserControl
+    public partial class Diagnoses : Page
     {
         public Diagnoses()
         {

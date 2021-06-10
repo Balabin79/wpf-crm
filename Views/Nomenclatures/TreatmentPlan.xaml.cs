@@ -2,7 +2,7 @@
 
 namespace Dental.Views.Nomenclatures
 {
-    public partial class TreatmentPlan : UserControl
+    public partial class TreatmentPlan : Page
     {
         public TreatmentPlan()
         {

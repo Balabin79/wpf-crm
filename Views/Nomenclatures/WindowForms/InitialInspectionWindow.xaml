@@ -9,14 +9,11 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
         mc:Ignorable="d"
-        Title="Склад" Height="330" Width="800"
+        Title="Первичный осмотр" Height="330" Width="800"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <vm:EmployeeViewModel x:Key="emp"/>
-    </Window.Resources>
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Book-Keeping.png" />
+        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/init.png" />
     </Window.Icon>
     <Grid>
         <Grid Visibility="{Binding IsVisibleItemForm}">
@@ -40,28 +37,20 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
-                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
                                 <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
 
                                 <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding StorageGroup}"
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
-                                                          SelectedItem="{Binding SelectedStorageGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
                                                />
 
-                                <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Ответственное лицо:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Path=Employees }"
-                                                          DisplayMember="FullName"
-                                                          SelectedItem="{Binding SelectedEmployee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="3" Grid.ColumnSpan="2"  Margin="0,0,0,8"
-                                               />
-
                             </Grid>
-                          
+
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -110,9 +99,9 @@
                                 <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
 
                                 <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding StorageGroup}"
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
-                                                          SelectedItem="{Binding SelectedStorageGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,8,8"
                                                />
                             </Grid>

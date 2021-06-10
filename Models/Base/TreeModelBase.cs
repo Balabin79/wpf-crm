@@ -17,7 +17,7 @@ namespace Dental.Models.Base
         [Display(Name = "Наименование")]
         public string Name { get; set; }
 
-        [Column("Dir")]
+        [Column("IsDir")]
         [Display(Name = "Директория")]
         public int IsDir { get; set; }
 
