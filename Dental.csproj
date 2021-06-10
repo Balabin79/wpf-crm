@@ -270,7 +270,6 @@
     <Folder Include="Infrastructures\Pages\" />
     <Folder Include="Models\Actions\" />
     <Folder Include="Reports\OtherDocuments\" />
-    <Folder Include="Repositories\Fakes\" />
     <Folder Include="Resources\PatientCard\Новая папка1\" />
     <Folder Include="Resources\PatientCard\Новая папка\" />
     <Folder Include="Views\Controls\MainWindow\" />

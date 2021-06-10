@@ -142,7 +142,7 @@ namespace Dental.ViewModels
         private ObservableCollection<Speciality> _GetSpecialityListEmployee;
         [NotMapped]
         public ObservableCollection<Speciality> GetSpecialityListEmployee { 
-            get => new SpecialityRepository().GetAll().Result;
+            //get => new SpecialityRepository().GetAll().Result;
             set => Set(ref _GetSpecialityListEmployee, value);
         }
 /*
@@ -159,7 +159,7 @@ namespace Dental.ViewModels
                 ObservableCollection<EmployesSpecialities> Specialities = (ObservableCollection<EmployesSpecialities>)result;
                 var query = Specialities.Where(i => i.EmployeeId == (int)SetEmployee);             
                 SetSpecialityList = query.Select(i => i.SpecialityId).ToList();
-                query.Select(i => i.Speciality).ToList().ForEach(i => GetSpecialityListEmployee.Add(i));
+               // query.Select(i => i.Speciality).ToList().ForEach(i => GetSpecialityListEmployee.Add(i));
           
             } catch (Exception e)
             {

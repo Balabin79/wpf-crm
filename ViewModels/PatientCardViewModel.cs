@@ -14,8 +14,8 @@ using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class PatientCardViewModel : ViewModelBase, ICollectionCommand
-    {
+    class PatientCardViewModel : ViewModelBase//, ICollectionCommand
+    {/*
         public PatientCardViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -214,7 +214,7 @@ namespace Dental.ViewModels
         public ICollection<Questionary> BadHabitsList // наличие вредных привычек
         {
             get => questionaries.Where(i => i.ParentId == 82).ToList();
-        }
+        }*/
 
 
 

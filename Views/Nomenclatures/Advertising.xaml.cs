@@ -7,7 +7,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class Advertising : UserControl
+    public partial class Advertising : Page
     {
         public Advertising()
         {

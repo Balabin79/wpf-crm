@@ -16,7 +16,7 @@ namespace Dental.Models
         public string Name { get; set; }
 
         public int? ParentId { get; set; }
-        public int IsDir { get; set; }
+        public int? IsDir { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

@@ -7,11 +7,11 @@ namespace Dental.Infrastructures.Collection
 {
     class TryingCreatingDuplicate
     {              
-        public bool run(int category)
+        public bool run(int? category)
         {
             try
             {
-                if (category == (int)TypeItem.Directory)
+                if (category == null || category == (int)TypeItem.Directory)
                 {
                     var response = ThemedMessageBox.Show(title: "Ошибка",
                         text: "Директория с таким названием и на данном уровне уже существует. Необходимо изменить название!",

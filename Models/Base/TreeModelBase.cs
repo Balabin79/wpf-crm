@@ -19,7 +19,7 @@ namespace Dental.Models.Base
 
         [Column("IsDir")]
         [Display(Name = "Директория")]
-        public int IsDir { get; set; }
+        public int? IsDir { get; set; }
 
         [Column("IsSys")]
         [Display(Name = "Системные значения")]

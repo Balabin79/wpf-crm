@@ -9,74 +9,108 @@
       xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:b ="clr-namespace:Dental.Behaviors" 
+      Title="Единицы измерения"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-      xmlns:nomen="clr-namespace:Dental.Views.Nomenclatures" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
-      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
-      xmlns:dxwuii="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal"
-      xmlns:internal="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/internal"
-      xmlns:fa="http://schemas.fontawesome.io/icons/"
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:UnitViewModel x:Key="vm"/>
+        <vm:HandbooksViewModel x:Key="menu" />
     </Page.Resources>
     <Grid DataContext="{StaticResource vm}">
-        <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
-                 EnableSmartColumnsGeneration="True" Name="grid"  
-                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="2 2 2 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Image Height="20" Width="20" Margin="5 0 3 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="Единицы измерения" FontSize="15" />
+                </StackPanel>
+
+
+                <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-1"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать позицию">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/document.svg" Height="18" />
+                    </Button>
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-2"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать группу">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/folder.svg" Height="17" />
+                    </Button>
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-3"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2 2 5 2" ToolTip="Печать">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/print.svg" Height="18" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+        <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" Name="grid"  
+                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="2"
+                         >
+
             <dxg:GridControl.View>
-                <dxg:TableView                   
+                <dxg:TreeListView                   
                     x:Name="view"
-                    AllowPerPixelScrolling="True" 
-                    ShowTotalSummary="True" 
+                    KeyFieldName="Id"
+                    ParentFieldName="ParentId"
+                    TreeDerivationMode="Selfreference" 
+                    ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
                     SearchPanelAllowFilter="True"
                     AutoWidth="True" 
                     PrintAutoWidth="True"
                     BestFitModeOnSourceChange="VisibleRows"            
-                    AllowDragDrop="True"
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
-                    EditFormColumnCount="1" 
-                    EditFormPostConfirmation="YesNo" 
-                    VerticalScrollbarVisibility="Auto">
-
-                    <dxg:TableView.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Height="22" Width="22" Margin="0 5 3 0">
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Gnome-Applications-Engineering.png" />
-                                </Image.Source>
-                            </Image>
-                            <TextBlock Text="Единицы измерений" FontSize="15" Margin="0 5 0 0" />
-                        </StackPanel>
-                    </dxg:TableView.Header>
-
-                    <dxg:TableView.FooterTemplate>
-                        <DataTemplate>
-                            <dxe:HyperlinkEdit HorizontalAlignment="Right"                                              
-                                FontSize="14"
-                                ToolTip="Создать единицу измерения"
-                                DataContext="{Binding Source={StaticResource vm} }" 
-                                Command="{Binding OpenFormCommand}">
-                                Создать единицу измерения
-                            </dxe:HyperlinkEdit>
-          
-                        </DataTemplate>
-                    </dxg:TableView.FooterTemplate>
-
-                    <dxg:TableView.InputBindings>
+                    VerticalScrollbarVisibility="Auto"
+                    AllowPrintColumnHeaderImage="True" 
+                    PrintNodeImages="True"
+                    ShowNodeImages="True"
+                    NodeImageSize="15,15"
+                    ExpandNodesOnFiltering="True"
+                    FilterMode="Extended"                 
+                    >
+                    <dxg:TreeListView.InputBindings>
                         <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"/>
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-1"  
+                                    />
+                        <KeyBinding Key="G"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-2"  
+                                    />
                         <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
                                 Command="{Binding OpenFormCommand}"
@@ -84,21 +118,27 @@
                         <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                    </dxg:TableView.InputBindings>
-                    <dxg:TableView.RowCellMenuCustomizations>
+                    </dxg:TreeListView.InputBindings>
+
+
+                    <dxg:TreeListView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}"/>
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
+                                            Name="addGroup" KeyGesture="Ctrl+G" Content="Добавить группу"  Command="{Binding OpenFormCommand}" CommandParameter="-2"/>
                         <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
-                    </dxg:TableView.RowCellMenuCustomizations>
-                </dxg:TableView>
+                    </dxg:TreeListView.RowCellMenuCustomizations>
+
+                    <dxg:TreeListView.NodeImageSelector>
+                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                    </dxg:TreeListView.NodeImageSelector>
+                </dxg:TreeListView>
             </dxg:GridControl.View>
 
-
-
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="5*">
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="3*">
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -108,17 +148,7 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
-
-            <dxg:GridColumn FieldName="Count"  Header="Количество" Name="Count" MinWidth="100" Width="*">
-                <dxg:GridColumn.HeaderTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/balance-scale-right.svg" Height="11"  />
-                            <TextBlock Text="Количество" Margin="3 0 0 0"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </dxg:GridColumn.HeaderTemplate>
-            </dxg:GridColumn>
+            <dxg:GridColumn FieldName="Count"  Header="Количество" Name="Count" Width="1*"/>
 
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
@@ -139,7 +169,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
-          
+
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>

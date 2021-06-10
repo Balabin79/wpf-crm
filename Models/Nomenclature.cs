@@ -26,7 +26,7 @@ namespace Dental.Models
         public string VendorCode { get; set; }
 
         public int? ParentId { get; set; }
-        public int IsDir { get; set; }
+        public int? IsDir { get; set; }
 
         public int? UnitId { get; set; }
         public Unit Unit { get; set; }

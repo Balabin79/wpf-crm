@@ -16,7 +16,7 @@ using DevExpress.Xpf.Grid;
 
 namespace Dental.Repositories
 {
-    class PatientCardRepository : AbstractTableViewActionRepository
+    class PatientCardRepository
     {
         public async Task<ObservableCollection<PatientInfo>> GetAll()
         {
@@ -60,7 +60,7 @@ namespace Dental.Repositories
                 {
                     db.Employes.Add(item);
                     db.SaveChanges();
-                    AddModel?.Invoke((item, table));
+                   // AddModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -90,14 +90,14 @@ namespace Dental.Repositories
 
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
-                        UpdateModel?.Invoke((item, table));
+                        //UpdateModel?.Invoke((item, table));
                         return;
                     }
                     item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    UpdateModel?.Invoke((item, table));
+                    //UpdateModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -117,7 +117,7 @@ namespace Dental.Repositories
                 var row = db.Employes.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
-                DeleteModel?.Invoke(model);
+                //DeleteModel?.Invoke(model);
             }
             catch (Exception e)
             {
@@ -135,7 +135,7 @@ namespace Dental.Repositories
 
                 if (!new ConfirCopyInCollection().run())
                 {
-                    CopyModel?.Invoke((item, table));
+                    //CopyModel?.Invoke((item, table));
                     return;
                 }
 
@@ -144,7 +144,7 @@ namespace Dental.Repositories
                 newModel.LastName += " Копия";
                 db.Employes.Add(newModel);
                 db.SaveChanges();
-                CopyModel?.Invoke((newModel, table));
+                //CopyModel?.Invoke((newModel, table));
             }
             catch (Exception e)
             {

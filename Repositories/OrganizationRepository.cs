@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Repositories
 {
-    class OrganizationRepository : AbstractTableViewActionRepository
+    class OrganizationRepository 
     {
         public async Task<ObservableCollection<Organization>> GetAll()
         {
@@ -41,7 +41,7 @@ namespace Dental.Repositories
                 {
                     db.Organizations.Add(item);
                     db.SaveChanges();
-                    AddModel?.Invoke((item, table));
+                    //AddModel?.Invoke((item, table));
                 }
             }
             catch (Exception e)
@@ -71,14 +71,14 @@ namespace Dental.Repositories
                     
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
                     {
-                         UpdateModel?.Invoke((item, table));
+                        // UpdateModel?.Invoke((item, table));
                          return;
                     }
                     item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    UpdateModel?.Invoke((item, table));
+                  //  UpdateModel?.Invoke((item, table));
                 }                                   
             }
             catch (Exception e)
@@ -98,7 +98,7 @@ namespace Dental.Repositories
                 var row = db.Organizations.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (row != null) db.Entry(row).State = EntityState.Deleted;
                 db.SaveChanges();
-                DeleteModel?.Invoke(model);
+                //DeleteModel?.Invoke(model);
             }
             catch (Exception e)
             {
@@ -116,7 +116,7 @@ namespace Dental.Repositories
 
                 if (!new ConfirCopyInCollection().run())
                 {
-                    CopyModel?.Invoke((item, table));
+                   /// CopyModel?.Invoke((item, table));
                     return;
                 }
 
@@ -125,7 +125,7 @@ namespace Dental.Repositories
                 newModel.Name += " Копия";
                 db.Organizations.Add(newModel);
                 db.SaveChanges();
-                CopyModel?.Invoke((newModel, table));                               
+                //CopyModel?.Invoke((newModel, table));                               
             }
             catch (Exception e)
             {

@@ -8,7 +8,7 @@ namespace Dental.Models.Base
 {
     interface ITree
     {
-        int IsDir { get; set; }
+        int? IsDir { get; set; }
         int? ParentId { get; set; }
     }
 }

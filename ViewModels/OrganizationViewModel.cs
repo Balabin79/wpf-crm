@@ -16,8 +16,8 @@ using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel: ViewModelBase, ICollectionCommand
-    {
+    class OrganizationViewModel: ViewModelBase//, ICollectionCommand
+    {/*
         public OrganizationViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -27,7 +27,7 @@ namespace Dental.ViewModels
 
             Repository = new OrganizationRepository();
 
-            Repository.CopyModel += ((IModel, TableView) c) => {
+            //Repository.CopyModel += ((IModel, TableView) c) => {
                 var copiedRow = Collection.Where(d => d.Id == ((Organization)c.Item2.FocusedRow)?.Id).FirstOrDefault();
                 if (copiedRow != null)
                 {
@@ -43,7 +43,7 @@ namespace Dental.ViewModels
                     }
                 }
             };
-            Repository.UpdateModel += ((IModel, TableView) c) => {
+            //Repository.UpdateModel += ((IModel, TableView) c) => {
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
                 if (row != null)
                 {
@@ -51,7 +51,7 @@ namespace Dental.ViewModels
                     Collection[index] = (Organization)c.Item1;
                 }
             };
-            Repository.AddModel += ((IModel, TableView) c) => {
+            //Repository.AddModel += ((IModel, TableView) c) => {
                 Collection.Add((Organization)c.Item1);
                 var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
 
@@ -62,7 +62,7 @@ namespace Dental.ViewModels
                     //c.Item2.ShowEditForm();
                 }
             };
-            Repository.DeleteModel += (IModel model) => {
+           // Repository.DeleteModel += (IModel model) => {
                 var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
                 if (item != null) Collection.Remove(item);
             };
@@ -147,6 +147,6 @@ namespace Dental.ViewModels
                 return _Collection;
             }
             set => Set(ref _Collection, value);
-        }
+        }*/
     }
 }
