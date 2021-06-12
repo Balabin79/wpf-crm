@@ -7,7 +7,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class LoyaltyPrograms : UserControl
+    public partial class LoyaltyPrograms : Page
     {
         public LoyaltyPrograms()
         {

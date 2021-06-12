@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.Nomenclatures.LoyaltyPrograms"
+﻿<Page x:Class="Dental.Views.Nomenclatures.LoyaltyPrograms"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,189 +9,169 @@
       xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:b ="clr-namespace:Dental.Behaviors" 
-      xmlns:i="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
-      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+      Title="Программы лояльности"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-      xmlns:local_com ="clr-namespace:Dental.Infrastructures.Commands"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-      d:DesignHeight="450" d:DesignWidth="800"
-     >
-    <UserControl.Resources>
-        <converter:DateToStringConverter x:Key="dateToString" />
-    </UserControl.Resources>
+      xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      d:DesignHeight="450" d:DesignWidth="800">
+    <Page.Resources>
+        <vm:LoyaltyProgramsViewModel x:Key="vm"/>
+        <vm:HandbooksViewModel x:Key="menu" />
+    </Page.Resources>
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-    <Grid>
-        <Grid.DataContext>
-            <vm:LoyaltyProgramsViewModel/>
-        </Grid.DataContext>
+        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="2 2 2 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Image Height="20" Width="20" Margin="5 0 3 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="Программы лояльности" FontSize="15" />
+                </StackPanel>
 
-        <dxg:GridControl AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"  
-                 EnableSmartColumnsGeneration="True" Name="grid" 
-                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
+                <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-1"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать позицию">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/document.svg" Height="18" />
+                    </Button>
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-2"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать группу">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/folder.svg" Height="17" />
+                    </Button>
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-3"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="2 2 5 2" ToolTip="Печать">
+                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/print.svg" Height="18" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+        <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" Name="grid"  
+                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="2"
+                         >
 
             <dxg:GridControl.View>
-                <dxg:TableView                   
+                <dxg:TreeListView                   
                     x:Name="view"
-                    AllowPerPixelScrolling="True" 
-                    ShowTotalSummary="True" 
+                    KeyFieldName="Id"
+                    ParentFieldName="ParentId"
+                    TreeDerivationMode="Selfreference" 
+                    ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
                     SearchPanelAllowFilter="True"
                     AutoWidth="True" 
                     PrintAutoWidth="True"
                     BestFitModeOnSourceChange="VisibleRows"            
-                    AllowDragDrop="True"
-                    AllowEditing="True"
-                    EditFormShowMode="Inline"
-                    ShowDataNavigator="True"
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
-                    EditFormColumnCount="1" 
-                    EditFormPostConfirmation="YesNo"                   
+                    VerticalScrollbarVisibility="Auto"
+                    AllowPrintColumnHeaderImage="True" 
+                    PrintNodeImages="True"
+                    ShowNodeImages="True"
+                    NodeImageSize="15,15"
+                    ExpandNodesOnFiltering="True"
+                    FilterMode="Extended"                 
                     >
-                    <dxg:TableView.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Height="22" Width="22" Margin="0 5 3 0">
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
-                                </Image.Source>
-                            </Image>
-                            <TextBlock Text="Программы лояльности" FontSize="15" Margin="0 5 0 0"/>
-                        </StackPanel>
-                    </dxg:TableView.Header>
-
-                    <dxg:TableView.InputBindings>
+                    <dxg:TreeListView.InputBindings>
                         <KeyBinding Key="Delete"         
-                                Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
-                                CommandParameter="{Binding ElementName=view}"/>
-                        <KeyBinding Key="D"  
-                                Modifiers="Ctrl"
-                                Command="{x:Static local_com:TreeCommands.CopyRowCommand}" 
-                                CommandParameter="{Binding ElementName=view}"/>
+                                Command="{Binding DeleteCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
-                                Command="{x:Static dxg:GridCommands.AddNewRow}"
-                                CommandParameter="{Binding ElementName=view}"/>
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-1"  
+                                    />
+                        <KeyBinding Key="G"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Path=OpenFormCommand}"
+                                CommandParameter="-2"  
+                                    />
                         <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
-                                Command="{x:Static dxg:GridCommands.EditFocusedRow}"
-                                CommandParameter="{Binding ElementName=view}"/>
-                    </dxg:TableView.InputBindings>
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить" Command="{x:Static dxg:GridCommands.AddNewRow}" CommandParameter="{Binding ElementName=view}"/>
-                        <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}"
-                            Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать" Command="{x:Static dxg:GridCommands.EditFocusedRow}" CommandParameter="{Binding ElementName=view}"/>
-                        <dxb:BarButtonItem Name="copyRow" Content="Копировать"  Command="{x:Static local_com:TreeCommands.CopyRowCommand}" CommandParameter="{Binding ElementName=view}"
-                                            KeyGesture="Ctrl+D" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Merge_32x32.png}"/>
-                        <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" CommandParameter="{Binding ElementName=view}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
-                    </dxg:TableView.RowCellMenuCustomizations>
-                    <dxmvvm:Interaction.Behaviors>
-                        <b:DeleteRowDataGridBehaviors/>
-                        <dxmvvm:EventToCommand  EventName="ValidateRow" Command="{Binding Path=UpdateCommand}" CommandParameter="{Binding ElementName=view}" />
-                    </dxmvvm:Interaction.Behaviors>
-
-                    <dxg:TableView.EditFormTemplate>
-                        <DataTemplate>
-                            <GroupBox Header="Редактирование позиции" Margin="10" Padding="10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="0.3*" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Название: " Grid.Row="0" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="Name" Grid.Row="0" Grid.Column="1" Margin="2" />
-                                    
-                                    <TextBlock Text="Описание: " Grid.Row="1" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="Description" Grid.Row="1" Grid.Column="1" Margin="2"/>
-                                    
-                                    <TextBlock Text="Действует до: " Grid.Row="2" Grid.Column="0" />
-                                    <dxg:EditFormEditor FieldName="PeriodTo" Grid.Row="2" Grid.Column="1" Margin="2"/>
-
-                                    <StackPanel  Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                                        <dx:SimpleButton Content="Применить" Command="{Binding CommitCommand}" Margin="2"/>
-                                        <dx:SimpleButton Content="Закрыть" Command="{Binding CancelCommand}" Margin="2"/>
-                                    </StackPanel>
-                                </Grid>
-                            </GroupBox>
-                        </DataTemplate>
-                    </dxg:TableView.EditFormTemplate>
-
-                </dxg:TableView>
+                                Command="{Binding OpenFormCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding OpenFormCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                    </dxg:TreeListView.InputBindings>
 
 
+                    <dxg:TreeListView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
+                                            Name="addGroup" KeyGesture="Ctrl+G" Content="Добавить группу"  Command="{Binding OpenFormCommand}" CommandParameter="-2"/>
+                        <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
+                            Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
+                    </dxg:TreeListView.RowCellMenuCustomizations>
+
+                    <dxg:TreeListView.NodeImageSelector>
+                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                    </dxg:TreeListView.NodeImageSelector>
+                </dxg:TreeListView>
             </dxg:GridControl.View>
 
-
-
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="*" >
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="2*">
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="15" Height="15" >
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/View_Details.ico" />
-                                </Image.Source>
-                            </Image>
+                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
+            <dxg:GridColumn FieldName="PeriodTo" Header="Действует до" Name="PeriodTo" Width="1*"/>
+            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" Width="3*"/>
 
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" MinWidth="200" Width="5*" >
+            <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
-                    <DataTemplate>
-                        <dxe:TextEdit Name="PART_Editor" Text="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}" />
-                    </DataTemplate>
-                </dxg:GridColumn.CellTemplate>
-
-                <dxg:GridColumn.EditFormTemplate>
-                    <DataTemplate >
-                        <dxe:MemoEdit Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.Description, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}"  />
-                    </DataTemplate>
-                </dxg:GridColumn.EditFormTemplate>
-            </dxg:GridColumn>
-
-            <dxg:GridColumn FieldName="PeriodTo"  Header="Действует до" Name="PeriodTo" MinWidth="200" Width="1*" >
-                <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="15" Height="15" >
-                                <Image.Source>
-                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/fa/Time.ico" />
-                                </Image.Source>
-                            </Image>
-                            <TextBlock Text="Действует до" Margin="3 0 0 0"/>
+                            <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
+                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2" ToolTip="Редактировать">
+                                <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/edit.svg" Height="13" />
+                            </Button>
+                            <Button DataContext="{Binding Source={StaticResource vm} }"
+                                    Command="{Binding DeleteCommand}" 
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
+                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2"  ToolTip="Удалить">
+                                <svgc:SvgViewbox    Source="pack://application:,,,/Resources/Icons/svg/trash-alt.svg" Height="13" />
+                            </Button>
                         </StackPanel>
-                    </DataTemplate>
-                </dxg:GridColumn.HeaderTemplate>
-                <dxg:GridColumn.CellTemplate>
-                    <DataTemplate>
-                        <dxe:TextEdit Mask="DateTime" Name="PART_Editor" Text="{Binding RowData.Source.Row.PeriodTo, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}"  />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
 
-                <dxg:GridColumn.EditFormTemplate>
-                    <DataTemplate >
-                        <dxe:DateEdit Name="PART_Editor"  EditValue="{Binding RowData.Source.Row.PeriodTo, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}"  />
-                    </DataTemplate>
-                </dxg:GridColumn.EditFormTemplate>
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>
-</UserControl>
+</Page>

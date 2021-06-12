@@ -7,7 +7,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class DiscountGroups : UserControl
+    public partial class DiscountGroups : Page
     {
         public DiscountGroups()
         {

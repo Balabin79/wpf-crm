@@ -138,7 +138,7 @@
                 </dxg:TreeListView>
             </dxg:GridControl.View>
 
-            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="1*">
+            <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="*">
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

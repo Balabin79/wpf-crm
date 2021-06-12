@@ -17,14 +17,14 @@ namespace Dental.Infrastructures.Converters
             try
             {
                 DateTime result;
-                if (string.IsNullOrEmpty(value.ToString())) return new DateTime().ToShortDateString();
+                if (string.IsNullOrEmpty(value?.ToString())) return DateTime.Now.ToShortDateString();
                 if (DateTime.TryParse((string)value, out result)) 
                     return result.ToShortDateString();
-                return new DateTime().ToShortDateString();
+                return DateTime.Now.ToShortDateString();
             } catch(Exception e)
             {
                 new ConvertorLog(e).run();
-                return new DateTime().ToShortDateString();
+                return DateTime.Now.ToShortDateString();
             }
 
         }
