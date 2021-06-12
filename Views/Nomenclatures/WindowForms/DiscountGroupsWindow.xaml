@@ -8,10 +8,14 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         mc:Ignorable="d"
         Title="Группа скидки"  Width="800" Height="280"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converter:FloatToStringConverter x:Key="conv"/>
+    </Window.Resources>
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Profiles.png" />
     </Window.Icon>
@@ -38,6 +42,8 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
@@ -50,8 +56,24 @@
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
                                                />
 
-                                <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Описание:"  Margin="0,0,8,3" />
-                                <dxe:MemoEdit  MemoTextWrapping="Wrap" ShowIcon="False" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+                                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Тип скидки:"  Margin="0,0,8,3" />
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Types}"                                      
+                                                          SelectedItem="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="Выберите тип скидки"
+                                              IsTextEditable="False" Grid.Row="3" Grid.Column="0"  Margin="0,0,8,8">
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
+                                
+                                <TextBlock  Grid.Row="2" Grid.Column="1" Text="Размер скидки:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="3" Grid.Column="1" Mask="F" MaskType="Numeric"
+                                               Text="{Binding Model.AmountDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                    ValidatesOnDataErrors=True, Converter={StaticResource conv} }" Margin="0,0,0,8" />
+
+
+                                <TextBlock  Grid.Row="4" Grid.ColumnSpan="2" Text="Описание:"  Margin="0,0,8,3" />
+                                <dxe:MemoEdit  MemoTextWrapping="Wrap" ShowIcon="False" Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
                             </Grid>
                         </StackPanel>
                     </GroupBox>

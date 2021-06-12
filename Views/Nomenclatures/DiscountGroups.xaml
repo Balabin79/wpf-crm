@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
-      xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:b ="clr-namespace:Dental.Behaviors" 
@@ -15,6 +14,7 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:DiscountGroupsViewModel x:Key="vm"/>
@@ -148,10 +148,8 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="DiscountGroupType"  Header="Тип" Name="DiscountGroupType" Width="2*"/>
-            <dxg:GridColumn FieldName="AmountDiscount"  Header="Размер" Name="AmountDiscount" Width="1*"/>
-            <dxg:GridColumn FieldName="Description"  Header="Описание" Name="Description" Width="3*"/>
-
+            <dxg:GridColumn FieldName="DiscountGroupType"  Header="Тип" Name="DiscountGroupType" Width="1*" />
+            <dxg:GridColumn FieldName="AmountDiscount"  Header="Размер" Name="AmountDiscount" Width="1*" />
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>

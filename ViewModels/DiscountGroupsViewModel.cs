@@ -80,6 +80,14 @@ namespace Dental.ViewModels
                 var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
 
                 if (SelectedGroup != null) Model.ParentId = ((DiscountGroups)SelectedGroup).Id;
+                
+                if (SelectedType != null) Model.DiscountGroupType = SelectedType.ToString();
+
+                if (Model.IsDir == 1)
+                {
+                    Model.AmountDiscount = null;
+                    Model.DiscountGroupType = null;
+                }
 
                 if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
                 {
@@ -91,6 +99,7 @@ namespace Dental.ViewModels
                 db.SaveChanges();
 
                 SelectedGroup = null;
+                SelectedType = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -130,6 +139,7 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<DiscountGroups>().ToObservableCollection();
 
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
+                        SelectedType = Model.DiscountGroupType;
 
                         if (Model.IsDir == 0)
                         {
@@ -165,6 +175,15 @@ namespace Dental.ViewModels
             get => _SelectedGroup;
             set => Set(ref _SelectedGroup, value);
         }
+
+        private object _SelectedType;
+        public object SelectedType
+        {
+            get => _SelectedType;
+            set => Set(ref _SelectedType, value);
+        }
+
+        public ICollection<string> Types { get; } = new List<string>() { "Фиксированная сумма", "Процент"}; 
 
         /******************************************************/
         public ObservableCollection<DiscountGroups> Collection

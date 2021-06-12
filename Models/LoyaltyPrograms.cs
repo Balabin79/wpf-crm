@@ -24,6 +24,7 @@ namespace Dental.Models
             get { 
                 try
                 {
+                    if (IsDir == 1) return null;
                     DateTime.TryParse(_PeriodTo, out DateTime v);
                     if (string.IsNullOrEmpty(_PeriodTo)) return DateTime.Now.ToShortDateString().ToString();
                     return v.ToShortDateString().ToString();

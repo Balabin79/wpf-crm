@@ -16,9 +16,8 @@ namespace Dental.Infrastructures.Converters
        {
             try
             {
-                DateTime result;
                 if (string.IsNullOrEmpty(value?.ToString())) return DateTime.Now.ToShortDateString();
-                if (DateTime.TryParse((string)value, out result)) 
+                if (DateTime.TryParse((string)value, out DateTime result)) 
                     return result.ToShortDateString();
                 return DateTime.Now.ToShortDateString();
             } catch(Exception e)

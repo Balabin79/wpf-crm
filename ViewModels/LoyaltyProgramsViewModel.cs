@@ -87,6 +87,11 @@ namespace Dental.ViewModels
                     return;
                 }
 
+                if (Model.IsDir == 1)
+                {
+                    Model.PeriodTo = null;
+                }
+
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
 

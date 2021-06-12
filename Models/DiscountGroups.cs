@@ -16,10 +16,10 @@ namespace Dental.Models
         public string Name { get; set; }
 
         [Display(Name = "Вид скидки")]
-        public string DiscountGroupType { get; set; } = "Процент";
+        public string DiscountGroupType { get; set; }
 
         [Display(Name = "Размер скидки")]
-        public float AmountDiscount { get; set; }
+        public string AmountDiscount { get; set; }
 
         [Display(Name = "Описание")]
         public string Description { get; set; }
