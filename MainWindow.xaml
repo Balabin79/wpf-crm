@@ -151,6 +151,14 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png"   
                                            ToolTip="Справочники"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
+                        <dxb:BarButtonItem Content="Должности"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png"   
+                                           ToolTip="Должности"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Specialities}"/>
+
                         <dxb:BarButtonItem Content="Роли"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/status11.png" 

@@ -8,15 +8,16 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         mc:Ignorable="d"
-        Title="Склад" Height="330" Width="800"
+        Title="Специальность" Width="800"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <vm:EmployeeViewModel x:Key="emp"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
     </Window.Resources>
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Book-Keeping.png" />
+        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" />
     </Window.Icon>
     <Grid>
         <Grid Visibility="{Binding IsVisibleItemForm}">
@@ -33,8 +34,9 @@
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -45,21 +47,19 @@
 
                                 <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
                                 <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-
+                                  
                                 <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding StorageGroup}"
+                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
-                                                          SelectedItem="{Binding SelectedStorageGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
                                                />
 
-                                <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Ответственное лицо:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Path=Employees }"
-                                                          DisplayMember="FullName"
-                                                          SelectedItem="{Binding SelectedEmployee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="3" Grid.ColumnSpan="2"  Margin="0,0,0,8"
-                                               />
-
+                                <StackPanel  Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                                <dxe:CheckEdit IsChecked="{Binding Model.ShowInShedule, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"  Margin="12 0 0 8"/>
+                                <TextBlock  Text="В расписании"  Margin="3,2,8,3" />
+                                </StackPanel>
                             </Grid>
                           
                             <Grid>

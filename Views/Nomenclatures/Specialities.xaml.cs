@@ -9,7 +9,7 @@ namespace Dental.Views.Nomenclatures
     /// <summary>
     /// Логика взаимодействия для Roles.xaml
     /// </summary>
-    public partial class Specialities : UserControl
+    public partial class Specialities : Page
     {
         public Specialities()
         {
