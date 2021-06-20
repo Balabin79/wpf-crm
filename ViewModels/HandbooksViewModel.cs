@@ -51,8 +51,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
-                int x = 0;
+
             }
 
         }

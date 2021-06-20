@@ -1,171 +1,337 @@
 using Dental.Models.Base;
+using DevExpress.Mvvm;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Dental.Models
 {
     [Table("Organizations")]
-    public class Organization : AbstractBaseModel
+    public class Organization : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
         [Required]
         [MaxLength(255)]
         [Display(Name = "Наименование")]
-        public string Name { get; set; } = "Новая организация";
+        public string Name 
+        {
+            get => _Name;
+            set
+            {
+                _Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
 
         [MaxLength(255)]
         [Display(Name = "Сокращенное наименование")]
-        public string ShortName { get; set; } = "";
+        public string ShortName 
+        {
+            get => _ShortName;
+            set
+            {
+                _ShortName = value;
+                OnPropertyChanged(nameof(ShortName));
+            }
+        }
 
         [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         [Display(Name = "ИНН")]
-        public string Inn { get; set; } = "";
+        public string Inn
+        {
+            get => _Inn;
+            set
+            {
+                _Inn = value;
+                OnPropertyChanged(nameof(Inn));
+            }
+        }
 
         [MaxLength(9, ErrorMessage = "Длина не более 9 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         [Display(Name = "КПП")]
-        public string Kpp { get; set; } = "";
-
-        public string Logo { get; set; }
-
-
-            byte[] imageData;
-
-            [NotMapped]
-            public byte[] ImageData { 
-                get => !String.IsNullOrEmpty(Logo) ? File.ReadAllBytes(Logo) : File.ReadAllBytes("c:\\Users\\user\\source\\repos\\Dental\\Resources\\Icons\\example\\cyprus.jpg");
-                set => imageData = value;
-              }
-
-            private BitmapImage imageSource;
-
-            [NotMapped]
-            public BitmapImage LogoEdit
+        public string Kpp 
+        {
+            get => _Kpp;
+            set
             {
-                get
-                {
-                    if (imageSource == null) SetImageSource();
-                    return imageSource;                
-                }
-                set
-                {
-                    imageSource = value;
-                }
+                _Kpp = value;
+                OnPropertyChanged(nameof(Kpp));
             }
-            void SetImageSource()
+        }
+
+        // Общая информация
+        [Display(Name = "Лого")]
+        public string Logo 
+        {
+            get => _Logo;
+            set
             {
-                var stream = new MemoryStream(ImageData);
-                imageSource = new BitmapImage();
-                imageSource.BeginInit();
-                imageSource.StreamSource = stream;
-                imageSource.EndInit();
+                _Logo = value;
+                OnPropertyChanged(nameof(Logo));
             }
+        }
+
+        [NotMapped]
+        public ImageSource Image { get; set; }
 
 
 
-            // Контактная инф-ция
+        // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
-        public string Address { get; set; }
+        public string Address 
+        {
+            get => _Address;
+            set
+            {
+                _Address = value;
+                OnPropertyChanged(nameof(Address));
+            }
+        }
 
         [Display(Name = "Юридический адрес")]
-        public string LegalAddress { get; set; }
+        public string LegalAddress 
+        {
+            get => _LegalAddress;
+            set
+            {
+                _LegalAddress = value;
+                OnPropertyChanged(nameof(LegalAddress));
+            }
+        }
 
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [Phone]
         [Display(Name = "Телефон")]
-        public string Phone { get; set; } = "89111111111";
+        public string Phone 
+        {
+            get => _Phone;
+            set
+            {
+                _Phone = value;
+                OnPropertyChanged(nameof(Phone));
+            }
+        }
 
         [MaxLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
-        public string Email { get; set; } = "example@company.com";
+        public string Email
+        {
+            get => _Email;
+            set
+            {
+                _Email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
 
 
         // Банковские реквизиты
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Bik { get; set; }
+        public string Bik 
+        {
+            get => _Bik;
+            set
+            {
+                _Bik = value;
+                OnPropertyChanged(nameof(Bik));
+            }
+        }
 
         [Display(Name = "Расчетный счет")]
         [MaxLength(20, ErrorMessage = "Длина не более 20 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string AccountNumber { get; set; }
+        public string AccountNumber { 
+            get => _AccountNumber;
+            set 
+            {
+                _AccountNumber = value;
+                OnPropertyChanged(nameof(AccountNumber)); 
+            } 
+        }
 
         [Display(Name = "Наименование банка")]
-        public string BankName { get; set; }
+        public string BankName
+        {
+            get => _BankName;
+            set
+            {
+                _BankName = value;
+                OnPropertyChanged(nameof(BankName));
+            }
+        }
 
         // Регистрационная информация
         [Display(Name = "ОГРН")]
         [MaxLength(13, ErrorMessage = "Длина не более 13 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Ogrn { get; set; }
+        public string Ogrn 
+        {
+            get => _Ogrn;
+            set
+            {
+                _Ogrn = value;
+                OnPropertyChanged(nameof(Ogrn));
+            }
+        }
 
         [Display(Name = "Дата регистрации")]
-        public string RegisterDate { get; set; } = DateTime.Now.ToShortDateString().ToString();
+        public string RegisterDate
+        {
+            get
+            {
+                try
+                {
 
+                    DateTime.TryParse(_RegisterDate, out DateTime v);
+                    if (string.IsNullOrEmpty(_RegisterDate)) return DateTime.Now.ToShortDateString().ToString();
+                    return v.ToShortDateString().ToString();
+                }
+                catch (Exception e)
+                {
+                    return DateTime.Now.ToShortDateString();
+                }
+
+            }
+            set
+            {
+                _RegisterDate = value;
+                OnPropertyChanged(nameof(RegisterDate));
+            }
+        }
+       
         [Display(Name = "Генеральный директор")]
-        public string GeneralDirector { get; set; }
+        public string GeneralDirector 
+        {
+            get => _GeneralDirector;
+            set
+            {
+                _GeneralDirector = value;
+                OnPropertyChanged(nameof(GeneralDirector));
+            }
+        }
 
         [Display(Name = "Лицензия")]
-        public string License { get; set; }
+        public string License 
+        {
+            get => _License;
+            set
+            {
+                _License = value;
+                OnPropertyChanged(nameof(License));
+            }
+        }
 
         [Display(Name = "Кем выдана")]
-        public string WhoIssuedBy { get; set; }
+        public string WhoIssuedBy 
+        {
+            get => _WhoIssuedBy;
+            set
+            {
+                _WhoIssuedBy = value;
+                OnPropertyChanged(nameof(WhoIssuedBy));
+            }
+        }
 
+        [Display(Name = "Дополнительно")]
+        public string Additional 
+        {
+            get => _Additional;
+            set
+            {
+                _Additional = value;
+                OnPropertyChanged(nameof(Additional));
+            }
+        }
+
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         public bool this[PropertyInfo prop, Organization item]
         {
             get
             {
-                switch(prop.Name)
+                switch (prop.Name)
                 {
-                    case "Id": return item.Id == Id;
-                    case "Name" : return item.Name == Name;
+                    case "Name": return item.Name == Name;
                     case "ShortName": return item.ShortName == ShortName;
                     case "Inn": return item.Inn == Inn;
                     case "Kpp": return item.Kpp == Kpp;
-                    case "Logo" : return item.Logo == Logo;
+                    case "Ogrn": return item.Ogrn == Ogrn;
+                    case "Logo": return item.Logo == Logo;
                     case "Address": return item.Address == Address;
                     case "LegalAddress": return item.LegalAddress == LegalAddress;
-                    case "Phone": return item.Phone == Phone;
                     case "Email": return item.Email == Email;
+                    case "Phone": return item.Phone == Phone;
                     case "Bik": return item.Bik == Bik;
                     case "AccountNumber": return item.AccountNumber == AccountNumber;
                     case "BankName": return item.BankName == BankName;
                     case "RegisterDate": return item.RegisterDate == RegisterDate;
-                    case "Ogrn": return item.Ogrn == Ogrn;
                     case "GeneralDirector": return item.GeneralDirector == GeneralDirector;
                     case "License": return item.License == License;
                     case "WhoIssuedBy": return item.WhoIssuedBy == WhoIssuedBy;
+                    case "Additional": return item.Additional == Additional;
                     default: return true;
                 }
-            }         
+            }
         }
 
         public void Copy(Organization copy)
         {
-             Name = copy.Name;
-             ShortName = copy.ShortName;
-             Inn = copy.Inn;
-             Kpp = copy.Kpp;
-             Logo = copy.Logo;
-             Address = copy.Address;
-             LegalAddress = copy.LegalAddress;
-             Phone = copy.Phone;
-             Email = copy.Email;
-             Bik = copy.Bik;
-             AccountNumber = copy.AccountNumber;
-             BankName = copy.BankName;
-             RegisterDate = copy.RegisterDate;
-             Ogrn = copy.Ogrn;
-             GeneralDirector = copy.GeneralDirector;
-             License = copy.License;
-             WhoIssuedBy = copy.WhoIssuedBy;
+            Id = copy.Id;
+            Name = copy.Name;
+            ShortName = copy.ShortName;
+            Inn = copy.Inn;
+            Kpp = copy.Kpp;
+            Ogrn = copy.Ogrn;
+            Logo = copy.Logo;
+            Email = copy.Email;
+            Address = copy.Address;
+            LegalAddress = copy.LegalAddress;
+            Phone = copy.Phone;
+            Email = copy.Email;
+            Bik = copy.Bik;
+            AccountNumber = copy.AccountNumber;
+            BankName = copy.BankName;
+            RegisterDate = copy.RegisterDate;
+            GeneralDirector = copy.GeneralDirector;
+            License = copy.License;
+            WhoIssuedBy = copy.WhoIssuedBy;
+            Additional = copy.Additional;
         }
-    }
+
+        private string _AccountNumber;
+        private string _Name;
+        private string _ShortName;
+        private string _Inn;
+        private string _Kpp;
+        private string _Ogrn;
+        private string _Logo;
+        private string _Email;
+        private string _Address;
+        private string _LegalAddress;
+        private string _Phone;
+        private string _Bik;
+        private string _Additional;
+        private string _BankName;
+        private string _GeneralDirector;
+        private string _License;
+        private string _WhoIssuedBy;
+        private string _RegisterDate;
+
+        public event PropertyChangedEventHandler PropertyChanged;         
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+    }  
 }

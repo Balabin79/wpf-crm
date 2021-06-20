@@ -55,7 +55,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:Patient}"/>
 
                         <dxb:BarButtonItem Content="Список пациентов" RibbonStyle="Default" 
                                            ToolTip="Список пациентов"
@@ -144,13 +144,32 @@
                     </dxr:RibbonPageGroup >
 
                     <dxr:RibbonPageGroup Caption="Настройки" >
-                        <dxb:BarButtonItem Content="Справочники"
+
+                       
+                        <dxb:BarButtonItem Content="Организация"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/org.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/org.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/org.png"   
+                                           ToolTip="Организация"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Organization}"/>
+                        <dxb:BarButtonItem Content="Филиалы"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Google-Map.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Google-Map.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Google-Map.png"   
+                                           ToolTip="Филиалы"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
+
+                        <dxb:BarButtonItem Content="Подразделения"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png" 
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png"   
-                                           ToolTip="Справочники"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
+                                           ToolTip="Подразделения"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Departaments}"/>
+
+
                         <dxb:BarButtonItem Content="Должности"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" 

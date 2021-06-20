@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Dental.Enums;
@@ -12,141 +16,100 @@ using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
 using Dental.Repositories;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel: ViewModelBase//, ICollectionCommand
-    {/*
+    class OrganizationViewModel: ViewModelBase
+    {
+        private readonly ApplicationContext db;
         public OrganizationViewModel()
         {
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
-            UpdateCommand = new LambdaCommand(OnUpdateCommandExecuted, CanUpdateCommandExecute);
-            CopyCommand = new LambdaCommand(OnCopyCommandExecuted, CanCopyCommandExecute);
+            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
+            EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+            IsReadOnly = true;
+            try
+            {
+                db = new ApplicationContext();
+                Model = GetModel();
+                OldModel = new Organization();
+                OldModel.Copy(Model);
+                Model.Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
 
-            Repository = new OrganizationRepository();
+        public ICommand SaveCommand { get; }
+        public ICommand EditableCommand { get; }
+        public ICommand CancelCommand { get; }
+       
+        private bool CanSaveCommandExecute(object p) => true;
+        private bool CanEditableCommandExecute(object p) => true;
+        private bool CanCancelCommandExecute(object p) => true;
 
-            //Repository.CopyModel += ((IModel, TableView) c) => {
-                var copiedRow = Collection.Where(d => d.Id == ((Organization)c.Item2.FocusedRow)?.Id).FirstOrDefault();
-                if (copiedRow != null)
+        private void OnSaveCommandExecuted(object p)
+        {
+            try {
+                if (Model?.Id > 0) db.Entry(Model).State = EntityState.Modified;
+                else db.Organizations.Add(Model);
+                db.SaveChanges();
+                OldModel.Copy(Model);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelCommandExecuted(object p)
+        {
+            PropertyInfo[] properties = typeof(Organization).GetProperties();
+            bool isModified = false;
+            foreach (PropertyInfo property in properties)
+            {
+                if (!Model[property, OldModel])
                 {
-                    int index = Collection.IndexOf(copiedRow) + 1;
-                    Collection.Insert(index, (Organization)c.Item1);
-                    var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                    if (row != null)
-                    {
-                        c.Item2.FocusedRow = row;
-                        c.Item2.ScrollIntoView(c.Item1);
-                        c.Item2.FocusedRow = c.Item1;
-                        //c.Item2.ShowEditForm();
-                    }
-                }
-            };
-            //Repository.UpdateModel += ((IModel, TableView) c) => {
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
-                if (row != null)
-                {
-                    int index = Collection.IndexOf(row);
-                    Collection[index] = (Organization)c.Item1;
-                }
-            };
-            //Repository.AddModel += ((IModel, TableView) c) => {
-                Collection.Add((Organization)c.Item1);
-                var row = Collection.Where(d => d.Id == c.Item1.Id).FirstOrDefault();
+                    //if ()
+                    isModified = true;
+                } 
+                                                                    
+            } 
+            if (isModified == true)
+            {
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Есть несохраненные изменения, которые будут утеряны! Продолжить?",
+                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+                if (response.ToString() == "No") return;
+            }
 
-                if (row != null)
-                {
-                    c.Item2.FocusedRow = row;
-                    c.Item2.ScrollIntoView(row);
-                    //c.Item2.ShowEditForm();
-                }
-            };
-           // Repository.DeleteModel += (IModel model) => {
-                var item = Collection.Where(d => d.Id == model.Id).FirstOrDefault();
-                if (item != null) Collection.Remove(item);
-            };
+            Model.Copy(OldModel);
+            db.SaveChanges();            
+        }  
+        
+        private void OnEditableCommandExecuted(object p)
+        {
+            IsReadOnly = !IsReadOnly;
         }
 
-        public ICommand DeleteCommand { get; }
-        public ICommand AddCommand { get; }
-        public ICommand UpdateCommand { get; }
-        public ICommand CopyCommand { get; }
 
-        private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanAddCommandExecute(object p) => true;
-        private bool CanUpdateCommandExecute(object p) => true;
-        private bool CanCopyCommandExecute(object p) => true;
-
-
-        private void OnDeleteCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Delete(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+        private Organization _Model;
+        public Organization Model { 
+            get => _Model; 
+            set => Set(ref _Model, value); 
         }
 
-        private void OnAddCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as TableView;
-                if (table == null) return;
-                Repository.Add(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+        private bool _IsReadOnly;
+        public bool IsReadOnly {
+            get => _IsReadOnly;
+            set => Set(ref _IsReadOnly, value);
         }
 
-        private void OnUpdateCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Update(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnCopyCommandExecuted(object p)
-        {
-            try
-            {
-                var table = p as DevExpress.Xpf.Grid.TableView;
-                if (table == null) return;
-                Repository.Copy(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        OrganizationRepository Repository { get; set; }
-
-        private ObservableCollection<Organization> _Collection;
-
-        public ObservableCollection<Organization> Collection
-        {
-            get
-            {
-                if (_Collection == null) _Collection = Repository.GetAll().Result;
-                return _Collection;
-            }
-            set => Set(ref _Collection, value);
-        }*/
+        private Organization GetModel() => db.Organizations.FirstOrDefault();
+        private Organization OldModel { get; set; }
     }
 }

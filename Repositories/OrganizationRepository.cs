@@ -66,7 +66,7 @@ namespace Dental.Repositories
                     bool needUpdate = false;
                     foreach (PropertyInfo property in properties)
                     {
-                        if (! model[property, item]) needUpdate = true;                                                     
+               //         if (! model[property, item]) needUpdate = true;                                                     
                     }    
                     
                     if (!needUpdate || !new ConfirUpdateInCollection().run())
@@ -74,7 +74,7 @@ namespace Dental.Repositories
                         // UpdateModel?.Invoke((item, table));
                          return;
                     }
-                    item.Copy(model);
+                  //  item.Copy(model);
                     db.Entry(item).State = EntityState.Modified;
                     db.SaveChanges();
 
@@ -121,7 +121,7 @@ namespace Dental.Repositories
                 }
 
                 Organization newModel = new Organization();
-                newModel.Copy(model);
+               // newModel.Copy(model);
                 newModel.Name += " Копия";
                 db.Organizations.Add(newModel);
                 db.SaveChanges();

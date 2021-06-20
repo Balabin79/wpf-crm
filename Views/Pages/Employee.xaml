@@ -14,10 +14,10 @@
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                       xmlns:app="clr-namespace:Dental" 
                       xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions" 
-             xmlns:local ="clr-namespace:Dental.Views.Pages"  
-             xmlns:uc ="clr-namespace:Dental.Views.Pages.UserControls"  
-             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-             mc:Ignorable="d"
+                      xmlns:local ="clr-namespace:Dental.Views.Pages"  
+                      xmlns:uc ="clr-namespace:Dental.Views.Pages.UserControls"  
+                      xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+                      mc:Ignorable="d"
                       dx:ThemeManager.ThemeName="Office2019White" 
                       d:DesignHeight="300" d:DesignWidth="300">
 
@@ -244,15 +244,15 @@
                             <dxlc:LayoutItem Label="Место работы, должность" LabelPosition="Top" VerticalAlignment="Top" Margin="0,5">
                                 <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="197">
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="CreatedOn" FixedWidth="True">
+                                        <dxg:GridColumn FieldName="Филиал" FixedWidth="True">
                                             <dxg:GridColumn.CellStyle>
                                                 <Style>
                                                     <Setter Property="TextBlock.FontWeight" Value="Bold" />
                                                 </Style>
                                             </dxg:GridColumn.CellStyle>
                                         </dxg:GridColumn>
-                                        <dxg:GridColumn FieldName="Subject" />
-                                        <dxg:GridColumn FieldName="Manager" />
+                                        <dxg:GridColumn FieldName="Подразделение" />
+                                        <dxg:GridColumn FieldName="Должность" />
                                     </dxg:GridControl.Columns>
                                     <dxg:GridControl.View>
                                         <dxg:TableView ShowGroupPanel="False"
