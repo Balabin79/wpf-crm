@@ -73,11 +73,17 @@ namespace Dental.ViewModels
             bool isModified = false;
             foreach (PropertyInfo property in properties)
             {
-                if (!Model[property, OldModel])
+                if (Model[property] != OldModel[property])
                 {
-                    //if ()
                     isModified = true;
-                } 
+                    if (string.IsNullOrEmpty(Model[property]) && string.IsNullOrEmpty(Model[property]) == string.IsNullOrEmpty(OldModel[property]))
+                    {
+                        isModified = false;
+                    }
+                    if (isModified) break;
+                }
+                
+                       
                                                                     
             } 
             if (isModified == true)

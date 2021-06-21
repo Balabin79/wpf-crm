@@ -255,31 +255,31 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public bool this[PropertyInfo prop, Organization item]
+        public string this[PropertyInfo property]
         {
             get
             {
-                switch (prop.Name)
+                switch (property.Name)
                 {
-                    case "Name": return item.Name == Name;
-                    case "ShortName": return item.ShortName == ShortName;
-                    case "Inn": return item.Inn == Inn;
-                    case "Kpp": return item.Kpp == Kpp;
-                    case "Ogrn": return item.Ogrn == Ogrn;
-                    case "Logo": return item.Logo == Logo;
-                    case "Address": return item.Address == Address;
-                    case "LegalAddress": return item.LegalAddress == LegalAddress;
-                    case "Email": return item.Email == Email;
-                    case "Phone": return item.Phone == Phone;
-                    case "Bik": return item.Bik == Bik;
-                    case "AccountNumber": return item.AccountNumber == AccountNumber;
-                    case "BankName": return item.BankName == BankName;
-                    case "RegisterDate": return item.RegisterDate == RegisterDate;
-                    case "GeneralDirector": return item.GeneralDirector == GeneralDirector;
-                    case "License": return item.License == License;
-                    case "WhoIssuedBy": return item.WhoIssuedBy == WhoIssuedBy;
-                    case "Additional": return item.Additional == Additional;
-                    default: return true;
+                    case "Name": return Name;
+                    case "ShortName": return ShortName;
+                    case "Inn": return Inn;
+                    case "Kpp": return Kpp;
+                    case "Ogrn": return Ogrn;
+                    case "Logo": return Logo;
+                    case "Address": return Address;
+                    case "LegalAddress": return LegalAddress;
+                    case "Email": return Email;
+                    case "Phone": return Phone;
+                    case "Bik": return Bik;
+                    case "AccountNumber": return AccountNumber;
+                    case "BankName": return BankName;
+                    case "RegisterDate": return RegisterDate;
+                    case "GeneralDirector": return GeneralDirector;
+                    case "License": return License;
+                    case "WhoIssuedBy": return WhoIssuedBy;
+                    case "Additional": return Additional;
+                    default: return null;
                 }
             }
         }
