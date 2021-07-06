@@ -65,10 +65,10 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
                         <dxb:BarButtonItem Content="Журнал обзвона" RibbonStyle="Default" 
                                            ToolTip="Журнал обзвона"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Fax.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Fax.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Fax.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:CommunicationLogView}"/>
                         <dxb:BarButtonItem Content="Реестр счетов" RibbonStyle="Default" 
                                            ToolTip="Реестр счетов"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Coins.png"
@@ -89,12 +89,6 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Ribbon.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
-                        <dxb:BarButtonItem Content="Email и СМС рассылка" RibbonStyle="Default" 
-                                           ToolTip="Email и СМС рассылка"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Blackberry-White.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:MainList}"/>
                     </dxr:RibbonPageGroup>
                

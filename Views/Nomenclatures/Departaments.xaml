@@ -38,7 +38,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Large-Tiles.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Роли" FontSize="15" />
+                    <TextBlock Text="Подразделения" FontSize="15" />
                 </StackPanel>
 
 

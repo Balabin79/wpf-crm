@@ -9,9 +9,8 @@ namespace Dental.Models
 {
     class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base("DefaultConnection")
-        {
-        }
+        public ApplicationContext() : base("DefaultConnection"){}
+
         public DbSet<Role> Roles { get; set; }
         public DbSet<Employee> Employes { get; set; }
         public DbSet<Advertising> Advertising { get; set; }
@@ -39,5 +38,9 @@ namespace Dental.Models
         public DbSet<Contractor> Contractors { get; set; }
         public DbSet<Branche> Branches { get; set; }
         public DbSet<Departament> Departaments { get; set; }
+        public DbSet<CommunicationLog> CommunicationLog { get; set; }
+        public DbSet<CommunicationLogStatus> CommunicationLogStatus { get; set; }
+        public DbSet<CommunicationLogThema> CommunicationLogThema { get; set; }
+        public DbSet<ClientsCategory> ClientsCategory { get; set; }
     }
 }

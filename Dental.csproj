@@ -76,6 +76,7 @@
     <None Remove="Resources\Icons\Sections\Vcard.png" />
     <None Remove="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <None Remove="Resources\Icons\svg\balance-scale-right.svg" />
+    <None Remove="Resources\Icons\svg\document.png" />
     <None Remove="Resources\Icons\svg\document.svg" />
     <None Remove="Resources\Icons\svg\edit.svg" />
     <None Remove="Resources\Icons\svg\edit2.svg" />
@@ -84,17 +85,25 @@
     <None Remove="Resources\Icons\svg\eye.svg" />
     <None Remove="Resources\Icons\svg\file-alt.svg" />
     <None Remove="Resources\Icons\svg\file.svg" />
+    <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\folder.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
+    <None Remove="Resources\Icons\svg\megaphone.svg" />
+    <None Remove="Resources\Icons\svg\message.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
     <None Remove="Resources\Icons\svg\opened_folder.svg" />
     <None Remove="Resources\Icons\svg\pen-alt.svg" />
     <None Remove="Resources\Icons\svg\pencil-alt.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
+    <None Remove="Resources\Icons\svg\phone1.svg" />
+    <None Remove="Resources\Icons\svg\phone2.svg" />
     <None Remove="Resources\Icons\svg\plus-square.svg" />
+    <None Remove="Resources\Icons\svg\price_tag.svg" />
     <None Remove="Resources\Icons\svg\print.svg" />
     <None Remove="Resources\Icons\svg\save.svg" />
+    <None Remove="Resources\Icons\svg\settings.svg" />
+    <None Remove="Resources\Icons\svg\settings2.svg" />
     <None Remove="Resources\Icons\svg\Skype.png" />
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\tooth.svg" />
@@ -115,20 +124,32 @@
     <None Remove="Resources\Icons\Template\Coins.png" />
     <None Remove="Resources\Icons\Template\comp.png" />
     <None Remove="Resources\Icons\Template\Curriculum-Vitae.png" />
+    <None Remove="Resources\Icons\Template\delete_32.png" />
     <None Remove="Resources\Icons\Template\diagnos.png" />
     <None Remove="Resources\Icons\Template\diary.png" />
+    <None Remove="Resources\Icons\Template\doc.png" />
+    <None Remove="Resources\Icons\Template\Document-Index.png" />
+    <None Remove="Resources\Icons\Template\Document-Layout.png" />
+    <None Remove="Resources\Icons\Template\document-lined-pen.png" />
     <None Remove="Resources\Icons\Template\Document-Mark-As-Final.ico" />
     <None Remove="Resources\Icons\Template\Document-Signature.png" />
+    <None Remove="Resources\Icons\Template\document.png" />
     <None Remove="Resources\Icons\Template\Draw-Clone.png" />
     <None Remove="Resources\Icons\Template\Drawer-Open.png" />
+    <None Remove="Resources\Icons\Template\Edit-128.png" />
+    <None Remove="Resources\Icons\Template\Edit-48.png" />
+    <None Remove="Resources\Icons\Template\Email-Edit.png" />
+    <None Remove="Resources\Icons\Template\Email-Link.png" />
     <None Remove="Resources\Icons\Template\emp.png" />
     <None Remove="Resources\Icons\Template\error-item.png" />
     <None Remove="Resources\Icons\Template\Error-Symbol.png" />
     <None Remove="Resources\Icons\Template\Exclamation.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
+    <None Remove="Resources\Icons\Template\Folder.png" />
     <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Edit-Delete-32.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Google-Map.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
@@ -138,6 +159,7 @@
     <None Remove="Resources\Icons\Template\initial.png" />
     <None Remove="Resources\Icons\Template\Injection.png" />
     <None Remove="Resources\Icons\Template\Key.png" />
+    <None Remove="Resources\Icons\Template\key_E.png" />
     <None Remove="Resources\Icons\Template\Large-Tiles.png" />
     <None Remove="Resources\Icons\Template\License-Management.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
@@ -145,10 +167,15 @@
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
     <None Remove="Resources\Icons\Template\Money.png" />
     <None Remove="Resources\Icons\Template\org.png" />
+    <None Remove="Resources\Icons\Template\Page-White-Edit.png" />
     <None Remove="Resources\Icons\Template\Participation-Rate.png" />
+    <None Remove="Resources\Icons\Template\Pen.png" />
+    <None Remove="Resources\Icons\Template\Pencil.png" />
+    <None Remove="Resources\Icons\Template\pencil_32.png" />
     <None Remove="Resources\Icons\Template\people.png" />
     <None Remove="Resources\Icons\Template\Pill.png" />
     <None Remove="Resources\Icons\Template\plan.png" />
+    <None Remove="Resources\Icons\Template\Printer.png" />
     <None Remove="Resources\Icons\Template\Profiles.png" />
     <None Remove="Resources\Icons\Template\Radio-2.png" />
     <None Remove="Resources\Icons\Template\red.png" />
@@ -164,6 +191,7 @@
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\PatientCard\1.png" />
@@ -385,13 +413,20 @@
     <Resource Include="Resources\Icons\svg\folder.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
+    <Resource Include="Resources\Icons\svg\megaphone.svg" />
+    <Resource Include="Resources\Icons\svg\message.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
     <Resource Include="Resources\Icons\svg\pen-alt.svg" />
     <Resource Include="Resources\Icons\svg\pencil-alt.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
+    <Resource Include="Resources\Icons\svg\phone1.svg" />
+    <Resource Include="Resources\Icons\svg\phone2.svg" />
     <Resource Include="Resources\Icons\svg\plus-square.svg" />
+    <Resource Include="Resources\Icons\svg\price_tag.svg" />
     <Resource Include="Resources\Icons\svg\print.svg" />
     <Resource Include="Resources\Icons\svg\save.svg" />
+    <Resource Include="Resources\Icons\svg\settings.svg" />
+    <Resource Include="Resources\Icons\svg\settings2.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\tooth.svg" />
     <Resource Include="Resources\Icons\svg\trash-alt.svg" />
@@ -410,14 +445,23 @@
     <Resource Include="Resources\Icons\Template\Coins.png" />
     <Resource Include="Resources\Icons\Template\comp.png" />
     <Resource Include="Resources\Icons\Template\Curriculum-Vitae.png" />
+    <Resource Include="Resources\Icons\Template\delete_32.png" />
     <Resource Include="Resources\Icons\Template\diagnos.png" />
+    <Resource Include="Resources\Icons\Template\Document-Index.png" />
+    <Resource Include="Resources\Icons\Template\Document-Layout.png" />
+    <Resource Include="Resources\Icons\Template\document-lined-pen.png" />
     <Resource Include="Resources\Icons\Template\Document-Signature.png" />
     <Resource Include="Resources\Icons\Template\Draw-Clone.png" />
     <Resource Include="Resources\Icons\Template\Drawer-Open.png" />
+    <Resource Include="Resources\Icons\Template\Edit-128.png" />
+    <Resource Include="Resources\Icons\Template\Edit-48.png" />
+    <Resource Include="Resources\Icons\Template\Email-Edit.png" />
+    <Resource Include="Resources\Icons\Template\Email-Link.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
     <Resource Include="Resources\Icons\Template\error-item.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
+    <Resource Include="Resources\Icons\Template\Folder.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
@@ -431,10 +475,15 @@
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
     <Resource Include="Resources\Icons\Template\org.png" />
+    <Resource Include="Resources\Icons\Template\Page-White-Edit.png" />
     <Resource Include="Resources\Icons\Template\Participation-Rate.png" />
+    <Resource Include="Resources\Icons\Template\Pen.png" />
+    <Resource Include="Resources\Icons\Template\Pencil.png" />
+    <Resource Include="Resources\Icons\Template\pencil_32.png" />
     <Resource Include="Resources\Icons\Template\people.png" />
     <Resource Include="Resources\Icons\Template\Pill.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
+    <Resource Include="Resources\Icons\Template\Printer.png" />
     <Resource Include="Resources\Icons\Template\Profiles.png" />
     <Resource Include="Resources\Icons\Template\Radio-2.png" />
     <Resource Include="Resources\Icons\Template\Report.png" />
@@ -449,6 +498,7 @@
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\PatientCard\1.png" />
@@ -530,6 +580,9 @@
     <Compile Update="Views\Nomenclatures\Departaments.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Nomenclatures\CommunicationLogView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Nomenclatures\Specialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -543,6 +596,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\DepartamentWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\SpecialityWindow.xaml.cs">
@@ -579,6 +635,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Nomenclatures\WindowListForms\CommunicationLogThemas.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -658,6 +717,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Nomenclatures\CommunicationLogView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Nomenclatures\Units.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -682,6 +745,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\WindowForms\DepartamentWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -730,6 +797,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Nomenclatures\WindowListForms\CommunicationLogThemas.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
