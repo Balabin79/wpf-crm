@@ -191,6 +191,7 @@
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <None Remove="Resources\Icons\Template\Transmit.png" />
     <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
@@ -453,7 +454,6 @@
     <Resource Include="Resources\Icons\Template\Document-Signature.png" />
     <Resource Include="Resources\Icons\Template\Draw-Clone.png" />
     <Resource Include="Resources\Icons\Template\Drawer-Open.png" />
-    <Resource Include="Resources\Icons\Template\Edit-128.png" />
     <Resource Include="Resources\Icons\Template\Edit-48.png" />
     <Resource Include="Resources\Icons\Template\Email-Edit.png" />
     <Resource Include="Resources\Icons\Template\Email-Link.png" />
@@ -498,6 +498,7 @@
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <Resource Include="Resources\Icons\Template\Transmit.png" />
     <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
@@ -556,6 +557,9 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\CommunicationLog\SmsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -568,19 +572,10 @@
     <Compile Update="Views\Nomenclatures\DiscountGroups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\LoyaltyPrograms.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\HandbooksPages\InsuranceCompany.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\Access.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\Departaments.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\CommunicationLogView.xaml.cs">
+    <Compile Update="Views\CommunicationLog\CommunicationLogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\Specialities.xaml.cs">
@@ -590,12 +585,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\ContractorWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\DepartamentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml.cs">
@@ -608,12 +597,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\LoyaltyProgramsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\RoleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\AdvertisingWindow.xaml.cs">
@@ -629,12 +612,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\DiagnosWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\UnitWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowListForms\CommunicationLogThemas.xaml.cs">
@@ -678,6 +655,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\CommunicationLog\SmsView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\HandbooksPages\EmployeePage1.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
@@ -697,36 +678,13 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\LoyaltyPrograms.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\HandbooksPages\InsuranceCompany.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\Access.xaml">
+    <Page Update="Views\CommunicationLog\CommunicationLogView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\Contractor.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\Departaments.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\CommunicationLogView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\Units.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\Storage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\Nomenclatures\Specialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
@@ -737,14 +695,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\Diary.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\ContractorWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\DepartamentWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -761,14 +711,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\LoyaltyProgramsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\RoleWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -789,14 +731,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\WindowForms\DiagnosWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\UnitWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\StorageWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

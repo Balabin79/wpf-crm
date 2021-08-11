@@ -11,11 +11,9 @@ namespace Dental.Models
     {
         public ApplicationContext() : base("DefaultConnection"){}
 
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Employee> Employes { get; set; }
         public DbSet<Advertising> Advertising { get; set; }
         public DbSet<DiscountGroups> DiscountGroups { get; set; }
-        public DbSet<LoyaltyPrograms> LoyaltyPrograms { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Diagnos> Diagnoses { get; set; }
@@ -30,17 +28,12 @@ namespace Dental.Models
         public DbSet<Region> Region { get; set; }
         public DbSet<City> City { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
+        public DbSet<Communication> Communication { get; set; }
+        public DbSet<ClientsCategory> ClientsCategory { get; set; }
         public DbSet<Nomenclature> Nomenclature { get; set; }
         public DbSet<Unit> Unit { get; set; }
-
         public DbSet<Storage> Storage { get; set; }
         public DbSet<Contractor> Contractors { get; set; }
-        public DbSet<Branche> Branches { get; set; }
-        public DbSet<Departament> Departaments { get; set; }
-        public DbSet<CommunicationLog> CommunicationLog { get; set; }
-        public DbSet<CommunicationLogStatus> CommunicationLogStatus { get; set; }
-        public DbSet<CommunicationLogThema> CommunicationLogThema { get; set; }
-        public DbSet<ClientsCategory> ClientsCategory { get; set; }
+
     }
 }
