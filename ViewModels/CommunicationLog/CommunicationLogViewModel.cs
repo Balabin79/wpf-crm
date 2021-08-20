@@ -253,7 +253,7 @@ namespace Dental.ViewModels.CommunicationLog
        
         public IEnumerable<string> Statuses { get; }
         public string SendErrror { get; set; }
-        public IEnumerable<ClientsCategory> ClientsCategories { get => db.ClientsCategory.OrderBy(f => f.Name).ToList(); }
+        public IEnumerable<ClientsGroup> ClientsCategories { get => db.ClientsGroup.OrderBy(f => f.Name).ToList(); }
         public IEnumerable<Employee> Employees { get => db.Employes.OrderBy(f => f.LastName).ToList(); }
 
        // public bool IsEnabled { get =>  } 

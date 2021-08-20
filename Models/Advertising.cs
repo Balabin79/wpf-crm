@@ -15,9 +15,14 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Display(Name = "Описание")]
-        public string Description { get; set; }
+        [Display(Name = "Период от")]
+        public string PeriodFrom{ get; set; }
 
+        [Display(Name = "Период до")]
+        public string PeriodTo { get; set; }
+
+        [Display(Name = "Бюджет")]
+        public double? Sum { get; set; }
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }

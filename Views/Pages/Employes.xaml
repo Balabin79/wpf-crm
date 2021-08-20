@@ -23,11 +23,6 @@
        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
               d:DesignWidth="800">
 
-
-    <UserControl.DataContext>
-        <vm:ListEmployeesViewModel/>
-    </UserControl.DataContext>
-
     <UserControl.Resources>
         
         <!--#region Shared templates-->
@@ -38,7 +33,6 @@
                     <Grid Margin="12" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -48,42 +42,72 @@
                                        Source="{Binding Path=Row.Photo}"
                                        
                                        Margin="0 0 15 0"
-                                       ShowMenu="False"
-                                       IsReadOnly="True" />
+                                       ShowMenu="True"
+                                       IsReadOnly="False" />
                         </Decorator>
-                        
-                            <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                 <ColumnDefinition />
-                                 <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+
+
+                        <GroupBox Grid.Column="1">
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <GroupBox Header="Персональные данные" Grid.Column="0">
+                                    <Grid >
+                           
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="ФИО:" FontWeight="Regular" FontStyle="Italic" Margin="0 2 20 2"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Специальности:"   FontStyle="Italic" Margin="0 0 20 2"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Организации:"  FontStyle="Italic" Margin="0 2 20 2"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Row.FullName}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Row.SpecialitiesName}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Row.OrganizationsName}" />
+                                     <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock  Grid.Row="0" Grid.Column="0"  Text="ФИО:" FontWeight="Regular" FontStyle="Italic"  Margin="0 2 0 2"/>
+                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.FullName}" Margin="0 2 0 0" />
+                                    <TextBlock  Grid.Row="1" Grid.Column="0" Text="Специальности:"   FontStyle="Italic" Margin="0 5 20 2"/>
+                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Row.SpecialitiesName}"  Margin="0 5 0 0"/>
+                                    <TextBlock  Grid.Row="2" Grid.Column="0" Text="Статус:"   FontStyle="Italic" Margin="0 5 20 2"/>
+                                        <TextBlock  Grid.Row="2" Grid.Column="1" Text="{Binding Row.Status}"  Margin="0 5 0 0"/>
+
+                                        <TextBlock  Grid.Row="3" Grid.Column="0" Text="Подробнее" Margin="0 5 20 2"/>
 
 
-    
-                                
-                        
-                        </Grid>
-                        <Button  dxwuin:Navigation.NavigateTo="Employee" dxwuin:Navigation.NavigationParameter="{Binding Row.Id}" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="pack://application:,,,/Resources/Icons/fa/Guest.png" Height="15" Width="15" Margin="0 0 5 0"/>
-                                <TextBlock Text="Карта сотрудника" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
 
-                        </Button>
+                                </Grid>
+                            </GroupBox>
+                                <GroupBox Header="Контактные данные" Grid.Column="1" Margin="10 0 0 0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock  Grid.Row="0" Grid.Column="0"  Text="Раб. телефон:" FontWeight="Regular" FontStyle="Italic"  Margin="0 2 0 2"/>
+                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.HomePhone}" Margin="10 2 0 0" />
+
+                                        <TextBlock  Grid.Row="1" Grid.Column="0" Text="Моб. телефон:"   FontStyle="Italic" Margin="0 5 0 2"/>
+                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Row.MobilePhone}"  Margin="10 5 0 0"/>
+                                        
+                                        <TextBlock  Grid.Row="2" Grid.Column="0" Text="Email:"   FontStyle="Italic" Margin="0 5 20 2"/>
+                                        <TextBlock  Grid.Row="2" Grid.Column="1" Text="{Binding Row.Email}"  Margin="10 5 0 0"/>
+
+                                        <TextBlock  Grid.Row="3" Grid.Column="0" Text="Skype:"   FontStyle="Italic" Margin="0 5 20 2"/>
+                                        <TextBlock  Grid.Row="3" Grid.Column="1" Text="{Binding Row.Skype}"  Margin="10 5 0 0"/>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </GroupBox>
+
                     </Grid>
                 </Grid>
             </dx:MeasurePixelSnapper>
@@ -116,22 +140,122 @@
                 </Setter>
             </Style.Setters>
         </Style>
+        <Style x:Key ="MenuButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="OuterBorder" CornerRadius="3" Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!-- Here use TargetName -->
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="gray" />
+                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LeftBottom" TargetType="dxe:FlyoutControl">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="LeftBottom" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Settings">
+                <Setter.Value>
+                    <dxe:FlyoutSettings Placement="Left" ShowIndicator="True" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+        <vm:ListEmployeesViewModel x:Key="vm"/>
         <!--#endregion-->
     </UserControl.Resources>
 
-    <Grid >
+    <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
+            <RowDefinition Height="44"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Background="White" Margin="0 10 0 0">
-            <Image Height="25" Width="25" Margin="15 5 5 5">
-                <Image.Source>
-                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
-                </Image.Source>
-            </Image>
-            <TextBlock  Text="Список сотрудников" FontSize="20" Margin="0 3 0 0"/>
-        </StackPanel>
+
+        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="2 2 2 0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Image Height="20" Width="20" Margin="5 0 3 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="Список сотрудников" FontSize="15" />
+                </StackPanel>
+
+
+
+                <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding OpenFormCommand}" 
+                                    CommandParameter="-1"
+                                    Background="White"
+                            BorderThickness="0"
+                                    Padding="0" Height="30" Width="30" Margin="0" ToolTip="Создать позицию">
+                        <Image Height="25" Width="25" Margin="2 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Page-White-Edit.png" />
+                            </Image.Source>
+                        </Image>
+                    </Button>
+
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                             x:Name="LeftBottom"                           
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                              
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="0 2 0 0" ToolTip="Справочная информация по разделу">
+                        <Image Height="25" Width="25" Margin="0 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png" />
+                            </Image.Source>
+                        </Image>
+                    </Button>
+
+
+                    <Grid x:Name="LayoutRoot">
+                        <dxe:FlyoutControl
+                            x:Name="flyoutControl"
+                            FontSize="16"
+                            AllowMoveAnimation="True"
+                            FontFamily="Segoe UI Light"
+                            IsOpen="True"/>
+                    </Grid>
+                    <Button DataContext="{Binding Source={StaticResource vm} }" 
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding PrintCommand}" 
+                                    CommandParameter="{Binding ElementName=view}"
+                                    Background="White"
+                                    Padding="0" Height="30" Width="30" Margin="0 2 2 0" ToolTip="Печать">
+                        <Image Height="25" Width="25" Margin="0 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Printer.png" />
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
 
 
         <DockPanel Grid.Row="1">
@@ -195,8 +319,6 @@
                         <dxg:GridColumn.EditSettings>
                             <dxe:DateEditSettings DisplayFormat="d" />
                         </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
-                    <dxg:GridColumn Binding="{Binding Path=OrganizationsName}" Header="Филиалы" Width="*">
                     </dxg:GridColumn>
                 </dxg:GridControl.Columns>
 

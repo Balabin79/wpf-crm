@@ -8,5 +8,7 @@ namespace Dental.Models.Base
         [Key]
         [Column("Id")]
         public int Id { get; set; }
+
+        public string Guid { get; set; }
     }
 }

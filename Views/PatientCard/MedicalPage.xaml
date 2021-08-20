@@ -42,7 +42,6 @@
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Список пациентов" NavigateTo="PatientsList"/>
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Aдминистративная" NavigateTo="MainInfoPage"/>
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Техническая лабаратория" NavigateTo="TechLabPage"/>
-                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Ортодонтическая" NavigateTo="OrtoPage"/>
                         </StackPanel>
                         
                     </Grid>

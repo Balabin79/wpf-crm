@@ -287,6 +287,7 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
     <PackageReference Include="SharpVectors" Version="1.7.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
@@ -557,6 +558,12 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ClientsGroups\GroupsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ClientsGroups\Groups.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\CommunicationLog\SmsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -566,7 +573,7 @@
     <Compile Update="Views\Nomenclatures\InitialInspection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\Advertising.xaml.cs">
+    <Compile Update="Views\Adv\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\DiscountGroups.xaml.cs">
@@ -599,7 +606,7 @@
     <Compile Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\AdvertisingWindow.xaml.cs">
+    <Compile Update="Views\Adv\AdvertisingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\TreatmentPlanWindow.xaml.cs">
@@ -655,6 +662,14 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\ClientsGroups\GroupsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ClientsGroups\Groups.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\CommunicationLog\SmsView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -670,7 +685,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\Advertising.xaml">
+    <Page Update="Views\Adv\Advertising.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -714,7 +729,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\AdvertisingWindow.xaml">
+    <Page Update="Views\Adv\AdvertisingWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -743,10 +758,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\MedicalPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\OrtoPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

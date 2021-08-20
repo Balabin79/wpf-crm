@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Views.Nomenclatures.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
-using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Models.Base;
-using Dental.Interfaces;
-using Dental.Models.Template;
 
 namespace Dental.ViewModels
 {
@@ -59,11 +53,8 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
-
-                if (Model.IsDir == 0) Delete(new ObservableCollection<DiscountGroups>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<DiscountGroups>().ToObservableCollection());
+                if (Model == null || !new ConfirDeleteInCollection().run(null)) return;
+                Delete(new ObservableCollection<DiscountGroups>() { Model });             
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -77,28 +68,11 @@ namespace Dental.ViewModels
             try
             {
                 //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
-
-                if (SelectedGroup != null) Model.ParentId = ((DiscountGroups)SelectedGroup).Id;
-                
+                var matchingItem = Collection.Where(f => f.Name == Model.Name && Model.Id != f.Id).ToList();
                 if (SelectedType != null) Model.DiscountGroupType = SelectedType.ToString();
-
-                if (Model.IsDir == 1)
-                {
-                    Model.AmountDiscount = null;
-                    Model.DiscountGroupType = null;
-                }
-
-                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
-                {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
-                }
 
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
-
-                SelectedGroup = null;
                 SelectedType = null;
                 Window.Close();
             }
@@ -121,42 +95,19 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Model.IsDir = 0;
                         Title = "Новая группа скидок";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Создать группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemGroup();
+                        Group = Collection.Where(f => f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
                         break;
                     default:
                         Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<DiscountGroups>().ToObservableCollection();
 
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
                         SelectedType = Model.DiscountGroupType;
-
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать группу скидок";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
+                        Title = "Редактировать группу скидок";
                         break;
                 }
 
                 Window.DataContext = this;
                 Window.ShowDialog();
-                SelectedGroup = null;
             }
             catch (Exception e)
             {
@@ -168,13 +119,6 @@ namespace Dental.ViewModels
 
         /************* Специфика этой ViewModel ******************/
         public ICollection<DiscountGroups> Group { get; set; }
-
-        private object _SelectedGroup;
-        public object SelectedGroup
-        {
-            get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
-        }
 
         private object _SelectedType;
         public object SelectedType
@@ -194,21 +138,9 @@ namespace Dental.ViewModels
         public DiscountGroups Model { get; set; }
         public string Title { get; set; }
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
 
 
-        private void VisibleItemForm()
-        {
-            IsVisibleItemForm = Visibility.Visible;
-            IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 330;
-        }
-        private void VisibleItemGroup()
-        {
-            IsVisibleItemForm = Visibility.Hidden;
-            IsVisibleGroupForm = Visibility.Visible;
-            Window.Height = 280;
-        }
+
 
         private ObservableCollection<DiscountGroups> _Collection;
         private DiscountGroupsWindow Window;
@@ -223,12 +155,14 @@ namespace Dental.ViewModels
 
         private void Add()
         {
+            Model.Guid = Dental.Services.KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Added;
             db.SaveChanges();
             Collection.Add(Model);
         }
         private void Update()
         {
+            if (string.IsNullOrEmpty(Model.Guid)) Dental.Services.KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
             var index = Collection.IndexOf(Model);

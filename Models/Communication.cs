@@ -24,7 +24,7 @@ namespace Dental.Models
      
 
         public int? ClientsCategoryId { get; set; }
-        public ClientsCategory ClientsCategory { get; set; }
+        public ClientsGroup ClientsCategory { get; set; }
 
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }

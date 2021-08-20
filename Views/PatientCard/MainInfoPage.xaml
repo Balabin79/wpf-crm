@@ -57,7 +57,6 @@
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Список пациентов" NavigateTo="PatientsList"/>
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Врачебная" NavigateTo="MedicalPage"/>
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Техническая лаборатория" NavigateTo="TechLabPage"/>
-                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Ортодонтическая" NavigateTo="OrtoPage"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -244,16 +243,7 @@
                                                     <dxlc:LayoutItem Label="Квартира:" Name="Apartment" LabelPosition="Top" Grid.Column="2">
                                                             <dxe:TextEdit Margin="0 0 8 0"/>
                                                     </dxlc:LayoutItem>
-                                                        <dxlc:LayoutItem Label="Местность:" Name="Area" LabelPosition="Top" Grid.Column="3">
-                                                            <dxe:ComboBoxEdit   ItemsSource="{Binding Path=AreaList}"  
-                                                         NullText="Местность" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name"
-                                                      >
-                                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                                    <dxe:RadioComboBoxStyleSettings/>
-                                                                </dxe:ComboBoxEdit.StyleSettings>
-                                                            </dxe:ComboBoxEdit>
-                                                        </dxlc:LayoutItem>
+                              
                                                     </Grid>
                                             </Grid>
                                         </GroupBox>
@@ -301,35 +291,7 @@
                                             </Grid>
                                         </GroupBox>
 
-                                        <GroupBox Header="Льготы и оплата" Grid.Row="0" Grid.Column="1" Margin="5 0 0 0">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <dxlc:LayoutItem Label="Категория льготности:" Name="Apartmenyyet" LabelPosition="Top" Grid.Column="0" Grid.Row="0">
-                                                    <dxe:TextEdit Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Код категории льготы:" Name="Apar2tyymenet" LabelPosition="Top" Grid.Column="1" Grid.Row="0">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Вид оплаты:" Name="Apar62tyymenet" LabelPosition="Top" Grid.Column="0" Grid.Row="1">
-                                                    <dxe:ComboBoxEdit   ItemsSource="{Binding Path=PaymentTypeList}"  
-                                                         NullText="Вид оплаты" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 10 0"
-                                                      >
-                                                        <dxe:ComboBoxEdit.StyleSettings>
-                                                            <dxe:RadioComboBoxStyleSettings/>
-                                                        </dxe:ComboBoxEdit.StyleSettings>
-                                                    </dxe:ComboBoxEdit>
-
-                                                </dxlc:LayoutItem>
-                                            </Grid>
-                                        </GroupBox>
+                          
                                         <GroupBox Header="К кому обращаться в случае необходимости" Grid.Row="1" Grid.Column="0" Margin="0 8 0 5">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -379,29 +341,8 @@
                                                     </dxe:ComboBoxEdit.StyleSettings>
                                                 </dxe:ComboBoxEdit>
                                             </dxlc:LayoutItem>
-
-                                            <dxlc:LayoutItem Label="Образование:" Name="Education" LabelPosition="Top" Grid.Column="1"  Grid.Row="1">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EducationList}"  
-                                                         NullText="Образование" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 8 0"
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
-
-                                            <dxlc:LayoutItem Label="Занятость:" Name="Employment" LabelPosition="Top" Grid.Column="2"  Grid.Row="1">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=EmploymentList}"  
-                                                         NullText="Занятость" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" 
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
-                                        </Grid>
+         
+                                            </Grid>
                                     
                                     </Grid>
                             </dxlc:LayoutGroup>

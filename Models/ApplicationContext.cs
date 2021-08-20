@@ -29,11 +29,11 @@ namespace Dental.Models
         public DbSet<City> City { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Communication> Communication { get; set; }
-        public DbSet<ClientsCategory> ClientsCategory { get; set; }
         public DbSet<Nomenclature> Nomenclature { get; set; }
         public DbSet<Unit> Unit { get; set; }
         public DbSet<Storage> Storage { get; set; }
         public DbSet<Contractor> Contractors { get; set; }
+        public DbSet<ClientsGroup> ClientsGroup { get; set; }
 
     }
 }

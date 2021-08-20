@@ -19,6 +19,45 @@
     <Page.Resources>
         <vm:DiscountGroupsViewModel x:Key="vm"/>
         <vm:HandbooksViewModel x:Key="menu" />
+        <Style x:Key ="MenuButton" TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="OuterBorder" CornerRadius="3" Background="{TemplateBinding Background}" BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!-- Here use TargetName -->
+                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="gray" />
+                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="LeftBottom" TargetType="dxe:FlyoutControl">
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="LeftBottom" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Settings">
+                <Setter.Value>
+                    <dxe:FlyoutSettings Placement="Left" ShowIndicator="True" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
     </Page.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
@@ -44,25 +83,52 @@
 
                 <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
                     <Button DataContext="{Binding Source={StaticResource vm} }" 
+                                    Style="{StaticResource ResourceKey=MenuButton}"
                                     Command="{Binding OpenFormCommand}" 
                                     CommandParameter="-1"
                                     Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать позицию">
-                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/document.svg" Height="18" />
+                            BorderThickness="0"
+                                    Padding="0" Height="30" Width="30" Margin="0" ToolTip="Создать позицию">
+                        <Image Height="25" Width="25" Margin="2 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Page-White-Edit.png" />
+                            </Image.Source>
+                        </Image>
                     </Button>
+       
                     <Button DataContext="{Binding Source={StaticResource vm} }" 
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-2"
+                            Click="OpenFlyout" x:Name="LeftBottom"                           
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                              
                                     Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="2" ToolTip="Создать группу">
-                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/folder.svg" Height="17" />
+                                    Padding="0" Height="30" Width="30" Margin="0 2 0 0" ToolTip="Справочная информация по разделу">
+                        <Image Height="25" Width="25" Margin="0 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png" />
+                            </Image.Source>
+                        </Image>
                     </Button>
+
+
+                    <Grid x:Name="LayoutRoot">
+                        <dxe:FlyoutControl
+                            x:Name="flyoutControl"
+                            FontSize="16"
+                            AllowMoveAnimation="True"
+                            FontFamily="Segoe UI Light"
+                            IsOpen="True"/>
+                    </Grid>
                     <Button DataContext="{Binding Source={StaticResource vm} }" 
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-3"
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding PrintCommand}" 
+                                    CommandParameter="{Binding ElementName=view}"
                                     Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="2 2 5 2" ToolTip="Печать">
-                        <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/print.svg" Height="18" />
+                                    Padding="0" Height="30" Width="30" Margin="0 2 2 0" ToolTip="Печать">
+                        <Image Height="25" Width="25" Margin="0 2 0 0">
+                            <Image.Source>
+                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Printer.png" />
+                            </Image.Source>
+                        </Image>
                     </Button>
                 </StackPanel>
             </Grid>
@@ -75,11 +141,8 @@
                          >
 
             <dxg:GridControl.View>
-                <dxg:TreeListView                   
+                <dxg:TableView                   
                     x:Name="view"
-                    KeyFieldName="Id"
-                    ParentFieldName="ParentId"
-                    TreeDerivationMode="Selfreference" 
                     ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
@@ -90,14 +153,9 @@
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True" 
-                    PrintNodeImages="True"
-                    ShowNodeImages="True"
-                    NodeImageSize="15,15"
-                    ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"                 
+                    AllowPrintColumnHeaderImage="True"                 
                     >
-                    <dxg:TreeListView.InputBindings>
+                    <dxg:TableView.InputBindings>
                         <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
@@ -118,10 +176,10 @@
                         <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                    </dxg:TreeListView.InputBindings>
+                    </dxg:TableView.InputBindings>
 
 
-                    <dxg:TreeListView.RowCellMenuCustomizations>
+                    <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
@@ -130,12 +188,9 @@
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
-                    </dxg:TreeListView.RowCellMenuCustomizations>
+                    </dxg:TableView.RowCellMenuCustomizations>
 
-                    <dxg:TreeListView.NodeImageSelector>
-                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                    </dxg:TreeListView.NodeImageSelector>
-                </dxg:TreeListView>
+                </dxg:TableView>
             </dxg:GridControl.View>
 
             <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="3*">
@@ -155,20 +210,32 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Button DataContext="{Binding Source={StaticResource vm} }" 
+                            Style="{StaticResource ResourceKey=MenuButton}"
                                     Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
-                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2" ToolTip="Редактировать">
-                                <svgc:SvgViewbox   Source="pack://application:,,,/Resources/Icons/svg/edit.svg" Height="13" />
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"             
+                                    Padding="2" Height="20" Width="20" Margin="2 2 0 2" ToolTip="Редактировать">
+                                <Image Height="15" Width="15" >
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Edit-48.png" />
+                                    </Image.Source>
+                                </Image>
                             </Button>
-                            <Button DataContext="{Binding Source={StaticResource vm} }"
+
+                            <Button DataContext="{Binding Source={StaticResource vm} }" 
+                            Style="{StaticResource ResourceKey=MenuButton}"
                                     Command="{Binding DeleteCommand}" 
                                     CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
-                                    Padding="0" Height="20" Width="20" Margin="2 2 2 2"  ToolTip="Удалить">
-                                <svgc:SvgViewbox    Source="pack://application:,,,/Resources/Icons/svg/trash-alt.svg" Height="13" />
+                            Padding="2" Height="20" Width="20" Margin="0 2 2 2" ToolTip="Удалить">
+                                <Image Height="15" Width="15" >
+                                    <Image.Source>
+                                        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Trash.png" />
+                                    </Image.Source>
+                                </Image>
                             </Button>
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
+
 
             </dxg:GridColumn>
         </dxg:GridControl>

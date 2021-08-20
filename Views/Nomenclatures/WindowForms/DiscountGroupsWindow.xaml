@@ -10,7 +10,7 @@
         xmlns:vm ="clr-namespace:Dental.ViewModels"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         mc:Ignorable="d"
-        Title="Группа скидки"  Width="800" Height="280"
+        Title="Группа скидки"  Width="800" Height="330"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -20,7 +20,7 @@
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Profiles.png" />
     </Window.Icon>
     <Grid>
-        <Grid Visibility="{Binding IsVisibleItemForm}">
+        <Grid >
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -46,26 +46,20 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                                <TextBlock  Grid.Row="0"  Text="Наименование:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,3,8" />
 
-                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
-                                                          DisplayMember="Name"
-                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
-                                               />
 
-                                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Тип скидки:"  Margin="0,0,8,3" />
+                                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Вид скидки:"  Margin="0,0,8,3" />
                                 <dxe:ComboBoxEdit ItemsSource="{Binding Types}"                                      
                                                           SelectedItem="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Выберите тип скидки"
+                                                          NullText="Выберите вид скидки"
                                               IsTextEditable="False" Grid.Row="3" Grid.Column="0"  Margin="0,0,8,8">
                                     <dxe:ComboBoxEdit.StyleSettings>
                                         <dxe:RadioComboBoxStyleSettings />
                                     </dxe:ComboBoxEdit.StyleSettings>
                                 </dxe:ComboBoxEdit>
-                                
+
                                 <TextBlock  Grid.Row="2" Grid.Column="1" Text="Размер скидки:"  Margin="0,0,8,3" />
                                 <dxe:TextEdit  Grid.Row="3" Grid.Column="1" Mask="F" MaskType="Numeric"
                                                Text="{Binding Model.AmountDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
@@ -83,54 +77,6 @@
                     </StackPanel>
                 </Grid>
             </GroupBox>
-        </Grid>
-
-        <Grid Visibility="{Binding IsVisibleGroupForm}">
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
-                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-
-                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
-                                                          DisplayMember="Name"
-                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
-                                               />
-
-                                <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Описание:"  Margin="0,0,8,3" />
-                                <dxe:MemoEdit  MemoTextWrapping="Wrap" ShowIcon="False" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
-                            </Grid>
-                        </StackPanel>
-                    </GroupBox>
-                    <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-
         </Grid>
     </Grid>
 </Window>
