@@ -56,7 +56,6 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Список пациентов" NavigateTo="PatientsList"/>
                             <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Врачебная" NavigateTo="MedicalPage"/>
-                            <dxwui:NavigationButton FontSize="14" Margin="10, 0, 0, 0" Content="Техническая лаборатория" NavigateTo="TechLabPage"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -78,332 +77,183 @@
                     </dxlc:LayoutGroup.GroupBoxStyle>
 
                     <dx:DXTabControl>
-                        <dx:DXTabItem Header="Общая информация">
-                            <StackPanel>
-                            <dxlc:LayoutGroup Header="Общая информация для стоматологического и ортодонтического пациента"
-                                              Name="layoutGroup1"
-                                              View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True"
-                                              >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <Grid Grid.Row="0" Margin="0 0 0 5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="115"/>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <dxe:ImageEdit Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Margin="0 0 8 8"/>
-          
-
-                                        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 0 5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <dxlc:LayoutItem Label="*Фамилия:" Name="LastName" LabelPosition="Top" IsRequired="True" Grid.Column="0">
-                                                <dxe:TextEdit  Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                            <dxlc:LayoutItem Label="*Имя:" Name="FirstName" LabelPosition="Top" IsRequired="True"  Grid.Column="1">
-                                                <dxe:TextEdit Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                            <dxlc:LayoutItem Label="Отчество:" Name="MiddleName" LabelPosition="Top"  Grid.Column="2">
-                                                <dxe:TextEdit/>
-                                            </dxlc:LayoutItem>
-                                        </Grid>
-
-                                        <Grid Grid.Row="1" Grid.Column="1"  Margin="0 0 0 5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="1*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <dxlc:LayoutItem Label="СНИЛС:" Name="Snils" LabelPosition="Top"  Grid.Column="0">
-                                                <dxe:TextEdit  Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                            <dxlc:LayoutItem Label="Пол:" Name="Gender" LabelPosition="Top" Grid.Column="1">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=GenderList}"  
-                                                         NullText="Пол" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 8 0"
-                                                      />
-
-                                            </dxlc:LayoutItem>
-                                            <dxlc:LayoutItem Label="Дата рождения:" Name="BirthDate" LabelPosition="Top" Grid.Column="2">
-                                                <dxe:DateEdit  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
-                                                 UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}"  Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                        </Grid>
-
-                                        <Grid Grid.Row="2" Grid.Column="1"  Margin="0 0 0 5">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <dxlc:LayoutItem Label="Телефон:" Name="Phone" LabelPosition="Top"  Grid.Column="0">
-                                                <dxe:TextEdit  Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                            <dxlc:LayoutItem Label="Email:" Name="Email" LabelPosition="Top"  Grid.Column="1">
-                                                <dxe:TextEdit  Margin="0 0 8 0"/>
-                                            </dxlc:LayoutItem>
-                                        </Grid>
-
-                                        <GroupBox Header="Полис" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 8 0" Grid.Row="3" >
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1.5*"/>
-                                                    <ColumnDefinition Width="2*"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                    <dxlc:LayoutItem Label="Название страховой организации:" Name="medOrg" LabelPosition="Top"  Grid.ColumnSpan="2" Grid.Row="0" Margin="0 0 0 5">
-                                                        <dxe:TextEdit/>
-                                                    </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="ОМС   Серия:" Name="PolisOMSSeria" LabelPosition="Left"  Grid.Column="0" Grid.Row="1"  Margin="0 0 0 5">
-                                                    <dxe:TextEdit Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Номер:" Name="PolisOMSNumber" LabelPosition="Left"  Grid.Column="1" Grid.Row="1"  Margin="0 0 0 5">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-
-                                                    <dxlc:LayoutItem Label="ДМС   Серия:" Name="PolisDMSSeria" LabelPosition="Left"  Grid.Column="0" Grid.Row="2">
-                                                    <dxe:TextEdit Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Номер:" Name="PolisDMSNumber" LabelPosition="Left"  Grid.Column="1" Grid.Row="2">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                            </Grid>
-                                        </GroupBox>
-
-                                        <GroupBox Header="Адрес" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition/>
-                                                    <ColumnDefinition/>
-                                                </Grid.ColumnDefinitions>
-                                                <dxlc:LayoutItem Label="Страна:" Name="Country" LabelPosition="Top"  Grid.Column="0" Grid.Row="0">
-                                                    <dxe:TextEdit  Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Республика, край, область:" Name="Region" LabelPosition="Top"  Grid.Column="1" Grid.Row="0">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Район:" Name="District" LabelPosition="Top"  Grid.Column="0" Margin="0 0 8 0" Grid.Row="1">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-
-                                                <dxlc:LayoutItem Label="Город:" Name="City" LabelPosition="Top"  Grid.Column="1" Grid.Row="1">
-                                                    <dxe:TextEdit/>
-                                                </dxlc:LayoutItem>
-
-                                                <dxlc:LayoutItem Label="Населенный пункт:" Name="Locality" LabelPosition="Top"  Grid.Column="0" Grid.Row="2">
-                                                    <dxe:TextEdit  Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Улица:" Name="Street" LabelPosition="Top"  Grid.Column="1" Grid.Row="2">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-
-                                                <Grid  Grid.Row="3" Grid.ColumnSpan="2">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition/>
-                                                        <ColumnDefinition/>
-                                                        <ColumnDefinition Width="3*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <dxlc:LayoutItem Label="Дом:" Name="House" LabelPosition="Top" Grid.Column="0">
-                                                        <dxe:TextEdit Margin="0 0 8 0" />
-                                                    </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Корпус:" Name="Section" LabelPosition="Top" Grid.Column="1">
-                                                        <dxe:TextEdit Margin="0 0 8 0"/>
-                                                    </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Квартира:" Name="Apartment" LabelPosition="Top" Grid.Column="2">
-                                                            <dxe:TextEdit Margin="0 0 8 0"/>
-                                                    </dxlc:LayoutItem>
-                              
-                                                    </Grid>
-                                            </Grid>
-                                        </GroupBox>
-                                    </Grid>
-                                </Grid>
-                            </dxlc:LayoutGroup>
-
-                                <dxlc:LayoutGroup Margin="0 10 0 0" Header="Дополнительная информация" 
-                                                  Name="layoutGroup2" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" IsCollapsible="True">
-                            
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <GroupBox Header="Паспортные данные" Grid.Row="0" Grid.Column="0">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <dxlc:LayoutItem Label="Серия:" Name="Apartsdmenet" LabelPosition="Top" Grid.Column="0" Grid.Row="0">
-                                                    <dxe:TextEdit Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Номер:" Name="Aparstdmenet" LabelPosition="Top" Grid.Column="1" Grid.Row="0">
-                                                    <dxe:TextEdit Margin="0 0 8 0"/>
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Дата выдачи:" Name="BirthDateа" LabelPosition="Top" Grid.Column="2">
-                                                    <dxe:DateEdit  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
-                                                 UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Кем выдан:" Name="Aparлstdmenet" LabelPosition="Top" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 8 0 0" Grid.Row="1">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                            </Grid>
-                                        </GroupBox>
-
-                          
-                                        <GroupBox Header="К кому обращаться в случае необходимости" Grid.Row="1" Grid.Column="0" Margin="0 8 0 5">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>
-                                                    <ColumnDefinition Width="1*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <dxlc:LayoutItem Label="ФИО:" Name="Apar2tyyme5net" LabelPosition="Top" Grid.Column="0" Margin="0 0 8 0">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Телефон:" Name="Apar62tyymen5et" LabelPosition="Top" Grid.Column="1">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                            </Grid>
-                                        </GroupBox>
-                                    
-                                            <Grid Grid.Row="1" Grid.Column="1" Margin="8 8 0 5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition/>
-                                            </Grid.RowDefinitions>
-                                            <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="0 0 0 8">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="1*"/>
-                                                    <ColumnDefinition Width="3*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <dxlc:LayoutItem Label="Должность:" Name="Apar2tyym6e5net" LabelPosition="Top"  Grid.Column="0" Margin="0 0 8 0">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                                <dxlc:LayoutItem Label="Место работы:" Name="Apar62tyy6men5et" LabelPosition="Top" Grid.Column="1">
-                                                    <dxe:TextEdit />
-                                                </dxlc:LayoutItem>
-                                            </Grid>
-
-                                            <dxlc:LayoutItem Label="Семейное положение:" Name="MaritalStatus" LabelPosition="Top"  Grid.Row="1" 
-                                                             Grid.Column="0">
-                                                <dxe:ComboBoxEdit   ItemsSource="{Binding Path=MaritalStatusList}"  
-                                                         NullText="Семейное положение" AutoComplete="True"                                                     
-                                                           ValueMember="Id" DisplayMember="Name" Margin="0 0 8 0"
-                                                      >
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings/>
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
-         
-                                            </Grid>
-                                    
-                                    </Grid>
-                            </dxlc:LayoutGroup>
-                            </StackPanel>
-                            
-                        </dx:DXTabItem>
-
-
-                        <dx:DXTabItem Header="Лечащие врачи">
-                            <dxlc:LayoutGroup Header="Лечащие врачи"
-                              Name="layoutGroup366"
-                              View="GroupBox"
-                              Orientation="Vertical"
-                              ItemLabelsAlignment="Local"
-                              IsCollapsible="True">
-                                <Grid></Grid>
-                            </dxlc:LayoutGroup>
-                        </dx:DXTabItem>
-
-
-                        <dx:DXTabItem Header="Маркетинг">
+                        <dx:DXTabItem Header="Административная">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
-                           
-                            <dxlc:LayoutGroup Header="Программы лояльности" Grid.Row="0" Margin="0 0 0 8"
-                                      Name="layoutGroup45"
-                                      View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
 
-                                        <Grid></Grid>
-                                    </dxlc:LayoutGroup>
+                                <dxlc:LayoutGroup Header="Общая информация" Grid.Row="0" Grid.Column="0" Name="layoutGroup1" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" IsCollapsible="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <dxlc:LayoutItem Label="*Фамилия:" Grid.Column="0" Grid.Row="0" Name="LastName" LabelPosition="Top" IsRequired="True" >
+                                            <dxe:TextEdit  Margin="0 0 8 0"/>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="*Имя:" Grid.Column="1" Grid.Row="0" Name="FirstName" LabelPosition="Top" IsRequired="True" >
+                                            <dxe:TextEdit  Margin="0 0 8 0"/>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Отчество:" Grid.Column="2" Grid.Row="0" Name="MiddleName" LabelPosition="Top" >
+                                            <dxe:TextEdit />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Дата рождения:" Grid.Column="0" Grid.Row="1" Name="BirthDate" LabelPosition="Top" >
+                                            <dxe:DateEdit Margin="0,0,8,8"  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Пол:" Grid.Column="1" Grid.Row="1" Name="Gender" LabelPosition="Top" >
+                                            <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
+                                                          SelectedItem="{Binding SelectedGender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="Пол"
+                                              IsTextEditable="False" Margin="0,0,8,8">
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="ИНН:" Grid.Column="2" Grid.Row="1" Name="Inn" LabelPosition="Top" >
+                                            <dxe:TextEdit  />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Адрес проживания:" Grid.ColumnSpan="4" Grid.Row="2" Name="Address" LabelPosition="Top" >
+                                            <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Address, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged}"/>
+                                        </dxlc:LayoutItem>
+                                    </Grid>
+                                </dxlc:LayoutGroup>
 
-                                    <dxlc:LayoutGroup Header="Реклама" Grid.Row="1" Margin="0 0 0 8"
-                                      Name="layoutGroup646"
-                                      View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True">
+                                <dxlc:LayoutGroup Header="Контакты" Grid.Row="0" Grid.Column="1" Name="layoutGroup2" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" IsCollapsible="True" Margin="10 0 0 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <dxlc:LayoutItem Label="Моб. телефон" AddColonToLabel="True" Grid.Row="0" LabelPosition="Top">
+                                            <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="+7(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                                <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Дом. телефон" AddColonToLabel="True" Grid.Row="1" LabelPosition="Top">
+                                            <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                                <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg" Margin="0 2 2 2"/>
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Email" AddColonToLabel="True"  Grid.Row="2" LabelPosition="Top">
+                                            <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True">
+                                                <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                    </Grid>
+                                </dxlc:LayoutGroup>
 
-                                        <Grid></Grid>
-                                    </dxlc:LayoutGroup>
-                                    
-                                    <dxlc:LayoutGroup Header="Группы" Grid.Row="2"
-                                      Name="layoutGroup636"
-                                      View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True">
+                                <dxlc:LayoutGroup Header="Дополнительная информация" Grid.Row="1" Grid.Column="0" Name="layoutGroup3" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" IsCollapsible="True" Margin="0 20 0 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <dxlc:LayoutItem Label="Серия и номер паспорта:" Grid.Row="0" Grid.Column="0" Name="Passport" LabelPosition="Top" >
+                                            <dxe:TextEdit  EditValue="{Binding RowData.Source.Row.Passport, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged}" Mask="d" Margin="0 0 8 0" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Дата выдачи:" Grid.Column="1" Grid.Row="0" Name="IssuedDate" LabelPosition="Top" >
+                                            <dxe:DateEdit Margin="0,0,0,8"  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Кем выдан:" Grid.Row="1" Grid.ColumnSpan="2" Name="whoIssued" LabelPosition="Top" >
+                                            <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged}" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Комментарии:" Grid.Row="2" Grid.ColumnSpan="2" Name="Comment" LabelPosition="Top" >
+                                            <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged}" />
+                                        </dxlc:LayoutItem>
+                                    </Grid>
+                                </dxlc:LayoutGroup>
 
-                                        <Grid></Grid>
-                                    </dxlc:LayoutGroup>
+                                <dxlc:LayoutGroup Header="Маркетинг" Grid.Row="1" Grid.Column="1" Name="layoutGroup5" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" IsCollapsible="True" Margin="10 20 0 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <dxlc:LayoutItem Label="Категория клиентов:" Grid.Row="0" Name="ClientsCategory" LabelPosition="Top" >
+                                            <dxe:TextEdit  Margin="0 0 0 0"/>
+                                        </dxlc:LayoutItem>
+
+                                        <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="1" Name="Advertising" LabelPosition="Top" >
+                                            <dxe:TextEdit  Margin="0 0 0 0"/>
+                                        </dxlc:LayoutItem>
+
+                                        <dxlc:LayoutItem Label="Скидки:" Grid.Row="2" Name="Discount" LabelPosition="Top" >
+                                            <dxe:ListBoxEdit ItemsSource="{Binding DiscountList}"                                      
+                                                          SelectedItem="{Binding SelectedDiscount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="ВЫберите скидки" Margin="0,0,0,8">
+                                                <dxe:ListBoxEdit.StyleSettings>
+                                                    <dxe:CheckedListBoxEditStyleSettings/>
+                                                </dxe:ListBoxEdit.StyleSettings>
+                                            </dxe:ListBoxEdit>
+                                        </dxlc:LayoutItem>
+                                    </Grid>
+                                </dxlc:LayoutGroup>
+
+
+                                <dxlc:LayoutGroup Header="Лечащие врачи" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 20 0 20" 
+                                                  Name="layoutGroup6" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" IsCollapsible="True">
+
+
+                                </dxlc:LayoutGroup>
+                                <dxlc:LayoutGroup  Header="Полисы" Grid.Row="3" Grid.ColumnSpan="2"
+                                                  Name="layoutGroup7" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" IsCollapsible="True">
+
+
+                                </dxlc:LayoutGroup>
+
                             </Grid>
-
+                            
                         </dx:DXTabItem>
-
 
 
                         <dx:DXTabItem Header="ИДС, Документы">
@@ -415,7 +265,7 @@
                               IsCollapsible="True">
 
                                 <Grid DataContext="{StaticResource ResourceKey=Ids}">
-    
+
                                     <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
                                         <FlowDocument>
                                             <List FontSize="12">
@@ -624,35 +474,6 @@
                                 </Grid>
                             </dxlc:LayoutGroup>
                         </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="История">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <dxlc:LayoutGroup Header="История посещений" Grid.Row="0" Margin="0 0 0 10"
-                                      Name="layoutGroup5"
-                                      View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True">
-
-                                    <Grid></Grid>
-                                </dxlc:LayoutGroup>
-
-                                <dxlc:LayoutGroup Header="История звонков" Grid.Row="1"
-                                      Name="layoutGroup66"
-                                      View="GroupBox"
-                                      Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"
-                                      IsCollapsible="True">
-
-                                    <Grid></Grid>
-                                </dxlc:LayoutGroup>
-                            </Grid>
-                        </dx:DXTabItem>
-
 
 
                     </dx:DXTabControl>

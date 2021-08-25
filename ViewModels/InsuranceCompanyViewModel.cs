@@ -7,7 +7,6 @@ using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
-using Dental.Repositories;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels

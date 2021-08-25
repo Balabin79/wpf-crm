@@ -4,9 +4,6 @@ using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections;
-using Dental.Models.PatientCard;
-using System.Collections.Generic;
 
 namespace Dental.Models
 {

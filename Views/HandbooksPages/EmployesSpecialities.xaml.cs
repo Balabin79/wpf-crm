@@ -1,5 +1,4 @@
 using Dental.Models;
-using Dental.Repositories;
 using System.Windows.Controls;
 
 namespace Dental.Views.HandbooksPages

@@ -147,6 +147,7 @@
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
     <None Remove="Resources\Icons\Template\Folder.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Edit-Delete-32.png" />
@@ -304,7 +305,6 @@
     <Folder Include="Reports\OtherDocuments\" />
     <Folder Include="Resources\PatientCard\Новая папка1\" />
     <Folder Include="Resources\PatientCard\Новая папка\" />
-    <Folder Include="Views\Controls\MainWindow\" />
     <Folder Include="Views\HandbooksPages\MedicalCard\" />
   </ItemGroup>
 
@@ -463,6 +463,7 @@
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Folder.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
@@ -570,9 +571,6 @@
     <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\InitialInspection.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Adv\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -589,9 +587,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\TreatmentPlan.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\Diary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml.cs">
@@ -612,37 +607,10 @@
     <Compile Update="Views\Nomenclatures\WindowForms\TreatmentPlanWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\InitialInspectionWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\DiaryWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\DiagnosWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Nomenclatures\WindowListForms\CommunicationLogThemas.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\BottomSimpleOneRoot.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\TopSimpleOneRoot.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\TopOneRoot.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\BottomOneRoot.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\TopThreeRoots.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Teeth\TopTwoRoots.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -674,14 +642,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\HandbooksPages\EmployeePage1.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
     <Page Update="Views\HandbooksPages\EmployesSpecialities.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\InitialInspection.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -709,10 +670,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\Diary.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -737,27 +694,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\InitialInspectionWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\DiaryWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\DiagnosWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Nomenclatures\WindowListForms\CommunicationLogThemas.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\TechLabPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\MedicalPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -770,30 +707,6 @@
     </Page>
     <Page Update="Views\PatientCard\MainList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\BottomSimpleOneRoot.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\TopSimpleOneRoot.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\TopOneRoot.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\BottomOneRoot.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\TopThreeRoots.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Teeth\TopTwoRoots.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

@@ -11,15 +11,14 @@ using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
-using Dental.Repositories;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class EmployesSpecialitiesViewModel : ViewModelBase, ICollectionCommand
+    class EmployesSpecialitiesViewModel : ViewModelBase//, ICollectionCommand
     {
-
+        /*
         public EmployesSpecialitiesViewModel()
         {
             Repository = new EmployesSpecialitiesRepository();
@@ -145,13 +144,8 @@ namespace Dental.ViewModels
             //get => new SpecialityRepository().GetAll().Result;
             set => Set(ref _GetSpecialityListEmployee, value);
         }
-/*
-        [NotMapped]
-        public ObservableCollection<Employee> GetEmployeeList
-        {
-            get => new EmployeeRepository().GetAll().Result;
-        }
-*/
+
+
         private void setFields(object result)
         {
             try
@@ -166,6 +160,6 @@ namespace Dental.ViewModels
                 int y = 0; 
             }
             
-        }
+        }*/
     }
 }

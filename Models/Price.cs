@@ -7,16 +7,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Table("Prices")]
-    class Pricee : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
+    [Table("Price")]
+    class Price : AbstractBaseModel, IDataErrorInfo
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        public int? ParentId { get; set; }
-        public int? IsDir { get; set; }
+        [Display(Name = "Код")]
+        public string Code { get; set; }
+
+        public int ParentId { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

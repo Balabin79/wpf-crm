@@ -8,8 +8,6 @@ using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
-using Dental.Models.PatientCard;
-using Dental.Repositories;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
@@ -216,7 +214,13 @@ namespace Dental.ViewModels
             get => questionaries.Where(i => i.ParentId == 82).ToList();
         }*/
 
+        public string SelectedGender { get; set; }
 
+        public ICollection<string> GenderList
+        {
+            get => _GenderList;
+        }
+        private ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
 
     }
 }

@@ -10,7 +10,6 @@ using Dental.Infrastructures.Logs;
 using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
-using Dental.Repositories;
 using DevExpress.Xpf.Grid;
 using System.Windows.Documents;
 using Dental.Reports;
@@ -23,7 +22,6 @@ using DevExpress.DataAccess.ObjectBinding;
 using System.Drawing;
 using Dental.Reports.IDS;
 using Dental.Reports.Recommendations;
-using Dental.Models.PatientCard;
 
 namespace Dental.ViewModels
 {

@@ -1,4 +1,3 @@
-using Dental.Models.Share;
 using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -54,10 +53,6 @@ namespace Dental.Models
         [Display(Name = "Область, край, республика")]
         public int? RegionId { get; set; }
         public Region Region { get; set; }
-
-        [Display(Name = "Населенный пункт")]
-        public int? CityId { get; set; }
-        public City City { get; set; }
 
         [Display(Name = "Район")]
         public string Area { get; set; }

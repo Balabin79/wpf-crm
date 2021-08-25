@@ -16,9 +16,6 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Models.Base;
-using Dental.Interfaces;
-using Dental.Models.Template;
-using Dental.Views.Nomenclatures;
 
 namespace Dental.ViewModels.CommunicationLog
 {

@@ -42,8 +42,8 @@
                                        Source="{Binding Path=Row.Photo}"
                                        
                                        Margin="0 0 15 0"
-                                       ShowMenu="True"
-                                       IsReadOnly="False" />
+                                       ShowMenu="False"
+                                       IsReadOnly="True" />
                         </Decorator>
 
 
@@ -68,7 +68,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock  Grid.Row="0" Grid.Column="0"  Text="ФИО:" FontWeight="Regular" FontStyle="Italic"  Margin="0 2 0 2"/>
-                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.FullName}" Margin="0 2 0 0" />
+                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.Fio}" Margin="0 2 0 0" />
                                     <TextBlock  Grid.Row="1" Grid.Column="0" Text="Специальности:"   FontStyle="Italic" Margin="0 5 20 2"/>
                                         <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Row.SpecialitiesName}"  Margin="0 5 0 0"/>
                                     <TextBlock  Grid.Row="2" Grid.Column="0" Text="Статус:"   FontStyle="Italic" Margin="0 5 20 2"/>

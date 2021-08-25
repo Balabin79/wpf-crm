@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevExpress.DataAccess.ObjectBinding;
+﻿using DevExpress.DataAccess.ObjectBinding;
 using System.ComponentModel;
 using Dental.Models;
-using Dental.Models.PatientCard;
+
 
 namespace Dental.Reports
 {
