@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Price")]
-    class Price : AbstractBaseModel, IDataErrorInfo
+    class Price : AbstractBaseModel, IDataErrorInfo, ITreeModel, ITreeViewCollection
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
@@ -18,7 +18,11 @@ namespace Dental.Models
         [Display(Name = "Код")]
         public string Code { get; set; }
 
-        public int ParentId { get; set; }
+        [Display(Name = "Значение")]
+        public string Value { get; set; }
+
+        public int? ParentId { get; set; }
+        public int? IsDir { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

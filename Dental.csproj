@@ -113,6 +113,7 @@
     <None Remove="Resources\Icons\Template\.png" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
+    <None Remove="Resources\Icons\Template\Application-Form-Edit.png" />
     <None Remove="Resources\Icons\Template\Barcode.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
     <None Remove="Resources\Icons\Template\Blackberry-White.png" />
@@ -436,6 +437,7 @@
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\Template\Account-Balances.png" />
     <Resource Include="Resources\Icons\Template\Advertising.png" />
+    <Resource Include="Resources\Icons\Template\Application-Form-Edit.png" />
     <Resource Include="Resources\Icons\Template\Barcode.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
@@ -559,10 +561,10 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ClientsGroups\GroupsWindow.xaml.cs">
+    <Compile Update="Views\WindowForms\GroupsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ClientsGroups\Groups.xaml.cs">
+    <Compile Update="Views\Groups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\CommunicationLog\SmsView.xaml.cs">
@@ -571,7 +573,7 @@
     <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Adv\Advertising.xaml.cs">
+    <Compile Update="Views\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\DiscountGroups.xaml.cs">
@@ -583,7 +585,7 @@
     <Compile Update="Views\CommunicationLog\CommunicationLogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\Specialities.xaml.cs">
+    <Compile Update="Views\Specialities.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\TreatmentPlan.xaml.cs">
@@ -592,7 +594,7 @@
     <Compile Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\SpecialityWindow.xaml.cs">
+    <Compile Update="Views\WindowForms\SpecialityWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\DiscountGroupsWindow.xaml.cs">
@@ -601,7 +603,7 @@
     <Compile Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Adv\AdvertisingWindow.xaml.cs">
+    <Compile Update="Views\WindowForms\AdvertisingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\TreatmentPlanWindow.xaml.cs">
@@ -611,6 +613,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\PriceWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -630,11 +635,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ClientsGroups\GroupsWindow.xaml">
+    <Page Update="Views\WindowForms\GroupsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ClientsGroups\Groups.xaml">
+    <Page Update="Views\Groups.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -646,7 +651,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Adv\Advertising.xaml">
+    <Page Update="Views\Advertising.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -662,7 +667,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\Specialities.xaml">
+    <Page Update="Views\Specialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -674,7 +679,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\SpecialityWindow.xaml">
+    <Page Update="Views\WindowForms\SpecialityWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -686,7 +691,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Adv\AdvertisingWindow.xaml">
+    <Page Update="Views\WindowForms\AdvertisingWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -707,6 +712,10 @@
     </Page>
     <Page Update="Views\PatientCard\MainList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\WindowForms\PriceWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

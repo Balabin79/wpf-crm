@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("PatientInfo")]
-    public class PatientInfo : AbstractBaseModel
+    class PatientInfo : AbstractBaseModel
     {
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]

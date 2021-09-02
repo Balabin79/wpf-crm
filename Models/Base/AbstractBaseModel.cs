@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 
 namespace Dental.Models.Base
 {
-    public abstract class AbstractBaseModel : IModel
+    abstract class AbstractBaseModel :  IModel
     {
         [Key]
         [Column("Id")]

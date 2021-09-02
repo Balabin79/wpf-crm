@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
@@ -25,7 +26,6 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-            PrintCommand = new LambdaCommand(OnPrintCommandExecuted, CanPrintCommandExecute);
 
             try
             {
@@ -43,27 +43,11 @@ namespace Dental.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
-        public ICommand PrintCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
-        private bool CanPrintCommandExecute(object p) => true;
-
-
-        private void OnPrintCommandExecuted(object p)
-        {
-            try
-            {
-                var tree = p as TreeListView;
-                tree.ShowPrintPreview(tree);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
 
         private void OnDeleteCommandExecuted(object p)
         {
@@ -206,9 +190,9 @@ namespace Dental.ViewModels
         }
 
         private ObservableCollection<Advertising> _Collection;
-        private Dental.Views.Adv.AdvertisingWindow Window;
+        private AdvertisingWindow Window;
         private ObservableCollection<Advertising> GetCollection() => db.Advertising.OrderBy(d => d.Name).ToObservableCollection();
-        private void CreateNewWindow() => Window = new Dental.Views.Adv.AdvertisingWindow();
+        private void CreateNewWindow() => Window = new AdvertisingWindow();
         private Advertising CreateNewModel() => new Advertising();
 
         private Advertising GetModelById(int id)

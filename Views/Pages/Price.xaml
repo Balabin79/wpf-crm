@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.Pages.Price"
+﻿<Page x:Class="Dental.Views.Pages.Price"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,58 +6,20 @@
       mc:Ignorable="d" 
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-      xmlns:local ="clr-namespace:Dental.Views.HandbooksPages"
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-      xmlns:b ="clr-namespace:Dental.Behaviors" 
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
       d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <vm:AdvertisingViewModel x:Key="vm"/>
-        <vm:HandbooksViewModel x:Key="menu" />
-        <Style x:Key ="MenuButton" TargetType="{x:Type Button}">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="OuterBorder" CornerRadius="3" Background="{TemplateBinding Background}" BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <!-- Here use TargetName -->
-                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="gray" />
-                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="LeftBottom" TargetType="dxe:FlyoutControl">
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="LeftBottom" />
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Settings">
-                <Setter.Value>
-                    <dxe:FlyoutSettings Placement="Left" ShowIndicator="True" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
+    <Page.Resources>
+        <vm:PriceViewModel x:Key="vm"/>
+        <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-    </UserControl.Resources>
+    </Page.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
             <RowDefinition Height="44"/>
@@ -131,9 +93,8 @@
                             FontFamily="Segoe UI Light"
                             IsOpen="True"/>
                     </Grid>
-                    <Button DataContext="{Binding Source={StaticResource vm} }" 
-                            Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding PrintCommand}" 
+                    <Button Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding Source={StaticResource Print}}" 
                                     CommandParameter="{Binding ElementName=view}"
                                     Background="White"
                                     Padding="0" Height="30" Width="30" Margin="0 2 2 0" ToolTip="Печать">
@@ -227,14 +188,7 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
-
-            <dxg:GridColumn Binding="{Binding Data.PeriodFrom, Mode=TwoWay, Converter={StaticResource DateToString}}"  Header="Период от" Name="PeriodFrom" Width="1*" />
-            <dxg:GridColumn Binding="{Binding Data.PeriodTo, Mode=TwoWay, Converter={StaticResource DateToString}}"  Header="Период до" Name="PeriodTo" Width="1*" />
-            <dxg:GridColumn Binding="{Binding Data.Sum, StringFormat=C, ConverterCulture=ru-RU}" Header="Сумма"  Name="Sum" Width="1*" />
-
-
-
-
+            <dxg:GridColumn Binding="{Binding Data.Value, StringFormat=C, ConverterCulture=ru-RU}"  Header="Значение"  Name="Value" Width="1*" />
 
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>
@@ -271,4 +225,4 @@
             </dxg:GridColumn>
         </dxg:GridControl>
     </Grid>
-</UserControl>
+</Page>

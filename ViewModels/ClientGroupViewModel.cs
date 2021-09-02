@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
@@ -24,7 +25,6 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-            PrintCommand = new LambdaCommand(OnPrintCommandExecuted, CanPrintCommandExecute);
 
             try
             {
@@ -42,27 +42,12 @@ namespace Dental.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
-        public ICommand PrintCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
-        private bool CanPrintCommandExecute(object p) => true;
 
-
-        private void OnPrintCommandExecuted(object p)
-        {
-            try
-            {
-                var tree = p as TableView;
-                tree.ShowPrintPreview(tree);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
 
         private void OnDeleteCommandExecuted(object p)
         {
@@ -136,9 +121,9 @@ namespace Dental.ViewModels
         public string Title { get; set; }
 
         private ObservableCollection<ClientsGroup> _Collection;
-        private Dental.Views.ClientsGroups.GroupsWindow Window;
+        private GroupsWindow Window;
         private ObservableCollection<ClientsGroup> GetCollection() => db.ClientsGroup.OrderBy(d => d.Name).ToObservableCollection();
-        private void CreateNewWindow() => Window = new Dental.Views.ClientsGroups.GroupsWindow();
+        private void CreateNewWindow() => Window = new GroupsWindow();
         private ClientsGroup CreateNewModel() => new ClientsGroup();
 
         private ClientsGroup GetModelById(int id)

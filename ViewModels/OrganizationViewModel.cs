@@ -26,15 +26,12 @@ namespace Dental.ViewModels
         public OrganizationViewModel()
         {
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
             IsReadOnly = true;
             try
             {
                 db = new ApplicationContext();
                 Model = GetModel();
-                OldModel = new Organization();
-                OldModel.Copy(Model);
                 Model.Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
             }
             catch (Exception e)
@@ -46,11 +43,9 @@ namespace Dental.ViewModels
 
         public ICommand SaveCommand { get; }
         public ICommand EditableCommand { get; }
-        public ICommand CancelCommand { get; }
        
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanEditableCommandExecute(object p) => true;
-        private bool CanCancelCommandExecute(object p) => true;
 
         private void OnSaveCommandExecuted(object p)
         {
@@ -58,7 +53,6 @@ namespace Dental.ViewModels
                 if (Model?.Id > 0) db.Entry(Model).State = EntityState.Modified;
                 else db.Organizations.Add(Model);
                 db.SaveChanges();
-                OldModel.Copy(Model);
             }
             catch (Exception e)
             {
@@ -66,47 +60,13 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelCommandExecuted(object p)
-        {
-            PropertyInfo[] properties = typeof(Organization).GetProperties();
-            bool isModified = false;
-            foreach (PropertyInfo property in properties)
-            {
-                if (Model[property] != OldModel[property])
-                {
-                    isModified = true;
-                    if (string.IsNullOrEmpty(Model[property]) && string.IsNullOrEmpty(Model[property]) == string.IsNullOrEmpty(OldModel[property]))
-                    {
-                        isModified = false;
-                    }
-                    if (isModified) break;
-                }
-                
-                       
-                                                                    
-            } 
-            if (isModified == true)
-            {
-                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: "Есть несохраненные изменения, которые будут утеряны! Продолжить?",
-                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
-                if (response.ToString() == "No") return;
-            }
-
-            Model.Copy(OldModel);
-            db.SaveChanges();            
-        }  
         
         private void OnEditableCommandExecuted(object p)
         {
             IsReadOnly = !IsReadOnly;
         }
 
-
-        private Organization _Model;
-        public Organization Model { 
-            get => _Model; 
-            set => Set(ref _Model, value); 
-        }
+        public Organization Model { get; set; }
 
         private bool _IsReadOnly;
         public bool IsReadOnly {
@@ -115,6 +75,5 @@ namespace Dental.ViewModels
         }
 
         private Organization GetModel() => db.Organizations.FirstOrDefault();
-        private Organization OldModel { get; set; }
     }
 }

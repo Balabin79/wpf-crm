@@ -475,6 +475,55 @@
                             </dxlc:LayoutGroup>
                         </dx:DXTabItem>
 
+                        <dx:DXTabItem Header="План лечения">
+                            <dxlc:LayoutGroup Header="План лечения"
+                              Name="layoutGroup8"
+                              View="GroupBox"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              IsCollapsible="True">
+                            </dxlc:LayoutGroup>
+                        </dx:DXTabItem>
+
+                        <dx:DXTabItem Header="История болезни">
+                            <dxlc:LayoutGroup Header="История болезни"
+                              Name="layoutGroup9"
+                              View="GroupBox"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              IsCollapsible="True">
+                            </dxlc:LayoutGroup>
+                        </dx:DXTabItem>
+
+                        <dx:DXTabItem Header="История посещений">
+                            <dxlc:LayoutGroup Header="История посещений"
+                              Name="layoutGroup10"
+                              View="GroupBox"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              IsCollapsible="True">
+                            </dxlc:LayoutGroup>
+                        </dx:DXTabItem>
+
+                        <dx:DXTabItem Header="Файлы, изображения">
+                            <dxlc:LayoutGroup Header="Файлы, изображения"
+                              Name="layoutGroup11"
+                              View="GroupBox"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              IsCollapsible="True">
+                            </dxlc:LayoutGroup>
+                        </dx:DXTabItem>
+
+                        <dx:DXTabItem Header="Карта зубов">
+                            <dxlc:LayoutGroup Header="Карта зубов"
+                              Name="layoutGroup12"
+                              View="GroupBox"
+                              Orientation="Vertical"
+                              ItemLabelsAlignment="Local"
+                              IsCollapsible="True">
+                            </dxlc:LayoutGroup>
+                        </dx:DXTabItem>
 
                     </dx:DXTabControl>
 

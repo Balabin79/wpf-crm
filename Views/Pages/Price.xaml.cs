@@ -18,7 +18,7 @@ namespace Dental.Views.Pages
     /// <summary>
     /// Логика взаимодействия для Price.xaml
     /// </summary>
-    public partial class Price : UserControl
+    public partial class Price : Page
     {
         public Price()
         {

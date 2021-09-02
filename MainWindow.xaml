@@ -7,11 +7,10 @@
     xmlns:local="clr-namespace:Dental" 
     xmlns:viewModels="clr-namespace:Dental.ViewModels" 
     xmlns:pages="clr-namespace:Dental.Views.HandbooksPages" 
-    xmlns:groups="clr-namespace:Dental.Views.ClientsGroups" 
     xmlns:main_pages="clr-namespace:Dental.Views.Pages" 
     xmlns:cl="clr-namespace:Dental.Views.CommunicationLog" 
     xmlns:nomen="clr-namespace:Dental.Views.Nomenclatures" 
-    xmlns:adv="clr-namespace:Dental.Views.Adv" 
+    xmlns:v="clr-namespace:Dental.Views" 
     xmlns:pcpages="clr-namespace:Dental.Views.PatientCard" 
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -141,7 +140,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/status11.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/status11.png"   
                                             ToolTip="Категории клиентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type groups:Groups}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Groups}"/>
                         <dxb:BarButtonItem Content="Скидки"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Profiles.png"
@@ -156,7 +155,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Advertising.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Advertising.png"   
                                             ToolTip="Рекламные источники"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type adv:Advertising}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Advertising}"/>
 
                     </dxr:RibbonPageGroup>
 
@@ -171,20 +170,13 @@
                                             ToolTip="Диагнозы"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:TreatmentPlan}"/>
 
-                        <dxb:BarButtonItem Content="План лечения"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/plan.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/plan.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/plan.png"   
-                                            ToolTip="План лечения"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:TreatmentPlan}"/>
                         <dxb:BarButtonItem Content="Прайсы"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png"   
                                             ToolTip="Прайсы"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:PricePage}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:Price}"/>
                         
 
                     </dxr:RibbonPageGroup>
@@ -197,15 +189,15 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/org.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/org.png"   
                                            ToolTip="Организация"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Organization}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Organization}"/>
 
                         <dxb:BarButtonItem Content="Должности"
                                            RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" 
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Participation-Rate.png"   
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
                                            ToolTip="Должности"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:Specialities}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Specialities}"/>
 
                         <dxb:BarButtonItem Content="Интеграции"
                                            RibbonStyle="Default" 

@@ -188,7 +188,7 @@ namespace Dental.ViewModels
 
         private ObservableCollection<TreatmentPlan> _Collection;
         private TreatmentPlanWindow Window;
-        private ObservableCollection<TreatmentPlan> GetCollection() => db.TreatmentPlanes.OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<TreatmentPlan> GetCollection() => null; // db.TreatmentPlanes.OrderBy(d => d.Name).ToObservableCollection();
         private void CreateNewWindow() => Window = new TreatmentPlanWindow();
         private TreatmentPlan CreateNewModel() => new TreatmentPlan();
 

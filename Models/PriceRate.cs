@@ -18,8 +18,6 @@ namespace Dental.Models
         [Display(Name = "Описание")]
         public string Description { get; set; }
 
-        public float Price { get; set; }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }

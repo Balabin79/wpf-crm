@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using Dental.Views.Nomenclatures.WindowForms;
+using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
@@ -177,13 +177,13 @@ namespace Dental.ViewModels
         {
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 330;
+            Window.Height = 280;
         }
         private void VisibleItemGroup()
         {
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
-            Window.Height = 280;
+            Window.Height = 230;
         }
 
         private ObservableCollection<Speciality> _Collection;

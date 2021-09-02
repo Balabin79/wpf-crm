@@ -5,7 +5,7 @@ using Dental.Models;
 
 namespace Dental.Reports
 {
-    public class SourceReportData
+    class SourceReportData
     {
         public Organization Organization { get; set; }
         public Employee Employee { get; set; }
@@ -24,7 +24,7 @@ namespace Dental.Reports
 
     [DisplayName("ReportData")]
     [HighlightedClass]
-    public class DataSource
+    class DataSource
     {
 
         private SourceReportData data;
