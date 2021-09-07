@@ -79,10 +79,10 @@
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
                     <Image Height="20" Width="20" Margin="5 0 3 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Reseller-Account.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Категории клиентов" FontSize="15" />
+                    <TextBlock Text="Анкета сотрудника" FontSize="15" />
                 </StackPanel>
 
 
@@ -173,7 +173,7 @@
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
-                        
+
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <ext:ImageEditEx                       
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
@@ -181,74 +181,6 @@
                                       EditValue = "{Binding Employee.Image, Mode=TwoWay}"                                 
                                       Height="128"  />
                                 </dxlc:LayoutItem>
-                            </dxlc:LayoutGroup>
-
-                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
-                                <dxlc:LayoutGroup Orientation="Horizontal">
-
-                                    <dxlc:LayoutItem Label="Страна" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit ItemsSource="{Binding Address.Countries}"
-                                                          DisplayMember="TitleRu"
-                                                          SelectedItem="{Binding Address.SelectedCountry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False"
-                                               />
-                                    </dxlc:LayoutItem>
-
-                                    <dxlc:LayoutItem Label="Регион" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit 
-                                              ItemsSource="{Binding Address.Regions, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                            
-                                              IsTextEditable="False"
-                                              ValueMember="RegionId"
-                                              DisplayMember="TitleRu" 
-                                              SelectedItem="{Binding Address.SelectedRegion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsEnabled="{Binding Address.IsEnabledRegionField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            />
-                                    </dxlc:LayoutItem>
-                                </dxlc:LayoutGroup>
-
-                                <dxlc:LayoutGroup Orientation="Horizontal">
-
-                                    <dxlc:LayoutItem Label="Район" AddColonToLabel="True" >
-                                        <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Address.Area, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
-                                            IsTextEditable="False"
-                                            DisplayMember="AreaRu" 
-                                            SelectedItem="{Binding Address.SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                            EditValue="{Binding Address.SelectedArea, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                          
-                                            IsEnabled="{Binding Address.IsEnabledAreaField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            />
-                                    </dxlc:LayoutItem>
-
-                                    <dxlc:LayoutItem Label="Нас.пункт" AddColonToLabel="True">
-                                        <dxe:ComboBoxEdit
-                                            ItemsSource="{Binding Address.Locality, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                                               
-                                            IsTextEditable="True"
-                                            SelectedItem="{Binding Address.SelectedLocality, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"                                                     
-                                            IsEnabled="{Binding Address.IsEnabledLocalityField, UpdateSourceTrigger=LostFocus, Mode=TwoWay}"
-                                            DisplayMember="TitleRu" 
-                                            ValueMember="CityId" 
-                                            />
-                                    </dxlc:LayoutItem>
-                                </dxlc:LayoutGroup>
-
-
-                                <dxlc:LayoutGroup Orientation="Horizontal">
-                                    <dxlc:LayoutItem Label="Улица" AddColonToLabel="True" Grid.Column="0">
-                                        <dxe:TextEdit EditValue="{Binding Path=Employee.Street, Mode=TwoWay}" />
-                                    </dxlc:LayoutItem>
-
-                                    <dxlc:LayoutGroup Orientation="Horizontal">
-                                        <dxlc:LayoutItem Label="Дом" AddColonToLabel="True" Grid.Column="1">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.House, Mode=TwoWay}" />
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Корпус" AddColonToLabel="True" Grid.Column="2">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Housing, Mode=TwoWay}" />
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Кварт." AddColonToLabel="True" Grid.Column="3">
-                                            <dxe:TextEdit  EditValue="{Binding Path=Employee.Apartment, Mode=TwoWay}" />
-                                        </dxlc:LayoutItem>
-                                    </dxlc:LayoutGroup>
-                                </dxlc:LayoutGroup>
                             </dxlc:LayoutGroup>
 
                             <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
@@ -295,7 +227,7 @@
                         </dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical">
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="0,5">
-                                <dxlc:LayoutItem Label="Дата приема на работу" AddColonToLabel="True">
+                                <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True">
                                     <dxe:DateEdit EditValue="{Binding Path=Employee.HireDate, Mode=TwoWay}" />
                                 </dxlc:LayoutItem>
 
@@ -310,22 +242,22 @@
                                               ValueMember="Value"
                                               DisplayMember="Name" />
                                 </dxlc:LayoutItem>
+                                
                                 <dxlc:LayoutItem Label="ИНН" AddColonToLabel="True">
                                     <dxe:TextEdit  MaskType="RegEx"  Mask="[0-9]*"  EditValue="{Binding Path=Employee.Inn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
-                            <dxlc:LayoutItem Label="Место работы, должность" LabelPosition="Top" VerticalAlignment="Top" Margin="0,5">
-                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="197">
+
+                            <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
+                                 <dxe:MemoEdit Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            </dxlc:LayoutItem>
+                        
+                            
+                            
+                        
+                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="100" Margin="0 7 0 0">
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="Филиал" FixedWidth="True">
-                                            <dxg:GridColumn.CellStyle>
-                                                <Style>
-                                                    <Setter Property="TextBlock.FontWeight" Value="Bold" />
-                                                </Style>
-                                            </dxg:GridColumn.CellStyle>
-                                        </dxg:GridColumn>
-                                        <dxg:GridColumn FieldName="Подразделение" />
-                                        <dxg:GridColumn FieldName="Должность" />
+                                    <dxg:GridColumn FieldName="SpecialityList" Header="Должности" />
                                     </dxg:GridControl.Columns>
                                     <dxg:GridControl.View>
                                         <dxg:TableView ShowGroupPanel="False"
@@ -338,7 +270,7 @@
                                                ShowIndicator="False" />
                                     </dxg:GridControl.View>
                                 </dxg:GridControl>
-                            </dxlc:LayoutItem>
+                           
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutItem Label="Задачи сотрудника" LabelPosition="Top" Margin="5,0,0,0">

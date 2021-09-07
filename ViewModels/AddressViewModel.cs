@@ -14,8 +14,8 @@ namespace Dental.ViewModels
             countries = db.Country.OrderBy(f => f.CountryId).ToList();
 
             Employee = employee;
-            SelectedCountry = (Employee.CountryId != null ) ? db.Country.Where(f => f.CountryId == Employee.CountryId).FirstOrDefault() : null;
-            SelectedRegion = (Employee.RegionId != null) ? db.Region.Where(f => f.RegionId == Employee.RegionId).FirstOrDefault() : null;
+           // SelectedCountry = (Employee.CountryId != null ) ? db.Country.Where(f => f.CountryId == Employee.CountryId).FirstOrDefault() : null;
+           // SelectedRegion = (Employee.RegionId != null) ? db.Region.Where(f => f.RegionId == Employee.RegionId).FirstOrDefault() : null;
         }
 
         private Employee Employee { get; set; }
@@ -46,7 +46,7 @@ namespace Dental.ViewModels
                 {
                     Set(ref selectedCountry, value);
                     if (selectedCountry == null) return;
-                    Employee.CountryId = ((Country)selectedCountry).CountryId;
+                    //Employee.CountryId = ((Country)selectedCountry).CountryId;
                     Regions = db.Region.Where(f => f.CountryId == ((Country)selectedCountry).CountryId)
                         .OrderBy(f => f.TitleRu).ToList();
 
@@ -73,7 +73,7 @@ namespace Dental.ViewModels
                 {
                     Set(ref selectedRegion, value);
                     if (selectedRegion == null) return;
-                    Employee.RegionId = ((Region)selectedRegion).RegionId;
+                    //Employee.RegionId = ((Region)selectedRegion).RegionId;
 
                     IsEnabledRegionField = true;
                     IsEnabledAreaField = true;

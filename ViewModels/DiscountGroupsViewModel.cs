@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using Dental.Views.Nomenclatures.WindowForms;
+using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
@@ -95,14 +95,14 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Title = "Новая группа скидок";
+                        Title = "Новая скидка";
                         Group = Collection.Where(f => f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
                         break;
                     default:
                         Model = GetModelById(param);
 
                         SelectedType = Model.DiscountGroupType;
-                        Title = "Редактировать группу скидок";
+                        Title = "Редактировать скидку";
                         break;
                 }
 

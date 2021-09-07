@@ -219,22 +219,37 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <dxlc:LayoutItem Label="Категория клиентов:" Grid.Row="0" Name="ClientsCategory" LabelPosition="Top" >
-                                            <dxe:TextEdit  Margin="0 0 0 0"/>
+                                        <dxlc:LayoutItem Label="Категория клиентов:" Grid.Row="0" LabelPosition="Top" >
+                                            <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedClientsGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="Категория клиентов" Margin="0,0,0,8">
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
                                         </dxlc:LayoutItem>
 
-                                        <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="1" Name="Advertising" LabelPosition="Top" >
-                                            <dxe:TextEdit  Margin="0 0 0 0"/>
+                                        <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="1" LabelPosition="Top" >
+                                            <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedAdvertisings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="Выберите скидки" Margin="0,0,0,8">
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:CheckedComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
                                         </dxlc:LayoutItem>
 
-                                        <dxlc:LayoutItem Label="Скидки:" Grid.Row="2" Name="Discount" LabelPosition="Top" >
-                                            <dxe:ListBoxEdit ItemsSource="{Binding DiscountList}"                                      
-                                                          SelectedItem="{Binding SelectedDiscount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="ВЫберите скидки" Margin="0,0,0,8">
-                                                <dxe:ListBoxEdit.StyleSettings>
-                                                    <dxe:CheckedListBoxEditStyleSettings/>
-                                                </dxe:ListBoxEdit.StyleSettings>
-                                            </dxe:ListBoxEdit>
+                                        <dxlc:LayoutItem Label="Скидки:" Grid.Row="2"  LabelPosition="Top" >
+                                            <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedDiscountGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          NullText="Выберите скидки" Margin="0,0,0,8">
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:CheckedComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
                                         </dxlc:LayoutItem>
                                     </Grid>
                                 </dxlc:LayoutGroup>

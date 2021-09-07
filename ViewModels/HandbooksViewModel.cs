@@ -1,5 +1,5 @@
 using Dental.Infrastructures.Commands.Base;
-using Dental.Views.HandbooksPages;
+using Dental.Views;
 using Dental.Views.PatientCard;
 using System;
 using System.Reflection;
@@ -16,7 +16,7 @@ namespace Dental.ViewModels
         public HandbooksViewModel()
         {
             FrameOpacity = 1;
-            CurrentPage = new InsuranceCompany();
+            //CurrentPage = new InsuranceCompany();
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
         }
 

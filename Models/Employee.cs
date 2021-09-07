@@ -1,16 +1,48 @@
 using DevExpress.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using Dental.Models.Base;
+using System.Windows.Media;
 
 namespace Dental.Models
 {
     [Table("Employes")]
-    class Employee : User, System.ComponentModel.IDataErrorInfo
+    class Employee : AbstractBaseModel, IDataErrorInfo
     {
+        // Общая информация
+        [Display(Name = "Фото")]
+        public string Photo { get; set; }
+
+        [NotMapped]
+        public ImageSource Image { get; set; }
+
+        [Display(Name = "Имя")]
+        [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Фамилия")]
+        [Required(ErrorMessage = @"Поле ""Фамилия"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Фамилия"" не более 255 символов")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Отчество")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Отчество"" не более 255 символов")]
+        public string MiddleName { get; set; }
+
+        [Display(Name = "Дата рождения")]
+        public string BirthDate { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+        }
         // Контактная информация
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email { get; set; }
@@ -45,46 +77,16 @@ namespace Dental.Models
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
+        [Display(Name = "Адрес")]
+        public string Address { get; set; }
 
-        [Display(Name = "Страна")]
-        public int? CountryId { get; set; }
-        public Country Country { get; set; }
-
-        [Display(Name = "Область, край, республика")]
-        public int? RegionId { get; set; }
-        public Region Region { get; set; }
-
-        [Display(Name = "Район")]
-        public string Area { get; set; }
-
-        [Display(Name = "Населенный пункт")]
-        public string Locality { get; set; }
-
-        [Display(Name = "Улица")]
-        public string Street { get; set; }
-
-        [Display(Name = "Дом")]
-        public string House { get; set; }
-
-        [Display(Name = "Корпус")]
-        public string Housing { get; set; }
-
-        [Display(Name = "Квартира")]
-        public string Apartment { get; set; }
         /*
         [NotMapped]
         public string SpecialitiesName
         {
             get => EmployesSpecialities.Count < 1 ? "": String.Join(", ", EmployesSpecialities.Select(d => d.Speciality?.Name).ToList());
         }
-        
-        [NotMapped]
-        public string OrganizationsName
-        {
-            get => EmployesInOrganizations.Count < 1 ? "" : String.Join(", ", EmployesInOrganizations.Select(d => d.Organization?.Name).ToList());
-        }
-        
-        public List<EmployesInOrganizations> EmployesInOrganizations { get; set; }
+
         public List<EmployesSpecialities> EmployesSpecialities { get; set; }
         */
 

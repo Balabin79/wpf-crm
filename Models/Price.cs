@@ -19,7 +19,7 @@ namespace Dental.Models
         public string Code { get; set; }
 
         [Display(Name = "Значение")]
-        public string Value { get; set; }
+        public decimal? Value { get; set; }
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }

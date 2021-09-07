@@ -147,7 +147,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Profiles.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Profiles.png"   
                                             ToolTip="Скидки"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:DiscountGroups}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:DiscountGroups}"/>
 
                         <dxb:BarButtonItem Content="Рекламные источники"
                                            RibbonStyle="Default" 
@@ -180,8 +180,7 @@
                         
 
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Настройки" >
-
+                    <dxr:RibbonPageGroup Caption="Общие справочники">
 
                         <dxb:BarButtonItem Content="Организация"
                                            RibbonStyle="Default" 
@@ -199,7 +198,10 @@
                                            ToolTip="Должности"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Specialities}"/>
 
-                        <dxb:BarButtonItem Content="Интеграции"
+                   
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="Настройки" >
+                            <dxb:BarButtonItem Content="Интеграции"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Server-Connect.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Server-Connect.png"

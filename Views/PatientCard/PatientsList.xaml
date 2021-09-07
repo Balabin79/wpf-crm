@@ -24,7 +24,7 @@
 
 
     <UserControl.DataContext>
-        <vm:PatientCardViewModel/>
+        <vm:PatientListViewModel/>
     </UserControl.DataContext>
 
     <UserControl.Resources>

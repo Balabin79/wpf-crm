@@ -576,10 +576,7 @@
     <Compile Update="Views\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\DiscountGroups.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\HandbooksPages\InsuranceCompany.xaml.cs">
+    <Compile Update="Views\DiscountGroups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\CommunicationLog\CommunicationLogView.xaml.cs">
@@ -597,10 +594,7 @@
     <Compile Update="Views\WindowForms\SpecialityWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\DiscountGroupsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml.cs">
+    <Compile Update="Views\WindowForms\DiscountGroupsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\AdvertisingWindow.xaml.cs">
@@ -655,11 +649,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\DiscountGroups.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\HandbooksPages\InsuranceCompany.xaml">
+    <Page Update="Views\DiscountGroups.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -683,11 +673,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\DiscountGroupsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Nomenclatures\WindowForms\InsuranceCompanyWindow.xaml">
+    <Page Update="Views\WindowForms\DiscountGroupsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
