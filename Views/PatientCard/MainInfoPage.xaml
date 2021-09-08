@@ -126,9 +126,7 @@
                                                 </dxe:ComboBoxEdit.StyleSettings>
                                             </dxe:ComboBoxEdit>
                                             </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="ИНН:" Grid.Column="2" Grid.Row="1" Name="Inn" LabelPosition="Top" >
-                                            <dxe:TextEdit  />
-                                        </dxlc:LayoutItem>
+                
                                         <dxlc:LayoutItem Label="Адрес проживания:" Grid.ColumnSpan="4" Grid.Row="2" Name="Address" LabelPosition="Top" >
                                             <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Address, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged}"/>
@@ -144,7 +142,7 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <dxlc:LayoutItem Label="Моб. телефон" AddColonToLabel="True" Grid.Row="0" LabelPosition="Top">
+                                        <dxlc:LayoutItem Label="Осн. телефон" AddColonToLabel="True" Grid.Row="0" LabelPosition="Top">
                                             <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
@@ -155,7 +153,7 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                                             </dxe:ButtonEdit>
                                         </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Дом. телефон" AddColonToLabel="True" Grid.Row="1" LabelPosition="Top">
+                                        <dxlc:LayoutItem Label="Доп. телефон" AddColonToLabel="True" Grid.Row="1" LabelPosition="Top">
                                             <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
@@ -180,36 +178,13 @@
                                     </Grid>
                                 </dxlc:LayoutGroup>
 
-                                <dxlc:LayoutGroup Header="Дополнительная информация" Grid.Row="1" Grid.Column="0" Name="layoutGroup3" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" IsCollapsible="True" Margin="0 20 0 0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <dxlc:LayoutItem Label="Серия и номер паспорта:" Grid.Row="0" Grid.Column="0" Name="Passport" LabelPosition="Top" >
-                                            <dxe:TextEdit  EditValue="{Binding RowData.Source.Row.Passport, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged}" Mask="d" Margin="0 0 8 0" />
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Дата выдачи:" Grid.Column="1" Grid.Row="0" Name="IssuedDate" LabelPosition="Top" >
-                                            <dxe:DateEdit Margin="0,0,0,8"  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Кем выдан:" Grid.Row="1" Grid.ColumnSpan="2" Name="whoIssued" LabelPosition="Top" >
+
+                                <dxlc:LayoutItem Label="Примечания:"  Name="Comment" LabelPosition="Top" Grid.Row="1" Grid.Column="0">
                                             <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged}" />
                                         </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Комментарии:" Grid.Row="2" Grid.ColumnSpan="2" Name="Comment" LabelPosition="Top" >
-                                            <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged}" />
-                                        </dxlc:LayoutItem>
-                                    </Grid>
-                                </dxlc:LayoutGroup>
+                                   
+                               
 
                                 <dxlc:LayoutGroup Header="Маркетинг" Grid.Row="1" Grid.Column="1" Name="layoutGroup5" View="GroupBox" Orientation="Vertical"
                                       ItemLabelsAlignment="Local" IsCollapsible="True" Margin="10 20 0 0">
@@ -255,16 +230,12 @@
                                 </dxlc:LayoutGroup>
 
 
-                                <dxlc:LayoutGroup Header="Лечащие врачи" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 20 0 20" 
+                                <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 20 0 20" 
                                                   Name="layoutGroup6" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" IsCollapsible="True">
 
 
                                 </dxlc:LayoutGroup>
-                                <dxlc:LayoutGroup  Header="Полисы" Grid.Row="3" Grid.ColumnSpan="2"
-                                                  Name="layoutGroup7" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" IsCollapsible="True">
-
-
-                                </dxlc:LayoutGroup>
+ 
 
                             </Grid>
                             
@@ -490,7 +461,7 @@
                             </dxlc:LayoutGroup>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="План лечения">
+                        <dx:DXTabItem Header="План лечения и счета">
                             <dxlc:LayoutGroup Header="План лечения"
                               Name="layoutGroup8"
                               View="GroupBox"
@@ -500,29 +471,9 @@
                             </dxlc:LayoutGroup>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="История болезни">
-                            <dxlc:LayoutGroup Header="История болезни"
-                              Name="layoutGroup9"
-                              View="GroupBox"
-                              Orientation="Vertical"
-                              ItemLabelsAlignment="Local"
-                              IsCollapsible="True">
-                            </dxlc:LayoutGroup>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="История посещений">
+                        <dx:DXTabItem Header="Приемы">
                             <dxlc:LayoutGroup Header="История посещений"
                               Name="layoutGroup10"
-                              View="GroupBox"
-                              Orientation="Vertical"
-                              ItemLabelsAlignment="Local"
-                              IsCollapsible="True">
-                            </dxlc:LayoutGroup>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Файлы, изображения">
-                            <dxlc:LayoutGroup Header="Файлы, изображения"
-                              Name="layoutGroup11"
                               View="GroupBox"
                               Orientation="Vertical"
                               ItemLabelsAlignment="Local"

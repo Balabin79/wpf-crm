@@ -84,10 +84,7 @@
                     </Image>
                     <TextBlock Text="Анкета сотрудника" FontSize="15" />
                 </StackPanel>
-
-
-
-                <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
+                <StackPanel Grid.Column="1"   HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
                     <Button DataContext="{Binding Source={StaticResource vm} }" 
                                     Style="{StaticResource ResourceKey=MenuButton}"
                                     Command="{Binding OpenFormCommand}" 
@@ -140,15 +137,13 @@
             </Grid>
         </Border>
 
-
-
-        <Border  Grid.Row="2">
+        <Border  Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" Margin="2 2 2 0">
             <StackPanel>
                 <uc:ListViewErrors Margin="5 0 0 0"/>
                 <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
                     <dxlc:LayoutGroup Orientation="Horizontal">
                         <dxlc:LayoutGroup Orientation="Vertical">
-                            <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
+                            <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
                                 <dxlc:LayoutGroup Orientation="Vertical">
                                     <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
                                         <dxe:TextEdit  EditValue="{Binding Path=Employee.FirstName, Mode=TwoWay, 
@@ -164,14 +159,11 @@
                                     <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
                                         <dxe:DateEdit EditValue="{Binding Path=Employee.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </dxlc:LayoutItem>
-                                    <dxlc:LayoutGroup Orientation="Horizontal">
-                                        <dxlc:LayoutItem Label="Логин" AddColonToLabel="True">
-                                            <dxe:TextEdit EditValue="{Binding Path=Employee.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Пароль" AddColonToLabel="True">
-                                            <dxe:TextEdit EditValue="{Binding Path=Employee.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                                        </dxlc:LayoutItem>
-                                    </dxlc:LayoutGroup>
+
+                                    <dxlc:LayoutItem Label="Пол" AddColonToLabel="True" Margin="0">
+                                        <dxe:TextEdit  MaskType="RegEx"  Mask="[0-9]*"  EditValue="{Binding Path=Employee.Inn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutItem>
+
                                 </dxlc:LayoutGroup>
 
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
@@ -183,8 +175,8 @@
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
 
-                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="5">
-                                <dxlc:LayoutItem Label="Дом. телефон" AddColonToLabel="True">
+                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0 10 0 0">
+                                <dxlc:LayoutItem Label="Осн. телефон" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
@@ -195,7 +187,7 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg"  Margin="0 2 3 2"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
-                                <dxlc:LayoutItem Label="Моб. телефон" AddColonToLabel="True">
+                                <dxlc:LayoutItem Label="Доп. телефон" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
@@ -224,10 +216,24 @@
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
+
+
+                            <dxlc:LayoutGroup Orientation="Vertical" Margin="0 10 0 0">
+                                <dxlc:LayoutItem Label="Логин" AddColonToLabel="True">
+                                    <dxe:TextEdit EditValue="{Binding Path=Employee.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Пароль" AddColonToLabel="True">
+                                    <dxe:TextEdit EditValue="{Binding Path=Employee.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Роли" AddColonToLabel="True">
+                                    <dxe:TextEdit EditValue="{Binding Path=Employee.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+
                         </dxlc:LayoutGroup>
                         <dxlc:LayoutGroup Orientation="Vertical">
-                            <dxlc:LayoutGroup Orientation="Vertical" Margin="0,5">
-                                <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True">
+                            <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
+                                <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
                                     <dxe:DateEdit EditValue="{Binding Path=Employee.HireDate, Mode=TwoWay}" />
                                 </dxlc:LayoutItem>
 
@@ -242,22 +248,40 @@
                                               ValueMember="Value"
                                               DisplayMember="Name" />
                                 </dxlc:LayoutItem>
-                                
-                                <dxlc:LayoutItem Label="ИНН" AddColonToLabel="True">
-                                    <dxe:TextEdit  MaskType="RegEx"  Mask="[0-9]*"  EditValue="{Binding Path=Employee.Inn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <dxlc:LayoutItem Label="З/п (форма оплаты)" AddColonToLabel="True">
+                                    <dxe:ComboBoxEdit EditValue="{Binding Path=Status, Mode=TwoWay}"
+                                      
+                                              IsTextEditable="False"
+                                              ValueMember="Value"
+                                              DisplayMember="Name" />
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Примечание" AddColonToLabel="True">
+                                    <dxe:MemoEdit Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
-
-                            <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
-                                 <dxe:MemoEdit Text="{Binding Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                        
-                            
-                            
-                        
-                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="100" Margin="0 7 0 0">
-                                    <dxg:GridControl.Columns>
+                            <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="100" Margin="5 12 0 0">
+                                <dxg:GridControl.Columns>
                                     <dxg:GridColumn FieldName="SpecialityList" Header="Должности" />
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView ShowGroupPanel="False"
+                                               NavigationStyle="Row"
+                                               AutoWidth="True"
+                                               AllowEditing="False"
+                                               ShowVerticalLines="False"
+                                               ShowHorizontalLines="False"
+                                               UseEvenRowBackground="True"
+                                               ShowIndicator="False" />
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>
+
+
+
+
+                            <dxlc:LayoutItem   Margin="5,10,0,0">
+                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="75" Margin="5 0 0 0">
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn FieldName="SpecialityList1" Header="Прикрепляемые файлы документов" />
                                     </dxg:GridControl.Columns>
                                     <dxg:GridControl.View>
                                         <dxg:TableView ShowGroupPanel="False"
@@ -270,61 +294,9 @@
                                                ShowIndicator="False" />
                                     </dxg:GridControl.View>
                                 </dxg:GridControl>
-                           
+                            </dxlc:LayoutItem>
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
-                    <dxlc:LayoutItem Label="Задачи сотрудника" LabelPosition="Top" Margin="5,0,0,0">
-                        <dxg:GridControl ItemsSource="{Binding Path=AssignedTasks}" Height="240">
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn FieldName="Задача" FixedWidth="True">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings 
-                                            
-                                                          ApplyItemTemplateToSelectedItem="True"
-                                                          IsTextEditable="False"
-                                                          AllowDefaultButton="False"
-                                                          HorizontalContentAlignment="Stretch"
-                                                           />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-
-                                <dxg:GridColumn FieldName="Приоритет" FixedWidth="True">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ComboBoxEditSettings 
-                                            
-                                                          ApplyItemTemplateToSelectedItem="True"
-                                                          IsTextEditable="False"
-                                                          AllowDefaultButton="False"
-                                                          HorizontalContentAlignment="Stretch"
-                                                           />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                                
-                                <dxg:GridColumn FieldName="Сделать до" FixedWidth="True">
-                                    <dxg:GridColumn.CellStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.FontWeight" Value="Bold" />
-                                        </Style>
-                                    </dxg:GridColumn.CellStyle>
-                                </dxg:GridColumn>
-                                <dxg:GridColumn FieldName="Выполнено">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ProgressBarEditSettings ContentDisplayMode="Value" DisplayFormat="p0" IsPercent="True" />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
-                            </dxg:GridControl.Columns>
-                            <dxg:GridControl.View>
-                                <dxg:TableView ShowGroupPanel="False"
-                                       NavigationStyle="Row"
-                                       AutoWidth="True"
-                                       AllowEditing="False"
-                                       RowDetailsVisibilityMode="Visible"
-                                       ShowVerticalLines="False"
-                            
-                                       ShowIndicator="False" />
-                            </dxg:GridControl.View>
-                        </dxg:GridControl>
-                    </dxlc:LayoutItem>
                 </dxlc:LayoutControl>
             </StackPanel>
         </Border>
