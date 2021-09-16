@@ -8,10 +8,11 @@
                       mc:Ignorable="d"
                       d:DesignHeight="300" d:DesignWidth="300"
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-             dx:ThemeManager.ThemeName="Office2019White"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             dx:ThemeManager.ThemeName="Office2019White" 
              >
-    <Grid  Margin="0 150 0 0" x:Name="grid">
+    <Grid  Margin="0 150 0 0" >
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -41,150 +42,98 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <local:ToothControl Grid.Row="0" Grid.Column="0" DataContext="{Binding Teeth.Tooth18, Mode=TwoWay}"/>
-            
-            
-            <StackPanel Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" Margin="0 0 0 20">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="17" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0" Grid.Column="2"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="16" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0" Grid.Column="3"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="15" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="4"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="12" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="5"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="13" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="6"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="12" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="7"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="11" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="9"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="21" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="10"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="22" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="11"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="23" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="0" Grid.Column="12"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="24" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="13"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="25" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="14"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="26" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="15"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="27" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="16"   Margin="0 0 0 5" HorizontalAlignment="Center">
-                <TextBlock Text="" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0"  Padding="0" >
-                    <Image Source="pack://application:,,,/Resources/Icons/Template/tooth_yellow.png" Height="60" Width="50" 
-                                                       VerticalAlignment="Center"/>
-                </Button>
-                <TextBlock Text="28" FontSize="18" HorizontalAlignment="Center"/>
-            </StackPanel>
-
-
+            <local:ToothControl x:Name="t18" Grid.Row="0" Grid.Column="0" DataContext="{Binding Teeth.Tooth18}"
+                                Abbr="{Binding Teeth.Tooth18.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth18.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth18.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t17" Grid.Row="0" Grid.Column="1" DataContext="{Binding Teeth.Tooth17}"
+                                Abbr="{Binding Teeth.Tooth17.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth17.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth17.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t16" Grid.Row="0" Grid.Column="2" DataContext="{Binding Teeth.Tooth16}"
+                                Abbr="{Binding Teeth.Tooth16.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth16.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth16.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t15" Grid.Row="0" Grid.Column="3" DataContext="{Binding Teeth.Tooth15}"
+                                Abbr="{Binding Teeth.Tooth15.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth15.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth15.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t14" Grid.Row="0" Grid.Column="4" DataContext="{Binding Teeth.Tooth14}"
+                                Abbr="{Binding Teeth.Tooth14.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth14.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth14.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t13" Grid.Row="0" Grid.Column="5" DataContext="{Binding Teeth.Tooth13}"
+                                Abbr="{Binding Teeth.Tooth13.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth13.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth13.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t12" Grid.Row="0" Grid.Column="6" DataContext="{Binding Teeth.Tooth12}"
+                                Abbr="{Binding Teeth.Tooth12.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth12.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth12.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t11" Grid.Row="0" Grid.Column="7" DataContext="{Binding Teeth.Tooth11}"
+                                Abbr="{Binding Teeth.Tooth11.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth11.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth11.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t21" Grid.Row="0" Grid.Column="9" DataContext="{Binding Teeth.Tooth21}"
+                                Abbr="{Binding Teeth.Tooth21.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth21.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth21.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t22" Grid.Row="0" Grid.Column="10" DataContext="{Binding Teeth.Tooth22}"
+                                Abbr="{Binding Teeth.Tooth22.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth22.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth22.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t23" Grid.Row="0" Grid.Column="11" DataContext="{Binding Teeth.Tooth23}"
+                                Abbr="{Binding Teeth.Tooth23.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth23.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth23.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t24" Grid.Row="0" Grid.Column="12" DataContext="{Binding Teeth.Tooth24}"
+                                Abbr="{Binding Teeth.Tooth24.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth24.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth24.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t25" Grid.Row="0" Grid.Column="13" DataContext="{Binding Teeth.Tooth25}"
+                                Abbr="{Binding Teeth.Tooth25.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth25.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth25.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t26" Grid.Row="0" Grid.Column="14" DataContext="{Binding Teeth.Tooth26}"
+                                Abbr="{Binding Teeth.Tooth26.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth26.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth26.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t27" Grid.Row="0" Grid.Column="15" DataContext="{Binding Teeth.Tooth27}"
+                                Abbr="{Binding Teeth.Tooth27.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth27.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth27.ToothImagePath, Mode=TwoWay}"                              
+                                />
+            <local:ToothControl x:Name="t28" Grid.Row="0" Grid.Column="16" DataContext="{Binding Teeth.Tooth28}"
+                                Abbr="{Binding Teeth.Tooth28.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth28.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth28.ToothImagePath, Mode=TwoWay}"                              
+                                />
 
             <Rectangle  Fill="LightGray" Height="1" Grid.ColumnSpan="17"  Grid.Row="1"  HorizontalAlignment="Stretch"  />
             <Rectangle  Fill="LightGray" Width="1" Grid.RowSpan="3"  Grid.Row="0"  VerticalAlignment="Stretch" Grid.Column="8"  />
 
 
+            <local:ToothControl x:Name="t48" Grid.Row="2" Grid.Column="0" DataContext="{Binding Teeth.Tooth48}"
+                                Abbr="{Binding Teeth.Tooth48.Abbr, Mode=TwoWay}"
+                                ToothNumber="{Binding Teeth.Tooth48.ToothNumber, Mode=TwoWay}"
+                                ToothImagePath="{Binding Teeth.Tooth48.ToothImagePath, Mode=TwoWay}"                              
+                                />
 
 
-
-
-            <StackPanel Grid.Row="2" Grid.Column="0"   Margin="0 5 0 0" HorizontalAlignment="Center">
-                <TextBlock Text="48" FontSize="18" HorizontalAlignment="Center"/>
-                <Button BorderBrush="Transparent" BorderThickness="0" >
-                    <Image Source="pack://application:,,,/Resources/PatientCard/tooth/48.png" Height="40" Width="20" 
-                                                       VerticalAlignment="Top"/>
-                </Button>
-            </StackPanel>
             <StackPanel Grid.Row="2" Grid.Column="1"   Margin="0 5 0 0" HorizontalAlignment="Center">
                 <TextBlock Text="47" FontSize="18" HorizontalAlignment="Center"/>
                 <Button BorderBrush="Transparent" BorderThickness="0" >
@@ -199,8 +148,6 @@
                                                        VerticalAlignment="Top"/>
                 </Button>
             </StackPanel>
-
-
             <StackPanel Grid.Row="2" Grid.Column="3"   Margin="0 5 0 0" HorizontalAlignment="Center">
                 <TextBlock Text="45" FontSize="18" HorizontalAlignment="Center"/>
                 <Button BorderBrush="Transparent" BorderThickness="0" >

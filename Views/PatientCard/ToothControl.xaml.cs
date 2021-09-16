@@ -27,9 +27,9 @@ namespace Dental.Views.PatientCard
         public static readonly DependencyProperty ToothNumberProperty = DependencyProperty.Register
         (
              "ToothNumber",
-             typeof(Dental.Models.Teeth),
+             typeof(string),
              typeof(ToothControl),
-             new PropertyMetadata(null)
+             new PropertyMetadata(string.Empty)
         );
 
 
@@ -45,28 +45,16 @@ namespace Dental.Views.PatientCard
             set { SetValue(ToothImagePathProperty, value); }
         }
 
-        public Dental.Models.Teeth ToothNumber
+        public string ToothNumber
         {
-            get { return (Dental.Models.Teeth)GetValue(ToothNumberProperty); }
+            get { return (string)GetValue(ToothNumberProperty); }
             set { SetValue(ToothNumberProperty, value); }
         }
 
         public ToothControl()
         {
             InitializeComponent();
-            int x = 0;
-        }
 
-        public ToothControl(int toothNumber)
-        {
-            InitializeComponent();
-            int x = 0;
-        }
-
-        public ToothControl(string toothNumber)
-        {
-            InitializeComponent();
-            int x = 0;
         }
     }
 }

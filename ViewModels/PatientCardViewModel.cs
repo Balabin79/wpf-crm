@@ -31,13 +31,9 @@ namespace Dental.ViewModels
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
                 ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
                 ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
-                Teeth = new Teeth();
-                Teeth.Tooth18 = 
-                    new Tooth(){
-                    Abbr = "KPPO",
-                    ToothNumber = 20,
-                    ToothImagePath = "pack://application:,,,/Resources/Icons/Template/tooth_yellow.png"               
-                    };
+             
+                _Teeth = new Teeth();
+
             }
             catch (Exception e)
             {
@@ -71,7 +67,11 @@ namespace Dental.ViewModels
         public object SelectedAdvertisings { get; set; }
         public string SelectedClientsGroup { get; set; }
 
-        public Teeth Teeth { get; set;}
+        public Teeth _Teeth;
+        public Teeth Teeth { 
+            get => _Teeth; 
+            set =>Set (ref _Teeth, value); 
+        }
 
 
         public IEnumerable<DiscountGroups> DiscountGroupList { get; set; }

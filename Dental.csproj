@@ -156,6 +156,7 @@
     <None Remove="Resources\Icons\Template\Google-Map.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
     <None Remove="Resources\Icons\Template\Hotjobs.png" />
+    <None Remove="Resources\Icons\Template\implant.png" />
     <None Remove="Resources\Icons\Template\Info-Rhombus.png" />
     <None Remove="Resources\Icons\Template\init.png" />
     <None Remove="Resources\Icons\Template\initial.png" />
@@ -194,6 +195,9 @@
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <None Remove="Resources\Icons\Template\tooth-yel.png" />
+    <None Remove="Resources\Icons\Template\tooth_gray.png" />
+    <None Remove="Resources\Icons\Template\tooth_green.png" />
+    <None Remove="Resources\Icons\Template\tooth_red.png" />
     <None Remove="Resources\Icons\Template\tooth_yellow.png" />
     <None Remove="Resources\Icons\Template\Transmit.png" />
     <None Remove="Resources\Icons\Template\Trash.png" />
@@ -472,6 +476,7 @@
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
     <Resource Include="Resources\Icons\Template\Hotjobs.png" />
+    <Resource Include="Resources\Icons\Template\implant.png" />
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\Injection.png" />
@@ -505,6 +510,9 @@
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <Resource Include="Resources\Icons\Template\tooth-yel.png" />
+    <Resource Include="Resources\Icons\Template\tooth_gray.png" />
+    <Resource Include="Resources\Icons\Template\tooth_green.png" />
+    <Resource Include="Resources\Icons\Template\tooth_red.png" />
     <Resource Include="Resources\Icons\Template\tooth_yellow.png" />
     <Resource Include="Resources\Icons\Template\Transmit.png" />
     <Resource Include="Resources\Icons\Template\Trash.png" />

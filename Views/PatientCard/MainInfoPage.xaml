@@ -393,7 +393,7 @@
 
                         <dx:DXTabItem Header="Карта зубов">
              
-                                <tp:TeethPage DataContext="{StaticResource vm}" />
+                                <tp:TeethPage DataContext="{Binding}" />
                            
                         </dx:DXTabItem>
                         
