@@ -193,6 +193,8 @@
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <None Remove="Resources\Icons\Template\tooth-yel.png" />
+    <None Remove="Resources\Icons\Template\tooth_yellow.png" />
     <None Remove="Resources\Icons\Template\Transmit.png" />
     <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
@@ -502,6 +504,8 @@
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <Resource Include="Resources\Icons\Template\tooth-yel.png" />
+    <Resource Include="Resources\Icons\Template\tooth_yellow.png" />
     <Resource Include="Resources\Icons\Template\Transmit.png" />
     <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
@@ -559,6 +563,12 @@
 
   <ItemGroup>
     <Compile Update="Employes1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\TreatmentPlan.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\GroupsWindow.xaml.cs">
@@ -626,6 +636,17 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\MainInfo.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\ToothControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\PatientCard\TreatmentPlan.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
