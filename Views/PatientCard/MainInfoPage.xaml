@@ -38,7 +38,7 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    <Grid DataContext="{StaticResource vm}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+    <Grid x:Name="gridPC" DataContext="{StaticResource vm}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*" />

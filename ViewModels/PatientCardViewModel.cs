@@ -25,28 +25,18 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                //Teeth
-                /*
+                              
                 ClickToothGreenCommand = new LambdaCommand(OnClickToothGreenCommandExecuted, CanClickToothGreenCommandExecute);
                 ClickToothYelPlCommand = new LambdaCommand(OnClickToothYelPlCommandExecuted, CanClickToothYelPlCommandExecute);
-                ClickToothYelKorCommand = new LambdaCommand(OnClickToothYelKorCommandExecuted, CanClickToothYelKorCommandExecute);
-                ClickToothYelImpCommand = new LambdaCommand(OnClickToothYelImpCommandExecuted, CanClickToothYelImpCommandExecute);
-                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
-                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
-                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
-                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
-                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+                ClickToothYelCorCommand = new LambdaCommand(OnClickToothYelCorCommandExecuted, CanClickToothYelCorCommandExecute);
+                ClickToothImpCommand = new LambdaCommand(OnClickToothImpCommandExecuted, CanClickToothImpCommandExecute);
+                ClickToothRedRCommand = new LambdaCommand(OnClickToothRedRCommandExecuted, CanClickToothRedRCommandExecute);
+                ClickToothRedPtCommand = new LambdaCommand(OnClickToothRedPtCommandExecuted, CanClickToothRedPtCommandExecute);
+                ClickToothRedPCommand = new LambdaCommand(OnClickToothRedPCommandExecuted, CanClickToothRedPCommandExecute);
+                ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
+                ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
 
 
-  
-        public ICommand ClickToothRedRCommand { get; }
-        public ICommand ClickToothRedPtCommand { get; }
-        public ICommand ClickToothRedPCommand { get; }
-        public ICommand ClickToothRedCCommand { get; }
-        public ICommand ClickToothGrayCommand { get; }
-
-        */
-                ClickToothCommand = new LambdaCommand(OnClickToothExecuted, CanClickToothExecute);
                 DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
                 ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
@@ -63,24 +53,144 @@ namespace Dental.ViewModels
 
         }
 
-        public ICommand ClickToothCommand { get; }
-        private bool CanClickToothExecute(object p) => true;
-        private void OnClickToothExecuted(object p)
+
+        public ICommand ClickToothGreenCommand { get; }
+        public ICommand ClickToothYelPlCommand { get; }
+        public ICommand ClickToothYelCorCommand { get; }
+        public ICommand ClickToothImpCommand { get; }
+        public ICommand ClickToothRedRCommand { get; }
+        public ICommand ClickToothRedPtCommand { get; }
+        public ICommand ClickToothRedPCommand { get; }
+        public ICommand ClickToothRedCCommand { get; }
+        public ICommand ClickToothGrayCommand { get; }
+
+
+        private bool CanClickToothGreenCommandExecute(object p) => true;
+        private bool CanClickToothYelPlCommandExecute(object p) => true;
+        private bool CanClickToothYelCorCommandExecute(object p) => true;
+        private bool CanClickToothImpCommandExecute(object p) => true;
+        private bool CanClickToothRedRCommandExecute(object p) => true;
+        private bool CanClickToothRedPtCommandExecute(object p) => true;
+        private bool CanClickToothRedPCommandExecute(object p) => true;
+        private bool CanClickToothRedCCommandExecute(object p) => true;
+        private bool CanClickToothGrayCommandExecute(object p) => true;
+
+        private void OnClickToothGreenCommandExecuted(object p)
         {
             try
             {
                 int x = 0;
-                /*if (Model?.Id > 0) db.Entry(Model).State = EntityState.Modified;
-                else db.Organizations.Add(Model);
-                db.SaveChanges();*/
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothYelPlCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothYelCorCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothImpCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothRedRCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothRedPtCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothRedPCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothRedCCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+        
+        private void OnClickToothGrayCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
         }
-
-
 
         public string SelectedGender { get; set; }
         public object SelectedDiscountGroups { get; set; }
@@ -104,19 +214,5 @@ namespace Dental.ViewModels
             get => _GenderList;
         }
         private ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
-
-        //Tooth
-        public ICommand ClickToothGreenCommand { get; }
-        public ICommand ClickToothYelPlCommand { get; }
-        public ICommand ClickToothYelKorCommand { get; }
-        public ICommand ClickToothYelImpCommand { get; }
-        public ICommand ClickToothRedRCommand { get; }
-        public ICommand ClickToothRedPtCommand { get; }
-        public ICommand ClickToothRedPCommand { get; }
-        public ICommand ClickToothRedCCommand { get; }
-        public ICommand ClickToothGrayCommand { get; }
-
-
-
     }
 }
