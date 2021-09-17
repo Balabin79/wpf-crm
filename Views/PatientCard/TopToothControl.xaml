@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Dental.Views.PatientCard.TopToothControl"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:teeth ="clr-namespace:Dental.Views.PatientCard.Teeth"
+                      mc:Ignorable="d"
+                      d:DesignHeight="300" d:DesignWidth="300"
+                      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             dx:ThemeManager.ThemeName="Office2019White"
+             >
+    <StackPanel    HorizontalAlignment="Center" Margin="0 0 0 20">
+
+        <TextBlock Text="{Binding Abbr}" FontSize="18" HorizontalAlignment="Center" Foreground="Gray" FontWeight="DemiBold"/>
+        <Button BorderBrush="Transparent" Padding="0" BorderThickness="0" dxb:BarManager.MenuShowMouseButton="LeftButton">
+            <Image Source="{Binding ToothImagePath, Mode=TwoWay}" Height="60" Width="50" VerticalAlignment="Center"/>
+            <dxb:BarManager.DXContextMenu >
+                <dxb:PopupMenu>
+                    <dxb:PopupMenu.Items>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-green.png" Content="Интактный"  Command="{Binding ClickToothCommand}" CommandParameter="green"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-yel.png" Content="Вылеченный (Пломба) - Пл"  Command="{Binding ClickToothYelPlCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-yel.png" Content="Вылеченный (Коронка) - Кор"  Command="{Binding ClickToothYelKorCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/implant.png" Content="Вылеченный (Искуственный зуб)"  Command="{Binding ClickToothYelImpCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-red.png" Content="Радикс - Р"  Command="{Binding ClickToothRedRCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-red.png" Content="Периодонтит - П"  Command="{Binding ClickToothRedPtCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-red.png" Content="Пульпит - Пт"  Command="{Binding ClickToothRedPCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-red.png" Content="Кариес - К"  Command="{Binding ClickToothRedCCommand}" CommandParameter="{Binding ToothNumber}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="pack://application:,,,/Resources/Icons/Template/tooth-gray.png" Content="Отсутствует"  Command="{Binding ClickToothGrayCommand}" CommandParameter="{Binding ToothNumber}"/>
+                    </dxb:PopupMenu.Items>
+                </dxb:PopupMenu>
+            </dxb:BarManager.DXContextMenu>
+        </Button>
+        <TextBlock Text="{Binding ToothNumber, Mode=TwoWay}" FontSize="18" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Gray"/>
+    </StackPanel>
+
+</UserControl>

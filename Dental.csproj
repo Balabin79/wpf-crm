@@ -194,6 +194,9 @@
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <None Remove="Resources\Icons\Template\tooth-gray.png" />
+    <None Remove="Resources\Icons\Template\tooth-green.png" />
+    <None Remove="Resources\Icons\Template\tooth-red.png" />
     <None Remove="Resources\Icons\Template\tooth-yel.png" />
     <None Remove="Resources\Icons\Template\tooth_gray.png" />
     <None Remove="Resources\Icons\Template\tooth_green.png" />
@@ -509,6 +512,9 @@
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
+    <Resource Include="Resources\Icons\Template\tooth-gray.png" />
+    <Resource Include="Resources\Icons\Template\tooth-green.png" />
+    <Resource Include="Resources\Icons\Template\tooth-red.png" />
     <Resource Include="Resources\Icons\Template\tooth-yel.png" />
     <Resource Include="Resources\Icons\Template\tooth_gray.png" />
     <Resource Include="Resources\Icons\Template\tooth_green.png" />
@@ -651,7 +657,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\ToothControl.xaml">
+    <Page Update="Views\PatientCard\BottomToothControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\TopToothControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\PatientCard\TreatmentPlan.xaml">

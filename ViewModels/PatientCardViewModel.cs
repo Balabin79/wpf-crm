@@ -25,8 +25,28 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-
+                //Teeth
+                /*
+                ClickToothGreenCommand = new LambdaCommand(OnClickToothGreenCommandExecuted, CanClickToothGreenCommandExecute);
+                ClickToothYelPlCommand = new LambdaCommand(OnClickToothYelPlCommandExecuted, CanClickToothYelPlCommandExecute);
+                ClickToothYelKorCommand = new LambdaCommand(OnClickToothYelKorCommandExecuted, CanClickToothYelKorCommandExecute);
+                ClickToothYelImpCommand = new LambdaCommand(OnClickToothYelImpCommandExecuted, CanClickToothYelImpCommandExecute);
                 ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+                ClickInAreaToothCommand = new LambdaCommand(OnClickInAreaToothExecuted, CanClickInAreaToothExecute);
+
+
+  
+        public ICommand ClickToothRedRCommand { get; }
+        public ICommand ClickToothRedPtCommand { get; }
+        public ICommand ClickToothRedPCommand { get; }
+        public ICommand ClickToothRedCCommand { get; }
+        public ICommand ClickToothGrayCommand { get; }
+
+        */
+                ClickToothCommand = new LambdaCommand(OnClickToothExecuted, CanClickToothExecute);
                 DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
                 ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
@@ -43,9 +63,9 @@ namespace Dental.ViewModels
 
         }
 
-        public ICommand ClickInAreaToothCommand { get; }
-        private bool CanClickInAreaToothExecute(object p) => true;
-        private void OnClickInAreaToothExecuted(object p)
+        public ICommand ClickToothCommand { get; }
+        private bool CanClickToothExecute(object p) => true;
+        private void OnClickToothExecuted(object p)
         {
             try
             {
@@ -84,6 +104,18 @@ namespace Dental.ViewModels
             get => _GenderList;
         }
         private ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
+
+        //Tooth
+        public ICommand ClickToothGreenCommand { get; }
+        public ICommand ClickToothYelPlCommand { get; }
+        public ICommand ClickToothYelKorCommand { get; }
+        public ICommand ClickToothYelImpCommand { get; }
+        public ICommand ClickToothRedRCommand { get; }
+        public ICommand ClickToothRedPtCommand { get; }
+        public ICommand ClickToothRedPCommand { get; }
+        public ICommand ClickToothRedCCommand { get; }
+        public ICommand ClickToothGrayCommand { get; }
+
 
 
     }
