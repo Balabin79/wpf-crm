@@ -42,7 +42,7 @@ namespace Dental.ViewModels
                 ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
                 ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
              
-                _Teeth = new Teeth();
+                _Teeth = new PatientTeeth();
 
             }
             catch (Exception e)
@@ -79,7 +79,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                SetToothState(p, "OnClickToothGreenCommandExecuted");
 
             }
             catch (Exception e)
@@ -92,7 +92,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                SetToothState(p, "OnClickToothYelPlCommandExecuted");
 
             }
             catch (Exception e)
@@ -105,8 +105,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothYelCorCommandExecuted");
             }
             catch (Exception e)
             {
@@ -118,8 +117,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothImpCommandExecuted");
             }
             catch (Exception e)
             {
@@ -131,8 +129,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothRedRCommandExecuted");
             }
             catch (Exception e)
             {
@@ -144,8 +141,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothRedPtCommandExecuted");
             }
             catch (Exception e)
             {
@@ -157,8 +153,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothRedPCommandExecuted");
             }
             catch (Exception e)
             {
@@ -170,8 +165,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothRedCCommandExecuted");
             }
             catch (Exception e)
             {
@@ -183,8 +177,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                SetToothState(p, "OnClickToothGrayCommandExecuted");
             }
             catch (Exception e)
             {
@@ -197,8 +190,8 @@ namespace Dental.ViewModels
         public object SelectedAdvertisings { get; set; }
         public string SelectedClientsGroup { get; set; }
 
-        public Teeth _Teeth;
-        public Teeth Teeth { 
+        public PatientTeeth _Teeth;
+        public PatientTeeth Teeth { 
             get => _Teeth; 
             set =>Set (ref _Teeth, value); 
         }
@@ -213,6 +206,24 @@ namespace Dental.ViewModels
         {
             get => _GenderList;
         }
-        private ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
+        private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
+
+        private void SetToothState(object p, string methodName)
+        {
+            Tooth tooth = p as Tooth;
+            if (tooth == null) return;
+
+            switch (methodName) {
+                case "OnClickToothGreenCommandExecuted" : tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
+                case "OnClickToothYelPlCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Plomba; break;
+                case "OnClickToothYelCorCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Coronka; break;
+                case "OnClickToothImpCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathImp; tooth.Abbr = ""; break;
+                case "OnClickToothRedRCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Radiks; break;
+                case "OnClickToothRedPtCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Periodontit; break;
+                case "OnClickToothRedPCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Pulpit; break;
+                case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
+                case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
+            }
+        }
     }
 }

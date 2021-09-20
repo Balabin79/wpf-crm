@@ -7,8 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    /*[Table("Price")]*/
-    public class Teeth// : AbstractBaseModel, IDataErrorInfo
+    public class PatientTeeth : IDataErrorInfo
     {
         public Tooth Tooth18 { get; set; } = new Tooth() { Abbr = "", ToothNumber = 18, ToothImagePath = ImgPathGreen };
         public Tooth Tooth17 { get; set; } = new Tooth() { Abbr = "", ToothNumber = 17, ToothImagePath = ImgPathGreen };
@@ -48,8 +47,15 @@ namespace Dental.Models
         public static string ImgPathRed { get => "pack://application:,,,/Resources/Icons/Template/tooth_red.png"; }
         public static string ImgPathGray { get => "pack://application:,,,/Resources/Icons/Template/tooth_gray.png"; }
         public static string ImgPathImp { get => "pack://application:,,,/Resources/Icons/Template/implant.png"; }
+        
+        public static string Periodontit { get => "П"; }
+        public static string Pulpit { get => "Пл"; }
+        public static string Radiks { get => "Р"; }
+        public static string Caries { get => "К"; }
+        public static string Plomba { get => "Пл"; }
+        public static string Coronka { get => "Кор"; }
 
-        //public string Error { get => string.Empty; }
-        //public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

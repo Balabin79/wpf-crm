@@ -1,21 +1,33 @@
-using Dental.Models.Base;
-using Dental.Interfaces;
 using DevExpress.Mvvm;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    /*[Table("Price")]*/
-    public class Tooth// : AbstractBaseModel, IDataErrorInfo
+    public class Tooth : ViewModelBase, IDataErrorInfo
     {
+        public string Abbr
+        {
+            get => _Abbr;
+            set => SetValue(ref _Abbr, value);
+        }
 
-        public string Abbr { get; set; }
-        public string ToothImagePath { get; set; }
-        public int ToothNumber { get; set; }
+        public string ToothImagePath 
+        { 
+            get => _ToothImagePath; 
+            set => SetValue(ref _ToothImagePath, value); 
+        }
 
-        //public string Error { get => string.Empty; }
-        //public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+        public int ToothNumber
+        {
+            get => _ToothNumber;
+            set => SetValue(ref _ToothNumber, value);
+        }
+
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+
+        private string _Abbr;
+        private string _ToothImagePath;
+        private int _ToothNumber;
     }
 }
