@@ -34,57 +34,22 @@
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                                <TextBlock  Grid.Row="0" Text="Наименование:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
 
-                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Group}"
+                                <TextBlock  Grid.Row="2" Text="Родительская группа:"  Margin="0,0,8,3" />
+                                <dxe:ComboBoxEdit Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Margin="0,0,0,8"
                                                />
-
-                                <Grid Grid.Row="2" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock  Grid.Row="0" Grid.Column="0" Text="Бюджет:"  Margin="0,0,8,3" />
-                                    <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Sum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,  
-                                        ValidatesOnDataErrors=True}" 
-                                                   Margin="0,0,8,8"
-                                                   MaskType="Numeric"
-                                                   Mask="C"
-                                                   MaskUseAsDisplayFormat="True"/>
-                                    
-                                    <TextBlock  Grid.Row="0" Grid.Column="1" Text="Период от:" />
-                                    
-                                    <dxe:DateEdit Grid.Row="1" Grid.Column="1" Margin="0,-8,0,0" Height="22"
-                                                  EditValue="{Binding Path=Model.PeriodFrom, 
-                                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                        ValidatesOnDataErrors=True, Converter={StaticResource DateToString }}" />
-                                   
-                                    <TextBlock  Grid.Row="0" Grid.Column="2" Text="Период до:"  Margin="8,0,0,0" />
-                                    <dxe:DateEdit Grid.Row="1" Grid.Column="2"  Margin="8,-8,0,0" Height="22"
-                                                  EditValue="{Binding Path=Model.PeriodTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
-                                        ValidatesOnDataErrors=True, Converter={StaticResource DateToString } }" />
-                                </Grid>
-                                
                             </Grid>
                         </StackPanel>
                     </GroupBox>
@@ -110,10 +75,6 @@
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -121,18 +82,15 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                                <TextBlock  Grid.Row="0" Text="Наименование:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
 
-                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Родительская группа:"  Margin="0,0,8,3" />
+                                <TextBlock  Grid.Row="2"  Text="Родительская группа:"  Margin="0,0,8,3" />
                                 <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="1" Grid.Column="1"  Margin="0,0,0,8"
+                                              IsTextEditable="False" Grid.Row="3"  Margin="0,0,0,8"
                                                />
-
-                                <TextBlock  Grid.Row="2" Grid.ColumnSpan="2" Text="Описание:"  Margin="0,0,8,3" />
-                                <dxe:MemoEdit  MemoTextWrapping="Wrap" ShowIcon="False" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
                             </Grid>
                         </StackPanel>
                     </GroupBox>

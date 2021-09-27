@@ -1,5 +1,4 @@
 using Dental.Models.Base;
-using Dental.Interfaces;
 using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -14,15 +13,6 @@ namespace Dental.Models
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name { get; set; }
-
-        [Display(Name = "Период от")]
-        public string PeriodFrom{ get; set; }
-
-        [Display(Name = "Период до")]
-        public string PeriodTo { get; set; }
-
-        [Display(Name = "Бюджет")]
-        public double? Sum { get; set; }
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }

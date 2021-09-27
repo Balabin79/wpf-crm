@@ -12,6 +12,7 @@
                       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
                       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
                       xmlns:sys="clr-namespace:System;assembly=netstandard"
+                      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
                       mc:Ignorable="d"
                       d:DesignHeight="300" d:DesignWidth="300"
                       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -21,6 +22,7 @@
              dx:ThemeManager.ThemeName="Office2019White">
 
     <UserControl.Resources>
+        <commands:PrintCommand x:Key="Print"/>
         <vm:IdsViewModel x:Key="Ids"/>
         <vm:PatientCardViewModel x:Key="vm"/>
         <converter:DateToStringConverter x:Key="dateToString" />
@@ -36,372 +38,305 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-
     </UserControl.Resources>
-    <Grid x:Name="gridPC" DataContext="{StaticResource vm}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-
-            <dxlc:LayoutControl  Orientation="Vertical"  Background="Transparent"  >
-                <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
-                    <dxlc:LayoutGroup.GroupBoxStyle>
-                        <Style TargetType="dxlc:GroupBox">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="TitleVisibility" Value="Collapsed" />
-                        </Style>
-                    </dxlc:LayoutGroup.GroupBoxStyle>
-
-                    <dx:DXTabControl>
-                        <dx:DXTabItem Header="Административная">
-                            <tp:MainInfo DataContext="{Binding}"/>
-                        </dx:DXTabItem>
 
 
-                        <dx:DXTabItem Header="ИДС, Документы">
-                            <dxlc:LayoutGroup Header="ИДС, Документы"
+    <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
+
+        <Grid x:Name="gridPC" DataContext="{StaticResource vm}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+
+
+
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left">
+                    <TextBlock Text="dadddw"/>
+                </StackPanel>
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                    
+                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                        <dxb:BarButtonItem Name="bNew" Content="New" Glyph="{dx:DXImage SvgImages/Outlook Inspired/New.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/New.svg}" />
+                        <dxb:BarButtonItem Name="bOpen" Content="Open" Glyph="{dx:DXImage SvgImages/Miscellaneous/Windows.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Miscellaneous/Windows.svg}" />
+                        <dxb:BarButtonItem Name="bSave" Content="Save" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
+                        <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem Name="bPrint"
+                                   Content="Print"
+                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Print.svg}"
+                                   LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Print.svg}"
+                                    />
+                    </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
+            </DockPanel>
+
+
+
+
+
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" >
+
+                <dxlc:LayoutControl  Orientation="Vertical"  Background="Transparent" Padding="5">
+                    <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
+                        <dxlc:LayoutGroup.GroupBoxStyle>
+                            <Style TargetType="dxlc:GroupBox">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="TitleVisibility" Value="Collapsed" />
+                            </Style>
+                        </dxlc:LayoutGroup.GroupBoxStyle>
+
+                        <dx:DXTabControl >
+                            <dx:DXTabItem Header="Административная">
+                                <tp:MainInfo DataContext="{Binding}"/>
+                            </dx:DXTabItem>
+
+
+                            <dx:DXTabItem Header="ИДС, Документы">
+                                <dxlc:LayoutGroup Header="ИДС, Документы"
                               Name="layoutGroup4"
                               View="GroupBox"
                               Orientation="Vertical"
                               ItemLabelsAlignment="Local"
                               IsCollapsible="True">
 
-                                <Grid DataContext="{StaticResource ResourceKey=Ids}">
+                                    <Grid DataContext="{StaticResource ResourceKey=Ids}">
 
-                                    <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
-                                        <FlowDocument>
-                                            <List FontSize="12">
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOnInjection">
-                                                            <Run>ИДС на инъекционную анестезию</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSCariesTreatment">
-                                                            <Run>ИДС на лечение кариеса и иных болезней твердых тканей зубов</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSUrgentHelp">
-                                                            <Run>ИДС на неотложную помощь</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem >
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthodonticTreatment">
-                                                            <Run>ИДС на ортодонтическое лечение</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthopedicTreatment">
-                                                            <Run>ИДС на ортопедическое лечение</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDisclaimerGuarantees">
-                                                            <Run>ИДС на отказ от гарантий (как временная мера)</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSParadonticTreatment">
-                                                            <Run>ИДС на парадонтологическое лечение</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDiagnosticManipulations">
-                                                            <Run>ИДС на проведение диагностических манипуляций (рентгендиагностику)</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSBoneAugmentation">
-                                                            <Run>ИДС на проведение операции наращивания кости на участке верхнечелюстной пазухи (синус-лифтинг)</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSProcessReconstruction">
-                                                            <Run>ИДС на проведение операций по реконструкции альвеолярного отростка</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSSurgery">
-                                                            <Run>ИДС на проведение хирургической операции (удаление зуба, резекция)</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTeethWhitening">
-                                                            <Run>ИДС на процедуру отбеливания зубов</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSImplantPlacement">
-                                                            <Run>ИДС на установку имплантата</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTreatmentAndImplantation">
-                                                            <Run>ИДС на хирургическое лечение и имплантацию</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSEndodonticTreatment">
-                                                            <Run>ИДС на эндодонтическое лечение</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSList">
-                                                            <Run>Лист ИДС</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="TeethWhiteningRecommendations">
-                                                            <Run>Рекомендации стоматолога по после отбеливания зубов</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="RecommendationsAfterImplantation">
-                                                            <Run>Рекомендации стоматолога после имплантации</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterCariesAndPulpitis">
-                                                            <Run>Рекомендации стоматолога после лечения кариеса и пульпита</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithDentures">
-                                                            <Run>Рекомендации стоматолога после протезированием  сьемными протезами</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithCrowns">
-                                                            <Run>Рекомендации стоматолога после протезирования коронками  и мостовидными ортопедическими конструкциями</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProfOralHygiene">
-                                                            <Run>Рекомендации стоматолога после профессиональной гигиены полости рта</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterToothExtraction">
-                                                            <Run>Рекомендации стоматолога после удаления зуба</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ForCareBraces">
-                                                            <Run>Рекомендации стоматолога по уходу за брекетами</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-
-
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ReceiptCashOrder">
-                                                            <Run>Приходный кассовый ордер</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="DentalServicesAgreement">
-                                                            <Run>Договор об оказании стоматологических услуг</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ContractGuarantor">
-                                                            <Run>Договор Поручитель</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-                                                <ListItem Margin="0 5 0 5">
-                                                    <Paragraph>
-                                                        <Hyperlink Command="{Binding OpenCommand}" CommandParameter="InstallmentAgreement">
-                                                            <Run>Договор рассрочки</Run>
-                                                        </Hyperlink>
-                                                    </Paragraph>
-                                                </ListItem>
-
-                                            </List>
-                                        </FlowDocument>
-                                    </FlowDocumentScrollViewer>
-                                </Grid>
-                            </dxlc:LayoutGroup>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="План лечения и счета" >
-                            <tp:TreatmentPlan DataContext="{Binding}"/>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Прикрепляемые файлы" >
-
-                            <DockPanel>
-                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                                 Name="PART_Options" DockPanel.Dock="Right" dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" Focusable="False">
-                                
-                                </ScrollViewer>
-                                <Grid x:Name="PART_RootGrid">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                                        <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled">
+                                            <FlowDocument>
+                                                <List FontSize="12">
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOnInjection">
+                                                                <Run>ИДС на инъекционную анестезию</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSCariesTreatment">
+                                                                <Run>ИДС на лечение кариеса и иных болезней твердых тканей зубов</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSUrgentHelp">
+                                                                <Run>ИДС на неотложную помощь</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem >
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthodonticTreatment">
+                                                                <Run>ИДС на ортодонтическое лечение</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSOrthopedicTreatment">
+                                                                <Run>ИДС на ортопедическое лечение</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDisclaimerGuarantees">
+                                                                <Run>ИДС на отказ от гарантий (как временная мера)</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSParadonticTreatment">
+                                                                <Run>ИДС на парадонтологическое лечение</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSDiagnosticManipulations">
+                                                                <Run>ИДС на проведение диагностических манипуляций (рентгендиагностику)</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSBoneAugmentation">
+                                                                <Run>ИДС на проведение операции наращивания кости на участке верхнечелюстной пазухи (синус-лифтинг)</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSProcessReconstruction">
+                                                                <Run>ИДС на проведение операций по реконструкции альвеолярного отростка</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSSurgery">
+                                                                <Run>ИДС на проведение хирургической операции (удаление зуба, резекция)</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTeethWhitening">
+                                                                <Run>ИДС на процедуру отбеливания зубов</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSImplantPlacement">
+                                                                <Run>ИДС на установку имплантата</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSTreatmentAndImplantation">
+                                                                <Run>ИДС на хирургическое лечение и имплантацию</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSEndodonticTreatment">
+                                                                <Run>ИДС на эндодонтическое лечение</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="IDSList">
+                                                                <Run>Лист ИДС</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="TeethWhiteningRecommendations">
+                                                                <Run>Рекомендации стоматолога по после отбеливания зубов</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="RecommendationsAfterImplantation">
+                                                                <Run>Рекомендации стоматолога после имплантации</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterCariesAndPulpitis">
+                                                                <Run>Рекомендации стоматолога после лечения кариеса и пульпита</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithDentures">
+                                                                <Run>Рекомендации стоматолога после протезированием  сьемными протезами</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProstheticsWithCrowns">
+                                                                <Run>Рекомендации стоматолога после протезирования коронками  и мостовидными ортопедическими конструкциями</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterProfOralHygiene">
+                                                                <Run>Рекомендации стоматолога после профессиональной гигиены полости рта</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="AfterToothExtraction">
+                                                                <Run>Рекомендации стоматолога после удаления зуба</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ForCareBraces">
+                                                                <Run>Рекомендации стоматолога по уходу за брекетами</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
 
 
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ReceiptCashOrder">
+                                                                <Run>Приходный кассовый ордер</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="DentalServicesAgreement">
+                                                                <Run>Договор об оказании стоматологических услуг</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="ContractGuarantor">
+                                                                <Run>Договор Поручитель</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
+                                                    <ListItem Margin="0 5 0 5">
+                                                        <Paragraph>
+                                                            <Hyperlink Command="{Binding OpenCommand}" CommandParameter="InstallmentAgreement">
+                                                                <Run>Договор рассрочки</Run>
+                                                            </Hyperlink>
+                                                        </Paragraph>
+                                                    </ListItem>
 
-                                    <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
-                                        <Button DataContext="{Binding Source={StaticResource vm} }" 
-                                    Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-1"
-                                    Background="White"
-                            BorderThickness="0"
-                                    Padding="0" Height="30" Width="30" Margin="0" ToolTip="Создать позицию">
-                                            <Image Height="25" Width="25" Margin="2 2 0 0">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Page-White-Edit.png" />
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button DataContext="{Binding Source={StaticResource vm} }" 
-                                    Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-2"
-                                    Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="0" ToolTip="Создать группу">
-                                            <Image Height="25" Width="25" Margin="1 2 0 0">
-                                                <Image.Source>
-                                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Folder.png" />
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
+                                                </List>
+                                            </FlowDocument>
+                                        </FlowDocumentScrollViewer>
+                                    </Grid>
+                                </dxlc:LayoutGroup>
+                            </dx:DXTabItem>
 
-                                       
+                            <dx:DXTabItem Header="План лечения и счета" >
+                                <tp:TreatmentPlan DataContext="{Binding}"/>
+                            </dx:DXTabItem>
 
+                            <dx:DXTabItem Header="Приемы">
+                                <tp:VisitStore DataContext="{Binding}"/>
+                            </dx:DXTabItem>
 
-                                        <Grid x:Name="LayoutRoot">
-                                            <dxe:FlyoutControl
-                            x:Name="flyoutControl"
-                            FontSize="16"
-                            AllowMoveAnimation="True"
-                            FontFamily="Segoe UI Light"
-                            IsOpen="True"/>
-                                        </Grid>
-  
-                                    </StackPanel>
-                                   
-                                    <dxe:ListBoxEdit x:Name="PART_ListBox"
-                             Grid.Row="1"
-                             ShowBorder="False"
-                             SelectedItem="{Binding CurrentPhoto}"
-                             ItemsSource="{Binding Photos}"
-                             SelectionMode="Single"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                        <dxe:ListBoxEdit.ItemContainerStyle>
-                                            <Style TargetType="dxe:ListBoxEditItem">
-                                                <Setter Property="ToolTip" Value="{Binding Path=PhotoName, Mode=OneWay}" />
-                                            </Style>
-                                        </dxe:ListBoxEdit.ItemContainerStyle>
-                                        <dxe:ListBoxEdit.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Background="Transparent">
-                                                    <Image Source="{Binding Path=Photo}" Stretch="Uniform" />
-                                                </Border>
-                                            </DataTemplate>
-                                        </dxe:ListBoxEdit.ItemTemplate>
-                                        <dxe:ListBoxEdit.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel Orientation="Horizontal" ItemHeight="150" ItemWidth="150" />
-                                            </ItemsPanelTemplate>
-                                        </dxe:ListBoxEdit.ItemsPanel>
-                                    </dxe:ListBoxEdit>
-                                    <dxb:StatusBarControl x:Name="PART_StatusBar" Grid.Row="2" BarItemDisplayMode="ContentAndGlyph" GlyphSize="Large">
-                                        <dxb:BarStaticItem AutoSizeMode="Fill" ContentAlignment="Stretch" ShowBorder="False">
-                                            <dxb:BarStaticItem.ContentTemplate>
-                                                <DataTemplate>
-                                                    <dxe:TextEdit EditMode="InplaceInactive" Text="{Binding Path=DataContext.GalleryDirectory, ElementName=PART_Ribbon, Mode=OneWay}" />
-                                                </DataTemplate>
-                                            </dxb:BarStaticItem.ContentTemplate>
-                                        </dxb:BarStaticItem>
-                                    </dxb:StatusBarControl>
-                                </Grid>
-                            </DockPanel>
-                        </dx:DXTabItem>
+                            <dx:DXTabItem Header="Карта зубов">
 
-                        <dx:DXTabItem Header="Приемы">
-                            <dxlc:LayoutGroup Header="История посещений"
-                              Name="layoutGroup10"
-                              View="GroupBox"
-                              Orientation="Vertical"
-                              ItemLabelsAlignment="Local"
-                              IsCollapsible="True">
-                            </dxlc:LayoutGroup>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Карта зубов">
-             
                                 <tp:TeethPage DataContext="{Binding}" />
-                           
-                        </dx:DXTabItem>
-                        
-                    </dx:DXTabControl>
+
+                            </dx:DXTabItem>
+
+                        </dx:DXTabControl>
 
 
-                </dxlc:LayoutGroup>
-            </dxlc:LayoutControl>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutControl>
             </ScrollViewer>
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

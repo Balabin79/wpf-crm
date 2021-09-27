@@ -185,14 +185,6 @@
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
             </dxg:GridColumn>
-            
-            <dxg:GridColumn Binding="{Binding Data.PeriodFrom, Mode=TwoWay, Converter={StaticResource DateToString}}"  Header="Период от" Name="PeriodFrom" Width="1*" />
-            <dxg:GridColumn Binding="{Binding Data.PeriodTo, Mode=TwoWay, Converter={StaticResource DateToString}}"  Header="Период до" Name="PeriodTo" Width="1*" />
-            <dxg:GridColumn Binding="{Binding Data.Sum, StringFormat=C, ConverterCulture=ru-RU}" Header="Сумма"  Name="Sum" Width="1*" />
-
-
-
-
 
             <dxg:GridColumn Width="auto" >
                 <dxg:GridColumn.CellTemplate>

@@ -17,9 +17,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="230"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -55,137 +54,108 @@
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
+               
             </dxlc:LayoutGroup>
+            <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True" LabelPosition="Top">
+                <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="+7(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                    <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutItem Label="Email" AddColonToLabel="True" LabelPosition="Top">
+                <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True">
+                    <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
+                </dxe:ButtonEdit>
+            </dxlc:LayoutItem>
+
         </dxlc:LayoutGroup>
 
 
-        <dxlc:LayoutGroup Header="Дополнительная информация" Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
+        <dxlc:LayoutGroup Header="Дополнительно" Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
                                       ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
-
-            <dxlc:LayoutGroup Orientation="Horizontal">
-                <dxlc:LayoutItem Label="Серия и номер паспорта:"  Name="SeriaNumberPassport" LabelPosition="Top" >
-                    <dxe:TextEdit />
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Дата выдачи:"  Name="IssuedDate" LabelPosition="Top" >
-                    <dxe:DateEdit   EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
-                </dxlc:LayoutItem>
-
-            </dxlc:LayoutGroup>
-
-            <dxlc:LayoutItem Label="Кем выдан:"  Name="WhoIssued" LabelPosition="Top" >
-                <dxe:MemoEdit />
-            </dxlc:LayoutItem>
 
             <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
                 <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Address, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged}"/>
             </dxlc:LayoutItem>
 
-            <dxlc:LayoutItem Label="Примечания:"  Name="Comment" LabelPosition="Top" >
+            <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="0" LabelPosition="Top" >
+                <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedAdvertisings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          >
+                    <dxe:ComboBoxEdit.StyleSettings>
+                        <dxe:CheckedComboBoxStyleSettings />
+                    </dxe:ComboBoxEdit.StyleSettings>
+                </dxe:ComboBoxEdit>
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutItem Label="Скидки:"  LabelPosition="Top">
+                <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedDiscountGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          >
+                    <dxe:ComboBoxEdit.StyleSettings>
+                        <dxe:CheckedComboBoxStyleSettings />
+                    </dxe:ComboBoxEdit.StyleSettings>
+                </dxe:ComboBoxEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
+                <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}" DisplayMember="Name"  
+                                                              IsTextEditable="False"
+                                                          SelectedItem="{Binding SelectedClientsGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                          >
+                    <dxe:ComboBoxEdit.StyleSettings>
+                        <dxe:RadioComboBoxStyleSettings />
+                    </dxe:ComboBoxEdit.StyleSettings>
+                </dxe:ComboBoxEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Примечание:"  Name="Comment" LabelPosition="Top" >
                 <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged}" />
             </dxlc:LayoutItem>
 
+            <dxlc:LayoutItem Grid.Row="2"  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Stretch">
+                <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" IsChecked="True" />
+            </dxlc:LayoutItem>
+
+
+
         </dxlc:LayoutGroup>
 
-        <dxlc:LayoutGroup Header="Контакты" Grid.Row="1" Grid.Column="0" Name="layoutGroup2" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"  Margin="0 10 10 0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <dxlc:LayoutItem Label="Основной телефон" AddColonToLabel="True" Grid.Row="0" LabelPosition="Top">
-                    <dxe:ButtonEdit IsTextEditable="True"
-                                            AllowDefaultButton="False"
-                                            MaskType="Simple"
-                                            Mask="+7(999) 000-0000"
-                                            MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                        <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
-                    </dxe:ButtonEdit>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Дополнительный телефон" AddColonToLabel="True" Grid.Row="1" LabelPosition="Top">
-                    <dxe:ButtonEdit IsTextEditable="True"
-                                            AllowDefaultButton="False"
-                                            MaskType="Simple"
-                                            Mask="(999) 000-0000"
-                                            MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
-                        <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg" Margin="0 2 2 2"/>
-                    </dxe:ButtonEdit>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Email" AddColonToLabel="True"  Grid.Row="2" LabelPosition="Top">
-                    <dxe:ButtonEdit IsTextEditable="True"
-                                            AllowDefaultButton="False"
-                                            MaskType="RegEx"
-                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                            EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                            ValidateOnTextInput="True">
-                        <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
-                    </dxe:ButtonEdit>
-                </dxlc:LayoutItem>
-            </Grid>
-        </dxlc:LayoutGroup>
 
-        <dxlc:LayoutGroup Header="Маркетинг" Grid.Row="1" Grid.Column="1" Name="layoutGroup5" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local"  Margin="0 10 0 0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
 
-                <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="0" LabelPosition="Top" >
-                    <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedAdvertisings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Выберите скидки">
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:CheckedComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-
-                <dxlc:LayoutGroup Orientation="Horizontal" Grid.Row="1">
-
-                    <dxlc:LayoutItem Label="Скидки:"  LabelPosition="Top">
-                        <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedDiscountGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Выберите скидки" >
-                            <dxe:ComboBoxEdit.StyleSettings>
-                                <dxe:CheckedComboBoxStyleSettings />
-                            </dxe:ComboBoxEdit.StyleSettings>
-                        </dxe:ComboBoxEdit>
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
-                        <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedClientsGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Категория клиентов" >
-                            <dxe:ComboBoxEdit.StyleSettings>
-                                <dxe:RadioComboBoxStyleSettings />
-                            </dxe:ComboBoxEdit.StyleSettings>
-                        </dxe:ComboBoxEdit>
-                    </dxlc:LayoutItem>
-                </dxlc:LayoutGroup>
-
-                <dxlc:LayoutItem Grid.Row="2"  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Stretch">
-                    <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" IsChecked="True" />
-                </dxlc:LayoutItem>
-
-            </Grid>
-        </dxlc:LayoutGroup>
-
-        <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 10 0 0" 
+        <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 10 0 0" MaxHeight="800"
                                                   Name="layoutGroup6" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+            <dxg:GridControl ItemsSource="{Binding}">
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="DateVisit" Header="Название документа" />
+                    <dxg:GridColumn FieldName="Doctors" Header="Дата добавления" />
+                    <dxg:GridColumn FieldName="Diagnos" Header="Ссылка" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView ShowGroupPanel="False"
+                                               NavigationStyle="Row"
+                                               AutoWidth="True"
+                                               AllowEditing="False"
+                                               ShowVerticalLines="False"
+                                               ShowHorizontalLines="False"
+                                               UseEvenRowBackground="True"
+                                               ShowIndicator="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
 
 
         </dxlc:LayoutGroup>

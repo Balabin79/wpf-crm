@@ -114,15 +114,20 @@
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Application-Form-Edit.png" />
+    <None Remove="Resources\Icons\Template\Application-Key.png" />
     <None Remove="Resources\Icons\Template\Barcode.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
     <None Remove="Resources\Icons\Template\Blackberry-White.png" />
     <None Remove="Resources\Icons\Template\Book-Keeping.png" />
     <None Remove="Resources\Icons\Template\Box-Open.png" />
     <None Remove="Resources\Icons\Template\Chart-Bar.png" />
+    <None Remove="Resources\Icons\Template\Chart-Curve.png" />
+    <None Remove="Resources\Icons\Template\Chart-Line.png" />
+    <None Remove="Resources\Icons\Template\Chart-Pie.png" />
     <None Remove="Resources\Icons\Template\Client-Account-Template.png" />
     <None Remove="Resources\Icons\Template\Coins-In-Hand.png" />
     <None Remove="Resources\Icons\Template\Coins.png" />
+    <None Remove="Resources\Icons\Template\Columnchart.png" />
     <None Remove="Resources\Icons\Template\comp.png" />
     <None Remove="Resources\Icons\Template\Curriculum-Vitae.png" />
     <None Remove="Resources\Icons\Template\delete_32.png" />
@@ -150,10 +155,13 @@
     <None Remove="Resources\Icons\Template\Folder.png" />
     <None Remove="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Edit-Delete-32.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Google-Map.png" />
+    <None Remove="Resources\Icons\Template\google.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
     <None Remove="Resources\Icons\Template\Hotjobs.png" />
     <None Remove="Resources\Icons\Template\implant.png" />
@@ -189,10 +197,12 @@
     <None Remove="Resources\Icons\Template\Sallary-Deferrais.png" />
     <None Remove="Resources\Icons\Template\Server-Connect.png" />
     <None Remove="Resources\Icons\Template\Setting-Tools.png" />
+    <None Remove="Resources\Icons\Template\Shape-Square-Key.png" />
     <None Remove="Resources\Icons\Template\Shedule.png" />
     <None Remove="Resources\Icons\Template\Sheduled-Task.png" />
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
+    <None Remove="Resources\Icons\Template\Table.png" />
     <None Remove="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <None Remove="Resources\Icons\Template\tooth-gray.png" />
     <None Remove="Resources\Icons\Template\tooth-green.png" />
@@ -202,6 +212,7 @@
     <None Remove="Resources\Icons\Template\tooth_green.png" />
     <None Remove="Resources\Icons\Template\tooth_red.png" />
     <None Remove="Resources\Icons\Template\tooth_yellow.png" />
+    <None Remove="Resources\Icons\Template\Transmit-Blue.png" />
     <None Remove="Resources\Icons\Template\Transmit.png" />
     <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
@@ -259,6 +270,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Images" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Images.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Mvvm" Version="20.1.4" />
     <PackageReference Include="DevExpress.Pdf.Drawing" Version="20.1.4" />
     <PackageReference Include="DevExpress.Pdf.Drawing.ru" Version="20.1.4" />
@@ -447,15 +460,20 @@
     <Resource Include="Resources\Icons\Template\Account-Balances.png" />
     <Resource Include="Resources\Icons\Template\Advertising.png" />
     <Resource Include="Resources\Icons\Template\Application-Form-Edit.png" />
+    <Resource Include="Resources\Icons\Template\Application-Key.png" />
     <Resource Include="Resources\Icons\Template\Barcode.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
     <Resource Include="Resources\Icons\Template\Book-Keeping.png" />
     <Resource Include="Resources\Icons\Template\Box-Open.png" />
     <Resource Include="Resources\Icons\Template\Chart-Bar.png" />
+    <Resource Include="Resources\Icons\Template\Chart-Curve.png" />
+    <Resource Include="Resources\Icons\Template\Chart-Line.png" />
+    <Resource Include="Resources\Icons\Template\Chart-Pie.png" />
     <Resource Include="Resources\Icons\Template\Client-Account-Template.png" />
     <Resource Include="Resources\Icons\Template\Coins-In-Hand.png" />
     <Resource Include="Resources\Icons\Template\Coins.png" />
+    <Resource Include="Resources\Icons\Template\Columnchart.png" />
     <Resource Include="Resources\Icons\Template\comp.png" />
     <Resource Include="Resources\Icons\Template\Curriculum-Vitae.png" />
     <Resource Include="Resources\Icons\Template\delete_32.png" />
@@ -476,8 +494,11 @@
     <Resource Include="Resources\Icons\Template\Folder.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
+    <Resource Include="Resources\Icons\Template\google.png" />
     <Resource Include="Resources\Icons\Template\Hotjobs.png" />
     <Resource Include="Resources\Icons\Template\implant.png" />
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
@@ -507,10 +528,12 @@
     <Resource Include="Resources\Icons\Template\Sallary-Deferrais.png" />
     <Resource Include="Resources\Icons\Template\Server-Connect.png" />
     <Resource Include="Resources\Icons\Template\Setting-Tools.png" />
+    <Resource Include="Resources\Icons\Template\Shape-Square-Key.png" />
     <Resource Include="Resources\Icons\Template\Shedule.png" />
     <Resource Include="Resources\Icons\Template\Sheduled-Task.png" />
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
+    <Resource Include="Resources\Icons\Template\Table.png" />
     <Resource Include="Resources\Icons\Template\To-Do-List-Cheked-All.png" />
     <Resource Include="Resources\Icons\Template\tooth-gray.png" />
     <Resource Include="Resources\Icons\Template\tooth-green.png" />
@@ -520,6 +543,7 @@
     <Resource Include="Resources\Icons\Template\tooth_green.png" />
     <Resource Include="Resources\Icons\Template\tooth_red.png" />
     <Resource Include="Resources\Icons\Template\tooth_yellow.png" />
+    <Resource Include="Resources\Icons\Template\Transmit-Blue.png" />
     <Resource Include="Resources\Icons\Template\Transmit.png" />
     <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
@@ -580,6 +604,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PatientCard\VisitStore.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\TreatmentPlan.xaml.cs">
@@ -659,6 +686,10 @@
     </Page>
     <Page Update="Views\PatientCard\ToothControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\PatientCard\VisitStore.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\TreatmentPlan.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
