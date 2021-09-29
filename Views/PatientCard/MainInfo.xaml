@@ -10,7 +10,8 @@
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
-              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
               d:DesignWidth="800">
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
@@ -29,26 +30,30 @@
                                       ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
 
             <dxlc:LayoutItem Label="*Фамилия:"  Name="LastName" LabelPosition="Top" IsRequired="True" >
-                <dxe:TextEdit />
+                <dxe:TextEdit Text="{Binding Model.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="*Имя:"  Name="FirstName" LabelPosition="Top" IsRequired="True" >
-                <dxe:TextEdit />
+                <dxe:TextEdit Text="{Binding Model.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Отчество:"  Name="MiddleName" LabelPosition="Top" >
-                <dxe:TextEdit />
+                <dxe:TextEdit Text="{Binding Model.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
             <dxlc:LayoutGroup Orientation="Horizontal">
                 <dxlc:LayoutItem Label="Дата рождения:"  Name="BirthDate" LabelPosition="Top" >
-                    <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding RowData.Source.Row.BirthDate, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}}" />
+                    <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding Model.BirthDate, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
 
                 <dxlc:LayoutItem Label="Пол:"  Name="Gender" LabelPosition="Top" >
 
                     <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
                                                           SelectedItem="{Binding SelectedGender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Пол"
-                                              IsTextEditable="False" >
+                                                          NullText="Пол" IsTextEditable="False"
+                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
@@ -62,7 +67,8 @@
                                             MaskType="Simple"
                                             Mask="+7(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Employee.MobilePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                            EditValue="{Binding Path=Model.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                 </dxe:ButtonEdit>
@@ -73,8 +79,8 @@
                                             AllowDefaultButton="False"
                                             MaskType="RegEx"
                                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                            EditValue="{Binding Path=Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                            ValidateOnTextInput="True">
+                                            EditValue="{Binding Path=Model.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True" IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                 </dxe:ButtonEdit>
@@ -87,15 +93,16 @@
                                       ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
 
             <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
-                <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Address, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged}"/>
+                <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
 
             <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="0" LabelPosition="Top" >
                 <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name"  
                                                               IsTextEditable="False"
                                                           SelectedItem="{Binding SelectedAdvertisings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          >
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:CheckedComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
@@ -106,7 +113,7 @@
                 <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" DisplayMember="Name"  
                                                               IsTextEditable="False"
                                                           SelectedItem="{Binding SelectedDiscountGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          >
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:CheckedComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
@@ -116,29 +123,30 @@
                 <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}" DisplayMember="Name"  
                                                               IsTextEditable="False"
                                                           SelectedItem="{Binding SelectedClientsGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          >
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
                 </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
-            <dxlc:LayoutItem Label="Примечание:"  Name="Comment" LabelPosition="Top" >
-                <dxe:MemoEdit  EditValue="{Binding RowData.Source.Row.Comment, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged}" />
+            <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" >
+                <dxe:MemoEdit  EditValue="{Binding Model.Note, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
 
             <dxlc:LayoutItem Grid.Row="2"  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Stretch">
-                <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" IsChecked="True" />
+                <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
+                                  IsChecked="{Binding Model.IsSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
-
-
-
         </dxlc:LayoutGroup>
 
 
 
-        <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2" Margin="0 10 0 0" MaxHeight="800"
-                                                  Name="layoutGroup6" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+        <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2"
+                          Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+            
             <dxg:GridControl ItemsSource="{Binding}">
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="DateVisit" Header="Название документа" />

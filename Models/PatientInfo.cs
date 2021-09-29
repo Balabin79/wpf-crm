@@ -1,12 +1,20 @@
 using Dental.Models.Base;
+using DevExpress.Mvvm;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace Dental.Models
 {
     [Table("PatientInfo")]
-    class PatientInfo : AbstractBaseModel
+    class PatientInfo : AbstractBaseModel, IDataErrorInfo
     {
+        [Display(Name = "Номер медицинской карты")]
+        public string PatientCardNumber { get; set; } //номер карты
+
+        [Display(Name = "Дата создания медицинской карты")]
+        public string PatientCardCreatedAt { get; set; } //дата заполнения карты
+
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
@@ -30,39 +38,37 @@ namespace Dental.Models
             get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
         }
 
+        [Display(Name = "Пол")]
+        public string Sex { get; set; }
+
         [Phone]
         [Display(Name = "Телефон")]
         public string Phone { get; set; }
-
-        [Display(Name = "Skype")]
-        [MaxLength(255)]
-        public string Skype { get; set; }
 
         [EmailAddress]
         [MaxLength(255)]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Номер медицинской карты")]
-        public string MedicalCardNumber { get; set;  } //номер карты
+        [Display(Name = "Адрес проживания")]
+        public string Address { get; set; } 
 
-        [Display(Name = "Дата создания медицинской карты")]
-        public string MedicalCardCreatedAt { get; set;  } //дата заполнения карты
+        [Display(Name = "Примечание")]
+        public string Note { get; set; } 
 
-        [Display(Name = "Серия и номер паспорта")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string SerialNumberPassport { get; set; } //серия и номер паспорта
+        [Display(Name = "Канал привлечения")]
+        public string AdvertisingSource{ get; set; }
 
-        [Display(Name = "Дата выдачи")]
-        public string DateIssuedPassport { get; set; } // дата выдачи
+        [Display(Name = "Категория клиентов")]
+        public string ClientCategory { get; set; }
 
-        [Display(Name = "Кем выдан")]
-        public string IssuedByPassport { get; set; } // кем выдан
+        [Display(Name = "Группа скидки")]
+        public string DiscountGroup { get; set; }
 
-        [Display(Name = "Адрес")]
-        public string Address{ get; set; }
+        [Display(Name = "Получает рассылки")]
+        public bool IsSubscribe { get; set; } = true;
 
-        [Display(Name = "Комментарий")]
-        public string Note { get; set; }
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 }

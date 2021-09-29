@@ -53,22 +53,29 @@
 
 
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left">
-                    <TextBlock Text="dadddw"/>
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Image Height="25" Width="25" Margin="2 0 0 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="{Binding Model.PatientCardNumber, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="18" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     
                     <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Name="bNew" Content="New" Glyph="{dx:DXImage SvgImages/Outlook Inspired/New.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/New.svg}" />
-                        <dxb:BarButtonItem Name="bOpen" Content="Open" Glyph="{dx:DXImage SvgImages/Miscellaneous/Windows.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Miscellaneous/Windows.svg}" />
+                      
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           Command="{Binding EditableCommand}"/>
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" Content="Редактировать данные" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                           Command="{Binding EditableCommand}"/>
+                        <dxb:BarButtonItem Name="bAttach" Content="Save" Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" />
                         <dxb:BarButtonItem Name="bSave" Content="Save" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Name="bPrint"
-                                   Content="Print"
-                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Print.svg}"
-                                   LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Print.svg}"
-                                    />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -320,15 +327,11 @@
                             <dx:DXTabItem Header="План лечения и счета" >
                                 <tp:TreatmentPlan DataContext="{Binding}"/>
                             </dx:DXTabItem>
-
                             <dx:DXTabItem Header="Приемы">
                                 <tp:VisitStore DataContext="{Binding}"/>
                             </dx:DXTabItem>
-
                             <dx:DXTabItem Header="Карта зубов">
-
                                 <tp:TeethPage DataContext="{Binding}" />
-
                             </dx:DXTabItem>
 
                         </dx:DXTabControl>

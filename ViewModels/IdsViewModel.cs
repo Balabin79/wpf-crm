@@ -89,9 +89,9 @@ namespace Dental.ViewModels
                         LastName = "Иванов",
                         MiddleName = "Иванович",
                         BirthDate = "12.02.1985",
-                        SerialNumberPassport = "6303",
+                        //SerialNumberPassport = "6303",
                        // NumberPassport = "987885",
-                        DateIssuedPassport = "12.02.2012",
+                        //DateIssuedPassport = "12.02.2012",
                         //FullAddress = "Саратовская область, Хвалынский район, с.Подлесное, ул. Лесная, 15"
                     }
                 };

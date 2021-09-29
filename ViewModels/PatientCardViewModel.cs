@@ -25,7 +25,13 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                              
+                IsReadOnly = true;
+                _BtnIconEditableHide = true;
+                _BtnIconEditableVisible = false;
+                Model = new PatientInfo();
+                Model.PatientCardNumber = (CreateNewNumberPatientCard()).ToString();
+                Model.PatientCardCreatedAt = DateTime.Now.ToShortDateString();
+
                 ClickToothGreenCommand = new LambdaCommand(OnClickToothGreenCommandExecuted, CanClickToothGreenCommandExecute);
                 ClickToothYelPlCommand = new LambdaCommand(OnClickToothYelPlCommandExecuted, CanClickToothYelPlCommandExecute);
                 ClickToothYelCorCommand = new LambdaCommand(OnClickToothYelCorCommandExecuted, CanClickToothYelCorCommandExecute);
@@ -36,11 +42,14 @@ namespace Dental.ViewModels
                 ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
                 ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
 
+                EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
 
                 DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
                 ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
                 ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
+
+
              
                 _Teeth = new PatientTeeth();
 
@@ -52,8 +61,7 @@ namespace Dental.ViewModels
             }
 
         }
-
-
+      
         public ICommand ClickToothGreenCommand { get; }
         public ICommand ClickToothYelPlCommand { get; }
         public ICommand ClickToothYelCorCommand { get; }
@@ -63,7 +71,7 @@ namespace Dental.ViewModels
         public ICommand ClickToothRedPCommand { get; }
         public ICommand ClickToothRedCCommand { get; }
         public ICommand ClickToothGrayCommand { get; }
-
+        public ICommand EditableCommand { get; }
 
         private bool CanClickToothGreenCommandExecute(object p) => true;
         private bool CanClickToothYelPlCommandExecute(object p) => true;
@@ -74,6 +82,7 @@ namespace Dental.ViewModels
         private bool CanClickToothRedPCommandExecute(object p) => true;
         private bool CanClickToothRedCCommandExecute(object p) => true;
         private bool CanClickToothGrayCommandExecute(object p) => true;
+        private bool CanEditableCommandExecute(object p) => true;
 
         private void OnClickToothGreenCommandExecuted(object p)
         {
@@ -185,16 +194,41 @@ namespace Dental.ViewModels
             }
         }
 
+        private void OnEditableCommandExecuted(object p)
+        {
+            IsReadOnly = !IsReadOnly;
+            BtnIconEditableHide = IsReadOnly;
+            BtnIconEditableVisible = !IsReadOnly;                            
+        }
+
+        private bool _IsReadOnly;
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set => Set(ref _IsReadOnly, value);
+        }
+
+        public PatientTeeth _Teeth;
+        public PatientTeeth Teeth
+        {
+            get => _Teeth;
+            set => Set(ref _Teeth, value);
+        }
+
+        private PatientInfo _Model;
+        public PatientInfo Model
+        {
+            get => _Model;
+            set => Set(ref _Model, value);
+        }
+
+
         public string SelectedGender { get; set; }
         public object SelectedDiscountGroups { get; set; }
         public object SelectedAdvertisings { get; set; }
         public string SelectedClientsGroup { get; set; }
 
-        public PatientTeeth _Teeth;
-        public PatientTeeth Teeth { 
-            get => _Teeth; 
-            set =>Set (ref _Teeth, value); 
-        }
+
 
 
         public IEnumerable<DiscountGroups> DiscountGroupList { get; set; }
@@ -224,6 +258,26 @@ namespace Dental.ViewModels
                 case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
                 case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
             }
+        }
+
+        private int CreateNewNumberPatientCard()
+        {
+            var id = db.PatientInfo?.OrderBy(f => f.Id).Select(f => f.Id)?.ToList()?.LastOrDefault();
+            if (id == null) return 1;
+            return (int)id++;
+        }
+        private bool _BtnIconEditableVisible;
+        public bool BtnIconEditableVisible 
+        { 
+            get => _BtnIconEditableVisible; 
+            set => Set(ref _BtnIconEditableVisible, value); 
+        }
+
+        private bool _BtnIconEditableHide;
+        public bool BtnIconEditableHide 
+        { 
+            get => _BtnIconEditableHide;
+            set => Set(ref _BtnIconEditableHide, value);
         }
     }
 }
