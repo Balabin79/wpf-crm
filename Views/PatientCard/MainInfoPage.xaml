@@ -73,8 +73,8 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            Command="{Binding EditableCommand}"/>
-                        <dxb:BarButtonItem Name="bAttach" Content="Save" Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" />
-                        <dxb:BarButtonItem Name="bSave" Content="Save" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
+                        <dxb:BarButtonItem Command="{Binding AttachmentFileCommand}" Name="bAttach" Content="Прикрепить файл" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}" />
+                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

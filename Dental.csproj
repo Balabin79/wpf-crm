@@ -150,6 +150,7 @@
     <None Remove="Resources\Icons\Template\error-item.png" />
     <None Remove="Resources\Icons\Template\Error-Symbol.png" />
     <None Remove="Resources\Icons\Template\Exclamation.png" />
+    <None Remove="Resources\Icons\Template\Eye.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
     <None Remove="Resources\Icons\Template\Folder.png" />
@@ -177,6 +178,7 @@
     <None Remove="Resources\Icons\Template\Mail-Server-Setting.png" />
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
     <None Remove="Resources\Icons\Template\Money.png" />
+    <None Remove="Resources\Icons\Template\Monitor.png" />
     <None Remove="Resources\Icons\Template\org.png" />
     <None Remove="Resources\Icons\Template\Page-White-Edit.png" />
     <None Remove="Resources\Icons\Template\Participation-Rate.png" />
@@ -218,6 +220,7 @@
     <None Remove="Resources\Icons\Template\User-Add.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\Icons\Template\User.png" />
+    <None Remove="Resources\Icons\Template\Widescreen.png" />
     <None Remove="Resources\PatientCard\1.png" />
     <None Remove="Resources\PatientCard\2.jpg" />
     <None Remove="Resources\PatientCard\3.png" />
@@ -490,6 +493,7 @@
     <Resource Include="Resources\Icons\Template\Email-Link.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
     <Resource Include="Resources\Icons\Template\error-item.png" />
+    <Resource Include="Resources\Icons\Template\Eye.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Folder.png" />
@@ -510,6 +514,7 @@
     <Resource Include="Resources\Icons\Template\License-Management.png" />
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
+    <Resource Include="Resources\Icons\Template\Monitor.png" />
     <Resource Include="Resources\Icons\Template\org.png" />
     <Resource Include="Resources\Icons\Template\Page-White-Edit.png" />
     <Resource Include="Resources\Icons\Template\Participation-Rate.png" />
@@ -550,6 +555,7 @@
     <Resource Include="Resources\Icons\Template\User-Add.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\Icons\Template\User.png" />
+    <Resource Include="Resources\Icons\Template\Widescreen.png" />
     <Resource Include="Resources\PatientCard\1.png" />
     <Resource Include="Resources\PatientCard\2.jpg" />
     <Resource Include="Resources\PatientCard\3.png" />

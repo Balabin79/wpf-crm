@@ -22,5 +22,6 @@ namespace Dental.Models
         public DbSet<ClientsGroup> ClientsGroup { get; set; }
         public DbSet<Price> Price { get; set; }
         public DbSet<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
+        public DbSet<ClientFiles> ClientFiles { get; set; }
     }
 }

@@ -12,7 +12,8 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-
+using System.IO;
+using System.Diagnostics;
 
 namespace Dental.ViewModels
 {
@@ -41,6 +42,8 @@ namespace Dental.ViewModels
                 ClickToothRedPCommand = new LambdaCommand(OnClickToothRedPCommandExecuted, CanClickToothRedPCommandExecute);
                 ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
                 ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
+                DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
+                AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
 
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
 
@@ -72,6 +75,8 @@ namespace Dental.ViewModels
         public ICommand ClickToothRedCCommand { get; }
         public ICommand ClickToothGrayCommand { get; }
         public ICommand EditableCommand { get; }
+        public ICommand DeleteFileCommand { get; }
+        public ICommand AttachmentFileCommand { get; }
 
         private bool CanClickToothGreenCommandExecute(object p) => true;
         private bool CanClickToothYelPlCommandExecute(object p) => true;
@@ -83,6 +88,8 @@ namespace Dental.ViewModels
         private bool CanClickToothRedCCommandExecute(object p) => true;
         private bool CanClickToothGrayCommandExecute(object p) => true;
         private bool CanEditableCommandExecute(object p) => true;
+        private bool CanDeleteFileCommandExecute(object p) => true;
+        private bool CanAttachmentFileCommandExecute(object p) => true;
 
         private void OnClickToothGreenCommandExecuted(object p)
         {
@@ -200,6 +207,56 @@ namespace Dental.ViewModels
             BtnIconEditableHide = IsReadOnly;
             BtnIconEditableVisible = !IsReadOnly;                            
         }
+
+        private void OnAttachmentFileCommandExecuted(object p)
+        {
+            try
+            {
+                var fileContent = string.Empty;
+                var filePath = string.Empty;
+                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    openFileDialog.InitialDirectory = "c:\\";
+                    openFileDialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        //Get the path of specified file
+                        filePath = openFileDialog.FileName;
+                        ClientFiles file = new ClientFiles();
+                        file.Path = filePath;
+                        file.DateCreated = DateTime.Today.ToShortDateString();
+                        file.Name = "vvv";
+                        TempFiles.Add(file);
+                       // Process.Start(filePath);
+
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        
+        private void OnDeleteFileCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public ObservableCollection<ClientFiles> Files { get; set; }
+        public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();
 
         private bool _IsReadOnly;
         public bool IsReadOnly
