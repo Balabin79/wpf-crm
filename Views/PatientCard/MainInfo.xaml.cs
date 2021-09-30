@@ -9,5 +9,10 @@ namespace Dental.Views.PatientCard
         {
             InitializeComponent();
         }
+        /*
+        private void openRow_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            int x = 0;
+        }*/
     }
 }

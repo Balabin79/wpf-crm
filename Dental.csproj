@@ -119,10 +119,14 @@
     <None Remove="Resources\Icons\Template\Bell.png" />
     <None Remove="Resources\Icons\Template\Blackberry-White.png" />
     <None Remove="Resources\Icons\Template\Book-Keeping.png" />
+    <None Remove="Resources\Icons\Template\Book.png" />
+    <None Remove="Resources\Icons\Template\Books.png" />
     <None Remove="Resources\Icons\Template\Box-Open.png" />
+    <None Remove="Resources\Icons\Template\calculator.png" />
     <None Remove="Resources\Icons\Template\Chart-Bar.png" />
     <None Remove="Resources\Icons\Template\Chart-Curve.png" />
     <None Remove="Resources\Icons\Template\Chart-Line.png" />
+    <None Remove="Resources\Icons\Template\Chart-Organisation.png" />
     <None Remove="Resources\Icons\Template\Chart-Pie.png" />
     <None Remove="Resources\Icons\Template\Client-Account-Template.png" />
     <None Remove="Resources\Icons\Template\Coins-In-Hand.png" />
@@ -154,13 +158,17 @@
     <None Remove="Resources\Icons\Template\Fax.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
     <None Remove="Resources\Icons\Template\Folder.png" />
+    <None Remove="Resources\Icons\Template\Glade-3-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Applications-Office-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Edit-Delete-32.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
+    <None Remove="Resources\Icons\Template\Gnome-X-Office-Spreadsheet-48.png" />
     <None Remove="Resources\Icons\Template\Google-Map.png" />
     <None Remove="Resources\Icons\Template\google.png" />
     <None Remove="Resources\Icons\Template\Group.png" />
@@ -170,12 +178,14 @@
     <None Remove="Resources\Icons\Template\init.png" />
     <None Remove="Resources\Icons\Template\initial.png" />
     <None Remove="Resources\Icons\Template\Injection.png" />
+    <None Remove="Resources\Icons\Template\invoice.png" />
     <None Remove="Resources\Icons\Template\Key.png" />
     <None Remove="Resources\Icons\Template\key_E.png" />
     <None Remove="Resources\Icons\Template\Large-Tiles.png" />
     <None Remove="Resources\Icons\Template\License-Management.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
     <None Remove="Resources\Icons\Template\Mail-Server-Setting.png" />
+    <None Remove="Resources\Icons\Template\moleskine_red.png" />
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
     <None Remove="Resources\Icons\Template\Money.png" />
     <None Remove="Resources\Icons\Template\Monitor.png" />
@@ -197,6 +207,7 @@
     <None Remove="Resources\Icons\Template\Reseller-Account.png" />
     <None Remove="Resources\Icons\Template\Ribbon.png" />
     <None Remove="Resources\Icons\Template\Sallary-Deferrais.png" />
+    <None Remove="Resources\Icons\Template\security.png" />
     <None Remove="Resources\Icons\Template\Server-Connect.png" />
     <None Remove="Resources\Icons\Template\Setting-Tools.png" />
     <None Remove="Resources\Icons\Template\Shape-Square-Key.png" />
@@ -469,10 +480,14 @@
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
     <Resource Include="Resources\Icons\Template\Book-Keeping.png" />
+    <Resource Include="Resources\Icons\Template\Book.png" />
+    <Resource Include="Resources\Icons\Template\Books.png" />
     <Resource Include="Resources\Icons\Template\Box-Open.png" />
+    <Resource Include="Resources\Icons\Template\calculator.png" />
     <Resource Include="Resources\Icons\Template\Chart-Bar.png" />
     <Resource Include="Resources\Icons\Template\Chart-Curve.png" />
     <Resource Include="Resources\Icons\Template\Chart-Line.png" />
+    <Resource Include="Resources\Icons\Template\Chart-Organisation.png" />
     <Resource Include="Resources\Icons\Template\Chart-Pie.png" />
     <Resource Include="Resources\Icons\Template\Client-Account-Template.png" />
     <Resource Include="Resources\Icons\Template\Coins-In-Hand.png" />
@@ -497,11 +512,15 @@
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Folder.png" />
+    <Resource Include="Resources\Icons\Template\Glade-3-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-Applications-Office-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
+    <Resource Include="Resources\Icons\Template\Gnome-X-Office-Spreadsheet-48.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
     <Resource Include="Resources\Icons\Template\google.png" />
     <Resource Include="Resources\Icons\Template\Hotjobs.png" />
@@ -509,10 +528,12 @@
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\Injection.png" />
+    <Resource Include="Resources\Icons\Template\invoice.png" />
     <Resource Include="Resources\Icons\Template\Key.png" />
     <Resource Include="Resources\Icons\Template\Large-Tiles.png" />
     <Resource Include="Resources\Icons\Template\License-Management.png" />
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
+    <Resource Include="Resources\Icons\Template\moleskine_red.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
     <Resource Include="Resources\Icons\Template\Monitor.png" />
     <Resource Include="Resources\Icons\Template\org.png" />
@@ -532,6 +553,7 @@
     <Resource Include="Resources\Icons\Template\Reseller-Account.png" />
     <Resource Include="Resources\Icons\Template\Ribbon.png" />
     <Resource Include="Resources\Icons\Template\Sallary-Deferrais.png" />
+    <Resource Include="Resources\Icons\Template\security.png" />
     <Resource Include="Resources\Icons\Template\Server-Connect.png" />
     <Resource Include="Resources\Icons\Template\Setting-Tools.png" />
     <Resource Include="Resources\Icons\Template\Shape-Square-Key.png" />
@@ -668,7 +690,7 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\WindowForms\PriceWindow.xaml.cs">
+    <Compile Update="Views\WindowForms\ClassificatorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -773,7 +795,7 @@
     <Page Update="Views\PatientCard\MainList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\WindowForms\PriceWindow.xaml">
+    <Page Update="Views\WindowForms\ClassificatorWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

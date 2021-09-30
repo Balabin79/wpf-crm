@@ -20,8 +20,9 @@ namespace Dental.Models
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Communication> Communication { get; set; }
         public DbSet<ClientsGroup> ClientsGroup { get; set; }
-        public DbSet<Price> Price { get; set; }
+        public DbSet<Classificator> Classificator { get; set; }
         public DbSet<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
         public DbSet<ClientFiles> ClientFiles { get; set; }
+        public DbSet<PriceForClients> PriceForClients { get; set; }
     }
 }

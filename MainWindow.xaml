@@ -79,7 +79,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type cl:CommunicationLogMain}"/>
-                       
+
                         <dxb:BarButtonItem Content="Счета и оплаты" RibbonStyle="Default" 
                                            ToolTip="Счета и оплаты"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Coins.png"
@@ -120,12 +120,9 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png"                                    
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type nomen:MainList}"/>
                     </dxr:RibbonPageGroup>
-
-
                 </dxr:RibbonPage>
 
-
-                <dxr:RibbonPage Caption="Администрирование">
+                    <dxr:RibbonPage Caption="Администрирование">
                     <dxr:RibbonPageGroup Caption="Кадры" >
                         <dxb:BarButtonItem Content="Список сотрудников"
                                            RibbonStyle="Default" 
@@ -196,13 +193,13 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
                                            ToolTip="Должности сотрудников"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Specialities}"/>
-                        <dxb:BarButtonItem Content="Прайсы"
+                        <dxb:BarButtonItem Content="Классификатор услуг" Padding="0"
                                            RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png"   
-                                            ToolTip="Прайсы"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:Price}"/>
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
+                                            ToolTip="Классификатор услуг"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:Classificator}"/>
 
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >

@@ -11,12 +11,13 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
               xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
               d:DesignWidth="800">
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="gridMainInfo">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>
@@ -146,8 +147,8 @@
 
         <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2"
                           Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
-            
-            <dxg:GridControl ItemsSource="{Binding TempFiles, Mode=TwoWay}">
+
+            <dxg:GridControl ItemsSource="{Binding TempFiles, Mode=TwoWay}" DataContext="{Binding}">
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Name" Header="Название" />
                     <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" />
@@ -158,7 +159,9 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button  Style="{StaticResource ResourceKey=MenuButton}"
-           
+                                  
+                                             Command="{Binding ExecuteFileCommand}"
+                                             CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                     Padding="2" Height="20" Width="20" Margin="0 2 0 0" ToolTip="Открыть">
                                         <Image Height="18" Width="18" >
                                             <Image.Source>
@@ -166,8 +169,8 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Button DataContext="{Binding}" Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding DeleteFileCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                                    <Button  Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding DeleteFileCommand}" CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                             Padding="2" Height="20" Width="20" Margin="5 0 0 0" ToolTip="Удалить">
                                         <Image Height="15" Width="15" >
                                             <Image.Source>
@@ -185,19 +188,42 @@
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
                     <dxg:TableView ShowGroupPanel="False"
+                                              x:Name="attachFileTableView"
                                                NavigationStyle="Row"
                                                AutoWidth="True"
                                                AllowEditing="False"
                                                ShowVerticalLines="False"
                                                ShowHorizontalLines="False"
                                                UseEvenRowBackground="True"
-                                               ShowIndicator="False" />
+                                               ShowIndicator="False" >
+                        <dxg:TableView.InputBindings>
+                            <KeyBinding Key="Delete"       
+                                Command="{Binding DeleteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                            <KeyBinding Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                            <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                        </dxg:TableView.InputBindings>
+                        
+                        <dxg:TableView.RowCellMenuCustomizations >
+                            <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
+                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
+                                               Command="{Binding ExecuteFileCommand}"
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                            <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                               Command="{Binding DeleteFileCommand}" 
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                        </dxg:TableView.RowCellMenuCustomizations>
+                    </dxg:TableView>
                 </dxg:GridControl.View>
             </dxg:GridControl>
-
-
         </dxlc:LayoutGroup>
-
     </Grid>
 
 </UserControl>

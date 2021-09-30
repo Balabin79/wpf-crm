@@ -43,6 +43,7 @@ namespace Dental.ViewModels
                 ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
                 ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
                 DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
+                ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
                 AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
 
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
@@ -76,6 +77,7 @@ namespace Dental.ViewModels
         public ICommand ClickToothGrayCommand { get; }
         public ICommand EditableCommand { get; }
         public ICommand DeleteFileCommand { get; }
+        public ICommand ExecuteFileCommand { get; }
         public ICommand AttachmentFileCommand { get; }
 
         private bool CanClickToothGreenCommandExecute(object p) => true;
@@ -89,6 +91,7 @@ namespace Dental.ViewModels
         private bool CanClickToothGrayCommandExecute(object p) => true;
         private bool CanEditableCommandExecute(object p) => true;
         private bool CanDeleteFileCommandExecute(object p) => true;
+        private bool CanExecuteFileCommandExecute(object p) => true;
         private bool CanAttachmentFileCommandExecute(object p) => true;
 
         private void OnClickToothGreenCommandExecuted(object p)
@@ -206,6 +209,23 @@ namespace Dental.ViewModels
             IsReadOnly = !IsReadOnly;
             BtnIconEditableHide = IsReadOnly;
             BtnIconEditableVisible = !IsReadOnly;                            
+        }
+
+        private void OnExecuteFileCommandExecuted(object p)
+        {
+            try
+            {
+                var file = p as ClientFiles;
+                file = null;
+                Process.Start(file?.Path);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                   text: "Невозможно запустить файл!",
+                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
         }
 
         private void OnAttachmentFileCommandExecuted(object p)
