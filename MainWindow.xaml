@@ -193,14 +193,20 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
                                            ToolTip="Должности сотрудников"
                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type v:Specialities}"/>
-                        <dxb:BarButtonItem Content="Классификатор услуг" Padding="0"
+                        <dxb:BarButtonItem Content="Классификатор услуг" 
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
                                             ToolTip="Классификатор услуг"
                                             Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:Classificator}"/>
-
+                        <dxb:BarButtonItem Content="Прайс для клиентов" 
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Money.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Money.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Money.png"   
+                                            ToolTip="Прайс для клиентов"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:ClientPrices}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >
 

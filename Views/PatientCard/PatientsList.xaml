@@ -28,175 +28,71 @@
     </UserControl.DataContext>
 
     <UserControl.Resources>
-        
-        <!--#region Shared templates-->
-        <DataTemplate x:Key="DetailCoreTemplate">
-            <dx:MeasurePixelSnapper>
-                <Grid  dx:ThemeManager.ThemeName="Office2019White"  Background="{dxi:ThemeResource {dxgt:TableViewThemeKey ResourceKey=EditFormBackground}}"
-                      TextBlock.Foreground="{dxi:ThemeResource {dxgt:TableViewThemeKey ResourceKey=EditFormForeground}}">
-                    <Grid Margin="12" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Decorator   Margin="-5,0,0,0" Grid.Column="0">
-                            <dxe:ImageEdit HorizontalAlignment="Left" 
-                                       VerticalAlignment="Top"
-                                       Source="{Binding Path=Row.Photo}"
-                                       
-                                       Margin="0 0 15 0"
-                                       ShowMenu="False"
-                                       IsReadOnly="True" />
-                        </Decorator>
-                        
-                            <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                 <ColumnDefinition />
-                                 <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="ФИО:" FontWeight="Regular" FontStyle="Italic" Margin="0 2 20 2"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Специальности:"   FontStyle="Italic" Margin="0 0 20 2"/>
-                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Организации:"  FontStyle="Italic" Margin="0 2 20 2"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Row.FullName}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Row.SpecialitiesName}" />
-                                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding Row.OrganizationsName}" />
-
-                
-                        </Grid>
-                        <Button  dxwuin:Navigation.NavigateTo="MainInfoPage" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="pack://application:,,,/Resources/Icons/fa/Guest.png" Height="15" Width="15" Margin="0 0 5 0"/>
-                                <TextBlock Text="Медицинская карта пациента" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                        </Button>
-                    </Grid>
-                </Grid>
-            </dx:MeasurePixelSnapper>
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region rowDetailTemplate-->
-        <DataTemplate x:Key="rowDetailTemplate">
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" />
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region expandableRowDetailTemplate-->
-        <DataTemplate x:Key="expandableRowDetailTemplate">
-            <dx:DXExpander IsExpanded="{Binding Path=IsSelected}" HorizontalExpand="None" VerticalExpand="FromTopToBottom">
-                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" />
-            </dx:DXExpander>
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region rowToolTipStyle-->
-        <Style x:Key="rowToolTipStyle">
-            <Style.Setters>
-                <Setter Property="ToolTipService.InitialShowDelay" Value="10" />
-                <Setter Property="ToolTipService.HasDropShadow" Value="False" />
-                <Setter Property="ToolTipService.ToolTip">
-                    <Setter.Value>
-                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" Tag="Transparent" MaxWidth="600" />
-                    </Setter.Value>
-                </Setter>
-            </Style.Setters>
-        </Style>
-        <!--#endregion-->
     </UserControl.Resources>
 
 
+    <Grid>
 
-    <DockPanel>
-
-        <dxdo:DockLayoutManager   x:Name="DemoDockContainer" dx:WorkspaceManager.IsEnabled="True"
-                   DockPanel.Dock="Right"        ClosedPanelsBarVisibility="Auto" AutoHideExpandMode="MouseDown" >
-
-                    <dxdo:DockLayoutManager.AutoHideGroups >
-
-                        <dxdo:AutoHideGroup DockType="Right" AllowClose="False" AllowMove="False">
-                            <dxdo:LayoutPanel Caption="Настройки">
-                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                      VerticalScrollBarVisibility="Auto" 
-                      dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                      Focusable="False"
-                      >
-                                    <StackPanel Margin="12,5,12,12" MinWidth="250">
-                                        <GroupBox Header="Row Template">
-                                            <dxe:ListBoxEdit Background="{x:Null}"
-                                     Margin="0,0,0,0"
-                                     ShowBorder="False"
-                                     DisplayMember="DisplayName"
-                                     SelectedIndex="0"
-                                     Name="rowTemplateComboBox">
-                                                <dxe:ListBoxEdit.StyleSettings>
-                                                    <dxe:RadioListBoxEditStyleSettings />
-                                                </dxe:ListBoxEdit.StyleSettings>
-                                                <dxe:ListBoxEdit.Items>
-                                                    <extens:RowTemplateSelectorItem DisplayName="Animated Details" DetailTemplate="{StaticResource expandableRowDetailTemplate}" />
-                                                    <extens:RowTemplateSelectorItem DisplayName="Expanded Details" DetailTemplate="{StaticResource rowDetailTemplate}" />
-                                                    <extens:RowTemplateSelectorItem DisplayName="Tooltip" RowStyle="{StaticResource rowToolTipStyle}" />
-                                                </dxe:ListBoxEdit.Items>
-                                            </dxe:ListBoxEdit>
-                                        </GroupBox>
-
-                                    </StackPanel>
-                                </ScrollViewer>
-                            </dxdo:LayoutPanel>
-
-                        </dxdo:AutoHideGroup>
-                    </dxdo:DockLayoutManager.AutoHideGroups>
-
-                    
-   
-        </dxdo:DockLayoutManager>
-
-        
-
-        <dxg:GridControl DockPanel.Dock="Left" Width="Auto" Name="grid"  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShowBorder="False">
-        <!--#region Columns-->
-        <dxg:GridControl.Columns>
-            <dxg:GridColumn FieldName="FullName" Header="ФИО" MinWidth="60" Width="*" />
-
-                <dxg:GridColumn Binding="{Binding Path=SpecialitiesName}" Header="Специальность" MinWidth="60" Width="*">
-                <dxg:GridColumn.EditSettings>
-                    <dxe:DateEditSettings DisplayFormat="d" />
-                </dxg:GridColumn.EditSettings>
-            </dxg:GridColumn>
-                <dxg:GridColumn Binding="{Binding Path=OrganizationsName}" Header="Филиалы" Width="*">
+        <dxg:GridControl Name="grid" Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
+                         AutoExpandAllGroups="False"               
+                         Margin="2"
+                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         AllowColumnMRUFilterList="False"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                         ShowBorder="True">
+            <dxg:GridControl.GroupSummary>
+                <dxg:GridSummaryItem SummaryType="Count" />
+            </dxg:GridControl.GroupSummary>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="FullName"
+                                Header="ФИО"                              
+                                Width="2*"
+                                UnboundType="String"
+                                UnboundExpression="[LastName] + ' ' + [FirstName] + ' ' + [MiddleName]"
+                                ReadOnly="True">
+                    <dxg:GridColumn.Image >
+                            
+                            <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
+                          
+                    </dxg:GridColumn.Image>
                 </dxg:GridColumn>
+
+                
+                <dxg:GridColumn FieldName="Address"                                
+                                Width="3*" 
+                                Header="Адрес" />
+
+                <dxg:GridColumn FieldName="BirthDate"
+                                Header="Дата рождения"
+                                Width="1*">
+                </dxg:GridColumn>                
+                
+                <dxg:GridColumn FieldName="LastName"
+                                Header="Фамилии"
+                                 GroupIndex="3" GroupInterval="Alphabetical" 
+                                Width="1*">
+                </dxg:GridColumn>
+
             </dxg:GridControl.Columns>
-            
-            
-        <!--#endregion-->
-        <dxg:GridControl.View>
-            <dxg:TableView Name="view" AllowScrollAnimation="True" ShowGroupedColumns="True" NavigationStyle="Row"
-                               RowDetailsVisibilityMode="Visible"
-                               RowDetailsTemplate="{Binding Path=SelectedItem.DetailTemplate, ElementName=rowTemplateComboBox}"
+
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
+                <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.View>
+                <dxg:TableView ShowFixedTotalSummary="True"
+                               AllowScrollAnimation="True"
+                               Name="view"
+                               AllowFixedGroups="True"
+                               NavigationStyle="Row"
+                               AllowPrintColumnHeaderImage="True"
                                UseLegacyFilterPanel="False"
-                               RowStyle="{Binding Path=SelectedItem.RowStyle, ElementName=rowTemplateComboBox}">
-                <dxmvvm:Interaction.Behaviors>
+                               HighlightItemOnHover="True">
 
-                </dxmvvm:Interaction.Behaviors>
-            </dxg:TableView>
-        </dxg:GridControl.View>
-            
-            
-            
-    </dxg:GridControl>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
 
-    </DockPanel>
-
-    <!--#endregion-->
+    </Grid>
 
 </UserControl>

@@ -35,10 +35,10 @@
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
                     <Image Height="20" Width="20" Margin="5 0 3 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Gnome-Accessories-Calculator-48.png" />
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Прайсы" FontSize="15" />
+                    <TextBlock Text="Классификатор" FontSize="15" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >

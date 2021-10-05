@@ -181,7 +181,6 @@ namespace Dental.ViewModels
         {
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 280;
             Window.Width = 800;
         }
         private void VisibleItemGroup()
@@ -189,7 +188,6 @@ namespace Dental.ViewModels
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
             Window.Width = 800;
-            Window.Height = 230;
         }
 
         private ObservableCollection<Classificator> _Collection;

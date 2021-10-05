@@ -35,7 +35,7 @@ namespace Dental.Models
         [NotMapped]
         public string FullName
         {
-            get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
         }
 
         [Display(Name = "Пол")]
@@ -57,16 +57,19 @@ namespace Dental.Models
         public string Note { get; set; } 
 
         [Display(Name = "Канал привлечения")]
-        public string AdvertisingSource{ get; set; }
+        public int? AdvertisingId{ get; set; }
+        public Advertising Advertising { get; set; }
 
         [Display(Name = "Категория клиентов")]
-        public string ClientCategory { get; set; }
+        public int? ClientCategoryId { get; set; }
+        public ClientsGroup ClientCategory { get; set; }
 
         [Display(Name = "Группа скидки")]
-        public string DiscountGroup { get; set; }
+        public int? DiscountGroupId { get; set; }
+        public DiscountGroups DiscountGroup { get; set; }
 
         [Display(Name = "Получает рассылки")]
-        public bool IsSubscribe { get; set; } = true;
+        public bool? IsSubscribe { get; set; } = true;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

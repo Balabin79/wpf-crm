@@ -514,13 +514,8 @@
     <Resource Include="Resources\Icons\Template\Folder.png" />
     <Resource Include="Resources\Icons\Template\Glade-3-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
-    <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering-48.png" />
-    <Resource Include="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
-    <Resource Include="Resources\Icons\Template\Gnome-Applications-Office-48.png" />
-    <Resource Include="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
-    <Resource Include="Resources\Icons\Template\Gnome-X-Office-Spreadsheet-48.png" />
     <Resource Include="Resources\Icons\Template\Google-Map.png" />
     <Resource Include="Resources\Icons\Template\google.png" />
     <Resource Include="Resources\Icons\Template\Hotjobs.png" />
@@ -528,12 +523,10 @@
     <Resource Include="Resources\Icons\Template\Info-Rhombus.png" />
     <Resource Include="Resources\Icons\Template\init.png" />
     <Resource Include="Resources\Icons\Template\Injection.png" />
-    <Resource Include="Resources\Icons\Template\invoice.png" />
     <Resource Include="Resources\Icons\Template\Key.png" />
     <Resource Include="Resources\Icons\Template\Large-Tiles.png" />
     <Resource Include="Resources\Icons\Template\License-Management.png" />
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
-    <Resource Include="Resources\Icons\Template\moleskine_red.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
     <Resource Include="Resources\Icons\Template\Monitor.png" />
     <Resource Include="Resources\Icons\Template\org.png" />
@@ -633,6 +626,9 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Pages\ClientPrices.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -707,6 +703,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\ClientPrices.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
