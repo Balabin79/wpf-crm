@@ -75,7 +75,13 @@ namespace Dental.ViewModels
                 //ищем совпадающий элемент
                 var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
 
-                if (SelectedGroup != null) Model.ParentId = ((Advertising)SelectedGroup).Id;
+                if (SelectedGroup != null)
+                {
+                    int id = ((Advertising)SelectedGroup).Id;
+                    if (id == 0) Model.ParentId = null;
+                    else Model.ParentId = id;
+                }  
+                    
 
                 if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
                 {
@@ -111,6 +117,7 @@ namespace Dental.ViewModels
                         Model.IsDir = 0;
                         Title = "Новый рекламный источник";
                         Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
                         VisibleItemForm();
                         break;
                     case -2:
@@ -118,13 +125,15 @@ namespace Dental.ViewModels
                         Title = "Создать группу";
                         Model.IsDir = 1;
                         Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
                         VisibleItemGroup();
                         break;
                     default:
                         Model = GetModelById(param);
                         Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
                             .GetDirectories().OfType<Advertising>().ToObservableCollection();
-
+                        
+                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
 
                         if (Model.IsDir == 0)
@@ -153,7 +162,13 @@ namespace Dental.ViewModels
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
         /************* Специфика этой ViewModel ******************/
-        public ICollection<Advertising> Group { get; set; }
+        private ObservableCollection<Advertising> _Group;
+        public ObservableCollection<Advertising> Group 
+        {
+            get => _Group;
+            set => Set(ref _Group, value);
+        }
+        public Advertising WithoutCategory { get; set; } = new Advertising() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
         private object _SelectedGroup;
         public object SelectedGroup

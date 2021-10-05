@@ -216,7 +216,6 @@ namespace Dental.ViewModels
             try
             {
                 var file = p as ClientFiles;
-                file = null;
                 Process.Start(file?.Path);
             }
             catch (Exception e)

@@ -27,8 +27,13 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <dxlc:LayoutGroup Header="Общая информация" Name="layoutGroup1" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0">
+        <dxlc:LayoutGroup Name="layoutGroup1" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" >
+            <dxlc:LayoutGroup.HeaderTemplate>
+                <DataTemplate >
+                    <TextBlock Text="Общая информация" VerticalAlignment="Center" Height="22"/>
+                </DataTemplate>
+            </dxlc:LayoutGroup.HeaderTemplate>
 
             <dxlc:LayoutItem Label="*Фамилия:"  Name="LastName" LabelPosition="Top" IsRequired="True" >
                 <dxe:TextEdit Text="{Binding Model.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
@@ -90,8 +95,13 @@
         </dxlc:LayoutGroup>
 
 
-        <dxlc:LayoutGroup Header="Дополнительно" Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
+        <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
                                       ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
+            <dxlc:LayoutGroup.HeaderTemplate>
+                <DataTemplate >
+                    <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
+                </DataTemplate>
+            </dxlc:LayoutGroup.HeaderTemplate>
 
             <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
                 <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, 
@@ -145,48 +155,73 @@
 
 
 
-        <dxlc:LayoutGroup Header="Прикрепляемые файлы документов (паспорт и пр.)" Grid.Row="2" Grid.ColumnSpan="2"
+        <dxlc:LayoutGroup  Grid.Row="2" Grid.ColumnSpan="2"
                           Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+            <dxlc:LayoutGroup.HeaderTemplate>
+                <DataTemplate >
+                    <DockPanel  HorizontalAlignment="Stretch">
+                        <TextBlock Text="Прикрепляемые файлы (документы, изображения и пр.)" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        
+                        <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-            <dxg:GridControl ItemsSource="{Binding TempFiles, Mode=TwoWay}" DataContext="{Binding}" Name="GridControlAttachFile">
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Name" Header="Название" />
-                    <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" />
-                    <dxg:GridColumn FieldName="Extension" Header="Тип файла" />
+                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                    <dxg:GridColumn Width="auto" >
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button  Style="{StaticResource ResourceKey=MenuButton}"                             
+                                <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
+                                                   Content="Прикрепить файл" 
+                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                    />
+
+                            </dxb:ToolBarControl>
+                        </dxb:BarContainerControl>
+                        
+                             
+                             
+                    </DockPanel>
+                    
+                </DataTemplate>
+            </dxlc:LayoutGroup.HeaderTemplate>
+    
+                <dxg:GridControl  ItemsSource="{Binding TempFiles, Mode=TwoWay}" 
+                                 DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Name" Header="Название" Width="9*"/>
+                        <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="3*" />
+                        <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
+
+                        <dxg:GridColumn Width="auto" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button  Style="{StaticResource ResourceKey=MenuButton}"                             
                                              Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
                                              CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                     Padding="2" Height="20" Width="20" Margin="0 2 0 0" ToolTip="Открыть">
-                                        <Image Height="18" Width="18" >
-                                            <Image.Source>
-                                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Eye.png" />
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                    <Button  Style="{StaticResource ResourceKey=MenuButton}"
+                                            <Image Height="18" Width="18" >
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Eye.png" />
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                        <Button  Style="{StaticResource ResourceKey=MenuButton}"
                                     Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}" CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                     Padding="2" Height="20" Width="20" Margin="5 0 0 0" ToolTip="Удалить">
-                                        <Image Height="15" Width="15" >
-                                            <Image.Source>
-                                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Trash.png" />
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
+                                            <Image Height="15" Width="15" >
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Trash.png" />
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
 
 
-                    </dxg:GridColumn>
+                        </dxg:GridColumn>
 
-                </dxg:GridControl.Columns>
-                <dxg:GridControl.View>
-                    <dxg:TableView ShowGroupPanel="False"
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView ShowGroupPanel="False"
                                               x:Name="attachFileTableView"
                                                NavigationStyle="Row"
                                                AutoWidth="True"
@@ -195,33 +230,33 @@
                                                ShowHorizontalLines="False"
                                                UseEvenRowBackground="True"
                                                ShowIndicator="False" >
-                        <dxg:TableView.InputBindings>
-                            <KeyBinding Key="Delete"       
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="Delete"       
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
                                 CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                            <KeyBinding Key="O"     
+                                <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
                                 CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                            <MouseBinding Gesture="LeftDoubleClick"      
+                                <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
                                 CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                        </dxg:TableView.InputBindings>
-                        
-                        <dxg:TableView.RowCellMenuCustomizations >
-                            <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                            </dxg:TableView.InputBindings>
+
+                            <dxg:TableView.RowCellMenuCustomizations >
+                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
                                                Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
                                                Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
                                                Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
                                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                            <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
                                                Command="{Binding DeleteFileCommand}" 
                                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
-                        </dxg:TableView.RowCellMenuCustomizations>
-                    </dxg:TableView>
-                </dxg:GridControl.View>
-            </dxg:GridControl>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
         </dxlc:LayoutGroup>
     </Grid>
 
