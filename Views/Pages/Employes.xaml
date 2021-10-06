@@ -336,4 +336,5 @@
         </DockPanel>
         <!--#endregion-->
     </Grid>
+
 </UserControl>
