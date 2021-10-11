@@ -23,7 +23,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ApplicationContext();
+                db = Db.Instance.Context;
                 Collection = db.PatientInfo.OrderBy(f => f.LastName).ToObservableCollection();
 
                 #region инициализация команд, связанных с общим функционалом карты пациента

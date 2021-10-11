@@ -23,7 +23,7 @@ namespace Dental.ViewModels
     {
         private readonly ApplicationContext db;
 
-        public PatientCardViewModel():this(0){ }
+        public PatientCardViewModel() : this(0) { }
 
         public PatientCardViewModel(int patientId)
         {
@@ -70,14 +70,13 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = db.PatientInfo.Where(f => f.Id == patientId).FirstOrDefault();
-
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
                 }
-
-                _LoadFieldsCollection();
+                ModelBeforeChanges = Model;
+                LoadFieldsCollection();
                 _Teeth = new PatientTeeth();
             }
             catch (Exception e)
@@ -337,17 +336,9 @@ namespace Dental.ViewModels
 
         public PatientInfo ModelBeforeChanges { get; set; }
 
-        public string SelectedGender { get; set; }
-        public object SelectedDiscountGroups { get; set; }
-        public object SelectedAdvertisings { get; set; }
-        public string SelectedClientsGroup { get; set; }
-
-
-
-
-        public IEnumerable<DiscountGroups> DiscountGroupList { get; set; }
-        public ICollection<Advertising> AdvertisingList { get; set; }
-        public ICollection<ClientsGroup> ClientsGroupList { get; set; }
+        public IEnumerable<string> DiscountGroupList { get; set; }
+        public ICollection<string> AdvertisingList { get; set; }
+        public IEnumerable<string> ClientsGroupList { get; set; }
         public ObservableCollection<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
 
         public ICollection<string> GenderList
@@ -361,8 +352,9 @@ namespace Dental.ViewModels
             Tooth tooth = p as Tooth;
             if (tooth == null) return;
 
-            switch (methodName) {
-                case "OnClickToothGreenCommandExecuted" : tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
+            switch (methodName)
+            {
+                case "OnClickToothGreenCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
                 case "OnClickToothYelPlCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Plomba; break;
                 case "OnClickToothYelCorCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Coronka; break;
                 case "OnClickToothImpCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathImp; tooth.Abbr = ""; break;
@@ -381,26 +373,27 @@ namespace Dental.ViewModels
             return (int)id++;
         }
         private bool _BtnIconEditableVisible;
-        public bool BtnIconEditableVisible 
-        { 
-            get => _BtnIconEditableVisible; 
-            set => Set(ref _BtnIconEditableVisible, value); 
+        public bool BtnIconEditableVisible
+        {
+            get => _BtnIconEditableVisible;
+            set => Set(ref _BtnIconEditableVisible, value);
         }
 
         private bool _BtnIconEditableHide;
-        public bool BtnIconEditableHide 
-        { 
+        public bool BtnIconEditableHide
+        {
             get => _BtnIconEditableHide;
             set => Set(ref _BtnIconEditableHide, value);
         }
 
 
-        private void _LoadFieldsCollection()
+        private void LoadFieldsCollection()
         {
-            DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
-            AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
-            ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
+            DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).Select(f => f.Name).ToList();
+            AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
+            ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
         }
+
     }
 }

@@ -40,7 +40,7 @@
     </Page.Resources>
 
 
-    <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
 
         <Grid x:Name="gridPC"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
@@ -58,7 +58,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="{Binding Model.PatientCardNumber, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="18" Padding="0 8 5 0"/>
+                    <TextBlock Text="{Binding Model.Id, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="18" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     

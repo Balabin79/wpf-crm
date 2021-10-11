@@ -16,6 +16,7 @@
        xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
        xmlns:view="clr-namespace:Dental.Views.PatientCard" 
        xmlns:uc="clr-namespace:Dental.Views.Pages.UserControls" 
+       xmlns:commands="clr-namespace:Dental.Infrastructures.Commands" 
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
        mc:Ignorable="d"
        d:DesignHeight="400"
@@ -26,45 +27,82 @@
               xmlns:system="clr-namespace:System;assembly=netstandard"
               xmlns:services ="clr-namespace:Dental.Services" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
        d:DesignWidth="800">
- 
+
     <Page.Resources>
+        <commands:PrintCommand x:Key="Print"/>
         <vm:PatientListViewModel x:Key="vm"/>
     </Page.Resources>
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
+        <Grid DataContext="{StaticResource vm}"
+                  ScrollViewer.CanContentScroll="True" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <DockPanel LastChildFill="True" Grid.Row="0">
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Image Height="25" Width="25" Margin="2 0 2 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/people.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="Список пациентов" FontSize="18" Padding="0 8 5 0"/>
+                </StackPanel>
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-    <Grid DataContext="{StaticResource vm}" >
+                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-        <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
+                        <dxb:BarButtonItem Name="bPrint" Content="Печать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}" 
+                                           Command="{StaticResource Print}"
+                                           CommandParameter="{Binding ElementName=view}"/>
+                        <dxb:BarItemLinkSeparator />
+                    </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
+
+                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
                          AutoExpandAllGroups="False"               
                          Margin="2"
+                         MaxHeight="1800"
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          AllowColumnMRUFilterList="False"
-                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" Name="gridControl"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                          ShowBorder="True">
-            <dxg:GridControl.GroupSummary>
-                <dxg:GridSummaryItem SummaryType="Count" />
-            </dxg:GridControl.GroupSummary>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="LastName" Header="Фамилии" GroupIndex="0" GroupInterval="Alphabetical" Width="1*"/>
-                <dxg:GridColumn FieldName="FullName"
+                    <dxg:GridControl.GroupSummary>
+                        <dxg:GridSummaryItem SummaryType="Count" />
+                    </dxg:GridControl.GroupSummary>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="LastName" 
+                                Header="Фамилии" 
+                                GroupIndex="0" 
+                                GroupInterval="Alphabetical" 
+                                Width="1*"/>
+                        <dxg:GridColumn FieldName="FullName"
                                 Header="ФИО"                              
                                 Width="2*"
                                 UnboundType="String"
                                 UnboundExpression="[LastName] + ' ' + [FirstName] + ' ' + [MiddleName]"
                                 ReadOnly="True">
-                    <dxg:GridColumn.Image >
-                        <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
-                    </dxg:GridColumn.Image>
-                </dxg:GridColumn>
+                            <dxg:GridColumn.Image >
+                                <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
+                            </dxg:GridColumn.Image>
+                        </dxg:GridColumn>
 
-                <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
-            </dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
+                    </dxg:GridControl.Columns>
 
-            <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
-                <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
-            </dxg:GridControl.TotalSummary>
-            <dxg:GridControl.View>
-                <dxg:TableView ShowFixedTotalSummary="True"
+                    <dxg:GridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
+                        <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
+                    </dxg:GridControl.TotalSummary>
+                    <dxg:GridControl.View>
+                        <dxg:TableView ShowFixedTotalSummary="True"
                                AllowScrollAnimation="True"
                                Name="view"
                                AllowFixedGroups="True"
@@ -72,41 +110,41 @@
                                AllowPrintColumnHeaderImage="True"
                                UseLegacyFilterPanel="False"
                                HighlightItemOnHover="True">
-                    <dxg:TableView.InputBindings>
-                        <KeyBinding Key="N"     
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
                                 Command="{Binding Path=OpenPatientCardCommand}"
                                 CommandParameter="-1"  
                                     />
-                        <KeyBinding Key="O"     
+                                <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
                                 Command="{Binding Path=OpenPatientCardCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                        <KeyBinding Key="Return"     
+                                <KeyBinding Key="Return"     
                                 Command="{Binding Path=OpenPatientCardCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                        <MouseBinding Gesture="LeftDoubleClick"      
+                                <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding Path=OpenPatientCardCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                    </dxg:TableView.InputBindings>
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                            </dxg:TableView.InputBindings>
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту пациента"  
                                             Command="{Binding Path=OpenPatientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту пациента"  
                                             Command="{Binding Path=OpenPatientCardCommand}"
                                             CommandParameter="-1"/>
-                    </dxg:TableView.RowCellMenuCustomizations>
-                </dxg:TableView>
-                
-            </dxg:GridControl.View>
-        </dxg:GridControl>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
 
-    </Grid>
-
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
 </Page>

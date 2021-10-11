@@ -8,7 +8,7 @@ using System;
 namespace Dental.Models
 {
     [Table("PatientInfo")]
-    class PatientInfo : AbstractBaseModel, IDataErrorInfo, IEquatable<PatientInfo>
+    class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
     {
         [Display(Name = "Номер медицинской карты")]
         public string PatientCardNumber { get; set; } //номер карты
@@ -58,28 +58,56 @@ namespace Dental.Models
         public string Note { get; set; } 
 
         [Display(Name = "Канал привлечения")]
-        public int? AdvertisingId{ get; set; }
-        public Advertising Advertising { get; set; }
+        public string Advertising { get; set; }
 
         [Display(Name = "Категория клиентов")]
-        public int? ClientCategoryId { get; set; }
-        public ClientsGroup ClientCategory { get; set; }
+        public string ClientCategory { get; set; }
 
         [Display(Name = "Группа скидки")]
-        public int? DiscountGroupId { get; set; }
-        public DiscountGroups DiscountGroup { get; set; }
+        public string DiscountGroup { get; set; }
 
         [Display(Name = "Получает рассылки")]
         public bool? IsSubscribe { get; set; } = true;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+        
+
+
+        public object Clone()
+        {
+
+            return new PatientInfo
+            {
+                PatientCardNumber = this.PatientCardNumber,
+                PatientCardCreatedAt = this.PatientCardCreatedAt,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                MiddleName = this.MiddleName,
+                BirthDate = this.BirthDate,
+                Sex = this.Sex,
+                Phone = this.Phone,
+                Email = this.Email,
+                Address = this.Address,
+                Note = this.Note,
+                IsSubscribe = this.IsSubscribe
+            };
+
+            /*Company company = new Company { Name = this.Work.Name };
+            return new Person
+            {
+                Name = this.Name,
+                Age = this.Age,
+                Work = company
+            };*/
+        }
+    
 
 
 
 
 
-        public override bool Equals(object other)
+    public override bool Equals(object other)
         {
             //Последовательность проверки должна быть именно такой.
             //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            

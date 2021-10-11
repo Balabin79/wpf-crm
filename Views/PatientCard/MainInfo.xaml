@@ -55,10 +55,9 @@
                 </dxlc:LayoutItem>
 
                 <dxlc:LayoutItem Label="Пол:"  Name="Gender" LabelPosition="Top" >
-
                     <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
-                                                          SelectedItem="{Binding SelectedGender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          NullText="Пол" IsTextEditable="False"
+                                      SelectedItem="{Binding Model.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Пол" IsTextEditable="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
@@ -110,31 +109,31 @@
             </dxlc:LayoutItem>
 
             <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="0" LabelPosition="Top" >
-                <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedAdvertisings, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" 
+                                  IsTextEditable="False"                                  
+                                  SelectedItem="{Binding Model.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
-                        <dxe:CheckedComboBoxStyleSettings />
+                        <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
                 </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
 
             <dxlc:LayoutItem Label="Скидки:"  LabelPosition="Top">
-                <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedDiscountGroups, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" 
+                                  IsTextEditable="False"
+                                  SelectedItem="{Binding Model.DiscountGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
-                        <dxe:CheckedComboBoxStyleSettings />
+                        <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
                 </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
-                <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}" DisplayMember="Name"  
-                                                              IsTextEditable="False"
-                                                          SelectedItem="{Binding SelectedClientsGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}"  
+                                  IsTextEditable="False"
+                                  SelectedItem="{Binding Model.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
