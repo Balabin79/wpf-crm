@@ -3,10 +3,7 @@ using DevExpress.Xpf.WindowsUI;
 
 namespace Dental.Views.PatientCard
 {
-    /// <summary>
-    /// Логика взаимодействия для Employes.xaml
-    /// </summary>
-    public partial class PatientsList : UserControl
+    public partial class PatientsList : Page
     {
         public PatientsList()
         {

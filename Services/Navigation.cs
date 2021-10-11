@@ -54,7 +54,12 @@ namespace Dental.Services
             try
             {
                 Page page;
-                if (p is PatientControl patientControl) page = CreatePage(patientControl.PageName, patientControl.Id);
+                if (p is Array) 
+                {
+                    string pageName = (string)((object[])p)[0];
+                    int id = (int)((object[])p)[1];
+                    page = CreatePage(pageName, id);
+                } 
                 else page = CreatePage(p.ToString());
                 SlowOpacity(page);
             }

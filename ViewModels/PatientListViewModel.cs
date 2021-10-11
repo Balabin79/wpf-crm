@@ -12,6 +12,7 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -41,10 +42,12 @@ namespace Dental.ViewModels
         private bool CanOpenPatientCardCommandExecute(object p) => true;
         private void OnOpenPatientCardCommandExecuted(object p)
         {
-
-            int x = 0;
+            if (p == null) return;
+            var nav = Navigation.Instance;
+            int.TryParse(p.ToString(), out int param);
+            if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.MainInfoPage");  
+            else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.PatientCard.MainInfoPage", param });
         }
-
 
         public ICommand MoveToArchiveCommand { get; }
         private bool CanMoveToArchiveCommandExecute(object p) => true;
