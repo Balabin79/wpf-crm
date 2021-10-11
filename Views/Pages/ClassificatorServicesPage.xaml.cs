@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Dental.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ClientPrices.xaml
+    /// Логика взаимодействия для ClassificatorServicesPage.xaml
     /// </summary>
-    public partial class ClientPrices : Page
+    public partial class ClassificatorServicesPage : Page
     {
-        public ClientPrices()
+        public ClassificatorServicesPage()
         {
             InitializeComponent();
         }

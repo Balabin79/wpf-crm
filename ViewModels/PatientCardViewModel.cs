@@ -14,6 +14,8 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using System.IO;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -21,18 +23,21 @@ namespace Dental.ViewModels
     {
         private readonly ApplicationContext db;
 
-        public PatientCardViewModel()
+        public PatientCardViewModel():this(0){ }
+
+        public PatientCardViewModel(int patientId)
         {
             try
             {
-                db = new ApplicationContext();
-                IsReadOnly = true;
-                _BtnIconEditableHide = true;
-                _BtnIconEditableVisible = false;
-                Model = new PatientInfo();
-                Model.PatientCardNumber = (CreateNewNumberPatientCard()).ToString();
-                Model.PatientCardCreatedAt = DateTime.Now.ToShortDateString();
+                db = Db.Instance.Context;
 
+                #region инициализация команд, связанных с общим функционалом карты пациента
+                // Команда включения - отключения редактирования полей
+                EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+                SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+                #endregion
+
+                #region инициализация команд, связанных с картой зубов пациента
                 ClickToothGreenCommand = new LambdaCommand(OnClickToothGreenCommandExecuted, CanClickToothGreenCommandExecute);
                 ClickToothYelPlCommand = new LambdaCommand(OnClickToothYelPlCommandExecuted, CanClickToothYelPlCommandExecute);
                 ClickToothYelCorCommand = new LambdaCommand(OnClickToothYelCorCommandExecuted, CanClickToothYelCorCommandExecute);
@@ -42,30 +47,47 @@ namespace Dental.ViewModels
                 ClickToothRedPCommand = new LambdaCommand(OnClickToothRedPCommandExecuted, CanClickToothRedPCommandExecute);
                 ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
                 ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
+                #endregion
+
+                #region инициализация команд, связанных с прикреплением к карте пациента файлов
                 DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
                 ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
                 AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
+                #endregion               
 
-                EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+                // Если patientCardNumber == 0, то это создается новая карта пациента, иначе загружаем данные существующего клиента
+                if (patientId == 0)
+                {
+                    Model = new PatientInfo();
+                    Model.PatientCardNumber = (CreateNewNumberPatientCard()).ToString();
+                    Model.PatientCardCreatedAt = DateTime.Now.ToShortDateString();
 
-                DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
-                AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
-                ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
-                ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
+                    // для новой карты пациента все поля по-умолчанию доступны для редактирования
+                    IsReadOnly = false;
+                    _BtnIconEditableHide = false;
+                    _BtnIconEditableVisible = true;
+                }
+                else
+                {
+                    Model = db.PatientInfo.Where(f => f.Id == patientId).FirstOrDefault();
 
+                    //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
+                    IsReadOnly = true;
+                    _BtnIconEditableHide = true;
+                    _BtnIconEditableVisible = false;
+                }
 
-             
+                _LoadFieldsCollection();
                 _Teeth = new PatientTeeth();
-
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-
         }
-      
+
+        #region команды, связанных с формулой зубов
         public ICommand ClickToothGreenCommand { get; }
         public ICommand ClickToothYelPlCommand { get; }
         public ICommand ClickToothYelCorCommand { get; }
@@ -75,10 +97,6 @@ namespace Dental.ViewModels
         public ICommand ClickToothRedPCommand { get; }
         public ICommand ClickToothRedCCommand { get; }
         public ICommand ClickToothGrayCommand { get; }
-        public ICommand EditableCommand { get; }
-        public ICommand DeleteFileCommand { get; }
-        public ICommand ExecuteFileCommand { get; }
-        public ICommand AttachmentFileCommand { get; }
 
         private bool CanClickToothGreenCommandExecute(object p) => true;
         private bool CanClickToothYelPlCommandExecute(object p) => true;
@@ -89,10 +107,6 @@ namespace Dental.ViewModels
         private bool CanClickToothRedPCommandExecute(object p) => true;
         private bool CanClickToothRedCCommandExecute(object p) => true;
         private bool CanClickToothGrayCommandExecute(object p) => true;
-        private bool CanEditableCommandExecute(object p) => true;
-        private bool CanDeleteFileCommandExecute(object p) => true;
-        private bool CanExecuteFileCommandExecute(object p) => true;
-        private bool CanAttachmentFileCommandExecute(object p) => true;
 
         private void OnClickToothGreenCommandExecuted(object p)
         {
@@ -105,8 +119,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothYelPlCommandExecuted(object p)
         {
             try
@@ -118,8 +132,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothYelCorCommandExecuted(object p)
         {
             try
@@ -130,8 +144,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothImpCommandExecuted(object p)
         {
             try
@@ -142,8 +156,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothRedRCommandExecuted(object p)
         {
             try
@@ -154,8 +168,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothRedPtCommandExecuted(object p)
         {
             try
@@ -166,8 +180,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothRedPCommandExecuted(object p)
         {
             try
@@ -178,8 +192,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothRedCCommandExecuted(object p)
         {
             try
@@ -190,8 +204,8 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-        
+        }
+
         private void OnClickToothGrayCommandExecuted(object p)
         {
             try
@@ -203,13 +217,16 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
 
-        private void OnEditableCommandExecuted(object p)
-        {
-            IsReadOnly = !IsReadOnly;
-            BtnIconEditableHide = IsReadOnly;
-            BtnIconEditableVisible = !IsReadOnly;                            
-        }
+        #region команды, связанных с прикреплением к карте пациентов файлов     
+        public ICommand DeleteFileCommand { get; }
+        public ICommand ExecuteFileCommand { get; }
+        public ICommand AttachmentFileCommand { get; }
+
+        private bool CanDeleteFileCommandExecute(object p) => true;
+        private bool CanExecuteFileCommandExecute(object p) => true;
+        private bool CanAttachmentFileCommandExecute(object p) => true;
 
         private void OnExecuteFileCommandExecuted(object p)
         {
@@ -249,7 +266,7 @@ namespace Dental.ViewModels
                         file.DateCreated = DateTime.Today.ToShortDateString();
                         file.Name = "vvv";
                         TempFiles.Add(file);
-                       // Process.Start(filePath);
+                        // Process.Start(filePath);
 
                     }
                 }
@@ -260,7 +277,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        
+
         private void OnDeleteFileCommandExecuted(object p)
         {
             try
@@ -273,6 +290,25 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
+
+        #region команды, связанные с общим функционалом карты пациента
+        public ICommand EditableCommand { get; }
+        private bool CanEditableCommandExecute(object p) => true;
+        private void OnEditableCommandExecuted(object p)
+        {
+            IsReadOnly = !IsReadOnly;
+            BtnIconEditableHide = IsReadOnly;
+            BtnIconEditableVisible = !IsReadOnly;
+        }
+
+        public ICommand SaveCommand { get; }
+        private bool CanSaveCommandExecute(object p) => true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            int x = 0;
+        }
+        #endregion
 
         public ObservableCollection<ClientFiles> Files { get; set; }
         public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();
@@ -298,6 +334,8 @@ namespace Dental.ViewModels
             set => Set(ref _Model, value);
         }
 
+
+        public PatientInfo ModelBeforeChanges { get; set; }
 
         public string SelectedGender { get; set; }
         public object SelectedDiscountGroups { get; set; }
@@ -354,6 +392,15 @@ namespace Dental.ViewModels
         { 
             get => _BtnIconEditableHide;
             set => Set(ref _BtnIconEditableHide, value);
+        }
+
+
+        private void _LoadFieldsCollection()
+        {
+            DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).ToObservableCollection();
+            AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToObservableCollection();
+            ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToObservableCollection();
+            ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.PatientCard.MainInfoPage"
+﻿<Page x:Class="Dental.Views.PatientCard.MainInfoPage"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -21,10 +21,9 @@
                      xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
              dx:ThemeManager.ThemeName="Office2019White">
 
-    <UserControl.Resources>
+    <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <vm:IdsViewModel x:Key="Ids"/>
-        <vm:PatientCardViewModel x:Key="vm"/>
         <converter:DateToStringConverter x:Key="dateToString" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
@@ -38,12 +37,12 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-    </UserControl.Resources>
+    </Page.Resources>
 
 
     <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
 
-        <Grid x:Name="gridPC" DataContext="{StaticResource vm}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="gridPC"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*" />
@@ -73,8 +72,10 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            Command="{Binding EditableCommand}"/>
-                      
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
+                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                           Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
@@ -342,4 +343,4 @@
             </ScrollViewer>
         </Grid>
     </Border>
-</UserControl>
+</Page>

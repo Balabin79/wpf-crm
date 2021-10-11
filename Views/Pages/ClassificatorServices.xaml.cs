@@ -13,16 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard
+namespace Dental.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для Patient.xaml
+    /// Логика взаимодействия для ClassificatorServices.xaml
     /// </summary>
-    public partial class Patient : Page
+    public partial class ClassificatorServices : UserControl
     {
-        public Patient()
+        public ClassificatorServices()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            } catch(Exception e)
+            {
+                int x = 0;
+            }
+            
         }
     }
 }

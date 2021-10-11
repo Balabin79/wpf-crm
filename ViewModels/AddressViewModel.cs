@@ -3,6 +3,8 @@ using Dental.Models;
 using System.Collections.Generic;
 using MoreLinq;
 using System;
+using System.Windows;
+using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
@@ -10,12 +12,19 @@ namespace Dental.ViewModels
     {    
         public AddressViewModel(Employee employee)
         {
-            db = new ApplicationContext();
-            countries = db.Country.OrderBy(f => f.CountryId).ToList();
+            try { 
+                db = new ApplicationContext();
+                countries = db.Country.OrderBy(f => f.CountryId).ToList();
 
-            Employee = employee;
-           // SelectedCountry = (Employee.CountryId != null ) ? db.Country.Where(f => f.CountryId == Employee.CountryId).FirstOrDefault() : null;
-           // SelectedRegion = (Employee.RegionId != null) ? db.Region.Where(f => f.RegionId == Employee.RegionId).FirstOrDefault() : null;
+                Employee = employee;
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом адресов!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+            // SelectedCountry = (Employee.CountryId != null ) ? db.Country.Where(f => f.CountryId == Employee.CountryId).FirstOrDefault() : null;
+            // SelectedRegion = (Employee.RegionId != null) ? db.Region.Where(f => f.RegionId == Employee.RegionId).FirstOrDefault() : null;
         }
 
         private Employee Employee { get; set; }

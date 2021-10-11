@@ -24,14 +24,37 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Collection = db.PatientInfo.OrderBy(f => f.LastName).ToObservableCollection();
+
+                #region инициализация команд, связанных с общим функционалом карты пациента
+                OpenPatientCardCommand = new LambdaCommand(OnOpenPatientCardCommandExecuted, CanOpenPatientCardCommandExecute);
+                MoveToArchiveCommand = new LambdaCommand(OnMoveToArchiveCommandExecuted, CanMoveToArchiveCommandExecute);
+                #endregion
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с данным разделом!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список пациентов\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICollection<PatientInfo> Collection { get; set; } 
+        public ICommand OpenPatientCardCommand { get; }
+        private bool CanOpenPatientCardCommandExecute(object p) => true;
+        private void OnOpenPatientCardCommandExecuted(object p)
+        {
+
+            int x = 0;
+        }
+
+
+        public ICommand MoveToArchiveCommand { get; }
+        private bool CanMoveToArchiveCommandExecute(object p) => true;
+        private void OnMoveToArchiveCommandExecuted(object p)
+        {
+            int x = 0;
+        }
+
+        public ObservableCollection<PatientInfo> Collection { get; set; } 
+
+        public object AppViewModel { get; set; }
     }
 }

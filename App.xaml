@@ -4,7 +4,9 @@
              xmlns:local="clr-namespace:Dental" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" xmlns:dxe="clr-namespace:DevExpress.Xpf.Editors.Flyout;assembly=DevExpress.Xpf.Core.v20.1"
+             xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
+             xmlns:dxe="clr-namespace:DevExpress.Xpf.Editors.Flyout;assembly=DevExpress.Xpf.Core.v20.1"
+             xmlns:viewModels="clr-namespace:Dental.ViewModels" 
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
@@ -88,5 +90,6 @@
             </Setter>
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
+
     </Application.Resources>
 </Application>

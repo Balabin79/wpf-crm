@@ -343,7 +343,6 @@
     <Folder Include="Reports\OtherDocuments\" />
     <Folder Include="Resources\PatientCard\Новая папка1\" />
     <Folder Include="Resources\PatientCard\Новая папка\" />
-    <Folder Include="Views\HandbooksPages\MedicalCard\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -626,7 +625,7 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\ClientPrices.xaml.cs">
+    <Compile Update="Views\Pages\ClassificatorServices.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
@@ -706,7 +705,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\ClientPrices.xaml">
+    <Page Update="Views\Pages\ClassificatorServices.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Pages\UserControls\PatientControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

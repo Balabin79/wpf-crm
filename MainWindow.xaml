@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:local="clr-namespace:Dental" 
     xmlns:viewModels="clr-namespace:Dental.ViewModels" 
+    xmlns:services="clr-namespace:Dental.Services" 
     xmlns:pages="clr-namespace:Dental.Views.HandbooksPages" 
     xmlns:main_pages="clr-namespace:Dental.Views.Pages" 
     xmlns:cl="clr-namespace:Dental.Views.CommunicationLog" 
@@ -24,17 +25,9 @@
 
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />
-        <viewModels:HandbooksViewModel x:Key="viewModel"/>
     </dx:ThemedWindow.Resources>
 
-
-<dx:ThemedWindow.DataContext>
-    <viewModels:HandbooksViewModel />
-</dx:ThemedWindow.DataContext>
-
-
-
-    <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0">
+    <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0" DataContext="{x:Static services:Navigation.Instance}">
     <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
@@ -50,7 +43,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="{x:Type pcpages:Patient}"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
 
                         <dxb:BarButtonItem Content="Список пациентов" RibbonStyle="Default" 
                                            ToolTip="Список пациентов"
@@ -206,10 +199,9 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Money.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Money.png"   
                                             ToolTip="Прайс для клиентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:ClientPrices}"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="{x:Type main_pages:ClassificatorServicesPage}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >
-
                         <dxb:BarButtonItem Content="Регистрация программы" RibbonStyle="Default" 
                                            ToolTip="Регистрация программы"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png"
@@ -233,7 +225,7 @@
 
 
 
-<Frame Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}" Opacity="{Binding FrameOpacity}" />
+<Frame DataContext="{x:Static services:Navigation.Instance}" Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}" Opacity="{Binding FrameOpacity}" />
 
 <!--<t:Ticket x:Name="Ticket" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       DataContext="{Binding Source={StaticResource TicketViewModel}}"

@@ -19,7 +19,6 @@
    
     <Page.Resources>
         <vm:TreatmentPlanViewModel x:Key="vm"/>
-        <vm:HandbooksViewModel x:Key="menu" />
     </Page.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>

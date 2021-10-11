@@ -1,23 +1,31 @@
-using Dental.Infrastructures.Commands.Base;
-using Dental.Views;
-using Dental.Views.PatientCard;
+﻿using Dental.Infrastructures.Commands.Base;
+using Dental.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using Dental.Views.Pages.UserControls;
 
-namespace Dental.ViewModels
+namespace Dental.Services
 {
-    class HandbooksViewModel : ViewModelBase
+    sealed class Navigation : ViewModelBase
     {
-        public HandbooksViewModel()
+        private static readonly Navigation instance = new Navigation();
+
+        static Navigation(){}
+        private Navigation() { FrameOpacity = 1; LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute); }
+
+        public static Navigation Instance
         {
-            FrameOpacity = 1;
-            //CurrentPage = new InsuranceCompany();
-            LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
+            get
+            {
+                return instance;
+            }
         }
 
         /// <summary>
@@ -43,23 +51,36 @@ namespace Dental.ViewModels
         private bool CanLeftMenuClickCommandExecute(object p) => true;
         private void OnLeftMenuClickCommandExecuted(object p)
         {
-            //bool isNew = true; // это новая форма, т.е. нужно создать новые модели, а не загружать сущ-щие данные
             try
             {
-                Page instance = CreatePage(p);
-                SlowOpacity(instance);
+                Page page;
+                if (p is PatientControl patientControl) page = CreatePage(patientControl.PageName, patientControl.Id);
+                else page = CreatePage(p.ToString());
+                SlowOpacity(page);
             }
             catch (Exception e)
             {
-
+                int x = 0;
             }
 
         }
 
-
-        private Page CreatePage(object page)
+        private Page CreatePage(string pageName)
         {
-            return (Page)Assembly.GetExecutingAssembly().CreateInstance(page.ToString());
+            Type type = GetTypeByPageName(pageName);
+            return (Page)Activator.CreateInstance(type);
+        }
+
+        private Page CreatePage(string pageName, int param)
+        {
+            Type type = GetTypeByPageName(pageName);
+            return (Page)Activator.CreateInstance(type, param);
+        }
+
+
+        private Type GetTypeByPageName(string pageName)
+        {
+            return Type.GetType(pageName);
         }
 
 
@@ -90,4 +111,3 @@ namespace Dental.ViewModels
 
     }
 }
-

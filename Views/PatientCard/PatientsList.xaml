@@ -14,26 +14,28 @@
        xmlns:extens ="clr-namespace:Dental.Infrastructures.Extensions"
        xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
        xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+       xmlns:view="clr-namespace:Dental.Views.PatientCard" 
+       xmlns:uc="clr-namespace:Dental.Views.Pages.UserControls" 
+       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
        xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-                       d:DesignWidth="800">
-
-
-    <UserControl.DataContext>
-        <vm:PatientListViewModel/>
-    </UserControl.DataContext>
+              xmlns:system="clr-namespace:System;assembly=netstandard"
+              xmlns:services ="clr-namespace:Dental.Services" 
+              d:DesignWidth="800">
+ 
 
     <UserControl.Resources>
+        <vm:PatientListViewModel x:Key="vm"/>
+        <converter:MultiBindingConverter x:Key="MultiBindingConverter"/>
     </UserControl.Resources>
 
+    <Grid DataContext="{StaticResource vm}" Name="grid1" >
 
-    <Grid>
-
-        <dxg:GridControl Name="grid" Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
+        <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
                          AutoExpandAllGroups="False"               
                          Margin="2"
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -51,26 +53,53 @@
                                 UnboundExpression="[LastName] + ' ' + [FirstName] + ' ' + [MiddleName]"
                                 ReadOnly="True">
                     <dxg:GridColumn.Image >
-                            
-                            <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
-                          
+                        <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                     </dxg:GridColumn.Image>
                 </dxg:GridColumn>
 
                 
-                <dxg:GridColumn FieldName="Address"                                
-                                Width="3*" 
-                                Header="Адрес" />
+                <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
 
-                <dxg:GridColumn FieldName="BirthDate"
-                                Header="Дата рождения"
-                                Width="1*">
-                </dxg:GridColumn>                
-                
-                <dxg:GridColumn FieldName="LastName"
-                                Header="Фамилии"
-                                 GroupIndex="3" GroupInterval="Alphabetical" 
-                                Width="1*">
+                <dxg:GridColumn FieldName="BirthDate" Header="Дата рождения" Width="1*"/>
+
+
+                <dxg:GridColumn FieldName="LastName" Header="Фамилии" GroupIndex="3" GroupInterval="Alphabetical" Width="1*"/>
+
+                <dxg:GridColumn Width="1*" >
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <uc:PatientControl PageName="Dental.Views.PatientCard.MainInfoPage" Id="{Binding RowData.Row.Id}" x:Name="PatientControl"/>
+                                <Button
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                                    Command="{Binding Source={StaticResource vm}, Path=OpenPatientCardCommand }" 
+                                    CommandParameter="{Binding RowData.Row.Id}"             
+                                    Padding="2" Height="20" Width="20" Margin="2 2 0 2" ToolTip="Редактировать">
+                                    <Image Height="15" Width="15" >
+                                        <Image.Source>
+                                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Edit-48.png" />
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+
+
+                                <Button DataContext="{x:Static services:Navigation.Instance}"
+                            Style="{StaticResource ResourceKey=MenuButton}"
+                                   Command="{Binding LeftMenuClick}" 
+                                   CommandParameter="{Binding ElementName=PatientControl}"
+                            Padding="2" Height="20" Width="20" Margin="0 2 2 2" ToolTip="Удалить">
+              
+                                    <Image Height="15" Width="15" >
+                                        <Image.Source>
+                                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Trash.png" />
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+
+
                 </dxg:GridColumn>
 
             </dxg:GridControl.Columns>
