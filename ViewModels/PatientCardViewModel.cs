@@ -16,6 +16,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Dental.Services;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
@@ -75,7 +76,7 @@ namespace Dental.ViewModels
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
                 }
-                ModelBeforeChanges = Model;
+                ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
                 _Teeth = new PatientTeeth();
             }
@@ -305,9 +306,42 @@ namespace Dental.ViewModels
         private bool CanSaveCommandExecute(object p) => true;
         private void OnSaveCommandExecuted(object p)
         {
+            // показывать сервисное сообщение
+            if (HasUnsavedChanges())
+            {
+                var notification = new Notification();
+                notification.Content = "Новый пациент записан в базу данных!";
+                notification.run();
+            }
+                
             int x = 0;
         }
         #endregion
+
+        public bool HasUnsavedChanges()
+        {
+            return !Model.Equals(ModelBeforeChanges);
+        }
+
+        public bool IsContinueAfterWarningMessage()
+        {
+            string warningMessage = "";     
+            foreach (var tab in Model.FieldsChanges)
+            {
+                if (tab.Value.Count == 0) continue;
+                string fieldNames = " ";
+                foreach (var field in tab.Value)
+                {
+                    fieldNames += " \"" + field + "\",";
+                }
+                 warningMessage = "\nВо вкладке \"" + tab.Key + "\", поля:" + fieldNames.Remove(fieldNames.Length - 1) + "\n";
+            }
+
+             var response = ThemedMessageBox.Show(title: "Внимание", text: "В карте пациента содержатся несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
+                messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+            return response.ToString() != "Cancel";
+        }
 
         public ObservableCollection<ClientFiles> Files { get; set; }
         public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();

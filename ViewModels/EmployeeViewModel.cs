@@ -113,7 +113,7 @@ namespace Dental.ViewModels
                     context.Add(Employee);
                     db.SaveChanges();
 
-                    new NotificationCreatingEmployee().run();
+                    new Notification().run();
                     return;
                 }
                 db.Entry(Employee).State = EntityState.Modified;

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System;
+using System.Collections.Generic;
 
 namespace Dental.Models
 {
@@ -52,10 +53,10 @@ namespace Dental.Models
         public string Email { get; set; }
 
         [Display(Name = "Адрес проживания")]
-        public string Address { get; set; } 
+        public string Address { get; set; }
 
         [Display(Name = "Примечание")]
-        public string Note { get; set; } 
+        public string Note { get; set; }
 
         [Display(Name = "Канал привлечения")]
         public string Advertising { get; set; }
@@ -71,7 +72,7 @@ namespace Dental.Models
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
-        
+
 
 
         public object Clone()
@@ -90,7 +91,10 @@ namespace Dental.Models
                 Email = this.Email,
                 Address = this.Address,
                 Note = this.Note,
-                IsSubscribe = this.IsSubscribe
+                IsSubscribe = this.IsSubscribe,
+                Advertising = this.Advertising,
+                ClientCategory = this.ClientCategory,
+                DiscountGroup = this.DiscountGroup
             };
 
             /*Company company = new Company { Name = this.Work.Name };
@@ -101,14 +105,17 @@ namespace Dental.Models
                 Work = company
             };*/
         }
-    
 
 
 
 
 
-    public override bool Equals(object other)
+
+        public override bool Equals(object other)
         {
+            if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
+            
+
             //Последовательность проверки должна быть именно такой.
             //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            
             if (other == null)
@@ -128,6 +135,8 @@ namespace Dental.Models
         }
         public bool Equals(PatientInfo other)
         {
+            if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
+            bool notIsChanges = true;
             if (other == null)
                 return false;
 
@@ -141,10 +150,84 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;
 
-            if (string.Compare(this.FirstName, other.LastName, StringComparison.CurrentCulture) == 0 /*&& this.speed.Equals(other.speed)*/)
-                return true;
-            else
-                return false;
+            if (string.Compare(this.FirstName, other.FirstName, StringComparison.CurrentCulture) != 0 /*&& this.speed.Equals(other.speed)*/)
+            {
+                notIsChanges = false;
+               FieldsChanges["Административная"].Add("Имя");
+            }
+            if (string.Compare(this.LastName, other.LastName, StringComparison.CurrentCulture) != 0 )
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Фамилия");
+            }
+            if (string.Compare(this.MiddleName, other.MiddleName, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Отчество");
+            }
+            if (string.Compare(this.BirthDate, other.BirthDate, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Дата рождения");
+            }
+            if (string.Compare(this.Sex, other.Sex, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Пол");
+            }
+            if (string.Compare(this.Phone, other.Phone, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Телефон");
+            }
+            if (string.Compare(this.Email, other.Email, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Email");
+            }
+            if (string.Compare(this.Address, other.Address, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Адрес");
+            }
+            if (string.Compare(this.Note, other.Note, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Дополнительно");
+            }
+            if (string.Compare(this.Advertising, other.Advertising, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Рекламные источники");
+            }
+            if (string.Compare(this.ClientCategory, other.ClientCategory, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Категории клиентов");
+            }
+            if (string.Compare(this.DiscountGroup, other.DiscountGroup, StringComparison.CurrentCulture) != 0)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Группы скидок");
+            }
+            if (this.IsSubscribe != other.IsSubscribe)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Участие в рассылках");
+            }
+            return notIsChanges;
+        }
+
+        [NotMapped]
+        public Dictionary<string, List<string>> FieldsChanges { get; set; } = CreateFieldsChanges();
+
+        private static Dictionary<string, List<string>> CreateFieldsChanges()
+        {
+            return new Dictionary<string, List<string>>() {
+                { "Административная", new List<string>() },
+                { "План лечения и счета", new List<string>() },
+                { "Карта зубов", new List<string>() }
+            };
         }
 
     }

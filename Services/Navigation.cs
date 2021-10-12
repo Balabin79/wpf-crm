@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dental.Views.Pages.UserControls;
+using Dental.ViewModels;
+using DevExpress.Xpf.Core;
+using System.Windows;
 
 namespace Dental.Services
 {
@@ -53,6 +56,12 @@ namespace Dental.Services
         {
             try
             {
+                if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
+                {
+                    var viewModel = (PatientCardViewModel)CurrentPage.DataContext;
+                    if (viewModel.HasUnsavedChanges() && !viewModel.IsContinueAfterWarningMessage()) return;
+                }
+
                 Page page;
                 if (p is Array) 
                 {
