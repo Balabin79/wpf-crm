@@ -70,6 +70,9 @@ namespace Dental.Models
         [Display(Name = "Получает рассылки")]
         public bool? IsSubscribe { get; set; } = true;
 
+        [Display(Name = "Перемещена в архив")]
+        public bool? IsInArchive { get; set; } = false;
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -92,6 +95,7 @@ namespace Dental.Models
                 Address = this.Address,
                 Note = this.Note,
                 IsSubscribe = this.IsSubscribe,
+                IsInArchive = this.IsInArchive,
                 Advertising = this.Advertising,
                 ClientCategory = this.ClientCategory,
                 DiscountGroup = this.DiscountGroup
@@ -105,11 +109,6 @@ namespace Dental.Models
                 Work = company
             };*/
         }
-
-
-
-
-
 
         public override bool Equals(object other)
         {
@@ -214,6 +213,11 @@ namespace Dental.Models
             {
                 notIsChanges = false;
                 FieldsChanges["Административная"].Add("Участие в рассылках");
+            }            
+            if (this.IsInArchive != other.IsInArchive)
+            {
+                notIsChanges = false;
+                FieldsChanges["Административная"].Add("Перемещена в архив");
             }
             return notIsChanges;
         }

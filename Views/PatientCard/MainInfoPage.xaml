@@ -75,6 +75,12 @@
                         <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                           Command="{Binding SaveCommand}"/>                    
+                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>

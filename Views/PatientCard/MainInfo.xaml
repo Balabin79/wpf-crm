@@ -144,12 +144,18 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
-
-            <dxlc:LayoutItem Grid.Row="2"  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Stretch">
-                <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
+            <dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutItem  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Left">
+                    <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-            </dxlc:LayoutItem>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem  Label="Перемещена в архив:" LabelPosition="Top"  HorizontalAlignment="Right">
+                    <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
+                                  IsChecked="{Binding Model.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
 
         <dxlc:LayoutGroup  Grid.Row="2" Grid.ColumnSpan="2"
