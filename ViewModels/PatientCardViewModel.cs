@@ -306,15 +306,30 @@ namespace Dental.ViewModels
         private bool CanSaveCommandExecute(object p) => true;
         private void OnSaveCommandExecuted(object p)
         {
-            // показывать сервисное сообщение
-            if (HasUnsavedChanges())
+            try
             {
                 var notification = new Notification();
-                notification.Content = "Новый пациент записан в базу данных!";
-                notification.run();
+                if (Model.Id == 0)
+                {
+                    notification.Content = "Новый пациент успешно записан в базу данных!";
+                    Add();
+                }
+                else
+                {
+                    notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
+                    Update();
+                }
+                if (HasUnsavedChanges())
+                {
+                    notification.run();
+                    ModelBeforeChanges = (PatientInfo)Model.Clone();
+                }
+            } 
+            catch(Exception e)
+            {
+                (new ViewModelLog(e)).run();
             }
-                
-            int x = 0;
+
         }
         #endregion
 
@@ -427,6 +442,24 @@ namespace Dental.ViewModels
             AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
+        }
+
+        private void Add()
+        {
+            Model.Guid = KeyGenerator.GetUniqueKey();
+            db.Entry(Model).State = EntityState.Added;
+            db.SaveChanges();
+        }
+        private void Update()
+        {
+            if (string.IsNullOrEmpty(Model.Guid)) KeyGenerator.GetUniqueKey();
+            db.Entry(Model).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        private void Delete(ObservableCollection<DiscountGroups> collection)
+        {
+            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
         }
 
     }
