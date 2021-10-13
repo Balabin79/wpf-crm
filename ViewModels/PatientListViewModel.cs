@@ -24,12 +24,15 @@ namespace Dental.ViewModels
             try
             {
                 db = Db.Instance.Context;
-                Collection = db.PatientInfo.OrderBy(f => f.LastName).ToObservableCollection();
+                SetCollection();
 
                 #region инициализация команд, связанных с общим функционалом карты пациента
                 OpenPatientCardCommand = new LambdaCommand(OnOpenPatientCardCommandExecuted, CanOpenPatientCardCommandExecute);
-                MoveToArchiveCommand = new LambdaCommand(OnMoveToArchiveCommandExecuted, CanMoveToArchiveCommandExecute);
+                ShowArchiveCommand = new LambdaCommand(OnShowArchiveCommandExecuted, CanShowArchiveCommandExecute);
                 #endregion
+
+                BtnIconArchive = false;
+                BtnIconList = true;
             }
             catch (Exception e)
             {
@@ -49,15 +52,48 @@ namespace Dental.ViewModels
             else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.PatientCard.MainInfoPage", param });
         }
 
-        public ICommand MoveToArchiveCommand { get; }
-        private bool CanMoveToArchiveCommandExecute(object p) => true;
-        private void OnMoveToArchiveCommandExecuted(object p)
+        public ICommand ShowArchiveCommand { get; }
+        private bool CanShowArchiveCommandExecute(object p) => true;
+        private void OnShowArchiveCommandExecuted(object p)
         {
-            int x = 0;
+            try
+            {
+                BtnIconArchive = !BtnIconArchive;
+                BtnIconList = !BtnIconList;
+                if (BtnIconList) SetCollection();
+                else SetCollection(true);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
         }
 
-        public ObservableCollection<PatientInfo> Collection { get; set; } 
+        private bool _BtnIconArchive;
+        public bool BtnIconArchive
+        {
+            get => _BtnIconArchive;
+            set => Set(ref _BtnIconArchive, value);
+        }
 
-        public object AppViewModel { get; set; }
+        private bool _BtnIconList;
+        public bool BtnIconList
+        {
+            get => _BtnIconList;
+            set => Set(ref _BtnIconList, value);
+        }
+
+        public ObservableCollection<PatientInfo> _Collection;
+        public ObservableCollection<PatientInfo> Collection 
+        {
+            get => _Collection;
+            set => Set(ref _Collection, value);
+        }
+
+        private void SetCollection(bool isArhive=false)
+        {
+           Collection = db.PatientInfo.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
+        }
+
     }
 }

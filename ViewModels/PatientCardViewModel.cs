@@ -36,6 +36,7 @@ namespace Dental.ViewModels
                 // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+                DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -60,7 +61,7 @@ namespace Dental.ViewModels
                 if (patientId == 0)
                 {
                     Model = new PatientInfo();
-                    Model.PatientCardNumber = (CreateNewNumberPatientCard()).ToString();
+                    NumberPatientCard = (CreateNewNumberPatientCard()).ToString();
                     Model.PatientCardCreatedAt = DateTime.Now.ToShortDateString();
 
                     // для новой карты пациента все поля по-умолчанию доступны для редактирования
@@ -72,6 +73,7 @@ namespace Dental.ViewModels
                 {
                     Model = db.PatientInfo.Where(f => f.Id == patientId).FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
+                    NumberPatientCard = Model.Id.ToString();
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
@@ -264,7 +266,7 @@ namespace Dental.ViewModels
                         ClientFiles file = new ClientFiles();
                         file.Path = filePath;
                         file.DateCreated = DateTime.Today.ToShortDateString();
-                        file.Name = "vvv";
+                        file.Name = Path.GetFileName(filePath);
                         TempFiles.Add(file);
                         // Process.Start(filePath);
 
@@ -292,14 +294,56 @@ namespace Dental.ViewModels
         }
         #endregion
 
+        public ObservableCollection<ClientFiles> Files { get; set; }
+        public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();
+
+
+
         #region команды, связанные с общим функционалом карты пациента
         public ICommand EditableCommand { get; }
         private bool CanEditableCommandExecute(object p) => true;
         private void OnEditableCommandExecuted(object p)
         {
-            IsReadOnly = !IsReadOnly;
-            BtnIconEditableHide = IsReadOnly;
-            BtnIconEditableVisible = !IsReadOnly;
+            try
+            {
+                IsReadOnly = !IsReadOnly;
+                BtnIconEditableHide = IsReadOnly;
+                BtnIconEditableVisible = !IsReadOnly;
+                BtnDeleteEnable = !IsReadOnly;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public ICommand DeleteCommand { get; }
+        private bool CanDeleteCommandExecute(object p) => true;
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить карту пациента из базы данных? Если необходимо ее просто убрать из списка, воспользуйтесь кнопкой \"Переместить в архив \". Удалить карту пациента с базы данных, без возможности восстановления?",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+                if (!CheckingRelatedData())
+                {
+                    //показываем сообщение, что какие связанные с картой пациента данные необходимо удалить, чтобы стало возможным удалить карту пациента, либо программно удалить, но предупредить и показать какие связанные данные будут удалены с бд в том числе
+                }
+
+                Delete();
+                var notification = new Notification();
+                notification.Content = "Карта пациента полностью удалена из базы данных!";
+                var nav = Navigation.Instance;
+                notification.run();
+                nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
+
+            } 
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
         }
 
         public ICommand SaveCommand { get; }
@@ -313,6 +357,7 @@ namespace Dental.ViewModels
                 {
                     notification.Content = "Новый пациент успешно записан в базу данных!";
                     Add();
+                    BtnDeleteEnable = true;
                 }
                 else
                 {
@@ -358,9 +403,6 @@ namespace Dental.ViewModels
             return response.ToString() != "Cancel";
         }
 
-        public ObservableCollection<ClientFiles> Files { get; set; }
-        public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();
-
         private bool _IsReadOnly;
         public bool IsReadOnly
         {
@@ -375,13 +417,27 @@ namespace Dental.ViewModels
             set => Set(ref _Teeth, value);
         }
 
+        public string _NumberPatientCard;
+        public string NumberPatientCard 
+        { 
+            get => _NumberPatientCard;
+            set => Set(ref _NumberPatientCard, value);
+        }
+
+        public bool _BtnDeleteEnable = false;
+        public bool BtnDeleteEnable 
+        {
+            get => _BtnDeleteEnable;
+            set => Set(ref _BtnDeleteEnable, value);
+        }
+
+
         private PatientInfo _Model;
         public PatientInfo Model
         {
             get => _Model;
             set => Set(ref _Model, value);
         }
-
 
         public PatientInfo ModelBeforeChanges { get; set; }
 
@@ -394,6 +450,7 @@ namespace Dental.ViewModels
         {
             get => _GenderList;
         }
+
         private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
 
         private void SetToothState(object p, string methodName)
@@ -417,9 +474,9 @@ namespace Dental.ViewModels
 
         private int CreateNewNumberPatientCard()
         {
-            var id = db.PatientInfo?.OrderBy(f => f.Id).Select(f => f.Id)?.ToList()?.LastOrDefault();
+            var id = db.PatientInfo?.Max(e => e.Id);
             if (id == null) return 1;
-            return (int)id++;
+            return (int)++id;
         }
         private bool _BtnIconEditableVisible;
         public bool BtnIconEditableVisible
@@ -435,7 +492,6 @@ namespace Dental.ViewModels
             set => Set(ref _BtnIconEditableHide, value);
         }
 
-
         private void LoadFieldsCollection()
         {
             DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).Select(f => f.Name).ToList();
@@ -444,12 +500,18 @@ namespace Dental.ViewModels
             ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
         }
 
+        private bool CheckingRelatedData()
+        {
+            return true;
+        }
+
         private void Add()
         {
             Model.Guid = KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Added;
             db.SaveChanges();
         }
+        
         private void Update()
         {
             if (string.IsNullOrEmpty(Model.Guid)) KeyGenerator.GetUniqueKey();
@@ -457,9 +519,10 @@ namespace Dental.ViewModels
             db.SaveChanges();
         }
 
-        private void Delete(ObservableCollection<DiscountGroups> collection)
+        private void Delete()
         {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+            db.Entry(Model).State = EntityState.Deleted;
+            db.SaveChanges();
         }
 
     }

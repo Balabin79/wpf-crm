@@ -48,9 +48,6 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-
-
-
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Image Height="25" Width="25" Margin="2 0 0 0">
@@ -58,7 +55,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="{Binding Model.Id, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="18" Padding="0 8 5 0"/>
+                    <TextBlock Text="{Binding NumberPatientCard, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="18" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     
@@ -72,25 +69,21 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            Command="{Binding EditableCommand}"/>
+
                         <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                                            Command="{Binding SaveCommand}"/>                    
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
-                                           Command="{Binding SaveCommand}"/>
+                                           Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
-
-
-
-
-
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" >
 
