@@ -54,6 +54,7 @@ namespace Dental.ViewModels
                 #region инициализация команд, связанных с прикреплением к карте пациента файлов
                 DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
                 ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
+                OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
                 AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
                 #endregion               
 
@@ -225,10 +226,29 @@ namespace Dental.ViewModels
         public ICommand DeleteFileCommand { get; }
         public ICommand ExecuteFileCommand { get; }
         public ICommand AttachmentFileCommand { get; }
+        public ICommand OpenDirectoryCommand { get; }
 
         private bool CanDeleteFileCommandExecute(object p) => true;
         private bool CanExecuteFileCommandExecute(object p) => true;
         private bool CanAttachmentFileCommandExecute(object p) => true;
+        private bool CanOpenDirectoryCommandExecute(object p) => true;
+
+        private void OnOpenDirectoryCommandExecuted(object p)
+        {
+            try
+            {
+                var file = p as ClientFiles;
+                var dir = Path.GetDirectoryName(file?.Path);
+                Process.Start(dir);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                    text: "Невозможно открыть содержащую файл директорию!",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
+        }
 
         private void OnExecuteFileCommandExecuted(object p)
         {
@@ -266,7 +286,12 @@ namespace Dental.ViewModels
                         ClientFiles file = new ClientFiles();
                         file.Path = filePath;
                         file.DateCreated = DateTime.Today.ToShortDateString();
-                        file.Name = Path.GetFileName(filePath);
+                        file.Name = Path.GetFileNameWithoutExtension(filePath);
+                        if (Path.HasExtension(filePath))
+                        {
+                            file.Extension = Path.GetExtension(filePath).Remove(0, 1);
+                        }
+                        file.Size = new FileInfo(filePath).Length.ToString();
                         TempFiles.Add(file);
                         // Process.Start(filePath);
                     }
@@ -308,7 +333,7 @@ namespace Dental.ViewModels
                 IsReadOnly = !IsReadOnly;
                 BtnIconEditableHide = IsReadOnly;
                 BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id !=0) BtnDeleteEnable = !IsReadOnly;
+                if (Model != null && Model.Id !=0) BtnAfterSaveEnable = !IsReadOnly;
             }
             catch (Exception e)
             {
@@ -356,7 +381,7 @@ namespace Dental.ViewModels
                 {
                     notification.Content = "Новый пациент успешно записан в базу данных!";
                     Add();
-                    BtnDeleteEnable = true;
+                    BtnAfterSaveEnable = true;
                 }
                 else
                 {
@@ -423,11 +448,11 @@ namespace Dental.ViewModels
             set => Set(ref _NumberPatientCard, value);
         }
 
-        public bool _BtnDeleteEnable = false;
-        public bool BtnDeleteEnable 
+        public bool _BtnAfterSaveEnable = false;
+        public bool BtnAfterSaveEnable
         {
-            get => _BtnDeleteEnable;
-            set => Set(ref _BtnDeleteEnable, value);
+            get => _BtnAfterSaveEnable;
+            set => Set(ref _BtnAfterSaveEnable, value);
         }
 
 

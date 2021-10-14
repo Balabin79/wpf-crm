@@ -172,7 +172,7 @@
                                 <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                                    Content="Прикрепить файл" 
-                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
                                                     />
 
                             </dxb:ToolBarControl>
@@ -188,9 +188,11 @@
                 <dxg:GridControl  ItemsSource="{Binding TempFiles, Mode=TwoWay}" 
                                  DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
                     <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="Name" Header="Название" Width="9*"/>
-                        <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="3*" />
-                        <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
+                        <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
+                    <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
+                    <dxg:GridColumn FieldName="Size" Header="Размер файла" Width="1*" />
+                    <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="1*" />
+                    <dxg:GridColumn FieldName="Status" Header="Статус" Width="1*"/>
 
                         <dxg:GridColumn Width="auto" >
                             <dxg:GridColumn.CellTemplate>
@@ -212,7 +214,7 @@
                                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            GlyphSize="Small" 
-                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.OpenDirectoryCommand}"
                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
     
                                         <dxb:BarButtonItem Name="bDelete" Content="Удалить файл" 

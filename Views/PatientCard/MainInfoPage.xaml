@@ -76,7 +76,7 @@
                                            Command="{Binding SaveCommand}"/>                    
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
                                            Command="{Binding DeleteCommand}"/>
