@@ -269,7 +269,6 @@ namespace Dental.ViewModels
                         file.Name = Path.GetFileName(filePath);
                         TempFiles.Add(file);
                         // Process.Start(filePath);
-
                     }
                 }
 
@@ -309,7 +308,7 @@ namespace Dental.ViewModels
                 IsReadOnly = !IsReadOnly;
                 BtnIconEditableHide = IsReadOnly;
                 BtnIconEditableVisible = !IsReadOnly;
-                BtnDeleteEnable = !IsReadOnly;
+                if (Model != null && Model.Id !=0) BtnDeleteEnable = !IsReadOnly;
             }
             catch (Exception e)
             {
