@@ -51,13 +51,18 @@ namespace Dental.Services
             return Directory.Exists(path);
         }
 
+        public static bool FileExistsInPatientCardDirectory(string patientCardNumber, string fileName)
+        {
+            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber, fileName);
+            return new FileInfo(path).Exists;
+        }
+
         public static DirectoryInfo CreatePatientCardDirectory(string patientCardNumber)
         {
             string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber);
             if (HasPatientCardDirectory(patientCardNumber)) return new DirectoryInfo(path);
             return Directory.CreateDirectory(path);
         }
-
        
         public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber)
         {
@@ -87,12 +92,20 @@ namespace Dental.Services
             return clientFiles;
         }
 
-        /*
-        public static string SaveInPatientCardDirectory()
+       
+        public static void SaveInPatientCardDirectory(string patientCardNumber, ClientFiles file)
         {
+             var newPath = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber, (file.FullName));
+            File.Copy(file.Path, newPath, true);
 
         }
 
+        public static List<string> Errors { get; set; } = new List<string>();
+        public static bool HasErrors() => Errors.Count > 0;
+        
+
+
+        /*
         public static string GetFilesFromPatientCardDirectory()
         {
 

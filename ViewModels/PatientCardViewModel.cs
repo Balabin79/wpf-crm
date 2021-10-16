@@ -31,7 +31,7 @@ namespace Dental.ViewModels
             try
             {
                 db = Db.Instance.Context;
-
+                Files = new ObservableCollection<ClientFiles>();
                 #region инициализация команд, связанных с общим функционалом карты пациента
                 // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
@@ -287,12 +287,13 @@ namespace Dental.ViewModels
                         file.Path = filePath;
                         file.DateCreated = DateTime.Today.ToShortDateString();
                         file.Name = Path.GetFileNameWithoutExtension(filePath);
+                        file.FullName = Path.GetFileName(filePath);
                         if (Path.HasExtension(filePath))
                         {
                             file.Extension = Path.GetExtension(filePath).Remove(0, 1);
                         }
                         file.Size = new FileInfo(filePath).Length.ToString();
-                        TempFiles.Add(file);
+                        Files.Insert(0,file);
                         // Process.Start(filePath);
                     }
                 }
@@ -318,9 +319,12 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        public ObservableCollection<ClientFiles> Files { get; set; }
-        public ObservableCollection<ClientFiles> TempFiles { get; set; } = new ObservableCollection<ClientFiles>();
-
+        public ObservableCollection<ClientFiles> _Files;
+        public ObservableCollection<ClientFiles> Files 
+        {
+            get => _Files;
+            set => Set(ref _Files, value);
+        }
 
 
         #region команды, связанные с общим функционалом карты пациента
@@ -386,6 +390,7 @@ namespace Dental.ViewModels
                 else
                 {
                     notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
+                    SaveFiles();
                     Update();
                 }
                 if (HasUnsavedChanges())
@@ -401,6 +406,59 @@ namespace Dental.ViewModels
 
         }
         #endregion
+
+        private bool SaveFiles()
+        {
+            try
+            {
+                if (ProgramDirectory.HasMainProgrammDirectory() && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
+                {
+                    ProgramDirectory.Errors.Clear();
+                    MoveFilesToPatientCardDirectory();
+                }
+                else
+                {
+                    //если нет директории программы, то создаем ее
+                    if (!ProgramDirectory.HasMainProgrammDirectory())
+                    {
+                        var _ = ProgramDirectory.CreateMainProgrammDirectory();
+                    }
+                    // если нет директории карты пациента, то создаем ее
+                    if (!ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
+                    {
+                        var _ = ProgramDirectory.CreatePatientCardDirectory(Model.Id.ToString());
+                    }
+                    MoveFilesToPatientCardDirectory();
+                    
+                }
+            } 
+            catch (Exception e)
+            {
+                int x = 0;
+            }
+            if (Files.Count() > 0)
+            {
+
+            }
+            return false;
+        }
+
+        private void MoveFilesToPatientCardDirectory()
+        {
+            foreach (ClientFiles file in Files)
+            {
+                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0 ) continue;
+
+                if (ProgramDirectory.FileExistsInPatientCardDirectory(Model.Id.ToString(), file.FullName))
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Файл с таким именем уже был раннее прикреплен к карте пациента? Вы хотите его перезаписать?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") continue;
+                }
+                ProgramDirectory.SaveInPatientCardDirectory(Model.Id.ToString(), file);
+                file.Status = ClientFiles.STATUS_SAVE_RUS;
+                int x = 0;
+            }
+        }
 
         public bool HasUnsavedChanges()
         {
