@@ -81,7 +81,7 @@ namespace Dental.Services
             {
                 ClientFiles cf = new ClientFiles();
                 cf.Path = i.FullName;
-                cf.Name = i.Name;
+                cf.Name = Path.GetFileNameWithoutExtension(i.FullName);
                 cf.Size = i.Length.ToString();
                 cf.DateCreated = i.CreationTime.ToShortDateString();
                 cf.Extension = i.Extension;
@@ -97,19 +97,11 @@ namespace Dental.Services
         {
              var newPath = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber, (file.FullName));
             File.Copy(file.Path, newPath, true);
+            file.Path = newPath;
 
         }
 
         public static List<string> Errors { get; set; } = new List<string>();
         public static bool HasErrors() => Errors.Count > 0;
-        
-
-
-        /*
-        public static string GetFilesFromPatientCardDirectory()
-        {
-
-        }
-*/
     }
 }

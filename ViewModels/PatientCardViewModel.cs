@@ -32,8 +32,9 @@ namespace Dental.ViewModels
             {
                 db = Db.Instance.Context;
                 Files = new ObservableCollection<ClientFiles>();
-                #region инициализация команд, связанных с общим функционалом карты пациента
-                // Команда включения - отключения редактирования полей
+
+               #region инициализация команд, связанных с общим функционалом карты пациента
+               // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -74,10 +75,15 @@ namespace Dental.ViewModels
                 {
                     Model = db.PatientInfo.Where(f => f.Id == patientId).FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
-                    NumberPatientCard = Model.Id.ToString();
+                    NumberPatientCard = Model?.Id.ToString();
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
+
+                    if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
+                    {
+                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<ClientFiles>();
+                    }
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
@@ -220,6 +226,32 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+
+        public PatientTeeth _Teeth;
+        public PatientTeeth Teeth
+        {
+            get => _Teeth;
+            set => Set(ref _Teeth, value);
+        }
+
+        private void SetToothState(object p, string methodName)
+        {
+            Tooth tooth = p as Tooth;
+            if (tooth == null) return;
+
+            switch (methodName)
+            {
+                case "OnClickToothGreenCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
+                case "OnClickToothYelPlCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Plomba; break;
+                case "OnClickToothYelCorCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Coronka; break;
+                case "OnClickToothImpCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathImp; tooth.Abbr = ""; break;
+                case "OnClickToothRedRCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Radiks; break;
+                case "OnClickToothRedPtCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Periodontit; break;
+                case "OnClickToothRedPCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Pulpit; break;
+                case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
+                case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
+            }
+        }
         #endregion
 
         #region команды, связанных с прикреплением к карте пациентов файлов     
@@ -281,7 +313,6 @@ namespace Dental.ViewModels
 
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        //Get the path of specified file
                         filePath = openFileDialog.FileName;
                         ClientFiles file = new ClientFiles();
                         file.Path = filePath;
@@ -290,11 +321,10 @@ namespace Dental.ViewModels
                         file.FullName = Path.GetFileName(filePath);
                         if (Path.HasExtension(filePath))
                         {
-                            file.Extension = Path.GetExtension(filePath).Remove(0, 1);
+                            file.Extension = Path.GetExtension(filePath);
                         }
                         file.Size = new FileInfo(filePath).Length.ToString();
                         Files.Insert(0,file);
-                        // Process.Start(filePath);
                     }
                 }
 
@@ -317,15 +347,56 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        #endregion
+
+
+        private bool SaveFiles()
+        {
+            try
+            {
+                //если нет директории программы, то создаем ее
+                if (!ProgramDirectory.HasMainProgrammDirectory())
+                {
+                    var _ = ProgramDirectory.CreateMainProgrammDirectory();
+                }
+                if (!ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
+                {
+                    var _ = ProgramDirectory.CreatePatientCardDirectory(Model.Id.ToString());
+                }
+
+                ProgramDirectory.Errors.Clear();
+                MoveFilesToPatientCardDirectory();
+                return true;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+                return false;
+            }
+        }
+
+        private void MoveFilesToPatientCardDirectory()
+        {
+            foreach (ClientFiles file in Files)
+            {
+                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0) continue;
+
+                if (ProgramDirectory.FileExistsInPatientCardDirectory(Model.Id.ToString(), file.FullName))
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Файл с таким именем уже был раннее прикреплен к карте пациента? Вы хотите его перезаписать?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") continue;
+                }
+                ProgramDirectory.SaveInPatientCardDirectory(Model.Id.ToString(), file);
+                file.Status = ClientFiles.STATUS_SAVE_RUS;
+            }
+        }
 
         public ObservableCollection<ClientFiles> _Files;
-        public ObservableCollection<ClientFiles> Files 
+        public ObservableCollection<ClientFiles> Files
         {
             get => _Files;
             set => Set(ref _Files, value);
         }
-
+        #endregion
 
         #region команды, связанные с общим функционалом карты пациента
         public ICommand EditableCommand { get; }
@@ -407,59 +478,6 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        private bool SaveFiles()
-        {
-            try
-            {
-                if (ProgramDirectory.HasMainProgrammDirectory() && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
-                {
-                    ProgramDirectory.Errors.Clear();
-                    MoveFilesToPatientCardDirectory();
-                }
-                else
-                {
-                    //если нет директории программы, то создаем ее
-                    if (!ProgramDirectory.HasMainProgrammDirectory())
-                    {
-                        var _ = ProgramDirectory.CreateMainProgrammDirectory();
-                    }
-                    // если нет директории карты пациента, то создаем ее
-                    if (!ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
-                    {
-                        var _ = ProgramDirectory.CreatePatientCardDirectory(Model.Id.ToString());
-                    }
-                    MoveFilesToPatientCardDirectory();
-                    
-                }
-            } 
-            catch (Exception e)
-            {
-                int x = 0;
-            }
-            if (Files.Count() > 0)
-            {
-
-            }
-            return false;
-        }
-
-        private void MoveFilesToPatientCardDirectory()
-        {
-            foreach (ClientFiles file in Files)
-            {
-                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0 ) continue;
-
-                if (ProgramDirectory.FileExistsInPatientCardDirectory(Model.Id.ToString(), file.FullName))
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Файл с таким именем уже был раннее прикреплен к карте пациента? Вы хотите его перезаписать?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") continue;
-                }
-                ProgramDirectory.SaveInPatientCardDirectory(Model.Id.ToString(), file);
-                file.Status = ClientFiles.STATUS_SAVE_RUS;
-                int x = 0;
-            }
-        }
-
         public bool HasUnsavedChanges()
         {
             return !Model.Equals(ModelBeforeChanges);
@@ -490,13 +508,6 @@ namespace Dental.ViewModels
         {
             get => _IsReadOnly;
             set => Set(ref _IsReadOnly, value);
-        }
-
-        public PatientTeeth _Teeth;
-        public PatientTeeth Teeth
-        {
-            get => _Teeth;
-            set => Set(ref _Teeth, value);
         }
 
         public string _NumberPatientCard;
@@ -534,25 +545,6 @@ namespace Dental.ViewModels
         }
 
         private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
-
-        private void SetToothState(object p, string methodName)
-        {
-            Tooth tooth = p as Tooth;
-            if (tooth == null) return;
-
-            switch (methodName)
-            {
-                case "OnClickToothGreenCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
-                case "OnClickToothYelPlCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Plomba; break;
-                case "OnClickToothYelCorCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Coronka; break;
-                case "OnClickToothImpCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathImp; tooth.Abbr = ""; break;
-                case "OnClickToothRedRCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Radiks; break;
-                case "OnClickToothRedPtCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Periodontit; break;
-                case "OnClickToothRedPCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Pulpit; break;
-                case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
-                case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
-            }
-        }
 
         private int CreateNewNumberPatientCard()
         {
