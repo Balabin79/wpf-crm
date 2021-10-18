@@ -630,6 +630,9 @@
     <Compile Update="Views\Pages\ClassificatorServices.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\Ids.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -712,6 +715,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Pages\UserControls\PatientControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Ids.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -410,6 +410,22 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool HasUnsavedFiles()
+        {
+            if (Files.Count > 0)
+            {
+                foreach (var i in Files)
+                {
+                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
+                    {
+                        Model.FieldsChanges["Административная"].Add("Прикрепляемые файлы");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public ObservableCollection<ClientFiles> _Files;
         public ObservableCollection<ClientFiles> Files
         {
@@ -497,23 +513,6 @@ namespace Dental.ViewModels
 
         }
         #endregion
-
-        public bool HasUnsavedFiles()
-        {
-            if (Files.Count > 0)
-            {
-                foreach (var i in Files)
-                {
-                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
-                    {
-                        Model.FieldsChanges["Административная"].Add("Прикрепляемые файлы");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
 
         public bool HasUnsavedChanges()
         {

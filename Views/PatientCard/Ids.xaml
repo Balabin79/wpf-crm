@@ -1,0 +1,136 @@
+﻿<UserControl  x:Class="Dental.Views.PatientCard.Ids"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+       mc:Ignorable="d"
+       d:DesignHeight="400"
+       dx:ThemeManager.ThemeName="Office2019White"
+       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+              d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:DateToStringConverter x:Key="dateToString" />
+    </UserControl.Resources>
+    <Grid x:Name="gridIds">
+        
+
+        <dxlc:LayoutGroup 
+                          Margin="0 10 0 0"  View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+            <dxlc:LayoutGroup.HeaderTemplate>
+                <DataTemplate >
+                    <DockPanel  HorizontalAlignment="Stretch">
+                        <TextBlock Text="ИДС, Документы" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        
+                        <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
+
+                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                                <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
+                                                   Content="Прикрепить файл" 
+                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
+                                                    />
+
+                            </dxb:ToolBarControl>
+                        </dxb:BarContainerControl>
+                        
+                             
+                             
+                    </DockPanel>
+                    
+                </DataTemplate>
+            </dxlc:LayoutGroup.HeaderTemplate>
+    
+                <dxg:GridControl  ItemsSource="{Binding Ids, Mode=TwoWay}" MaxHeight="2000"
+                                 DataContext="{Binding}" Name="GridControlIds" Width="auto">
+                    <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Name" Header="Название документа" />
+
+                    <dxg:GridColumn Width="auto" >
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+
+                                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                                        <dxb:BarButtonItem Name="bOpen"
+                                           Content="Открыть файл"                                                            
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                        
+                                        <dxb:BarButtonItem Name="bOpenDir" 
+                                           Content="Открыть содержащую файл директорию" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                           GlyphSize="Small" 
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirectoryCommand}"
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+    
+                                        <dxb:BarButtonItem Name="bDeleteFile" 
+                                           Content="Удалить файл" 
+                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteFileCommand}" 
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                        <dxb:BarItemLinkSeparator />
+                                    </dxb:ToolBarControl>
+                                </dxb:BarContainerControl>
+
+                            </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+
+
+                        </dxg:GridColumn>
+
+                    </dxg:GridControl.Columns>
+                    <dxg:GridControl.View>
+                        <dxg:TableView ShowGroupPanel="False"
+                                              x:Name="IdsTableView"
+                                               NavigationStyle="Row"
+                                               AutoWidth="True"
+                                               AllowEditing="False"
+                                               ShowVerticalLines="False"
+                                               ShowHorizontalLines="False"
+                                               UseEvenRowBackground="True"
+                                               ShowIndicator="False" >
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="Delete"       
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                <KeyBinding Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                            </dxg:TableView.InputBindings>
+
+                            <dxg:TableView.RowCellMenuCustomizations >
+                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
+                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
+                                               Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                               Command="{Binding DeleteFileCommand}" 
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+        </dxlc:LayoutGroup>
+    </Grid>
+
+</UserControl>

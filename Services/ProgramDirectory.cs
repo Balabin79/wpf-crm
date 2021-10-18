@@ -1,6 +1,7 @@
 ﻿using Dental.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,19 +30,19 @@ namespace Dental.Services
         public const string WINDIR = "@%WINDIR%";   // C:\Windows
         public const string PROGRAMM_NAME = "Dental";
         public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
-        public const string IDS_DIRECTORY = "Dental\\IDS";
+        public const string IDS_DIRECTORY = "Dental\\Ids";
 
-        public static string GetPathToProgrammDirectory()
+        private static string GetPathToProgrammDirectory()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
         }        
         
-        public static string GetPathToPatientsCardsDirectoty()
+        private static string GetPathToPatientsCardsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
         }
 
-        public static string GetPathToIdsDirectoty()
+        private static string GetPathIdsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
         }
@@ -56,16 +57,21 @@ namespace Dental.Services
             return Directory.Exists(GetPathToPatientsCardsDirectoty());
         }
 
-        public static DirectoryInfo CreateMainProgrammDirectoryForPatientCards()
-        {
-            if (HasPatientsCardsDirectoty()) return new DirectoryInfo(GetPathToPatientsCardsDirectoty());
-            return Directory.CreateDirectory(GetPathToPatientsCardsDirectoty());
-        }
-
         public static bool HasPatientCardDirectory(string patientCardNumber)
         {
             string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
             return Directory.Exists(path);
+        }
+
+        public static bool HasIdsDirectoty()
+        {
+            return Directory.Exists(GetPathIdsDirectoty());
+        }
+
+        public static DirectoryInfo CreateMainProgrammDirectoryForPatientCards()
+        {
+            if (HasPatientsCardsDirectoty()) return new DirectoryInfo(GetPathToPatientsCardsDirectoty());
+            return Directory.CreateDirectory(GetPathToPatientsCardsDirectoty());
         }
 
         public static bool FileExistsInPatientCardDirectory(string patientCardNumber, string fileName)
@@ -109,7 +115,24 @@ namespace Dental.Services
             }
             return clientFiles;
         }
-       
+      
+        public static ObservableCollection<FileInfo> GetIdsFilesNames()
+        {
+            ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
+            var path = GetPathIdsDirectoty();
+            IEnumerable<string> filesNames = Directory.EnumerateFiles(path).ToList();
+            foreach (var filePath in filesNames)
+            {
+                Ids.Add(new FileInfo(filePath));
+            }
+            return Ids;
+        }
+        /*
+        public static void ImportIds(FileInfo file)
+        {
+
+        }
+        */
         public static void SaveInPatientCardDirectory(string patientCardNumber, ClientFiles file)
         {
              var newPath = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName));
