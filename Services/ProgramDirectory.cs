@@ -29,6 +29,7 @@ namespace Dental.Services
         public const string WINDIR = "@%WINDIR%";   // C:\Windows
         public const string PROGRAMM_NAME = "Dental";
         public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
+        public const string IDS_DIRECTORY = "Dental\\IDS";
 
         public static string GetPathToProgrammDirectory()
         {
@@ -38,6 +39,11 @@ namespace Dental.Services
         public static string GetPathToPatientsCardsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
+        }
+
+        public static string GetPathToIdsDirectoty()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
         }
 
         public static bool HasMainProgrammDirectory()

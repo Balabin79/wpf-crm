@@ -498,9 +498,30 @@ namespace Dental.ViewModels
         }
         #endregion
 
+        public bool HasUnsavedFiles()
+        {
+            if (Files.Count > 0)
+            {
+                foreach (var i in Files)
+                {
+                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
+                    {
+                        Model.FieldsChanges["Административная"].Add("Прикрепляемые файлы");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+
         public bool HasUnsavedChanges()
         {
-            return !Model.Equals(ModelBeforeChanges);
+            bool hasUnsavedChanges = false;
+            if (Model.FieldsChanges != null) Model.FieldsChanges = PatientInfo.CreateFieldsChanges();
+            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            if (HasUnsavedFiles()) hasUnsavedChanges = true;
+            return hasUnsavedChanges;
         }
 
         public bool IsContinueAfterWarningMessage()

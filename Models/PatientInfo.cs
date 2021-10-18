@@ -143,8 +143,6 @@ namespace Dental.Models
 
         public override bool Equals(object other)
         {
-            if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
-            
 
             //Последовательность проверки должна быть именно такой.
             //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            
@@ -256,7 +254,7 @@ namespace Dental.Models
         [NotMapped]
         public Dictionary<string, List<string>> FieldsChanges { get; set; } = CreateFieldsChanges();
 
-        private static Dictionary<string, List<string>> CreateFieldsChanges()
+        public static Dictionary<string, List<string>> CreateFieldsChanges()
         {
             return new Dictionary<string, List<string>>() {
                 { "Административная", new List<string>() },
