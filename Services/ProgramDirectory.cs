@@ -116,7 +116,7 @@ namespace Dental.Services
             return clientFiles;
         }
       
-        public static ObservableCollection<FileInfo> GetIdsFilesNames()
+        public static ObservableCollection<FileInfo> GetIds()
         {
             ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
             var path = GetPathIdsDirectoty();

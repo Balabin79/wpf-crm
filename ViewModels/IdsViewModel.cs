@@ -32,7 +32,7 @@ namespace Dental.ViewModels
         public IdsViewModel()
         {
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
-            Ids = ProgramDirectory.GetIdsFilesNames();
+            Ids = ProgramDirectory.GetIds();
         }
 
         #region функционал связанный с ИДС
