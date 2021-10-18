@@ -28,51 +28,62 @@ namespace Dental.Services
         public const string USERPROFILE = "@%USERPROFILE%";   // C:\Users\Username
         public const string WINDIR = "@%WINDIR%";   // C:\Windows
         public const string PROGRAMM_NAME = "Dental";
+        public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
 
         public static string GetPathToProgrammDirectory()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PROGRAMM_NAME);
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
+        }        
+        
+        public static string GetPathToPatientsCardsDirectoty()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
         }
 
         public static bool HasMainProgrammDirectory()
         {
             return Directory.Exists(GetPathToProgrammDirectory());
         }
-        
-        public static DirectoryInfo CreateMainProgrammDirectory()
+
+        public static bool HasPatientsCardsDirectoty()
         {
-            if (HasMainProgrammDirectory()) return new DirectoryInfo(GetPathToProgrammDirectory());
-            return Directory.CreateDirectory(GetPathToProgrammDirectory());
+            return Directory.Exists(GetPathToPatientsCardsDirectoty());
+        }
+
+        public static DirectoryInfo CreateMainProgrammDirectoryForPatientCards()
+        {
+            if (HasPatientsCardsDirectoty()) return new DirectoryInfo(GetPathToPatientsCardsDirectoty());
+            return Directory.CreateDirectory(GetPathToPatientsCardsDirectoty());
         }
 
         public static bool HasPatientCardDirectory(string patientCardNumber)
         {
-            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber);
+            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
             return Directory.Exists(path);
         }
 
         public static bool FileExistsInPatientCardDirectory(string patientCardNumber, string fileName)
         {
-            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber, fileName);
+            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, fileName);
             return new FileInfo(path).Exists;
         }
 
         public static DirectoryInfo CreatePatientCardDirectory(string patientCardNumber)
         {
-            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber);
+            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
             if (HasPatientCardDirectory(patientCardNumber)) return new DirectoryInfo(path);
             return Directory.CreateDirectory(path);
         }
        
         public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber)
         {
-            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber);
+            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
             return new DirectoryInfo(path);
         }
 
         public static IEnumerable<ClientFiles> GetFilesFromPatientCardDirectory(string patientCardNumber)
         {
-            string path = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber);          
+            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);          
             FileInfo[] files = new DirectoryInfo(path).GetFiles();
 
             List<ClientFiles> clientFiles = new List<ClientFiles>();
@@ -82,6 +93,7 @@ namespace Dental.Services
                 ClientFiles cf = new ClientFiles();
                 cf.Path = i.FullName;
                 cf.Name = Path.GetFileNameWithoutExtension(i.FullName);
+                cf.FullName = Path.GetFileName(i.FullName);
                 cf.Size = i.Length.ToString();
                 cf.DateCreated = i.CreationTime.ToShortDateString();
                 cf.Extension = i.Extension;
@@ -91,14 +103,22 @@ namespace Dental.Services
             }
             return clientFiles;
         }
-
        
         public static void SaveInPatientCardDirectory(string patientCardNumber, ClientFiles file)
         {
-             var newPath = Path.Combine(GetPathToProgrammDirectory(), patientCardNumber, (file.FullName));
+             var newPath = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName));
             File.Copy(file.Path, newPath, true);
             file.Path = newPath;
 
+        }
+
+        public static void RemoveFileFromPatientsCard(string patientCardNumber, ClientFiles file)
+        {
+            var path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName));
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
 
         public static List<string> Errors { get; set; } = new List<string>();

@@ -5,12 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Dental.Models
 {
     [Table("PatientInfo")]
     class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
     {
+
         [Display(Name = "Номер медицинской карты")]
         public string PatientCardNumber { get; set; } //номер карты
 
@@ -20,16 +22,45 @@ namespace Dental.Models
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
-        public string FirstName { get; set; }
+        public string FirstName        
+        {
+            get => _FirstName;
+            set
+            {
+                _FirstName = value;
+                if (_FirstName?.Length > 0) _FirstName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+            } 
+        }
+        private string _FirstName;
 
         [Display(Name = "Фамилия")]
         [Required(ErrorMessage = @"Поле ""Фамилия"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Фамилия"" не более 255 символов")]
-        public string LastName { get; set; }
+        public string LastName 
+        {
+            get => _LastName;
+            set
+            {
+                _LastName = value;
+                if (_LastName?.Length > 0) _LastName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+            }
+
+        }
+        private string _LastName;
 
         [Display(Name = "Отчество")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Отчество"" не более 255 символов")]
-        public string MiddleName { get; set; }
+        public string MiddleName
+        {
+            get => _MiddleName;
+            set
+            {
+                _MiddleName = value;
+                if (_MiddleName?.Length > 0) _MiddleName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+            }
+
+        }
+        public string _MiddleName;
 
         [Display(Name = "Дата рождения")]
         public string BirthDate { get; set; }

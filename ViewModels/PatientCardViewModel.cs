@@ -82,7 +82,7 @@ namespace Dental.ViewModels
 
                     if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
                     {
-                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<ClientFiles>();
+                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<ClientFiles>();                        
                     }
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
@@ -324,6 +324,16 @@ namespace Dental.ViewModels
                             file.Extension = Path.GetExtension(filePath);
                         }
                         file.Size = new FileInfo(filePath).Length.ToString();
+
+                        if (FindDoubleFile(file.FullName))
+                        {
+                            var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                            if (response.ToString() == "No") return;
+                            var idx = Files.IndexOf(f => (string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0));
+                            if (idx != 0) return; 
+                            Files[idx] = file;
+                            return;
+                        }
                         Files.Insert(0,file);
                     }
                 }
@@ -339,8 +349,16 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
-
+                var file = p as ClientFiles;
+                var item = Files.Where<ClientFiles>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
+                if (item == null) return;               
+                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;                     
+                    ProgramDirectory.RemoveFileFromPatientsCard(Model.Id.ToString(), file);
+                }
+                Files.Remove(file);
             }
             catch (Exception e)
             {
@@ -348,6 +366,14 @@ namespace Dental.ViewModels
             }
         }
 
+        private bool FindDoubleFile(string fileName)
+        {
+            foreach(var file in Files)
+            {
+                if (string.Compare(file.FullName, fileName, StringComparison.CurrentCulture) == 0) return true;
+            }
+            return false;
+        } 
 
         private bool SaveFiles()
         {
@@ -356,7 +382,7 @@ namespace Dental.ViewModels
                 //если нет директории программы, то создаем ее
                 if (!ProgramDirectory.HasMainProgrammDirectory())
                 {
-                    var _ = ProgramDirectory.CreateMainProgrammDirectory();
+                    var _ = ProgramDirectory.CreateMainProgrammDirectoryForPatientCards();
                 }
                 if (!ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
                 {
@@ -379,12 +405,6 @@ namespace Dental.ViewModels
             foreach (ClientFiles file in Files)
             {
                 if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0) continue;
-
-                if (ProgramDirectory.FileExistsInPatientCardDirectory(Model.Id.ToString(), file.FullName))
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Файл с таким именем уже был раннее прикреплен к карте пациента? Вы хотите его перезаписать?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") continue;
-                }
                 ProgramDirectory.SaveInPatientCardDirectory(Model.Id.ToString(), file);
                 file.Status = ClientFiles.STATUS_SAVE_RUS;
             }
