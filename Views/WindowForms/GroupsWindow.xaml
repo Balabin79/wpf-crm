@@ -8,7 +8,7 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Height="275"
-        MaxHeight="275"
+        MaxHeight="27"
         Width="800"
         MaxWidth="800"
         Title="Категория клиентов"
