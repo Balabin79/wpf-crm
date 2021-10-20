@@ -13,6 +13,7 @@ using System.Windows;
 using DevExpress.Xpf.Grid;
 using Dental.Services;
 using Dental.Infrastructures.Collection;
+using System.Collections.Generic;
 
 namespace Dental.ViewModels
 {
@@ -54,8 +55,8 @@ namespace Dental.ViewModels
             try
             {
                 if (p == null) return;
-                if (Model == null || !new ConfirDeleteInCollection().run(null)) return;
                 Model = GetModelById((int)p);
+                if (Model == null || !new ConfirDeleteInCollection().run(0)) return;               
                 Delete(new ObservableCollection<ClientsGroup>() { Model });
                 db.SaveChanges();
             }
@@ -92,11 +93,11 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Title = "Новая группа клиентов";
+                        Title = "Создать";
                         break;                  
                     default:
                         Model = GetModelById(param);
-                        Title = "Редактировать группу клиентов";
+                        Title = "Редактировать";
                         break;
                 }
                 Window.DataContext = this;
@@ -112,6 +113,17 @@ namespace Dental.ViewModels
 
 
         /******************************************************/
+        public ICollection<DiscountGroups> Group { get; set; }
+
+        private object _SelectedType;
+        public object SelectedType
+        {
+            get => _SelectedType;
+            set => Set(ref _SelectedType, value);
+        }
+
+        public ICollection<string> Types { get; } = new List<string>() { "Фиксированная сумма", "Процент" };
+
         public ObservableCollection<ClientsGroup> Collection
         {
             get => _Collection;
@@ -149,7 +161,6 @@ namespace Dental.ViewModels
 
         private void Delete(ObservableCollection<ClientsGroup> collection)
         {
-
             collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
             collection.ForEach(f => Collection.Remove(f));
         }

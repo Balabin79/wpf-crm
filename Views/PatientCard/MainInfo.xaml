@@ -108,7 +108,7 @@
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
 
-            <dxlc:LayoutItem Label="Источник рекламы:" Grid.Row="0" LabelPosition="Top" >
+            <dxlc:LayoutItem Label="Источник привлечения клиента:" Grid.Row="0" LabelPosition="Top" >
                 <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" 
                                   IsTextEditable="False"                                  
                                   SelectedItem="{Binding Model.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
@@ -119,16 +119,6 @@
                 </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
 
-            <dxlc:LayoutItem Label="Скидки:"  LabelPosition="Top">
-                <dxe:ComboBoxEdit ItemsSource="{Binding DiscountGroupList, Mode=TwoWay}" 
-                                  IsTextEditable="False"
-                                  SelectedItem="{Binding Model.DiscountGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                    <dxe:ComboBoxEdit.StyleSettings>
-                        <dxe:RadioComboBoxStyleSettings />
-                    </dxe:ComboBoxEdit.StyleSettings>
-                </dxe:ComboBoxEdit>
-            </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
                 <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}"  
                                   IsTextEditable="False"
@@ -144,19 +134,19 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
-            <dxlc:LayoutGroup Orientation="Horizontal">
+    
                 <dxlc:LayoutItem  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Left">
                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem  Label="Перемещена в архив:" LabelPosition="Top"  HorizontalAlignment="Right">
+            <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top"  HorizontalAlignment="Left">
                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
-        </dxlc:LayoutGroup>
+   
 
         <dxlc:LayoutGroup  Grid.Row="2" Grid.ColumnSpan="2"
                           Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
@@ -201,8 +191,8 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn Width="auto" >
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
                                     <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
@@ -214,7 +204,7 @@
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                        
+
                                         <dxb:BarButtonItem Name="bOpenDir" 
                                            Content="Открыть содержащую файл директорию" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
@@ -222,7 +212,7 @@
                                            GlyphSize="Small" 
                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.OpenDirectoryCommand}"
                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-    
+
                                         <dxb:BarButtonItem Name="bDeleteFile" 
                                            Content="Удалить файл" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
@@ -233,14 +223,9 @@
                                         <dxb:BarItemLinkSeparator />
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
-
-
-
                             </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-
-
-                        </dxg:GridColumn>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
 
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>

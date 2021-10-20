@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Specialities")]
-    class Speciality : AbstractBaseModel, IDataErrorInfo, ITreeModel
+    class Speciality : AbstractBaseModel, IDataErrorInfo
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
@@ -17,10 +17,6 @@ namespace Dental.Models
 
         [Display(Name = "В расписании")]
         public int ShowInShedule { get; set; }
-
-
-        public int? ParentId { get; set; }
-        public int? IsDir { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

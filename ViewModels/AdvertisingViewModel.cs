@@ -55,11 +55,8 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
-
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Advertising>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<Advertising>().ToObservableCollection());
+                if (Model == null) return;
+                 Delete(new ObservableCollection<Advertising>() { Model });
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -72,27 +69,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
-
-                if (SelectedGroup != null)
-                {
-                    int id = ((Advertising)SelectedGroup).Id;
-                    if (id == 0) Model.ParentId = null;
-                    else Model.ParentId = id;
-                }  
-                    
-
-                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
-                {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
-                }
-
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
-
-                SelectedGroup = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -114,44 +92,23 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Model.IsDir = 0;
-                        Title = "Новый рекламный источник";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
+   
+                        Title = "Создать";
+            
                         VisibleItemForm();
                         break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Создать группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
-                        VisibleItemGroup();
-                        break;
+
                     default:
                         Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Advertising>().ToObservableCollection();
-                        
-                        if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
+                        Title = "Редактировать";
+                        VisibleItemForm();
 
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать рекламный источник";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
+     
                         break;
                 }
 
                 Window.DataContext = this;
                 Window.ShowDialog();
-                SelectedGroup = null;
             }
             catch (Exception e)
             {
@@ -161,23 +118,7 @@ namespace Dental.ViewModels
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
-        /************* Специфика этой ViewModel ******************/
-        private ObservableCollection<Advertising> _Group;
-        public ObservableCollection<Advertising> Group 
-        {
-            get => _Group;
-            set => Set(ref _Group, value);
-        }
-        public Advertising WithoutCategory { get; set; } = new Advertising() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
-        private object _SelectedGroup;
-        public object SelectedGroup
-        {
-            get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
-        }
-
-        /******************************************************/
         public ObservableCollection<Advertising> Collection
         {
             get => _Collection;
@@ -193,16 +134,8 @@ namespace Dental.ViewModels
         {
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 280;
-            Window.Width = 800;
         }
-        private void VisibleItemGroup()
-        {
-            IsVisibleItemForm = Visibility.Hidden;
-            IsVisibleGroupForm = Visibility.Visible;
-            Window.Width = 800;
-            Window.Height = 280;
-        }
+
 
         private ObservableCollection<Advertising> _Collection;
         private AdvertisingWindow Window;

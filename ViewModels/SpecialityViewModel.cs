@@ -54,11 +54,8 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
-
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Speciality>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<Speciality>().ToObservableCollection());
+                if (Model == null) return;
+                Delete(new ObservableCollection<Speciality>() { Model });
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -71,21 +68,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
-
-                if (SelectedGroup != null) Model.ParentId = ((Speciality)SelectedGroup).Id;
-
-                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
-                {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
-                }
 
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
-
-                SelectedGroup = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -107,41 +92,18 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Model.IsDir = 0;
                         Title = "Новая специальность";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
                         VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Создать группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemGroup();
                         break;
                     default:
                         Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Speciality>().ToObservableCollection();
-
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать специальность";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
+                        Title = "Редактировать специальность";
+                        VisibleItemForm();
                         break;
                 }
 
                 Window.DataContext = this;
                 Window.ShowDialog();
-                SelectedGroup = null;
             }
             catch (Exception e)
             {
@@ -150,16 +112,6 @@ namespace Dental.ViewModels
         }
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
-
-        /************* Специфика этой ViewModel ******************/
-        public ICollection<Speciality> Group { get; set; }
-
-        private object _SelectedGroup;
-        public object SelectedGroup
-        {
-            get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
-        }
 
         /******************************************************/
         public ObservableCollection<Speciality> Collection

@@ -14,8 +14,15 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Display(Name = "Описание")]
-        public string Description { get; set; }
+        [Display(Name = "Вид скидки")]
+        public string DiscountType { get; set; }
+
+        [Display(Name = "Размер скидки")]
+        public string Amount { get; set; }
+
+        public int? IsDiscountActive { get; set; } = 0;
+
+        public int? IsApplyDiscount { get; set; } = 0;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

@@ -112,11 +112,8 @@
                          >
 
             <dxg:GridControl.View>
-                <dxg:TreeListView                   
+                <dxg:TableView                   
                     x:Name="view"
-                    KeyFieldName="Id"
-                    ParentFieldName="ParentId"
-                    TreeDerivationMode="Selfreference" 
                     ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
@@ -127,14 +124,9 @@
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True" 
-                    PrintNodeImages="True"
-                    ShowNodeImages="True"
-                    NodeImageSize="15,15"
-                    ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"                 
+                    AllowPrintColumnHeaderImage="True"                
                     >
-                    <dxg:TreeListView.InputBindings>
+                    <dxg:TableView.InputBindings>
                         <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
@@ -143,11 +135,6 @@
                                 Command="{Binding Path=OpenFormCommand}"
                                 CommandParameter="-1"  
                                     />
-                        <KeyBinding Key="G"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"
-                                CommandParameter="-2"  
-                                    />
                         <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
                                 Command="{Binding OpenFormCommand}"
@@ -155,24 +142,18 @@
                         <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                    </dxg:TreeListView.InputBindings>
+                    </dxg:TableView.InputBindings>
 
 
-                    <dxg:TreeListView.RowCellMenuCustomizations>
+                    <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
-                                            Name="addGroup" KeyGesture="Ctrl+G" Content="Добавить группу"  Command="{Binding OpenFormCommand}" CommandParameter="-2"/>
                         <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
                             Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
-                    </dxg:TreeListView.RowCellMenuCustomizations>
-
-                    <dxg:TreeListView.NodeImageSelector>
-                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                    </dxg:TreeListView.NodeImageSelector>
-                </dxg:TreeListView>
+                    </dxg:TableView.RowCellMenuCustomizations>
+                </dxg:TableView>
             </dxg:GridControl.View>
 
             <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="5*">

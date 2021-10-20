@@ -5,59 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Height="280"
+        Height="285"
+        MaxHeight="285"
         Width="800"
+        MaxWidth="800"
         Title="Категория клиентов"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <converter:DateToStringConverter x:Key="DateToString"/>
-        <converter:FloatToStringConverter x:Key="FloatToString"/>
+        <converter:FloatToStringConverter x:Key="conv"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
     </Window.Resources>
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
     </Window.Icon>
     <Grid>
-        <Grid>
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
-                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+        <GroupBox Margin="10 0 10 10"  BorderBrush="LightGray" BorderThickness="1" >
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="14" FontWeight="DemiBold"/>
+                
+                <StackPanel Grid.Row="1">
+       
+                        <dxlc:LayoutItem  Label="Название:" LabelPosition="Top"  HorizontalAlignment="Stretch">
+                            <dxe:TextEdit  
+                                       Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"  />
+                        </dxlc:LayoutItem>
+                    <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 5 0 0">
+                        <dxlc:LayoutItem  Label="Тип скидки:" LabelPosition="Top" >
+                            <dxe:ComboBoxEdit ItemsSource="{Binding Types}"                                      
+                                              SelectedItem="{Binding Model.DiscountType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              NullText="Выберите тип скидки"
+                                              IsTextEditable="False" 
+                                              IsEnabled="{Binding Model.IsApplyDiscount, Mode=TwoWay}">
+                                <dxe:ComboBoxEdit.StyleSettings>
+                                    <dxe:RadioComboBoxStyleSettings />
+                                </dxe:ComboBoxEdit.StyleSettings>
+                            </dxe:ComboBoxEdit>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem  Label="Размер скидки:" LabelPosition="Top"  >
+                            <dxe:TextEdit  Mask="F" MaskType="Numeric" 
+                                           Text="{Binding Model.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                ValidatesOnDataErrors=True, Converter={StaticResource conv} }" 
+                                           IsEnabled="{Binding Model.IsApplyDiscount, Mode=TwoWay}"/>
+                            
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+                    <dxlc:LayoutGroup Orientation="Vertical" Margin="0 5 0 0">
+                        <dxlc:LayoutItem  Label="Применять скидку:" LabelPosition="Left"  HorizontalAlignment="Left">
+                            <dxe:CheckEdit IsChecked="{Binding Model.IsApplyDiscount, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"  Margin="3 3 0 0"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem  Label="Скидка активна:" LabelPosition="Left"  HorizontalAlignment="Left">
+                            <dxe:CheckEdit IsChecked="{Binding Model.IsDiscountActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"  
+                                           Margin="3 3 0 0"
+                                           IsEnabled="{Binding Model.IsApplyDiscount, Mode=TwoWay}"/>
+                        </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
 
-                                <TextBlock  Grid.Row="0"  Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                </StackPanel>
 
-                                <TextBlock  Grid.Row="2" Text="Описание:"  Margin="0,0,8,3" />
-                                    <dxe:MemoEdit  Grid.Row="3"  Text="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,  
-                                        ValidatesOnDataErrors=True}"  Margin="0,0,8,3" />
 
-                                  
-                            </Grid>
-                        </StackPanel>
-                    </GroupBox>
-
-                    <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-        </Grid>
+                <StackPanel Height="25" Grid.Row="2" Margin="0 0 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                    <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

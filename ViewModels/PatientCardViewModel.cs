@@ -574,7 +574,6 @@ namespace Dental.ViewModels
 
         public PatientInfo ModelBeforeChanges { get; set; }
 
-        public IEnumerable<string> DiscountGroupList { get; set; }
         public ICollection<string> AdvertisingList { get; set; }
         public IEnumerable<string> ClientsGroupList { get; set; }
         public ObservableCollection<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
@@ -608,7 +607,6 @@ namespace Dental.ViewModels
 
         private void LoadFieldsCollection()
         {
-            DiscountGroupList = db.DiscountGroups.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();

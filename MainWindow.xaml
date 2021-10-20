@@ -145,13 +145,6 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/status11.png"   
                                             ToolTip="Категории клиентов"
                                             Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Groups"/>
-                        <dxb:BarButtonItem Content="Скидки"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Profiles.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Profiles.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Profiles.png"   
-                                            ToolTip="Скидки"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.DiscountGroups"/>
 
                         <dxb:BarButtonItem Content="Рекламные источники"
                                            RibbonStyle="Default" 
