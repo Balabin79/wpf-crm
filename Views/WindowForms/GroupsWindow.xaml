@@ -7,8 +7,8 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Height="285"
-        MaxHeight="285"
+        Height="275"
+        MaxHeight="275"
         Width="800"
         MaxWidth="800"
         Title="Категория клиентов"
@@ -27,7 +27,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="14" FontWeight="DemiBold"/>
                 

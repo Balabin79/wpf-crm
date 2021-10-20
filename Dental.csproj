@@ -479,10 +479,6 @@
     <Resource Include="Resources\Icons\Template\Barcode.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
-    <Resource Include="Resources\Icons\Template\Book-Keeping.png" />
-    <Resource Include="Resources\Icons\Template\Book.png" />
-    <Resource Include="Resources\Icons\Template\Books.png" />
-    <Resource Include="Resources\Icons\Template\Box-Open.png" />
     <Resource Include="Resources\Icons\Template\box.png" />
     <Resource Include="Resources\Icons\Template\calculator.png" />
     <Resource Include="Resources\Icons\Template\Chart-Bar.png" />
@@ -497,10 +493,6 @@
     <Resource Include="Resources\Icons\Template\comp.png" />
     <Resource Include="Resources\Icons\Template\Curriculum-Vitae.png" />
     <Resource Include="Resources\Icons\Template\delete_32.png" />
-    <Resource Include="Resources\Icons\Template\diagnos.png" />
-    <Resource Include="Resources\Icons\Template\Document-Index.png" />
-    <Resource Include="Resources\Icons\Template\Document-Layout.png" />
-    <Resource Include="Resources\Icons\Template\document-lined-pen.png" />
     <Resource Include="Resources\Icons\Template\Document-Signature.png" />
     <Resource Include="Resources\Icons\Template\Draw-Clone.png" />
     <Resource Include="Resources\Icons\Template\Drawer-Open.png" />
@@ -508,12 +500,10 @@
     <Resource Include="Resources\Icons\Template\Email-Edit.png" />
     <Resource Include="Resources\Icons\Template\Email-Link.png" />
     <Resource Include="Resources\Icons\Template\emp.png" />
-    <Resource Include="Resources\Icons\Template\error-item.png" />
     <Resource Include="Resources\Icons\Template\Eye.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Folder.png" />
-    <Resource Include="Resources\Icons\Template\Glade-3-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Dialog-Question-64.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Document-Save-64.png" />
@@ -533,16 +523,13 @@
     <Resource Include="Resources\Icons\Template\org.png" />
     <Resource Include="Resources\Icons\Template\Page-White-Edit.png" />
     <Resource Include="Resources\Icons\Template\Participation-Rate.png" />
-    <Resource Include="Resources\Icons\Template\Pen.png" />
     <Resource Include="Resources\Icons\Template\Pencil.png" />
     <Resource Include="Resources\Icons\Template\pencil_32.png" />
     <Resource Include="Resources\Icons\Template\people.png" />
-    <Resource Include="Resources\Icons\Template\Pill.png" />
     <Resource Include="Resources\Icons\Template\plan.png" />
     <Resource Include="Resources\Icons\Template\Printer.png" />
     <Resource Include="Resources\Icons\Template\Profiles.png" />
     <Resource Include="Resources\Icons\Template\Radio-2.png" />
-    <Resource Include="Resources\Icons\Template\Report.png" />
     <Resource Include="Resources\Icons\Template\Reseller-Account-Template.png" />
     <Resource Include="Resources\Icons\Template\Reseller-Account.png" />
     <Resource Include="Resources\Icons\Template\Ribbon.png" />
@@ -657,9 +644,6 @@
     <Compile Update="Views\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\DiscountGroups.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\CommunicationLog\CommunicationLogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -673,9 +657,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\SpecialityWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WindowForms\DiscountGroupsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\AdvertisingWindow.xaml.cs">
@@ -757,10 +738,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\DiscountGroups.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\CommunicationLog\CommunicationLogView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -778,10 +755,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\WindowForms\SpecialityWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\DiscountGroupsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

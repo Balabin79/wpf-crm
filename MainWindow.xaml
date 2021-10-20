@@ -160,18 +160,18 @@
 
                         <dxb:BarButtonItem Content="Реквизиты организации"
                                            RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/License-Management.png" 
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/License-Management.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/License-Management.png"   
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png"   
                                            ToolTip="Реквизиты организации"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Organization"/>
 
-                        <dxb:BarButtonItem Content="Должности сотрудников"
+                        <dxb:BarButtonItem Content="Специальности сотрудников"
                                            RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
-                                           ToolTip="Должности сотрудников"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png"   
+                                           ToolTip="Специальности сотрудников"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
                         <dxb:BarButtonItem Content="Классификатор услуг" 
                                            RibbonStyle="Default" 

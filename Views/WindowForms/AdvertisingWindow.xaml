@@ -8,8 +8,8 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Height="185"
-        MaxHeight="185"
+        Height="180"
+        MaxHeight="180"
         Width="800"
         MaxWidth="800"
         Title="Рекламный источник"
@@ -19,12 +19,12 @@
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Advertising.png" />
     </Window.Icon>
     <Grid>
-        <GroupBox Margin="10 5 10 10" Padding="2" BorderBrush="LightGray" BorderThickness="1" >
+        <GroupBox Margin="10 0 10 10" Padding="2" BorderBrush="LightGray" BorderThickness="1" >
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="35"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="14" FontWeight="DemiBold"/>
                 <StackPanel Grid.Row="1">

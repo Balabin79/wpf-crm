@@ -22,7 +22,7 @@
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Page.Resources>
 
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
  
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
@@ -50,8 +50,7 @@
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-1"/>
              
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать" 
-                                           
+                        <dxb:BarButtonItem Name="bPrint" Content="Печать"                          
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" 
@@ -64,10 +63,8 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid"  
-                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DataContext="{StaticResource vm}"
-                         Margin="2" MaxHeight="2000"
-                         >
+                <dxg:GridControl AutoGenerateColumns="None"  Name="grid"  
+                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" MaxHeight="2000">
 
                     <dxg:GridControl.View>
                         <dxg:TableView                   
@@ -111,11 +108,6 @@
                                 <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:EventToCommand EventName="RowUpdated" 
-                               Command="{Binding SaveCommand}" 
-                               ModifierKeys="Ctrl+"/>
-                            </dxmvvm:Interaction.Behaviors>
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
@@ -176,9 +168,9 @@
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                                        <dxb:BarButtonItem Name="bDeleteFile" 
+                                        <dxb:BarButtonItem Name="bDelete" 
                                            DataContext="{StaticResource vm}"        
-                                           Content="Удалить файл" 
+                                           Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
                                            GlyphSize="Small"
@@ -190,7 +182,6 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-
                 </dxg:GridControl>
             </ScrollViewer>
         </Grid>

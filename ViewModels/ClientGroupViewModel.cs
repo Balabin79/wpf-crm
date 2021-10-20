@@ -113,7 +113,6 @@ namespace Dental.ViewModels
 
 
         /******************************************************/
-        public ICollection<DiscountGroups> Group { get; set; }
 
         private object _SelectedType;
         public object SelectedType

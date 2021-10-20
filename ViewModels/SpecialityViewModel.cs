@@ -54,7 +54,7 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null) return;
+                if (Model == null || !new ConfirDeleteInCollection().run(0)) return;
                 Delete(new ObservableCollection<Speciality>() { Model });
                 db.SaveChanges();
             }
@@ -92,12 +92,12 @@ namespace Dental.ViewModels
                 {
                     case -1:
                         Model = CreateNewModel();
-                        Title = "Новая специальность";
+                        Title = "Создать";
                         VisibleItemForm();
                         break;
                     default:
                         Model = GetModelById(param);
-                        Title = "Редактировать специальность";
+                        Title = "Редактировать";
                         VisibleItemForm();
                         break;
                 }
@@ -129,13 +129,11 @@ namespace Dental.ViewModels
         {
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 280;
         }
         private void VisibleItemGroup()
         {
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
-            Window.Height = 230;
         }
 
         private ObservableCollection<Speciality> _Collection;

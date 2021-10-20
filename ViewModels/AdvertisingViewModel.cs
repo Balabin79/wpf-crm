@@ -55,8 +55,8 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 Model = GetModelById((int)p);
-                if (Model == null) return;
-                 Delete(new ObservableCollection<Advertising>() { Model });
+                if (Model == null || !new ConfirDeleteInCollection().run(0)) return;
+                Delete(new ObservableCollection<Advertising>() { Model });
                 db.SaveChanges();
             }
             catch (Exception e)
