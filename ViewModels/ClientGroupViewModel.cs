@@ -29,7 +29,7 @@ namespace Dental.ViewModels
 
             try
             {
-                db = new ApplicationContext();
+                db = Db.Instance.Context;
                 Collection = GetCollection();
             }
             catch (Exception e)

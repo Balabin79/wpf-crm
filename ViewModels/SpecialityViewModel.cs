@@ -13,6 +13,7 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Models.Base;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -28,7 +29,7 @@ namespace Dental.ViewModels
 
             try
             {
-                db = new ApplicationContext();
+                db = Db.Instance.Context;
                 Collection = GetCollection();
             }
             catch (Exception e)

@@ -9,6 +9,7 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -20,7 +21,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ApplicationContext();
+                db = Db.Instance.Context;
             }
             catch (Exception e)
             {

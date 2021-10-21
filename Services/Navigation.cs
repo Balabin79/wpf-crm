@@ -13,6 +13,8 @@ using Dental.Views.Pages.UserControls;
 using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System.Windows;
+using System.Data.Entity;
+using Dental.Models;
 
 namespace Dental.Services
 {
@@ -59,7 +61,20 @@ namespace Dental.Services
                 if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
                 {
                     var viewModel = (PatientCardViewModel)CurrentPage.DataContext;
-                    if (viewModel.HasUnsavedChanges() && !viewModel.IsContinueAfterWarningMessage()) return;
+                    if (viewModel.HasUnsavedChanges())
+                    {
+                        bool response = viewModel.UserSelectedBtnCancel();
+                        if (response) return;
+
+                        if (viewModel.Model.Id != null && viewModel.Model.Id != 0)
+                        {
+                            var model = Db.Instance.Context.PatientInfo.Find(viewModel.Model.Id);
+                            if (model == null) return;
+                            model = (PatientInfo)viewModel.ModelBeforeChanges.Copy(model);
+                            Db.Instance.Context.Entry(model).State = EntityState.Modified;
+                            Db.Instance.Context.SaveChanges();
+                        }
+                    }
                 }
 
                 Page page;

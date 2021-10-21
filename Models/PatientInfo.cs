@@ -114,6 +114,7 @@ namespace Dental.Models
 
             return new PatientInfo
             {
+                Id = this.Id,
                 PatientCardNumber = this.PatientCardNumber,
                 PatientCardCreatedAt = this.PatientCardCreatedAt,
                 FirstName = this.FirstName,
@@ -139,6 +140,28 @@ namespace Dental.Models
                 Age = this.Age,
                 Work = company
             };*/
+        }
+
+        public PatientInfo Copy(PatientInfo model)
+        {
+            model.Id = this.Id;
+            model.PatientCardNumber = this.PatientCardNumber;
+            model.PatientCardCreatedAt = this.PatientCardCreatedAt;
+            model.FirstName = this.FirstName;
+            model.LastName = this.LastName;
+            model.MiddleName = this.MiddleName;
+            model.BirthDate = this.BirthDate;
+            model.Sex = this.Sex;
+            model.Phone = this.Phone;
+            model.Email = this.Email;
+            model.Address = this.Address;
+            model.Note = this.Note;
+            model.IsSubscribe = this.IsSubscribe;
+            model.IsInArchive = this.IsInArchive;
+            model.Advertising = this.Advertising;
+            model.ClientCategory = this.ClientCategory;
+            model.DiscountGroup = this.DiscountGroup;
+            return model;
         }
 
         public override bool Equals(object other)

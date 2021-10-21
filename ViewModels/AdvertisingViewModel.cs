@@ -14,6 +14,7 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -29,7 +30,7 @@ namespace Dental.ViewModels
 
             try
             {
-                db = new ApplicationContext();
+                db = db = Db.Instance.Context;
                 Collection = GetCollection();
             }
             catch (Exception e)

@@ -14,6 +14,7 @@ using System.IO;
 using DevExpress.Data.ODataLinq.Helpers;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -27,7 +28,7 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
-            db = new ApplicationContext();
+            db = Db.Instance.Context; 
             context = db.Employes;
             Collection = GetCollection();
             VisibleErrors = Visibility.Collapsed;

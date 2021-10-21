@@ -22,7 +22,7 @@ namespace Dental.ViewModels
 {
     class PatientCardViewModel : ViewModelBase
     {
-        private readonly ApplicationContext db;
+        private  ApplicationContext db;
 
         public PatientCardViewModel() : this(0) { }
 
@@ -523,7 +523,7 @@ namespace Dental.ViewModels
             return hasUnsavedChanges;
         }
 
-        public bool IsContinueAfterWarningMessage()
+        public bool UserSelectedBtnCancel()
         {
             string warningMessage = "";     
             foreach (var tab in Model.FieldsChanges)
@@ -540,8 +540,9 @@ namespace Dental.ViewModels
              var response = ThemedMessageBox.Show(title: "Внимание", text: "В карте пациента содержатся несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
                 messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
 
-            return response.ToString() != "Cancel";
+            return response.ToString() == "Cancel";
         }
+
 
         private bool _IsReadOnly;
         public bool IsReadOnly
