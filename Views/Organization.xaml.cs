@@ -8,9 +8,8 @@ namespace Dental.Views
     public partial class Organization : Page
     {
         public Organization()
-        {
+        {          
             InitializeComponent();
-
         }
     }
 }

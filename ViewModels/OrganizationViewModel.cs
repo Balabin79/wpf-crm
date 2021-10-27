@@ -25,10 +25,12 @@ namespace Dental.ViewModels
     class OrganizationViewModel: ViewModelBase
     {
         private readonly ApplicationContext db;
+       
         public OrganizationViewModel()
         {
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             IsReadOnly = true;
             try
             {
@@ -60,7 +62,6 @@ namespace Dental.ViewModels
        
         private bool CanSaveCommandExecute(object p) => true;
 
-
         private void OnSaveCommandExecuted(object p)
         {
             try { 
@@ -70,12 +71,38 @@ namespace Dental.ViewModels
                 else db.Entry(Model).State = EntityState.Modified;
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
-                db.SaveChanges();
+               
                 if (HasUnsavedChanges())
                 {
                     notification.run();
-                    ModelBeforeChanges = (Organization)Model.Clone();
-                }          
+                    ModelBeforeChanges = (Organization)Model.Clone();                  
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public ICommand DeleteCommand { get; }
+
+        private bool CanDeleteCommandExecute(object p) => true;
+
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить данные организации?",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+                Delete();
+                Model = new Organization();
+                var notification = new Notification();
+                ModelBeforeChanges.Copy(Model);
+
+                notification.Content = "Данные организации полностью удалены!";
+                notification.run();
             }
             catch (Exception e)
             {
@@ -111,6 +138,21 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool UserSelectedBtnCancel()
+        {
+            string warningMessage = "\nПоля: ";
+            foreach (var fieldName in Model.FieldsChanges)
+            {
+                warningMessage += " " + "\"" + fieldName + "\"" + ",";
+            }
+            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
+
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
+               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+            return response.ToString() == "Cancel";
+        }
+
         private bool _BtnIconEditableVisible;
         public bool BtnIconEditableVisible
         {
@@ -139,10 +181,19 @@ namespace Dental.ViewModels
             set => Set(ref _IsReadOnly, value);
         }
 
-        public Organization Model { get; set; }
+        public Organization _Model;
+        public Organization Model 
+        {
+            get => _Model;
+            set => Set(ref _Model, value);
+        }
 
 
-
-        private Organization GetModel() => db.Organizations.FirstOrDefault();
+        private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
+        private void Delete()
+        { 
+            db.Entry(Model).State = EntityState.Deleted;
+            db.SaveChanges();
+        }
     }
 }

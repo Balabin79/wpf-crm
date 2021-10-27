@@ -22,6 +22,7 @@
     <None Remove="Resources\Icons\folder_closed_gnone_32.png" />
     <None Remove="Resources\Icons\folder_open_32.png" />
     <None Remove="Resources\Icons\folder_open_gnone_32.png" />
+    <None Remove="Resources\Icons\Page.png" />
     <None Remove="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <None Remove="Resources\Icons\svg\balance-scale-right.svg" />
     <None Remove="Resources\Icons\svg\document.png" />
@@ -304,6 +305,7 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\folder_closed_gnone_32.png" />
     <Resource Include="Resources\Icons\folder_open_gnone_32.png" />
+    <Resource Include="Resources\Icons\Page.png" />
     <Resource Include="Resources\Icons\svg\arrow-alt-circle-up.svg" />
     <Resource Include="Resources\Icons\svg\balance-scale-right.svg" />
     <Resource Include="Resources\Icons\svg\document.svg" />
@@ -430,9 +432,6 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Pages\ClassificatorServices.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PatientCard\Ids.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -443,6 +442,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\TreatmentPlan.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\PriceRateForClientsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\WageRateForEmploymentsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\GroupsWindow.xaml.cs">
@@ -507,10 +512,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Pages\ClassificatorServices.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Pages\UserControls\PatientControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -531,6 +532,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\TreatmentPlan.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\WindowForms\PriceRateForClientsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\WindowForms\WageRateForEmploymentsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

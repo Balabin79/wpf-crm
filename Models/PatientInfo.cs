@@ -60,7 +60,7 @@ namespace Dental.Models
             }
 
         }
-        public string _MiddleName;
+        private string _MiddleName;
 
         [Display(Name = "Дата рождения")]
         public string BirthDate { get; set; }
@@ -76,27 +76,49 @@ namespace Dental.Models
 
         [Phone]
         [Display(Name = "Телефон")]
-        public string Phone { get; set; }
+        public string Phone
+        {
+            get => _Phone;
+            set => _Phone = value?.Trim();
+        }
+        private string _Phone;
 
         [EmailAddress]
         [MaxLength(255)]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public string Email
+        {
+            get => _Email;
+            set => _Email = value?.Trim();
+        }
+        private string _Email;
 
         [Display(Name = "Адрес проживания")]
-        public string Address { get; set; }
+        public string Address
+        {
+            get => _Address;
+            set => _Address = value?.Trim();
+        }
+        private string _Address;
 
         [Display(Name = "Примечание")]
-        public string Note { get; set; }
+        public string Note
+        {
+            get => _Note;
+            set => _Note = value?.Trim();
+        }
+        private string _Note;
 
         [Display(Name = "Канал привлечения")]
-        public string Advertising { get; set; }
+        public string Advertising
+        {
+            get => _Advertising;
+            set => _Advertising = value?.Trim();
+        }
+        private string _Advertising;
 
         [Display(Name = "Категория клиентов")]
         public string ClientCategory { get; set; }
-
-        [Display(Name = "Группа скидки")]
-        public string DiscountGroup { get; set; }
 
         [Display(Name = "Получает рассылки")]
         public bool? IsSubscribe { get; set; } = true;
@@ -130,7 +152,6 @@ namespace Dental.Models
                 IsInArchive = this.IsInArchive,
                 Advertising = this.Advertising,
                 ClientCategory = this.ClientCategory,
-                DiscountGroup = this.DiscountGroup
             };
 
             /*Company company = new Company { Name = this.Work.Name };
@@ -160,7 +181,6 @@ namespace Dental.Models
             model.IsInArchive = this.IsInArchive;
             model.Advertising = this.Advertising;
             model.ClientCategory = this.ClientCategory;
-            model.DiscountGroup = this.DiscountGroup;
             return model;
         }
 
@@ -187,7 +207,7 @@ namespace Dental.Models
         public bool Equals(PatientInfo other)
         {
             if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
-            bool notIsChanges = true;
+            NotIsChanges = true;
             if (other == null)
                 return false;
 
@@ -201,78 +221,41 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;
 
-            if (string.Compare(this.FirstName, other.FirstName, StringComparison.CurrentCulture) != 0 /*&& this.speed.Equals(other.speed)*/)
-            {
-                notIsChanges = false;
-               FieldsChanges["Административная"].Add("Имя");
-            }
-            if (string.Compare(this.LastName, other.LastName, StringComparison.CurrentCulture) != 0 )
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Фамилия");
-            }
-            if (string.Compare(this.MiddleName, other.MiddleName, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Отчество");
-            }
-            if (string.Compare(this.BirthDate, other.BirthDate, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Дата рождения");
-            }
-            if (string.Compare(this.Sex, other.Sex, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Пол");
-            }
-            if (string.Compare(this.Phone, other.Phone, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Телефон");
-            }
-            if (string.Compare(this.Email, other.Email, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Email");
-            }
-            if (string.Compare(this.Address, other.Address, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Адрес");
-            }
-            if (string.Compare(this.Note, other.Note, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Дополнительно");
-            }
-            if (string.Compare(this.Advertising, other.Advertising, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Рекламные источники");
-            }
-            if (string.Compare(this.ClientCategory, other.ClientCategory, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Категории клиентов");
-            }
-            if (string.Compare(this.DiscountGroup, other.DiscountGroup, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges["Административная"].Add("Группы скидок");
-            }
+            StringParamsIsEquel(this.FirstName, other.FirstName, "Административная", "Имя");
+            StringParamsIsEquel(this.LastName, other.LastName, "Административная", "Фамилия");
+            StringParamsIsEquel(this.MiddleName, other.MiddleName, "Административная", "Отчество");
+            StringParamsIsEquel(this.BirthDate, other.BirthDate, "Административная", "Дата рождения");
+            StringParamsIsEquel(this.Sex, other.Sex, "Административная", "Пол");
+            StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
+            StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
+            StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес");
+            StringParamsIsEquel(this.Note, other.Note, "Административная", "Дополнительно");
+            StringParamsIsEquel(this.Advertising, other.Advertising, "Административная", "Рекламные источники");
+            StringParamsIsEquel(this.ClientCategory, other.ClientCategory, "Административная", "Категории клиентов");
+
             if (this.IsSubscribe != other.IsSubscribe)
             {
-                notIsChanges = false;
+                NotIsChanges = false;
                 FieldsChanges["Административная"].Add("Участие в рассылках");
             }            
             if (this.IsInArchive != other.IsInArchive)
             {
-                notIsChanges = false;
+                NotIsChanges = false;
                 FieldsChanges["Административная"].Add("Перемещена в архив");
             }
-            return notIsChanges;
+            return NotIsChanges;
         }
+
+        private void StringParamsIsEquel(string param1, string param2, string section, string fieldName)
+        {
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
+            NotIsChanges = false;
+            FieldsChanges[section].Add(fieldName);
+        }
+
+        [NotMapped]
+        public bool NotIsChanges { get; set; } = true;
 
         [NotMapped]
         public Dictionary<string, List<string>> FieldsChanges { get; set; } = CreateFieldsChanges();

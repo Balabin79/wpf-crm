@@ -15,95 +15,206 @@ namespace Dental.Models
         [Required]
         [MaxLength(255)]
         [Display(Name = "Наименование")]
-        public string Name { get; set; }
+        public string Name 
+        {
+            get => _Name;
+            set => _Name = value?.Trim();
+        }
+        private string _Name;
 
         [MaxLength(255)]
         [Display(Name = "Сокращенное наименование")]
-        public string ShortName { get; set; }
+        public string ShortName 
+        {
+            get => _ShortName; 
+            set => _ShortName = value?.Trim();
+        }
+        private string _ShortName;
 
         [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         [Display(Name = "ИНН")]
-        public string Inn { get; set; }
+        public string Inn
+        {
+            get => _Inn;
+            set => _Inn = value?.Trim();
+        }
+        private string _Inn;
 
         [MaxLength(9, ErrorMessage = "Длина не более 9 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
         [Display(Name = "КПП")]
-        public string Kpp { get; set; }
-
+        public string Kpp
+        {
+            get => _Kpp;
+            set => _Kpp = value?.Trim();
+        }
+        private string _Kpp;
         // Общая информация
-        [Display(Name = "Лого")]
-        public string Logo { get; set; }
+       
+            [Display(Name = "Лого")]
+        public string Logo
+        {
+            get => _Logo;
+            set => _Logo = value?.Trim();
+        }
+        private string _Logo;
+
 
         [NotMapped]
         public ImageSource Image { get; set; }
 
         // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
-        public string Address { get; set; }
+        public string Address
+        {
+            get => _Address;
+            set => _Address = value?.Trim();
+        }
+        private string _Address;
 
         [Display(Name = "Юридический адрес")]
-        public string LegalAddress { get; set; }
+        public string LegalAddress
+        {
+            get => _LegalAddress;
+            set => _LegalAddress = value?.Trim();
+        }
+        private string _LegalAddress;
 
         [Phone]
         [Display(Name = "Телефон")]
-        public string Phone { get; set; }
+        public string Phone
+        {
+            get => _Phone;
+            set => _Phone = value?.Trim();
+        }
+        private string _Phone;
 
         [MaxLength(255)]
         [EmailAddress]
         [Display(Name = "Email")]
-        public string Email { get; set; }
+        public string Email
+        {
+            get => _Email;
+            set => _Email = value?.Trim();
+        }
+        private string _Email;
 
         // Банковские реквизиты
         [MaxLength(12, ErrorMessage = "Длина не более 12 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Bik { get; set; }
+        public string Bik
+        {
+            get => _Bik;
+            set => _Bik = value?.Trim();
+        }
+        private string _Bik;
 
         [Display(Name = "Расчетный счет")]
         [MaxLength(20, ErrorMessage = "Длина не более 20 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string AccountNumber { get; set; }
+        public string AccountNumber
+        {
+            get => _AccountNumber;
+            set => _AccountNumber = value?.Trim();
+        }
+        private string _AccountNumber;
 
         [Display(Name = "Наименование банка")]
-        public string BankName { get; set; }
+        public string BankName
+        {
+            get => _BankName;
+            set => _BankName = value?.Trim();
+        }
+        private string _BankName;
 
         [Display(Name = "ОГРН")]
         [MaxLength(13, ErrorMessage = "Длина не более 13 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Ogrn { get; set; }
+        public string Ogrn
+        {
+            get => _Ogrn;
+            set => _Ogrn = value?.Trim();
+        }
+        private string _Ogrn;
 
         [Display(Name = "Дата регистрации")]
-        public string RegisterDate { get; set; }
+        public string RegisterDate
+        {
+            get => _RegisterDate;
+            set => _RegisterDate = value?.Trim();
+        }
+        private string _RegisterDate;
 
         [Display(Name = "Генеральный директор")]
-        public string GeneralDirector { get; set; }
+        public string GeneralDirector
+        {
+            get => _GeneralDirector;
+            set => _GeneralDirector = value?.Trim();
+        }
+        private string _GeneralDirector;
 
         [Display(Name = "Лицензия")]
-        public string License { get; set; }
+        public string License
+        {
+            get => _License;
+            set => _License = value?.Trim();
+        }
+        private string _License;
 
         [Display(Name = "Кем выдана")]
-        public string WhoIssuedBy { get; set; }
+        public string WhoIssuedBy
+        {
+            get => _WhoIssuedBy;
+            set => _WhoIssuedBy = value?.Trim();
+        }
+        private string _WhoIssuedBy;
 
         [Display(Name = "Дополнительно")]
-        public string Additional { get; set; }
+        public string Additional
+        {
+            get => _Additional;
+            set => _Additional = value?.Trim();
+        }
+        private string _Additional;
 
         [Display(Name = "ОКВЭД")]
         [MaxLength(6, ErrorMessage = "Длина не более 6 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Okved { get; set; }
+        public string Okved
+        {
+            get => _Okved;
+            set => _Okved = value?.Trim();
+        }
+        private string _Okved;
 
         [Display(Name = "ОКПО")]
         [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Okpo { get; set; }
+        public string Okpo
+        {
+            get => _Okpo;
+            set => _Okpo = value?.Trim();
+        }
+        private string _Okpo;
 
         [Display(Name = "Корреспондирующий счет")]
         [MaxLength(20, ErrorMessage = "Длина не более 20 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string CorrAccountNumber { get; set; }
+        public string CorrAccountNumber
+        {
+            get => _CorrAccountNumber;
+            set => _CorrAccountNumber = value?.Trim();
+        }
+        private string _CorrAccountNumber;
 
         [Display(Name = "Сайт")]
-        public string Site { get; set; }
+        public string Site
+        {
+            get => _Site;
+            set => _Site = value?.Trim();
+        }
+        private string _Site;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -147,6 +258,34 @@ namespace Dental.Models
             };*/
         }
 
+        public Organization Copy(Organization model)
+        {
+            model.Name = this.Name;
+            model.ShortName = this.ShortName;
+            model.Kpp = this.Kpp;
+            model.Inn = this.Inn;
+            model.Logo = this.Logo;
+            model.Address = this.Address;
+            model.LegalAddress = this.LegalAddress;
+            model.Phone = this.Phone;
+            model.Email = this.Email;
+            model.AccountNumber = this.AccountNumber;
+            model.CorrAccountNumber = this.CorrAccountNumber;
+            model.Bik = this.Bik;
+            model.BankName = this.BankName;
+            model.Ogrn = this.Ogrn;
+            model.RegisterDate = this.RegisterDate;
+            model.GeneralDirector = this.GeneralDirector;
+            model.License = this.License;
+            model.Site = this.Site;
+            model.WhoIssuedBy = this.WhoIssuedBy;
+            model.Additional = this.Additional;
+            model.Okpo = this.Okpo;
+            model.Okved = this.Okved;
+            return model;
+        }
+
+
         public override bool Equals(object other)
         {
 
@@ -170,7 +309,7 @@ namespace Dental.Models
         public bool Equals(Organization other)
         {
             if (FieldsChanges != null) FieldsChanges = new List<string>();
-            bool notIsChanges = true;
+            NotIsChanges = true;
             if (other == null)
                 return false;
 
@@ -184,142 +323,44 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;
 
-            if (string.Compare(this.Name, other.Name, StringComparison.CurrentCulture) != 0 /*&& this.speed.Equals(other.speed)*/)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Наименование");
-            }
+            StringParamsIsEquel(this.Name, other.Name, "Наименование");
+            StringParamsIsEquel(this.ShortName, other.ShortName, "Сокращенное наименование");
+            StringParamsIsEquel(this.Kpp, other.Kpp, "КПП");
+            StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
+            StringParamsIsEquel(this.Logo, other.Logo, "Логотип");
+            StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
+            StringParamsIsEquel(this.Email, other.Email, "Email");
+            StringParamsIsEquel(this.Address, other.Address, "Фактический адрес");
+            StringParamsIsEquel(this.LegalAddress, other.LegalAddress, "Юридический адрес");
+            StringParamsIsEquel(this.Bik, other.Bik, "БИК");
+            StringParamsIsEquel(this.AccountNumber, other.AccountNumber, "Расчетный счет");
+            StringParamsIsEquel(this.BankName, other.BankName, "Наименование банка");
+            StringParamsIsEquel(this.Ogrn, other.Ogrn, "ОГРН");
+            StringParamsIsEquel(this.Okpo, other.Okpo, "ОКПО");
+            StringParamsIsEquel(this.Okved, other.Okved, "ОКВЭД");
+            StringParamsIsEquel(this.RegisterDate, other.RegisterDate, "Дата регистрации");
+            StringParamsIsEquel(this.GeneralDirector, other.GeneralDirector, "Генеральный директор");
+            StringParamsIsEquel(this.License, other.License, "Лицензия");
+            StringParamsIsEquel(this.WhoIssuedBy, other.WhoIssuedBy, "Кем выдана");
+            StringParamsIsEquel(this.CorrAccountNumber, other.CorrAccountNumber, "Корреспондирующий счет");
+            StringParamsIsEquel(this.Additional, other.Additional, "Дополнительно");
+            StringParamsIsEquel(this.Site, other.Site, "Сайт");
 
-            if (string.Compare(this.ShortName, other.ShortName, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Сокращенное наименование"); 
-            }
+            return NotIsChanges;
+        }
 
-            if (string.Compare(this.Kpp, other.Kpp, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("КПП");
-            }
-
-            if (string.Compare(this.Inn, other.Inn, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("ИНН");
-            }
-
-            if (string.Compare(this.Logo, other.Logo, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Логотип");
-            }
-
-            if (string.Compare(this.Phone, other.Phone, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Телефон"); ;
-            }
-
-            if (string.Compare(this.Email, other.Email, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Email");
-            }
-
-            if (string.Compare(this.Address, other.Address, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Фактический адрес");
-            }
-
-            if (string.Compare(this.LegalAddress, other.LegalAddress, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Юридический адрес");
-            }
-
-            if (string.Compare(this.Bik, other.Bik, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("БИК");
-            }
-
-            if (string.Compare(this.AccountNumber, other.AccountNumber, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Расчетный счет");
-            }
-
-            if (string.Compare(this.BankName, other.BankName, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Наименование банка");
-            }
-
-            if (string.Compare(this.Ogrn, other.Ogrn, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("ОГРН");
-            }
-
-            if (string.Compare(this.Okpo, other.Okpo, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("ОКПО");
-            }
-
-            if (string.Compare(this.Okved, other.Okved, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("ОКВЭД");
-            }
-
-            if (string.Compare(this.RegisterDate, other.RegisterDate, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Дата регистрации");
-            }
-
-            if (string.Compare(this.GeneralDirector, other.GeneralDirector, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Генеральный директор");
-            }
-
-            if (string.Compare(this.License, other.License, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Лицензия);");
-            }
-
-            if (string.Compare(this.WhoIssuedBy, other.WhoIssuedBy, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Кем выдана");
-            }
-
-            if (string.Compare(this.CorrAccountNumber, other.CorrAccountNumber, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Корреспондирующий счет");
-            }
-
-            if (string.Compare(this.Additional, other.Additional, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Дополнительно");
-            }
-
-            if (string.Compare(this.Site, other.Site, StringComparison.CurrentCulture) != 0)
-            {
-                notIsChanges = false;
-                FieldsChanges.Add("Сайт");
-            }
-
-            return notIsChanges;
+        private void StringParamsIsEquel(string param1, string param2, string fieldName)
+        {
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
+            NotIsChanges = false;
+            FieldsChanges.Add(fieldName);
         }
 
         [NotMapped]
         public List<string> FieldsChanges { get; set; } = new List<string>();
+
+        [NotMapped]
+        public bool NotIsChanges { get; set; } = true;
     }  
 }

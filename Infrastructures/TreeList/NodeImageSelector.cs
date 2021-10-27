@@ -22,7 +22,7 @@ namespace Dental.Infrastructures.TreeList
 
             Open = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_open_gnone_32.png"));
             Closed = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_closed_gnone_32.png"));
-            File = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/document_gnome_32.png"));
+            File = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Page.png"));
 
 
             var template = rowData.Row as ITreeModel;

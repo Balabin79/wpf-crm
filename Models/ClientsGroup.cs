@@ -18,7 +18,12 @@ namespace Dental.Models
         public string DiscountType { get; set; }
 
         [Display(Name = "Размер скидки")]
-        public string Amount { get; set; }
+        public string Amount 
+        {
+            get => string.Format("{0:C}", _Amount);
+            set => _Amount = value;
+        }
+        private string _Amount;
 
         public int? IsDiscountActive { get; set; } = 0;
 

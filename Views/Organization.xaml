@@ -204,24 +204,24 @@
                                                   Text="{Binding Model.GeneralDirector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
-                               
-                                    <dxlc:LayoutItem  Label="Лицензия:"                                                   
+
+                                <dxlc:LayoutItem  Label="Лицензия:"                                                   
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
-                                        <dxe:TextEdit Name="License" 
+                                    <dxe:TextEdit Name="License" 
                                                   Text="{Binding Model.License, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem  Label="Дата регистрации:" 
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Дата регистрации:" 
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
-                                        <dxe:DateEdit Name="RegisterDate" 
+                                    <dxe:DateEdit Name="RegisterDate" 
                                                   MaskType="DateTimeAdvancingCaret" 
                                                   Mask="d" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                                   Text="{Binding Model.RegisterDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString},ValidatesOnDataErrors=True }"  />
-                                    </dxlc:LayoutItem>
-                             
+                                </dxlc:LayoutItem>
+
                                 <dxlc:LayoutItem  Label="Кем выдана:"                                                   
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
@@ -266,11 +266,24 @@
                                                   Text="{Binding Model.CorrAccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
-
-
                             </dxlc:LayoutGroup>
                         </dxlc:LayoutGroup>
                     </GroupBox>
+                    
+                    <dxlc:LayoutGroup>
+                        <dxlc:LayoutItem Label="Логотип" LabelPosition="Top" Margin="15 0 0 0">
+                            <Decorator   >
+                                <ext:ImageEditEx   Height="128" Width="128"  HorizontalAlignment="Left"                   
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                      ImagePath = "{Binding Model.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding Model.Image, Mode=TwoWay}"                                 
+                                         
+                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                      
+                                      ShowMenu="True"/>
+                            </Decorator>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
                 </StackPanel>
             </ScrollViewer>
 

@@ -27,6 +27,10 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
+            PriceRateForClientsCommand = new LambdaCommand(OnPriceRateForClientsCommandExecuted, CanPriceRateForClientsCommandExecute);
+            WageRateForEmploymentsCommand = new LambdaCommand(OnWageRateForEmploymentsCommandExecuted, CanWageRateForEmploymentsCommandExecute);
+            CancelPriceRateForClientsCommand = new LambdaCommand(OnCancelPriceRateForClientsExecuted, CanCancelPriceRateForClientsCommandExecute);
+            CancelWageRateForEmploymentsCommand = new LambdaCommand(OnCancelWageRateForEmploymentsExecuted, CanCancelWageRateForEmploymentsCommandExecute);
 
             try
             {
@@ -41,16 +45,53 @@ namespace Dental.ViewModels
         }
 
         public ICommand DeleteCommand { get; }
+        public ICommand CancelWageRateForEmploymentsCommand { get; }
+        public ICommand CancelPriceRateForClientsCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
+        public ICommand PriceRateForClientsCommand { get; }
+        public ICommand WageRateForEmploymentsCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
 
+        private bool CanCancelPriceRateForClientsCommandExecute(object p) => true;
+        private bool CanCancelWageRateForEmploymentsCommandExecute(object p) => true;
 
+        private bool CanPriceRateForClientsCommandExecute(object p) => true;
+        private bool CanWageRateForEmploymentsCommandExecute(object p) => true;
+
+        private void OnPriceRateForClientsCommandExecuted(object p)
+        {
+            try
+            {
+                PriceRateForClientsWindow = new PriceRateForClientsWindow();
+                PriceRateForClientsWindow.DataContext = this;
+                PriceRateForClientsWindow.ShowDialog();
+               // SelectedGroup = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnWageRateForEmploymentsCommandExecuted(object p)
+        {
+            try
+            {
+                WageRateForEmploymentsWindow = new WageRateForEmploymentsWindow();
+                WageRateForEmploymentsWindow.DataContext = this;
+                WageRateForEmploymentsWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
 
         private void OnDeleteCommandExecuted(object p)
         {
@@ -153,7 +194,9 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormCommandExecuted(object p) => Window.Close();
+        private void OnCancelFormCommandExecuted(object p) => Window.Close(); 
+        private void OnCancelPriceRateForClientsExecuted(object p) => PriceRateForClientsWindow.Close();
+        private void OnCancelWageRateForEmploymentsExecuted(object p) => WageRateForEmploymentsWindow.Close();
 
         /************* Специфика этой ViewModel ******************/
         public ICollection<Classificator> Group { get; set; }
@@ -191,6 +234,8 @@ namespace Dental.ViewModels
         }
 
         private ObservableCollection<Classificator> _Collection;
+        private PriceRateForClientsWindow PriceRateForClientsWindow;
+        private WageRateForEmploymentsWindow WageRateForEmploymentsWindow;
         private ClassificatorWindow Window;
         private ObservableCollection<Classificator> GetCollection() => db.Classificator.OrderBy(d => d.Name).ToObservableCollection();
         private void CreateNewWindow() => Window = new ClassificatorWindow();

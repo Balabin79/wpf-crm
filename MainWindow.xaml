@@ -178,13 +178,6 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
                                             ToolTip="Классификатор услуг"
                                             Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Pages.Classificator"/>
-                        <dxb:BarButtonItem Content="Прайс для клиентов" 
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Money.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Money.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Money.png"   
-                                            ToolTip="Прайс для клиентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Pages.ClassificatorServicesPage"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >
                         <dxb:BarButtonItem Content="Регистрация программы" RibbonStyle="Default" 
