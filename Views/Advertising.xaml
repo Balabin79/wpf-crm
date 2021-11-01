@@ -90,7 +90,7 @@
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
                     AllowPrintColumnHeaderImage="True"
-                            ShowGroupPanel="False"
+                    ShowGroupPanel="False"
                     >
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"        

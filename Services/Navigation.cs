@@ -73,6 +73,13 @@ namespace Dental.Services
                     }
                 }
 
+                if (CurrentPage?.ToString() == "Dental.Views.Specialities")
+                {
+                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is SpecialityViewModel vm)
+                    {
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
+                    }
+                }
 
 
                 //////////////////////////
