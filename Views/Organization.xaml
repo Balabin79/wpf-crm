@@ -48,7 +48,11 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:ToolBarControl x:Name="fileToolBar" 
+                                        Caption="File" 
+                                        ShowDragWidget="False"
+                                        AllowCustomizationMenu="False" 
+                                        AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 

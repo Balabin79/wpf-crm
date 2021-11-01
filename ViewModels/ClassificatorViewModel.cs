@@ -29,7 +29,6 @@ namespace Dental.ViewModels
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
             PriceRateForClientsCommand = new LambdaCommand(OnPriceRateForClientsCommandExecuted, CanPriceRateForClientsCommandExecute);
             WageRateForEmploymentsCommand = new LambdaCommand(OnWageRateForEmploymentsCommandExecuted, CanWageRateForEmploymentsCommandExecute);
-            CancelPriceRateForClientsCommand = new LambdaCommand(OnCancelPriceRateForClientsExecuted, CanCancelPriceRateForClientsCommandExecute);
             CancelWageRateForEmploymentsCommand = new LambdaCommand(OnCancelWageRateForEmploymentsExecuted, CanCancelWageRateForEmploymentsCommandExecute);
 
             try
@@ -46,7 +45,6 @@ namespace Dental.ViewModels
 
         public ICommand DeleteCommand { get; }
         public ICommand CancelWageRateForEmploymentsCommand { get; }
-        public ICommand CancelPriceRateForClientsCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
@@ -58,7 +56,6 @@ namespace Dental.ViewModels
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
 
-        private bool CanCancelPriceRateForClientsCommandExecute(object p) => true;
         private bool CanCancelWageRateForEmploymentsCommandExecute(object p) => true;
 
         private bool CanPriceRateForClientsCommandExecute(object p) => true;
@@ -68,9 +65,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                PriceRateForClientsWindow = new PriceRateForClientsWindow();
-                PriceRateForClientsWindow.DataContext = this;
-                PriceRateForClientsWindow.ShowDialog();
+                new PriceRateForClientsViewModel().OpenFormCommand.Execute(-1);
+
                // SelectedGroup = null;
             }
             catch (Exception e)
@@ -195,7 +191,6 @@ namespace Dental.ViewModels
         }
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close(); 
-        private void OnCancelPriceRateForClientsExecuted(object p) => PriceRateForClientsWindow.Close();
         private void OnCancelWageRateForEmploymentsExecuted(object p) => WageRateForEmploymentsWindow.Close();
 
         /************* Специфика этой ViewModel ******************/
@@ -234,7 +229,6 @@ namespace Dental.ViewModels
         }
 
         private ObservableCollection<Classificator> _Collection;
-        private PriceRateForClientsWindow PriceRateForClientsWindow;
         private WageRateForEmploymentsWindow WageRateForEmploymentsWindow;
         private ClassificatorWindow Window;
         private ObservableCollection<Classificator> GetCollection() => db.Classificator.OrderBy(d => d.Name).ToObservableCollection();

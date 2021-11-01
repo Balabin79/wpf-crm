@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dental.Views.Pages.UserControls;
-using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Data.Entity;
@@ -58,7 +57,18 @@ namespace Dental.Services
         {
             try
             {
-                if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
+                if (CurrentPage?.ToString() == "Dental.Views.Advertising")
+                {
+                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is AdvertisingViewModel vm)
+                    {
+                       if(vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
+                    }
+                }
+
+
+
+                    //////////////////////////
+                    if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
                 {
                     var viewModel = CurrentPage.DataContext as PatientCardViewModel;
                     if (viewModel == null) return;

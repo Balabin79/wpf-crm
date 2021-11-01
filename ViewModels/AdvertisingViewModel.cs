@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
@@ -15,6 +14,7 @@ using System.Windows;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using Dental.Services;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
@@ -25,13 +25,13 @@ namespace Dental.ViewModels
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
+            AddCommand = new LambdaCommand(OnAddCommandExecuted, CanAddCommandExecute);
 
             try
             {
-                db = db = Db.Instance.Context;
+                db = new ApplicationContext();
                 Collection = GetCollection();
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
             }
             catch (Exception e)
             {
@@ -42,23 +42,27 @@ namespace Dental.ViewModels
 
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
-        public ICommand OpenFormCommand { get; }
-        public ICommand CancelFormCommand { get; }
+        public ICommand AddCommand { get; }
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
-        private bool CanOpenFormCommandExecute(object p) => true;
-        private bool CanCancelFormCommandExecute(object p) => true;
+        private bool CanAddCommandExecute(object p) => true;
 
         private void OnDeleteCommandExecuted(object p)
         {
             try
             {
-                if (p == null) return;
-                Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(0)) return;
-                Delete(new ObservableCollection<Advertising>() { Model });
-                db.SaveChanges();
+                if (p is Advertising model)
+                {
+                    if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
+
+                    Collection.Remove(model);
+                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    else db.Entry(model).State = EntityState.Detached;
+                    db.SaveChanges();
+                    CollectionBeforeChanges = new ObservableCollection<Advertising>();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                }
             }
             catch (Exception e)
             {
@@ -70,46 +74,29 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (Model.Id == 0) Add(); else Update();
-                db.SaveChanges();
-                Window.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnOpenFormCommandExecuted(object p)
-        {
-            try
-            {
-                CreateNewWindow();
-                if (p == null) return;
-                int.TryParse(p.ToString(), out int param);
-                if (param == -3) return;
-
-                switch (param)
+                foreach (var item in Collection)
                 {
-                    case -1:
-                        Model = CreateNewModel();
-   
-                        Title = "Создать";
-            
-                        VisibleItemForm();
-                        break;
-
-                    default:
-                        Model = GetModelById(param);
-                        Title = "Редактировать";
-                        VisibleItemForm();
-
-     
-                        break;
+                    if (string.IsNullOrEmpty(item.Name)) continue;
+                    
+                    if (item.Id == 0) 
+                    {
+                        item.Guid = KeyGenerator.GetUniqueKey();
+                        db.Entry(item).State = EntityState.Added;
+                        continue;
+                    }  
+                    else if (string.IsNullOrEmpty(item.Guid)) item.Guid = KeyGenerator.GetUniqueKey();
                 }
+                int rows = db.SaveChanges();
+                Collection.Where(f => f.Id == 0).ToArray().ForEach(f => Collection.Remove(f));
 
-                Window.DataContext = this;
-                Window.ShowDialog();
+                CollectionBeforeChanges = new ObservableCollection<Advertising>();
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                if (rows != 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Изменения сохранены в базу данных!";
+                    notification.run();
+                }
             }
             catch (Exception e)
             {
@@ -117,58 +104,40 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormCommandExecuted(object p) => Window.Close();
-
+        private void OnAddCommandExecuted(object p) => Collection.Add(new Advertising());
 
         public ObservableCollection<Advertising> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        public Advertising Model { get; set; }
-        public string Title { get; set; }
-        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
-
-
-        private void VisibleItemForm()
-        {
-            IsVisibleItemForm = Visibility.Visible;
-            IsVisibleGroupForm = Visibility.Hidden;
-        }
-
-
         private ObservableCollection<Advertising> _Collection;
-        private AdvertisingWindow Window;
         private ObservableCollection<Advertising> GetCollection() => db.Advertising.OrderBy(d => d.Name).ToObservableCollection();
-        private void CreateNewWindow() => Window = new AdvertisingWindow();
-        private Advertising CreateNewModel() => new Advertising();
+        public ObservableCollection<Advertising> CollectionBeforeChanges { get; set; } = new ObservableCollection<Advertising>();
 
-        private Advertising GetModelById(int id)
+        public bool HasUnsavedChanges()
         {
-            return Collection.Where(f => f.Id == id).FirstOrDefault();
+            if (CollectionBeforeChanges?.Count != Collection.Count) return true;
+            foreach (var item in Collection)
+            {
+                if (string.IsNullOrEmpty(item.Name)) continue;
+                if (item.Id == 0) return true;
+                if (!item.Equals(
+                    CollectionBeforeChanges.
+                    Where(
+                        f => f.Id == item.Id)
+                    .FirstOrDefault())) return true;
+            }
+            return false;
         }
 
-        private void Add()
+        public bool UserSelectedBtnCancel()
         {
-            Model.Guid = Dental.Services.KeyGenerator.GetUniqueKey();
-            db.Entry(Model).State = EntityState.Added;
-            db.SaveChanges();
-            Collection.Add(Model);
-        }
-        private void Update()
-        {
-            if (string.IsNullOrEmpty(Model.Guid)) Model.Guid = Dental.Services.KeyGenerator.GetUniqueKey();
-            db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-            var index = Collection.IndexOf(Model);
-            if (index != -1) Collection[index] = Model;
-        }
 
-        private void Delete(ObservableCollection<Advertising> collection)
-        {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Если хотите сохранить эти данные, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой). Для продолжения без сохранения, нажмите \"Ок\"",
+               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning) ;
+
+            return response.ToString() == "Cancel";
         }
     }
 }

@@ -176,7 +176,7 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem Name="bCreate" Content="Создать новую позицию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
@@ -308,7 +308,7 @@
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                         <dxb:BarButtonItem Name="bOpen"
                                            DataContext="{StaticResource vm}"
