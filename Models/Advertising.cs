@@ -32,7 +32,7 @@ namespace Dental.Models
         {
             model.Id = this.Id;
             model.Name = this.Name;
-            Guid = this.Guid;
+            model.Guid = this.Guid;
             return model;
         }
 

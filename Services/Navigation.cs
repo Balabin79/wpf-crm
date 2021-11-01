@@ -65,10 +65,18 @@ namespace Dental.Services
                     }
                 }
 
+                if (CurrentPage?.ToString() == "Dental.Views.Groups")
+                {
+                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is ClientGroupViewModel vm)
+                    {
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
+                    }
+                }
 
 
-                    //////////////////////////
-                    if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
+
+                //////////////////////////
+                if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
                 {
                     var viewModel = CurrentPage.DataContext as PatientCardViewModel;
                     if (viewModel == null) return;

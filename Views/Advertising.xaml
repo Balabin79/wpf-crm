@@ -89,7 +89,8 @@
                     NavigationStyle="Cell"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True"                
+                    AllowPrintColumnHeaderImage="True"
+                            ShowGroupPanel="False"
                     >
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"        
@@ -102,14 +103,14 @@
 
 
                             <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding AddCommand}"/>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" DataContext="{Binding Source={StaticResource vm}}"
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать"  Command="{Binding AddCommand}"/>
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" DataContext="{Binding Source={StaticResource vm}}"
                             Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding SaveCommand}" />
                                 
                                 <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding Source={StaticResource vm}}"/>
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
@@ -118,14 +119,14 @@
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
+                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
                                     <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.HeaderTemplate>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
