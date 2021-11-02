@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using System.Windows;
 
 namespace Dental.Models
 {
@@ -30,6 +31,10 @@ namespace Dental.Models
         [Display(Name = "Процент или значение")] // 10% или 500 руб.
         public string PercentOrCost { get; set; }
 
+        [Display(Name = "Значение")]
+        [MaxLength(6, ErrorMessage = @"Длина не более 6 цифр")]
+        public string Value { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -43,9 +48,9 @@ namespace Dental.Models
                 Guid = this.Guid,
                 IsActive = this.IsActive,
                 IsApplyRule = this.IsApplyRule,
-                IsBasic = this.IsBasic,
                 MoreOrLess = this.MoreOrLess,
-                PercentOrCost = this.PercentOrCost
+                PercentOrCost = this.PercentOrCost,
+                Value = this.Value
             };
         }
 
@@ -56,9 +61,9 @@ namespace Dental.Models
             model.Guid = this.Guid;
             model.IsActive = this.IsActive;
             model.IsApplyRule = this.IsApplyRule;
-            model.IsBasic = this.IsBasic;
             model.MoreOrLess = this.MoreOrLess;
             model.PercentOrCost = this.PercentOrCost;
+            model.Value = this.Value;
             return model;
         }
 
@@ -93,9 +98,9 @@ namespace Dental.Models
             StringParamsIsEquel(this.Guid, other.Guid);
             StringParamsIsEquel(this.MoreOrLess, other.MoreOrLess);
             StringParamsIsEquel(this.PercentOrCost, other.PercentOrCost);
+            StringParamsIsEquel(this.Value, other.Value);
             if (this.IsActive != other.IsActive) return false;
             if (this.IsApplyRule != other.IsApplyRule) return false;
-            if (this.IsBasic != other.IsBasic) return false;
             return NotIsChanges;
         }
 
@@ -107,6 +112,19 @@ namespace Dental.Models
         }
 
         [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
+        public bool NotIsChanges { get; set; } = true;          
+        
+        [NotMapped]
+        public Visibility ShowBtnDelete { get => IsBasic == 1 ? Visibility.Hidden : Visibility.Visible; }    
+        
+        [NotMapped]
+        public bool IsEnableRule 
+        { 
+            get
+            {
+                if (IsBasic == 1 || IsApplyRule == 0) return false;
+                return true;
+            }
+        }
     }
 }

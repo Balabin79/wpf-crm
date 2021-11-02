@@ -12,17 +12,15 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Models.Base;
-using DevExpress.Xpf.Grid;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
-    class PriceRateForClientsViewModel : ViewModelBase
+    class WageRateViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
-        public PriceRateForClientsViewModel()
+        public WageRateViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -33,7 +31,7 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Collection = GetCollection();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((PriceRateForClients)f.Clone()));
+                Collection.ForEach(f => CollectionBeforeChanges.Add((WageRateForEmployments)f.Clone()));
             }
             catch (Exception e)
             {
@@ -56,7 +54,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                Window = new PriceRateForClientsWindow();
+                Window = new WageRateForEmploymentsWindow();
                 GetCollection();
                 Window.DataContext = this;
                 Window.ShowDialog();
@@ -72,7 +70,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is PriceRateForClients model)
+                if (p is WageRateForEmployments model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
 
@@ -80,8 +78,8 @@ namespace Dental.ViewModels
                     if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
                     else db.Entry(model).State = EntityState.Detached;
                     db.SaveChanges();
-                    CollectionBeforeChanges = new ObservableCollection<PriceRateForClients>();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((PriceRateForClients)f.Clone()));
+                    CollectionBeforeChanges = new ObservableCollection<WageRateForEmployments>();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((WageRateForEmployments)f.Clone()));
                 }
             }
             catch (Exception e)
@@ -110,8 +108,8 @@ namespace Dental.ViewModels
                 int rows = db.SaveChanges();
                 Collection.Where(f => f.Id == 0).ToArray().ForEach(f => Collection.Remove(f));
 
-                CollectionBeforeChanges = new ObservableCollection<PriceRateForClients>();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((PriceRateForClients)f.Clone()));
+                CollectionBeforeChanges = new ObservableCollection<WageRateForEmployments>();
+                Collection.ForEach(f => CollectionBeforeChanges.Add((WageRateForEmployments)f.Clone()));
                 if (rows != 0)
                 {
                     var notification = new Notification();
@@ -125,18 +123,18 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAddCommandExecuted(object p) => Collection.Add(new PriceRateForClients());
+        private void OnAddCommandExecuted(object p) => Collection.Add(new WageRateForEmployments());
 
-        public ObservableCollection<PriceRateForClients> Collection
+        public ObservableCollection<WageRateForEmployments> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        private ObservableCollection<PriceRateForClients> _Collection;
-        private ObservableCollection<PriceRateForClients> GetCollection() => db.PriceRateForClients.OrderBy(d => d.Name).ToObservableCollection();
-        public ObservableCollection<PriceRateForClients> CollectionBeforeChanges { get; set; } = new ObservableCollection<PriceRateForClients>();
+        private ObservableCollection<WageRateForEmployments> _Collection;
+        private ObservableCollection<WageRateForEmployments> GetCollection() => db.WageRateForEmployments.OrderBy(d => d.Name).ToObservableCollection();
+        public ObservableCollection<WageRateForEmployments> CollectionBeforeChanges { get; set; } = new ObservableCollection<WageRateForEmployments>();
 
-        public PriceRateForClientsWindow Window;
+        public WageRateForEmploymentsWindow Window;
 
         public bool HasUnsavedChanges()
         {

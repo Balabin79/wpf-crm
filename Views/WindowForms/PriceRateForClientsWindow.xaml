@@ -140,8 +140,7 @@
                         <dxg:GridColumn FieldName="IsBasic"  Header="Базовый" Name="IsBasic" Width="1*" HorizontalHeaderContentAlignment="Center">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsBasic, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
+                                    <dxe:CheckEdit HorizontalAlignment="Center" IsChecked="{Binding RowData.Row.IsBasic, Converter={StaticResource boolConverter}}" IsReadOnly="True" Margin="0 0 5 0" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
@@ -154,20 +153,72 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Value" Header="Больше/Меньше базового на" Width="1*"/>
-                        <dxg:GridColumn FieldName="PercentOrCost" Header="Процент/Сумма" Width="1*"/>
-
-                        <dxg:GridColumn Width="auto">
+                       
+                        <dxg:GridColumn FieldName="MoreOrLess" Header="Больше/Меньше базового" Width="1*">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
-                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+                                    <TextBlock Margin="5 0 0 0" Text="{Binding Row.MoreOrLess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.CellEditTemplate>
+                                <DataTemplate>
+                                    <dxe:ComboBoxEdit  ItemsSource="{Binding Source={StaticResource vm}, Path=MoreOrLessList}"                                    
+                                      SelectedItem="{Binding Row.MoreOrLess, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Больше/Меньше" IsTextEditable="False"
+                                      IsEnabled="{Binding RowData.Row.IsEnableRule,  UpdateSourceTrigger=PropertyChanged}">
+                                        <dxe:ComboBoxEdit.StyleSettings>
+                                            <dxe:RadioComboBoxStyleSettings />
+                                        </dxe:ComboBoxEdit.StyleSettings>
+                                    </dxe:ComboBoxEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellEditTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="PercentOrCost" Header="Процент/Сумма" Width="1*">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="5 0 0 0" Text="{Binding Row.PercentOrCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.CellEditTemplate>
+                                <DataTemplate>
+                                    <dxe:ComboBoxEdit ItemsSource="{Binding Source={StaticResource vm}, Path=PercentOrCostList}"                                   
+                                      SelectedItem="{Binding Row.PercentOrCost, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Процент/Сумма" IsTextEditable="False"
+                                      IsEnabled="{Binding RowData.Row.IsEnableRule,  UpdateSourceTrigger=PropertyChanged}">
+                                        <dxe:ComboBoxEdit.StyleSettings>
+                                            <dxe:RadioComboBoxStyleSettings />
+                                        </dxe:ComboBoxEdit.StyleSettings>
+                                    </dxe:ComboBoxEdit>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellEditTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn  Header="Значение" Width="3*" AllowEditing="True" FieldName="Value">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="5 0 0 0" Text="{Binding Row.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.CellEditTemplate>
+                                <DataTemplate>
+                                    <dxe:TextEdit IsEnabled="{Binding RowData.Row.IsEnableRule,  UpdateSourceTrigger=PropertyChanged}"
+                                        Mask="d" MaskType="Numeric"  Margin="5 0 0 0" Text="{Binding Row.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellEditTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn Width="*" MinWidth="25">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" Visibility="{Binding Row.ShowBtnDelete}">
 
                                         <dxb:ToolBarControl x:Name="fileToolBar"                                                            
                                                             Caption="File" 
                                                             ShowDragWidget="False"
                                                             AllowCustomizationMenu="False" 
                                                             AllowQuickCustomization="False">
-                                            <dxb:BarButtonItem   
+                                            <dxb:BarButtonItem  
                                            DataContext="{StaticResource vm}"  
                                            Content="Удалить" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"

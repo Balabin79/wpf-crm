@@ -80,7 +80,6 @@ namespace Dental.ViewModels
             try
             {
                 WageRateForEmploymentsWindow = new WageRateForEmploymentsWindow();
-                WageRateForEmploymentsWindow.DataContext = this;
                 WageRateForEmploymentsWindow.ShowDialog();
             }
             catch (Exception e)
