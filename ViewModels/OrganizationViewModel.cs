@@ -34,7 +34,7 @@ namespace Dental.ViewModels
             IsReadOnly = true;
             try
             {
-                db = Db.Instance.Context;
+                db = new ApplicationContext();
                 Model = GetModel();
                 Model.Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
                 if (Model != null)

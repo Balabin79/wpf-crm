@@ -450,9 +450,6 @@
     <Compile Update="Views\WindowForms\WageRateForEmploymentsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\WindowForms\GroupsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Groups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -475,12 +472,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WindowForms\SpecialityWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WindowForms\AdvertisingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Nomenclatures\WindowForms\TreatmentPlanWindow.xaml.cs">
@@ -543,10 +534,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\WindowForms\GroupsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Groups.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -576,14 +563,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Nomenclatures\WindowForms\CommunicationLogWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\SpecialityWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\AdvertisingWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

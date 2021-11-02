@@ -65,9 +65,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                new PriceRateForClientsViewModel().OpenFormCommand.Execute(-1);
-
-               // SelectedGroup = null;
+                PriceRateForClientsWindow = new PriceRateForClientsWindow();
+                PriceRateForClientsWindow.ShowDialog();
+                return;
             }
             catch (Exception e)
             {
@@ -261,5 +261,9 @@ namespace Dental.ViewModels
             collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
             collection.ForEach(f => Collection.Remove(f));
         }
+
+
+
+        public PriceRateForClientsWindow PriceRateForClientsWindow;
     }
 }

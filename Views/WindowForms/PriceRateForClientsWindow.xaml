@@ -10,22 +10,24 @@
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
+        xmlns:vm ="clr-namespace:Dental.ViewModels" 
         mc:Ignorable="d"
         Height="500"
         Width="800"
         Title="Список тарифов"
         HorizontalAlignment="Center"
-        WindowStartupLocation="CenterScreen">
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Advertising.png" />
-    </Window.Icon>
+        WindowStartupLocation="CenterScreen"
+        Closing="OnClosing">
+
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <commands:PrintCommand x:Key="Print"/>
+        <vm:PriceRateForClientsViewModel x:Key="vm"/>
     </Window.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" >
 
-        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+              DataContext="{StaticResource vm}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*" />
@@ -35,7 +37,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Image Height="23" Width="23" Margin="3 0 3 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Advertising.png" />
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins-In-Hand.png" />
                         </Image.Source>
                     </Image>
                     <TextBlock Text="Тарифы для клиентов" FontSize="16" Padding="0 8 0 0" />
@@ -45,115 +47,35 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem Name="bCreate" Content="Добавить новый тариф"  
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_AddCircled.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_AddCircled.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                            Command="{Binding AddCommand}"
-                                           CommandParameter="-1"/>
+                                           CommandParameter="-1" />
 
 
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Name="bSave" Content="Сохранить"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                                            Command="{Binding SaveCommand}"/>
-
+                        <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem Name="bPrint" Content="Печать" 
-                                           
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" 
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"/>
-                        <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dxlc:LayoutGroup  Grid.Row="2" Grid.ColumnSpan="2" Name="layoutGroup1" Header="Список тарифов для клиентов" 
-                          Margin="5" MaxHeight="2000" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
-          
 
-                    <dxg:GridControl  ItemsSource="{Binding Collection, Mode=TwoWay}" MinHeight="45" MaxHeight="2000"
-                                 DataContext="{Binding}" Name="GridControlAttachFile" Width="auto" >
-                       
-                        <dxg:GridControl.Columns>
-                            <dxg:GridColumn  Header="Название тарифа" Width="3*" AllowEditing="True">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Margin="5 0 0 0" Text="{Binding Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:TextEdit  Margin="5 0 0 0" Text="{Binding Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellEditTemplate>
-                            </dxg:GridColumn>
 
-                            <dxg:GridColumn FieldName="IsActive" AllowEditing="True" Header="Активность" Name="IsActive" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                                <dxg:GridColumn.EditFormTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.EditFormTemplate>
-                            </dxg:GridColumn>
-
-                            <dxg:GridColumn FieldName="IsBasic"  Header="Базовый" Name="IsBasic" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsBasic, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-
-                            <dxg:GridColumn FieldName="IsApplyRule"  Header="Применяется правило" Name="IsApplyRule" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-                            <dxg:GridColumn FieldName="Value" Header="Больше/Меньше базового на" Width="1*"/>
-                            <dxg:GridColumn FieldName="PercentOrCost" Header="Процент/Сумма" Width="1*"/>
-
-                            <dxg:GridColumn Width="auto">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-
-                                            <dxb:ToolBarControl x:Name="fileToolBar"                                                            
-                                                            Caption="File" 
-                                                            ShowDragWidget="False"
-                                                            AllowCustomizationMenu="False" 
-                                                            AllowQuickCustomization="False">
-                                                <dxb:BarButtonItem Name="bDelete"                               
-                                                Content="Удалить" 
-                                                IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                                Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
-                                                GlyphSize="Small"
-                                                Command="{Binding DeleteCommand}" 
-                                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                                <dxb:BarItemLinkSeparator />
-                                            </dxb:ToolBarControl>
-                                        </dxb:BarContainerControl>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-
-                        </dxg:GridControl.Columns>
-                        <dxg:GridControl.View >
-                            <dxg:TableView ShowGroupPanel="False"                                      
-                                       x:Name="tableView"
+                <dxg:GridControl  ItemsSource="{Binding Collection, Mode=TwoWay}" MinHeight="45" MaxHeight="2000"
+                                  Name="GridControlAttachFile" Width="auto" Margin="5" >
+                    <dxg:GridControl.View >
+                        <dxg:TableView ShowGroupPanel="False"                                      
+                                       x:Name="view"
                                        AllowEditing="True"
                                        NavigationStyle="Cell"
                                        AutoWidth="True"                                      
@@ -161,34 +83,107 @@
                                        ShowHorizontalLines="False"                            
                                        UseEvenRowBackground="True"
                                        ShowIndicator="False" >
-                                <dxg:TableView.InputBindings>
-                                    <KeyBinding Key="Delete"       
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                    <KeyBinding Key="O"     
-                                Modifiers="Ctrl"
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                    <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                </dxg:TableView.InputBindings>
+                            
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="Delete"        
+                                Command="{Binding DeleteCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow}"  />
+                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=AddCommand}"/>
+                                <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
 
-                                <dxg:TableView.RowCellMenuCustomizations >
-                                    <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
-                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
-                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
-                                               Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
-                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                    <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
-                                               Command="{Binding DeleteFileCommand}" 
-                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
-                                </dxg:TableView.RowCellMenuCustomizations>
-                            </dxg:TableView>
-                        </dxg:GridControl.View>
-                    </dxg:GridControl>
-                </dxlc:LayoutGroup>
+                            </dxg:TableView.InputBindings>
+
+
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                            KeyGesture="Ctrl+N" Content="Создать"  Command="{Binding AddCommand}" DataContext="{StaticResource vm}"/>
+
+                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                            KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding SaveCommand}" DataContext="{StaticResource vm}"/>
+
+                                <dxb:BarButtonItem  Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{StaticResource vm}"/>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+
+
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn  Header="Название тарифа" Width="3*" AllowEditing="True" FieldName="Name">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Margin="5 0 0 0" Text="{Binding Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.CellEditTemplate>
+                                <DataTemplate>
+                                    <dxe:TextEdit  Margin="5 0 0 0" Text="{Binding Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellEditTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="IsActive" AllowEditing="True" Header="Активность" Name="IsActive" Width="1*" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                            <dxg:GridColumn.EditFormTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
+                                </DataTemplate>
+                            </dxg:GridColumn.EditFormTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="IsBasic"  Header="Базовый" Name="IsBasic" Width="1*" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsBasic, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn FieldName="IsApplyRule"  Header="Применяется правило" Name="IsApplyRule" Width="1*" HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" Margin="0 0 5 0" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="Value" Header="Больше/Меньше базового на" Width="1*"/>
+                        <dxg:GridColumn FieldName="PercentOrCost" Header="Процент/Сумма" Width="1*"/>
+
+                        <dxg:GridColumn Width="auto">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+
+                                        <dxb:ToolBarControl x:Name="fileToolBar"                                                            
+                                                            Caption="File" 
+                                                            ShowDragWidget="False"
+                                                            AllowCustomizationMenu="False" 
+                                                            AllowQuickCustomization="False">
+                                            <dxb:BarButtonItem   
+                                           DataContext="{StaticResource vm}"  
+                                           Content="Удалить" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding DeleteCommand}" 
+                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                                            <dxb:BarItemLinkSeparator />
+                                        </dxb:ToolBarControl>
+                                    </dxb:BarContainerControl>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+
+                    </dxg:GridControl.Columns>
+                  
+                </dxg:GridControl>
             </ScrollViewer>
 
         </Grid>

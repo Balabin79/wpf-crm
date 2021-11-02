@@ -82,6 +82,9 @@ namespace Dental.Services
                 }
 
 
+
+
+
                 //////////////////////////
                 if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
                 {

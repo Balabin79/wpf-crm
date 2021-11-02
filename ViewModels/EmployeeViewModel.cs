@@ -46,7 +46,7 @@ namespace Dental.ViewModels
                     Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
                     Title = Employee.FullName;                 
                 }
-                Address = new AddressViewModel(Employee);
+               // Address = new AddressViewModel(Employee);
             } 
             catch (Exception e)
             {
@@ -62,7 +62,7 @@ namespace Dental.ViewModels
         }
 
         public Employee Employee { get; set; }
-        public AddressViewModel Address { get; set; }
+       // public AddressViewModel Address { get; set; }
         public DbSet<Employee> Context => context;
 
         public object VisibleErrors

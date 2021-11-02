@@ -12,11 +12,7 @@ namespace Dental.Models
         public DbSet<Speciality> Specialities { get; set; }
         public DbSet<Organization> Organizations { get; set; }       
         public DbSet<EmployesSpecialities> EmployesSpecialities { get; set; }
-        public DbSet<InsuranceCompany> InsuranceCompany { get; set; }
         public DbSet<PatientInfo> PatientInfo { get; set; }
-        public DbSet<Country> Country { get; set; }
-        public DbSet<Region> Region { get; set; }
-        public DbSet<Address> Addresses { get; set; }
         public DbSet<Communication> Communication { get; set; }
         public DbSet<ClientsGroup> ClientsGroup { get; set; }
         public DbSet<Classificator> Classificator { get; set; }
