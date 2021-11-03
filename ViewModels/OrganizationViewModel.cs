@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
@@ -17,12 +19,13 @@ using Dental.Interfaces.Template;
 using Dental.Models;
 using Dental.Models.Base;
 using Dental.Services;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel: ViewModelBase
+    class OrganizationViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
        
@@ -31,17 +34,30 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+
+            #region инициализация команд, связанных с прикреплением к карте пациента файлов
+            DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
+            ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
+            OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
+            AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
+            #endregion
+
             IsReadOnly = true;
             try
             {
                 db = new ApplicationContext();
+                Files = new ObservableCollection<ClientFiles>();
                 Model = GetModel();
-                Model.Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
+                LogoLoading();
                 if (Model != null)
                 {
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
+                    if (ProgramDirectory.HasOrgDirectoty())
+                    {
+                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
+                    }
                 } 
                 else
                 {
@@ -68,7 +84,8 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Organizations.Add(Model);
-                else db.Entry(Model).State = EntityState.Modified;
+                else SaveFiles();
+                SaveLogo();
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
                
@@ -97,9 +114,10 @@ namespace Dental.ViewModels
 
                 if (response.ToString() == "No") return;
                 Delete();
+            
                 Model = new Organization();
                 var notification = new Notification();
-                ModelBeforeChanges.Copy(Model);
+                ModelBeforeChanges = (Organization)Model.Clone();
 
                 notification.Content = "Данные организации полностью удалены!";
                 notification.run();
@@ -117,9 +135,9 @@ namespace Dental.ViewModels
             bool hasUnsavedChanges = false;
             if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            if (HasUnsavedFiles()) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
-
 
         public ICommand EditableCommand { get; }
         private bool CanEditableCommandExecute(object p) => true;
@@ -191,9 +209,256 @@ namespace Dental.ViewModels
 
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
         private void Delete()
-        { 
-            db.Entry(Model).State = EntityState.Deleted;
-            db.SaveChanges();
+        { try
+            {
+                db.Entry(Model).State = EntityState.Deleted;
+                db.SaveChanges();
+                ProgramDirectory.RemoveAllOrgFiles();
+                Files = new ObservableCollection<ClientFiles>();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
         }
+
+        /////////////////////////////
+
+        #region команды, связанных с прикреплением к карте пациентов файлов     
+        public ICommand DeleteFileCommand { get; }
+        public ICommand ExecuteFileCommand { get; }
+        public ICommand AttachmentFileCommand { get; }
+        public ICommand OpenDirectoryCommand { get; }
+
+        private bool CanDeleteFileCommandExecute(object p) => true;
+        private bool CanExecuteFileCommandExecute(object p) => true;
+        private bool CanAttachmentFileCommandExecute(object p) => true;
+        private bool CanOpenDirectoryCommandExecute(object p) => true;
+
+        private void OnOpenDirectoryCommandExecuted(object p)
+        {
+            try
+            {
+                var file = p as ClientFiles;
+                var dir = Path.GetDirectoryName(file?.Path);
+                Process.Start(dir);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                    text: "Невозможно открыть содержащую файл директорию!",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnExecuteFileCommandExecuted(object p)
+        {
+            try
+            {
+                var file = p as ClientFiles;
+                Process.Start(file?.Path);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                   text: "Невозможно запустить файл!",
+                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnAttachmentFileCommandExecuted(object p)
+        {
+            try
+            {
+                var fileContent = string.Empty;
+                var filePath = string.Empty;
+                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    openFileDialog.InitialDirectory = "c:\\";
+                    openFileDialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        filePath = openFileDialog.FileName;
+                        ClientFiles file = new ClientFiles();
+                        file.Path = filePath;
+                        file.DateCreated = DateTime.Today.ToShortDateString();
+                        file.Name = Path.GetFileNameWithoutExtension(filePath);
+                        file.FullName = Path.GetFileName(filePath);
+                        if (Path.HasExtension(filePath))
+                        {
+                            file.Extension = Path.GetExtension(filePath);
+                        }
+                        file.Size = new FileInfo(filePath).Length.ToString();
+
+                        if (FindDoubleFile(file.FullName))
+                        {
+                            var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                            if (response.ToString() == "No") return;
+
+                            var idx = Files.IndexOf(f => (string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0));
+                            if (idx == -1) return;
+                            file.Status = ClientFiles.STATUS_NEW_RUS;
+                            Files[idx] = file;                            
+                            return;
+                        }
+                        Files.Insert(0, file);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteFileCommandExecuted(object p)
+        {
+            try
+            {
+                var file = p as ClientFiles;
+                var item = Files.Where<ClientFiles>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
+                if (item == null) return;
+                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    ProgramDirectory.RemoveFileFromOrgDirectory(file);
+                }
+                Files.Remove(file);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private bool FindDoubleFile(string fileName)
+        {
+            foreach (var file in Files)
+            {
+                if (string.Compare(file.FullName, fileName, StringComparison.CurrentCulture) == 0) return true;
+            }
+            return false;
+        }
+
+        private bool SaveFiles()
+        {
+            try
+            {
+                //если нет директории программы, то создаем ее
+                if (!ProgramDirectory.HasMainProgrammDirectory())
+                {
+                    var _ = ProgramDirectory.CreateMainProgrammDirectoryForPatientCards();
+                }
+                if (!ProgramDirectory.HasOrgDirectoty())
+                {
+                    var _ = ProgramDirectory.CreateOrgDirectory();
+                }
+
+                ProgramDirectory.Errors.Clear();
+                MoveFilesToOrgDirectory();
+                return true;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+                return false;
+            }
+        }
+
+        private void SaveLogo()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Logo))
+                {
+                    if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
+                    if (Path.GetDirectoryName(Model.Logo) != ProgramDirectory.GetPathLogoDirectoty())
+                    {
+                        ProgramDirectory.SaveFileInLogoDirectory(new ClientFiles() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo });
+                        Model.Logo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Logo)));
+                    }
+                }                
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void MoveFilesToOrgDirectory()
+        {
+            foreach (ClientFiles file in Files)
+            {
+                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0) continue;
+                ProgramDirectory.SaveInOrgDirectory(file);
+                file.Status = ClientFiles.STATUS_SAVE_RUS;
+            }
+        }
+        
+        public bool HasUnsavedFiles()
+        {
+            if (Files.Count > 0)
+            {
+                foreach (var i in Files)
+                {
+                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
+                    {
+                        Model.FieldsChanges.Add("Прикрепляемые файлы");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void LogoLoading()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo))
+                {
+                    using (var stream = new FileStream(Model.Logo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        Image = img;
+                    }
+                }
+                else Image = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+        
+        public ObservableCollection<ClientFiles> _Files;
+        public ObservableCollection<ClientFiles> Files
+        {
+            get => _Files;
+            set => Set(ref _Files, value);
+        }
+        #endregion
+
+        public ImageSource Image 
+        {
+            get => _Image;
+            set => Set(ref _Image, value); 
+        }
+        public ImageSource _Image;
+
     }
 }

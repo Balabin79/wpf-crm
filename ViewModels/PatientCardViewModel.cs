@@ -30,7 +30,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = Db.Instance.Context;
+                db = new ApplicationContext();
                 Files = new ObservableCollection<ClientFiles>();
 
                #region инициализация команд, связанных с общим функционалом карты пациента
@@ -330,7 +330,8 @@ namespace Dental.ViewModels
                             var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                             if (response.ToString() == "No") return;
                             var idx = Files.IndexOf(f => (string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0));
-                            if (idx != 0) return; 
+                            if (idx == -1) return;
+                            file.Status = ClientFiles.STATUS_NEW_RUS;
                             Files[idx] = file;
                             return;
                         }

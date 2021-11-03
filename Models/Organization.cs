@@ -52,17 +52,13 @@ namespace Dental.Models
         private string _Kpp;
         // Общая информация
        
-            [Display(Name = "Лого")]
+        [Display(Name = "Лого")]
         public string Logo
         {
             get => _Logo;
             set => _Logo = value?.Trim();
         }
-        private string _Logo;
-
-
-        [NotMapped]
-        public ImageSource Image { get; set; }
+        private string _Logo;       
 
         // Контактная инф-ция
         [Display(Name = "Фактический адрес")]

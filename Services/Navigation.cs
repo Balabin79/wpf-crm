@@ -81,8 +81,14 @@ namespace Dental.Services
                     }
                 }
 
+                if (CurrentPage?.ToString() == "Dental.Views.Organization")
+                {
+                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is OrganizationViewModel vm)
+                    {
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
 
-
+                    }
+                }
 
 
                 //////////////////////////
@@ -105,25 +111,7 @@ namespace Dental.Services
                         }
                     }
                 }
-                if (CurrentPage?.ToString() == "Dental.Views.Organization")
-                {
-                    var viewModel = ((System.Windows.FrameworkElement)CurrentPage.Content).DataContext as OrganizationViewModel;
-                    if (viewModel == null) return;
-                    if (viewModel.HasUnsavedChanges())
-                    {
-                        bool response = viewModel.UserSelectedBtnCancel();
-                        if (response) return;
 
-                        if (viewModel.Model.Id != 0)
-                        {
-                            var model = Db.Instance.Context.Organizations.Find(viewModel.Model.Id);
-                            if (model == null) return;
-                            model = (Organization)viewModel.ModelBeforeChanges.Copy(model);
-                            Db.Instance.Context.Entry(model).State = EntityState.Modified;
-                            Db.Instance.Context.SaveChanges();
-                        }
-                    }
-                }
 
                 Page page;
                 if (p is Array) 
