@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Dental.Enums;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Logs;
-using Dental.Interfaces.Template;
 using Dental.Models;
-using Dental.Models.Base;
 using Dental.Services;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
-using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
