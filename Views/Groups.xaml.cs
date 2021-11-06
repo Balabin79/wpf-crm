@@ -11,5 +11,11 @@ namespace Dental.Views
         {
             InitializeComponent();
         }
+
+        private void TableView_CellValueChanging(object sender, DevExpress.Xpf.Grid.CellValueChangedEventArgs e)
+        {
+
+            ((TableView)sender).PostEditor();
+        }
     }
 }

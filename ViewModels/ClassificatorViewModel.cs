@@ -230,7 +230,10 @@ namespace Dental.ViewModels
         private ObservableCollection<Classificator> _Collection;
         private WageRateForEmploymentsWindow WageRateForEmploymentsWindow;
         private ClassificatorWindow Window;
-        private ObservableCollection<Classificator> GetCollection() => db.Classificator.OrderBy(d => d.Name).ToObservableCollection();
+
+        private ObservableCollection<Classificator> GetCollection() => db.Classificator.Include("PriceForClients")
+            .OrderBy(d => d.Name).ToObservableCollection();
+
         private void CreateNewWindow() => Window = new ClassificatorWindow();
         private Classificator CreateNewModel() => new Classificator();
 

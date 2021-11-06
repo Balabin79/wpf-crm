@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Pages
+namespace Dental.Views
 {
     /// <summary>
     /// Логика взаимодействия для Classificator.xaml

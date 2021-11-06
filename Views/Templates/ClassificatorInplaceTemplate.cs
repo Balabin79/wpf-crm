@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Dental.Models;
 using System.Windows.Controls;
 
 namespace Dental.Views.Templates
@@ -20,11 +19,10 @@ namespace Dental.Views.Templates
             RowData row = item as RowData;
             if (row != null)
             {
-                Classificator c = row.Row as Classificator;
-                if (c != null)
-                    //return person.Address.Contains("London") ? PrimaryRowDetailsTemplate : SecondaryRowDetailsTemplate;
-                     return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
-                    //if (c.IsDir == 0) return FileRowDetailsTemplate;
+                if (row.Row is Dental.Models.Classificator c) {
+                    return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
+                }
+       
              
             }
             return base.SelectTemplate(item, container);

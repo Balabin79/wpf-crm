@@ -1,4 +1,5 @@
-﻿<dx:ThemedWindow x:Class="Dental.MainWindow" Title="{Binding Path=Title}" Visibility="Visible" 
+﻿<dx:ThemedWindow x:Class="Dental.MainWindow" 
+                 Title="{Binding Path=Title}" Visibility="Visible" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -177,7 +178,7 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
                                             ToolTip="Классификатор услуг"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Pages.Classificator"/>
+                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >
                         <dxb:BarButtonItem Content="Регистрация программы" RibbonStyle="Default" 

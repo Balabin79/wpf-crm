@@ -22,7 +22,8 @@
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Page.Resources>
 
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" 
+            DataContext="{StaticResource vm}" x:Name="BorderForm">
  
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
@@ -85,8 +86,10 @@
                     BestFitModeOnSourceChange="VisibleRows"            
                     NavigationStyle="Cell"
                     AllowScrollToFocusedRow="True" 
-                    VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True"
+                    VerticalScrollbarVisibility="Auto"                 
+                    EnableImmediatePosting="True" 
+                    CellValueChanging="TableView_CellValueChanging"
+                    
                     >
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"        
@@ -111,7 +114,7 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="3*">
+                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="3*" >
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -153,42 +156,61 @@
                     <dxg:GridColumn FieldName="IsDiscountActive"  Header="Скидка активна" Name="IsDiscountActive" Width="1*"  HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsDiscountActive, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
+                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor"
+                                               IsChecked="{Binding RowData.Row.IsDiscountActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"
+                                                IsEnabled="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsDiscountActive, Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
+                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" 
+                                               IsChecked="{Binding RowData.Row.IsDiscountActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"
+                                               IsEnabled="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               />
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-                    
-                    
-                    <dxg:GridColumn FieldName="DiscountType"  Header="Тип скидки" Name="DiscountType" Width="2*"  HorizontalHeaderContentAlignment="Center" >
+          
+
+                    <dxg:GridColumn FieldName="DiscountType" Header="Процент/Сумма" Width="1*" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RowData.Row.DiscountType, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Margin="5 0 0 0" Text="{Binding Row.DiscountType, Mode=TwoWay,
+                                    UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            IsEnabled="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RowData.Row.DiscountType, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <dxe:ComboBoxEdit  Name="PART_Editor"  ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.DiscountTypeList}"                                   
+                                      SelectedItem="{Binding Row.DiscountType}"
+                                      NullText="Процент/Сумма" IsTextEditable="False"
+                                      IsEnabled="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-                    
-                    
-                    <dxg:GridColumn FieldName="Amount"  Header="Размер" Name="Amount" Width="1*"  HorizontalHeaderContentAlignment="Center">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RowData.Row.Amount, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
+
+
+                    <dxg:GridColumn FieldName="Amount" 
+                                    Header="Размер скидки"       
+                                    Name="Amount" Width="1*"
+                                   
+                                    HorizontalHeaderContentAlignment="Center"
+                                    IsEnabled="{Binding RowData.Row.IsDiscountActive, Mode=TwoWay, 
+                            UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
+
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RowData.Row.Amount, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <dxe:TextEdit  Name="PART_Editor"  Text="{Binding RowData.Row.Amount, Mode=TwoWay}" MaskType="Numeric" Mask="######"
+                                               IsEnabled="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

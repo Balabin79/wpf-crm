@@ -1,4 +1,4 @@
-﻿<Page x:Class="Dental.Views.Pages.Classificator"
+﻿<Page x:Class="Dental.Views.Classificator"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -55,8 +55,8 @@
                                  DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="Name" Header="Название тарифа" Width="9*"/>
-                            <dxg:GridColumn FieldName="DateCreated" Header="Доступность" Width="3*" />
-                            <dxg:GridColumn FieldName="Extension" Header="Значение" Width="1*"/>
+                            <dxg:GridColumn FieldName="DateCreated" Header="Активность" Width="3*" />
+                            <dxg:GridColumn FieldName="Extension" Header="Цена" Width="1*"/>
 
                             <dxg:GridColumn Width="auto" >
                                 <dxg:GridColumn.CellTemplate>
@@ -127,12 +127,6 @@
                         </dxg:GridControl.View>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
-
-
-
-
-
-
 
             </Grid>
         </DataTemplate>

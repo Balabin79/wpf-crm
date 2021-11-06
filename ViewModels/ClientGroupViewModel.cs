@@ -114,6 +114,7 @@ namespace Dental.ViewModels
         private ObservableCollection<ClientsGroup> _Collection;
         private ObservableCollection<ClientsGroup> GetCollection() => db.ClientsGroup.OrderBy(d => d.Name).ToObservableCollection();
         public ObservableCollection<ClientsGroup> CollectionBeforeChanges { get; set; } = new ObservableCollection<ClientsGroup>();
+        public IEnumerable<string> DiscountTypeList { get => new List<string> { "Процент", "Сумма" }; }
 
         public bool HasUnsavedChanges()
         {
