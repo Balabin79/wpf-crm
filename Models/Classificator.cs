@@ -4,6 +4,8 @@ using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
@@ -20,6 +22,8 @@ namespace Dental.Models
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
+
+        public ObservableCollection<PriceForClients> PriceForClients { get; set; } 
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

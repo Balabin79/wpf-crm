@@ -22,6 +22,7 @@ namespace Dental.Infrastructures.Converters
         public object ConvertBack(
             object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) return 0;
             if ((bool)value == true) return 1;
             return 0;
         }

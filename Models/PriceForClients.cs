@@ -10,10 +10,11 @@ namespace Dental.Models
     [Table("PriceForClients")]
     class PriceForClients : AbstractBaseModel, IDataErrorInfo
     {
-        public int ClassificatorId { get; set; }
+        public int? ClassificatorId { get; set; }
         public Classificator Classificator { get; set; }
 
-        public int PriceRateId { get; set; }
+        public int? PriceRateForClientsId { get; set; }
+        public PriceRateForClients PriceRateForClients { get; set; }
 
         public string Price { get; set; }
 
