@@ -24,15 +24,5 @@ namespace Dental.Views
         {
             InitializeComponent();
         }
-
-        private void GridControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            int x = 0;
-        }
-
-        private void GridFileRowDetailsTemplate_Loaded(object sender, RoutedEventArgs e)
-        {
-            int x = 0;
-        }
     }
 }

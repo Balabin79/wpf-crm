@@ -36,6 +36,8 @@ namespace Dental.ViewModels
             DeleteRowInPriceForClientsCommand = new LambdaCommand(OnDeleteRowInPriceForClientsCommandExecuted, CanDeleteRowInPriceForClientsCommandExecute);
             SaveRowInPriceForClientsCommand = new LambdaCommand(OnSaveRowInPriceForClientsCommandExecuted, CanSaveRowInPriceForClientsCommandExecute);
 
+            ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
+
             try
             {
                 db = new ApplicationContext();
@@ -62,6 +64,9 @@ namespace Dental.ViewModels
         public ICommand SaveRowInPriceForClientsCommand { get; }
 
 
+        public ICommand ExpandTreeCommand { get; }
+
+
         private bool CanAddRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanDeleteRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanSaveRowInPriceForClientsCommandExecute(object p) => true;
@@ -74,6 +79,32 @@ namespace Dental.ViewModels
         private bool CanCancelWageRateForEmploymentsCommandExecute(object p) => true;
         private bool CanPriceRateForClientsCommandExecute(object p) => true;
         private bool CanWageRateForEmploymentsCommandExecute(object p) => true;
+       
+        private bool CanExpandTreeCommandExecute(object p) => true;
+
+        private void OnExpandTreeCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is TreeListView tree)
+                {
+                    foreach (var node in tree.Nodes)
+                    {
+                        if (node.IsExpanded)
+                        {
+                            tree.CollapseAllNodes();                           
+                            return;
+                        }
+                    }
+                    tree.ExpandAllNodes();
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
 
         private void OnSaveRowInPriceForClientsCommandExecuted(object p)
         {
@@ -82,12 +113,15 @@ namespace Dental.ViewModels
                 if (p is Classificator collection)
                 {
                     if (collection.PriceForClients.Count == 0) return;
-                    foreach (var item in collection.PriceForClients)
+                    foreach (var group in collection.PriceForClients.GroupBy(f => f.PriceRateForClientsId))
                     {
-                        if (db.Entry(item).State == EntityState.Modified)
-                            Console.WriteLine("ddd");
+                        if (group.Count() > 1)
+                        {
+                            var response = ThemedMessageBox.Show(title: "Внимание", text: "В прайсе для клиентов имеются задублированные позиции по тарифам! Рекомендуется удалить такие позиции, иначе возможны коллизии при формировании счетов. Чтобы отменить, выберите \"Cancel\", чтобы все равно сохранить - выберите \"Ок\"", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+                            if (response.ToString() == "Cancel") return;
+                        }
                     }
-                    //Collection.Where(f => f.Id == row.Classificator.Id).FirstOrDefault()?.PriceForClients.Remove(row);
                     db.SaveChanges();
                 }
 
@@ -312,7 +346,6 @@ namespace Dental.ViewModels
             Window.Width = 800;
         }
 
-        //public IEnumerable<PriceForClients> PriceForClients { get => db.PriceForClients.Include("PriceRateForClients"); }
 
         public IEnumerable<PriceRateForClients> PriceRateForClients { get; set; }
         public IEnumerable<WageRateForEmployments> WageRateForEmployments { get => db.WageRateForEmployments.ToList(); }

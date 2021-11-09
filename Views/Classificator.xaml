@@ -27,8 +27,7 @@
         <DataTemplate x:Key="fileRowDetailsTemplate">
             <Grid Margin="5" 
                   MaxHeight="1200"
-                  x:Name="GridFileRowDetailsTemplate"
-                  Loaded="GridFileRowDetailsTemplate_Loaded">
+                  x:Name="GridFileRowDetailsTemplate">
                 <dxlc:LayoutGroup  
                     Grid.Row="2" 
                     Grid.ColumnSpan="2"
@@ -72,7 +71,6 @@
                     </dxlc:LayoutGroup.HeaderTemplate>
 
                     <dxg:GridControl 
-                        Loaded="GridControl_Loaded"  
                         x:Name="GridControlPriceForClients"           
                         ItemsSource="{Binding Row.PriceForClients, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                         MinHeight="45" 
@@ -101,7 +99,6 @@
                                 </dxg:GridColumn.CellEditTemplate>
                             </dxg:GridColumn>
 
-
                             <dxg:GridColumn FieldName="IsActive" 
                                             Header="Активность" 
                                             Width="3*" 
@@ -117,8 +114,6 @@
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
-
-
                             <dxg:GridColumn 
                                 FieldName="Price" 
                                 Header="Цена" 
@@ -212,20 +207,23 @@
             </Grid>
         </DataTemplate>
 
-
-
-
         <DataTemplate x:Key="directoryRowDetailsTemplate"/>
 
 
-        <templates:ClassificatorInplaceTemplate x:Key="rowDetailsTemplateSelector"
-                                   FileRowDetailsTemplate="{StaticResource fileRowDetailsTemplate}"
-                                   DirectoryRowDetailsTemplate="{StaticResource directoryRowDetailsTemplate}" />
+        <templates:ClassificatorInplaceTemplate 
+            x:Key="rowDetailsTemplateSelector"
+            FileRowDetailsTemplate="{StaticResource fileRowDetailsTemplate}"
+            DirectoryRowDetailsTemplate="{StaticResource directoryRowDetailsTemplate}" />
     </Page.Resources>
 
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
+    <Border 
+        BorderBrush="LightGray" 
+        BorderThickness="1" 
+        Margin="5" 
+        dx:ThemeManager.ThemeName="Office2019White" 
+        DataContext="{StaticResource vm}">
 
-        <Grid x:Name="gridMain"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*" />
@@ -260,7 +258,7 @@
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"                      
-                                           Command="{Binding WageRateForEmploymentsCommand}" 
+                                           Command="{Binding ExpandTreeCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
                                            CommandParameter="{Binding ElementName=view}"
                                            />
@@ -296,9 +294,9 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000"
+
+            <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
 
@@ -409,7 +407,7 @@
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
                 </dxg:GridControl>
-            </ScrollViewer>
+          
         </Grid>
     </Border>
 </Page>
