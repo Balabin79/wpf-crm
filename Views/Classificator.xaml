@@ -101,15 +101,30 @@
 
                             <dxg:GridColumn FieldName="IsActive" 
                                             Header="Активность" 
-                                            Width="3*" 
+                                            Width="1*" 
                                             HorizontalHeaderContentAlignment="Center">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
-                                        <dxe:CheckEdit Name="PART_Editor"  
+                                        <dxe:CheckEdit   
                                                        IsReadOnly="True" 
                                                        HorizontalAlignment="Center" 
-                                                       IsChecked="{Binding Row.PriceRateForClients.IsActive, Mode=OneWay, 
-                                                          UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" 
+                                                       IsChecked="{Binding Row.PriceRateForClients.IsActive, Mode=TwoWay, 
+                                                          Converter={StaticResource boolConverter}}" 
+                                                       Margin="0 0 5 0" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="IsBasic" 
+                                            Header="Базовый тариф" 
+                                            Width="1*" 
+                                            HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxe:CheckEdit   
+                                                       IsReadOnly="True" 
+                                                       HorizontalAlignment="Center" 
+                                                       IsChecked="{Binding Row.PriceRateForClients.IsBasic, Mode=TwoWay, 
+                                                          Converter={StaticResource boolConverter}}" 
                                                        Margin="0 0 5 0" />
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
