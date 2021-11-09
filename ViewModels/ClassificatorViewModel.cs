@@ -186,7 +186,12 @@ namespace Dental.ViewModels
                 //ищем совпадающий элемент
                 var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
 
-                if (SelectedGroup != null) Model.ParentId = ((Classificator)SelectedGroup).Id;
+                if (SelectedGroup != null) 
+                {
+                    int id = ((Classificator)SelectedGroup).Id;
+                    if (id == 0) Model.ParentId = null;
+                    else Model.ParentId = id;
+                } 
 
                 if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
                 {
@@ -229,13 +234,14 @@ namespace Dental.ViewModels
                         Title = "Создать группу";
                         Model.IsDir = 1;
                         Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        Group.Add(WithoutCategory);
                         VisibleItemGroup();
                         break;
                     default:
                         Model = GetModelById(param);
                         Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
                             .GetDirectories().OfType<Classificator>().ToObservableCollection();
-
+                        if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
 
                         if (Model.IsDir == 0)
@@ -265,7 +271,14 @@ namespace Dental.ViewModels
         private void OnCancelWageRateForEmploymentsExecuted(object p) => WageRateForEmploymentsWindow.Close();
 
         /************* Специфика этой ViewModel ******************/
-        public ICollection<Classificator> Group { get; set; }
+        private ObservableCollection<Classificator> _Group;
+        public ObservableCollection<Classificator> Group
+        {
+            get => _Group;
+            set => Set(ref _Group, value);
+        }
+
+        public Classificator WithoutCategory { get; set; } = new Classificator() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
         private object _SelectedGroup;
         public object SelectedGroup
