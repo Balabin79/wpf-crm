@@ -34,6 +34,5 @@ namespace Dental.Views
         {
             int x = 0;
         }
-
     }
 }

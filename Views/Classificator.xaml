@@ -256,13 +256,21 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-2"/>
+                        <dxb:BarButtonItem Name="expandTree" Content="Развернуть или свернуть все позиции" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           DataContext="{StaticResource vm}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"                      
+                                           Command="{Binding WageRateForEmploymentsCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
+                                           CommandParameter="{Binding ElementName=view}"
+                                           />
 
                         <dxb:BarItemLinkSeparator />
 
                         <dxb:BarButtonItem Name="priceRate" Content="Тарифы для клиентов" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Euro.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Euro.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}" 
                                            Command="{Binding PriceRateForClientsCommand }"
                                            />
                         
@@ -295,7 +303,7 @@
                          >
 
                     <dxg:GridControl.View>
-                        <dxg:TreeListView                   
+                        <dxg:TreeListView  
                     x:Name="view"
                     KeyFieldName="Id"
                     ParentFieldName="ParentId"
