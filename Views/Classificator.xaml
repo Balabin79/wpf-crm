@@ -389,7 +389,7 @@
                                            DataContext="{StaticResource vm}"        
                                            Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding DeleteCommand}" 
                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
