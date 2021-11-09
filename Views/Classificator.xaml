@@ -266,11 +266,12 @@
                                            Command="{Binding PriceRateForClientsCommand }"
                                            />
                         
-                        <dxb:BarButtonItem Name="employeeRate2" Content="Зарплатные ставки сотрудников" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Name="employeeRate2" Content="Зарплатные ставки сотрудников" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_Wallet.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Shopping_Wallet.svg}"                      
-                                           Command="{Binding WageRateForEmploymentsCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/CostAnalysis.svg}"                      
+                                           Command="{Binding WageRateForEmploymentsCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/CostAnalysis.svg}"
                                            />
                         
                         <dxb:BarItemLinkSeparator />
