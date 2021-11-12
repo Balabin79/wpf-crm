@@ -35,6 +35,10 @@
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>
                             <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -42,11 +46,15 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock  Grid.Row="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0" Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+
+                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Код:"  Margin="0,0,8,3" />
+                                <dxe:TextEdit  Grid.Row="1" Grid.Column="1" Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+
 
                                 <TextBlock  Grid.Row="2"  Text="Родительская группа:"  Margin="0,0,0,3" />
-                                <dxe:ComboBoxEdit Grid.Row="3"  ItemsSource="{Binding Group}"
+                                <dxe:ComboBoxEdit Grid.Row="3" Grid.ColumnSpan="2"  ItemsSource="{Binding Group}"
                                                           DisplayMember="Name" NullText="Выберите родительскую директорию"
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Margin="0,0,0,8"
