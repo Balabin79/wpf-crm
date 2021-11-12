@@ -70,6 +70,7 @@ namespace Dental.ViewModels
         private bool CanAddRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanDeleteRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanSaveRowInPriceForClientsCommandExecute(object p) => true;
+        private bool CanCloseEditorPriceForClientsCommandExecute(object p) => true;
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
@@ -173,6 +174,7 @@ namespace Dental.ViewModels
             {
                 PriceRateForClientsWindow = new PriceRateForClientsWindow();
                 PriceRateForClientsWindow.ShowDialog();
+                PriceRateForClients = db.PriceRateForClients.ToList();
                 return;
             }
             catch (Exception e)

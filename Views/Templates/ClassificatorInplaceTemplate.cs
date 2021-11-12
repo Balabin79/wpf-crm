@@ -21,9 +21,7 @@ namespace Dental.Views.Templates
             {
                 if (row.Row is Dental.Models.Classificator c) {
                     return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
-                }
-       
-             
+                }                 
             }
             return base.SelectTemplate(item, container);
         }

@@ -20,6 +20,9 @@ namespace Dental.Models
         [Display(Name = "Код")]
         public string Code { get; set; }
 
+        [NotMapped]
+        public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
+
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
 

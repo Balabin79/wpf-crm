@@ -23,11 +23,20 @@
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:BoolIntConverter x:Key="boolConverter" />
-        
-        <DataTemplate x:Key="fileRowDetailsTemplate">
-            <Grid Margin="5" 
+
+        <DataTemplate x:Key="fileRowDetailsTemplate" >
+            <Expander>
+                <Expander.Header>
+                    <TextBlock 
+                        FontStyle="Italic" 
+                        FontSize="10"
+                        Foreground="DarkBlue"
+                        Text="Подробная информация по тарифам для клиентов и з/п ставкам для сотрудников по выбранной позиции"/>
+                </Expander.Header>
+                <Grid Margin="5" 
                   MaxHeight="1200"
-                  x:Name="GridFileRowDetailsTemplate">
+                  x:Name="GridFileRowDetailsTemplate"                  
+                  >
                 <dxlc:LayoutGroup  
                     Grid.Row="2" 
                     Grid.ColumnSpan="2"
@@ -220,6 +229,7 @@
                 </dxlc:LayoutGroup>
 
             </Grid>
+            </Expander>
         </DataTemplate>
 
         <DataTemplate x:Key="directoryRowDetailsTemplate"/>
@@ -228,7 +238,7 @@
         <templates:ClassificatorInplaceTemplate 
             x:Key="rowDetailsTemplateSelector"
             FileRowDetailsTemplate="{StaticResource fileRowDetailsTemplate}"
-            DirectoryRowDetailsTemplate="{StaticResource directoryRowDetailsTemplate}" />
+            DirectoryRowDetailsTemplate="{StaticResource directoryRowDetailsTemplate}"  />
     </Page.Resources>
 
     <Border 
@@ -336,7 +346,7 @@
                     ShowNodeImages="True"
                     NodeImageSize="15,15"
                     ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"    
+                    FilterMode="Extended"                        
                     RowDetailsTemplateSelector="{StaticResource rowDetailsTemplateSelector}"
                     >
                             <dxg:TreeListView.InputBindings>
@@ -380,7 +390,7 @@
                         </dxg:TreeListView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Name"  Header="Наименование" Name="Name" MinWidth="200" Width="5*">
+                    <dxg:GridColumn FieldName="FullName"  Header="Наименование" Name="Name" MinWidth="200" Width="5*">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
