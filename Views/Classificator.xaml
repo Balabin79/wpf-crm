@@ -81,7 +81,7 @@
 
                     <dxg:GridControl 
                         x:Name="GridControlPriceForClients"           
-                        ItemsSource="{Binding Row.PriceForClients, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding Row.PriceForClients, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                         MinHeight="45" 
                         MaxHeight="150"
                         Width="auto" >
@@ -89,17 +89,26 @@
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn FieldName="PriceRateForClients" Header="Название тарифа" Width="1*">
                                 <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Name="PART_Editor" Margin="5 0 0 0" Text="{Binding Row.PriceRateForClients.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:ComboBoxEdit Name="PART_Editor" ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients, Mode=TwoWay}"                                   
+                                        <DataTemplate>
+                                            <dxe:ComboBoxEdit Name="PART_Editor" ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                   
                                       SelectedItem="{Binding Row.PriceRateForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Тарифы для клиентов" IsTextEditable="False"
-                                      DisplayMember="Name"
-                                      IsEnabled="{Binding RowData.Row.IsEnableRule,  UpdateSourceTrigger=PropertyChanged}">
+                                      DisplayMember="Name" >
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                <dxg:GridColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                            <dxe:ComboBoxEdit
+                                                Name="PART_Editor" 
+                                                ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                   
+                                      SelectedItem="{Binding Row.PriceRateForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Тарифы для клиентов" 
+                                                              IsTextEditable="False"
+                                      DisplayMember="Name">
                                             <dxe:ComboBoxEdit.StyleSettings>
                                                 <dxe:RadioComboBoxStyleSettings />
                                             </dxe:ComboBoxEdit.StyleSettings>

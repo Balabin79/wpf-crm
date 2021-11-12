@@ -70,7 +70,6 @@ namespace Dental.ViewModels
         private bool CanAddRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanDeleteRowInPriceForClientsCommandExecute(object p) => true;
         private bool CanSaveRowInPriceForClientsCommandExecute(object p) => true;
-        private bool CanCloseEditorPriceForClientsCommandExecute(object p) => true;
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
@@ -114,7 +113,7 @@ namespace Dental.ViewModels
                 if (p is Classificator collection)
                 {
                     if (collection.PriceForClients.Count == 0) return;
-                    foreach (var group in collection.PriceForClients.GroupBy(f => f.PriceRateForClientsId))
+                    foreach (var group in collection.PriceForClients.GroupBy(f => f.PriceRateForClients))
                     {
                         if (group.Count() > 1)
                         {
@@ -123,6 +122,7 @@ namespace Dental.ViewModels
                             if (response.ToString() == "Cancel") return;
                         }
                     }
+                   
                     db.SaveChanges();
                 }
 
@@ -139,7 +139,13 @@ namespace Dental.ViewModels
             {
                 if (p is PriceForClients row)
                 {
-                    Collection.Where(f => f.Id == row.Classificator.Id).FirstOrDefault()?.PriceForClients.Remove(row);
+
+                    if (row.Id!=0)
+                    {
+                        db.Entry(row).State = EntityState.Deleted;
+                    }
+                    else Collection.Where(f => f.Id == row.Classificator.Id).FirstOrDefault()?.PriceForClients.Remove(row);
+                    
                 }
                 db.SaveChanges();
 
@@ -156,8 +162,9 @@ namespace Dental.ViewModels
             {
                 if (p is Classificator row)
                 {
-                    Collection.Where(f => f.Id == row.Id).FirstOrDefault()?.PriceForClients.Insert(0,
-                        new PriceForClients() { Price = "", Classificator = row, ClassificatorId = row.Id, PriceRateForClientsId = 1, PriceRateForClients = db.PriceRateForClients.Where(d => d.Id == 1 ).FirstOrDefault() }
+                    var priceRate = db.PriceRateForClients.Where(d => d.Id == 1).FirstOrDefault();
+                    Collection.Where(f => f.Id == row.Id).FirstOrDefault()?.PriceForClients.Add(
+                        new PriceForClients() { Price = "", Classificator = row, ClassificatorId = row.Id }
                         );
                 }
 
