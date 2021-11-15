@@ -444,12 +444,6 @@
     <Compile Update="Views\PatientCard\TreatmentPlan.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\WindowForms\WageRateForEmploymentsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WindowForms\PriceRateForClientsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Groups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -523,14 +517,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\TreatmentPlan.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\WageRateForEmploymentsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\PriceRateForClientsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

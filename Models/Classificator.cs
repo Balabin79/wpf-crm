@@ -23,10 +23,12 @@ namespace Dental.Models
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 
+        public string Price { get; set; }
+
+        public string Cost { get; set; }
+
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
-
-        public ObservableCollection<PriceForClients> PriceForClients { get; set; } 
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

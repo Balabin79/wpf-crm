@@ -27,14 +27,7 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-            PriceRateForClientsCommand = new LambdaCommand(OnPriceRateForClientsCommandExecuted, CanPriceRateForClientsCommandExecute);
-            WageRateForEmploymentsCommand = new LambdaCommand(OnWageRateForEmploymentsCommandExecuted, CanWageRateForEmploymentsCommandExecute);
-            CancelWageRateForEmploymentsCommand = new LambdaCommand(OnCancelWageRateForEmploymentsExecuted, CanCancelWageRateForEmploymentsCommandExecute);
-           
-            
-            AddRowInPriceForClientsCommand = new LambdaCommand(OnAddRowInPriceForClientsCommandExecuted, CanAddRowInPriceForClientsCommandExecute);
-            DeleteRowInPriceForClientsCommand = new LambdaCommand(OnDeleteRowInPriceForClientsCommandExecuted, CanDeleteRowInPriceForClientsCommandExecute);
-            SaveRowInPriceForClientsCommand = new LambdaCommand(OnSaveRowInPriceForClientsCommandExecuted, CanSaveRowInPriceForClientsCommandExecute);
+          
 
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
 
@@ -42,7 +35,6 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Collection = GetCollection();
-                PriceRateForClients = db.PriceRateForClients.ToList();
             }
             catch (Exception e)
             {
@@ -52,34 +44,19 @@ namespace Dental.ViewModels
         }
 
         public ICommand DeleteCommand { get; }
-        public ICommand CancelWageRateForEmploymentsCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
-        public ICommand PriceRateForClientsCommand { get; }
-        public ICommand WageRateForEmploymentsCommand { get; }   
-          
-        public ICommand AddRowInPriceForClientsCommand { get; }
-        public ICommand DeleteRowInPriceForClientsCommand { get; }
-        public ICommand SaveRowInPriceForClientsCommand { get; }
-
-
+ 
         public ICommand ExpandTreeCommand { get; }
 
 
-        private bool CanAddRowInPriceForClientsCommandExecute(object p) => true;
-        private bool CanDeleteRowInPriceForClientsCommandExecute(object p) => true;
-        private bool CanSaveRowInPriceForClientsCommandExecute(object p) => true;
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
 
-        private bool CanCancelWageRateForEmploymentsCommandExecute(object p) => true;
-        private bool CanPriceRateForClientsCommandExecute(object p) => true;
-        private bool CanWageRateForEmploymentsCommandExecute(object p) => true;
-       
         private bool CanExpandTreeCommandExecute(object p) => true;
 
         private void OnExpandTreeCommandExecuted(object p)
@@ -99,103 +76,6 @@ namespace Dental.ViewModels
                     tree.ExpandAllNodes();
                     return;
                 }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSaveRowInPriceForClientsCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is Classificator collection)
-                {
-                    if (collection.PriceForClients.Count == 0) return;
-                    foreach (var group in collection.PriceForClients.GroupBy(f => f.PriceRateForClients))
-                    {
-                        if (group.Count() > 1)
-                        {
-                            var response = ThemedMessageBox.Show(title: "Внимание", text: "В прайсе для клиентов имеются задублированные позиции по тарифам! Рекомендуется удалить такие позиции, иначе возможны коллизии при формировании счетов. Чтобы отменить, выберите \"Cancel\", чтобы все равно сохранить - выберите \"Ок\"", messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
-
-                            if (response.ToString() == "Cancel") return;
-                        }
-                    }
-                   
-                    db.SaveChanges();
-                }
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnDeleteRowInPriceForClientsCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is PriceForClients row)
-                {
-
-                    if (row.Id!=0)
-                    {
-                        db.Entry(row).State = EntityState.Deleted;
-                    }
-                    else Collection.Where(f => f.Id == row.Classificator.Id).FirstOrDefault()?.PriceForClients.Remove(row);
-                    
-                }
-                db.SaveChanges();
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnAddRowInPriceForClientsCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is Classificator row)
-                {
-                    var priceRate = db.PriceRateForClients.Where(d => d.Id == 1).FirstOrDefault();
-                    Collection.Where(f => f.Id == row.Id).FirstOrDefault()?.PriceForClients.Add(
-                        new PriceForClients() { Price = "", Classificator = row, ClassificatorId = row.Id }
-                        );
-                }
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnPriceRateForClientsCommandExecuted(object p)
-        {
-            try
-            {
-                PriceRateForClientsWindow = new PriceRateForClientsWindow();
-                PriceRateForClientsWindow.ShowDialog();
-                PriceRateForClients = db.PriceRateForClients.ToList();
-                return;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnWageRateForEmploymentsCommandExecuted(object p)
-        {
-            try
-            {
-                WageRateForEmploymentsWindow = new WageRateForEmploymentsWindow();
-                WageRateForEmploymentsWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -311,7 +191,6 @@ namespace Dental.ViewModels
         }
 
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
-        private void OnCancelWageRateForEmploymentsExecuted(object p) => WageRateForEmploymentsWindow.Close();
 
         /************* Специфика этой ViewModel ******************/
         private ObservableCollection<Classificator> _Group;
@@ -347,25 +226,21 @@ namespace Dental.ViewModels
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
             Window.Width = 800;
+            Window.Height = 328;
         }
         private void VisibleItemGroup()
         {
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
             Window.Width = 800;
+            Window.Height = 280;
         }
 
 
-        public IEnumerable<PriceRateForClients> PriceRateForClients { get; set; }
-        public IEnumerable<WageRateForEmployments> WageRateForEmployments { get => db.WageRateForEmployments.ToList(); }
-
         private ObservableCollection<Classificator> _Collection;
-        private WageRateForEmploymentsWindow WageRateForEmploymentsWindow;
         private ClassificatorWindow Window;
 
-        private ObservableCollection<Classificator> GetCollection() => db.Classificator
-            .Include(d => d.PriceForClients.Select(f => f.PriceRateForClients))
-            .OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<Classificator> GetCollection() => db.Classificator.OrderBy(d => d.Name).ToObservableCollection();
 
         private void CreateNewWindow() => Window = new ClassificatorWindow();
         private Classificator CreateNewModel() => new Classificator();
@@ -396,9 +271,5 @@ namespace Dental.ViewModels
             collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
             collection.ForEach(f => Collection.Remove(f));
         }
-
-
-
-        public PriceRateForClientsWindow PriceRateForClientsWindow;
     }
 }

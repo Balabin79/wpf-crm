@@ -15,20 +15,21 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Display(Name = "Вид скидки")]
-        public string DiscountType { get; set; }
+        [Display(Name = "Активно")]
+        public int? IsActive { get; set; } = 1;
 
-        [Display(Name = "Размер скидки")]
-        public string Amount 
-        {
-            get => string.Format("{0:C}", _Amount);
-            set => _Amount = value;
-        }
-        private string _Amount;
+        [Display(Name = "Применяется правило")]
+        public int? IsApplyRule { get; set; } = 0;
 
-        public int? IsDiscountActive { get; set; } = 0;
+        [Display(Name = "Больше или меньше базового")]
+        public string MoreOrLess { get; set; }
 
-        public int? IsApplyDiscount { get; set; } = 0;
+        [Display(Name = "Процент или сумма")]
+        public string PercentOrCost { get; set; }
+
+        [Display(Name = "Значение")]
+        public string Amount { get; set; }
+
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -40,10 +41,11 @@ namespace Dental.Models
                 Id = this.Id,
                 Name = this.Name,
                 Guid = this.Guid,
-                DiscountType = this.DiscountType,
+                IsActive = this.IsActive,
                 Amount = this.Amount,
-                IsDiscountActive = this.IsDiscountActive,
-                IsApplyDiscount = this.IsApplyDiscount
+                IsApplyRule = this.IsApplyRule,
+                MoreOrLess = this.MoreOrLess,
+                PercentOrCost = this.PercentOrCost
         };
         }
 
@@ -52,10 +54,11 @@ namespace Dental.Models
             model.Id = this.Id;
             model.Name = this.Name;
             model.Guid = this.Guid;
-            model.DiscountType = this.DiscountType;
+            model.IsActive = this.IsActive;
             model.Amount = this.Amount;
-            model.IsDiscountActive = this.IsDiscountActive;
-            model.IsApplyDiscount = this.IsApplyDiscount;
+            model.IsApplyRule = this.IsApplyRule;
+            model.MoreOrLess = this.MoreOrLess;
+            model.PercentOrCost = this.PercentOrCost;
             return model;
         }
 
@@ -88,10 +91,11 @@ namespace Dental.Models
 
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.DiscountType, other.DiscountType);
+            StringParamsIsEquel(this.MoreOrLess, other.MoreOrLess);
+            StringParamsIsEquel(this.PercentOrCost, other.PercentOrCost);
             StringParamsIsEquel(this.Amount, other.Amount);
-            if (this.IsDiscountActive != other.IsDiscountActive) return false;
-            if (this.IsApplyDiscount != other.IsApplyDiscount) return false;
+            if (this.IsActive != other.IsActive) return false;
+            if (this.IsApplyRule != other.IsApplyRule) return false;
                 return NotIsChanges;
         }
 
