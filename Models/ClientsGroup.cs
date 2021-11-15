@@ -21,7 +21,7 @@ namespace Dental.Models
         [Display(Name = "Применяется правило")]
         public int? IsApplyRule { get; set; } = 0;
 
-        [Display(Name = "Больше или меньше базового")]
+        [Display(Name = "Больше или меньше тарифа")]
         public string MoreOrLess { get; set; }
 
         [Display(Name = "Процент или сумма")]

@@ -15,6 +15,7 @@ namespace Dental.Models
         public DbSet<PatientInfo> PatientInfo { get; set; }
         public DbSet<Communication> Communication { get; set; }
         public DbSet<ClientsGroup> ClientsGroup { get; set; }
+        public DbSet<EmployeeGroup> EmployeeGroup { get; set; }
         public DbSet<Classificator> Classificator { get; set; }
         public DbSet<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
         public DbSet<ClientFiles> ClientFiles { get; set; }

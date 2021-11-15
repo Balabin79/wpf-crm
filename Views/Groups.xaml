@@ -209,7 +209,7 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn FieldName="MoreOrLess" 
-                                    Header="Больше/Меньше базового" 
+                                    Header="Больше/Меньше тарифа" 
                                     Width="1*" 
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
@@ -247,6 +247,7 @@
                             <DataTemplate>
                                 <TextBlock 
                                     VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Text="{Binding Path=RowData.Row.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
@@ -257,8 +258,6 @@
                                     IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"/>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
-                       
-
                     </dxg:GridColumn>
                     
 

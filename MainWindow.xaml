@@ -144,7 +144,13 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/status11.png"   
                                             ToolTip="Категории клиентов"
                                             Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Groups"/>
-
+                        <dxb:BarButtonItem Content="Категории сотрудников"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
+                                            ToolTip="Категории клиентов"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeGroups"/>
                         <dxb:BarButtonItem Content="Рекламные источники"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Advertising.png"
