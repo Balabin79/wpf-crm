@@ -116,14 +116,15 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/emp.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/emp.png"   
                                            ToolTip="Список сотрудников"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Pages.EmployeePage" AllowDrop="True"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Employes"
+                                           />
                         <dxb:BarButtonItem Content="Добавить сотрудника"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png"   
                                            ToolTip="Добавить сотрудника"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Pages.EmployeePage"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Employee"/>
                         <dxb:BarButtonItem Content="Зарплата сотрудников"
                                            RibbonStyle="Default" 
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"

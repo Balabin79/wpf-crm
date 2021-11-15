@@ -13,7 +13,12 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _Name;
+            set => _Name = value?.Trim();
+        }
+        private string _Name;
 
         [Display(Name = "Активно")]
         public int? IsActive { get; set; } = 1;
@@ -28,7 +33,12 @@ namespace Dental.Models
         public string PercentOrCost { get; set; }
 
         [Display(Name = "Значение")]
-        public string Amount { get; set; }
+        public string Amount
+        {
+            get => _Amount;
+            set => _Amount = value?.Trim();
+        }
+        private string _Amount;
 
 
         public string Error { get => string.Empty; }

@@ -14,10 +14,15 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _Name;
+            set => _Name = value?.Trim();
+        }
+        private string _Name;
 
         [Display(Name = "В расписании")]
-        public int ShowInShedule { get; set; }
+        public int? ShowInShedule { get; set; } = 0;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

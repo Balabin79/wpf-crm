@@ -15,6 +15,7 @@ using DevExpress.Data.ODataLinq.Helpers;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using Dental.Services;
+using System.Windows.Media;
 
 namespace Dental.ViewModels
 {
@@ -24,64 +25,151 @@ namespace Dental.ViewModels
 
         public EmployeeViewModel(int? employeeId = 0)
         {
+
+            EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+            ///
+
             CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
-            db = Db.Instance.Context; 
-            context = db.Employes;
-            Collection = GetCollection();
-            VisibleErrors = Visibility.Collapsed;
+            db = new ApplicationContext();
+            
 
             try
             {
-                if (employeeId == 0 || employeeId == null)
+                if (! int.TryParse(employeeId.ToString(), out int id) || id == 0)
                 {
-                    Employee = new Employee();
+                    Model = GetModel(0);
                     Title = "Новый сотрудник";
+                    IsReadOnly = false;
+                    _BtnIconEditableHide = false;
+                    _BtnIconEditableVisible = true;
                 }
                 else
                 {
-                    Employee = context.Where(i => i.Id == employeeId).First();                   
-                    Employee.Image = !string.IsNullOrEmpty(Employee.Photo) && File.Exists(Employee.Photo) ? new BitmapImage(new Uri(Employee.Photo)) : null;
-                    Title = Employee.FullName;                 
-                }
-               // Address = new AddressViewModel(Employee);
+                    Model = GetModel(id);
+                    IsReadOnly = true;
+                    _BtnIconEditableHide = true;
+                    _BtnIconEditableVisible = false;
+                   /* if (ProgramDirectory.HasOrgDirectoty())
+                    {
+                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
+                    }
+                   */
+
+                    Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;                
+                    }
+                ModelBeforeChanges = (Employee)Model.Clone();
             } 
             catch (Exception e)
             {
                 Title = "Новый сотрудник";
-                Employee = new Employee();
+                Model = new Employee();
                 (new ViewModelLog(e)).run();
-                Errors = new List<string>(){"Ошибка при загрузке данных сотрудника. " +
-                    "Возможно данные повреждены или удалены." +
-                    "Вернитесь к списку сотрудников и повторите попытку." +
-                    "При повторении ошибки, обратитесь за помощью к администратору или в тех.поддержку" };
-                VisibleErrors = true;
             }           
         }
 
-        public Employee Employee { get; set; }
-       // public AddressViewModel Address { get; set; }
-        public DbSet<Employee> Context => context;
-
-        public object VisibleErrors
+        public ICommand EditableCommand { get; }
+        private bool CanEditableCommandExecute(object p) => true;
+        private void OnEditableCommandExecuted(object p)
         {
-            get => visibleErrors;
-            set => Set(ref visibleErrors, value);
+            try
+            {
+                IsReadOnly = !IsReadOnly;
+                BtnIconEditableHide = IsReadOnly;
+                BtnIconEditableVisible = !IsReadOnly;
+                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
         }
 
-        public IEnumerable<string> Errors
+        private bool _IsReadOnly;
+        public bool IsReadOnly
         {
-            get => errors;
-            set => Set(ref errors, value);
+            get => _IsReadOnly;
+            set => Set(ref _IsReadOnly, value);
         }
 
-        public string Title
+        private bool _BtnIconEditableVisible;
+        public bool BtnIconEditableVisible
         {
-            get => title;
-            set => Set(ref title, value);
+            get => _BtnIconEditableVisible;
+            set => Set(ref _BtnIconEditableVisible, value);
         }
+
+        private bool _BtnIconEditableHide;
+        public bool BtnIconEditableHide
+        {
+            get => _BtnIconEditableHide;
+            set => Set(ref _BtnIconEditableHide, value);
+        }
+
+        public bool _BtnAfterSaveEnable = false;
+        public bool BtnAfterSaveEnable
+        {
+            get => _BtnAfterSaveEnable;
+            set => Set(ref _BtnAfterSaveEnable, value);
+        }
+        public ImageSource Image
+        {
+            get => _Image;
+            set => Set(ref _Image, value);
+        }
+        public ImageSource _Image;
+
+        public ObservableCollection<ClientFiles> _Files;
+        public ObservableCollection<ClientFiles> Files
+        {
+            get => _Files;
+            set => Set(ref _Files, value);
+        }
+
+        public Employee ModelBeforeChanges { get; set; }
+
+        public bool HasUnsavedChanges()
+        {
+            bool hasUnsavedChanges = false;
+            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
+            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            if (HasUnsavedFiles()) hasUnsavedChanges = true;
+            return hasUnsavedChanges;
+        }
+
+        public bool HasUnsavedFiles()
+        {
+            if (Files.Count > 0)
+            {
+                foreach (var i in Files)
+                {
+                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
+                    {
+                        Model.FieldsChanges.Add("Прикрепляемые файлы");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public Employee _Model;
+        public Employee Model
+        {
+            get => _Model;
+            set => Set(ref _Model, value);
+        }
+
+        public string Title { get; set; }
+
+        private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id).FirstOrDefault() : new Employee();
+
+
+
+        /// ///////////////////////////////////////////////////////
+
 
 
         public ICommand CancelCommand { get; }
@@ -106,18 +194,17 @@ namespace Dental.ViewModels
         {
             try
             {
-                Errors = null;
-                VisibleErrors = Visibility.Collapsed;
 
-                if (Employee.Id == 0)
+
+                if (Model.Id == 0)
                 {
-                    context.Add(Employee);
+                    //.Add(Model);
                     db.SaveChanges();
 
                     new Notification().run();
                     return;
                 }
-                db.Entry(Employee).State = EntityState.Modified;
+                db.Entry(Model).State = EntityState.Modified;
                 db.SaveChanges();            
             }
             catch (DbEntityValidationException ex)
@@ -125,8 +212,7 @@ namespace Dental.ViewModels
                 var errors = ex.EntityValidationErrors.First().ValidationErrors.Select(f => f.ErrorMessage);
 
                 if (errors.Count() > 0) { 
-                    Errors = errors;
-                    VisibleErrors = Visibility.Visible;
+
                 }
             }
             catch (Exception e){}
@@ -147,23 +233,15 @@ namespace Dental.ViewModels
         }
  
         private readonly ApplicationContext db;
-        private readonly DbSet<Employee> context;
-        private IEnumerable<string> errors;
-        private string title;
-        private object visibleErrors;
+
 
         private bool CanCancelCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenCommandExecute(object p) => true;
 
 
-        private ObservableCollection<Employee> _Collection;
-        public ObservableCollection<Employee> Collection
-        {
-            get => _Collection;
-            set => Set(ref _Collection, value);
-        }
-
-        private ObservableCollection<Employee> GetCollection() => db.Employes.OrderBy(d => d.LastName).ToObservableCollection();
+        public IEnumerable<string> Statuses { get; } = new List<string>() { "Работает", "Уволен", "В отпуске", "Другое" };
+        public IEnumerable<string> GenderList { get; } = new List<string> { "Мужчина", "Женщина" };
+        public IEnumerable<string> RateTypes { get; } = new List<string> { "Фиксированный оклад", "Сдельная оплата" };
     }
 }

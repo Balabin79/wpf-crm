@@ -48,6 +48,7 @@ namespace Dental.ViewModels
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
+                    Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
                     if (ProgramDirectory.HasOrgDirectoty())
                     {
                         Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();

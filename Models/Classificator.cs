@@ -4,8 +4,6 @@ using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
@@ -15,17 +13,37 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _Name;
+            set => _Name = value?.Trim();
+        }
+        private string _Name;
 
         [Display(Name = "Код")]
-        public string Code { get; set; }
+        public string Code
+        {
+            get => _Code;
+            set => _Code = value?.Trim();
+        }
+        private string _Code;
 
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
+    
+        public string Price
+        {
+            get => _Price;
+            set => _Price = value?.Trim();
+        }
+        private string _Price;
 
-        public string Price { get; set; }
-
-        public string Cost { get; set; }
+        public string Cost
+        {
+            get => _Cost;
+            set => _Cost = value?.Trim();
+        }
+        private string _Cost;
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }

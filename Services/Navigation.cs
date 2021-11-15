@@ -125,6 +125,7 @@ namespace Dental.Services
             }
             catch (Exception e)
             {
+                var msg = "Не найден раздел";
                 int x = 0;
             }
 

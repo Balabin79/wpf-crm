@@ -21,7 +21,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = Db.Instance.Context;
+                db = new ApplicationContext();
             }
             catch (Exception e)
             {
@@ -33,12 +33,12 @@ namespace Dental.ViewModels
 
         protected DbSet<Employee> Context { get => db.Employes; }
 
-        public IEnumerable Employees
+        public IEnumerable Collection
         {
             get 
             {
-                Context.OrderBy(d => d.LastName).ToList()
-                    .ForEach(f => f.Image = !string.IsNullOrEmpty(f.Photo) && File.Exists(f.Photo) ? new BitmapImage(new Uri(f.Photo)) : null);
+               /* Context.OrderBy(d => d.LastName).ToList()
+                    .ForEach(f => f.Photo = !string.IsNullOrEmpty(f.Photo) && File.Exists(f.Photo) ? new BitmapImage(new Uri(f.Photo)) : null);*/
                 return Context.Local;
             }
         }
