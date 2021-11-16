@@ -125,7 +125,7 @@ namespace Dental.ViewModels
                 if (!item.Equals(
                     CollectionBeforeChanges.
                     Where(
-                        f => f.Id == item.Id)
+                        f => f.Guid == item.Guid)
                     .FirstOrDefault())) return true;
             }
             return false;
