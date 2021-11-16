@@ -181,25 +181,32 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
           
-                    <dxg:GridColumn FieldName="PercentOrCost" 
-                                    Header="Процент/Сумма" 
-                                    Width="1*" 
-                                    HorizontalHeaderContentAlignment="Center">
+                    <dxg:GridColumn 
+                        FieldName="PercentOrCost" 
+                        Header="Процент/Сумма" 
+                        Width="1*" 
+                        HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="5 0 0 0" Text="{Binding Row.PercentOrCost, Mode=TwoWay,
+                                <TextBlock 
+                                    Margin="5 0 0 0" 
+                                    Text="{Binding Row.PercentOrCost.Name, Mode=TwoWay,
                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"
-                                            IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"
                                            />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:ComboBoxEdit  Name="PART_Editor"  ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.PercentOrCost}"                                   
-                                      SelectedItem="{Binding Row.PercentOrCost}"
-                                      NullText="Процент/Сумма" IsTextEditable="False"
-                                      IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
+                                <dxe:ComboBoxEdit  
+                                    Name="PART_Editor"  
+                                    ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.PercentOrCost}"  
+                                    DisplayMember="Name"
+                                    SelectedItem="{Binding Row.PercentOrCost}"
+                                    NullText="Процент/Сумма" IsTextEditable="False"
+                                    IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
                                     <dxe:ComboBoxEdit.StyleSettings>
                                         <dxe:RadioComboBoxStyleSettings />
                                     </dxe:ComboBoxEdit.StyleSettings>
@@ -215,7 +222,7 @@
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5 0 0 0" 
-                                           Text="{Binding Row.MoreOrLess, Mode=TwoWay,
+                                           Text="{Binding Row.MoreOrLess.Name, Mode=TwoWay,
                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                            HorizontalAlignment="Center" 
                                            VerticalAlignment="Center"
@@ -225,11 +232,13 @@
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:ComboBoxEdit  Name="PART_Editor"  
-                                                   ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.MoreOrLess}"                                   
-                                      SelectedItem="{Binding Row.MoreOrLess}"
-                                      NullText="Больше/Меньше базового" IsTextEditable="False"
-                                      IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
+                                <dxe:ComboBoxEdit  
+                                    Name="PART_Editor"  
+                                    ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.MoreOrLess}"   
+                                    DisplayMember="Name"
+                                    SelectedItem="{Binding Row.MoreOrLess}"
+                                    NullText="Больше/Меньше базового" IsTextEditable="False"
+                                    IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
                                     <dxe:ComboBoxEdit.StyleSettings>
                                         <dxe:RadioComboBoxStyleSettings />
                                     </dxe:ComboBoxEdit.StyleSettings>

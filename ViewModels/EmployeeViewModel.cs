@@ -34,7 +34,7 @@ namespace Dental.ViewModels
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
             db = new ApplicationContext();
-            
+            EmployeeGroups = db.EmployeeGroup.ToList();
 
             try
             {
@@ -49,6 +49,7 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = GetModel(id);
+                    IsPieceWork = string.IsNullOrEmpty(Model.RateType) || Model.RateType == "Сдельная оплата";
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
@@ -242,6 +243,8 @@ namespace Dental.ViewModels
 
         public IEnumerable<string> Statuses { get; } = new List<string>() { "Работает", "Уволен", "В отпуске", "Другое" };
         public IEnumerable<string> GenderList { get; } = new List<string> { "Мужчина", "Женщина" };
-        public IEnumerable<string> RateTypes { get; } = new List<string> { "Фиксированный оклад", "Сдельная оплата" };
+        public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
+
+        public bool IsPieceWork { get; set; } = true;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Dental.Models.Base;
+﻿using Dental.Infrastructures.Logs;
+using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
@@ -28,10 +29,12 @@ namespace Dental.Models
         public int? IsApplyRule { get; set; } = 0;
 
         [Display(Name = "Больше или меньше тарифа")]
-        public string MoreOrLess { get; set; }
+        public Dictionary MoreOrLess { get; set; }
+        public int? MoreOrLessId { get; set; }
 
         [Display(Name = "Процент или сумма")]
-        public string PercentOrCost { get; set; }
+        public Dictionary PercentOrCost { get; set; }
+        public int? PercentOrCostId { get; set; }
 
         [Display(Name = "Значение")]
         public string Amount
@@ -47,17 +50,43 @@ namespace Dental.Models
 
         public object Clone()
         {
-            return new ClientsGroup
+            try
             {
-                Id = this.Id,
-                Name = this.Name,
-                Guid = this.Guid,
-                IsActive = this.IsActive,
-                Amount = this.Amount,
-                IsApplyRule = this.IsApplyRule,
-                MoreOrLess = this.MoreOrLess,
-                PercentOrCost = this.PercentOrCost
-        };
+                Dictionary percentOrCost = new Dictionary
+                {
+                    Name = this.PercentOrCost?.Name,
+                    Id = this.PercentOrCost?.Id ?? 0,
+                    CategoryId = this.PercentOrCost?.CategoryId ?? 0,
+                    Guid = this.PercentOrCost?.Guid
+                };
+
+                Dictionary moreOrLess = new Dictionary
+                {
+                    Name = this.MoreOrLess?.Name,
+                    Id = this.MoreOrLess?.Id ?? 0,
+                    CategoryId = this.MoreOrLess?.CategoryId ?? 0,
+                    Guid = this.MoreOrLess?.Guid
+                };
+
+                return new ClientsGroup
+                {
+                    Id = this.Id,
+                    Name = this.Name,
+                    Guid = this.Guid,
+                    IsActive = this.IsActive,
+                    Amount = this.Amount,
+                    IsApplyRule = this.IsApplyRule,
+                    PercentOrCost = percentOrCost,
+                    PercentOrCostId = this.PercentOrCostId,
+                    MoreOrLess = moreOrLess,
+                    MoreOrLessId = this.MoreOrLessId
+                };
+            } catch(Exception ex)
+            {
+                (new ViewModelLog(ex)).run();
+                return new ClientsGroup();
+            }
+
         }
 
         public ClientsGroup Copy(ClientsGroup model)
@@ -98,12 +127,12 @@ namespace Dental.Models
                 return true;
 
             if (this.GetType() != other.GetType())
-                return false;
+                return false;           
 
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.MoreOrLess, other.MoreOrLess);
-            StringParamsIsEquel(this.PercentOrCost, other.PercentOrCost);
+            StringParamsIsEquel(this.MoreOrLess?.Guid, other.MoreOrLess?.Guid);
+            StringParamsIsEquel(this.PercentOrCost?.Guid, other.PercentOrCost?.Guid);
             StringParamsIsEquel(this.Amount, other.Amount);
             if (this.IsActive != other.IsActive) return false;
             if (this.IsApplyRule != other.IsApplyRule) return false;

@@ -73,6 +73,15 @@ namespace Dental.Services
                     }
                 }
 
+                if (CurrentPage?.ToString() == "Dental.Views.EmployeeGroups")
+                {
+                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeGroupViewModel vm)
+                    {
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
+                    }
+                }
+
+
                 if (CurrentPage?.ToString() == "Dental.Views.Specialities")
                 {
                     if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is SpecialityViewModel vm)

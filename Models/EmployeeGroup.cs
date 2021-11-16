@@ -27,10 +27,12 @@ namespace Dental.Models
         public int? IsApplyRule { get; set; } = 0;
 
         [Display(Name = "Больше или меньше стоимости работы")]
-        public string MoreOrLess { get; set; }
+        public Dictionary MoreOrLess { get; set; }
+        public int? MoreOrLessId { get; set; }
 
         [Display(Name = "Процент или сумма")]
-        public string PercentOrCost { get; set; }
+        public Dictionary PercentOrCost { get; set; }
+        public int? PercentOrCostId { get; set; }
 
         [Display(Name = "Значение")]
         public string Amount
@@ -46,6 +48,22 @@ namespace Dental.Models
 
         public object Clone()
         {
+            Dictionary percentOrCost = new Dictionary
+            {
+                Name = this.PercentOrCost?.Name,
+                Id = this.PercentOrCost?.Id ?? 0,
+                CategoryId = this.PercentOrCost?.CategoryId ?? 0,
+                Guid = this.PercentOrCost?.Guid
+            };
+
+            Dictionary moreOrLess = new Dictionary
+            {
+                Name = this.MoreOrLess?.Name,
+                Id = this.MoreOrLess?.Id ?? 0,
+                CategoryId = this.MoreOrLess?.CategoryId ?? 0,
+                Guid = this.MoreOrLess?.Guid
+            };
+
             return new EmployeeGroup
             {
                 Id = this.Id,
@@ -54,9 +72,11 @@ namespace Dental.Models
                 IsActive = this.IsActive,
                 Amount = this.Amount,
                 IsApplyRule = this.IsApplyRule,
-                MoreOrLess = this.MoreOrLess,
-                PercentOrCost = this.PercentOrCost
-        };
+                PercentOrCost = percentOrCost,
+                PercentOrCostId = this.PercentOrCostId,
+                MoreOrLess = moreOrLess,
+                MoreOrLessId = this.MoreOrLessId
+            };
         }
 
         public EmployeeGroup Copy(EmployeeGroup model)
@@ -101,12 +121,12 @@ namespace Dental.Models
 
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.MoreOrLess, other.MoreOrLess);
-            StringParamsIsEquel(this.PercentOrCost, other.PercentOrCost);
+            StringParamsIsEquel(this.MoreOrLess?.Guid, other.MoreOrLess?.Guid);
+            StringParamsIsEquel(this.PercentOrCost?.Guid, other.PercentOrCost?.Guid);
             StringParamsIsEquel(this.Amount, other.Amount);
             if (this.IsActive != other.IsActive) return false;
             if (this.IsApplyRule != other.IsApplyRule) return false;
-                return NotIsChanges;
+            return NotIsChanges;
         }
 
         private void StringParamsIsEquel(string param1, string param2)

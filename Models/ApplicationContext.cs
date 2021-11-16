@@ -18,6 +18,6 @@ namespace Dental.Models
         public DbSet<EmployeeGroup> EmployeeGroup { get; set; }
         public DbSet<Classificator> Classificator { get; set; }
         public DbSet<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
-        public DbSet<ClientFiles> ClientFiles { get; set; }
+        public DbSet<Dictionary> Dictionary { get; set; }
     }
 }

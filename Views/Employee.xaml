@@ -78,7 +78,7 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     
@@ -216,17 +216,27 @@
                                                           LabelPosition="Left"  
                                                           HorizontalAlignment="Left"
                                                           AddColonToLabel="True">
-                                            <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Фиксированный оклад" UncheckedStateContent="Сдельная оплата" 
-                                  IsChecked="{Binding Model.RateType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                            <dxe:ToggleSwitch
+                                                ContentPlacement="Far" 
+                                                HorizontalAlignment="Left" 
+                                                CheckedStateContent="Фиксированный оклад" 
+                                                UncheckedStateContent="Сдельная оплата"
+                                                Name="TypeRate"
+                                  IsChecked="{Binding IsPieceWork, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
 
 
                                         <dxlc:LayoutItem Label="Категория сотрудников:"  LabelPosition="Left" >
-                                            <dxe:ComboBoxEdit ItemsSource="{Binding EmployeeCategories, Mode=TwoWay}" 
-                                  IsTextEditable="False"                                  
-                                  SelectedItem="{Binding Model.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <dxe:ComboBoxEdit 
+                                                ItemsSource="{Binding EmployeeGroups, Mode=TwoWay}" 
+                                                IsTextEditable="False"  
+                                                DisplayMember="Name"
+                                                NullText="Категории сотрудников"
+                                  SelectedItem="{Binding Model.EmployeeGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                IsEnabled="{Binding ElementName=TypeRate, Path=IsChecked, Mode=TwoWay}">
                                                 <dxe:ComboBoxEdit.StyleSettings>
                                                     <dxe:RadioComboBoxStyleSettings />
                                                 </dxe:ComboBoxEdit.StyleSettings>

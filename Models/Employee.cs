@@ -52,8 +52,9 @@ namespace Dental.Models
         [Display(Name = "Тип оклада")]
         public string RateType { get; set; }
 
-        [Display(Name = "Категория сотрудника")]
-        public string Category { get; set; }
+
+        public EmployeeGroup EmployeeGroup { get; set; }
+        public int EmployeeGroupId { get; set; }
 
         [Display(Name = "Размер оклада")]
         public string Amount
@@ -133,6 +134,14 @@ namespace Dental.Models
 
         public object Clone()
         {
+            EmployeeGroup EmployeeGroup = new EmployeeGroup { 
+                Name = this.EmployeeGroup?.Name,
+                IsActive = this.EmployeeGroup?.IsActive,
+                IsApplyRule = this.EmployeeGroup?.IsApplyRule,
+                MoreOrLess = this.EmployeeGroup?.MoreOrLess,
+                PercentOrCost = this.EmployeeGroup?.PercentOrCost,
+                Amount = this.EmployeeGroup?.Amount
+            };
 
             return new Employee
             {
@@ -155,18 +164,11 @@ namespace Dental.Models
                 IsDismissed = this.IsDismissed,
                 RateType = this.RateType,
                 Amount = this.Amount,
-                Category = this.Category,
+                EmployeeGroup = EmployeeGroup,
+                EmployeeGroupId = this.EmployeeGroupId,
                 Note = this.Note,
                 Sex = this.Sex
             };
-
-            /*Company company = new Company { Name = this.Work.Name };
-            return new Person
-            {
-                Name = this.Name,
-                Age = this.Age,
-                Work = company
-            };*/
         }
 
         public Employee Copy(Employee model)
@@ -191,7 +193,8 @@ namespace Dental.Models
             model.IsDismissed = this.IsDismissed;
             model.Sex = this.Sex;
             model.Amount = this.Amount;
-            model.Category = this.Category;
+            model.EmployeeGroup = this.EmployeeGroup;
+            model.EmployeeGroupId = this.EmployeeGroupId;
             model.Note = this.Note;
             return model;
         }
@@ -248,7 +251,6 @@ namespace Dental.Models
             StringParamsIsEquel(this.Status, other.Status, "Статус");
             StringParamsIsEquel(this.Sex, other.Sex, "Пол");
             StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
-            StringParamsIsEquel(this.Category, other.Category, "Категории сотрудников");
             StringParamsIsEquel(this.RateType, other.RateType, "Тип оклада");
             StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
@@ -256,6 +258,12 @@ namespace Dental.Models
             {
                 NotIsChanges = false;
                 FieldsChanges.Add("Уволен");
+            }
+
+            if (this.EmployeeGroupId != other.EmployeeGroupId)
+            {
+                NotIsChanges = false;
+                FieldsChanges.Add("Категории сотрудников");
             }
 
             return NotIsChanges;

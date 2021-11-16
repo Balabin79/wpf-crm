@@ -32,6 +32,8 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsGroup)f.Clone()));
+                PercentOrCost = db.Dictionary.Where(f => f.CategoryId == 2).ToList();
+                MoreOrLess = db.Dictionary.Where(f => f.CategoryId == 3).ToList();
             }
             catch (Exception e)
             {
@@ -140,7 +142,8 @@ namespace Dental.ViewModels
             return response.ToString() == "Cancel";
         }
 
-        public List<string> MoreOrLess { get; } = new List<string>() { "Больше", "Меньше" };
-        public List<string> PercentOrCost { get; } = new List<string>() { "Процент", "Сумма" };
+        public List<Dictionary> MoreOrLess { get; set; }
+        public List<Dictionary> PercentOrCost { get; set; }
+
     }
 }
