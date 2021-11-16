@@ -87,6 +87,14 @@ namespace Dental.Models
         }
         private string _Skype;
 
+        [Display(Name = "Примечание")]
+        public string Note
+        {
+            get => _Note;
+            set => _Note = value?.Trim();
+        }
+        private string _Note;
+
         public string Status { get; set; }
 
         [Display(Name = "Телефон")]
@@ -148,6 +156,7 @@ namespace Dental.Models
                 RateType = this.RateType,
                 Amount = this.Amount,
                 Category = this.Category,
+                Note = this.Note,
                 Sex = this.Sex
             };
 
@@ -183,6 +192,7 @@ namespace Dental.Models
             model.Sex = this.Sex;
             model.Amount = this.Amount;
             model.Category = this.Category;
+            model.Note = this.Note;
             return model;
         }
 
@@ -240,6 +250,7 @@ namespace Dental.Models
             StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
             StringParamsIsEquel(this.Category, other.Category, "Категории сотрудников");
             StringParamsIsEquel(this.RateType, other.RateType, "Тип оклада");
+            StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
             if (this.IsDismissed != other.IsDismissed)
             {

@@ -33,7 +33,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DockPanel LastChildFill="True" >
+            <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel  DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal" >
                     <Image Height="23" Width="23" Margin="3 0 3 0">
                         <Image.Source>
@@ -76,33 +76,38 @@
             </DockPanel>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-                <GroupBox BorderBrush="LightGray" Margin="5" Header="Общая информация">
-                    <StackPanel >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <GroupBox BorderBrush="LightGray" Margin="5" Header="Общая информация" Grid.Row="0">
                         <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
-                        <dxlc:LayoutGroup Orientation="Horizontal">
-                            <dxlc:LayoutGroup Orientation="Vertical">
-                                <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
-                                    <dxlc:LayoutGroup Orientation="Vertical">
-                                        <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
-                                            <dxe:TextEdit  
+                            <dxlc:LayoutGroup Orientation="Horizontal">
+                                <dxlc:LayoutGroup Orientation="Vertical">
+                                    <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+                                        <dxlc:LayoutGroup Orientation="Vertical">
+                                            <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
+                                                <dxe:TextEdit  
                                                 EditValue="{Binding Path=Model.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
                                                 <dxe:TextEdit 
                                                     EditValue="{Binding Path=Model.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Отчество" AddColonToLabel="True">
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Отчество" AddColonToLabel="True">
                                                 <dxe:TextEdit 
                                                     EditValue="{Binding Path=Model.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
                                                 <dxe:DateEdit 
                                                     EditValue="{Binding Path=Model.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
+                                            </dxlc:LayoutItem>
 
                                             <dxlc:LayoutItem Label="Пол:" LabelPosition="Left" >
                                                 <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
@@ -115,87 +120,87 @@
                                                 </dxe:ComboBoxEdit>
                                             </dxlc:LayoutItem>
                                         </dxlc:LayoutGroup>
-                                    
-                                    
 
-                                    <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
-                                        <ext:ImageEditEx                       
+
+
+                                        <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
+                                            <ext:ImageEditEx                       
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
                                       ImagePath = "{Binding Model.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Image, Mode=TwoWay}"   
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       Height="128"  />
-                                    </dxlc:LayoutItem>
-                                </dxlc:LayoutGroup>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
                                     <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
                                         <dxe:MemoEdit 
                                                 EditValue="{Binding Path=Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0 10 0 0">
-                                    <dxlc:LayoutItem Label="Осн. телефон" AddColonToLabel="True">
-                                        <dxe:ButtonEdit IsTextEditable="True"
+                                        <dxlc:LayoutItem Label="Осн. телефон" AddColonToLabel="True">
+                                            <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
                                             EditValue="{Binding Path=Model.Phone, Mode=TwoWay}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <dxe:ImageButtonInfo
+                                                <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg"  Margin="0 2 3 2"/>
-                                        </dxe:ButtonEdit>
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="Доп. телефон" AddColonToLabel="True">
-                                        <dxe:ButtonEdit IsTextEditable="True"
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Доп. телефон" AddColonToLabel="True">
+                                            <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
                                             EditValue="{Binding Path=Model.AddPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <dxe:ImageButtonInfo
+                                                <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
-                                        </dxe:ButtonEdit>
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
-                                        <dxe:ButtonEdit IsTextEditable="True"
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
+                                            <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
                                             MaskType="RegEx"
                                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
                                             EditValue="{Binding Path=Model.Email, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <dxe:ImageButtonInfo
+                                                <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
-                                        </dxe:ButtonEdit>
-                                    </dxlc:LayoutItem>
-                                    <dxlc:LayoutItem Label="Skype" AddColonToLabel="True">
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Skype" AddColonToLabel="True">
                                             <dxe:ButtonEdit 
                                                 IsTextEditable="True" AllowDefaultButton="False" 
                                                 EditValue="{Binding Path=Model.Skype, Mode=TwoWay}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <dxe:ImageButtonInfo
+                                                <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/skype.svg"  Margin="0 2 2 2"/>
-                                        </dxe:ButtonEdit>
-                                    </dxlc:LayoutItem>
+                                            </dxe:ButtonEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+
+
+
                                 </dxlc:LayoutGroup>
-
-
-
-                            </dxlc:LayoutGroup>
-                            <dxlc:LayoutGroup Orientation="Vertical">
-                                <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
-                                    <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
+                                <dxlc:LayoutGroup Orientation="Vertical">
+                                    <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
+                                        <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
                                             <dxe:DateEdit 
                                                 EditValue="{Binding Path=Model.HireDate, Mode=TwoWay}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                    </dxlc:LayoutItem>
+                                        </dxlc:LayoutItem>
 
-                                    <dxlc:LayoutItem Label="Дата увольнения" AddColonToLabel="True">
+                                        <dxlc:LayoutItem Label="Дата увольнения" AddColonToLabel="True">
                                             <dxe:DateEdit 
                                                 EditValue="{Binding Path=Model.DismissalDate, Mode=TwoWay}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                    </dxlc:LayoutItem>
+                                        </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem Label="Статус:" LabelPosition="Left" >
                                             <dxe:ComboBoxEdit ItemsSource="{Binding Statuses}"                                      
@@ -218,15 +223,15 @@
 
 
                                         <dxlc:LayoutItem Label="Категория сотрудников:"  LabelPosition="Left" >
-                                                <dxe:ComboBoxEdit ItemsSource="{Binding EmployeeCategories, Mode=TwoWay}" 
+                                            <dxe:ComboBoxEdit ItemsSource="{Binding EmployeeCategories, Mode=TwoWay}" 
                                   IsTextEditable="False"                                  
                                   SelectedItem="{Binding Model.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                    <dxe:ComboBoxEdit.StyleSettings>
-                                                        <dxe:RadioComboBoxStyleSettings />
-                                                    </dxe:ComboBoxEdit.StyleSettings>
-                                                </dxe:ComboBoxEdit>
-                                            </dxlc:LayoutItem>
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem Label="Размер оклада:"  LabelPosition="Left" >
                                             <dxe:TextEdit  EditValue="{Binding Model.Amount, Mode=TwoWay, 
@@ -252,31 +257,158 @@
                                         </dxg:GridControl.View>
                                     </dxg:GridControl>
                                 </dxlc:LayoutGroup>
-                            
-                        </dxlc:LayoutGroup>
-
+                            </dxlc:LayoutGroup>
                         </dxlc:LayoutControl>
-                        <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
-                            <dxlc:LayoutItem   Margin="0,10,0,0">
-                                <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="75" >
+                    </GroupBox>
+                    
+                    
+                    
+                    
+                    <GroupBox BorderBrush="LightGray" Margin="5" Header="Дополнительно" Grid.Row="1">
+                        
+                        <dxlc:LayoutControl  Orientation="Vertical" Padding="0">
+                            <dxlc:LayoutGroup>
+                            <dxlc:LayoutItem Label="Примечание" AddColonToLabel="True" LabelPosition="Top">
+                                <dxe:MemoEdit 
+                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+
+                            <dxlc:LayoutGroup  
+                                 VerticalAlignment="Stretch" Margin="0 5 0 0"
+                          MaxHeight="1500" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                                <dxlc:LayoutGroup.HeaderTemplate>
+                                    <DataTemplate >
+                                        <DockPanel  HorizontalAlignment="Stretch">
+                                            <TextBlock Text="Прикрепляемые файлы (документы, изображения и пр.)" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+
+                                            <dxb:BarContainerControl 
+                                                DockPanel.Dock="Right" 
+                                                HorizontalAlignment="Right">
+
+                                                <dxb:ToolBarControl
+                                                    BarItemDisplayMode="ContentAndGlyph" 
+                                                    Caption="File" 
+                                                    AllowCustomizationMenu="False" 
+                                                    AllowQuickCustomization="False"
+                                                    ShowDragWidget="False">
+
+                                                    <dxb:BarButtonItem 
+                                                        Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
+                                                   Content="Прикрепить файл" 
+                                                        
+                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
+                                                    />
+
+                                                </dxb:ToolBarControl>
+                                            </dxb:BarContainerControl>
+
+
+
+                                        </DockPanel>
+
+                                    </DataTemplate>
+                                </dxlc:LayoutGroup.HeaderTemplate>
+
+                                <dxg:GridControl  ItemsSource="{Binding Files, Mode=TwoWay}" MaxHeight="2000"
+                                                  VerticalAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                 DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn FieldName="SpecialityList1" Header="Прикрепляемые файлы документов" />
+                                        <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
+                                        <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
+                                        <dxg:GridColumn FieldName="Size" Header="Размер файла" Width="1*" />
+                                        <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="1*" />
+                                        <dxg:GridColumn  Width="1*" Header="Статус">
+                                            <dxg:GridColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding RowData.Row.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn>
+
+                                        <dxg:GridColumn Width="auto" >
+                                            <dxg:GridColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+
+                                                        <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                                                            <dxb:BarButtonItem Name="bOpen"
+                                           Content="Открыть файл"                                                            
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+
+                                                            <dxb:BarButtonItem Name="bOpenDir" 
+                                           Content="Открыть содержащую файл директорию" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                           GlyphSize="Small" 
+                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.OpenDirectoryCommand}"
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+
+                                                            <dxb:BarButtonItem Name="bDeleteFile" 
+                                           Content="Удалить файл" 
+                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}" 
+                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                                            <dxb:BarItemLinkSeparator />
+                                                        </dxb:ToolBarControl>
+                                                    </dxb:BarContainerControl>
+                                                </DataTemplate>
+                                            </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn>
+
                                     </dxg:GridControl.Columns>
                                     <dxg:GridControl.View>
                                         <dxg:TableView ShowGroupPanel="False"
+                                              x:Name="attachFileTableView"
                                                NavigationStyle="Row"
                                                AutoWidth="True"
                                                AllowEditing="False"
                                                ShowVerticalLines="False"
                                                ShowHorizontalLines="False"
                                                UseEvenRowBackground="True"
-                                               ShowIndicator="False" />
+                                               ShowIndicator="False" >
+                                            <dxg:TableView.InputBindings>
+                                                <KeyBinding Key="Delete"       
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                                <KeyBinding Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                                <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                            </dxg:TableView.InputBindings>
+
+                                            <dxg:TableView.RowCellMenuCustomizations >
+                                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
+                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
+                                               Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                               Command="{Binding DeleteFileCommand}" 
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                                            </dxg:TableView.RowCellMenuCustomizations>
+                                        </dxg:TableView>
                                     </dxg:GridControl.View>
                                 </dxg:GridControl>
-                            </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+
                         </dxlc:LayoutControl>
-                    </StackPanel>
-                </GroupBox>
+                    </GroupBox>
+                </Grid>
+                
             </ScrollViewer>
         </Grid>
     </Border>
