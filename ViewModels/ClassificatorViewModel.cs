@@ -107,7 +107,7 @@ namespace Dental.ViewModels
             try
             {
                 //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
+                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Guid != f.Guid).ToList();
 
                 if (SelectedGroup != null) 
                 {
@@ -149,14 +149,14 @@ namespace Dental.ViewModels
                         Model = CreateNewModel();
                         Model.IsDir = 0;
                         Title = "Новая позиция";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
                         VisibleItemForm();
                         break;
                     case -2:
                         Model = CreateNewModel();
                         Title = "Создать группу";
                         Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
+                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
                         Group.Add(WithoutCategory);
                         VisibleItemGroup();
                         break;
