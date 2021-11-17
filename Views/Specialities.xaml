@@ -101,7 +101,10 @@
                             </dxg:TableView.InputBindings>
 
                             <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" DataContext="{Binding Source={StaticResource vm}}"
+                                <dxb:BarButtonItem  GlyphSize="Small" 
+                                                    GlyphAlignment="Left" 
+                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                                    DataContext="{Binding Source={StaticResource vm}}"
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать"  Command="{Binding AddCommand}"/>
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" DataContext="{Binding Source={StaticResource vm}}"
