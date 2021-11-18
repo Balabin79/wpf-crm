@@ -453,9 +453,6 @@
     <Compile Update="Views\CommunicationLog\SmsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\HandbooksPages\EmployesSpecialities.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Advertising.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -532,10 +529,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\CommunicationLog\SmsView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\HandbooksPages\EmployesSpecialities.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

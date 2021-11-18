@@ -1,44 +1,94 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
 using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection;
+using System.ComponentModel;
+using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
     [Table("EmployesSpecialities")]
-    class EmployesSpecialities : AbstractBaseModel
+    class EmployesSpecialities : AbstractBaseModel, IDataErrorInfo
     {
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
-        public int SpecialityId { get; set; }
+        public int? SpecialityId { get; set; }
         public Speciality Speciality { get; set; }
 
-        public bool this[PropertyInfo prop, EmployesSpecialities item]
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+
+        public EmployesSpecialities Copy(EmployesSpecialities model)
         {
-            get
+            model.Id = this.Id;
+            model.Guid = this.Guid;
+            model.Employee = this.Employee;
+            model.EmployeeId = this.EmployeeId;
+            model.Speciality = this.Speciality;
+            model.SpecialityId = this.SpecialityId;
+            return model;
+        }
+
+        public override bool Equals(object other)
+        {
+            //Последовательность проверки должна быть именно такой.
+            //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            
+            if (other == null)
+                return false;
+
+            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
+            if (object.ReferenceEquals(this, other))
+                return true;
+
+            //Если класс находится на вершине иерархии или просто не имеет наследников, то можно просто
+            //сделать Vehicle tmp = other as Vehicle; if(tmp==null) return false; 
+            //Затем вызвать экземплярный метод, сразу передав ему объект tmp.
+            if (this.GetType() != other.GetType())
+                return false;
+
+            return this.Equals(other as EmployesSpecialities);
+        }
+        public bool Equals(EmployesSpecialities other)
+        {
+            NotIsChanges = true;
+            if (other == null)
+                return false;
+
+            //Здесь сравнение по ссылкам необязательно.
+            //Если вы уверены, что многие проверки на идентичность будут отсекаться на проверке по ссылке - //можно имплементировать.
+            if (object.ReferenceEquals(this, other))
+                return true;
+
+            //Если по логике проверки, экземпляры родительского класса и класса потомка могут считаться равными,
+            //то проверять на идентичность необязательно и можно переходить сразу к сравниванию полей.
+            if (this.GetType() != other.GetType())
+                return false;
+
+            StringParamsIsEquel(this.Guid, other.Guid);
+            StringParamsIsEquel(this.Employee?.Guid, other?.Guid);
+            StringParamsIsEquel(this.Speciality?.Guid, other?.Guid);
+
+            if (this.SpecialityId != other.SpecialityId)
             {
-                switch (prop.Name)
-                {
-                    case "Id": return item.Id == Id;
-                    case "EmployeeId": return item.EmployeeId == EmployeeId;
-                    case "SpecialityId": return item.SpecialityId == SpecialityId;
-
-                    default: return true;
-                }
+                NotIsChanges = false;
             }
+
+            if (this.EmployeeId != other.EmployeeId)
+            {
+                NotIsChanges = false;
+            }
+
+            return NotIsChanges;
         }
 
-        public void Copy(EmployesSpecialities copy)
+        private void StringParamsIsEquel(string param1, string param2)
         {
-            EmployeeId = copy.EmployeeId;
-            SpecialityId = copy.SpecialityId;
-
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
+            NotIsChanges = false;
         }
+
+        [NotMapped]
+        public bool NotIsChanges { get; set; } = true;
     }
 }

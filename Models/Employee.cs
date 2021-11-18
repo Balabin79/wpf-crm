@@ -14,6 +14,14 @@ namespace Dental.Models
     [Table("Employes")]
     class Employee : AbstractBaseModel, IDataErrorInfo
     {
+
+        [NotMapped]
+        public ImageSource Image { get; set; }
+
+        [NotMapped]
+        public string Fio { 
+            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName; 
+        }
         // Общая информация
         [Display(Name = "Фото")]
         public string Photo { get; set; }
@@ -45,16 +53,6 @@ namespace Dental.Models
             set => _MiddleName = value?.Trim();
         }
         private string _MiddleName;
-
-        [Display(Name = "Пол")]
-        public string Sex { get; set; }
-
-        [Display(Name = "Тип оклада")]
-        public string RateType { get; set; }
-
-
-        public EmployeeGroup EmployeeGroup { get; set; }
-        public int EmployeeGroupId { get; set; }
 
         [Display(Name = "Размер оклада")]
         public string Amount
@@ -96,8 +94,6 @@ namespace Dental.Models
         }
         private string _Note;
 
-        public string Status { get; set; }
-
         [Display(Name = "Телефон")]
         [Phone(ErrorMessage = @"В поле ""Телефон"" введено некорректное значение")]
         public string Phone { get; set; }
@@ -119,7 +115,6 @@ namespace Dental.Models
         [RegularExpression(@"^\d{12}$", ErrorMessage = @"Формат ""ИНН""- 12 цифр")]
         public string Inn { get; set; }
 
-
         [Display(Name = "Адрес")]
         public string Address
         {
@@ -128,13 +123,29 @@ namespace Dental.Models
         }
         private string _Address;
 
+        [Display(Name = "Категория сотрудника")]
+        public EmployeeGroup EmployeeGroup { get; set; }
+        public int? EmployeeGroupId { get; set; }
+
+        [Display(Name = "Статус")]
+        public Dictionary Status { get; set; }
+        public int? StatusId { get; set; }
+
+        [Display(Name = "Пол")]
+        public Dictionary Sex { get; set; }
+        public int? SexId { get; set; }
+
+        [Display(Name = "Тип оклада")]
+        public Dictionary RateType { get; set; }
+        public int? RateTypeId { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
 
         public object Clone()
         {
-            EmployeeGroup EmployeeGroup = new EmployeeGroup { 
+            EmployeeGroup employeeGroup = new EmployeeGroup { 
                 Name = this.EmployeeGroup?.Name,
                 IsActive = this.EmployeeGroup?.IsActive,
                 IsApplyRule = this.EmployeeGroup?.IsApplyRule,
@@ -143,9 +154,34 @@ namespace Dental.Models
                 Amount = this.EmployeeGroup?.Amount
             };
 
+            Dictionary rateType = new Dictionary
+            {
+                Name = this.RateType?.Name,
+                Id = this.RateType?.Id ?? 0,
+                CategoryId = this.RateType?.CategoryId ?? 0,
+                Guid = this.RateType?.Guid
+            };
+
+            Dictionary status = new Dictionary
+            {
+                Name = this.Status?.Name,
+                Id = this.Status?.Id ?? 0,
+                CategoryId = this.Status?.CategoryId ?? 0,
+                Guid = this.Status?.Guid
+            };
+
+            Dictionary sex = new Dictionary
+            {
+                Name = this.Sex?.Name,
+                Id = this.Sex?.Id ?? 0,
+                CategoryId = this.Sex?.CategoryId ?? 0,
+                Guid = this.Sex?.Guid
+            };
+
             return new Employee
             {
                 Id = this.Id,
+                Guid = this.Guid,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 MiddleName = this.MiddleName,
@@ -157,17 +193,19 @@ namespace Dental.Models
                 Email = this.Email,
                 BirthDate = this.BirthDate,
                 DismissalDate = this.DismissalDate,
-                Guid = this.Guid,
                 HireDate = this.HireDate,
                 Skype = this.Skype,
-                Status = this.Status,
                 IsDismissed = this.IsDismissed,
-                RateType = this.RateType,
-                Amount = this.Amount,
-                EmployeeGroup = EmployeeGroup,
-                EmployeeGroupId = this.EmployeeGroupId,
                 Note = this.Note,
-                Sex = this.Sex
+                Amount = this.Amount,
+                RateType = rateType,
+                RateTypeId = this.RateTypeId,
+                Status = status,
+                StatusId = this.StatusId,
+                EmployeeGroup = employeeGroup,
+                EmployeeGroupId = this.EmployeeGroupId,
+                Sex = sex,
+                SexId = this.SexId
             };
         }
 
@@ -247,11 +285,12 @@ namespace Dental.Models
             StringParamsIsEquel(this.Email, other.Email, "Email");
             StringParamsIsEquel(this.Address, other.Address, "Адрес");
             StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
-            StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");          
-            StringParamsIsEquel(this.Status, other.Status, "Статус");
-            StringParamsIsEquel(this.Sex, other.Sex, "Пол");
+            StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
+            StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
+            StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
+            StringParamsIsEquel(this.RateType?.Guid, other.RateType?.Guid, "Тип оклада");
+            StringParamsIsEquel(this.EmployeeGroup?.Guid, other.EmployeeGroup?.Guid, "Категория сотрудника");
             StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
-            StringParamsIsEquel(this.RateType, other.RateType, "Тип оклада");
             StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
             if (this.IsDismissed != other.IsDismissed)

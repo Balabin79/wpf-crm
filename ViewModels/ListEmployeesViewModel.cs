@@ -10,6 +10,8 @@ using System.Windows;
 using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Services;
+using System.Collections.Generic;
+using Dental.Infrastructures.Logs;
 
 namespace Dental.ViewModels
 {
@@ -21,7 +23,19 @@ namespace Dental.ViewModels
         {
             try
             {
+                NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
                 db = new ApplicationContext();
+                Collection = db.Employes.OrderBy(d => d.LastName).ToList();
+                foreach (var i in Collection)
+                {
+                    if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo)) {
+                        i.Image = new BitmapImage(new Uri(i.Photo));
+                    }
+                }
+
+                    /*ForEach(f => f.Image = 
+                    !string.IsNullOrEmpty(f.Photo) && File.Exists(f.Photo) 
+                    ? new BitmapImage(new Uri(f.Photo)) : null);*/
             }
             catch (Exception e)
             {
@@ -30,17 +44,24 @@ namespace Dental.ViewModels
             }
         }
 
-
-        protected DbSet<Employee> Context { get => db.Employes; }
-
-        public IEnumerable Collection
+        public ICommand NavigateToCommand { get; }
+        private bool CanNavigateToCommandExecute(object p) => true;
+        private void OnNavigateToCommandExecuted(object p)
         {
-            get 
+            try
             {
-               /* Context.OrderBy(d => d.LastName).ToList()
-                    .ForEach(f => f.Photo = !string.IsNullOrEmpty(f.Photo) && File.Exists(f.Photo) ? new BitmapImage(new Uri(f.Photo)) : null);*/
-                return Context.Local;
+                if (string.IsNullOrEmpty(p.ToString())) return;
+                var nav = Navigation.Instance;
+                int.TryParse(p.ToString(), out int param);
+                if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.Employee");
+                else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.Employee", param });
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
             }
         }
+
+        public List<Employee> Collection { get; set; }
     }
 }

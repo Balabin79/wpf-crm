@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using Dental.ViewModels;
 using DevExpress.Xpf.WindowsUI;
 
 namespace Dental.Views

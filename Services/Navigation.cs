@@ -99,6 +99,19 @@ namespace Dental.Services
                     }
                 }
 
+                if (CurrentPage?.ToString() == "Dental.Views.Employee")
+                {
+                    if (CurrentPage?.DataContext is EmployeeViewModel vm)
+                    {
+                        int x = 0;
+                    }
+                    /*if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeViewModel vm)
+                    {
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
+
+                    }*/
+                }
+
 
                 //////////////////////////
                 if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")

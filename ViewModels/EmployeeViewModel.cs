@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using Dental.Services;
 using System.Windows.Media;
+using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
@@ -34,14 +35,24 @@ namespace Dental.ViewModels
             OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
             db = new ApplicationContext();
-            EmployeeGroups = db.EmployeeGroup.ToList();
 
+            // подгружаем вспомогательные справочники
+            EmployeeGroups = db.EmployeeGroup.ToList();
+            Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
+            GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
+            RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
+            Specialities = db.Specialities.ToList();
+            
+
+
+            RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
+            RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
+            
             try
             {
                 if (! int.TryParse(employeeId.ToString(), out int id) || id == 0)
                 {
                     Model = GetModel(0);
-                    Title = "Новый сотрудник";
                     IsReadOnly = false;
                     _BtnIconEditableHide = false;
                     _BtnIconEditableVisible = true;
@@ -49,10 +60,12 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = GetModel(id);
-                    IsPieceWork = string.IsNullOrEmpty(Model.RateType) || Model.RateType == "Сдельная оплата";
+                    //EmployeeSpecialities = db.EmployesSpecialities.Where(f => f.Guid == Model.Guid).ToList();
+                    //IsPieceWork = string.IsNullOrEmpty(Model.RateType) || Model.RateType == "Сдельная оплата";
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
+                    Title = "Анкета сотрудника (" + Model.Fio + ")";
                    /* if (ProgramDirectory.HasOrgDirectoty())
                     {
                         Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
@@ -65,7 +78,6 @@ namespace Dental.ViewModels
             } 
             catch (Exception e)
             {
-                Title = "Новый сотрудник";
                 Model = new Employee();
                 (new ViewModelLog(e)).run();
             }           
@@ -142,7 +154,7 @@ namespace Dental.ViewModels
 
         public bool HasUnsavedFiles()
         {
-            if (Files.Count > 0)
+            if (Files?.Count > 0)
             {
                 foreach (var i in Files)
                 {
@@ -163,18 +175,32 @@ namespace Dental.ViewModels
             set => Set(ref _Model, value);
         }
 
-        public string Title { get; set; }
 
         private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id).FirstOrDefault() : new Employee();
 
 
+        public bool UserSelectedBtnCancel()
+        {
+            string warningMessage = "\nПоля: ";
+            foreach (var fieldName in Model.FieldsChanges)
+            {
+                warningMessage += " " + "\"" + fieldName + "\"" + ",";
+            }
+            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
 
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
+               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+            return response.ToString() == "Cancel";
+        }
+
+        public ICommand SaveCommand { get; }
         /// ///////////////////////////////////////////////////////
 
 
 
         public ICommand CancelCommand { get; }
-        public ICommand SaveCommand { get; }
+        
         public ICommand OpenCommand { get; }
 
 
@@ -195,28 +221,24 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (Model == null) return;
+                var notification = new Notification();
+                if (Model.Id == 0) db.Employes.Add(Model);
+                //else SaveFiles();
+                //SaveLogo();
+                db.SaveChanges();
+                notification.Content = "Изменения сохранены в базу данных!";
 
-
-                if (Model.Id == 0)
+                if (HasUnsavedChanges())
                 {
-                    //.Add(Model);
-                    db.SaveChanges();
-
-                    new Notification().run();
-                    return;
+                    notification.run();
+                    ModelBeforeChanges = (Employee)Model.Clone();
                 }
-                db.Entry(Model).State = EntityState.Modified;
-                db.SaveChanges();            
             }
-            catch (DbEntityValidationException ex)
+            catch (Exception e)
             {
-                var errors = ex.EntityValidationErrors.First().ValidationErrors.Select(f => f.ErrorMessage);
-
-                if (errors.Count() > 0) { 
-
-                }
+                (new ViewModelLog(e)).run();
             }
-            catch (Exception e){}
         }
 
         private void OnOpenCommandExecuted(object p)
@@ -241,10 +263,18 @@ namespace Dental.ViewModels
         private bool CanOpenCommandExecute(object p) => true;
 
 
-        public IEnumerable<string> Statuses { get; } = new List<string>() { "Работает", "Уволен", "В отпуске", "Другое" };
-        public IEnumerable<string> GenderList { get; } = new List<string> { "Мужчина", "Женщина" };
+        public IEnumerable<Dictionary> Statuses { get; set; } 
+        public IEnumerable<Dictionary> GenderList { get; set; } 
         public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
+        public List<Dictionary> RateType { get; set; }
+
+        public List<Speciality> Specialities { get; set; }
+        public object EmployeeSpecialities { get; set; }
+
+        public string RateCheckedStateContent { get; set; }
+        public string RateUncheckedStateContent { get; set; }
 
         public bool IsPieceWork { get; set; } = true;
+        public string Title { get; set; } = "Анкета сотрудника";
     }
 }

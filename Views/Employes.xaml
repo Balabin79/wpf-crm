@@ -9,315 +9,130 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:extens ="clr-namespace:Dental.Infrastructures.Extensions"
+       xmlns:sys="clr-namespace:System;assembly=mscorlib"
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
-       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+
+                      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+                      xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+
               d:DesignWidth="800">
 
     <Page.Resources>
-        
-        <!--#region Shared templates-->
-        <DataTemplate x:Key="DetailCoreTemplate">
-            <dx:MeasurePixelSnapper>
-                <Grid  dx:ThemeManager.ThemeName="Office2019White"  Background="{dxi:ThemeResource {dxgt:TableViewThemeKey ResourceKey=EditFormBackground}}"
-                      TextBlock.Foreground="{dxi:ThemeResource {dxgt:TableViewThemeKey ResourceKey=EditFormForeground}}">
-                    <Grid Margin="12" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Decorator   Margin="-5,0,0,0" Grid.Column="0">
-                            <dxe:ImageEdit HorizontalAlignment="Left" 
-                                       VerticalAlignment="Top"
-                                       Source="{Binding Path=Row.Photo}"
-                                       
-                                       Margin="0 0 15 0"
-                                       ShowMenu="False"
-                                       IsReadOnly="True" />
-                        </Decorator>
-
-
-                        <GroupBox Grid.Column="1">
-                            <Grid >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1.5*"/>
-                                    <ColumnDefinition Width="1*"/>
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Header="Персональные данные" Grid.Column="0">
-                                    <Grid >
-                           
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                     <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock  Grid.Row="0" Grid.Column="0"  Text="ФИО:" FontWeight="Regular" FontStyle="Italic"  Margin="0 2 0 2"/>
-                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.Fio}" Margin="0 2 0 0" />
-                                    <TextBlock  Grid.Row="1" Grid.Column="0" Text="Специальности:"   FontStyle="Italic" Margin="0 5 20 2"/>
-                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Row.SpecialitiesName}"  Margin="0 5 0 0"/>
-                                    <TextBlock  Grid.Row="2" Grid.Column="0" Text="Статус:"   FontStyle="Italic" Margin="0 5 20 2"/>
-                                        <TextBlock  Grid.Row="2" Grid.Column="1" Text="{Binding Row.Status}"  Margin="0 5 0 0"/>
-
-                                        <TextBlock  Grid.Row="3" Grid.Column="0" Text="Подробнее" Margin="0 5 20 2"/>
-
-
-
-                                </Grid>
-                            </GroupBox>
-                                <GroupBox Header="Контактные данные" Grid.Column="1" Margin="10 0 0 0">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="2*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock  Grid.Row="0" Grid.Column="0"  Text="Раб. телефон:" FontWeight="Regular" FontStyle="Italic"  Margin="0 2 0 2"/>
-                                        <TextBlock  Grid.Row="0" Grid.Column="1" Text="{Binding Row.HomePhone}" Margin="10 2 0 0" />
-
-                                        <TextBlock  Grid.Row="1" Grid.Column="0" Text="Моб. телефон:"   FontStyle="Italic" Margin="0 5 0 2"/>
-                                        <TextBlock  Grid.Row="1" Grid.Column="1" Text="{Binding Row.MobilePhone}"  Margin="10 5 0 0"/>
-                                        
-                                        <TextBlock  Grid.Row="2" Grid.Column="0" Text="Email:"   FontStyle="Italic" Margin="0 5 20 2"/>
-                                        <TextBlock  Grid.Row="2" Grid.Column="1" Text="{Binding Row.Email}"  Margin="10 5 0 0"/>
-
-                                        <TextBlock  Grid.Row="3" Grid.Column="0" Text="Skype:"   FontStyle="Italic" Margin="0 5 20 2"/>
-                                        <TextBlock  Grid.Row="3" Grid.Column="1" Text="{Binding Row.Skype}"  Margin="10 5 0 0"/>
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
-                        </GroupBox>
-
-                    </Grid>
-                </Grid>
-            </dx:MeasurePixelSnapper>
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region rowDetailTemplate-->
-        <DataTemplate x:Key="rowDetailTemplate">
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" />
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region expandableRowDetailTemplate-->
-        <DataTemplate x:Key="expandableRowDetailTemplate">
-            <dx:DXExpander IsExpanded="{Binding Path=IsSelected}" HorizontalExpand="None" VerticalExpand="FromTopToBottom">
-                <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" />
-            </dx:DXExpander>
-        </DataTemplate>
-        <!--#endregion-->
-
-        <!--#region rowToolTipStyle-->
-        <Style x:Key="rowToolTipStyle">
-            <Style.Setters>
-                <Setter Property="ToolTipService.InitialShowDelay" Value="10" />
-                <Setter Property="ToolTipService.HasDropShadow" Value="False" />
-                <Setter Property="ToolTipService.ToolTip">
-                    <Setter.Value>
-                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource DetailCoreTemplate}" Tag="Transparent" MaxWidth="700" />
-                    </Setter.Value>
-                </Setter>
-            </Style.Setters>
-        </Style>
-        <Style x:Key ="MenuButton" TargetType="{x:Type Button}">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="OuterBorder" CornerRadius="3" Background="{TemplateBinding Background}" BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <!-- Here use TargetName -->
-                                <Setter TargetName="OuterBorder" Property="BorderBrush" Value="gray" />
-                                <Setter TargetName="OuterBorder" Property="BorderThickness" Value="1" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="LeftBottom" TargetType="dxe:FlyoutControl">
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="LeftBottom" />
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Settings">
-                <Setter.Value>
-                    <dxe:FlyoutSettings Placement="Left" ShowIndicator="True" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-        </Style>
         <vm:ListEmployeesViewModel x:Key="vm"/>
-        <!--#endregion-->
+        <DataTemplate x:Key="readonlyCardTemplate">
+            <StackPanel Orientation="Vertical">
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <dxe:ImageEdit Grid.Column="0"
+                                   Stretch="UniformToFill"
+                                   Height="70"
+                                   Width="64"
+                                   Source="{Binding Path=Row.Image, Mode=OneWay}"
+                                   ShowMenu="False"
+                                   IsReadOnly="True" />
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,12,0" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontWeight="Bold" Text="Фамилия: " />
+                            <TextBlock Text="{Binding Path=Row.LastName}" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Bold" Text="Имя: " />
+                            <TextBlock Text="{Binding Path=Row.FirstName}" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Bold" Text="Отчество: " />
+                            <TextBlock Text="{Binding Path=Row.MiddleName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Bold" Text="Подробнее: " />
+                            <dxe:HyperlinkEdit 
+                                Text="Перейти" 
+                                Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
+                                CommandParameter="{Binding Path=Row.Id}"
+                                Margin="0 -3 0 0" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <dx:DXTabControl SelectedIndex="0"
+                                 Style="{DynamicResource demoTabControl}"
+                                 Margin="0,12,0,0">
+                    
+                    <dx:DXTabItem Header="Контакты" Style="{DynamicResource demoTabItem}">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="Hire Date: " />
+                                <TextBlock Text="{Binding Row.HireDate, StringFormat=D}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="Experience: " />
+                                <TextBlock Text="{DXBinding Expr='$sys:DateTime.Now.Year - Row.HireDate.Year'}" />
+                                <TextBlock Text=" years" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="E-mail: " />
+                                <TextBlock Text="{DXBinding Expr='Row.LastName.ToLower() + `@devexpress.com`'}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontWeight="Bold" Text="Phone: " />
+                                <TextBlock Text="{Binding Path=Row.Phone}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </dx:DXTabItem>
+                    <dx:DXTabItem Header="Специальности" Style="{DynamicResource demoTabItem}">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="Address: " />
+                                <TextBlock Text="{Binding Path=Row.AddressLine1}" TextWrapping="Wrap" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="City: " />
+                                <TextBlock Text="{Binding Path=Row.City}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock FontWeight="Bold" Text="Postal Code: " />
+                                <TextBlock Text="{Binding Path=Row.PostalCode}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontWeight="Bold" Text="Country: " />
+                                <TextBlock Text="{Binding Path=Row.CountryRegionName}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </dx:DXTabItem>
+                </dx:DXTabControl>
+            </StackPanel>
+        </DataTemplate>
+        
+        
     </Page.Resources>
 
-    <Grid DataContext="{StaticResource vm}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="44"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Margin="2 2 2 0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal" >
-                    <Image Height="20" Width="20" Margin="5 0 3 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="Список сотрудников" FontSize="15" />
-                </StackPanel>
 
 
-
-                <StackPanel Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" >
-                    <Button DataContext="{Binding Source={StaticResource vm} }" 
-                                    Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-1"
-                                    Background="White"
-                            BorderThickness="0"
-                                    Padding="0" Height="30" Width="30" Margin="0" ToolTip="Создать позицию">
-                        <Image Height="25" Width="25" Margin="2 2 0 0">
-                            <Image.Source>
-                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Page-White-Edit.png" />
-                            </Image.Source>
-                        </Image>
-                    </Button>
-
-                    <Button DataContext="{Binding Source={StaticResource vm} }" 
-                             x:Name="LeftBottom"                           
-                            Style="{StaticResource ResourceKey=MenuButton}"
+    <dxg:GridControl Name="grid" DataContext="{StaticResource vm}" ItemsSource="{Binding Collection}" ShowBorder="False">
+            <!--#region Columns-->
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="FirstName" />
+                <dxg:GridColumn FieldName="LastName" />
+                <dxg:GridColumn FieldName="Image" AllowColumnFiltering="False" />
+            </dxg:GridControl.Columns>
+            <!--#endregion-->
+            <dxg:GridControl.View>
+                <dxg:CardView Name="view"
+                              EditorButtonShowMode="ShowAlways"
+                              ShowGroupedColumns="True"
+                              CardTemplate="{StaticResource readonlyCardTemplate}"
                               
-                                    Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="0 2 0 0" ToolTip="Справочная информация по разделу">
-                        <Image Height="25" Width="25" Margin="0 2 0 0">
-                            <Image.Source>
-                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png" />
-                            </Image.Source>
-                        </Image>
-                    </Button>
+                            
+                              PrintMaximumCardColumns="2"
+                              PrintAutoCardWidth="True"
+                              UseLegacyFilterPanel="False"
+                              />
+            </dxg:GridControl.View>
+        </dxg:GridControl>
 
-                    <Button DataContext="{Binding Source={StaticResource vm} }" 
-                            Style="{StaticResource ResourceKey=MenuButton}"
-                                    Command="{Binding PrintCommand}" 
-                                    CommandParameter="{Binding ElementName=view}"
-                                    Background="White"
-                                    Padding="0" Height="30" Width="30" Margin="0 2 2 0" ToolTip="Печать">
-                        <Image Height="25" Width="25" Margin="0 2 0 0">
-                            <Image.Source>
-                                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Printer.png" />
-                            </Image.Source>
-                        </Image>
-                    </Button>
-                </StackPanel>
-            </Grid>
-        </Border>
-
-
-        <DockPanel Grid.Row="1">
-
-            <dxdo:DockLayoutManager   x:Name="DemoDockContainer" 
-                                  dx:WorkspaceManager.IsEnabled="True"
-                                  DockPanel.Dock="Right"        
-                                  ClosedPanelsBarVisibility="Auto" 
-                                  AutoHideExpandMode="MouseDown" 
-                                  
-                                  >
-
-                <dxdo:DockLayoutManager.AutoHideGroups >
-
-                    <dxdo:AutoHideGroup DockType="Right">
-
-                        <dxdo:LayoutPanel Caption="Настройки" AllowClose="False" AllowMove="False" AllowDrag="False" 
-                                      AllowDrop="False" AllowFloat="False" ShowCloseButton="False">
-                            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                               VerticalScrollBarVisibility="Auto" 
-                                               dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"                                             
-                                               AllowDrop="False" Focusable="False">
-
-                                <GroupBox Header="Настройка списка" Margin="5">
-                                    <dxe:ListBoxEdit Background="{x:Null}"  Width="150"                                                
-                                     Margin="0,0,0,0"
-                                     ShowBorder="False"
-                                     DisplayMember="DisplayName"
-                                     SelectedIndex="0"
-                                     Name="rowTemplateComboBox">
-                                        <dxe:ListBoxEdit.StyleSettings>
-                                            <dxe:RadioListBoxEditStyleSettings />
-                                        </dxe:ListBoxEdit.StyleSettings>
-                                        <dxe:ListBoxEdit.Items>
-                                            <extens:RowTemplateSelectorItem DisplayName="Анимированный" DetailTemplate="{StaticResource expandableRowDetailTemplate}" />
-                                            <extens:RowTemplateSelectorItem DisplayName="Раскрытый" DetailTemplate="{StaticResource rowDetailTemplate}" />
-                                            <extens:RowTemplateSelectorItem DisplayName="При наведении" RowStyle="{StaticResource rowToolTipStyle}" />
-                                        </dxe:ListBoxEdit.Items>
-                                    </dxe:ListBoxEdit>
-                                </GroupBox>
-
-
-                            </ScrollViewer>
-                        </dxdo:LayoutPanel>
-
-                    </dxdo:AutoHideGroup>
-                </dxdo:DockLayoutManager.AutoHideGroups>
-
-
-
-            </dxdo:DockLayoutManager>
-
-
-
-            <dxg:GridControl DockPanel.Dock="Left" Width="Auto" Name="grid"  ItemsSource="{Binding Collection}" ShowBorder="False">
-                <!--#region Columns-->
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="FullName" Header="ФИО" MinWidth="60" Width="*" />
-
-                    <dxg:GridColumn Binding="{Binding Path=SpecialitiesName}" Header="Специальность" MinWidth="60" Width="*">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:DateEditSettings DisplayFormat="d" />
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
-                </dxg:GridControl.Columns>
-
-
-                <!--#endregion-->
-                <dxg:GridControl.View>
-                    <dxg:TableView Name="view" AllowScrollAnimation="True" ShowGroupedColumns="True" NavigationStyle="Row"
-                               RowDetailsVisibilityMode="Visible"
-                               RowDetailsTemplate="{Binding Path=SelectedItem.DetailTemplate, ElementName=rowTemplateComboBox}"
-                               UseLegacyFilterPanel="False"
-                               RowStyle="{Binding Path=SelectedItem.RowStyle, ElementName=rowTemplateComboBox}">
-                    </dxg:TableView>
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-        </DockPanel>
-        <!--#endregion-->
-    </Grid>
 </Page>

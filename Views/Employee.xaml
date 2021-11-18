@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:vm ="clr-namespace:Dental.ViewModels" 
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
@@ -16,15 +15,9 @@
     dx:ThemeManager.ThemeName="Office2019White" 
     d:DesignHeight="300" d:DesignWidth="300">
 
-    <Page.Resources>
-        <vm:EmployeeViewModel x:Key="vm"/>
-    </Page.Resources>
-
     <Border BorderBrush="LightGray" 
             BorderThickness="1" 
-            Margin="5" 
-            DataContext="{StaticResource vm}">
-
+            Margin="5" >
         <Grid x:Name="gridMainorganization"  
               ScrollViewer.CanContentScroll="True" 
               ScrollViewer.VerticalScrollBarVisibility="Auto" >
@@ -40,7 +33,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Reseller-Account.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Анкета сотрудника" FontSize="16" Padding="0 8 5 0" />
+                    <TextBlock Text="{Binding Title, Mode=TwoWay}" FontSize="16" Padding="0 8 5 0" />
                 </StackPanel>
                 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -104,16 +97,22 @@
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
-                                                <dxe:DateEdit 
-                                                    EditValue="{Binding Path=Model.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                <dxe:DateEdit
+                                                    Mask="d"
+                                                    MaskUseAsDisplayFormat ="True"
+                                                    EditValue="{Binding Path=Model.BirthDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                    
                                             </dxlc:LayoutItem>
 
                                             <dxlc:LayoutItem Label="Пол:" LabelPosition="Left" >
-                                                <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
-                                      SelectedItem="{Binding Model.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      NullText="Пол" IsTextEditable="False"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                <dxe:ComboBoxEdit 
+                                                    ItemsSource="{Binding GenderList}"                                      
+                                                    SelectedItem="{Binding Model.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    NullText="Пол" 
+                                                    IsTextEditable="False"
+                                                    DisplayMember="Name"
+                                                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                                     <dxe:ComboBoxEdit.StyleSettings>
                                                         <dxe:RadioComboBoxStyleSettings />
                                                     </dxe:ComboBoxEdit.StyleSettings>
@@ -192,21 +191,28 @@
                                     <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
                                         <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
                                             <dxe:DateEdit 
+                                                Mask="d"
+                                                MaskUseAsDisplayFormat ="True"
                                                 EditValue="{Binding Path=Model.HireDate, Mode=TwoWay}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem Label="Дата увольнения" AddColonToLabel="True">
-                                            <dxe:DateEdit 
+                                            <dxe:DateEdit
+                                                Mask="d"
+                                                MaskUseAsDisplayFormat ="True"
                                                 EditValue="{Binding Path=Model.DismissalDate, Mode=TwoWay}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem Label="Статус:" LabelPosition="Left" >
-                                            <dxe:ComboBoxEdit ItemsSource="{Binding Statuses}"                                      
-                                      SelectedItem="{Binding Model.Status, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      NullText="Статус сотрудника" IsTextEditable="False"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <dxe:ComboBoxEdit 
+                                                ItemsSource="{Binding Statuses}"                                      
+                                                SelectedItem="{Binding Model.Status, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                DisplayMember="Name"
+                                                NullText="Статус сотрудника" 
+                                                IsTextEditable="False"
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                                 <dxe:ComboBoxEdit.StyleSettings>
                                                     <dxe:RadioComboBoxStyleSettings />
                                                 </dxe:ComboBoxEdit.StyleSettings>
@@ -218,9 +224,10 @@
                                                           AddColonToLabel="True">
                                             <dxe:ToggleSwitch
                                                 ContentPlacement="Far" 
-                                                HorizontalAlignment="Left" 
-                                                CheckedStateContent="Фиксированный оклад" 
-                                                UncheckedStateContent="Сдельная оплата"
+                                                HorizontalAlignment="Left"
+                                                BindingGroup="{Binding RateType, Mode=TwoWay}"
+                                                CheckedStateContent="{Binding RateCheckedStateContent}" 
+                                                UncheckedStateContent="{Binding RateUncheckedStateContent}"
                                                 Name="TypeRate"
                                   IsChecked="{Binding IsPieceWork, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                 ValidatesOnDataErrors=True}" 
@@ -251,21 +258,28 @@
 
 
                                     </dxlc:LayoutGroup>
-                                    <dxg:GridControl ItemsSource="{Binding Path=Evaluations}" Height="100" Margin="5 12 0 0" >
-                                        <dxg:GridControl.Columns>
-                                            <dxg:GridColumn FieldName="SpecialityList" Header="Должности" />
-                                        </dxg:GridControl.Columns>
-                                        <dxg:GridControl.View>
-                                            <dxg:TableView ShowGroupPanel="False"
-                                               NavigationStyle="Row"
-                                               AutoWidth="True"
-                                               AllowEditing="False"
-                                               ShowVerticalLines="False"
-                                               ShowHorizontalLines="False"
-                                               UseEvenRowBackground="True"
-                                               ShowIndicator="False" />
-                                        </dxg:GridControl.View>
-                                    </dxg:GridControl>
+
+                                    <GroupBox Header="Должности сотрудника" Margin="5,10,0,0" >
+                                        <dxe:ComboBoxEdit 
+                                            x:Name="cbScrollableToken" 
+                                            NullText="Начните вводить название должности ..."
+                                            MaxHeight="100"
+                                            ValidateOnTextInput="True"
+                                            ValidateOnEnterKeyPressed="True"
+                                            ItemsSource="{Binding Specialities, Mode=OneWay}"
+                                            EditValue="{Binding EmployeeSpecialities, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            DisplayMember="Name"
+                                            AutoComplete="True"
+                                            IncrementalFiltering="True"
+                                            VerticalScrollBarVisibility="Auto"
+                                            ImmediatePopup="True">
+                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                <dxe:TokenComboBoxStyleSettings NewTokenPosition="Far" EnableTokenWrapping="True" />
+                                            </dxe:ComboBoxEdit.StyleSettings>
+                                        </dxe:ComboBoxEdit>
+                                    </GroupBox>
+                                    
+                                    
                                 </dxlc:LayoutGroup>
                             </dxlc:LayoutGroup>
                         </dxlc:LayoutControl>
