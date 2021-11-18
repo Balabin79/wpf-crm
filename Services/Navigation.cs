@@ -103,7 +103,7 @@ namespace Dental.Services
                 {
                     if (CurrentPage?.DataContext is EmployeeViewModel vm)
                     {
-                        int x = 0;
+                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
                     }
                     /*if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeViewModel vm)
                     {

@@ -28,6 +28,7 @@ namespace Dental.ViewModels
         {
 
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
+            ToggleSwitchedCommand = new LambdaCommand(OnToggleSwitchedCommandExecuted, CanToggleSwitchedCommandExecute);
             ///
 
             CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
@@ -41,10 +42,7 @@ namespace Dental.ViewModels
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
             RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
-            Specialities = db.Specialities.ToList();
-            
-
-
+            Specialities = db.Specialities.ToList();           
             RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
             RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
             
@@ -60,18 +58,18 @@ namespace Dental.ViewModels
                 else
                 {
                     Model = GetModel(id);
-                    //EmployeeSpecialities = db.EmployesSpecialities.Where(f => f.Guid == Model.Guid).ToList();
-                    //IsPieceWork = string.IsNullOrEmpty(Model.RateType) || Model.RateType == "Сдельная оплата";
+                    EmployeeSpecialities = GetEmployeeSpecialities();
+
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
                     Title = "Анкета сотрудника (" + Model.Fio + ")";
-                   /* if (ProgramDirectory.HasOrgDirectoty())
-                    {
-                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
-                    }
-                   */
-
+                    /* if (ProgramDirectory.HasOrgDirectoty())
+                     {
+                         Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
+                     }
+                    */
+                    IsNotFixRate = Model?.IsFixRate == 1 ? false : true;
                     Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;                
                     }
                 ModelBeforeChanges = (Employee)Model.Clone();
@@ -84,6 +82,8 @@ namespace Dental.ViewModels
         }
 
         public ICommand EditableCommand { get; }
+        public ICommand ToggleSwitchedCommand { get; }
+
         private bool CanEditableCommandExecute(object p) => true;
         private void OnEditableCommandExecuted(object p)
         {
@@ -99,6 +99,23 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+
+
+        private bool CanToggleSwitchedCommandExecute(object p) => true;
+        private void OnToggleSwitchedCommandExecuted(object p)
+        {
+            try
+            {
+                if (Model?.IsFixRate == 1) IsNotFixRate = false;
+                else IsNotFixRate = true;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+
 
         private bool _IsReadOnly;
         public bool IsReadOnly
@@ -148,6 +165,13 @@ namespace Dental.ViewModels
             bool hasUnsavedChanges = false;
             if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            
+            if (!IsEqualEmployeeSpecialities())
+            {
+                hasUnsavedChanges = true;
+                Model.FieldsChanges.Add("Должности сотрудника");
+            }
+
             if (HasUnsavedFiles()) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
@@ -176,7 +200,9 @@ namespace Dental.ViewModels
         }
 
 
-        private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id).FirstOrDefault() : new Employee();
+        private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id)
+            .Include("EmployesSpecialities")
+            .FirstOrDefault() : new Employee();
 
 
         public bool UserSelectedBtnCancel()
@@ -224,13 +250,19 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Employes.Add(Model);
+
                 //else SaveFiles();
                 //SaveLogo();
+ 
                 db.SaveChanges();
+
                 notification.Content = "Изменения сохранены в базу данных!";
 
                 if (HasUnsavedChanges())
                 {
+                    ////////////////
+                    ///
+
                     notification.run();
                     ModelBeforeChanges = (Employee)Model.Clone();
                 }
@@ -257,7 +289,6 @@ namespace Dental.ViewModels
  
         private readonly ApplicationContext db;
 
-
         private bool CanCancelCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenCommandExecute(object p) => true;
@@ -268,13 +299,56 @@ namespace Dental.ViewModels
         public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
         public List<Dictionary> RateType { get; set; }
 
-        public List<Speciality> Specialities { get; set; }
-        public object EmployeeSpecialities { get; set; }
-
         public string RateCheckedStateContent { get; set; }
         public string RateUncheckedStateContent { get; set; }
 
-        public bool IsPieceWork { get; set; } = true;
         public string Title { get; set; } = "Анкета сотрудника";
+
+        public List<Speciality> Specialities { get; set; }
+        
+        public object EmployeeSpecialities 
+        {
+            get => _EmployeeSpecialities;
+            set => Set(ref _EmployeeSpecialities, value);
+        }
+        public object _EmployeeSpecialities;
+
+        public bool IsNotFixRate 
+        {
+            get => _IsNotFixRate;
+            set => Set(ref _IsNotFixRate, value);
+        }
+        private bool _IsNotFixRate;
+
+        private List<Speciality> GetEmployeeSpecialities()
+        {
+            return Model?.EmployesSpecialities.Select(f => f.Speciality).ToList();
+        }
+
+        private bool IsEqualEmployeeSpecialities()
+        {
+            if (EmployeeSpecialities.ToString()?.Length > 0)
+            {
+                if (EmployeeSpecialities is List<object> employeeSpecialities)
+                {
+                    var employeeSpecialitiesFromDb = GetEmployeeSpecialities();
+
+                    if (employeeSpecialities.Count() != employeeSpecialitiesFromDb.Count())
+                    {                      
+                        return false;
+                    }
+
+                    for (int i = 0; i < employeeSpecialities.Count(); i++)
+                    {
+                        var es = (Speciality)employeeSpecialities[i];
+                        if (! es.Equals(employeeSpecialitiesFromDb[i]))
+                        {
+                            return false;
+                        }                         
+                    }
+                }                
+            }
+            return true;
+        }
     }
 }

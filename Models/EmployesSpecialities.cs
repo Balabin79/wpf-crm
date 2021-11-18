@@ -15,6 +15,8 @@ namespace Dental.Models
         public int? SpecialityId { get; set; }
         public Speciality Speciality { get; set; }
 
+        public string EmployeeGuid { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -26,6 +28,7 @@ namespace Dental.Models
             model.EmployeeId = this.EmployeeId;
             model.Speciality = this.Speciality;
             model.SpecialityId = this.SpecialityId;
+            model.EmployeeGuid = this.EmployeeGuid;
             return model;
         }
 
@@ -67,6 +70,7 @@ namespace Dental.Models
             StringParamsIsEquel(this.Guid, other.Guid);
             StringParamsIsEquel(this.Employee?.Guid, other?.Guid);
             StringParamsIsEquel(this.Speciality?.Guid, other?.Guid);
+            StringParamsIsEquel(this.EmployeeGuid, other?.EmployeeGuid);
 
             if (this.SpecialityId != other.SpecialityId)
             {

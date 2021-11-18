@@ -135,9 +135,18 @@ namespace Dental.Models
         public Dictionary Sex { get; set; }
         public int? SexId { get; set; }
 
-        [Display(Name = "Тип оклада")]
-        public Dictionary RateType { get; set; }
-        public int? RateTypeId { get; set; }
+        [Display(Name = "Оклад фиксированный")]
+        public int? IsFixRate { get; set; }
+
+
+        public List<EmployesSpecialities> EmployesSpecialities { get; set; }
+
+        public Employee()
+        {
+            EmployesSpecialities = new List<EmployesSpecialities>();
+        }
+
+
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -152,14 +161,6 @@ namespace Dental.Models
                 MoreOrLess = this.EmployeeGroup?.MoreOrLess,
                 PercentOrCost = this.EmployeeGroup?.PercentOrCost,
                 Amount = this.EmployeeGroup?.Amount
-            };
-
-            Dictionary rateType = new Dictionary
-            {
-                Name = this.RateType?.Name,
-                Id = this.RateType?.Id ?? 0,
-                CategoryId = this.RateType?.CategoryId ?? 0,
-                Guid = this.RateType?.Guid
             };
 
             Dictionary status = new Dictionary
@@ -177,6 +178,22 @@ namespace Dental.Models
                 CategoryId = this.Sex?.CategoryId ?? 0,
                 Guid = this.Sex?.Guid
             };
+
+
+            List<EmployesSpecialities> employesSpecialities = new List<EmployesSpecialities>();
+            foreach (var i in EmployesSpecialities)
+            {
+                var item = new EmployesSpecialities() 
+                { 
+                    Id = i.Id,
+                    Guid = i.Guid,
+                    EmployeeId = i.EmployeeId,
+                    SpecialityId = i.SpecialityId,
+                    EmployeeGuid = i.EmployeeGuid
+                };
+                employesSpecialities.Add(item);
+            }
+
 
             return new Employee
             {
@@ -198,14 +215,14 @@ namespace Dental.Models
                 IsDismissed = this.IsDismissed,
                 Note = this.Note,
                 Amount = this.Amount,
-                RateType = rateType,
-                RateTypeId = this.RateTypeId,
+                IsFixRate = this.IsFixRate,
                 Status = status,
                 StatusId = this.StatusId,
                 EmployeeGroup = employeeGroup,
                 EmployeeGroupId = this.EmployeeGroupId,
                 Sex = sex,
-                SexId = this.SexId
+                SexId = this.SexId,
+                EmployesSpecialities = employesSpecialities
             };
         }
 
@@ -227,13 +244,14 @@ namespace Dental.Models
             model.HireDate = this.HireDate;
             model.Skype = this.Skype;
             model.Status = this.Status;
-            model.RateType = this.RateType;
+            model.IsFixRate = this.IsFixRate;
             model.IsDismissed = this.IsDismissed;
             model.Sex = this.Sex;
             model.Amount = this.Amount;
             model.EmployeeGroup = this.EmployeeGroup;
             model.EmployeeGroupId = this.EmployeeGroupId;
             model.Note = this.Note;
+            model.EmployesSpecialities = this.EmployesSpecialities;
             return model;
         }
 
@@ -288,7 +306,6 @@ namespace Dental.Models
             StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
             StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
             StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
-            StringParamsIsEquel(this.RateType?.Guid, other.RateType?.Guid, "Тип оклада");
             StringParamsIsEquel(this.EmployeeGroup?.Guid, other.EmployeeGroup?.Guid, "Категория сотрудника");
             StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
             StringParamsIsEquel(this.Note, other.Note, "Примечание");
@@ -303,6 +320,12 @@ namespace Dental.Models
             {
                 NotIsChanges = false;
                 FieldsChanges.Add("Категории сотрудников");
+            }
+
+            if (this.IsFixRate != other.IsFixRate)
+            {
+                NotIsChanges = false;
+                FieldsChanges.Add("Тип оклада");
             }
 
             return NotIsChanges;

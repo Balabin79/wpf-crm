@@ -9,11 +9,14 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions"   
-    xmlns:uc ="clr-namespace:Dental.Views.Pages.UserControls"  
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
     mc:Ignorable="d"
     dx:ThemeManager.ThemeName="Office2019White" 
     d:DesignHeight="300" d:DesignWidth="300">
+    <Page.Resources>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+    </Page.Resources>
 
     <Border BorderBrush="LightGray" 
             BorderThickness="1" 
@@ -184,8 +187,6 @@
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
-
-
                                 </dxlc:LayoutGroup>
                                 <dxlc:LayoutGroup Orientation="Vertical">
                                     <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
@@ -225,11 +226,11 @@
                                             <dxe:ToggleSwitch
                                                 ContentPlacement="Far" 
                                                 HorizontalAlignment="Left"
-                                                BindingGroup="{Binding RateType, Mode=TwoWay}"
                                                 CheckedStateContent="{Binding RateCheckedStateContent}" 
                                                 UncheckedStateContent="{Binding RateUncheckedStateContent}"
                                                 Name="TypeRate"
-                                  IsChecked="{Binding IsPieceWork, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                Command="{Binding Path=ToggleSwitchedCommand}"
+                                  IsChecked="{Binding Model.IsFixRate, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                                 ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
@@ -251,8 +252,12 @@
                                         </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem Label="Размер оклада:"  LabelPosition="Left" >
-                                            <dxe:TextEdit  EditValue="{Binding Model.Amount, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                            <dxe:TextEdit 
+                                                MaskType="Numeric"
+                                                Mask="c2"
+                                                EditValue="{Binding Model.Amount, Mode=TwoWay,                                              
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                               IsEnabled="{Binding Path=IsNotFixRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
 
@@ -260,12 +265,14 @@
                                     </dxlc:LayoutGroup>
 
                                     <GroupBox Header="Должности сотрудника" Margin="5,10,0,0" >
-                                        <dxe:ComboBoxEdit 
+                                        <dxe:ComboBoxEdit                                          
                                             x:Name="cbScrollableToken" 
                                             NullText="Начните вводить название должности ..."
                                             MaxHeight="100"
                                             ValidateOnTextInput="True"
                                             ValidateOnEnterKeyPressed="True"
+                                            TextWrapping="Wrap"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                             ItemsSource="{Binding Specialities, Mode=OneWay}"
                                             EditValue="{Binding EmployeeSpecialities, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             DisplayMember="Name"
