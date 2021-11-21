@@ -7,7 +7,6 @@ using Dental.Models;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
@@ -29,14 +28,10 @@ namespace Dental.ViewModels
 
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
             ToggleSwitchedCommand = new LambdaCommand(OnToggleSwitchedCommandExecuted, CanToggleSwitchedCommandExecute);
-            ///
 
-            CancelCommand = new LambdaCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            OpenCommand = new LambdaCommand(OnOpenCommandExecuted, CanOpenCommandExecute);
 
             db = new ApplicationContext();
-
             // подгружаем вспомогательные справочники
             EmployeeGroups = db.EmployeeGroup.ToList();
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
@@ -59,7 +54,6 @@ namespace Dental.ViewModels
                 {
                     Model = GetModel(id);
                     EmployeeSpecialities = GetEmployeeSpecialities();
-
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
@@ -69,9 +63,12 @@ namespace Dental.ViewModels
                          Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
                      }
                     */
-                    IsNotFixRate = Model?.IsFixRate == 1 ? false : true;
-                    Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;
+
                 }
+                IsNotFixRate = Model?.IsFixRate == 1 ? false : true;
+                //PhotoLoading();
+                Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;
+
                 ModelBeforeChanges = (Employee)Model.Clone();
             }
             catch (Exception e)
@@ -81,48 +78,13 @@ namespace Dental.ViewModels
             }
         }
 
-        public ICommand EditableCommand { get; }
-        public ICommand ToggleSwitchedCommand { get; }
-
-        private bool CanEditableCommandExecute(object p) => true;
-        private void OnEditableCommandExecuted(object p)
-        {
-            try
-            {
-                IsReadOnly = !IsReadOnly;
-                BtnIconEditableHide = IsReadOnly;
-                BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-
-        private bool CanToggleSwitchedCommandExecute(object p) => true;
-        private void OnToggleSwitchedCommandExecuted(object p)
-        {
-            try
-            {
-                if (Model?.IsFixRate == 1) IsNotFixRate = false;
-                else IsNotFixRate = true;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-
-
-        private bool _IsReadOnly;
+        #region Блокировка полей
         public bool IsReadOnly
         {
             get => _IsReadOnly;
             set => Set(ref _IsReadOnly, value);
         }
+        private bool _IsReadOnly;
 
         private bool _BtnIconEditableVisible;
         public bool BtnIconEditableVisible
@@ -144,98 +106,26 @@ namespace Dental.ViewModels
             get => _BtnAfterSaveEnable;
             set => Set(ref _BtnAfterSaveEnable, value);
         }
-        public ImageSource Image
+
+        public bool IsNotFixRate
         {
-            get => _Image;
-            set => Set(ref _Image, value);
+            get => _IsNotFixRate;
+            set => Set(ref _IsNotFixRate, value);
         }
-        public ImageSource _Image;
+        private bool _IsNotFixRate;
 
-        public ObservableCollection<ClientFiles> _Files;
-        public ObservableCollection<ClientFiles> Files
-        {
-            get => _Files;
-            set => Set(ref _Files, value);
-        }
+        public ICommand EditableCommand { get; }
+        public ICommand ToggleSwitchedCommand { get; }
 
-        public Employee ModelBeforeChanges { get; set; }
-
-        public bool HasUnsavedChanges()
-        {
-            bool hasUnsavedChanges = false;
-            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
-            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-
-            if (!IsEqualEmployeeSpecialities())
-            {
-                hasUnsavedChanges = true;
-                Model.FieldsChanges.Add("Должности сотрудника");
-            }
-
-            if (HasUnsavedFiles()) hasUnsavedChanges = true;
-            return hasUnsavedChanges;
-        }
-
-        public bool HasUnsavedFiles()
-        {
-            if (Files?.Count > 0)
-            {
-                foreach (var i in Files)
-                {
-                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
-                    {
-                        Model.FieldsChanges.Add("Прикрепляемые файлы");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public Employee _Model;
-        public Employee Model
-        {
-            get => _Model;
-            set => Set(ref _Model, value);
-        }
-
-
-        private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id)
-            .Include("EmployesSpecialities")
-            .FirstOrDefault() : new Employee();
-
-
-        public bool UserSelectedBtnCancel()
-        {
-            string warningMessage = "\nПоля: ";
-            foreach (var fieldName in Model.FieldsChanges)
-            {
-                warningMessage += " " + "\"" + fieldName + "\"" + ",";
-            }
-            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
-
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
-
-            return response.ToString() == "Cancel";
-        }
-
-        public ICommand SaveCommand { get; }
-        /// ///////////////////////////////////////////////////////
-
-
-
-        public ICommand CancelCommand { get; }
-
-        public ICommand OpenCommand { get; }
-
-
-        private void OnCancelCommandExecuted(object p)
+        private bool CanEditableCommandExecute(object p) => true;
+        private void OnEditableCommandExecuted(object p)
         {
             try
             {
-
-                // Repository.Delete(table);
+                IsReadOnly = !IsReadOnly;
+                BtnIconEditableHide = IsReadOnly;
+                BtnIconEditableVisible = !IsReadOnly;
+                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
             }
             catch (Exception e)
             {
@@ -243,57 +133,22 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveCommandExecuted(object p)
+        private bool CanToggleSwitchedCommandExecute(object p) => true;
+        private void OnToggleSwitchedCommandExecuted(object p)
         {
             try
             {
-                if (Model == null) return;
-                var notification = new Notification();
-                if (Model.Id == 0) db.Employes.Add(Model);
-                SaveEmployeeSpecialities();
-                //else SaveFiles();
-                //SaveLogo();
-
-                db.SaveChanges();
-
-                notification.Content = "Изменения сохранены в базу данных!";
-
-                if (HasUnsavedChanges())
-                {
-                    ////////////////
-                    ///
-
-                    notification.run();
-                    ModelBeforeChanges = (Employee)Model.Clone();
-                }
+                if (Model?.IsFixRate == 1) IsNotFixRate = false;
+                else IsNotFixRate = true;
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
 
-        private void OnOpenCommandExecuted(object p)
-        {
-            int x = 0;
-            try
-            {
-
-                //Repository.Update(table);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private readonly ApplicationContext db;
-
-        private bool CanCancelCommandExecute(object p) => true;
-        private bool CanSaveCommandExecute(object p) => true;
-        private bool CanOpenCommandExecute(object p) => true;
-
-
+        #region Вспомогательные справочники, заголовок
         public IEnumerable<Dictionary> Statuses { get; set; }
         public IEnumerable<Dictionary> GenderList { get; set; }
         public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
@@ -305,7 +160,9 @@ namespace Dental.ViewModels
         public string Title { get; set; } = "Анкета сотрудника";
 
         public List<Speciality> Specialities { get; set; }
+        #endregion
 
+        #region Должности сотрудника
         public object EmployeeSpecialities
         {
             get => _EmployeeSpecialities;
@@ -317,23 +174,14 @@ namespace Dental.ViewModels
         }
         public object _EmployeeSpecialities;
 
-        public bool IsNotFixRate
-        {
-            get => _IsNotFixRate;
-            set => Set(ref _IsNotFixRate, value);
-        }
-        private bool _IsNotFixRate;
-
         private List<Speciality> GetEmployeeSpecialities()
         {
             return Model?.EmployesSpecialities.Where(f => f.EmployeeId == Model?.Id).Select(f => f.Speciality).ToList();
         }
 
-
-
         private bool IsEqualEmployeeSpecialities()
         {
-            if (EmployeeSpecialities.ToString()?.Length > 0)
+            if (EmployeeSpecialities?.ToString()?.Length > 0)
             {
                 if (EmployeeSpecialities is List<object> employeeSpecialities)
                 {
@@ -403,5 +251,170 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
+
+        #region Управление моделью
+        public Employee ModelBeforeChanges { get; set; }
+
+        public bool HasUnsavedChanges()
+        {
+            bool hasUnsavedChanges = false;
+            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
+            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+
+            if (!IsEqualEmployeeSpecialities())
+            {
+                hasUnsavedChanges = true;
+                Model.FieldsChanges.Add("Должности сотрудника");
+            }
+
+            if (HasUnsavedFiles()) hasUnsavedChanges = true;
+            return hasUnsavedChanges;
+        }
+
+        public Employee _Model;
+        public Employee Model
+        {
+            get => _Model;
+            set => Set(ref _Model, value);
+        }
+
+        private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id)
+            .Include("EmployesSpecialities")
+            .FirstOrDefault() : new Employee();
+
+        public bool UserSelectedBtnCancel()
+        {
+            string warningMessage = "\nПоля: ";
+            foreach (var fieldName in Model.FieldsChanges)
+            {
+                warningMessage += " " + "\"" + fieldName + "\"" + ",";
+            }
+            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
+
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
+               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+            return response.ToString() == "Cancel";
+        }
+
+        public ICommand SaveCommand { get; }
+        private bool CanSaveCommandExecute(object p) => true;
+
+        private void OnSaveCommandExecuted(object p)
+        {
+            try
+            {
+                if (Model == null) return;
+                var notification = new Notification();
+                if (Model.Id == 0) db.Employes.Add(Model);
+                SaveEmployeeSpecialities();
+                //else SaveFiles();
+                SavePhoto();
+
+                db.SaveChanges();
+
+                notification.Content = "Изменения сохранены в базу данных!";
+
+                if (HasUnsavedChanges())
+                {
+                    ////////////////
+                    ///
+
+                    notification.run();
+                    ModelBeforeChanges = (Employee)Model.Clone();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+
+        #region Управление фото
+        public ImageSource Image
+        {
+            get => _Image;
+            set => Set(ref _Image, value);
+        }
+        public ImageSource _Image;
+
+        #region Управление фото
+        private void PhotoLoading()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo))
+                {
+                    using (var stream = new FileStream(Model.Photo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        Image = img;
+                    }
+                }
+                else Image = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
+        private void SavePhoto()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Photo))
+                {
+                    if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
+                    if (Path.GetDirectoryName(Model.Photo) != ProgramDirectory.GetPathLogoDirectoty())
+                    {
+                        ProgramDirectory.SaveFileInLogoDirectory(new ClientFiles() { Name = Path.GetFileName(Model.Photo), Path = Model.Photo });
+                        Model.Photo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Photo)));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+        #endregion
+
+        #region управление фото и файлами сотрудника
+        public ObservableCollection<ClientFiles> _Files;
+        public ObservableCollection<ClientFiles> Files
+        {
+            get => _Files;
+            set => Set(ref _Files, value);
+        }
+
+        public bool HasUnsavedFiles()
+        {
+            if (Files?.Count > 0)
+            {
+                foreach (var i in Files)
+                {
+                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
+                    {
+                        Model.FieldsChanges.Add("Прикрепляемые файлы");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        #endregion
+
+        private readonly ApplicationContext db;
+
     }
 }

@@ -69,6 +69,139 @@ namespace Dental.ViewModels
             }
         }
 
+        #region Блокировка полей
+        public ICommand EditableCommand { get; }
+        private bool CanEditableCommandExecute(object p) => true;
+        private void OnEditableCommandExecuted(object p)
+        {
+            try
+            {
+                IsReadOnly = !IsReadOnly;
+                BtnIconEditableHide = IsReadOnly;
+                BtnIconEditableVisible = !IsReadOnly;
+                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private bool _BtnIconEditableVisible;
+        public bool BtnIconEditableVisible
+        {
+            get => _BtnIconEditableVisible;
+            set => Set(ref _BtnIconEditableVisible, value);
+        }
+
+        private bool _BtnIconEditableHide;
+        public bool BtnIconEditableHide
+        {
+            get => _BtnIconEditableHide;
+            set => Set(ref _BtnIconEditableHide, value);
+        }
+
+        public bool _BtnAfterSaveEnable = false;
+        public bool BtnAfterSaveEnable
+        {
+            get => _BtnAfterSaveEnable;
+            set => Set(ref _BtnAfterSaveEnable, value);
+        }
+
+        private bool _IsReadOnly;
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set => Set(ref _IsReadOnly, value);
+        }
+        #endregion
+
+        #region Управление моделью
+        public Organization ModelBeforeChanges { get; set; }
+
+        public bool HasUnsavedChanges()
+        {
+            bool hasUnsavedChanges = false;
+            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
+            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            if (HasUnsavedFiles()) hasUnsavedChanges = true;
+            return hasUnsavedChanges;
+        }
+
+        public bool UserSelectedBtnCancel()
+        {
+            string warningMessage = "\nПоля: ";
+            foreach (var fieldName in Model.FieldsChanges)
+            {
+                warningMessage += " " + "\"" + fieldName + "\"" + ",";
+            }
+            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
+
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
+               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+
+            return response.ToString() == "Cancel";
+        }
+
+        public Organization _Model;
+        public Organization Model
+        {
+            get => _Model;
+            set => Set(ref _Model, value);
+        }
+
+        private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
+        #endregion
+
+        #region Управление лого
+        private void LogoLoading()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo))
+                {
+                    using (var stream = new FileStream(Model.Logo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        Image = img;
+                    }
+                }
+                else Image = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
+        private void SaveLogo()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(Model.Logo))
+                {
+                    if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
+                    if (Path.GetDirectoryName(Model.Logo) != ProgramDirectory.GetPathLogoDirectoty())
+                    {
+                        ProgramDirectory.SaveFileInLogoDirectory(new ClientFiles() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo });
+                        Model.Logo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Logo)));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+
+
         public ICommand SaveCommand { get; }
        
         private bool CanSaveCommandExecute(object p) => true;
@@ -123,86 +256,6 @@ namespace Dental.ViewModels
             }
         }
 
-        public Organization ModelBeforeChanges { get; set; }
-
-        public bool HasUnsavedChanges()
-        {
-            bool hasUnsavedChanges = false;
-            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
-            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-            if (HasUnsavedFiles()) hasUnsavedChanges = true;
-            return hasUnsavedChanges;
-        }
-
-        public ICommand EditableCommand { get; }
-        private bool CanEditableCommandExecute(object p) => true;
-        private void OnEditableCommandExecuted(object p)
-        {
-            try
-            {
-                IsReadOnly = !IsReadOnly;
-                BtnIconEditableHide = IsReadOnly;
-                BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        public bool UserSelectedBtnCancel()
-        {
-            string warningMessage = "\nПоля: ";
-            foreach (var fieldName in Model.FieldsChanges)
-            {
-                warningMessage += " " + "\"" + fieldName + "\"" + ",";
-            }
-            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
-
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
-
-            return response.ToString() == "Cancel";
-        }
-
-        private bool _BtnIconEditableVisible;
-        public bool BtnIconEditableVisible
-        {
-            get => _BtnIconEditableVisible;
-            set => Set(ref _BtnIconEditableVisible, value);
-        }
-
-        private bool _BtnIconEditableHide;
-        public bool BtnIconEditableHide
-        {
-            get => _BtnIconEditableHide;
-            set => Set(ref _BtnIconEditableHide, value);
-        }
-
-        public bool _BtnAfterSaveEnable = false;
-        public bool BtnAfterSaveEnable
-        {
-            get => _BtnAfterSaveEnable;
-            set => Set(ref _BtnAfterSaveEnable, value);
-        }
-
-        private bool _IsReadOnly;
-        public bool IsReadOnly
-        {
-            get => _IsReadOnly;
-            set => Set(ref _IsReadOnly, value);
-        }
-
-        public Organization _Model;
-        public Organization Model 
-        {
-            get => _Model;
-            set => Set(ref _Model, value);
-        }
-
-
-        private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
         private void Delete()
         { try
             {
@@ -368,26 +421,6 @@ namespace Dental.ViewModels
             }
         }
 
-        private void SaveLogo()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(Model.Logo))
-                {
-                    if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
-                    if (Path.GetDirectoryName(Model.Logo) != ProgramDirectory.GetPathLogoDirectoty())
-                    {
-                        ProgramDirectory.SaveFileInLogoDirectory(new ClientFiles() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo });
-                        Model.Logo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Logo)));
-                    }
-                }                
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
         private void MoveFilesToOrgDirectory()
         {
             foreach (ClientFiles file in Files)
@@ -414,32 +447,7 @@ namespace Dental.ViewModels
             return false;
         }
 
-        private void LogoLoading()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo))
-                {
-                    using (var stream = new FileStream(Model.Logo, FileMode.Open))
-                    {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        Image = img;
-                    }
-                }
-                else Image = null;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
 
-        }
-        
         public ObservableCollection<ClientFiles> _Files;
         public ObservableCollection<ClientFiles> Files
         {

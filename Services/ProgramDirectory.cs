@@ -31,6 +31,7 @@ namespace Dental.Services
         public const string WINDIR = "@%WINDIR%";   // C:\Windows
         public const string PROGRAMM_NAME = "Dental";
         public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
+        public const string EMPLOYEES_CARDS_DIRECTORY = "Dental\\EmployeesCards";
         public const string IDS_DIRECTORY = "Dental\\Ids";
         public const string ORG_DIRECTORY = "Dental\\Organization";
         public const string LOGO_DIRECTORY = "Dental\\Logo";
@@ -45,6 +46,11 @@ namespace Dental.Services
         private static string GetPathToPatientsCardsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
+        }
+        
+        private static string GetPathToEmployeesCardsDirectoty()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_CARDS_DIRECTORY);
         }
 
         private static string GetPathIdsDirectoty()
@@ -65,6 +71,12 @@ namespace Dental.Services
         public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber)
         {
             string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
+            return new DirectoryInfo(path);
+        }
+
+        public static DirectoryInfo GetEmployeeCardDirectory(string employeeCardNumber)
+        {
+            string path = Path.Combine(GetPathToEmployeesCardsDirectoty(), employeeCardNumber);
             return new DirectoryInfo(path);
         }
 

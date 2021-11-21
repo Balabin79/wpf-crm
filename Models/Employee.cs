@@ -32,11 +32,8 @@ namespace Dental.Models
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string FirstName {
             get => _FirstName;
-            set
-            {
-                if (_FirstName?.Length > 0) _FirstName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
-            }
-    }
+            set => _FirstName = value?.Trim();
+        }
         private string _FirstName;
 
         [Display(Name = "Фамилия")]
@@ -45,10 +42,7 @@ namespace Dental.Models
         public string LastName
         {
             get => _LastName;
-            set
-            {
-                if (_LastName?.Length > 0) _LastName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
-            }
+            set => _LastName = value?.Trim();
         }
         private string _LastName;
 
