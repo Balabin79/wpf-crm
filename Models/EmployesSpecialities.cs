@@ -3,12 +3,15 @@ using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 using DevExpress.Mvvm;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dental.Models
 {
     [Table("EmployesSpecialities")]
     class EmployesSpecialities : AbstractBaseModel, IDataErrorInfo
     {
+
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
@@ -17,8 +20,11 @@ namespace Dental.Models
 
         public string EmployeeGuid { get; set; }
 
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+
+      
 
         public EmployesSpecialities Copy(EmployesSpecialities model)
         {
@@ -26,8 +32,8 @@ namespace Dental.Models
             model.Guid = this.Guid;
             model.Employee = this.Employee;
             model.EmployeeId = this.EmployeeId;
-            model.Speciality = this.Speciality;
             model.SpecialityId = this.SpecialityId;
+            model.Speciality = this.Speciality;
             model.EmployeeGuid = this.EmployeeGuid;
             return model;
         }
@@ -53,36 +59,38 @@ namespace Dental.Models
         }
         public bool Equals(EmployesSpecialities other)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
+            try {
+                NotIsChanges = true;
+                if (other == null)
+                    return false;
 
-            //Здесь сравнение по ссылкам необязательно.
-            //Если вы уверены, что многие проверки на идентичность будут отсекаться на проверке по ссылке - //можно имплементировать.
-            if (object.ReferenceEquals(this, other))
-                return true;
+                //Здесь сравнение по ссылкам необязательно.
+                //Если вы уверены, что многие проверки на идентичность будут отсекаться на проверке по ссылке - //можно имплементировать.
+                if (object.ReferenceEquals(this, other))
+                    return true;
 
-            //Если по логике проверки, экземпляры родительского класса и класса потомка могут считаться равными,
-            //то проверять на идентичность необязательно и можно переходить сразу к сравниванию полей.
-            if (this.GetType() != other.GetType())
-                return false;
+                //Если по логике проверки, экземпляры родительского класса и класса потомка могут считаться равными,
+                //то проверять на идентичность необязательно и можно переходить сразу к сравниванию полей.
+                if (this.GetType() != other.GetType())
+                    return false;
 
-            StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.Employee?.Guid, other?.Guid);
-            StringParamsIsEquel(this.Speciality?.Guid, other?.Guid);
-            StringParamsIsEquel(this.EmployeeGuid, other?.EmployeeGuid);
+                StringParamsIsEquel(this.Guid, other.Guid);
+                StringParamsIsEquel(this.Employee?.Guid, other?.Guid);
+                StringParamsIsEquel(this.EmployeeGuid, other?.EmployeeGuid);
+                //IsEqualsEmployeeSpecialities(Specialities, other?.Specialities);
 
-            if (this.SpecialityId != other.SpecialityId)
-            {
-                NotIsChanges = false;
+                if (this.EmployeeId != other.EmployeeId)
+                {
+                    NotIsChanges = false;
+                }
+                //if (!NotIsChanges) FieldsChanges.Add("Должности сотрудника");
+                return NotIsChanges;
             }
-
-            if (this.EmployeeId != other.EmployeeId)
+            catch(Exception e)
             {
-                NotIsChanges = false;
+                return false;
             }
-
-            return NotIsChanges;
+            
         }
 
         private void StringParamsIsEquel(string param1, string param2)
@@ -92,7 +100,27 @@ namespace Dental.Models
             NotIsChanges = false;
         }
 
+        private void IsEqualsEmployeeSpecialities(List<Speciality> param1, List<Speciality> param2)
+        {
+            if (param1.Count() != param2.Count) {
+                NotIsChanges = false;
+                return;
+            }
+            for (int i = 0; i < param1.Count(); i++)
+            {
+                if (param1[i].Guid != param2[i].Guid)
+                {
+                    NotIsChanges = false;
+                    return;
+                }
+            }
+        }
+
+
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
+        [NotMapped]
+        public List<string> FieldsChanges { get; set; } = new List<string>();
     }
 }

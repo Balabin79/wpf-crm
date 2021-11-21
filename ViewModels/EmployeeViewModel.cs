@@ -22,7 +22,7 @@ namespace Dental.ViewModels
 {
     class EmployeeViewModel : ViewModelBase
     {
-        public EmployeeViewModel() : this(0){}
+        public EmployeeViewModel() : this(0) { }
 
         public EmployeeViewModel(int? employeeId = 0)
         {
@@ -42,13 +42,13 @@ namespace Dental.ViewModels
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
             RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
-            Specialities = db.Specialities.ToList();           
+            Specialities = db.Specialities.ToList();
             RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
             RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
-            
+
             try
             {
-                if (! int.TryParse(employeeId.ToString(), out int id) || id == 0)
+                if (!int.TryParse(employeeId.ToString(), out int id) || id == 0)
                 {
                     Model = GetModel(0);
                     IsReadOnly = false;
@@ -70,15 +70,15 @@ namespace Dental.ViewModels
                      }
                     */
                     IsNotFixRate = Model?.IsFixRate == 1 ? false : true;
-                    Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;                
-                    }
+                    Image = !string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo) ? new BitmapImage(new Uri(Model.Photo)) : null;
+                }
                 ModelBeforeChanges = (Employee)Model.Clone();
-            } 
+            }
             catch (Exception e)
             {
                 Model = new Employee();
                 (new ViewModelLog(e)).run();
-            }           
+            }
         }
 
         public ICommand EditableCommand { get; }
@@ -165,7 +165,7 @@ namespace Dental.ViewModels
             bool hasUnsavedChanges = false;
             if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-            
+
             if (!IsEqualEmployeeSpecialities())
             {
                 hasUnsavedChanges = true;
@@ -226,7 +226,7 @@ namespace Dental.ViewModels
 
 
         public ICommand CancelCommand { get; }
-        
+
         public ICommand OpenCommand { get; }
 
 
@@ -235,7 +235,7 @@ namespace Dental.ViewModels
             try
             {
 
-               // Repository.Delete(table);
+                // Repository.Delete(table);
             }
             catch (Exception e)
             {
@@ -250,10 +250,10 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Employes.Add(Model);
-
+                SaveEmployeeSpecialities();
                 //else SaveFiles();
                 //SaveLogo();
- 
+
                 db.SaveChanges();
 
                 notification.Content = "Изменения сохранены в базу данных!";
@@ -286,7 +286,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
- 
+
         private readonly ApplicationContext db;
 
         private bool CanCancelCommandExecute(object p) => true;
@@ -294,8 +294,8 @@ namespace Dental.ViewModels
         private bool CanOpenCommandExecute(object p) => true;
 
 
-        public IEnumerable<Dictionary> Statuses { get; set; } 
-        public IEnumerable<Dictionary> GenderList { get; set; } 
+        public IEnumerable<Dictionary> Statuses { get; set; }
+        public IEnumerable<Dictionary> GenderList { get; set; }
         public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
         public List<Dictionary> RateType { get; set; }
 
@@ -305,15 +305,19 @@ namespace Dental.ViewModels
         public string Title { get; set; } = "Анкета сотрудника";
 
         public List<Speciality> Specialities { get; set; }
-        
-        public object EmployeeSpecialities 
+
+        public object EmployeeSpecialities
         {
             get => _EmployeeSpecialities;
-            set => Set(ref _EmployeeSpecialities, value);
+            set
+            {
+                Set(ref _EmployeeSpecialities, value);
+            }
+
         }
         public object _EmployeeSpecialities;
 
-        public bool IsNotFixRate 
+        public bool IsNotFixRate
         {
             get => _IsNotFixRate;
             set => Set(ref _IsNotFixRate, value);
@@ -322,8 +326,10 @@ namespace Dental.ViewModels
 
         private List<Speciality> GetEmployeeSpecialities()
         {
-            return Model?.EmployesSpecialities.Select(f => f.Speciality).ToList();
+            return Model?.EmployesSpecialities.Where(f => f.EmployeeId == Model?.Id).Select(f => f.Speciality).ToList();
         }
+
+
 
         private bool IsEqualEmployeeSpecialities()
         {
@@ -334,21 +340,68 @@ namespace Dental.ViewModels
                     var employeeSpecialitiesFromDb = GetEmployeeSpecialities();
 
                     if (employeeSpecialities.Count() != employeeSpecialitiesFromDb.Count())
-                    {                      
+                    {
                         return false;
                     }
 
                     for (int i = 0; i < employeeSpecialities.Count(); i++)
                     {
                         var es = (Speciality)employeeSpecialities[i];
-                        if (! es.Equals(employeeSpecialitiesFromDb[i]))
+                        if (!es.Equals(employeeSpecialitiesFromDb[i]))
                         {
                             return false;
-                        }                         
+                        }
                     }
-                }                
+                }
             }
             return true;
+        }
+
+        private void SaveEmployeeSpecialities()
+        {
+            try
+            {
+                if (Model.EmployesSpecialities == null) return;
+                if (EmployeeSpecialities is List<object> employeeSpecialities)
+                {
+                    var col = employeeSpecialities.Cast<Speciality>();
+                    foreach (var item in col)
+                    {
+                        // если эл-т содержится, то пропускаем
+                        if (Model.EmployesSpecialities.Select(f => f.Speciality).Contains(item)) continue;
+
+                        //если эл-та нет - то добавляем
+                        Model.EmployesSpecialities.Add(new EmployesSpecialities()
+                        {
+                            Guid = KeyGenerator.GetUniqueKey(),
+                            Employee = Model,
+                            EmployeeId = Model.Id,
+                            EmployeeGuid = Model.Guid,
+                            Speciality = item,
+                            SpecialityId = item.Id
+                        }
+                        );
+                    }
+
+                    // сравниваем две коллекции, если равно то возврат
+                    if (col.Count() == Model.EmployesSpecialities.Count) return;
+
+                    // если не равны, то какие-то элементы убрали из коллекции, находим их и удаляем.
+                    var removedSpecialities = Model.EmployesSpecialities.Select(f => f.Speciality).Except(col).ToArray();
+
+                    for (int i = 0; i < removedSpecialities.Count(); i++)
+                    {
+                        var item = Model.EmployesSpecialities.Where(f => f.Speciality.Id == removedSpecialities[i].Id).FirstOrDefault();
+                        if (item == null) continue;
+                        db.Entry(item).State = EntityState.Deleted;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
         }
     }
 }

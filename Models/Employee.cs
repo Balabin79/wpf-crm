@@ -138,15 +138,12 @@ namespace Dental.Models
         [Display(Name = "Оклад фиксированный")]
         public int? IsFixRate { get; set; }
 
-
         public List<EmployesSpecialities> EmployesSpecialities { get; set; }
 
         public Employee()
         {
             EmployesSpecialities = new List<EmployesSpecialities>();
         }
-
-
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -179,22 +176,6 @@ namespace Dental.Models
                 Guid = this.Sex?.Guid
             };
 
-
-            List<EmployesSpecialities> employesSpecialities = new List<EmployesSpecialities>();
-            foreach (var i in EmployesSpecialities)
-            {
-                var item = new EmployesSpecialities() 
-                { 
-                    Id = i.Id,
-                    Guid = i.Guid,
-                    EmployeeId = i.EmployeeId,
-                    SpecialityId = i.SpecialityId,
-                    EmployeeGuid = i.EmployeeGuid
-                };
-                employesSpecialities.Add(item);
-            }
-
-
             return new Employee
             {
                 Id = this.Id,
@@ -221,8 +202,7 @@ namespace Dental.Models
                 EmployeeGroup = employeeGroup,
                 EmployeeGroupId = this.EmployeeGroupId,
                 Sex = sex,
-                SexId = this.SexId,
-                EmployesSpecialities = employesSpecialities
+                SexId = this.SexId
             };
         }
 
