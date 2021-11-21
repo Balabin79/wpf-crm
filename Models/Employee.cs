@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using Dental.Models.Base;
 using System.Windows.Media;
+using System.Globalization;
 
 namespace Dental.Models
 {
@@ -31,8 +32,11 @@ namespace Dental.Models
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string FirstName {
             get => _FirstName;
-            set => _FirstName = value?.Trim();
-        }
+            set
+            {
+                if (_FirstName?.Length > 0) _FirstName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+            }
+    }
         private string _FirstName;
 
         [Display(Name = "Фамилия")]
@@ -41,7 +45,10 @@ namespace Dental.Models
         public string LastName
         {
             get => _LastName;
-            set => _LastName = value?.Trim();
+            set
+            {
+                if (_LastName?.Length > 0) _LastName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+            }
         }
         private string _LastName;
 
@@ -157,7 +164,9 @@ namespace Dental.Models
                 IsApplyRule = this.EmployeeGroup?.IsApplyRule,
                 MoreOrLess = this.EmployeeGroup?.MoreOrLess,
                 PercentOrCost = this.EmployeeGroup?.PercentOrCost,
-                Amount = this.EmployeeGroup?.Amount
+                Amount = this.EmployeeGroup?.Amount,
+                Id = this.EmployeeGroup?.Id ?? 0,
+                Guid = this.EmployeeGroup?.Guid
             };
 
             Dictionary status = new Dictionary
