@@ -19,5 +19,8 @@ namespace Dental.Models
         public DbSet<Classificator> Classificator { get; set; }
         public DbSet<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
         public DbSet<Dictionary> Dictionary { get; set; }
+        public DbSet<Teeth> Teeth { get; set; }
+        public DbSet<MedicalAppointment> Appointments { get; set; }
+        public DbSet<ResourceEntity> Resources { get; set; }
     }
 }

@@ -49,7 +49,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Дополнительно">
                         <dxb:BarButtonItem Content="Google календарь"

@@ -17,6 +17,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Dental.ViewModels
 {
@@ -87,7 +89,7 @@ namespace Dental.ViewModels
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
-                _Teeth = new PatientTeeth();
+                LoadTeeth();
             }
             catch (Exception e)
             {
@@ -250,6 +252,59 @@ namespace Dental.ViewModels
                 case "OnClickToothRedPCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Pulpit; break;
                 case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
                 case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
+            }
+        }
+
+        private void SaveTeeth()
+        {
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                var jsonTeeth = JsonSerializer.Serialize<PatientTeeth>(Teeth, options);
+
+                var teeth = db.Teeth.Where(i => i.PatientInfoId == Model.Id).FirstOrDefault();
+                if (teeth == null)
+                {
+
+                    db.Teeth.Add(new Teeth()
+                    {
+                        Guid = KeyGenerator.GetUniqueKey(),
+                        PatientInfoId = Model.Id,
+                        PatientTeeth = jsonTeeth
+                    });
+                }
+                else teeth.PatientTeeth = jsonTeeth;
+                db.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }           
+        }
+
+        private void LoadTeeth()
+        {
+            try
+            {
+                var teeth = db.Teeth.Where(i => i.PatientInfoId == Model.Id).FirstOrDefault();
+                if (teeth == null)
+                {
+                    Teeth = new PatientTeeth();
+                    return;
+                }
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                var patientTeeth = JsonSerializer.Deserialize<PatientTeeth>(teeth.PatientTeeth, options);
+                Teeth = new PatientTeeth(patientTeeth);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
             }
         }
         #endregion
@@ -493,6 +548,7 @@ namespace Dental.ViewModels
                 {
                     notification.Content = "Новый пациент успешно записан в базу данных!";
                     Add();
+                    SaveTeeth();
                     BtnAfterSaveEnable = true;
                 }
                 else
@@ -500,6 +556,7 @@ namespace Dental.ViewModels
                     notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
                     SaveFiles();
                     Update();
+                    SaveTeeth();
                 }
                 if (HasUnsavedChanges())
                 {
