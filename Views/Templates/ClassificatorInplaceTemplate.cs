@@ -19,7 +19,7 @@ namespace Dental.Views.Templates
             RowData row = item as RowData;
             if (row != null)
             {
-                if (row.Row is Dental.Models.Classificator c) {
+                if (row.Row is Dental.Models.TreatmentPlan c) {
                     return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
                 }                 
             }

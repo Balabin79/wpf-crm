@@ -90,7 +90,9 @@ namespace Dental.ViewModels
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
                 LoadTeeth();
-                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : db.TreatmentPlans.Where(f => f.PatientInfoId == Model.Id).OrderBy(f => f.Id).ToObservableCollection();
+                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
+                    .Include("TreatmentPlanItems")
+                    .OrderBy(f => f.Id).ToObservableCollection();
             }
             catch (Exception e)
             {

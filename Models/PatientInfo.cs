@@ -12,6 +12,10 @@ namespace Dental.Models
     [Table("PatientInfo")]
     class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
     {
+        public PatientInfo()
+        {
+
+        }
 
         [Display(Name = "Номер медицинской карты")]
         public string PatientCardNumber { get; set; } //номер карты

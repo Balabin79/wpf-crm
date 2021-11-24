@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
-    [Table("TreatmentPlansItems")]
+    [Table("TreatmentPlanItems")]
     class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo
     {
         public TreatmentPlanItems()
@@ -16,16 +17,12 @@ namespace Dental.Models
             TreatmentPlanEmployes = new ObservableCollection<TreatmentPlanEmployes>();
         }
 
-        public int TreatmentPlanId { get; set; }
-        public TreatmentPlan TreatmentPlan { get; set; }
-
-        public int ClassificatorId { get; set; }
+        public int? ClassificatorId { get; set; }
         public Classificator Classificator { get; set; }
 
-        public int TreatmentPlanEmployesId { get; set; }
         public ICollection TreatmentPlanEmployes { get; set; }
         
-        public int Count { get; set; }
+        public int? Count { get; set; }
 
         public string Teeth { get; set; }
         public string Price { get; set; }
@@ -40,9 +37,7 @@ namespace Dental.Models
             {
                 Id = this.Id,
                 Guid = this.Guid,
-                TreatmentPlanId = this.TreatmentPlanId,
                 ClassificatorId = this.ClassificatorId,
-                TreatmentPlanEmployesId = this.TreatmentPlanEmployesId,
                 Count = this.Count,
                 Teeth = this.Teeth,
                 Price = this.Price,
@@ -55,9 +50,7 @@ namespace Dental.Models
         {
             model.Id = this.Id;
             model.Guid = this.Guid;
-            model.TreatmentPlanId = this.TreatmentPlanId;
             model.ClassificatorId = this.ClassificatorId;
-            model.TreatmentPlanEmployesId = this.TreatmentPlanEmployesId;
             model.Count = this.Count;
             model.Teeth = this.Teeth;
             model.Price = this.Price;
@@ -96,11 +89,9 @@ namespace Dental.Models
             StringParamsIsEquel(this.Teeth, other.Teeth);
             StringParamsIsEquel(this.Price, other.Price);
             StringParamsIsEquel(this.Status, other.Status);
-            StringParamsIsEquel(this.Guid, other.Guid);
+            StringParamsIsEquel(this.Guid, other.Guid);        
 
-            if (this.TreatmentPlanId != other.TreatmentPlanId) return false;
             if (this.ClassificatorId != other.ClassificatorId) return false;
-            if (this.TreatmentPlanEmployesId != other.TreatmentPlanEmployesId) return false;
 
             return NotIsChanges;
         }

@@ -87,7 +87,7 @@ namespace Dental.ViewModels
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
         /************* Специфика этой ViewModel ******************/
-        public ICollection<TreatmentPlan> Group { get; set; }
+        public ICollection<TreatmentPlanItems> Group { get; set; }
 
         private object _SelectedGroup;
         public object SelectedGroup
@@ -123,7 +123,7 @@ namespace Dental.ViewModels
 
         private ObservableCollection<TreatmentPlan> _Collection;
         private TreatmentPlanWindow Window;
-        private ObservableCollection<TreatmentPlan> GetCollection() => null; // db.TreatmentPlanes.OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<TreatmentPlan> GetCollection() =>  db.TreatmentPlan.OrderBy(d => d.Name).ToObservableCollection();
         private void CreateNewWindow() => Window = new TreatmentPlanWindow();
         private TreatmentPlan CreateNewModel() => new TreatmentPlan();
 
