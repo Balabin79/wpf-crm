@@ -90,6 +90,7 @@ namespace Dental.ViewModels
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
                 LoadTeeth();
+                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : db.TreatmentPlans.Where(f => f.PatientInfoId == Model.Id).OrderBy(f => f.Id).ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -97,6 +98,11 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+        #region Планы лечения и счета
+        public ObservableCollection<TreatmentPlan>TreatmentPlans { get; set; }
+        #endregion
+
 
         #region команды, связанных с формулой зубов
         public ICommand ClickToothGreenCommand { get; }
@@ -635,7 +641,7 @@ namespace Dental.ViewModels
 
         public ICollection<string> AdvertisingList { get; set; }
         public IEnumerable<string> ClientsGroupList { get; set; }
-        public ObservableCollection<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
+        //public ObservableCollection<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
 
         public ICollection<string> GenderList
         {
@@ -668,7 +674,6 @@ namespace Dental.ViewModels
         {
             AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
-            ClientTreatmentPlans = db.ClientTreatmentPlans.OrderBy(f => f.TreatmentPlanNumber).ToObservableCollection();
         }
 
         private bool CheckingRelatedData()

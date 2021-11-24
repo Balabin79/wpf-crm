@@ -3,55 +3,262 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
+       xmlns:templates="clr-namespace:Dental.Views.Templates"
        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm ="clr-namespace:Dental.ViewModels" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
               d:DesignWidth="800">
     <UserControl.Resources>
+
+
+        <DataTemplate x:Key="fileRowDetailsTemplate" >
+            <Grid Margin="5" 
+                  MaxHeight="1200"
+                  x:Name="GridFileRowDetailsTemplate"                  
+                  >
+                <dxlc:LayoutGroup  
+                    Grid.Row="2" 
+                    Grid.ColumnSpan="2"
+                    Margin="0 10 0 0" 
+                    MaxHeight="800" 
+                    View="GroupBox" 
+                    Orientation="Vertical" 
+                    ItemLabelsAlignment="Local" >
+                    <dxlc:LayoutGroup.HeaderTemplate>
+                        <DataTemplate >
+                            <DockPanel  
+                                HorizontalAlignment="Stretch">
+                                <TextBlock 
+                                    Text="Прайс для клиентов"
+                                    DockPanel.Dock="Left" 
+                                    VerticalAlignment="Center"/>
+                                <dxb:BarContainerControl 
+                                    DockPanel.Dock="Right" 
+                                    HorizontalAlignment="Right">
+                                    <dxb:ToolBarControl 
+                                        BarItemDisplayMode="ContentAndGlyph"
+                                        Caption="File" AllowCustomizationMenu="False"                                         
+                                        AllowQuickCustomization="False"
+                                        ShowDragWidget="False">
+                                        <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=gridMain, Path=DataContext.AddRowInPriceForClientsCommand}" 
+                                            CommandParameter="{Binding ElementName=GridControlPriceForClients, Path=DataContext.Row}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            Content="Добавить запись" 
+                                                    />
+                                        <dxb:BarButtonItem  
+                                            Content="Сохранить" 
+                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                            Command="{Binding ElementName=gridMain, Path=DataContext.SaveRowInPriceForClientsCommand}"
+                                            CommandParameter="{Binding ElementName=GridControlPriceForClients, Path=DataContext.Row}"/>
+                                    </dxb:ToolBarControl>
+                                </dxb:BarContainerControl>
+                            </DockPanel>
+
+                        </DataTemplate>
+                    </dxlc:LayoutGroup.HeaderTemplate>
+
+                    <dxg:GridControl 
+                        x:Name="GridControlPriceForClients"           
+                        ItemsSource="{Binding Row.PriceForClients, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                        MinHeight="45" 
+                        MaxHeight="150"
+                        Width="auto" >
+
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="PriceRateForClients" Header="Название тарифа" Width="1*">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxe:ComboBoxEdit Name="PART_Editor" ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                   
+                                      SelectedItem="{Binding Row.PriceRateForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Тарифы для клиентов" IsTextEditable="False"
+                                      DisplayMember="Name" >
+                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                <dxe:RadioComboBoxStyleSettings />
+                                            </dxe:ComboBoxEdit.StyleSettings>
+                                        </dxe:ComboBoxEdit>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                                <dxg:GridColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                        <dxe:ComboBoxEdit
+                                                Name="PART_Editor" 
+                                                ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                   
+                                      SelectedItem="{Binding Row.PriceRateForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Тарифы для клиентов" 
+                                                              IsTextEditable="False"
+                                      DisplayMember="Name">
+                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                <dxe:RadioComboBoxStyleSettings />
+                                            </dxe:ComboBoxEdit.StyleSettings>
+                                        </dxe:ComboBoxEdit>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellEditTemplate>
+                            </dxg:GridColumn>
+
+                            <dxg:GridColumn FieldName="IsActive" 
+                                            Header="Активность" 
+                                            Width="1*" 
+                                            HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxe:CheckEdit   
+                                                       IsReadOnly="True" 
+                                                       HorizontalAlignment="Center" 
+                                                       IsChecked="{Binding Row.PriceRateForClients.IsActive, Mode=TwoWay, 
+                                                          Converter={StaticResource boolConverter}}" 
+                                                       Margin="0 0 5 0" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn FieldName="IsBasic" 
+                                            Header="Базовый тариф" 
+                                            Width="1*" 
+                                            HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxe:CheckEdit   
+                                                       IsReadOnly="True" 
+                                                       HorizontalAlignment="Center" 
+                                                       IsChecked="{Binding Row.PriceRateForClients.IsBasic, Mode=TwoWay, 
+                                                          Converter={StaticResource boolConverter}}" 
+                                                       Margin="0 0 5 0" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+                            <dxg:GridColumn 
+                                FieldName="Price" 
+                                Header="Цена" 
+                                Width="1*" 
+                                HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                            HorizontalAlignment="Center"
+                                            Margin="5 0 0 0" Text="{Binding Row.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                                <dxg:GridColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                        <dxe:TextEdit 
+                                            Name="PART_Editor" 
+                                            Text="{Binding Row.Price, Mode=TwoWay}" 
+                                            HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellEditTemplate>
+                            </dxg:GridColumn>
+
+
+                            <dxg:GridColumn Width="auto">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <dxb:BarContainerControl 
+                                            DockPanel.Dock="Top" 
+                                            HorizontalAlignment="Right" >
+
+                                            <dxb:ToolBarControl 
+                                                Caption="File" 
+                                                ShowDragWidget="False"
+                                                AllowCustomizationMenu="False" 
+                                                AllowQuickCustomization="False">
+
+                                                <dxb:BarButtonItem      
+                                                Content="Удалить" 
+                                                IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                                Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                                GlyphSize="Small"
+                                                Command="{Binding Source={StaticResource vm}, Path=DeleteRowInPriceForClientsCommand}" 
+                                                CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
+
+                                            </dxb:ToolBarControl>
+                                        </dxb:BarContainerControl>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+
+                        </dxg:GridControl.Columns>
+                        <dxg:GridControl.View>
+                            <dxg:TableView ShowGroupPanel="False"
+                                              x:Name="attachFileTableView"
+                                               NavigationStyle="Cell"
+                                               AutoWidth="True"
+                                               AllowEditing="True"
+                                               ShowVerticalLines="False"
+                                               ShowHorizontalLines="False"
+                                               UseEvenRowBackground="True"
+                                               ShowIndicator="False" >
+                                <dxg:TableView.InputBindings>
+                                    <KeyBinding Key="Delete"       
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                    <KeyBinding Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                    <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                </dxg:TableView.InputBindings>
+
+                                <dxg:TableView.RowCellMenuCustomizations >
+                                    <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
+                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
+                                               Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                    <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                               Command="{Binding DeleteFileCommand}" 
+                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </dxlc:LayoutGroup>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="directoryRowDetailsTemplate"/>
+
+
+        <templates:ClassificatorInplaceTemplate 
+            x:Key="rowDetailsTemplateSelector"
+            FileRowDetailsTemplate="{StaticResource fileRowDetailsTemplate}"
+            DirectoryRowDetailsTemplate="{StaticResource directoryRowDetailsTemplate}"  />
+
+
+
+
+
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
 
-
-        <dxlc:LayoutGroup Header="Планы лечения" Grid.Row="0" Grid.Column="0" Margin="0 0 5 0"
-                                Name="layoutGroup155" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local">
-            <ListBox  ItemsSource="{Binding ClientTreatmentPlans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="TreatmentPlanNumber"/>
-        </dxlc:LayoutGroup>
-
-
-
-        <dxlc:LayoutGroup Header="Счета, прикрепляемые документы, примечания" Grid.Row="0" Grid.Column="1"
-                                Name="layoutGroup156" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" ScrollViewer.VerticalScrollBarVisibility="Auto">
-
-            <dxlc:LayoutItem Label="Список счетов" LabelPosition="Top" VerticalAlignment="Stretch" >
-                <dxg:GridControl ItemsSource="{Binding Path=Invoices}" MaxHeight="600" >
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="Number" Header="Номер" />
-                        <dxg:GridColumn FieldName="CreatedOn" Header="Дата и время" FixedWidth="True">
-                            <dxg:GridColumn.CellStyle>
-                                <Style>
-                                    <Setter Property="TextBlock.FontWeight" Value="Bold" />
-                                </Style>
-                            </dxg:GridColumn.CellStyle>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Subject" Header="Врач" />
-                        <dxg:GridColumn FieldName="Action" Header="Операция" />
-                        <dxg:GridColumn FieldName="Sum" Header="Сумма к оплате" />
-                    </dxg:GridControl.Columns>
-                    <dxg:GridControl.View>
-                        <dxg:TableView ShowGroupPanel="False"
+    <dxlc:LayoutGroup 
+        Header="Планы лечения" 
+        Margin="5"
+        View="GroupBox" 
+        Orientation="Vertical" 
+        ItemLabelsAlignment="Local">
+        <dxg:GridControl ItemsSource="{Binding Path=TreatmentPlans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxHeight="2000" >
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Number" Header="Номер" />
+                <dxg:GridColumn FieldName="DateTime" Header="Дата и время создания" FixedWidth="True">
+                    <dxg:GridColumn.CellStyle>
+                        <Style>
+                            <Setter Property="TextBlock.FontWeight" Value="Bold" />
+                        </Style>
+                    </dxg:GridColumn.CellStyle>
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView ShowGroupPanel="False"
                                                NavigationStyle="Row"
                                                AutoWidth="True"
                                                AllowEditing="False"
@@ -59,41 +266,8 @@
                                                ShowHorizontalLines="False"
                                                UseEvenRowBackground="True"
                                                ShowIndicator="False" />
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </dxlc:LayoutItem >
-            <dxlc:LayoutItem  Label="Примечание"  LabelPosition="Top" VerticalAlignment="Bottom" Height="40">
-                <dxe:MemoEdit  Text="{Binding Note}"/>
-            </dxlc:LayoutItem>
-
-        </dxlc:LayoutGroup>
-
-
-
-        <dxlc:LayoutGroup Header="Содержание плана лечения" Name="layoutGroup157" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0 10 0 0">
-            <dxg:GridControl ItemsSource="{Binding Path=Invoices}" MaxHeight="600" >
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Action" Header="Операция" />
-                    <dxg:GridColumn FieldName="Teeth" Header="Зубы" />
-                    <dxg:GridColumn FieldName="Price" Header="Цена за ед." />
-                    <dxg:GridColumn FieldName="Count" Header="Количество" />
-                    <dxg:GridColumn FieldName="Cost" Header="Стоимость мин/макс" />
-                    <dxg:GridColumn FieldName="Doctors" Header="Лечащие врачи" />
-                    <dxg:GridColumn FieldName="Status" Header="Статус" />
-                </dxg:GridControl.Columns>
-                <dxg:GridControl.View>
-                    <dxg:TableView ShowGroupPanel="False"
-                                               NavigationStyle="Row"
-                                               AutoWidth="True"
-                                               AllowEditing="False"
-                                               ShowVerticalLines="False"
-                                               ShowHorizontalLines="False"
-                                               UseEvenRowBackground="True"
-                                               ShowIndicator="False" />
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-        </dxlc:LayoutGroup>
-
-    </Grid>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </dxlc:LayoutGroup>
 
 </UserControl>

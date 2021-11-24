@@ -52,14 +52,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p == null) return;
-                Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
-
-                if (Model.IsDir == 0) Delete(new ObservableCollection<TreatmentPlan>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<TreatmentPlan>().ToObservableCollection());
-                db.SaveChanges();
+                
             }
             catch (Exception e)
             {
@@ -71,22 +64,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Id != f.Id).ToList();
-
-                if (SelectedGroup != null) Model.ParentId = ((TreatmentPlan)SelectedGroup).Id;
-
-                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
-                {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
-                }
-
-                if (Model.Id == 0) Add(); else Update();
-                db.SaveChanges();
-
-                SelectedGroup = null;
-                Window.Close();
+                
             }
             catch (Exception e)
             {
@@ -98,50 +76,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                CreateNewWindow();
-                if (p == null) return;
-                int.TryParse(p.ToString(), out int param);
-                if (param == -3) return;
-
-                switch (param)
-                {
-                    case -1:
-                        Model = CreateNewModel();
-                        Model.IsDir = 0;
-                        Title = "Новый план лечения";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Создать группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Id != Model?.Id).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemGroup();
-                        break;
-                    default:
-                        Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<TreatmentPlan>().ToObservableCollection();
-
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать план лечения";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
-                        break;
-                }
-
-                Window.DataContext = this;
-                Window.ShowDialog();
-                SelectedGroup = null;
+               
             }
             catch (Exception e)
             {
