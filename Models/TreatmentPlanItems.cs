@@ -9,7 +9,7 @@ using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
-    [Table("TreatmentPlanItems")]
+    [Table("TreatmentPlansItems")]
     class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo
     {
         public TreatmentPlanItems()
@@ -19,6 +19,9 @@ namespace Dental.Models
 
         public int? ClassificatorId { get; set; }
         public Classificator Classificator { get; set; }
+
+        public int? TreatmentPlanId { get; set; }
+        public TreatmentPlan TreatmentPlan { get; set; }
 
         public ICollection TreatmentPlanEmployes { get; set; }
         
@@ -42,6 +45,8 @@ namespace Dental.Models
                 Teeth = this.Teeth,
                 Price = this.Price,
                 Status = this.Status,
+                TreatmentPlanId = this.TreatmentPlanId,
+                TreatmentPlan = this.TreatmentPlan,
                 TreatmentPlanEmployes = this.TreatmentPlanEmployes
             };
         }
@@ -55,6 +60,8 @@ namespace Dental.Models
             model.Teeth = this.Teeth;
             model.Price = this.Price;
             model.Status = this.Status;
+            model.TreatmentPlanId = this.TreatmentPlanId;
+            model.TreatmentPlan = this.TreatmentPlan;
             model.TreatmentPlanEmployes = this.TreatmentPlanEmployes;
             return model;
         }
@@ -90,8 +97,10 @@ namespace Dental.Models
             StringParamsIsEquel(this.Price, other.Price);
             StringParamsIsEquel(this.Status, other.Status);
             StringParamsIsEquel(this.Guid, other.Guid);        
+            StringParamsIsEquel(this.TreatmentPlan.Guid, other.TreatmentPlan.Guid);        
 
             if (this.ClassificatorId != other.ClassificatorId) return false;
+            if (this.TreatmentPlanId != other.TreatmentPlanId) return false;
 
             return NotIsChanges;
         }

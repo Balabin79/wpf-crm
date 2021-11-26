@@ -9,5 +9,15 @@ namespace Dental.Views.PatientCard
         {
             InitializeComponent();
         }
+
+        private void PART_Editor_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
+
+        private void BarButtonItem_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int x = 0;
+        }
     }
 }

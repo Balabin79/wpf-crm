@@ -19,6 +19,7 @@ using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -40,6 +41,17 @@ namespace Dental.ViewModels
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
+                #endregion
+
+                #region инициализация команд, связанных с закладкой "Планы лечения"
+                OpenFormPlanCommand = new LambdaCommand(OnOpenFormPlanCommandExecuted, CanOpenFormPlanCommandExecute);
+                SavePlanCommand = new LambdaCommand(OnSavePlanCommandExecuted, CanSavePlanCommandExecute);
+                DeletePlanCommand = new LambdaCommand(OnDeletePlanCommandExecuted, CanDeletePlanCommandExecute);
+
+                AddRowInPlanCommand = new LambdaCommand(OnAddRowInPlanCommandExecuted, CanAddRowInPlanCommandExecute);
+                SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
+                DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
+                CancelFormPlanCommand = new LambdaCommand(OnCancelFormPlanCommandExecuted, CanCancelFormPlanCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -101,8 +113,130 @@ namespace Dental.ViewModels
             }
         }
 
-        #region Планы лечения и счета
+        #region Команды и ф-нал связанный с Планом лечения
+
+        public ICommand OpenFormPlanCommand { get; }
+        public ICommand SavePlanCommand { get; }
+        public ICommand DeletePlanCommand { get; }
+        public ICommand AddRowInPlanCommand { get; }
+        public ICommand SaveRowInPlanCommand { get; }
+        public ICommand DeleteRowInPlanCommand { get; }
+        public ICommand CancelFormPlanCommand { get; }
+
+        private bool CanOpenFormPlanCommandExecute(object p) => true;
+        private bool CanSavePlanCommandExecute(object p) => true;
+        private bool CanDeletePlanCommandExecute(object p) => true;
+        private bool CanAddRowInPlanCommandExecute(object p) => true;
+        private bool CanSaveRowInPlanCommandExecute(object p) => true;
+        private bool CanDeleteRowInPlanCommandExecute(object p) => true;
+        private bool CanCancelFormPlanCommandExecute(object p) => true;
+
+        private void OnOpenFormPlanCommandExecuted(object p)
+        {
+            try
+            {
+                PlanWindow = new PlanWindow();
+                PlanModel = new TreatmentPlan();
+                PlanModel.IsDir = 1;     
+                PlanWindow.DataContext = this;
+                PlanWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSavePlanCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeletePlanCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnAddRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSaveRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                int x = 0;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
+
+        private PlanWindow PlanWindow;
+        private TreatmentPlan PlanModel { get; set; }
+
+        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
+        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
+
+        private ObservableCollection<TreatmentPlan> _PlanGroup;
+        public ObservableCollection<TreatmentPlan> PlanGroup
+        {
+            get => _PlanGroup;
+            set => Set(ref _PlanGroup, value);
+        }
         public ObservableCollection<TreatmentPlan>TreatmentPlans { get; set; }
+
+        private void VisibleItemPlanForm()
+        {
+            IsVisibleItemPlanForm = Visibility.Visible;
+            IsVisibleGroupPlanForm = Visibility.Hidden;
+            PlanWindow.Width = 800;
+            PlanWindow.Height = 328;
+        }
+        private void VisibleItemPlanGroup()
+        {
+            IsVisibleItemPlanForm = Visibility.Hidden;
+            IsVisibleGroupPlanForm = Visibility.Visible;
+            PlanWindow.Width = 800;
+            PlanWindow.Height = 280;
+        }
         #endregion
 
 

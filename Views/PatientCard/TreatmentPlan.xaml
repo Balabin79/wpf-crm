@@ -11,15 +11,17 @@
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
+       xmlns:repo ="clr-namespace:Dental.Repositories" 
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-       d:DesignWidth="800">
+       d:DesignWidth="800"
+       x:Name="UTreatmentPlan"
+              >
     <UserControl.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
-
         <DataTemplate x:Key="fileRowDetailsTemplate">
             <Grid 
                 Margin="5" 
@@ -74,16 +76,21 @@
                         Width="auto" >
 
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn FieldName="TreatmentPlanItems" Header="Название тарифа" Width="1*">
+                            <dxg:GridColumn 
+                                FieldName="TreatmentPlanItems"
+                                Header="Услуга" Width="1*">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Name="PART_Editor" Margin="5 0 0 0" Text="{Binding Row.PriceRateForClients.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                        <TextBlock Name="PART_Editor" Margin="5 0 0 0" Text="{Binding Row.Classificator.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                                 <dxg:GridColumn.CellEditTemplate>
                                     <DataTemplate>
-                                        <dxe:ComboBoxEdit Name="PART_Editor" ItemsSource="{Binding Source={StaticResource vm}, Path=PriceRateForClients, Mode=TwoWay}"                                   
-                                      SelectedItem="{Binding Row.PriceRateForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        <dxe:ComboBoxEdit 
+                                            Name="PART_Editor" 
+                               
+                                      ItemsSource="{Binding Source={x:Static repo:ClassificatorRepository.ClassificatorCategories}, Mode=OneWay}"                                   
+                                      SelectedItem="{Binding Row.Classificator, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Тарифы для клиентов" IsTextEditable="False"
                                       DisplayMember="Name"
                                       IsEnabled="{Binding RowData.Row.IsEnableRule,  UpdateSourceTrigger=PropertyChanged}">
@@ -246,11 +253,13 @@
                             AllowCustomizationMenu="False" 
                             AllowQuickCustomization="False">
 
-                            <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AddPlanCommand}" 
-                                                   Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                                   Content="Создать план лечения" 
-                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
-                                                    />
+                            <dxb:BarButtonItem 
+                                Loaded="BarButtonItem_Loaded"
+                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormPlanCommand}" 
+                                Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                Content="Создать план лечения" 
+                                IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
+                            />
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
 

@@ -6,7 +6,7 @@ using System.Data.Entity.Core.Objects;
 
 namespace Dental.Models.Base
 {
-    abstract class AbstractBaseModel :  IModel
+    abstract public class AbstractBaseModel :  IModel
     {
         [Key]
         [Column("Id")]
