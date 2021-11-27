@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
     [Table("TreatmentPlans")]
-    class TreatmentPlan : AbstractBaseModel, ITreeModel, IDataErrorInfo
+    class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
     {
         public TreatmentPlan()
         {
             TreatmentPlanEmployes = new List<TreatmentPlanEmployes>();
             TreatmentPlanItems = new List<TreatmentPlanItems>();
-            Invoices = new List<InvoiceItems>();
         }
 
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
@@ -28,18 +28,22 @@ namespace Dental.Models
         }
         private string _Name;
 
-        public int? ParentId { get; set; }
-        public int? IsDir { get; set; }
-
-
         public List<TreatmentPlanEmployes> TreatmentPlanEmployes { get; set; }
         public List<TreatmentPlanItems> TreatmentPlanItems { get; set; }
-        public List<InvoiceItems> Invoices { get; set; }
 
         public int PatientInfoId { get; set; }
         public PatientInfo PatientInfo { get; set; }
 
-        public string DateTime { get; set; }
+        public string DateTime
+        {
+            get => _DateTime;
+            set
+            {               
+                if (System.DateTime.TryParse(value, out DateTime result)) _DateTime = result.ToShortDateString();
+                else _DateTime = value;
+            }
+        }
+        private string _DateTime;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -53,9 +57,7 @@ namespace Dental.Models
                 Name = this.Name,
                 DateTime = this.DateTime,
                 PatientInfo = this.PatientInfo,
-                PatientInfoId = this.PatientInfoId,
-                IsDir = this.IsDir,
-                ParentId = this.ParentId,
+                PatientInfoId = this.PatientInfoId
             };
         }
 
@@ -65,8 +67,6 @@ namespace Dental.Models
             model.Guid = this.Guid;
             model.DateTime = this.DateTime;
             model.Name = this.Name;
-            model.IsDir = this.IsDir;
-            model.ParentId = this.ParentId;
             model.PatientInfoId = this.PatientInfoId;
             model.PatientInfo = this.PatientInfo;
             return model;
@@ -101,11 +101,9 @@ namespace Dental.Models
             StringParamsIsEquel(this.Guid, other.Guid);
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.DateTime, other.DateTime);
-            StringParamsIsEquel(this.PatientInfo.Guid, other.PatientInfo.Guid);
+            StringParamsIsEquel(this?.PatientInfo?.Guid, other?.PatientInfo?.Guid);
 
             if (this.PatientInfoId != other.PatientInfoId) return false;
-            if (this.ParentId != other.ParentId) return false;
-            if (this.IsDir != other.IsDir) return false;
 
             return NotIsChanges;
         }
@@ -119,5 +117,6 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
     }
 }

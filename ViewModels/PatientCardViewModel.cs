@@ -20,6 +20,7 @@ using Dental.Infrastructures.Extensions.Notifications;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Dental.Models.Base;
+using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
@@ -135,9 +136,18 @@ namespace Dental.ViewModels
         {
             try
             {
-                PlanWindow = new PlanWindow();
-                PlanModel = new TreatmentPlan();
-                PlanModel.IsDir = 1;     
+                if (p != null)
+                {
+                    PlanModel = db.TreatmentPlan.Where(i => i.Id == (int)p).FirstOrDefault();
+                }
+                else
+                {
+                    PlanModel = new TreatmentPlan();
+                    PlanModel.Guid = KeyGenerator.GetUniqueKey();
+                    PlanModel.PatientInfoId = Model.Id;
+                    PlanModel.DateTime = PlanModel.DateTime != null ? PlanModel.DateTime : DateTime.Now.ToShortDateString();
+                }
+                PlanWindow = new PlanWindow();               
                 PlanWindow.DataContext = this;
                 PlanWindow.ShowDialog();
             }
@@ -151,7 +161,23 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                if (PlanModel.Id == 0)
+                {
+                    TreatmentPlans.Add(PlanModel);
+                    db.TreatmentPlan.Add(PlanModel);
+                }
+                else
+                {
+                    db.Entry<TreatmentPlan>(PlanModel).State = EntityState.Modified;
+                    var index = TreatmentPlans.IndexOf(f => f.Id == PlanModel.Id);
+                    if (index != -1)
+                    {
+                        TreatmentPlans.Remove(TreatmentPlans.Where(f => f.Id == PlanModel.Id).FirstOrDefault());
+                        TreatmentPlans.Insert(index, PlanModel);
+                    }
+                }
+                db.SaveChanges();
+                PlanWindow.Close();
             }
             catch (Exception e)
             {
@@ -210,7 +236,12 @@ namespace Dental.ViewModels
         private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
 
         private PlanWindow PlanWindow;
-        private TreatmentPlan PlanModel { get; set; }
+        public TreatmentPlan PlanModel 
+        {
+            get => _PlanModel;
+            set => Set(ref _PlanModel, value); 
+        }
+        public TreatmentPlan _PlanModel;
 
         public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
@@ -221,7 +252,12 @@ namespace Dental.ViewModels
             get => _PlanGroup;
             set => Set(ref _PlanGroup, value);
         }
-        public ObservableCollection<TreatmentPlan>TreatmentPlans { get; set; }
+        public ObservableCollection<TreatmentPlan>TreatmentPlans 
+        {
+            get => _TreatmentPlans;
+            set => Set(ref _TreatmentPlans, value);
+        }
+        public ObservableCollection<TreatmentPlan> _TreatmentPlans;
 
         private void VisibleItemPlanForm()
         {
