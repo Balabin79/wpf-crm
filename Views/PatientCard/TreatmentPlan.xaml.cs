@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.WindowsUI;
 
 namespace Dental.Views.PatientCard
@@ -10,10 +11,16 @@ namespace Dental.Views.PatientCard
             InitializeComponent();
         }
 
-
-        private void BarButtonItem_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void GridControlPriceForClients_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             int x = 0;
         }
+
+        private void lookup_QuerySubmitted(object sender, DevExpress.Xpf.Editors.AutoSuggestEditQuerySubmittedEventArgs e)
+        {
+
+        }
+
+
     }
 }

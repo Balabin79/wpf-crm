@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DevExpress.Xpf.Editors;
+using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -10,15 +12,16 @@ using System.Windows.Data;
 namespace Dental.Infrastructures.Converters
 {
 
-    class MultiBindingConverter : IMultiValueConverter
+    public class MultiBindingConverter : IMultiValueConverter
     {
         public object Convert(object[] Values, Type Target_Type, object Parameter, CultureInfo culture)
         {
             var findCommandParameters = new FindCommandParameters();
            
-            findCommandParameters.Property2 = ((Models.Base.AbstractBaseModel)((DevExpress.Xpf.Grid.GridCellData)((System.Windows.FrameworkElement)Values[1]).DataContext).Row).Id;
+            findCommandParameters.Tree = (TreeListView) (System.Windows.FrameworkElement)Values[0];
 
-            findCommandParameters.Property1 = Values[0];
+            findCommandParameters.Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1];
+
             return findCommandParameters;
         }
         
@@ -30,8 +33,8 @@ namespace Dental.Infrastructures.Converters
 
     public class FindCommandParameters
     {
-        public object Property1 { get; set; }
-        public int Property2 { get; set; }
+        public TreeListView Tree { get; set; }
+        public PopupBaseEdit Popup { get; set; }
     }
 }
 

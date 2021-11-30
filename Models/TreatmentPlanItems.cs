@@ -17,15 +17,16 @@ namespace Dental.Models
             TreatmentPlanEmployes = new ObservableCollection<TreatmentPlanEmployes>();
         }
 
-        public int? ClassificatorId { get; set; }
+       
         public Classificator Classificator { get; set; }
+        public int? ClassificatorId { get; set; }
 
-        public int? TreatmentPlanId { get; set; }
+        public int TreatmentPlanId { get; set; }
         public TreatmentPlan TreatmentPlan { get; set; }
 
         public ICollection TreatmentPlanEmployes { get; set; }
-        
-        public int? Count { get; set; }
+
+        public int Count { get; set; } = 1;
 
         public string Teeth { get; set; }
         public string Price { get; set; }

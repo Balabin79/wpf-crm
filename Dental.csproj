@@ -72,6 +72,7 @@
     <None Remove="Resources\Icons\Template\Books.png" />
     <None Remove="Resources\Icons\Template\Box-Open.png" />
     <None Remove="Resources\Icons\Template\box.png" />
+    <None Remove="Resources\Icons\Template\Calculator-Edit.png" />
     <None Remove="Resources\Icons\Template\calculator.png" />
     <None Remove="Resources\Icons\Template\Chart-Bar.png" />
     <None Remove="Resources\Icons\Template\Chart-Curve.png" />
@@ -345,6 +346,7 @@
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
     <Resource Include="Resources\Icons\Template\box.png" />
+    <Resource Include="Resources\Icons\Template\Calculator-Edit.png" />
     <Resource Include="Resources\Icons\Template\calculator.png" />
     <Resource Include="Resources\Icons\Template\Chart-Bar.png" />
     <Resource Include="Resources\Icons\Template\Chart-Curve.png" />

@@ -9,7 +9,7 @@ namespace Dental.Models
     [Table("TreatmentPlanEmployes")]
     class TreatmentPlanEmployes : AbstractBaseModel, IDataErrorInfo
     {
-        public int? TreatmentPlanId { get; set; }
+        public int TreatmentPlanId { get; set; }
         public TreatmentPlanItems TreatmentPlan { get; set; }
 
         public int? EmployeeId { get; set; }

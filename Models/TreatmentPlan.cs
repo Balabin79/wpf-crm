@@ -36,12 +36,8 @@ namespace Dental.Models
 
         public string DateTime
         {
-            get => _DateTime;
-            set
-            {               
-                if (System.DateTime.TryParse(value, out DateTime result)) _DateTime = result.ToShortDateString();
-                else _DateTime = value;
-            }
+            get =>  (System.DateTime.TryParse(_DateTime, out DateTime result)) ? result.ToShortDateString() : _DateTime;
+            set => _DateTime = value;
         }
         private string _DateTime;
 

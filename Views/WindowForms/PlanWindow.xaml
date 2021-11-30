@@ -19,7 +19,7 @@
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
     <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" />
+        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Calculator-Edit.png" />
     </Window.Icon>
     <Grid>
 
@@ -58,12 +58,8 @@
                                     Text="Дата создания:"  
                                     Margin="0,0,8,3" />
                                 <dxe:DateEdit  
-                                    Grid.Row="3"  
-                                    Mask="d"
-                                   
-                                    MaskType="DateTime"
-                                    MaskUseAsDisplayFormat ="True"                                    
-                                    EditValue="{Binding PlanModel.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                    Grid.Row="3"                                    
+                                    EditValue="{Binding PlanModel.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DateToString} }" 
                                     Margin="0,0,0,8" />
 
                             </Grid>

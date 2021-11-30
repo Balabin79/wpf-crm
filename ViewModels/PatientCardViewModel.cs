@@ -21,6 +21,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Editors;
+using Dental.Infrastructures.Converters;
 
 namespace Dental.ViewModels
 {
@@ -49,6 +51,7 @@ namespace Dental.ViewModels
                 SavePlanCommand = new LambdaCommand(OnSavePlanCommandExecuted, CanSavePlanCommandExecute);
                 DeletePlanCommand = new LambdaCommand(OnDeletePlanCommandExecuted, CanDeletePlanCommandExecute);
 
+                SelectPosInClassificatorCommand = new LambdaCommand(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
                 AddRowInPlanCommand = new LambdaCommand(OnAddRowInPlanCommandExecuted, CanAddRowInPlanCommandExecute);
                 SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
                 DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
@@ -103,8 +106,13 @@ namespace Dental.ViewModels
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
                 LoadTeeth();
+
+
+                ClassificatorCategories = GetClassificatorCategories();
                 TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
-                    .Include("TreatmentPlanItems")
+                    .Include("TreatmentPlanEmployes")
+                    .Include(f => f.TreatmentPlanItems.Select(i => i.Classificator)
+                    )
                     .OrderBy(f => f.Id).ToObservableCollection();
             }
             catch (Exception e)
@@ -119,11 +127,14 @@ namespace Dental.ViewModels
         public ICommand OpenFormPlanCommand { get; }
         public ICommand SavePlanCommand { get; }
         public ICommand DeletePlanCommand { get; }
+
+        public ICommand SelectPosInClassificatorCommand { get; }
         public ICommand AddRowInPlanCommand { get; }
         public ICommand SaveRowInPlanCommand { get; }
         public ICommand DeleteRowInPlanCommand { get; }
         public ICommand CancelFormPlanCommand { get; }
 
+        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
         private bool CanOpenFormPlanCommandExecute(object p) => true;
         private bool CanSavePlanCommandExecute(object p) => true;
         private bool CanDeletePlanCommandExecute(object p) => true;
@@ -189,9 +200,40 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                if (p != null)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+
+                    var model = db.TreatmentPlan.Where(i => i.Id == (int)p).Include("TreatmentPlanEmployes").Include("TreatmentPlanItems").FirstOrDefault();
+
+                    db.TreatmentPlan.Remove(model);                    
+                    TreatmentPlans.Remove(model);
+                    db.SaveChanges();
+                }
             }
             catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSelectPosInClassificatorCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.FocusedRow is Classificator classificator)
+                    {
+                        if (classificator.IsDir == 1) return;
+                        parameters.Popup.EditValue = classificator;
+                    }
+
+                    parameters.Popup.ClosePopup();
+                }
+
+            } catch(Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
@@ -201,6 +243,22 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (p != null)
+                {
+                    var plan = TreatmentPlans.Where(i => i.Id == (int)p).FirstOrDefault();
+                    
+                    TreatmentPlanItems items = new TreatmentPlanItems()
+                    {
+                        Guid = KeyGenerator.GetUniqueKey(),
+                        Classificator = new Classificator(),
+                        TreatmentPlan = plan,
+
+                    };
+
+                    plan.TreatmentPlanItems.Add(items);
+                }
+
+
                 int x = 0;
             }
             catch (Exception e)
@@ -273,6 +331,14 @@ namespace Dental.ViewModels
             PlanWindow.Width = 800;
             PlanWindow.Height = 280;
         }
+
+        public List<Classificator> ClassificatorCategories { get; set; } 
+        //public object SelectedClassificator { get; set; } 
+
+        private  List<Classificator> GetClassificatorCategories() => db.Classificator./*Where(i => i.IsDir == 1).*/ToList();
+
+
+
         #endregion
 
 

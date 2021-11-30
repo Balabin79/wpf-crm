@@ -18,12 +18,15 @@ namespace Dental.Repositories
                  return new ApplicationContext().Classificator.Where(i => i.IsDir == 1).ToList();
         }
 
-        public static List<Classificator> GetClassificatorItemsCategory(int category)
+
+        public static List<Classificator> Classificator { get => GetClassificator(); }
+
+
+        public static List<Classificator> GetClassificator()
         {
-            using (var db = new ApplicationContext())
-            {
-                return db.Classificator.Where(i => i.IsDir == 0 && i.ParentId == category).ToList();
-            }
+
+             return new ApplicationContext().Classificator.ToList();
+            
         }
 
 
