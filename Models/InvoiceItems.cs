@@ -7,7 +7,7 @@ using DevExpress.Mvvm;
 namespace Dental.Models
 {
     [Table("InvoiceItems")]
-    class InvoiceItems : AbstractBaseModel, IDataErrorInfo
+    public class InvoiceItems : AbstractBaseModel, IDataErrorInfo
     {
         public int TreatmentPlanId { get; set; }
         public TreatmentPlanItems TreatmentPlan { get; set; }

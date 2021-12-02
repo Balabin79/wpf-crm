@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Dictionary")]
-    class Dictionary : AbstractBaseModel, IDataErrorInfo
+    public class Dictionary : AbstractBaseModel, IDataErrorInfo
     {
         public string Name 
         {

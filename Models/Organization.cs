@@ -10,7 +10,7 @@ using System.Windows.Media;
 namespace Dental.Models
 {
     [Table("Organizations")]
-    class Organization : AbstractBaseModel, IDataErrorInfo
+    public class Organization : AbstractBaseModel, IDataErrorInfo
     {
         [Required]
         [MaxLength(255)]

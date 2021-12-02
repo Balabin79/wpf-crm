@@ -10,7 +10,7 @@ using System.Globalization;
 namespace Dental.Models
 {
     [Table("PatientInfo")]
-    class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
+    public class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
     {
         public PatientInfo()
         {

@@ -9,7 +9,7 @@ using System.Linq;
 namespace Dental.Models
 {
     [Table("EmployesSpecialities")]
-    class EmployesSpecialities : AbstractBaseModel, IDataErrorInfo
+    public class EmployesSpecialities : AbstractBaseModel, IDataErrorInfo
     {
 
         public int? EmployeeId { get; set; }

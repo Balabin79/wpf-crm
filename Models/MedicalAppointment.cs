@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("MedicalAppointment")]
-    class MedicalAppointment : AbstractBaseModel, IDataErrorInfo
+    public class MedicalAppointment : AbstractBaseModel, IDataErrorInfo
     {
         public string Subject { get; set; }
         public string Description { get; set; }

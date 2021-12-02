@@ -4,31 +4,38 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
     [Table("TreatmentPlansItems")]
-    class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo
-    {
-        public TreatmentPlanItems()
+    public class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
+    {    
+        [Required(ErrorMessage = @"Поле ""Классификатор"" обязательно для заполнения")]
+        public Classificator Classificator 
         {
-            TreatmentPlanEmployes = new ObservableCollection<TreatmentPlanEmployes>();
+            get => _Classificator;
+            set 
+            {
+                _Classificator = value;
+                OnPropertyChanged(nameof(Classificator));
+            } 
         }
-
-       
-        public Classificator Classificator { get; set; }
         public int? ClassificatorId { get; set; }
 
-        public int TreatmentPlanId { get; set; }
-        public TreatmentPlan TreatmentPlan { get; set; }
+        private Classificator _Classificator;
 
-        public ICollection TreatmentPlanEmployes { get; set; }
+        public TreatmentPlan TreatmentPlan { get; set; }
+        public int TreatmentPlanId { get; set; }
+
+        public int? EmployeeId { get; set; }
+        public Employee Employee { get; set; }
 
         public int Count { get; set; } = 1;
 
-        public string Teeth { get; set; }
+        public string Note { get; set; }
         public string Price { get; set; }
         public string Status { get; set; }
 
@@ -43,12 +50,12 @@ namespace Dental.Models
                 Guid = this.Guid,
                 ClassificatorId = this.ClassificatorId,
                 Count = this.Count,
-                Teeth = this.Teeth,
+                Note = this.Note,
                 Price = this.Price,
                 Status = this.Status,
                 TreatmentPlanId = this.TreatmentPlanId,
                 TreatmentPlan = this.TreatmentPlan,
-                TreatmentPlanEmployes = this.TreatmentPlanEmployes
+                Employee = this.Employee
             };
         }
 
@@ -58,12 +65,12 @@ namespace Dental.Models
             model.Guid = this.Guid;
             model.ClassificatorId = this.ClassificatorId;
             model.Count = this.Count;
-            model.Teeth = this.Teeth;
+            model.Note = this.Note;
             model.Price = this.Price;
             model.Status = this.Status;
             model.TreatmentPlanId = this.TreatmentPlanId;
             model.TreatmentPlan = this.TreatmentPlan;
-            model.TreatmentPlanEmployes = this.TreatmentPlanEmployes;
+            model.Employee = this.Employee;
             return model;
         }
 
@@ -94,14 +101,17 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;
 
-            StringParamsIsEquel(this.Teeth, other.Teeth);
+            StringParamsIsEquel(this.Note, other.Note);
             StringParamsIsEquel(this.Price, other.Price);
             StringParamsIsEquel(this.Status, other.Status);
             StringParamsIsEquel(this.Guid, other.Guid);        
-            StringParamsIsEquel(this.TreatmentPlan.Guid, other.TreatmentPlan.Guid);        
+            StringParamsIsEquel(this?.TreatmentPlan?.Guid, other?.TreatmentPlan?.Guid);        
+            StringParamsIsEquel(this?.Classificator?.Guid, other?.Classificator?.Guid);        
+            StringParamsIsEquel(this?.Employee?.Guid, other?.Employee?.Guid);        
 
             if (this.ClassificatorId != other.ClassificatorId) return false;
             if (this.TreatmentPlanId != other.TreatmentPlanId) return false;
+            if (this.EmployeeId != other.EmployeeId) return false;
 
             return NotIsChanges;
         }
@@ -115,5 +125,12 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
     }
 }

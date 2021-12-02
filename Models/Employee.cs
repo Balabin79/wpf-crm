@@ -13,7 +13,7 @@ using System.Globalization;
 namespace Dental.Models
 {
     [Table("Employes")]
-    class Employee : AbstractBaseModel, IDataErrorInfo
+    public class Employee : AbstractBaseModel, IDataErrorInfo
     {
 
         [NotMapped]
@@ -327,6 +327,11 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
+        public override string ToString()
+        {
+            return (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
+        }
 
     }
 }

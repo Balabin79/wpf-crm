@@ -4,11 +4,12 @@ using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace Dental.Models
 {
     [Table("Classificator")]
-    public class Classificator : AbstractBaseModel, IDataErrorInfo, ITreeModel
+    public class Classificator : AbstractBaseModel, IDataErrorInfo, ITreeModel, INotifyPropertyChanged
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
@@ -16,7 +17,11 @@ namespace Dental.Models
         public string Name
         {
             get => _Name;
-            set => _Name = value?.Trim();
+            set 
+            {
+                _Name = value?.Trim();
+                OnPropertyChanged(nameof(Name));
+            } 
         }
         private string _Name;
 
@@ -55,6 +60,13 @@ namespace Dental.Models
         public override string ToString()
         {
             return Name;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

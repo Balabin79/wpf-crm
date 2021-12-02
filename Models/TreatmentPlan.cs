@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,12 +11,11 @@ using DevExpress.Mvvm;
 namespace Dental.Models
 {
     [Table("TreatmentPlans")]
-    class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
+    public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
         public TreatmentPlan()
         {
-            TreatmentPlanEmployes = new List<TreatmentPlanEmployes>();
-            TreatmentPlanItems = new List<TreatmentPlanItems>();
+            TreatmentPlanItems = new ObservableCollection<TreatmentPlanItems>();
         }
 
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
@@ -28,8 +28,16 @@ namespace Dental.Models
         }
         private string _Name;
 
-        public List<TreatmentPlanEmployes> TreatmentPlanEmployes { get; set; }
-        public List<TreatmentPlanItems> TreatmentPlanItems { get; set; }
+        public ObservableCollection<TreatmentPlanItems> TreatmentPlanItems 
+        { 
+            get => _TreatmentPlanItems; 
+            set
+            {
+                _TreatmentPlanItems = value;
+                OnPropertyChanged(nameof(TreatmentPlanItems));
+            } 
+        }
+        private ObservableCollection<TreatmentPlanItems> _TreatmentPlanItems;
 
         public int PatientInfoId { get; set; }
         public PatientInfo PatientInfo { get; set; }
@@ -113,6 +121,13 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
 
     }
 }

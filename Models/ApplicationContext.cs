@@ -3,7 +3,7 @@
 
 namespace Dental.Models
 {
-    class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
         public ApplicationContext() : base("DefaultConnection"){}
 
@@ -21,7 +21,6 @@ namespace Dental.Models
         public DbSet<Teeth> Teeth { get; set; }
         public DbSet<TreatmentPlan> TreatmentPlan { get; set; }
         public DbSet<TreatmentPlanItems> TreatmentPlanItems { get; set; }
-        public DbSet<TreatmentPlanEmployes> TreatmentPlanEmployes { get; set; }
         public DbSet<InvoiceItems> InvoiceItems { get; set; }
 
         public DbSet<MedicalAppointment> Appointments { get; set; }

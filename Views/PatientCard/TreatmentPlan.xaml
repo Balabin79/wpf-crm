@@ -62,12 +62,11 @@
                             </DockPanel>
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
-                    
-                    
+
                     <dxg:GridControl 
                         x:Name="TreatmentPlanItems" 
                         ItemsSource="{Binding TreatmentPlanItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        MinHeight="45" 
+                        MinHeight="100" 
                         VerticalAlignment="Stretch"
                         MaxHeight="1500"
                         Width="auto" 
@@ -107,7 +106,7 @@
                                                             Name="gridr" 
                                                             MaxHeight="2000" 
                                                             VerticalAlignment="Stretch"
-                                                            ItemsSource="{Binding Source={x:Static repo:ClassificatorRepository.Classificator}}" 
+                                                            ItemsSource="{Binding ElementName=view, Path=DataContext.ClassificatorCategories, Mode=OneWay}" 
                                                             Margin="2">
                                                         <dxg:GridControl.View>
                                                             <dxg:TreeListView  
@@ -186,21 +185,44 @@
                                             </DataTemplate>
                                         </dxg:GridColumn.CellEditTemplate>
                                     </dxg:GridColumn>
-                                
-                                <dxg:GridColumn FieldName="Teeth" 
-                                                Header="Зубы" 
-                                                Width="1*" 
-                                                HorizontalHeaderContentAlignment="Center">
-                                        <dxg:GridColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock HorizontalAlignment="Center" Text="{Binding Row.Teeth, Mode=TwoWay}" />
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
-                                    <dxg:GridColumn.CellEditTemplate>
-                                        <DataTemplate>
-                                            <dxe:TextEdit    
-                                                           HorizontalAlignment="Stretch" 
-                                                           Text="{Binding Row.Teeth, Mode=TwoWay}" />
+
+                            <dxg:GridColumn 
+                                FieldName="Employee" 
+                                Header="Исполнитель" 
+                                Width="1*" 
+                                HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                        <dxe:ComboBoxEdit                                           
+                                             ItemsSource="{Binding ElementName=view, Path=DataContext.Employes, Mode=OneWay}"                                       
+                                             NullText="Сотрудник" 
+                                             IsTextEditable="False"
+                                             DisplayMember="Fio"
+                                             SelectedItem ="{Binding Row.Employee, Mode=TwoWay}" 
+                                             EditValue ="{Binding Row.Employee, Mode=TwoWay}" >
+                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                <dxe:RadioComboBoxStyleSettings />
+                                            </dxe:ComboBoxEdit.StyleSettings>
+                                        </dxe:ComboBoxEdit>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellEditTemplate>
+                            </dxg:GridColumn>
+
+                            <dxg:GridColumn
+                                FieldName="Note" 
+                                Header="Комментарий" 
+                                Width="1*" 
+                                HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                     <DataTemplate>
+                                          <TextBlock HorizontalAlignment="Center" Text="{Binding Row.Note, Mode=TwoWay}" />
+                                     </DataTemplate>
+                                     </dxg:GridColumn.CellTemplate>
+                                <dxg:GridColumn.CellEditTemplate>
+                                     <DataTemplate>
+                                         <dxe:MemoEdit    
+                                              HorizontalAlignment="Stretch" 
+                                              Text="{Binding Row.Note, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -213,9 +235,9 @@
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock 
-                                                    HorizontalAlignment="Center" 
-                                                    Text="{Binding Row.Classificator.Price, Mode=OneWay, StringFormat={}{0:c2}}" 
-                                                    Margin="0 0 5 0" />
+                                            HorizontalAlignment="Center" 
+                                            Text="{Binding Row.Classificator.Price, Mode=OneWay, StringFormat={}{0:c2}}" 
+                                            Margin="0 0 5 0" />
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -256,7 +278,7 @@
                                                 IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"
-                                                Command="{Binding DeleteRowInPriceForClientsCommand}" 
+                                                Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}" 
                                                 CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                 </dxb:ToolBarControl>
                                             </dxb:BarContainerControl>
@@ -265,6 +287,7 @@
                                 </dxg:GridColumn>
                                 
                             </dxg:GridControl.Columns>
+                        
                         <dxg:GridControl.TotalSummary>
                             <dxg:GridSummaryItem 
                                 FieldName="Price" 

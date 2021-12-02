@@ -23,6 +23,7 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Editors;
 using Dental.Infrastructures.Converters;
+using System.Data.Entity.Validation;
 
 namespace Dental.ViewModels
 {
@@ -108,11 +109,13 @@ namespace Dental.ViewModels
                 LoadTeeth();
 
 
-                ClassificatorCategories = GetClassificatorCategories();
-                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
-                    .Include("TreatmentPlanEmployes")
-                    .Include(f => f.TreatmentPlanItems.Select(i => i.Classificator)
-                    )
+                ClassificatorCategories = db.Classificator.ToList();
+                Employes = db.Employes.ToList();
+
+                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : 
+                    db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
+                    .Include(f => f.TreatmentPlanItems.Select(i => i.Classificator))
+                    .Include(f => f.TreatmentPlanItems.Select(i => i.Employee))
                     .OrderBy(f => f.Id).ToObservableCollection();
             }
             catch (Exception e)
@@ -227,7 +230,9 @@ namespace Dental.ViewModels
                     if (parameters.Tree.FocusedRow is Classificator classificator)
                     {
                         if (classificator.IsDir == 1) return;
+
                         parameters.Popup.EditValue = classificator;
+                        db.Entry(classificator).State = EntityState.Modified;
                     }
 
                     parameters.Popup.ClosePopup();
@@ -246,20 +251,12 @@ namespace Dental.ViewModels
                 if (p != null)
                 {
                     var plan = TreatmentPlans.Where(i => i.Id == (int)p).FirstOrDefault();
-                    
                     TreatmentPlanItems items = new TreatmentPlanItems()
                     {
                         Guid = KeyGenerator.GetUniqueKey(),
-                        Classificator = new Classificator(),
-                        TreatmentPlan = plan,
-
                     };
-
                     plan.TreatmentPlanItems.Add(items);
                 }
-
-
-                int x = 0;
             }
             catch (Exception e)
             {
@@ -271,7 +268,24 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                if (db.GetValidationErrors().Count() > 0) return;
+
+                int cnt = db.SaveChanges();
+                if (cnt > 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Позиции в плане лечения сохранены!";
+                    var nav = Navigation.Instance;
+                    notification.run();
+                }
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var error in db.GetValidationErrors())
+                {
+                    db.Entry(error.Entry).State = EntityState.Detached;
+                }
+                (new ViewModelLog(e)).run();
             }
             catch (Exception e)
             {
@@ -283,7 +297,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                int x = 0;
+                if (p is TreatmentPlanItems item)
+                {
+                    db.Entry(item).State = EntityState.Deleted;
+                    db.SaveChanges();
+                    var planitem = TreatmentPlans.Select(f => f.TreatmentPlanItems.Where(i => i.Id == item.Id));
+                }
+
             }
             catch (Exception e)
             {
@@ -332,11 +352,8 @@ namespace Dental.ViewModels
             PlanWindow.Height = 280;
         }
 
-        public List<Classificator> ClassificatorCategories { get; set; } 
-        //public object SelectedClassificator { get; set; } 
-
-        private  List<Classificator> GetClassificatorCategories() => db.Classificator./*Where(i => i.IsDir == 1).*/ToList();
-
+        public List<Classificator> ClassificatorCategories { get; set; }  
+        public List<Employee> Employes { get; set; }
 
 
         #endregion
