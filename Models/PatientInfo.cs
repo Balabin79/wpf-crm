@@ -14,8 +14,10 @@ namespace Dental.Models
     {
         public PatientInfo()
         {
-
+            TreatmentPlans = new List<TreatmentPlan>();
         }
+
+        ICollection<TreatmentPlan> TreatmentPlans { get; set; }
 
         [Display(Name = "Номер медицинской карты")]
         public string PatientCardNumber { get; set; } //номер карты

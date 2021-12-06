@@ -1,11 +1,33 @@
 ﻿using System.Data.Entity;
-
+using System.Threading;
+using System.Threading.Tasks;
+using System.Linq;
+using Dental.Models.Base;
 
 namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
         public ApplicationContext() : base("DefaultConnection"){}
+
+        public override int SaveChanges()
+        {
+            AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            AddTimestamps();
+            return base.SaveChangesAsync();
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = ChangeTracker.Entries()
+                .Where(x => x.Entity is AbstractBaseModel && (x.State == EntityState.Added || x.State == EntityState.Modified));
+            foreach (var entity in entities) ((AbstractBaseModel)entity.Entity).Update();           
+        }
 
         public DbSet<Employee> Employes { get; set; }
         public DbSet<Advertising> Advertising { get; set; }

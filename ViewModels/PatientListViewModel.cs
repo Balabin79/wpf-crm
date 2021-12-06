@@ -23,7 +23,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = Db.Instance.Context;
+                db = new ApplicationContext();
                 SetCollection();
 
                 #region инициализация команд, связанных с общим функционалом карты пациента

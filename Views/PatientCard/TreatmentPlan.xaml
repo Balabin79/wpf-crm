@@ -96,9 +96,7 @@
                                             SelectAllOnGotFocus="True"                                            
                                             EditValue="{Binding Row.Classificator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                                             NullText="Выберите позицию в классификаторе">
-
-         
-                                                <dxe:PopupBaseEdit.PopupContentTemplate>
+                                            <dxe:PopupBaseEdit.PopupContentTemplate>
                                                     <ControlTemplate>
                                                     <dxg:GridControl 
                                                             Grid.Row="1" 

@@ -47,6 +47,7 @@ namespace Dental.ViewModels
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
                 #endregion
 
+
                 #region инициализация команд, связанных с закладкой "Планы лечения"
                 OpenFormPlanCommand = new LambdaCommand(OnOpenFormPlanCommandExecuted, CanOpenFormPlanCommandExecute);
                 SavePlanCommand = new LambdaCommand(OnSavePlanCommandExecuted, CanSavePlanCommandExecute);
@@ -124,6 +125,105 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+
+        #region команды, связанные с общим функционалом карты пациента
+        public ICommand EditableCommand { get; }
+        private bool CanEditableCommandExecute(object p) => true;
+        private void OnEditableCommandExecuted(object p)
+        {
+            try
+            {
+                IsReadOnly = !IsReadOnly;
+                BtnIconEditableHide = IsReadOnly;
+                BtnIconEditableVisible = !IsReadOnly;
+                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public ICommand DeleteCommand { get; }
+        private bool CanDeleteCommandExecute(object p) => true;
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту пациента из базы данных, без возможности восстановления?",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+                if (!CheckingRelatedData())
+                {
+                    //показываем сообщение, что какие связанные с картой пациента данные необходимо удалить, чтобы стало возможным удалить карту пациента, либо программно удалить, но предупредить и показать какие связанные данные будут удалены с бд в том числе
+                }
+
+                Delete();
+                var notification = new Notification();
+                notification.Content = "Карта пациента полностью удалена из базы данных!";
+                var nav = Navigation.Instance;
+                notification.run();
+                nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public ICommand SaveCommand { get; }
+        private bool CanSaveCommandExecute(object p) => true;
+        private void OnSaveCommandExecuted(object p)
+        {
+            try
+            {
+                var notification = new Notification();
+                if (Model.Id == 0)
+                {
+                    notification.Content = "Новый пациент успешно записан в базу данных!";
+                    Add();
+                    SaveTeeth();
+                    BtnAfterSaveEnable = true;
+                }
+                else
+                {
+                    notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
+                    SaveFiles();
+                    Update();
+                    SaveTeeth();
+                }
+                if (HasUnsavedChanges())
+                {
+                    notification.run();
+                    ModelBeforeChanges = (PatientInfo)Model.Clone();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
+        // Поиск связанных с картой пациента данных перед их удалением
+        private bool CheckingRelatedData()
+        {
+
+            return true;
+        }
+        #endregion
+
+
+
+
+
+
+
+
+
 
         #region Команды и ф-нал связанный с Планом лечения
 
@@ -751,87 +851,7 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        #region команды, связанные с общим функционалом карты пациента
-        public ICommand EditableCommand { get; }
-        private bool CanEditableCommandExecute(object p) => true;
-        private void OnEditableCommandExecuted(object p)
-        {
-            try
-            {
-                IsReadOnly = !IsReadOnly;
-                BtnIconEditableHide = IsReadOnly;
-                BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id !=0) BtnAfterSaveEnable = !IsReadOnly;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        public ICommand DeleteCommand { get; }
-        private bool CanDeleteCommandExecute(object p) => true;
-        private void OnDeleteCommandExecuted(object p)
-        {
-            try
-            {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить карту пациента из базы данных? Если необходимо ее просто убрать из списка, воспользуйтесь кнопкой \"Переместить в архив \". Удалить карту пациента с базы данных, без возможности восстановления?",
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                if (response.ToString() == "No") return;
-                if (!CheckingRelatedData())
-                {
-                    //показываем сообщение, что какие связанные с картой пациента данные необходимо удалить, чтобы стало возможным удалить карту пациента, либо программно удалить, но предупредить и показать какие связанные данные будут удалены с бд в том числе
-                }
-
-                Delete();
-                var notification = new Notification();
-                notification.Content = "Карта пациента полностью удалена из базы данных!";
-                var nav = Navigation.Instance;
-                notification.run();
-                nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
-
-            } 
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        public ICommand SaveCommand { get; }
-        private bool CanSaveCommandExecute(object p) => true;
-        private void OnSaveCommandExecuted(object p)
-        {
-            try
-            {
-                var notification = new Notification();
-                if (Model.Id == 0)
-                {
-                    notification.Content = "Новый пациент успешно записан в базу данных!";
-                    Add();
-                    SaveTeeth();
-                    BtnAfterSaveEnable = true;
-                }
-                else
-                {
-                    notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
-                    SaveFiles();
-                    Update();
-                    SaveTeeth();
-                }
-                if (HasUnsavedChanges())
-                {
-                    notification.run();
-                    ModelBeforeChanges = (PatientInfo)Model.Clone();
-                }
-            } 
-            catch(Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
-        }
-        #endregion
+       
 
         public bool HasUnsavedChanges()
         {
@@ -931,21 +951,16 @@ namespace Dental.ViewModels
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
         }
 
-        private bool CheckingRelatedData()
-        {
-            return true;
-        }
+
 
         private void Add()
         {
-            Model.Guid = KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Added;
             db.SaveChanges();
         }
         
-        private void Update()
+        protected void Update()
         {
-            if (string.IsNullOrEmpty(Model.Guid)) KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
         }
