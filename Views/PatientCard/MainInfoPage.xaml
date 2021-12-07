@@ -23,7 +23,6 @@
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
-        <vm:IdsViewModel x:Key="Ids"/>
         <converter:DateToStringConverter x:Key="dateToString" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
@@ -108,7 +107,7 @@
                             <dx:DXTabItem Header="ИДС, Документы">
                   
 
-                                    <Grid DataContext="{StaticResource ResourceKey=Ids}">
+                                    <Grid DataContext="{Binding}">
 
                                         <tp:Ids/>
                                     </Grid>

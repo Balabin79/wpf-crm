@@ -50,7 +50,7 @@
                 <dxg:GridControl  ItemsSource="{Binding Ids, Mode=TwoWay}" MaxHeight="2000"
                                  DataContext="{Binding}" Name="GridControlIds" Width="auto">
                     <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Name" Header="Название документа" />
+                    <dxg:GridColumn FieldName="Name" Header="Название документа" Name="IdsName" />
 
                     <dxg:GridColumn Width="auto" >
                             <dxg:GridColumn.CellTemplate>
@@ -64,8 +64,8 @@
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
-                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
+                                           CommandParameter="{Binding Row}"/>
                                         
                                         <dxb:BarButtonItem Name="bOpenDir" 
                                            Content="Открыть содержащую файл директорию" 

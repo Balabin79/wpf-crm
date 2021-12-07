@@ -24,6 +24,8 @@ using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Editors;
 using Dental.Infrastructures.Converters;
 using System.Data.Entity.Validation;
+using System.Windows.Documents;
+using DevExpress.XtraRichEdit;
 
 namespace Dental.ViewModels
 {
@@ -39,9 +41,10 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Files = new ObservableCollection<ClientFiles>();
+                Ids = ProgramDirectory.GetIds();
 
-               #region инициализация команд, связанных с общим функционалом карты пациента
-               // Команда включения - отключения редактирования полей
+                #region инициализация команд, связанных с общим функционалом карты пациента
+                // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -58,6 +61,10 @@ namespace Dental.ViewModels
                 SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
                 DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
                 CancelFormPlanCommand = new LambdaCommand(OnCancelFormPlanCommandExecuted, CanCancelFormPlanCommandExecute);
+                #endregion
+
+                #region Инициализация команд, связанных с закладкой "ИДС, Документы"
+                OpenFormDocCommand = new LambdaCommand(OnOpenFormDocCommandExecuted, CanOpenFormDocCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -128,6 +135,44 @@ namespace Dental.ViewModels
             }
         }
 
+        #region Команды и связанный ф-нал с ИДС и документами
+        // открыть форму и загрузить документ
+        public ICommand OpenFormDocCommand { get; }
+
+        private bool CanOpenFormDocCommandExecute(object p) => true;
+
+        private void OnOpenFormDocCommandExecuted(object p)
+        {
+            try
+            {
+                string fileName = p.ToString();
+
+
+                if (fileName != null && File.Exists(fileName))
+                {
+
+                    IDSWindow = new IDSWindow();
+                    IDSWindow.DataContext = this;
+                    var richEdit = IDSWindow.RichEdit;
+                    richEdit.LoadDocument(fileName, DocumentFormat.Rtf);
+                    richEdit.RtfText = new RtfParse(richEdit.RtfText).Run();
+                    //var txt = "";
+                    //richEdit.RtfText = txt;
+                    IDSWindow.ShowDialog(); 
+                
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public IDSWindow IDSWindow { get; set; }
+
+        public ObservableCollection<FileInfo> _Ids;
+        public ObservableCollection<FileInfo> Ids { get; set; } = new ObservableCollection<FileInfo>();
+        #endregion
 
 
         #region Команды и ф-нал связанный с Планом лечения
