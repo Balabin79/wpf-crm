@@ -10,6 +10,5 @@ namespace Dental.Views.PatientCard
         {
             InitializeComponent();
         }
-
     }
 }

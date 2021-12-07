@@ -93,7 +93,9 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    Model = db.PatientInfo.Where(f => f.Id == patientId).FirstOrDefault();
+                    Model = db.PatientInfo.Where(f => f.Id == patientId)?
+                        .Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems))
+                        .FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     NumberPatientCard = Model?.Id.ToString();
                     IsReadOnly = true;
@@ -112,12 +114,12 @@ namespace Dental.ViewModels
 
                 ClassificatorCategories = db.Classificator.ToList();
                 Employes = db.Employes.ToList();
-
+                /*
                 TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : 
                     db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
                     .Include(f => f.TreatmentPlanItems.Select(i => i.Classificator))
                     .Include(f => f.TreatmentPlanItems.Select(i => i.Employee))
-                    .OrderBy(f => f.Id).ToObservableCollection();
+                    .OrderBy(f => f.Id).ToObservableCollection();*/
             }
             catch (Exception e)
             {
@@ -125,6 +127,217 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+
+
+        #region Команды и ф-нал связанный с Планом лечения
+
+        // открыть форму плана лечения
+        public ICommand OpenFormPlanCommand { get; }
+        // сохранить новый или отредактированный план лечения
+        public ICommand SavePlanCommand { get; }
+        //удалить план лечения
+        public ICommand DeletePlanCommand { get; }
+
+
+        public ICommand SelectPosInClassificatorCommand { get; }
+        public ICommand AddRowInPlanCommand { get; }
+        public ICommand SaveRowInPlanCommand { get; }
+        public ICommand DeleteRowInPlanCommand { get; }
+        public ICommand CancelFormPlanCommand { get; }
+
+        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
+        private bool CanOpenFormPlanCommandExecute(object p) => true;
+        private bool CanSavePlanCommandExecute(object p) => true;
+        private bool CanDeletePlanCommandExecute(object p) => true;
+        private bool CanAddRowInPlanCommandExecute(object p) => true;
+        private bool CanSaveRowInPlanCommandExecute(object p) => true;
+        private bool CanDeleteRowInPlanCommandExecute(object p) => true;
+        private bool CanCancelFormPlanCommandExecute(object p) => true;
+
+        private void OnOpenFormPlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (p != null)
+                {
+                    PlanModel = db.TreatmentPlan.Where(i => i.Id == (int)p).FirstOrDefault();
+                }
+                else
+                {
+                    PlanModel = new TreatmentPlan();
+                    PlanModel.PatientInfoId = Model.Id;
+                    PlanModel.DateTime = PlanModel.DateTime != null ? PlanModel.DateTime : DateTime.Now.ToShortDateString();
+                }
+                PlanWindow = new PlanWindow();
+                PlanWindow.DataContext = this;
+                PlanWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSavePlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (PlanModel.Id == 0) Model.TreatmentPlans.Add(PlanModel);
+                db.SaveChanges();
+                PlanWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeletePlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is TreatmentPlan plan)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    
+                    db.TreatmentPlan.Remove(plan);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSelectPosInClassificatorCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.FocusedRow is Classificator classificator)
+                    {
+                        if (classificator.IsDir == 1) return;
+                        parameters.Popup.EditValue = classificator;
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnAddRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is TreatmentPlan plan) plan.TreatmentPlanItems.Add(new TreatmentPlanItems());
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSaveRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (db.GetValidationErrors().Count() > 0) return;
+
+                int cnt = db.SaveChanges();
+                if (cnt > 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Позиции в плане лечения сохранены!";
+                    var nav = Navigation.Instance;
+                    notification.run();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteRowInPlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is TreatmentPlanItems item)
+                {
+                    db.Entry(item).State = EntityState.Deleted;
+                    db.SaveChanges();
+                    //var planitem = TreatmentPlans.Select(f => f.TreatmentPlanItems.Where(i => i.Id == item.Id));
+                }
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
+
+        private PlanWindow PlanWindow;
+       
+        
+        public TreatmentPlan PlanModel
+        {
+            get => _PlanModel;
+            set => Set(ref _PlanModel, value);
+        }
+        public TreatmentPlan _PlanModel;
+
+        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
+        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
+
+        private ObservableCollection<TreatmentPlan> _PlanGroup;
+        public ObservableCollection<TreatmentPlan> PlanGroup
+        {
+            get => _PlanGroup;
+            set => Set(ref _PlanGroup, value);
+        }
+       /* public ObservableCollection<TreatmentPlan> TreatmentPlans
+        {
+            get => _TreatmentPlans;
+            set => Set(ref _TreatmentPlans, value);
+        }
+        public ObservableCollection<TreatmentPlan> _TreatmentPlans;*/
+
+        private void VisibleItemPlanForm()
+        {
+            IsVisibleItemPlanForm = Visibility.Visible;
+            IsVisibleGroupPlanForm = Visibility.Hidden;
+            PlanWindow.Width = 800;
+            PlanWindow.Height = 328;
+        }
+        private void VisibleItemPlanGroup()
+        {
+            IsVisibleItemPlanForm = Visibility.Hidden;
+            IsVisibleGroupPlanForm = Visibility.Visible;
+            PlanWindow.Width = 800;
+            PlanWindow.Height = 280;
+        }
+
+        public List<Classificator> ClassificatorCategories { get; set; }
+        public List<Employee> Employes { get; set; }
+
+
+        #endregion
+
+
+
+
+
+
+
 
 
         #region команды, связанные с общим функционалом карты пациента
@@ -184,7 +397,7 @@ namespace Dental.ViewModels
                 if (Model.Id == 0)
                 {
                     notification.Content = "Новый пациент успешно записан в базу данных!";
-                    Add();
+                    db.PatientInfo.Add(Model);
                     SaveTeeth();
                     BtnAfterSaveEnable = true;
                 }
@@ -192,9 +405,10 @@ namespace Dental.ViewModels
                 {
                     notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
                     SaveFiles();
-                    Update();
+                   // Update();
                     SaveTeeth();
                 }
+                db.SaveChanges();
                 if (HasUnsavedChanges())
                 {
                     notification.run();
@@ -223,240 +437,6 @@ namespace Dental.ViewModels
 
 
 
-
-
-        #region Команды и ф-нал связанный с Планом лечения
-
-        public ICommand OpenFormPlanCommand { get; }
-        public ICommand SavePlanCommand { get; }
-        public ICommand DeletePlanCommand { get; }
-
-        public ICommand SelectPosInClassificatorCommand { get; }
-        public ICommand AddRowInPlanCommand { get; }
-        public ICommand SaveRowInPlanCommand { get; }
-        public ICommand DeleteRowInPlanCommand { get; }
-        public ICommand CancelFormPlanCommand { get; }
-
-        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
-        private bool CanOpenFormPlanCommandExecute(object p) => true;
-        private bool CanSavePlanCommandExecute(object p) => true;
-        private bool CanDeletePlanCommandExecute(object p) => true;
-        private bool CanAddRowInPlanCommandExecute(object p) => true;
-        private bool CanSaveRowInPlanCommandExecute(object p) => true;
-        private bool CanDeleteRowInPlanCommandExecute(object p) => true;
-        private bool CanCancelFormPlanCommandExecute(object p) => true;
-
-        private void OnOpenFormPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p != null)
-                {
-                    PlanModel = db.TreatmentPlan.Where(i => i.Id == (int)p).FirstOrDefault();
-                }
-                else
-                {
-                    PlanModel = new TreatmentPlan();
-                    PlanModel.Guid = KeyGenerator.GetUniqueKey();
-                    PlanModel.PatientInfoId = Model.Id;
-                    PlanModel.DateTime = PlanModel.DateTime != null ? PlanModel.DateTime : DateTime.Now.ToShortDateString();
-                }
-                PlanWindow = new PlanWindow();               
-                PlanWindow.DataContext = this;
-                PlanWindow.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSavePlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (PlanModel.Id == 0)
-                {
-                    TreatmentPlans.Add(PlanModel);
-                    db.TreatmentPlan.Add(PlanModel);
-                }
-                else
-                {
-                    db.Entry<TreatmentPlan>(PlanModel).State = EntityState.Modified;
-                    var index = TreatmentPlans.IndexOf(f => f.Id == PlanModel.Id);
-                    if (index != -1)
-                    {
-                        TreatmentPlans.Remove(TreatmentPlans.Where(f => f.Id == PlanModel.Id).FirstOrDefault());
-                        TreatmentPlans.Insert(index, PlanModel);
-                    }
-                }
-                db.SaveChanges();
-                PlanWindow.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnDeletePlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p != null)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-
-                    var model = db.TreatmentPlan.Where(i => i.Id == (int)p).Include("TreatmentPlanEmployes").Include("TreatmentPlanItems").FirstOrDefault();
-
-                    db.TreatmentPlan.Remove(model);                    
-                    TreatmentPlans.Remove(model);
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSelectPosInClassificatorCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.FocusedRow is Classificator classificator)
-                    {
-                        if (classificator.IsDir == 1) return;
-
-                        parameters.Popup.EditValue = classificator;
-                        db.Entry(classificator).State = EntityState.Modified;
-                    }
-
-                    parameters.Popup.ClosePopup();
-                }
-
-            } catch(Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnAddRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p != null)
-                {
-                    var plan = TreatmentPlans.Where(i => i.Id == (int)p).FirstOrDefault();
-                    TreatmentPlanItems items = new TreatmentPlanItems()
-                    {
-                        Guid = KeyGenerator.GetUniqueKey(),
-                    };
-                    plan.TreatmentPlanItems.Add(items);
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSaveRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (db.GetValidationErrors().Count() > 0) return;
-
-                int cnt = db.SaveChanges();
-                if (cnt > 0)
-                {
-                    var notification = new Notification();
-                    notification.Content = "Позиции в плане лечения сохранены!";
-                    var nav = Navigation.Instance;
-                    notification.run();
-                }
-            }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var error in db.GetValidationErrors())
-                {
-                    db.Entry(error.Entry).State = EntityState.Detached;
-                }
-                (new ViewModelLog(e)).run();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnDeleteRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is TreatmentPlanItems item)
-                {
-                    db.Entry(item).State = EntityState.Deleted;
-                    db.SaveChanges();
-                    var planitem = TreatmentPlans.Select(f => f.TreatmentPlanItems.Where(i => i.Id == item.Id));
-                }
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
-
-        private PlanWindow PlanWindow;
-        public TreatmentPlan PlanModel 
-        {
-            get => _PlanModel;
-            set => Set(ref _PlanModel, value); 
-        }
-        public TreatmentPlan _PlanModel;
-
-        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
-
-        private ObservableCollection<TreatmentPlan> _PlanGroup;
-        public ObservableCollection<TreatmentPlan> PlanGroup
-        {
-            get => _PlanGroup;
-            set => Set(ref _PlanGroup, value);
-        }
-        public ObservableCollection<TreatmentPlan>TreatmentPlans 
-        {
-            get => _TreatmentPlans;
-            set => Set(ref _TreatmentPlans, value);
-        }
-        public ObservableCollection<TreatmentPlan> _TreatmentPlans;
-
-        private void VisibleItemPlanForm()
-        {
-            IsVisibleItemPlanForm = Visibility.Visible;
-            IsVisibleGroupPlanForm = Visibility.Hidden;
-            PlanWindow.Width = 800;
-            PlanWindow.Height = 328;
-        }
-        private void VisibleItemPlanGroup()
-        {
-            IsVisibleItemPlanForm = Visibility.Hidden;
-            IsVisibleGroupPlanForm = Visibility.Visible;
-            PlanWindow.Width = 800;
-            PlanWindow.Height = 280;
-        }
-
-        public List<Classificator> ClassificatorCategories { get; set; }  
-        public List<Employee> Employes { get; set; }
-
-
-        #endregion
 
 
         #region команды, связанных с формулой зубов

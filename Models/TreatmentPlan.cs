@@ -11,7 +11,7 @@ using DevExpress.Mvvm;
 namespace Dental.Models
 {
     [Table("TreatmentPlans")]
-    public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
+    public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
     {
         public TreatmentPlan()
         {
@@ -121,13 +121,6 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
 
     }
 }

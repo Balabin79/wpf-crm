@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
@@ -14,10 +15,10 @@ namespace Dental.Models
     {
         public PatientInfo()
         {
-            TreatmentPlans = new List<TreatmentPlan>();
+            TreatmentPlans = new ObservableCollection<TreatmentPlan>();
         }
 
-        ICollection<TreatmentPlan> TreatmentPlans { get; set; }
+        public ObservableCollection<TreatmentPlan> TreatmentPlans { get; set; }
 
         [Display(Name = "Номер медицинской карты")]
         public string PatientCardNumber { get; set; } //номер карты
