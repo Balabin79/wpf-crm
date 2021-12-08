@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dental.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,10 @@ namespace Dental.Services
 {
     public class RtfParse
     {
-        public RtfParse(string txt)
+        public RtfParse(string txt, PatientInfo model)
         {
             RtfText = txt;
+            Model = model;
         }
 
         public string Run()
@@ -30,11 +32,9 @@ namespace Dental.Services
                     foreach (Match match in matches)
                     {
                         // раскодируем параметр и определим каким значением мы его заменяем
-                        string replaceParam = reg.Replace(match.Value, target);
-                        // предположим заменим словом Вася
-                        string value = "Вася";
+                        string replaceParam = reg.Replace(match.Value, target).Replace("]","").Replace("[", "").Trim();
                         //теперь находим перезаписываем параметр в исходной строке и заменяем его значением
-                        RtfText = RtfText.Replace(match.Value, value);
+                        RtfText = RtfText.Replace(match.Value, GetValueProperty(replaceParam));
                     }
                 }
                 return RtfText;
@@ -45,6 +45,9 @@ namespace Dental.Services
             }
         }
 
-        public string RtfText { get; set; }
+        private string GetValueProperty(string nameProperty) => Model.GetType().GetProperty(nameProperty)?.GetValue(Model).ToString();            
+
+        private string RtfText { get; set; }
+        private PatientInfo Model { get; set; }
     }
 }

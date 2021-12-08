@@ -155,7 +155,7 @@ namespace Dental.ViewModels
                     IDSWindow.DataContext = this;
                     var richEdit = IDSWindow.RichEdit;
                     richEdit.LoadDocument(fileName, DocumentFormat.Rtf);
-                    richEdit.RtfText = new RtfParse(richEdit.RtfText).Run();
+                    richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
                     //var txt = "";
                     //richEdit.RtfText = txt;
                     IDSWindow.ShowDialog(); 
