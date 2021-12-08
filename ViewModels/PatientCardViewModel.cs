@@ -65,6 +65,8 @@ namespace Dental.ViewModels
 
                 #region Инициализация команд, связанных с закладкой "ИДС, Документы"
                 OpenFormDocCommand = new LambdaCommand(OnOpenFormDocCommandExecuted, CanOpenFormDocCommandExecute);
+                OpenFormDocEditCommand = new LambdaCommand(OnOpenFormDocEditCommandExecuted, CanOpenFormDocEditCommandExecute);
+                DeleteDocCommand = new LambdaCommand(OnDeleteDocCommandExecuted, CanDeleteDocCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -138,33 +140,99 @@ namespace Dental.ViewModels
         #region Команды и связанный ф-нал с ИДС и документами
         // открыть форму и загрузить документ
         public ICommand OpenFormDocCommand { get; }
+        public ICommand OpenFormDocEditCommand { get; }
+        public ICommand DeleteDocCommand { get; }
 
         private bool CanOpenFormDocCommandExecute(object p) => true;
+        private bool CanOpenFormDocEditCommandExecute(object p) => true;
+        private bool CanDeleteDocCommandExecute(object p) => true;
 
         private void OnOpenFormDocCommandExecuted(object p)
         {
             try
             {
                 string fileName = p.ToString();
-
-
                 if (fileName != null && File.Exists(fileName))
                 {
+                    FileInfo fileInfo = new FileInfo(fileName);
 
                     IDSWindow = new IDSWindow();
                     IDSWindow.DataContext = this;
                     var richEdit = IDSWindow.RichEdit;
-                    richEdit.LoadDocument(fileName, DocumentFormat.Rtf);
+                    richEdit.ReadOnly = true;
+                    richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
+
+                    richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(ProgramDirectory.GetPathMyDocuments(), fileInfo.Name);
+
                     richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
-                    //var txt = "";
-                    //richEdit.RtfText = txt;
-                    IDSWindow.ShowDialog(); 
-                
+                    IDSWindow.Show();                
                 }
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnOpenFormDocEditCommandExecuted(object p)
+        {
+            try
+            {
+                string fileName = p.ToString();
+                if (fileName != null && File.Exists(fileName))
+                {
+                    IDSWindow = new IDSWindow();
+                    IDSWindow.DataContext = this;
+                    var richEdit = IDSWindow.RichEdit;
+                    richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));                   
+                    IDSWindow.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteDocCommandExecuted(object p)
+        {
+            try
+            {
+                string fileName = p.ToString();
+                if (fileName != null && File.Exists(fileName))
+                {
+
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private DocumentFormat GetDocumentFormat(string fileName)
+        {
+            try
+            {
+                string ext = new FileInfo(fileName).Extension.ToString().Replace(".", "");
+                switch(ext)
+                {
+                    case "rtf": return DocumentFormat.Rtf;
+                    case "doc": return DocumentFormat.Doc;
+                    case "docx": return DocumentFormat.Doc;
+                    case "html": return DocumentFormat.Html;
+                    case "htm": return DocumentFormat.Html;
+                    case "mht": return DocumentFormat.Mht;
+                    case "epub": return DocumentFormat.ePub;
+                    case "txt": return DocumentFormat.PlainText;
+                    case "odt": return DocumentFormat.OpenDocument;
+                    default: return DocumentFormat.PlainText;
+                }
+            }
+            catch(Exception e)
+            {
+                return DocumentFormat.PlainText;
             }
         }
 

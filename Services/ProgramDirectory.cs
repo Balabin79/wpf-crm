@@ -66,6 +66,11 @@ namespace Dental.Services
         public static string GetPathLogoDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
+        }        
+        
+        public static string GetPathMyDocuments()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         }
 
         public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber)
@@ -126,7 +131,15 @@ namespace Dental.Services
         {
             ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
             var path = GetPathIdsDirectoty();
-            IEnumerable<string> filesNames = Directory.EnumerateFiles(path).ToList();
+
+            IEnumerable<string> filesNames = new List<string>();
+            string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
+            foreach (var format in formats)
+            {
+                var collection = Directory.EnumerateFiles(path, format).ToList();
+                if (collection.Count > 0) filesNames = filesNames.Union(collection);
+            }
+
             foreach (var filePath in filesNames)
             {
                 Ids.Add(new FileInfo(filePath));

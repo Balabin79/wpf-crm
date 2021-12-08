@@ -45,7 +45,7 @@ namespace Dental.Services
             }
         }
 
-        private string GetValueProperty(string nameProperty) => Model.GetType().GetProperty(nameProperty)?.GetValue(Model).ToString();            
+        private string GetValueProperty(string nameProperty) => Model.GetType().GetProperty(nameProperty)?.GetValue(Model)?.ToString();            
 
         private string RtfText { get; set; }
         private PatientInfo Model { get; set; }

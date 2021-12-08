@@ -66,6 +66,48 @@
                 </dxlc:LayoutItem>
                
             </dxlc:LayoutGroup>
+
+            <dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutItem Label="Серия паспорта:"  Name="PassportSeries" LabelPosition="Top" >
+                    <dxe:TextEdit 
+                        Margin="0,0,8,0"
+                        Mask="d"
+                        MaskType="Numeric"
+                        Text="{Binding Model.PassportSeries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Номер:"  Name="PassportNo" LabelPosition="Top" >
+                    <dxe:TextEdit 
+                        Mask="d"
+                        MaskType="Numeric"
+                        Text="{Binding Model.PassportNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+          
+            <dxlc:LayoutItem Label="Дата выдачи:"  Name="PassportIssuanceDate" LabelPosition="Top" >
+                <dxe:DateEdit   EditValue="{Binding Model.PassportIssuanceDate, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Кем выдан:"  Name="WhomIssued" LabelPosition="Top" >
+                <dxe:MemoEdit Text="{Binding Model.WhomIssued, Mode=TwoWay, 
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </dxlc:LayoutItem>
+           
+        </dxlc:LayoutGroup>
+
+
+        <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
+            <dxlc:LayoutGroup.HeaderTemplate>
+                <DataTemplate >
+                    <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
+                </DataTemplate>
+            </dxlc:LayoutGroup.HeaderTemplate>
+
+
             <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True" LabelPosition="Top">
                 <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
@@ -90,17 +132,6 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                 </dxe:ButtonEdit>
             </dxlc:LayoutItem>
-
-        </dxlc:LayoutGroup>
-
-
-        <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
-            <dxlc:LayoutGroup.HeaderTemplate>
-                <DataTemplate >
-                    <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
-                </DataTemplate>
-            </dxlc:LayoutGroup.HeaderTemplate>
 
             <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
                 <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, 
@@ -134,18 +165,19 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </dxlc:LayoutItem>
-    
+            <dxlc:LayoutGroup Orientation="Horizontal">
                 <dxlc:LayoutItem  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Left">
                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-            <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top"  HorizontalAlignment="Left">
+                <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top"  HorizontalAlignment="Right">
                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
    
 
         <dxlc:LayoutGroup  Grid.Row="2" Grid.ColumnSpan="2"
@@ -157,7 +189,7 @@
                         
                         <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                            <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                 <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
@@ -195,7 +227,7 @@
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                         <dxb:BarButtonItem Name="bOpen"
                                            Content="Открыть файл"                                                            

@@ -6,7 +6,7 @@
         xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
         xmlns:local="clr-namespace:Dental.Views.WindowForms"
         mc:Ignorable="d"
-        Title="Документы, ИДС" Height="450" Width="800">
+        Title="Документы, ИДС" >
     <Grid>
         <dxre:RichEditControl
             x:Name="RichEdit"

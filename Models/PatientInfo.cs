@@ -133,6 +133,19 @@ namespace Dental.Models
         [Display(Name = "Перемещена в архив")]
         public bool? IsInArchive { get; set; } = false;
 
+        [Display(Name = "Серия паспорта")]
+        public string PassportSeries { get; set; }
+
+        [Display(Name = "Номер паспорта")]
+        public string PassportNo { get; set; }
+
+        [Display(Name = "Дата выдачи паспорта")]
+        public string PassportIssuanceDate { get; set; }
+
+        [Display(Name = "Кем выдан")]
+        public string WhomIssued { get; set; }
+
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -159,6 +172,10 @@ namespace Dental.Models
                 IsInArchive = this.IsInArchive,
                 Advertising = this.Advertising,
                 ClientCategory = this.ClientCategory,
+                PassportIssuanceDate = this.PassportIssuanceDate,
+                PassportNo = this.PassportNo,
+                PassportSeries = this.PassportSeries,
+                WhomIssued = this.WhomIssued
             };
 
             /*Company company = new Company { Name = this.Work.Name };
@@ -188,6 +205,10 @@ namespace Dental.Models
             model.IsInArchive = this.IsInArchive;
             model.Advertising = this.Advertising;
             model.ClientCategory = this.ClientCategory;
+            model.PassportIssuanceDate = this.PassportIssuanceDate;
+            model.PassportNo = this.PassportNo;
+            model.PassportSeries = this.PassportSeries;
+            model.WhomIssued = this.WhomIssued;
             return model;
         }
 
@@ -239,6 +260,10 @@ namespace Dental.Models
             StringParamsIsEquel(this.Note, other.Note, "Административная", "Дополнительно");
             StringParamsIsEquel(this.Advertising, other.Advertising, "Административная", "Рекламные источники");
             StringParamsIsEquel(this.ClientCategory, other.ClientCategory, "Административная", "Категории клиентов");
+            StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
+            StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
+            StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
+            StringParamsIsEquel(this.PassportNo, other.PassportNo, "Административная", "Номер паспорта");
 
             if (this.IsSubscribe != other.IsSubscribe)
             {

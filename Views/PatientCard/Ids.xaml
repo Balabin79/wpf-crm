@@ -12,7 +12,8 @@
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
               xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
               xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
               d:DesignWidth="800">
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
@@ -29,7 +30,7 @@
                         
                         <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                 <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
@@ -39,9 +40,7 @@
 
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>
-                        
-                             
-                             
+                                             
                     </DockPanel>
                     
                 </DataTemplate>
@@ -50,17 +49,26 @@
                 <dxg:GridControl  ItemsSource="{Binding Ids, Mode=TwoWay}" MaxHeight="2000"
                                  DataContext="{Binding}" Name="GridControlIds" Width="auto">
                     <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Name" Header="Название документа" Name="IdsName" />
+                    <dxg:GridColumn FieldName="Name" Name="IdsName" >
+                        <dxg:GridColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                    <TextBlock Text="Название документа" Margin="3 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </dxg:GridColumn.HeaderTemplate>
+                    </dxg:GridColumn>
 
                     <dxg:GridColumn Width="auto" >
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                         <dxb:BarButtonItem Name="bOpen"
-                                           Content="Открыть файл"                                                            
+                                           Content="Открыть документ"                                                            
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                            GlyphSize="Small"
@@ -68,20 +76,20 @@
                                            CommandParameter="{Binding Row}"/>
                                         
                                         <dxb:BarButtonItem Name="bOpenDir" 
-                                           Content="Открыть содержащую файл директорию" 
+                                           Content="Открыть документ с тегами для редактирования" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
                                            GlyphSize="Small" 
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirectoryCommand}"
-                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocEditCommand}"
+                                           CommandParameter="{Binding Row}"/>
     
                                         <dxb:BarButtonItem Name="bDeleteFile" 
-                                           Content="Удалить файл" 
+                                           Content="Удалить документ" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteFileCommand}" 
-                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
+                                           CommandParameter="{Binding Row}"/>
                                         <dxb:BarItemLinkSeparator />
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
