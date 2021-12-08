@@ -227,6 +227,12 @@ namespace Dental.Services
             if (File.Exists(path)) File.Delete(path);          
         }
 
+        public static void RemoveIDSFile(FileInfo file)
+        {
+            var path = Path.Combine(GetPathIdsDirectoty(), (file.FullName));
+            if (File.Exists(path)) File.Delete(path);
+        }
+
         public static void RemoveAllOrgFiles()
         {
             var files = GetFilesFromOrgDirectory();

@@ -67,6 +67,7 @@ namespace Dental.ViewModels
                 OpenFormDocCommand = new LambdaCommand(OnOpenFormDocCommandExecuted, CanOpenFormDocCommandExecute);
                 OpenFormDocEditCommand = new LambdaCommand(OnOpenFormDocEditCommandExecuted, CanOpenFormDocEditCommandExecute);
                 DeleteDocCommand = new LambdaCommand(OnDeleteDocCommandExecuted, CanDeleteDocCommandExecute);
+                ImportDocCommand = new LambdaCommand(OnImportDocCommandExecuted, CanImportDocCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -142,10 +143,12 @@ namespace Dental.ViewModels
         public ICommand OpenFormDocCommand { get; }
         public ICommand OpenFormDocEditCommand { get; }
         public ICommand DeleteDocCommand { get; }
+        public ICommand ImportDocCommand { get; }
 
         private bool CanOpenFormDocCommandExecute(object p) => true;
         private bool CanOpenFormDocEditCommandExecute(object p) => true;
         private bool CanDeleteDocCommandExecute(object p) => true;
+        private bool CanImportDocCommandExecute(object p) => true;
 
         private void OnOpenFormDocCommandExecuted(object p)
         {
@@ -201,11 +204,26 @@ namespace Dental.ViewModels
                 string fileName = p.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
-
-                    
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    FileInfo fileInfo = new FileInfo(fileName);
+                    ProgramDirectory.RemoveIDSFile(fileInfo);
+                    Ids.Remove(Ids.Where(f => f.FullName == fileInfo.FullName).FirstOrDefault());
                 }
             }
             catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnImportDocCommandExecuted(object p)
+        {
+            try
+            {
+
+            } 
+            catch(Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
@@ -237,9 +255,13 @@ namespace Dental.ViewModels
         }
 
         public IDSWindow IDSWindow { get; set; }
-
-        public ObservableCollection<FileInfo> _Ids;
-        public ObservableCollection<FileInfo> Ids { get; set; } = new ObservableCollection<FileInfo>();
+      
+        public ObservableCollection<FileInfo> Ids 
+        { 
+            get => ids; 
+            set => Set(ref ids, value); 
+        }
+        private ObservableCollection<FileInfo> ids;
         #endregion
 
 
@@ -445,14 +467,6 @@ namespace Dental.ViewModels
 
         #endregion
 
-
-
-
-
-
-
-
-
         #region команды, связанные с общим функционалом карты пациента
         public ICommand EditableCommand { get; }
         private bool CanEditableCommandExecute(object p) => true;
@@ -542,14 +556,6 @@ namespace Dental.ViewModels
             return true;
         }
         #endregion
-
-
-
-
-
-
-
-
 
 
         #region команды, связанных с формулой зубов

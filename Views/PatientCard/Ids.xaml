@@ -46,7 +46,7 @@
                 </DataTemplate>
             </dxlc:LayoutGroup.HeaderTemplate>
     
-                <dxg:GridControl  ItemsSource="{Binding Ids, Mode=TwoWay}" MaxHeight="2000"
+                <dxg:GridControl  ItemsSource="{Binding Ids, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxHeight="2000"
                                  DataContext="{Binding}" Name="GridControlIds" Width="auto">
                     <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="Name" Name="IdsName" >
