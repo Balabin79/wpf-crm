@@ -16,7 +16,7 @@
     </UserControl.Resources>
     <Grid MaxHeight="1200">
         <dxlc:LayoutGroup Header="Список приёмов" Name="layoutGroup157" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
-            <dxg:GridControl ItemsSource="{Binding}">
+            <dxg:GridControl ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="DateVisit" Header="Дата приема" />
                     <dxg:GridColumn FieldName="Doctors" Header="Лечащие врачи" />

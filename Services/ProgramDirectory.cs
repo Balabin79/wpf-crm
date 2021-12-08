@@ -53,7 +53,7 @@ namespace Dental.Services
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_CARDS_DIRECTORY);
         }
 
-        private static string GetPathIdsDirectoty()
+        public static string GetPathIdsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
         }

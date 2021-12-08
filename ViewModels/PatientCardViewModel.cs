@@ -68,6 +68,7 @@ namespace Dental.ViewModels
                 OpenFormDocEditCommand = new LambdaCommand(OnOpenFormDocEditCommandExecuted, CanOpenFormDocEditCommandExecute);
                 DeleteDocCommand = new LambdaCommand(OnDeleteDocCommandExecuted, CanDeleteDocCommandExecute);
                 ImportDocCommand = new LambdaCommand(OnImportDocCommandExecuted, CanImportDocCommandExecute);
+                OpenDirDocCommand = new LambdaCommand(OnOpenDirDocCommandExecuted, CanOpenDirDocCommandExecute);
                 #endregion
 
                 #region инициализация команд, связанных с картой зубов пациента
@@ -144,11 +145,13 @@ namespace Dental.ViewModels
         public ICommand OpenFormDocEditCommand { get; }
         public ICommand DeleteDocCommand { get; }
         public ICommand ImportDocCommand { get; }
+        public ICommand OpenDirDocCommand { get; }
 
         private bool CanOpenFormDocCommandExecute(object p) => true;
         private bool CanOpenFormDocEditCommandExecute(object p) => true;
         private bool CanDeleteDocCommandExecute(object p) => true;
         private bool CanImportDocCommandExecute(object p) => true;
+        private bool CanOpenDirDocCommandExecute(object p) => true;
 
         private void OnOpenFormDocCommandExecuted(object p)
         {
@@ -204,7 +207,7 @@ namespace Dental.ViewModels
                 string fileName = p.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить документ с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     FileInfo fileInfo = new FileInfo(fileName);
                     ProgramDirectory.RemoveIDSFile(fileInfo);
@@ -225,6 +228,22 @@ namespace Dental.ViewModels
             } 
             catch(Exception e)
             {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnOpenDirDocCommandExecuted(object p)
+        {
+            try
+            {
+                var dir = ProgramDirectory.GetPathIdsDirectoty();
+                Process.Start(dir);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                    text: "Невозможно открыть содержащую документы директорию!",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
         }

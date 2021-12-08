@@ -41,7 +41,7 @@
 
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
 
-        <Grid x:Name="gridPC"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid x:Name="gridPC"  ScrollViewer.CanContentScroll="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*" />
@@ -84,9 +84,12 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" >
+ 
 
-                <dxlc:LayoutControl  Orientation="Vertical"  Background="Transparent" Padding="5">
+                <dxlc:LayoutControl  
+                    Orientation="Vertical"  
+                    Background="Transparent" 
+                    Padding="5" VerticalAlignment="Stretch" Grid.Row="1">
                     <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
                         <dxlc:LayoutGroup.GroupBoxStyle>
                             <Style TargetType="dxlc:GroupBox">
@@ -99,8 +102,8 @@
                         </dxlc:LayoutGroup.GroupBoxStyle>
 
                         <dx:DXTabControl >
-                            <dx:DXTabItem Header="Административная">
-                                <tp:MainInfo DataContext="{Binding}"/>
+                            <dx:DXTabItem Header="Административная" >
+                            <tp:MainInfo DataContext="{Binding}" />
                             </dx:DXTabItem>
 
 
@@ -114,22 +117,26 @@
                              
                             </dx:DXTabItem>
 
-                            <dx:DXTabItem Header="План лечения и счета" >
-                                <tp:TreatmentPlan DataContext="{Binding}"/>
-                            </dx:DXTabItem>
+                        <dx:DXTabItem Header="План лечения и счета" >
+                            <tp:TreatmentPlan DataContext="{Binding}"/>
+                        </dx:DXTabItem>
                             <dx:DXTabItem Header="Приемы">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:VisitStore DataContext="{Binding}"/>
-                            </dx:DXTabItem>
+                            </ScrollViewer>
+                        </dx:DXTabItem>
                             <dx:DXTabItem Header="Карта зубов">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:TeethPage DataContext="{Binding}" />
-                            </dx:DXTabItem>
+                            </ScrollViewer>
+                        </dx:DXTabItem>
 
                         </dx:DXTabControl>
 
 
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutControl>
-            </ScrollViewer>
+      
         </Grid>
     </Border>
 </Page>

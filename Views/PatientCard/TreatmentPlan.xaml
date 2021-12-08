@@ -70,6 +70,7 @@
                         VerticalAlignment="Stretch"
                         MaxHeight="1500"
                         Width="auto" 
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                         >
                         
                         <dxg:GridControl.Columns>
