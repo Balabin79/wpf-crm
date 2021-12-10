@@ -43,11 +43,11 @@ namespace Dental.Services
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
         }        
         
-        private static string GetPathToPatientsCardsDirectoty()
+        public static string GetPathToPatientsCardsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
         }
-        
+
         private static string GetPathToEmployeesCardsDirectoty()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_CARDS_DIRECTORY);

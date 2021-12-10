@@ -19,8 +19,6 @@
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
     <Grid x:Name="gridIds">
-        
-
         <dxlc:LayoutGroup 
             Margin="0 10 0 0"  
             View="GroupBox" 
@@ -35,17 +33,16 @@
 
                             <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                                <dxb:BarButtonItem Command="{Binding ElementName=GridControlIds, Path=DataContext.ImportDocCommand}" 
-                                                   Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"
-                                                   Content="Импорт" 
-                                                   IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
-                                                    />
-                                <dxb:BarButtonItem Name="bOpenDir" 
-                                           Content="Директория" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                           GlyphSize="Small" 
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"/>
+                                <dxb:BarButtonItem 
+                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.ImportDocCommand}" 
+                                    Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"
+                                    Content="Импорт" />
+                                <dxb:BarButtonItem 
+                                    Name="bOpenDir" 
+                                    Content="Директория" 
+                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                    GlyphSize="Small" 
+                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"/>
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>
                                              
@@ -82,31 +79,28 @@
 
                                         <dxb:BarButtonItem Name="bOpen"
                                            Content="Открыть документ"                                                            
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
                                            CommandParameter="{Binding Row}"/>
-                                        
+
                                         <dxb:BarButtonItem Name="bOpenDir" 
                                            Content="Открыть документ с тегами для редактирования" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           IsEnabled="{Binding ElementName=GridControlIds, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
                                            GlyphSize="Small" 
                                            Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocEditCommand}"
                                            CommandParameter="{Binding Row}"/>
-    
+
                                         <dxb:BarButtonItem Name="bDeleteFile" 
                                            Content="Удалить документ" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           IsEnabled="{Binding ElementName=GridControlIds, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
                                            CommandParameter="{Binding Row}"/>
-                                        <dxb:BarItemLinkSeparator />
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
-
                             </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
 
@@ -115,38 +109,57 @@
 
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>
-                        <dxg:TableView ShowGroupPanel="False"
-                                              x:Name="IdsTableView"
-                                               NavigationStyle="Row"
-                                               AutoWidth="True"
-                                               AllowEditing="False"
-                                               ShowVerticalLines="False"
-                                               ShowHorizontalLines="False"
-                                               UseEvenRowBackground="True"
-                                               ShowIndicator="False" >
+                        <dxg:TableView 
+                             ShowGroupPanel="False"
+                             x:Name="IdsTableView"
+                             NavigationStyle="Row"
+                             AutoWidth="True"
+                             AllowEditing="False"
+                             ShowVerticalLines="False"
+                             ShowHorizontalLines="False"
+                             UseEvenRowBackground="True"
+                             ShowIndicator="False" >
                             <dxg:TableView.InputBindings>
-                                <KeyBinding Key="Delete"       
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                <KeyBinding Key="O"     
+                                <KeyBinding Key="Delete"   
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
+                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
+                               
+                                <KeyBinding Key="R"     
                                 Modifiers="Ctrl"
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
+                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
+                                
+                                <KeyBinding Key="E"     
+                                Modifiers="Ctrl"
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocEditCommand}"
+                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
+                            
                                 <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
+                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
                             </dxg:TableView.InputBindings>
 
                             <dxg:TableView.RowCellMenuCustomizations >
-                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
-                                               Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
-                                               Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
-                                               Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
-                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
-                                               Command="{Binding DeleteFileCommand}" 
-                                               CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}"/>
+                                <dxb:BarButtonItem 
+                                    GlyphSize="Small" GlyphAlignment="Left"
+                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                    KeyGesture="Ctrl+R" Content="Открыть документ" 
+                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
+                                    CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
+                                    />
+                                <dxb:BarButtonItem 
+                                    GlyphSize="Small" GlyphAlignment="Left"
+                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" 
+                                    KeyGesture="Ctrl+E" Content="Редактировать документ" 
+                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocEditCommand}"
+                                    CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
+                                    />
+                            <dxb:BarButtonItem  
+                                Content="Удалить документ"
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
+                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
+                                KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
+                                Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
