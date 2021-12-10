@@ -294,12 +294,13 @@ namespace Dental.Services
             string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, fileName);
             return new FileInfo(path).Exists;
         }
-        /*
+        
         public static void ImportIds(FileInfo file)
         {
-
+            var newPath = Path.Combine(GetPathOrgDirectoty(), (file.FullName));
+            File.Copy(file.FullName, newPath, true);
         }
-        */
+        
 
         public static List<string> Errors { get; set; } = new List<string>();
         public static bool HasErrors() => Errors.Count > 0;

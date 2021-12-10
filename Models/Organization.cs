@@ -17,10 +17,10 @@ namespace Dental.Models
         [Display(Name = "Наименование")]
         public string Name 
         {
-            get => _Name;
-            set => _Name = value?.Trim();
+            get => name;
+            set => name = value?.Trim();
         }
-        private string _Name;
+        private string name;
 
         [MaxLength(255)]
         [Display(Name = "Сокращенное наименование")]
@@ -134,13 +134,13 @@ namespace Dental.Models
         }
         private string _Ogrn;
 
-        [Display(Name = "Дата регистрации")]
-        public string RegisterDate
+        [Display(Name = "Дата лицензии")]
+        public string LicenseDate
         {
-            get => _RegisterDate;
-            set => _RegisterDate = value?.Trim();
+            get => licenseDate;
+            set => licenseDate = value?.Trim();
         }
-        private string _RegisterDate;
+        private string licenseDate;
 
         [Display(Name = "Генеральный директор")]
         public string GeneralDirector
@@ -151,12 +151,12 @@ namespace Dental.Models
         private string _GeneralDirector;
 
         [Display(Name = "Лицензия")]
-        public string License
+        public string LicenseName
         {
-            get => _License;
-            set => _License = value?.Trim();
+            get => licenseName;
+            set => licenseName = value?.Trim();
         }
-        private string _License;
+        private string licenseName;
 
         [Display(Name = "Кем выдана")]
         public string WhoIssuedBy
@@ -235,9 +235,9 @@ namespace Dental.Models
                 Bik = this.Bik,
                 BankName = this.BankName,
                 Ogrn = this.Ogrn,
-                RegisterDate = this.RegisterDate,
+                LicenseDate = this.LicenseDate,
                 GeneralDirector = this.GeneralDirector,
-                License = this.License,
+                LicenseName = this.LicenseName,
                 Site = this.Site,
                 WhoIssuedBy = this.WhoIssuedBy,
                 Additional = this.Additional,
@@ -270,9 +270,9 @@ namespace Dental.Models
             model.Bik = this.Bik;
             model.BankName = this.BankName;
             model.Ogrn = this.Ogrn;
-            model.RegisterDate = this.RegisterDate;
+            model.LicenseDate = this.LicenseDate;
             model.GeneralDirector = this.GeneralDirector;
-            model.License = this.License;
+            model.LicenseName = this.LicenseName;
             model.Site = this.Site;
             model.WhoIssuedBy = this.WhoIssuedBy;
             model.Additional = this.Additional;
@@ -334,9 +334,9 @@ namespace Dental.Models
             StringParamsIsEquel(this.Ogrn, other.Ogrn, "ОГРН");
             StringParamsIsEquel(this.Okpo, other.Okpo, "ОКПО");
             StringParamsIsEquel(this.Okved, other.Okved, "ОКВЭД");
-            StringParamsIsEquel(this.RegisterDate, other.RegisterDate, "Дата регистрации");
+            StringParamsIsEquel(this.LicenseDate, other.LicenseDate, "Дата регистрации");
             StringParamsIsEquel(this.GeneralDirector, other.GeneralDirector, "Генеральный директор");
-            StringParamsIsEquel(this.License, other.License, "Лицензия");
+            StringParamsIsEquel(this.LicenseName, other.LicenseName, "Лицензия");
             StringParamsIsEquel(this.WhoIssuedBy, other.WhoIssuedBy, "Кем выдана");
             StringParamsIsEquel(this.CorrAccountNumber, other.CorrAccountNumber, "Корреспондирующий счет");
             StringParamsIsEquel(this.Additional, other.Additional, "Дополнительно");

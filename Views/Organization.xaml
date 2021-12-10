@@ -214,17 +214,17 @@
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="License" 
-                                                  Text="{Binding Model.License, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                  Text="{Binding Model.LicenseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
-                                <dxlc:LayoutItem  Label="Дата регистрации:" 
+                                <dxlc:LayoutItem  Label="Дата лицензии:" 
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
                                     <dxe:DateEdit Name="RegisterDate" 
                                                   MaskType="DateTimeAdvancingCaret" 
                                                   Mask="d" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                  Text="{Binding Model.RegisterDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString},ValidatesOnDataErrors=True }"  />
+                                                  Text="{Binding Model.LicenseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString},ValidatesOnDataErrors=True }"  />
                                 </dxlc:LayoutItem>
 
                                 <dxlc:LayoutItem  Label="Кем выдана:"                                                   

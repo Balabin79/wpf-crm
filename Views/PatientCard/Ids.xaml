@@ -35,7 +35,7 @@
 
                             <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                                <dxb:BarButtonItem Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                <dxb:BarButtonItem Command="{Binding ElementName=GridControlIds, Path=DataContext.ImportDocCommand}" 
                                                    Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"
                                                    Content="Импорт" 
                                                    IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 

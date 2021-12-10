@@ -169,7 +169,6 @@ namespace Dental.ViewModels
                     richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
 
                     richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(ProgramDirectory.GetPathMyDocuments(), fileInfo.Name);
-
                     richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
                     IDSWindow.Show();                
                 }
@@ -224,9 +223,42 @@ namespace Dental.ViewModels
         {
             try
             {
+                var filePath = string.Empty;
+                var fileName = string.Empty;
+                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    openFileDialog.InitialDirectory = ProgramDirectory.GetPathMyDocuments();
 
-            } 
-            catch(Exception e)
+                    openFileDialog.Filter = "Office Files(*.docx; *.doc; *.rtf; *.odt; *.epub; *.txt; *.html; *.htm; *.mht; *.xml) | *.docx; *.doc; *.rtf; *.odt; *.epub; *.txt; *.html; *.htm; *.mht; *.xml";
+                    openFileDialog.FilterIndex = 2;
+                    openFileDialog.RestoreDirectory = true;
+
+                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        var idsDirectory = ProgramDirectory.GetPathIdsDirectoty();
+   
+                        foreach (var ids in Ids)
+                        {
+                            if (openFileDialog.SafeFileName == ids.Name)
+                            {
+                                var response = ThemedMessageBox.Show(title: "Внимание!", text: "Документ с таким именем уже существует. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                                if (response.ToString() == "No") return;
+                            }
+                        }
+                        fileName = openFileDialog.SafeFileName;
+                        filePath = openFileDialog.FileName;
+                    }
+                    openFileDialog.Dispose();
+                    //ProgramDirectory.ImportIds(new FileInfo(openFileDialog.FileName));
+                }
+                var newPath = Path.Combine(ProgramDirectory.GetPathIdsDirectoty(), fileName);
+                File.Copy(filePath, newPath, true);
+
+                //
+                //Ids.Add(new FileInfo(newPath));
+                Ids = ProgramDirectory.GetIds();
+            }
+            catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
@@ -252,7 +284,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                string ext = new FileInfo(fileName).Extension.ToString().Replace(".", "");
+                string ext = new FileInfo(fileName).Extension.ToString().Replace(".", "").ToLower();
                 switch(ext)
                 {
                     case "rtf": return DocumentFormat.Rtf;

@@ -12,8 +12,10 @@ namespace Dental.Services
     {
         public RtfParse(string txt, PatientInfo model)
         {
+            ApplicationContext db = new ApplicationContext();
             RtfText = txt;
             Model = model;
+            Org = db.Organizations.FirstOrDefault();
         }
 
         public string Run()
@@ -45,9 +47,29 @@ namespace Dental.Services
             }
         }
 
-        private string GetValueProperty(string nameProperty) => Model.GetType().GetProperty(nameProperty)?.GetValue(Model)?.ToString();            
+        private string GetValueProperty(string param) 
+        {
+            try
+            {
+                string propertyName = param.Substring(param.IndexOf(".") + 1).Trim();
+                string modelName = param.Substring(0, param.IndexOf(".")).Trim();
+
+                switch (modelName)
+                {
+                    case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Org)?.ToString() ?? "";
+                    case "Client": return Model?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    default: return "";
+                }
+            }
+            catch(Exception e)
+            {
+                return "";
+            }
+        
+        }           
 
         private string RtfText { get; set; }
         private PatientInfo Model { get; set; }
+        private Organization Org { get; set; }
     }
 }
