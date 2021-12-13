@@ -29,6 +29,9 @@ namespace Dental.ViewModels
 
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
 
+                Doctors = db.Employes.ToObservableCollection();
+                Patients = db.PatientInfo.ToObservableCollection();
+
                 CreateDoctors();
                 CreateCalendars();
                 CreateMedicalAppointments();
@@ -56,10 +59,11 @@ namespace Dental.ViewModels
 
 
         public virtual ObservableCollection<Employee> Doctors { get; set; }
+        public virtual ObservableCollection<PatientInfo> Patients { get; set; }
         public virtual ObservableCollection<MedicalAppointment> Appointments { get; set; }
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
 
-        private void CreateDoctors() => Doctors = db.Employes.Include("Speciality").ToObservableCollection();        
+        private void CreateDoctors() => Doctors = db.Employes.Include("EmployesSpecialities").ToObservableCollection();        
         private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
         private void CreateMedicalAppointments() => Appointments = db.Appointments.ToObservableCollection();
 

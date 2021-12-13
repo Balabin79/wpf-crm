@@ -201,7 +201,6 @@
                                 <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                     <dxb:BarButtonItem
                                            Content="Директория" 
-                                           IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            GlyphSize="Small" 
                                            Command="{Binding ElementName=layoutGroup1, Path=DataContext.OpenDirectoryCommand}"

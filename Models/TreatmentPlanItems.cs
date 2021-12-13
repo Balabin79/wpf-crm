@@ -27,7 +27,7 @@ namespace Dental.Models
 
         private Classificator _Classificator;
 
-        public int TreatmentPlanId { get; set; }
+        public int? TreatmentPlanId { get; set; }
         public TreatmentPlan TreatmentPlan { get; set; }
 
         public int? EmployeeId { get; set; }

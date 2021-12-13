@@ -139,6 +139,9 @@ namespace Dental.ViewModels
             }
         }
 
+
+
+
         #region команды, связанные с общим функционалом карты пациента
        
         public ICommand EditableCommand { get; }
@@ -332,7 +335,7 @@ namespace Dental.ViewModels
                 if (item == null) return;
                 if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     ProgramDirectory.RemoveFileFromPatientsCard(Model.Id.ToString(), file);
                 }
@@ -411,9 +414,6 @@ namespace Dental.ViewModels
             set => Set(ref _Files, value);
         }
         #endregion
-
-
-
 
         #region Команды и связанный ф-нал с ИДС и документами
         // открыть форму и загрузить документ
@@ -594,7 +594,6 @@ namespace Dental.ViewModels
         private ObservableCollection<FileInfo> ids;
         #endregion
 
-
         #region Команды и ф-нал связанный с Планом лечения
 
         // открыть форму плана лечения
@@ -736,11 +735,27 @@ namespace Dental.ViewModels
             {
                 if (p is TreatmentPlanItems item)
                 {
-                    db.Entry(item).State = EntityState.Deleted;
-                    db.SaveChanges();
-                    //var planitem = TreatmentPlans.Select(f => f.TreatmentPlanItems.Where(i => i.Id == item.Id));
-                }
+                    foreach(var plan in Model?.TreatmentPlans)
+                    {
+                        foreach (var i in plan.TreatmentPlanItems)
+                        {
+                            if (i.Guid == item.Guid)
+                            {
+                                if (item.Id != 0)
+                                {
+                                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                                    if (response.ToString() == "No") return;
+                                    
+                                    plan.TreatmentPlanItems.Remove(i);
+                                    db.SaveChanges();
+                                    return;
+                                }
+                                plan.TreatmentPlanItems.Remove(i); return;
 
+                            }
+                        }
+                    }                   
+                }
             }
             catch (Exception e)
             {

@@ -19,127 +19,266 @@
     xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
     x:Class="Dental.Views.Sheduler" 
     dx:ThemeManager.ThemeName="Office2019White"
+    
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>
+ 
             <commands:PrintCommand x:Key="Print"/>
             <vm:ShedulerViewModel x:Key="vm"/>
             <converter:DateToStringConverter x:Key="DateToString"/>
             <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+            <converter:ImageConverter x:Key="ImageConv"/>
+
+
+
+
+            <DataTemplate x:Key="Doctor.Template">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="40" Height="40" Source="{Binding Path=Photo}">
+                        <Image.Clip>
+                            <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
+                        </Image.Clip>
+                    </Image>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
+                        <TextBlock Text="{Binding Fio}"/>
+                        <TextBlock Text="{Binding Department.Name}" Opacity="0.6"/>
+                    </StackPanel>
+                </StackPanel>
+            </DataTemplate>
+            <Style x:Key="DoctorsList.Style" TargetType="dxe:ListBoxEdit">
+                <Setter Property="dx:ScrollBarExtensions.ScrollBarMode" Value="TouchOverlap"/>
+                <Setter Property="AllowCollectionView" Value="True"/>
+                <Setter Property="SelectionMode" Value="Multiple"/>
+                <Setter Property="ItemTemplate" Value="{StaticResource Doctor.Template}"/>
+            </Style>
+
+            <Style x:Key="PatientsGridControl.Style" TargetType="dxg:GridControl">
+                <Setter Property="dx:ScrollBarExtensions.ScrollBarMode" Value="TouchOverlap"/>
+            </Style>
+            <Style x:Key="PatientsTableView.Style" TargetType="dxg:TableView">
+                <Setter Property="ShowGroupPanel" Value="False"/>
+                <Setter Property="AutoWidth" Value="True"/>
+                <Setter Property="AllowEditing" Value="False"/>
+                <Setter Property="ShowIndicator" Value="False"/>
+                <Setter Property="AllowDragDrop" Value="True"/>
+                <Setter Property="ShowDragDropHint" Value="False"/>
+                <Setter Property="DropMarkerTemplate" Value="{x:Null}"/>
+            </Style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <DataTemplate x:Key="resourceHeaderContentTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Image
+                        MaxWidth="120"
+                        MaxHeight="120"
+                        HorizontalAlignment="Center"
+                        DockPanel.Dock="Top"
+                        RenderOptions.BitmapScalingMode="NearestNeighbor"
+                        Source="{Binding Resource.CustomFields.ImageName}"
+                        Stretch="Uniform" />
+                    <StackPanel Grid.Row="1">
+                        <TextBlock
+                    HorizontalAlignment="Center"
+                    FontWeight="Bold"
+                    Text="{Binding Resource.Caption}" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+            <Style TargetType="dxschv:ResourceHeaderControl">
+                <Setter Property="ContentOrientation" Value="Horizontal" />
+            </Style>
+
+
+            <Style x:Key="ResourceHeader.Style" TargetType="dxschv:ResourceHeaderControl">
+                <Setter Property="ContentTemplate" Value="{StaticResource resourceHeaderContentTemplate}" />
+                <Setter Property="ContentOrientation" Value="Horizontal" />
+            </Style>
         </ResourceDictionary>
     </Page.Resources>
     <DockPanel>
 
+        <dxlc:LayoutControl 
+            MaxHeight="2000" 
+            Width="300"            
+            Name="PART_Options" 
+            Orientation="Vertical" 
+            Padding="0" 
+            DockPanel.Dock="Right">
+            <dxe:DateNavigator
+                ShowTodayButton="False" 
+                ShowWeekNumbers="False" 
+                IsMultiSelect="True"
+                VerticalAlignment="Top" 
+                dxlc:LayoutControl.AllowVerticalSizing="True">
+                <dxe:DateNavigator.StyleSettings>
+                    <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
+                </dxe:DateNavigator.StyleSettings>
+            </dxe:DateNavigator>
+            <dx:DXTabControl
+                DataContext="{StaticResource vm}"
+                dxlc:LayoutControl.AllowVerticalSizing="True" 
+                Padding="0" 
+                Margin="-1,0,-1,-1">
+                <dx:DXTabItem Header="Doctors">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Switch visible doctors" Opacity="0.6" Margin="6,3,6,3" />
+                        <dxe:ListBoxEdit 
+                                    Style="{StaticResource DoctorsList.Style}"
+                                    Margin="-1,0,-1,-1"
+                                    EditValue="{Binding SelectedDoctors}"
+                                    ItemsSource="{Binding Doctors, Mode=TwoWay}" 
+                                    DisplayMember="Fio">
+                            <dxe:ListBoxEdit.ItemContainerStyle>
+                                <Style TargetType="dxe:ListBoxEditItem">
+                                    <Setter Property="IsSelected" Value="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Style>
+                            </dxe:ListBoxEdit.ItemContainerStyle>
+                        </dxe:ListBoxEdit>
+                    </DockPanel>
+                </dx:DXTabItem>
+                <dx:DXTabItem Header="Patients">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Drag and drop a patient onto Scheduler" Opacity="0.6" Margin="6,3,6,3" />
+                        <dxg:GridControl
+                        Style="{StaticResource PatientsGridControl.Style}"
+                            Margin="-1,0,-1,-1"
+                            ItemsSource="{Binding Patients}">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="FullName" />
+                                <dxg:GridColumn FieldName="BirthDate" />
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView
+                                    Name="view"
+                                    Style="{StaticResource PatientsTableView.Style}"
+                                    StartRecordDrag="OnStartRecordDrag"
+                                    CompleteRecordDragDrop="OnCompleteRecordDragDrop"
+                                    DragRecordOver="OnDragRecordOver"
+                                    DropRecord="OnDropRecord" />
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </DockPanel>
+                </dx:DXTabItem>
+            </dx:DXTabControl>
+        </dxlc:LayoutControl>
 
 
-        <dxr:RibbonControl DockPanel.Dock="Top" 
-                           Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=RibbonControl}}" 
-                           dxsch:SchedulerControl.Scheduler="{Binding ElementName=scheduler}">
-            <dxr:RibbonDefaultPageCategory Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Categories_Default}}">
-                <dxr:RibbonPage x:Name="Pages_Home" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Pages_Home}}">
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_Appointment" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_Appointment}}">
-                        <dxb:BarButtonItem x:Name="Items_Home_Appointment_NewAppointment" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Appointment_NewAppointment}}"/>
-                        <dxb:BarButtonItem x:Name="Items_Home_Appointment_NewRecurringAppointment" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Appointment_NewRecurringAppointment}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_Navigate" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_Navigate}}">
-                        <dxb:BarButtonItem x:Name="Items_Home_Navigate_Backward" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Navigate_Backward}}"/>
-                        <dxb:BarButtonItem x:Name="Items_Home_Navigate_Forward" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Navigate_Forward}}"/>
-                        <dxb:BarButtonItem x:Name="Items_Home_Navigate_GotoToday" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Navigate_GotoToday}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_Arrange" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_Arrange}}">
-                        <dxb:BarLinkContainerItem x:Name="Items_Home_Arrange_Views" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Arrange_Views}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_GroupBy" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_GroupBy}}">
-                        <dxb:BarCheckItem x:Name="Items_Home_GroupBy_GroupByNone" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_GroupBy_GroupByNone}}"/>
-                        <dxb:BarCheckItem x:Name="Items_Home_GroupBy_GroupByDate" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_GroupBy_GroupByDate}}"/>
-                        <dxb:BarCheckItem x:Name="Items_Home_GroupBy_GroupByResource" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_GroupBy_GroupByResource}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_TimeScale" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_TimeScale}}">
-                        <dxb:BarSubItem x:Name="Items_Home_TimeScale_SwitchTimeScale" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_TimeScale_SwitchTimeScale}}"/>
-                        <dxb:BarEditItem x:Name="Items_Home_TimeScale_IntervalCount" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_TimeScale_IntervalCount}}"/>
-                        <dxb:BarSubItem x:Name="Items_Home_TimeScale_TimeScaleCaptions" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_TimeScale_ShowTimeScaleCaptions}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_Layout" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_Layout}}">
-                        <dxb:BarCheckItem x:Name="Items_Home_Layout_ShowWorkTimeOnly" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Layout_ShowWorkTimeOnly}}"/>
-                        <dxb:BarSubItem x:Name="Items_Home_Layout_SwitchSnapToCells" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Layout_SwitchSnapToCells}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Home_Window" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Home_Window}}">
-                        <dxb:BarButtonItem x:Name="Items_Home_Window_ShowRemindersWindow" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Home_Window_ShowRemindersWindow}}"/>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-            </dxr:RibbonDefaultPageCategory>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <dxsch:SchedulerControl 
+            DataContext="{StaticResource vm}"
+            x:Name="scheduler" 
+            CommandBarStyle="Ribbon"
+            GroupType="Resource" 
+            FirstDayOfWeek="Monday" 
+            MaxHeight="2000"                   
+            Margin="5"
+            AllowAppointmentConflicts="False"
+            AppointmentWindowShowing="OnAppointmentWindowShowing"
+            StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
+            DropAppointment="OnDropAppointment"
+            dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
             
-            <dxr:RibbonPageCategory 
-                x:Name="Categories_Appointment" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Categories_Appointment}}">
-                <dxr:RibbonPage x:Name="Pages_Appointment" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Pages_Appointment}}">
-                    <dxr:RibbonPageGroup x:Name="Groups_Appointment_Actions" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Appointment_Actions}}">
-                        <dxb:BarButtonItem x:Name="Items_Appointment_Actions_Open" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Actions_Open}}"/>
-                        <dxb:BarButtonItem x:Name="Items_Appointment_Actions_Delete" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Actions_Delete}}"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup x:Name="Groups_Appointment_Options" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Groups_Appointment_Options}}">
-                        <dxb:BarSubItem x:Name="Items_Appointment_Options_ShowTimeAs" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Options_ShowTimeAs}}"/>
-                        <dxb:BarSubItem x:Name="Items_Appointment_Options_LabelAs" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Options_LabelAs}}"/>
-                        <dxb:BarSubItem x:Name="Items_Appointment_Options_Reminder" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Options_Reminder}}"/>
-                        <dxb:BarCheckItem x:Name="Items_Appointment_Options_Recurrence" Style="{DynamicResource {dxscht:SchedulerCommandBarThemeKey ResourceKey=Items_Appointment_Options_Recurrence}}"/>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-            </dxr:RibbonPageCategory>
-        </dxr:RibbonControl>
-        
-        <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
+            
+            <dxsch:SchedulerControl.RibbonActions>
+                <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_LabelAs}"/>
+                <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
+            </dxsch:SchedulerControl.RibbonActions>
+            <dxsch:SchedulerControl.OptionsContextMenu>
+                <dxsch:OptionsContextMenu>
+                    <dxsch:OptionsContextMenu.AppointmentContextMenuActions>
+                        <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.ContextMenu_Items_Appointment_Options_LabelAs}"/>
+                        <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.ContextMenu_Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
+                    </dxsch:OptionsContextMenu.AppointmentContextMenuActions>
+                </dxsch:OptionsContextMenu>
+            </dxsch:SchedulerControl.OptionsContextMenu>
 
-            <Grid x:Name="gridMainClientGroups" 
-                  ScrollViewer.CanContentScroll="True" 
-                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                  MaxHeight="2000">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <dxsch:DayView
+                x:Name="dayView"
+                NavigationButtonsVisibility="Never"
+                ResourcesPerPage="5"
+                ShowAllDayArea="False"
+                ShowWorkTimeOnly="True"
+                SnapToCellsMode="Never"
+                TimeScale="00:10:00"
+                ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
+                ResourceHeaderContentTemplate="{StaticResource resourceHeaderContentTemplate}"/>
+            <dxsch:TimelineView
+                x:Name="timelineView"
+                ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
+                NavigationButtonsVisibility="Never"
+                ResourcesPerPage="5">
+                <dxsch:TimelineView.TimeScales>
+                    <dxsch:TimeScaleDay />
+                    <dxsch:TimeScaleWorkHour />
+                </dxsch:TimelineView.TimeScales>
+            </dxsch:TimelineView>
+            <dxsch:SchedulerControl.DataSource>
+                <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
+                    <dxsch:DataSource.ResourceMappings>
+                        <dxsch:ResourceMappings Caption="Fio" Id="Id" >
+                            <dxsch:CustomFieldMapping Mapping="SheduleImg" Name="ImageName" />
+                        </dxsch:ResourceMappings>
 
+                                    </dxsch:DataSource.ResourceMappings>
 
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-
-                    <dxsch:SchedulerControl
-                        x:Name="scheduler" 
-                        GroupType="Resource" 
-                        FirstDayOfWeek="Monday" 
-                        MaxHeight="2000" 
-                        Margin="5">
-                        <dxsch:SchedulerControl.DataSource>
-                            <dxsch:DataSource ResourcesSource="{Binding Doctors}" 
-                                              AppointmentsSource="{Binding Appointments}">
-                                <dxsch:DataSource.ResourceMappings>
-                                    <dxsch:ResourceMappings Caption="Name" Id="Id"/>
-                                </dxsch:DataSource.ResourceMappings>
-                                <dxsch:DataSource.AppointmentMappings>
-                                    <dxsch:AppointmentMappings
-                                        Type="Type"
+                                    <dxsch:DataSource.AppointmentMappings>
+                                        <dxsch:AppointmentMappings
+                                        Type="AppointmentType"
                                         StatusId="StatusId"
                                         Start="StartTime"
                                         Subject="PatientName"
-                                        ResourceId="DoctorId"
+                                        ResourceId="EmployeeId"
                                         RecurrenceInfo="RecurrenceInfo"
                                         Reminder="ReminderInfo"
-                                        LabelId="CategoryId"
+                                        LabelId="LabelId"
                                         Location="Location"
                                         Id="Id"
                                         End="EndTime"
-                                        Description="Notes"
+                                        Description="Description"
                                         AllDay="AllDay">
-                                        <dxsch:CustomFieldMapping Mapping="InsuranceNumber" Name="InsuranceNumber"/>
-                                        <dxsch:CustomFieldMapping Mapping="FirstVisit" Name="FirstVisit"/>
-                                    </dxsch:AppointmentMappings>
-                                </dxsch:DataSource.AppointmentMappings>
-                            </dxsch:DataSource>
-                        </dxsch:SchedulerControl.DataSource>
-                    </dxsch:SchedulerControl>
-                    
 
-                </ScrollViewer>
-            </Grid>
-        </Border>
-    </DockPanel>
+                                        </dxsch:AppointmentMappings>
+
+                                    </dxsch:DataSource.AppointmentMappings>
+                                </dxsch:DataSource>
+                            </dxsch:SchedulerControl.DataSource>
+                        </dxsch:SchedulerControl>
+
+                    </DockPanel>
+
+
 </Page>

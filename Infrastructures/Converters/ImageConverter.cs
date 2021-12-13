@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,13 @@ namespace Dental.Infrastructures.Converters
         public object Convert(
             object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new BitmapImage(new Uri(value.ToString()));
+
+            if (!string.IsNullOrEmpty(value?.ToString()) && File.Exists(value?.ToString()))
+            {
+                return new BitmapImage(new Uri(value.ToString()));
+            }
+
+            return null;
         }
 
         public object ConvertBack(

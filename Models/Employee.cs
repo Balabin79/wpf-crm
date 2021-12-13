@@ -9,6 +9,8 @@ using System.Reflection;
 using Dental.Models.Base;
 using System.Windows.Media;
 using System.Globalization;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Dental.Models
 {
@@ -18,6 +20,12 @@ namespace Dental.Models
 
         [NotMapped]
         public ImageSource Image { get; set; }
+
+        [NotMapped]
+        public ImageSource SheduleImg {
+            get => (!string.IsNullOrEmpty(Photo) && File.Exists(Photo)) ? new BitmapImage(new Uri(Photo)) : null;
+            
+        }
 
         [NotMapped]
         public string Fio { 

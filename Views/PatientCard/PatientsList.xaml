@@ -16,6 +16,7 @@
         <commands:PrintCommand x:Key="Print"/>
         <vm:PatientListViewModel x:Key="vm"/>
     </Page.Resources>
+    
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
         <Grid DataContext="{StaticResource vm}"
                   ScrollViewer.CanContentScroll="True" 
@@ -36,7 +37,12 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:ToolBarControl
+                        x:Name="fileToolBar" 
+                        Caption="File"
+                        ShowDragWidget="False"
+                        AllowCustomizationMenu="False" 
+                        AllowQuickCustomization="False">
                         <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" DataContext="{x:Static services:Navigation.Instance}"
                                            Glyph="{dx:DXImage SvgImages/XAF/FilterEditor_User.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/FilterEditor_User.svg}" 

@@ -15,8 +15,6 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
 
-                      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
-                      xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
 
               d:DesignWidth="800">
 
