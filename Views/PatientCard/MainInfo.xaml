@@ -312,6 +312,7 @@
                                     CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
                                 <dxb:BarButtonItem 
                                     Content="Удалить файл"
+                                    IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}"
                                     Command="{Binding ElementName=attachFileTableView,Path=DataContext.DeleteFileCommand}" 
                                     CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                     KeyGesture="Delete" 

@@ -647,7 +647,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (PlanModel.Id == 0) Model.TreatmentPlans.Add(PlanModel);
+                if (PlanModel.Id == 0) 
+                {
+                    if (!string.IsNullOrEmpty(PlanModel["Name"])) return;
+                    db.TreatmentPlan.Add(PlanModel);
+                }
+                              
                 db.SaveChanges();
                 PlanWindow.Close();
             }
@@ -663,10 +668,14 @@ namespace Dental.ViewModels
             {
                 if (p is TreatmentPlan plan)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    
+
+
+                   // plan.TreatmentPlanItems = null;
+                    db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);                   
                     db.TreatmentPlan.Remove(plan);
+                    
                     db.SaveChanges();
                 }
             }
@@ -696,11 +705,26 @@ namespace Dental.ViewModels
             }
         }
 
+
+
+
+
+
+
+
+
+
+
+
         private void OnAddRowInPlanCommandExecuted(object p)
         {
             try
             {
-                if (p is TreatmentPlan plan) plan.TreatmentPlanItems.Add(new TreatmentPlanItems());
+                if (p is TreatmentPlan plan) 
+                {
+                    Classificator cl = db.Classificator.Where(f => f.Id == 1).FirstOrDefault();
+                    plan.TreatmentPlanItems.Add(new TreatmentPlanItems() /*{ Classificator = cl }*/);
+                }
             }
             catch (Exception e)
             {
@@ -712,6 +736,22 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (p is TreatmentPlanItems item)
+                {
+                    if (item.TreatmentPlanId == null) return;
+                    var items = Model.TreatmentPlans.FirstOrDefault(f => f.Id == item.TreatmentPlanId)?.TreatmentPlanItems.ToList();
+                    foreach (var i in items)
+                    {
+                        if (!string.IsNullOrEmpty(i["Classificator"]))
+                        {
+                            ThemedMessageBox.Show(title: "Ошибка!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    
+                        }
+
+                    }
+                }
+
+
                 if (db.GetValidationErrors().Count() > 0) return;
 
                 int cnt = db.SaveChanges();
@@ -735,27 +775,17 @@ namespace Dental.ViewModels
             {
                 if (p is TreatmentPlanItems item)
                 {
-                    foreach(var plan in Model?.TreatmentPlans)
-                    {
-                        foreach (var i in plan.TreatmentPlanItems)
-                        {
-                            if (i.Guid == item.Guid)
-                            {
-                                if (item.Id != 0)
-                                {
-                                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                                    if (response.ToString() == "No") return;
-                                    
-                                    plan.TreatmentPlanItems.Remove(i);
-                                    db.SaveChanges();
-                                    return;
-                                }
-                                plan.TreatmentPlanItems.Remove(i); return;
+                    var planItem = Model.TreatmentPlans.FirstOrDefault(f => f.Id == item.TreatmentPlanId)?.TreatmentPlanItems.FirstOrDefault(i => i.Id == item.Id);
 
-                            }
-                        }
-                    }                   
+                    if (item.Id != 0)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                           if (response.ToString() == "No") return;
+                    }
+                    if (string.IsNullOrEmpty(planItem["Classificator"]) && item.Id != 0)db.Entry(planItem).State = EntityState.Deleted;
+                    else db.Entry(planItem).State = EntityState.Detached;
                 }
+
             }
             catch (Exception e)
             {

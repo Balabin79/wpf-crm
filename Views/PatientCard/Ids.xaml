@@ -124,7 +124,7 @@
                                 Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
                                 CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
                                
-                                <KeyBinding Key="R"     
+                                <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
                                 Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
                                 CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
@@ -143,7 +143,7 @@
                                 <dxb:BarButtonItem 
                                     GlyphSize="Small" GlyphAlignment="Left"
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                    KeyGesture="Ctrl+R" Content="Открыть документ" 
+                                    KeyGesture="Ctrl+O" Content="Открыть документ" 
                                     Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
                                     CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
                                     />
@@ -151,6 +151,7 @@
                                     GlyphSize="Small" GlyphAlignment="Left"
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" 
                                     KeyGesture="Ctrl+E" Content="Редактировать документ" 
+                                    IsEnabled="{Binding ElementName=GridControlIds, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}"
                                     Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocEditCommand}"
                                     CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
                                     />
@@ -159,6 +160,7 @@
                                 Command="{Binding ElementName=GridControlIds, Path=DataContext.DeleteDocCommand}"
                                 CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
                                 KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
+                                IsEnabled="{Binding ElementName=GridControlIds, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}"
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>

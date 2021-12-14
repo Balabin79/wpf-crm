@@ -12,9 +12,36 @@
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              dx:ThemeManager.ThemeName="Office2019White" 
              >
-    <dxlc:LayoutGroup Header="Карта зубов пациента"  Margin="0 0 5 0"  
-                                Name="layoutGroup1885" View="GroupBox" 
-                      Orientation="Vertical" ItemLabelsAlignment="Local">
+    <dxlc:LayoutGroup  
+        Margin="0 0 5 0" 
+        Name="layoutGroup1885" 
+        View="GroupBox" 
+        Orientation="Vertical" 
+        ItemLabelsAlignment="Local">
+        <dxlc:LayoutGroup.HeaderTemplate>
+            <DataTemplate>
+                <DockPanel HorizontalAlignment="Stretch">
+                    <TextBlock Text="Карта зубов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                    <dxb:BarContainerControl
+                                    DockPanel.Dock="Right" 
+                                    HorizontalAlignment="Right">
+                        <dxb:ToolBarControl 
+                                        BarItemDisplayMode="ContentAndGlyph" 
+                                        Caption="File" 
+                                        AllowCustomizationMenu="False"                                         
+                                        AllowQuickCustomization="False"
+                                        ShowDragWidget="False">
+                            <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
+                                            CommandParameter="{Binding ElementName= view, Path=FocusedRow}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                            Content="Детская карта" />
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
+            </DataTemplate>
+        </dxlc:LayoutGroup.HeaderTemplate>
         <Grid  VerticalAlignment="Top" x:Name="gridTeeth">
             <Grid.RowDefinitions>
                 <RowDefinition />

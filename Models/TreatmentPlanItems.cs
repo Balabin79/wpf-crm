@@ -14,18 +14,8 @@ namespace Dental.Models
     public class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {    
         [Required(ErrorMessage = @"Поле ""Классификатор"" обязательно для заполнения")]
-        public Classificator Classificator 
-        {
-            get => _Classificator;
-            set 
-            {
-                _Classificator = value;
-                OnPropertyChanged(nameof(Classificator));
-            } 
-        }
+        public Classificator Classificator { get; set; }
         public int? ClassificatorId { get; set; }
-
-        private Classificator _Classificator;
 
         public int? TreatmentPlanId { get; set; }
         public TreatmentPlan TreatmentPlan { get; set; }

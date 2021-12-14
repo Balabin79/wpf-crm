@@ -3,12 +3,30 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Dental.Models.Base;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
         public ApplicationContext() : base("DefaultConnection"){}
+
+        /*
+        public List<ValidationResult> CustomErrors { get; set; } = new List<ValidationResult>();
+
+        public void CustomValidate()
+        {
+            var changedEntities = ChangeTracker.Entries().Where(_ => _.State == EntityState.Added || _.State == EntityState.Modified);
+
+            foreach (var e in changedEntities)
+            {
+                var vc = new ValidationContext(e.Entity, null, null);
+                Validator.TryValidateObject(e.Entity, vc, CustomErrors, validateAllProperties: true);
+            }
+
+        }
+        */
 
         public override int SaveChanges()
         {

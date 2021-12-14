@@ -16,10 +16,9 @@
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:dxschv="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/visual"
       xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
-    xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
-    x:Class="Dental.Views.Sheduler" 
-    dx:ThemeManager.ThemeName="Office2019White"
-    
+      xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
+      x:Class="Dental.Views.Sheduler" 
+      dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>

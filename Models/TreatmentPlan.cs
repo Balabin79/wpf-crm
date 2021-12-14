@@ -24,7 +24,11 @@ namespace Dental.Models
         public string Name
         {
             get => _Name;
-            set => _Name = value?.Trim();
+            set 
+            {
+                _Name = value?.Trim();
+                OnPropertyChanged(nameof(Name));
+            } 
         }
         private string _Name;
 
@@ -45,7 +49,11 @@ namespace Dental.Models
         public string DateTime
         {
             get =>  (System.DateTime.TryParse(_DateTime, out DateTime result)) ? result.ToShortDateString() : _DateTime;
-            set => _DateTime = value;
+            set 
+            { 
+                _DateTime = value;
+                OnPropertyChanged(nameof(DateTime));
+            }
         }
         private string _DateTime;
 

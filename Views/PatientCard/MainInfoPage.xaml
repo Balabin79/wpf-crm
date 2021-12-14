@@ -120,7 +120,7 @@
                         <dx:DXTabItem Header="План лечения и счета" >
                             <tp:TreatmentPlan DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                            <dx:DXTabItem Header="Приемы">
+                            <dx:DXTabItem Header="План посещений">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:VisitStore DataContext="{Binding}"/>
                             </ScrollViewer>

@@ -359,10 +359,7 @@
                 <DockPanel  HorizontalAlignment="Stretch">
                     <TextBlock Text="Планы лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
-                    <dxb:BarContainerControl 
-                        DockPanel.Dock="Right" 
-                        HorizontalAlignment="Right"
-                        >
+                    <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
                         <dxb:ToolBarControl 
                             ShowDragWidget="False" 
@@ -379,9 +376,7 @@
                             />
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
-
                 </DockPanel>
-
             </DataTemplate>
         </dxlc:LayoutGroup.HeaderTemplate>
 
@@ -406,36 +401,58 @@
                     >
 
                     <dxg:TableView.InputBindings>
-                        <KeyBinding Key="Delete"         
-                                Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
-                        <KeyBinding Key="N"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormPlanCommand}"
-                                CommandParameter="-1"  
-                                    />
-                        <KeyBinding Key="G"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormPlanCommand}"
-                                CommandParameter="-2"  
-                                    />
-                        <KeyBinding Key="E"     
-                                Modifiers="Ctrl"
-                                Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                        <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        
+                        <KeyBinding 
+                            Key="N"     
+                            Modifiers="Ctrl"
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"/>
+                        
+                        <KeyBinding 
+                            Key="E"     
+                            Modifiers="Ctrl"
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
+                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}" />
+
+                        <KeyBinding 
+                            Key="Delete"         
+                            Command="{Binding ElementName=grid, Path=DataContext.DeletePlanCommand}"
+                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                        
+                        <MouseBinding 
+                            Gesture="LeftDoubleClick"      
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
+                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                                               
                     </dxg:TableView.InputBindings>
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding }"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  Command="{Binding OpenFormCommand}" CommandParameter="-1"/>
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/AddFile_32x32.png}" DataContext="{Binding }"
-                                            Name="addGroup" KeyGesture="Ctrl+G" Content="Добавить группу"  Command="{Binding OpenFormCommand}" CommandParameter="-2"/>
-                        <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/EditName_32x32.png}" DataContext="{Binding }"
-                            Name="editRow" KeyGesture="Ctrl+E" Content="Редактировать"  Command="{Binding OpenFormCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                        <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage Images/Actions/Trash_32x32.png}" DataContext="{Binding }"/>
+                    <dxg:TableView.RowCellMenuCustomizations >
+                        
+                        <dxb:BarButtonItem 
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}" 
+                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                            Content="Создать план лечения" 
+                            KeyGesture="Ctrl+N"
+                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                            />
+                        
+                        <dxb:BarButtonItem 
+                            GlyphSize="Small" 
+                            GlyphAlignment="Left"
+                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                            KeyGesture="Ctrl+E"
+                            Content="Редактировать план лечения" 
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
+                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
+                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                    />
+                        
+                        <dxb:BarButtonItem  
+                            Content="Удалить план лечения"
+                            Command="{Binding ElementName=grid, Path=DataContext.DeletePlanCommand}"
+                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
+                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"/>
+
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
