@@ -12,7 +12,17 @@ namespace Dental.Models
 {
     [Table("TreatmentPlansItems")]
     public class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
-    {    
+    {
+        public void Update()
+        {
+            OnPropertyChanged(nameof(Classificator));
+            OnPropertyChanged(nameof(Employee));
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged(nameof(Note));
+            OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(Status));
+        }
+
         [Required(ErrorMessage = @"Поле ""Классификатор"" обязательно для заполнения")]
         public Classificator Classificator { get; set; }
         public int? ClassificatorId { get; set; }
@@ -23,8 +33,7 @@ namespace Dental.Models
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
-        public int Count { get; set; } = 1;
-
+        public int Count { get; set; }
         public string Note { get; set; }
         public string Price { get; set; }
         public string Status { get; set; }
@@ -116,11 +125,5 @@ namespace Dental.Models
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
     }
 }

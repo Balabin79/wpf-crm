@@ -13,6 +13,12 @@ namespace Dental.Models
     [Table("TreatmentPlans")]
     public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
     {
+        public void Update()
+        {
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(DateTime));
+        }
+
         public TreatmentPlan()
         {
             TreatmentPlanItems = new ObservableCollection<TreatmentPlanItems>();
@@ -26,8 +32,7 @@ namespace Dental.Models
             get => _Name;
             set 
             {
-                _Name = value?.Trim();
-                OnPropertyChanged(nameof(Name));
+                _Name = value?.Trim();              
             } 
         }
         private string _Name;
@@ -52,7 +57,6 @@ namespace Dental.Models
             set 
             { 
                 _DateTime = value;
-                OnPropertyChanged(nameof(DateTime));
             }
         }
         private string _DateTime;

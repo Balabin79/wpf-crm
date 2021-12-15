@@ -38,7 +38,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Новая позиция в плане лечения" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
+                    <TextBlock Text="Позиция в плане лечения" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
                     <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>
@@ -76,41 +76,40 @@
                                     
                                     <dxe:PopupBaseEdit.PopupContentTemplate>
                                         <ControlTemplate>
+                                            
                                             <dxg:TreeListControl 
                                             
                                                 AutoGenerateColumns="None"                         
                                                 MaxHeight="2000" 
+                                                HorizontalAlignment="Stretch"
                                                 VerticalAlignment="Stretch"
                                                 ItemsSource="{Binding ElementName=view, Path=DataContext.ClassificatorCategories, Mode=OneWay}" 
                                  >
                                                 <dxg:TreeListControl.View>
-                                                    <dxg:TreeListView  
-                                                        Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type dxe:PopupBaseEdit}}, Path=ActualWidth}"
+                                                    <dxg:TreeListView                                                          
                                                         x:Name="tree_view"
                                                         KeyFieldName="Id"
                                                         ParentFieldName="ParentId"
                                                         TreeDerivationMode="Selfreference" 
                                                         ShowTotalSummary="False" 
-                                                        UseLegacyFilterPanel="True"
-                                                        ShowSearchPanelMode="Never"
-                                                        SearchPanelAllowFilter="True"
-                                                        AllowResizing="True"
-                                                        BestFitModeOnSourceChange="VisibleRows"            
-                                                        NavigationStyle="Row"
-                                                        AllowScrollToFocusedRow="True" 
-                                                        VerticalScrollbarVisibility="Auto"
-                                                        AllowPrintColumnHeaderImage="True" 
                                                         PrintNodeImages="True"
                                                         ShowNodeImages="True"
                                                         NodeImageSize="15,15"
+                                                        ShowSearchPanelMode="Never"
+                                                        SearchPanelAllowFilter="True"
+                                                        AllowResizing="True"
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        AllowPrintColumnHeaderImage="True"                                                 
                                                         ExpandNodesOnFiltering="True"
                                                         FilterMode="Extended"    
                                                         ImmediateUpdateRowPosition="True"
                                                         VerticalAlignment="Stretch"                                                                                                                 
                                                         AllowPerPixelScrolling="True"
-                                                        ShowVerticalLines="False"  
+                                                        UseLegacyFilterPanel="True"
                                                         ShowColumnHeaders="False"
-                                                                >
+                                                        AllowScrollToFocusedRow="True"
+                                                        ShowVerticalLines="False"                                                      
+                                                        NavigationStyle="Row">
                                                         <dxmvvm:Interaction.Behaviors>
                                                             <dxmvvm:EventToCommand 
                                                                          EventName="MouseDoubleClick" 
@@ -134,6 +133,7 @@
                                                                 </dxmvvm:EventToCommand.CommandParameter>
                                                             </dxmvvm:EventToCommand>
                                                         </dxmvvm:Interaction.Behaviors>
+                                                        
                                                         <dxg:TreeListView.NodeImageSelector>
                                                             <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
                                                         </dxg:TreeListView.NodeImageSelector>
@@ -141,16 +141,18 @@
                                                     </dxg:TreeListView>
                                                 </dxg:TreeListControl.View>
 
-                                                <dxg:TreeListControl.Columns>
-                                                    <dxg:TreeListColumn
-                                                        
-                                                        FieldName="FullName" 
-                                                        Width="auto"   >
-
-                                                        </dxg:TreeListColumn>
-                                                </dxg:TreeListControl.Columns>
-                                                   
-                                               
+                                                    <dxg:TreeListColumn 
+                                                        Width="auto"
+                                                        Name="PART_Editor">
+                                                            <dxg:TreeListColumn.CellDisplayTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock
+                                                                        TextWrapping="Wrap"
+                                                                        Text="{Binding Path=Row.Classificator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                </DataTemplate>
+                                                            </dxg:TreeListColumn.CellDisplayTemplate>
+                                                    </dxg:TreeListColumn>
+                                   
                                             </dxg:TreeListControl>
                                         </ControlTemplate>
                                     </dxe:PopupBaseEdit.PopupContentTemplate>
@@ -172,8 +174,8 @@
                                     NullText="Сотрудник" 
                                     IsTextEditable="False"
                                     DisplayMember="Fio"
-                                    SelectedItem ="{Binding PlanItemModel.Employee, Mode=TwoWay}" 
-                                    EditValue ="{Binding PlanItemModel.Employee, Mode=TwoWay}" >
+                                    SelectedItem ="{Binding PlanItemModel.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    EditValue ="{Binding PlanItemModel.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
                                     <dxe:ComboBoxEdit.StyleSettings>
                                         <dxe:RadioComboBoxStyleSettings />
                                     </dxe:ComboBoxEdit.StyleSettings>
@@ -200,7 +202,9 @@
                                 <dxe:TextEdit 
                                     Grid.Row="7"
                                     Grid.Column="0"
-                                
+                                    Mask="d"
+                                    MaskType="Numeric"
+                                    IsReadOnly="True"
                                     EditValue="{Binding PlanItemModel.Classificator.Price, Mode=OneWay, StringFormat={}{0:c2}}" 
                                     Margin="0 0 5 0" />
 
@@ -213,7 +217,9 @@
                                 <dxe:TextEdit 
                                     Grid.Row="7"
                                     Grid.Column="1"
-                                    Text="{Binding Row.Count, Mode=TwoWay}" />
+                                    Mask="d"
+                                    MaskType="Numeric"
+                                    Text="{Binding PlanItemModel.Count, Mode=TwoWay}" />
 
                             </Grid>
                         </StackPanel>
@@ -228,11 +234,11 @@
                         <dx:SimpleButton 
                             Content="Сохранить" 
                             VerticalContentAlignment="Center" 
-                            Command="{Binding SavePlanCommand}" />
+                            Command="{Binding SaveRowInPlanCommand}" />
                         <dx:SimpleButton 
                             Content="Закрыть" 
                             VerticalContentAlignment="Center" 
-                            Command="{Binding CancelFormPlanCommand}" 
+                            Command="{Binding CancelFormPlanItemCommand}" 
                             Margin="4 0 0 0"/>
                     </StackPanel>
                 </Grid>

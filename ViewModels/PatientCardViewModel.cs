@@ -62,6 +62,7 @@ namespace Dental.ViewModels
                 SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
                 DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
                 CancelFormPlanCommand = new LambdaCommand(OnCancelFormPlanCommandExecuted, CanCancelFormPlanCommandExecute);
+                CancelFormPlanItemCommand = new LambdaCommand(OnCancelFormPlanItemCommandExecuted, CanCancelFormPlanItemCommandExecute);
                 #endregion
 
                 #region Инициализация команд, связанных с закладкой "ИДС, Документы"
@@ -604,6 +605,7 @@ namespace Dental.ViewModels
         public ICommand SaveRowInPlanCommand { get; }
         public ICommand DeleteRowInPlanCommand { get; }
         public ICommand CancelFormPlanCommand { get; }
+        public ICommand CancelFormPlanItemCommand { get; }
 
         private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
         private bool CanOpenFormPlanCommandExecute(object p) => true;
@@ -614,6 +616,7 @@ namespace Dental.ViewModels
         private bool CanSaveRowInPlanCommandExecute(object p) => true;
         private bool CanDeleteRowInPlanCommandExecute(object p) => true;
         private bool CanCancelFormPlanCommandExecute(object p) => true;
+        private bool CanCancelFormPlanItemCommandExecute(object p) => true;
 
         private void OnOpenFormPlanCommandExecuted(object p)
         {
@@ -621,7 +624,7 @@ namespace Dental.ViewModels
             {
                 if (p != null)
                 {
-                    PlanModel = db.TreatmentPlan.Where(i => i.Id == (int)p).FirstOrDefault();
+                    PlanModel = db.TreatmentPlan.FirstOrDefault(i => i.Id == (int)p);
                 }
                 else
                 {
@@ -647,9 +650,9 @@ namespace Dental.ViewModels
                 {
                     if (!string.IsNullOrEmpty(PlanModel["Name"])) return;
                     db.TreatmentPlan.Add(PlanModel);
-                }
-                              
-                db.SaveChanges();
+                }                            
+                int cnt = db.SaveChanges();
+                if (cnt > 0) PlanModel.Update();
                 PlanWindow.Close();
             }
             catch (Exception e)
@@ -666,14 +669,27 @@ namespace Dental.ViewModels
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-
-
-                   // plan.TreatmentPlanItems = null;
                     db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);                   
-                    db.TreatmentPlan.Remove(plan);
-                    
+                    db.TreatmentPlan.Remove(plan);                   
                     db.SaveChanges();
                 }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelFormPlanCommandExecuted(object p)
+        {
+            try
+            {
+                if (db.Entry(PlanModel).State == EntityState.Modified)
+                {
+                    db.Entry(PlanModel).State = EntityState.Unchanged;
+                }
+                db.SaveChanges();
+                PlanWindow.Close();
             }
             catch (Exception e)
             {
@@ -701,7 +717,6 @@ namespace Dental.ViewModels
             }
         }
 
-
         private void OnAddRowInPlanCommandExecuted(object p)
         {
             try
@@ -723,22 +738,17 @@ namespace Dental.ViewModels
             }
         }
 
-
         private void OnEditPlanItemCommandExecuted(object p)
         {
             try
             {
-                if (p != null) PlanItemModel = db.TreatmentPlanItems.FirstOrDefault(i => i.Id == (int)p);
-                else
+                if (p is TreatmentPlanItems item) 
                 {
-                    PlanItemModel = new TreatmentPlanItems();
-                    PlanItemModel.TreatmentPlanId = Model.Id; ///////
-                    PlanItemModel.TreatmentPlan = db.TreatmentPlan.Find(1); ///////
-
+                    PlanItemModel = item;
+                    PlanItemWindow = new PlanItemWindow();
+                    PlanItemWindow.DataContext = this;
+                    PlanItemWindow.ShowDialog();
                 }
-                PlanItemWindow = new PlanItemWindow();
-                PlanItemWindow.DataContext = this;
-                PlanItemWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -750,36 +760,28 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is TreatmentPlanItems item)
+                if (!string.IsNullOrEmpty(PlanItemModel["Classificator"])) return;
+                if (PlanItemModel.Id == 0) 
                 {
-                    if (item.TreatmentPlanId == null) return;
-                    var items = Model.TreatmentPlans.FirstOrDefault(f => f.Id == item.TreatmentPlanId)?.TreatmentPlanItems.ToList();
-                    foreach (var i in items)
-                    {
-                        if (!string.IsNullOrEmpty(i["Classificator"]))
-                        {
-                            ThemedMessageBox.Show(title: "Ошибка!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    
-                        }
-
-                    }
-                }
-
-
-                if (db.GetValidationErrors().Count() > 0) return;
+                    db.TreatmentPlan.FirstOrDefault(f => f.Id == PlanItemModel.TreatmentPlanId)?.TreatmentPlanItems.Add(PlanItemModel);
+                } 
 
                 int cnt = db.SaveChanges();
                 if (cnt > 0)
                 {
+                    if (cnt > 0) PlanItemModel.Update();
                     var notification = new Notification();
-                    notification.Content = "Позиции в плане лечения сохранены!";
+                    notification.Content = "Позиция в плане лечения сохранена!";
                     var nav = Navigation.Instance;
                     notification.run();
                 }
+                PlanItemWindow.Close();
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+                PlanItemModel = null;
+                PlanItemWindow.Close();
             }
         }
 
@@ -787,19 +789,18 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (!string.IsNullOrEmpty(PlanItemModel["Classificator"]))
+                {
+                    int x = 0;
+                }
                 if (p is TreatmentPlanItems item)
                 {
-                    var planItem = Model.TreatmentPlans.FirstOrDefault(f => f.Id == item.TreatmentPlanId)?.TreatmentPlanItems.FirstOrDefault(i => i.Id == item.Id);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
 
-                    if (item.Id != 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                           if (response.ToString() == "No") return;
-                    }
-                    if (string.IsNullOrEmpty(planItem["Classificator"]) && item.Id != 0)db.Entry(planItem).State = EntityState.Deleted;
-                    else db.Entry(planItem).State = EntityState.Detached;
+                    db.Entry(item).State = EntityState.Deleted;
+                    db.SaveChanges();
                 }
-
             }
             catch (Exception e)
             {
@@ -807,7 +808,23 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
+        private void OnCancelFormPlanItemCommandExecuted(object p) 
+        { 
+            try
+            {
+                if (db.Entry(PlanItemModel).State == EntityState.Modified)
+                {
+                    db.Entry(PlanItemModel).State = EntityState.Unchanged;
+                }                                    
+                db.SaveChanges();
+                PlanItemWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
 
         private PlanWindow PlanWindow;
         private PlanItemWindow PlanItemWindow;
@@ -834,27 +851,6 @@ namespace Dental.ViewModels
         {
             get => _PlanGroup;
             set => Set(ref _PlanGroup, value);
-        }
-       /* public ObservableCollection<TreatmentPlan> TreatmentPlans
-        {
-            get => _TreatmentPlans;
-            set => Set(ref _TreatmentPlans, value);
-        }
-        public ObservableCollection<TreatmentPlan> _TreatmentPlans;*/
-
-        private void VisibleItemPlanForm()
-        {
-            IsVisibleItemPlanForm = Visibility.Visible;
-            IsVisibleGroupPlanForm = Visibility.Hidden;
-            PlanWindow.Width = 800;
-            PlanWindow.Height = 328;
-        }
-        private void VisibleItemPlanGroup()
-        {
-            IsVisibleItemPlanForm = Visibility.Hidden;
-            IsVisibleGroupPlanForm = Visibility.Visible;
-            PlanWindow.Width = 800;
-            PlanWindow.Height = 280;
         }
 
         public List<Classificator> ClassificatorCategories { get; set; }

@@ -58,12 +58,7 @@
                                             Content="Добавить запись" >
                                             
                                         </dxb:BarButtonItem>
-                                        <dxb:BarButtonItem  
-                                            Content="Сохранить" 
-                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                            IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                            Command="{Binding ElementName=view, Path=DataContext.SaveRowInPlanCommand}"
-                                            CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
+                     
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
                             </DockPanel>
@@ -81,33 +76,75 @@
                         >
 
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn FieldName="Classificator" Header="Услуга" Width="5*"/>
+                            <dxg:GridColumn  Header="Услуга" Width="7*" MaxWidth="300" FieldName="Classificator">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            Text="{Binding Path=Row.Classificator, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
 
 
 
                             <dxg:GridColumn 
-                                FieldName="Employee" 
+                                FieldName="Employee"
                                 Header="Исполнитель" 
-                                Width="1*" 
-                                HorizontalHeaderContentAlignment="Center"/>
+                                Width="3*" 
+                                HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            Text="{Binding Path=Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+
 
                             <dxg:GridColumn
                                 FieldName="Note" 
                                 Header="Комментарий" 
-                                Width="1*" 
-                                HorizontalHeaderContentAlignment="Center"/>
+                                Width="1*"                              
+                                HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            Text="{Binding Path=Row.Note, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
 
                             <dxg:GridColumn 
                                         FieldName="Price" 
                                         HorizontalHeaderContentAlignment="Center"            
                                         Header="Цена за ед." 
-                                        Width="1*" />
+                                        Width="1*" >
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            TextAlignment="Center"
+                                            Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
 
                             <dxg:GridColumn 
                                     FieldName="Count" 
                                     Header="Количество" 
                                     Width="1*" 
-                                    HorizontalHeaderContentAlignment="Center"/>
+                                    HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextAlignment="Center"
+                                            Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
 
                             <dxg:GridColumn Width="auto">
                                 <dxg:GridColumn.CellTemplate>
@@ -332,8 +369,8 @@
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <TextBlock Margin="0 4 0 0">
-                          <Run Text="{Binding Row.Name}"/>
-                          <Run Text="{Binding Row.DateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={} {0:D}}" />
+                          <Run Text="{Binding Row.Name, Mode=OneWay}"/>
+                          <Run Text="{Binding Row.DateTime, Mode=OneWay, StringFormat={} {0:D}}" />
                         </TextBlock>
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
