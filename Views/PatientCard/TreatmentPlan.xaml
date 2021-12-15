@@ -52,10 +52,12 @@
                                         ShowDragWidget="False">
                                         <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
-                                            CommandParameter="{Binding ElementName= view, Path=FocusedRow}"
+                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                            Content="Добавить запись" />
+                                            Content="Добавить запись" >
+                                            
+                                        </dxb:BarButtonItem>
                                         <dxb:BarButtonItem  
                                             Content="Сохранить" 
                                             Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
@@ -71,7 +73,7 @@
                     <dxg:GridControl 
                         x:Name="TreatmentPlanItems" 
                         ItemsSource="{Binding TreatmentPlanItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        MinHeight="100" 
+                        MinHeight="50" 
                         VerticalAlignment="Stretch"
                         MaxHeight="1500"
                         Width="auto" 
@@ -79,180 +81,34 @@
                         >
 
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn 
-                                FieldName="Classificator"                  
-                                Header="Услуга"
-                                Width="5*">
+                            <dxg:GridColumn FieldName="Classificator" Header="Услуга" Width="5*"/>
 
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:PopupBaseEdit
-                                            x:Name="popup"
-                                            SelectAllOnMouseUp="True"
-                                            SelectAllOnGotFocus="True"                                            
-                                            EditValue="{Binding Row.Classificator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
-                                            NullText="Выберите позицию в классификаторе">
-                                            <dxe:PopupBaseEdit.PopupContentTemplate>
-                                                <ControlTemplate>
-                                                    <dxg:GridControl 
-                                                            Grid.Row="1" 
-                                                            AutoGenerateColumns="None"  
-                                                            Name="gridr" 
-                                                            MaxHeight="2000" 
-                                                            VerticalAlignment="Stretch"
-                                                            ItemsSource="{Binding ElementName=view, Path=DataContext.ClassificatorCategories, Mode=OneWay}" 
-                                                            Margin="2">
-                                                        <dxg:GridControl.View>
-                                                            <dxg:TreeListView  
-                                                                x:Name="tree_view"
-                                                                KeyFieldName="Id"
-                                                                ParentFieldName="ParentId"
-                                                                TreeDerivationMode="Selfreference" 
-                                                                ShowTotalSummary="False" 
-                                                                UseLegacyFilterPanel="True"
-                                                                ShowSearchPanelMode="Never"
-                                                                SearchPanelAllowFilter="True"
-                                                                AllowResizing="True"
-                                                                BestFitModeOnSourceChange="VisibleRows"            
-                                                                NavigationStyle="Row"
-                                                                AllowScrollToFocusedRow="True" 
-                                                                VerticalScrollbarVisibility="Auto"
-                                                                AllowPrintColumnHeaderImage="True" 
-                                                                PrintNodeImages="True"
-                                                                ShowNodeImages="True"
-                                                                NodeImageSize="15,15"
-                                                                ExpandNodesOnFiltering="True"
-                                                                FilterMode="Extended"    
-                                                                ImmediateUpdateRowPosition="True"
-                                                                VerticalAlignment="Stretch"                                                                
-                                                                >
-                                                                <dxmvvm:Interaction.Behaviors>
-                                                                    <dxmvvm:EventToCommand 
-                                                                         EventName="MouseDoubleClick" 
-                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
-                                                                        <dxmvvm:EventToCommand.CommandParameter>
-                                                                            <MultiBinding Converter="{StaticResource multiConv}">
-                                                                                <Binding ElementName="tree_view"/>
-                                                                                <Binding ElementName="popup" />
-                                                                            </MultiBinding>
-                                                                        </dxmvvm:EventToCommand.CommandParameter>
-                                                                    </dxmvvm:EventToCommand>
 
-                                                                    <dxmvvm:EventToCommand 
-                                                                        EventName="MouseDown" 
-                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
-                                                                        <dxmvvm:EventToCommand.CommandParameter>
-                                                                            <MultiBinding Converter="{StaticResource multiConv}">
-                                                                                <Binding ElementName="tree_view"/>
-                                                                                <Binding ElementName="popup" />
-                                                                            </MultiBinding>
-                                                                        </dxmvvm:EventToCommand.CommandParameter>
-                                                                    </dxmvvm:EventToCommand>
-                                                                </dxmvvm:Interaction.Behaviors>
-                                                                <dxg:TreeListView.NodeImageSelector>
-                                                                    <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                                                                </dxg:TreeListView.NodeImageSelector>
-                                                            </dxg:TreeListView>
-                                                        </dxg:GridControl.View>
-                                                        <dxg:GridColumn FieldName="FullName"   Header="Наименование" Name="Name" MinWidth="200" Width="8*">
-                                                            <dxg:GridColumn.HeaderTemplate>
-                                                                <DataTemplate>
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
-                                                                        <TextBlock Text="Наименование" Margin="3 0 0 0"/>
-                                                                    </StackPanel>
-                                                                </DataTemplate>
-                                                            </dxg:GridColumn.HeaderTemplate>
-                                                            <dxg:GridColumn.CellTemplate>
-                                                                <DataTemplate>
-                                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Row.FullName}" />
-                                                                </DataTemplate>
-                                                            </dxg:GridColumn.CellTemplate>
-                                                        </dxg:GridColumn>
-                                                    </dxg:GridControl>
-                                                </ControlTemplate>
-                                            </dxe:PopupBaseEdit.PopupContentTemplate>
-                                        </dxe:PopupBaseEdit>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellEditTemplate>
-                            </dxg:GridColumn>
 
                             <dxg:GridColumn 
                                 FieldName="Employee" 
                                 Header="Исполнитель" 
                                 Width="1*" 
-                                HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:ComboBoxEdit                                           
-                                             ItemsSource="{Binding ElementName=view, Path=DataContext.Employes, Mode=OneWay}"                                       
-                                             NullText="Сотрудник" 
-                                             IsTextEditable="False"
-                                             DisplayMember="Fio"
-                                             SelectedItem ="{Binding Row.Employee, Mode=TwoWay}" 
-                                             EditValue ="{Binding Row.Employee, Mode=TwoWay}" >
-                                            <dxe:ComboBoxEdit.StyleSettings>
-                                                <dxe:RadioComboBoxStyleSettings />
-                                            </dxe:ComboBoxEdit.StyleSettings>
-                                        </dxe:ComboBoxEdit>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellEditTemplate>
-                            </dxg:GridColumn>
+                                HorizontalHeaderContentAlignment="Center"/>
 
                             <dxg:GridColumn
                                 FieldName="Note" 
                                 Header="Комментарий" 
                                 Width="1*" 
-                                HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Row.Note, Mode=TwoWay}" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:MemoEdit    
-                                              HorizontalAlignment="Stretch" 
-                                              Text="{Binding Row.Note, Mode=TwoWay}" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellEditTemplate>
-                            </dxg:GridColumn>
+                                HorizontalHeaderContentAlignment="Center"/>
 
                             <dxg:GridColumn 
                                         FieldName="Price" 
                                         HorizontalHeaderContentAlignment="Center"            
                                         Header="Цена за ед." 
-                                        Width="1*" >
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock 
-                                            HorizontalAlignment="Center" 
-                                            Text="{Binding Row.Classificator.Price, Mode=OneWay, StringFormat={}{0:c2}}" 
-                                            Margin="0 0 5 0" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
+                                        Width="1*" />
+
                             <dxg:GridColumn 
                                     FieldName="Count" 
                                     Header="Количество" 
                                     Width="1*" 
-                                    HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock 
-                                                HorizontalAlignment="Center"
-                                                Margin="5 0 0 0" Text="{Binding Row.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                                <dxg:GridColumn.CellEditTemplate>
-                                    <DataTemplate>
-                                        <dxe:TextEdit 
-                                                Name="PART_Editor" 
-                                                Text="{Binding Row.Count, Mode=TwoWay}" 
-                                                HorizontalAlignment="Center"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellEditTemplate>
-                            </dxg:GridColumn>
+                                    HorizontalHeaderContentAlignment="Center"/>
+
                             <dxg:GridColumn Width="auto">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
@@ -264,6 +120,13 @@
                                                 ShowDragWidget="False"
                                                 AllowCustomizationMenu="False" 
                                                 AllowQuickCustomization="False">
+                                                <dxb:BarButtonItem      
+                                                Content="Редактировать" 
+                                                IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
+                                                GlyphSize="Small"
+                                                Command="{Binding ElementName=view, Path=DataContext.EditPlanItemCommand}" 
+                                                CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                 <dxb:BarButtonItem      
                                                 Content="Удалить" 
                                                 IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
@@ -291,7 +154,7 @@
                             <dxg:TableView                                    
                                     ShowGroupPanel="False"
                                     x:Name="attachFileTableView"
-                                    NavigationStyle="Cell"
+                                    NavigationStyle="Row"
                                     AutoWidth="True"
                                     AllowEditing="True"
                                     ShowTotalSummary="True"

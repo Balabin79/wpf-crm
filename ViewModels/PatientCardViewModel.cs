@@ -53,6 +53,7 @@ namespace Dental.ViewModels
 
                 #region инициализация команд, связанных с закладкой "Планы лечения"
                 OpenFormPlanCommand = new LambdaCommand(OnOpenFormPlanCommandExecuted, CanOpenFormPlanCommandExecute);
+                EditPlanItemCommand = new LambdaCommand(OnEditPlanItemCommandExecuted, CanEditPlanItemCommandExecute);
                 SavePlanCommand = new LambdaCommand(OnSavePlanCommandExecuted, CanSavePlanCommandExecute);
                 DeletePlanCommand = new LambdaCommand(OnDeletePlanCommandExecuted, CanDeletePlanCommandExecute);
 
@@ -125,12 +126,6 @@ namespace Dental.ViewModels
 
                 ClassificatorCategories = db.Classificator.ToList();
                 Employes = db.Employes.ToList();
-                /*
-                TreatmentPlans = (Model.Id == 0) ? new ObservableCollection<TreatmentPlan>() : 
-                    db.TreatmentPlan.Where(f => f.PatientInfoId == Model.Id)
-                    .Include(f => f.TreatmentPlanItems.Select(i => i.Classificator))
-                    .Include(f => f.TreatmentPlanItems.Select(i => i.Employee))
-                    .OrderBy(f => f.Id).ToObservableCollection();*/
             }
             catch (Exception e)
             {
@@ -603,7 +598,7 @@ namespace Dental.ViewModels
         //удалить план лечения
         public ICommand DeletePlanCommand { get; }
 
-
+        public ICommand EditPlanItemCommand { get; }
         public ICommand SelectPosInClassificatorCommand { get; }
         public ICommand AddRowInPlanCommand { get; }
         public ICommand SaveRowInPlanCommand { get; }
@@ -612,6 +607,7 @@ namespace Dental.ViewModels
 
         private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
         private bool CanOpenFormPlanCommandExecute(object p) => true;
+        private bool CanEditPlanItemCommandExecute(object p) => true;
         private bool CanSavePlanCommandExecute(object p) => true;
         private bool CanDeletePlanCommandExecute(object p) => true;
         private bool CanAddRowInPlanCommandExecute(object p) => true;
@@ -706,25 +702,43 @@ namespace Dental.ViewModels
         }
 
 
-
-
-
-
-
-
-
-
-
-
         private void OnAddRowInPlanCommandExecuted(object p)
         {
             try
             {
                 if (p is TreatmentPlan plan) 
                 {
-                    Classificator cl = db.Classificator.Where(f => f.Id == 1).FirstOrDefault();
-                    plan.TreatmentPlanItems.Add(new TreatmentPlanItems() /*{ Classificator = cl }*/);
+                    PlanItemModel = new TreatmentPlanItems();
+                    PlanItemModel.TreatmentPlanId = plan.Id;
+                    PlanItemModel.TreatmentPlan = plan;
+
+                    PlanItemWindow = new PlanItemWindow();
+                    PlanItemWindow.DataContext = this;
+                    PlanItemWindow.ShowDialog();
                 }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+
+        private void OnEditPlanItemCommandExecuted(object p)
+        {
+            try
+            {
+                if (p != null) PlanItemModel = db.TreatmentPlanItems.FirstOrDefault(i => i.Id == (int)p);
+                else
+                {
+                    PlanItemModel = new TreatmentPlanItems();
+                    PlanItemModel.TreatmentPlanId = Model.Id; ///////
+                    PlanItemModel.TreatmentPlan = db.TreatmentPlan.Find(1); ///////
+
+                }
+                PlanItemWindow = new PlanItemWindow();
+                PlanItemWindow.DataContext = this;
+                PlanItemWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -796,14 +810,21 @@ namespace Dental.ViewModels
         private void OnCancelFormPlanCommandExecuted(object p) => PlanWindow.Close();
 
         private PlanWindow PlanWindow;
-       
-        
+        private PlanItemWindow PlanItemWindow;
+
+        public TreatmentPlanItems PlanItemModel
+        {
+            get => _PlanItemModel;
+            set => Set(ref _PlanItemModel, value);
+        }
+        private TreatmentPlanItems _PlanItemModel;
+
         public TreatmentPlan PlanModel
         {
             get => _PlanModel;
             set => Set(ref _PlanModel, value);
         }
-        public TreatmentPlan _PlanModel;
+        private TreatmentPlan _PlanModel;
 
         public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
