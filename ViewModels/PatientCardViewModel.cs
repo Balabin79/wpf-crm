@@ -826,6 +826,7 @@ namespace Dental.ViewModels
 
         }
 
+
         private PlanWindow PlanWindow;
         private PlanItemWindow PlanItemWindow;
 

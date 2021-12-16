@@ -64,9 +64,10 @@
                             </DockPanel>
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
-
-                    <dxg:GridControl 
-                        x:Name="TreatmentPlanItems" 
+                    
+                    <dxg:GridControl                                       
+                        x:Name="TreatmentPlanItems"
+                        CustomSummary="TreatmentPlanItems_CustomSummary"
                         ItemsSource="{Binding TreatmentPlanItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                         MinHeight="50" 
                         VerticalAlignment="Stretch"
@@ -86,8 +87,6 @@
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
 
-
-
                             <dxg:GridColumn 
                                 FieldName="Employee"
                                 Header="Исполнитель" 
@@ -101,7 +100,6 @@
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
-
 
                             <dxg:GridColumn
                                 FieldName="Note" 
@@ -118,22 +116,38 @@
                             </dxg:GridColumn>
 
                             <dxg:GridColumn 
-                                        FieldName="Price" 
+                                FieldName="Price"
                                         HorizontalHeaderContentAlignment="Center"            
                                         Header="Цена за ед." 
                                         Width="1*" >
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
+                                            x:Name="PART_Editor"
                                             TextWrapping="Wrap"
                                             TextAlignment="Center"
-                                            Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Classificator.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
 
                             <dxg:GridColumn 
-                                    FieldName="Count" 
+                                FieldName="Cost"
+                                HorizontalHeaderContentAlignment="Center"            
+                                Header="Стоимость работы" 
+                                Width="1*" >
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextWrapping="Wrap"
+                                            TextAlignment="Center"
+                                            Text="{Binding Path=Row.Classificator.Cost, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+
+                            <dxg:GridColumn 
+                                    FieldName="Count"
                                     Header="Количество" 
                                     Width="1*" 
                                     HorizontalHeaderContentAlignment="Center">
@@ -141,7 +155,7 @@
                                     <DataTemplate>
                                         <TextBlock
                                             TextAlignment="Center"
-                                            Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -181,19 +195,18 @@
 
 
                         <dxg:GridControl.View>
-                            <dxg:TableView  
-   
-                                    ShowGroupPanel="False"
+                            <dxg:TableView                                                                        
                                     x:Name="attachFileTableView"
                                     NavigationStyle="Row"
                                     AutoWidth="True"
                                     AllowEditing="False"
-                                SummaryCalculationMode="SelectedRows"
-                                    ShowTotalSummary="True"
+                                  ShowGroupPanel="False"                                                      
                                     ShowVerticalLines="False"
-                                    ShowHorizontalLines="False"
+                                    ShowHorizontalLines="True"
                                     UseEvenRowBackground="True"
-                                    ShowIndicator="False" >
+                                    ShowIndicator="False" 
+                                ShowTotalSummary="True" 
+                                >
 
                                 <dxg:TableView.InputBindings>
                                     <KeyBinding 
@@ -201,14 +214,14 @@
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}"
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
-                                    
+
                                     <KeyBinding 
                                         Key="N"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
-                                    
-                                    
+
+
                                 </dxg:TableView.InputBindings>
                                 <dxg:TableView.RowCellMenuCustomizations >
                                     <dxb:BarButtonItem 
@@ -220,7 +233,7 @@
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                         IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         Content="Добавить запись" />
-                                    
+
                                     <dxb:BarButtonItem 
                                         Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
@@ -228,25 +241,25 @@
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}"
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
-                                           
-                                </dxg:TableView.RowCellMenuCustomizations>
-                            </dxg:TableView>
-                            
-                        </dxg:GridControl.View>
 
+                                </dxg:TableView.RowCellMenuCustomizations>
+
+                                <dxg:TableView.TotalSummaryContentStyle>
+                                    <Style TargetType="dx:DataContentPresenter">
+                                        <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                                    </Style>
+                                </dxg:TableView.TotalSummaryContentStyle>
+
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
                         <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem 
-                                
-                                FieldName="Price" 
-                                SummaryType="Sum" 
-                                DisplayFormat="Итоговая сумма: {0:$0.00}" />
+                            <dxg:GridSummaryItem DisplayFormat=" {0:c2}"
+                             FieldName="Cost"
+                             SummaryType="Custom" />
+                            <dxg:GridSummaryItem DisplayFormat=" {0:c2}"
+                             FieldName="Price"
+                             SummaryType="Custom" />
                         </dxg:GridControl.TotalSummary>
-                        <dxg:GridControl.GroupSummary>
-                            <dxg:GridSummaryItem
-                                FieldName="Price" 
-                                SummaryType="Sum" 
-                                DisplayFormat="Итоговая сумма: {0:$0.00}" />
-                        </dxg:GridControl.GroupSummary>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
 
