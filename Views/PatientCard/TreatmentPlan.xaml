@@ -179,21 +179,16 @@
 
                         </dxg:GridControl.Columns>
 
-                        <dxg:GridControl.TotalSummary>
-                            <dxg:GridSummaryItem 
-                                FieldName="Price" 
-                                Alignment="Right"
-                                SummaryType="Sum" 
-                                DisplayFormat="{}{0:c2}" />
-                        </dxg:GridControl.TotalSummary>
 
                         <dxg:GridControl.View>
-                            <dxg:TableView                                    
+                            <dxg:TableView  
+   
                                     ShowGroupPanel="False"
                                     x:Name="attachFileTableView"
                                     NavigationStyle="Row"
                                     AutoWidth="True"
-                                    AllowEditing="True"
+                                    AllowEditing="False"
+                                SummaryCalculationMode="SelectedRows"
                                     ShowTotalSummary="True"
                                     ShowVerticalLines="False"
                                     ShowHorizontalLines="False"
@@ -230,13 +225,28 @@
                                         Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                         IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                        KeyGesture="Ctrl+Delete"     
+                                        KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}"
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
                                            
                                 </dxg:TableView.RowCellMenuCustomizations>
                             </dxg:TableView>
+                            
                         </dxg:GridControl.View>
+
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem 
+                                
+                                FieldName="Price" 
+                                SummaryType="Sum" 
+                                DisplayFormat="Итоговая сумма: {0:$0.00}" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem
+                                FieldName="Price" 
+                                SummaryType="Sum" 
+                                DisplayFormat="Итоговая сумма: {0:$0.00}" />
+                        </dxg:GridControl.GroupSummary>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
 

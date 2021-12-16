@@ -117,10 +117,10 @@
                              
                             </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="План лечения и счета" >
+                        <dx:DXTabItem Header="Планы лечения" >
                             <tp:TreatmentPlan DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                            <dx:DXTabItem Header="План посещений">
+                            <dx:DXTabItem Header="Планы посещений">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:VisitStore DataContext="{Binding}"/>
                             </ScrollViewer>

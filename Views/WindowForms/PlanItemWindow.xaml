@@ -143,12 +143,14 @@
 
                                                     <dxg:TreeListColumn 
                                                         Width="auto"
-                                                        Name="PART_Editor">
+                                                        FieldName="FullName"
+                                                        >
                                                             <dxg:TreeListColumn.CellDisplayTemplate>
                                                                 <DataTemplate>
                                                                     <TextBlock
                                                                         TextWrapping="Wrap"
-                                                                        Text="{Binding Path=Row.Classificator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                        Name="PART_Editor"
+                                                                        Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                                 </DataTemplate>
                                                             </dxg:TreeListColumn.CellDisplayTemplate>
                                                     </dxg:TreeListColumn>

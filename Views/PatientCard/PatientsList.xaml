@@ -107,7 +107,8 @@
                         <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
                     </dxg:GridControl.TotalSummary>
                     <dxg:GridControl.View>
-                        <dxg:TableView ShowFixedTotalSummary="True"
+                        <dxg:TableView 
+                            ShowFixedTotalSummary="True"
                                AllowScrollAnimation="True"
                                Name="view"
                                AllowFixedGroups="True"
