@@ -64,20 +64,19 @@
                             </DockPanel>
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
-                    
+
                     <dxg:GridControl                                       
                         x:Name="TreatmentPlanItems"
-                        CustomSummary="TreatmentPlanItems_CustomSummary"
+                        CustomSummary="TreatmentPlanItems_CustomSummary"                  
                         ItemsSource="{Binding TreatmentPlanItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                         MinHeight="50" 
                         VerticalAlignment="Stretch"
                         MaxHeight="1500"
                         Width="auto" 
-                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"                        
                         >
-
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn  Header="Услуга" Width="7*" MaxWidth="300" FieldName="Classificator">
+                            <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Classificator">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
@@ -89,8 +88,9 @@
 
                             <dxg:GridColumn 
                                 FieldName="Employee"
-                                Header="Исполнитель" 
-                                Width="3*" 
+                                Header="Сотрудник" 
+                                Width="4*" 
+                                MinWidth="130"
                                 HorizontalHeaderContentAlignment="Center">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
@@ -117,9 +117,9 @@
 
                             <dxg:GridColumn 
                                 FieldName="Price"
-                                        HorizontalHeaderContentAlignment="Center"            
-                                        Header="Цена за ед." 
-                                        Width="1*" >
+                                HorizontalHeaderContentAlignment="Center"            
+                                Header="Стоимость" 
+                                Width="1*" >
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
@@ -134,7 +134,7 @@
                             <dxg:GridColumn 
                                 FieldName="Cost"
                                 HorizontalHeaderContentAlignment="Center"            
-                                Header="Стоимость работы" 
+                                Header="Выплата сотруднику" 
                                 Width="1*" >
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
@@ -148,7 +148,7 @@
 
                             <dxg:GridColumn 
                                     FieldName="Count"
-                                    Header="Количество" 
+                                    Header="Кол-во" 
                                     Width="1*" 
                                     HorizontalHeaderContentAlignment="Center">
                                 <dxg:GridColumn.CellTemplate>
@@ -193,20 +193,19 @@
 
                         </dxg:GridControl.Columns>
 
-
                         <dxg:GridControl.View>
                             <dxg:TableView                                                                        
-                                    x:Name="attachFileTableView"
-                                    NavigationStyle="Row"
-                                    AutoWidth="True"
-                                    AllowEditing="False"
-                                  ShowGroupPanel="False"                                                      
-                                    ShowVerticalLines="False"
-                                    ShowHorizontalLines="True"
-                                    UseEvenRowBackground="True"
-                                    ShowIndicator="False" 
+                                x:Name="attachFileTableView"
+                                NavigationStyle="Row"
+                                AutoWidth="True"
+                                AllowEditing="False"
+                                ShowGroupPanel="False"                                                      
+                                ShowVerticalLines="False"
+                                ShowHorizontalLines="True"
+                                UseEvenRowBackground="True"
+                                ShowIndicator="False"                                
                                 ShowTotalSummary="True" 
-                                >
+                                CustomRowAppearance="attachFileTableView_CustomRowAppearance" >
 
                                 <dxg:TableView.InputBindings>
                                     <KeyBinding 
@@ -247,6 +246,8 @@
                                 <dxg:TableView.TotalSummaryContentStyle>
                                     <Style TargetType="dx:DataContentPresenter">
                                         <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                                        <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+                                        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
                                     </Style>
                                 </dxg:TableView.TotalSummaryContentStyle>
 
@@ -269,8 +270,6 @@
 
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
-
-
 
     <dxlc:LayoutGroup 
         Margin="5"
@@ -302,8 +301,6 @@
                 </DockPanel>
             </DataTemplate>
         </dxlc:LayoutGroup.HeaderTemplate>
-
-
 
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Path=Model.TreatmentPlans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 

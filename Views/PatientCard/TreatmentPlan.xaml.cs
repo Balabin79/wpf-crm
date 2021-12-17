@@ -11,12 +11,8 @@ namespace Dental.Views.PatientCard
         public TreatmentPlan()
         {
             InitializeComponent(); 
+         
         }
-/*
-        public void fff()
-        {
-            (TextBlock)(this.templateTotalSummary).
-        }*/
 
         private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
@@ -49,14 +45,17 @@ namespace Dental.Views.PatientCard
                 }
                 e.TotalValue = price;
             }
-
-         
             e.TotalValueReady = true;
         }
-
-        private void TextBlock_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        
+        private void attachFileTableView_CustomRowAppearance(object sender, CustomRowAppearanceEventArgs e)
         {
-
+            if (e.Source.DataControl is GridControl dataControl)
+            {
+                e.Handled = true;
+                dataControl.UpdateTotalSummary();
+                return;
+            }
         }
     }
 }

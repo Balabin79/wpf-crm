@@ -29,7 +29,6 @@
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Calculator-Edit.png" />
     </Window.Icon>
     <Grid>
-
         <Grid x:Name="view">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
@@ -76,10 +75,8 @@
                                     NullText="Выберите позицию в классификаторе" IsTextEditable="False">
                                     
                                     <dxe:PopupBaseEdit.PopupContentTemplate>
-                                        <ControlTemplate>
-                                            
-                                            <dxg:TreeListControl 
-                                            
+                                            <ControlTemplate>
+                                                <dxg:TreeListControl                                             
                                                 AutoGenerateColumns="None"                         
                                                 MaxHeight="2000" 
                                                 HorizontalAlignment="Stretch"
@@ -200,7 +197,7 @@
                                 <TextBlock  
                                     Grid.Row="6"
                                     Grid.Column="0"
-                                    Text="Цена (*из классификатора):"  
+                                    Text="Стоимость для клиента (*из классификатора):"  
                                     Margin="0,0,0,3" />
 
                                 <dxe:TextEdit 
@@ -209,13 +206,13 @@
                                     Mask="d"
                                     MaskType="Numeric"
                                     IsReadOnly="True"
-                                    EditValue="{Binding PlanItemModel.Classificator.Price, Mode=OneWay, StringFormat={}{0:c2}}" 
+                                    EditValue="{Binding ElementName=popup, Path=EditValue.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" 
                                     Margin="0 0 5 0" />
 
                                 <TextBlock  
                                     Grid.Row="6"
                                     Grid.Column="1"
-                                    Text="Стоимость работы сотрудника (*из классификатора):"  
+                                    Text="Размер выплаты сотруднику за работу:"  
                                     Margin="0,0,0,3" />
 
                                 <dxe:TextEdit 
@@ -224,7 +221,7 @@
                                     Mask="d"
                                     MaskType="Numeric"
                                     IsReadOnly="True"
-                                    EditValue="{Binding PlanItemModel.Classificator.Cost, Mode=OneWay, StringFormat={}{0:c2}}" 
+                                    EditValue="{Binding ElementName=popup, Path=EditValue.Cost, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" 
                                     Margin="0 0 5 0" />
 
                                 <TextBlock  
