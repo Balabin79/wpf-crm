@@ -309,15 +309,17 @@
                 <dxg:TableView  
                     Name="view"
                     UseLegacyFilterPanel="True"
-                    ShowSearchPanelMode="Always"
-                    SearchPanelAllowFilter="True"
+                    ShowSearchPanelMode="Never"
+                    SearchPanelAllowFilter="False"
+                    ShowGroupPanel="False"
                     AutoWidth="True" 
                     PrintAutoWidth="True"
                     BestFitModeOnSourceChange="VisibleRows"            
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True"  
+                    AllowPrintColumnHeaderImage="True" 
+                    
                     >
 
                     <dxg:TableView.InputBindings>

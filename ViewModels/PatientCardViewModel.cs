@@ -857,7 +857,6 @@ namespace Dental.ViewModels
         public List<Classificator> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }
 
-
         #endregion
 
         #region команды, связанных с формулой зубов
