@@ -231,15 +231,14 @@
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
                         <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
-                        <dxg:GridColumn FieldName="Size" Header="Размер файла" Width="1*" />
-                        <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="1*" />
-                        <dxg:GridColumn  Width="1*" Header="Статус">
-                            <dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn FieldName="Length" Header="Размер файла" Width="1*" >
+                            <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding RowData.Row.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Text="{Binding Row.Length, Mode=OneWay}" />
                                 </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn.CellDisplayTemplate>
                         </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="CreationTime" Header="Дата добавления" Width="1*" />
 
                         <dxg:GridColumn Width="auto" >
                             <dxg:GridColumn.CellTemplate>

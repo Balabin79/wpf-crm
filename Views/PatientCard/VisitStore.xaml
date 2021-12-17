@@ -38,7 +38,7 @@
                                             Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
                                             CommandParameter="{Binding ElementName= view, Path=FocusedRow}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
                                             Content="Добавить запись" />
                                 <dxb:BarButtonItem  
                                             Content="Сохранить" 

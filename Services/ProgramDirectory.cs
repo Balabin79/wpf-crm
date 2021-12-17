@@ -38,96 +38,35 @@ namespace Dental.Services
 
         
         /** Get path to directories **/
-        private static string GetPathToProgrammDirectory()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
-        }        
+        private static string GetPathToProgrammDirectory() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
+                       
+        public static string GetPathToPatientsCardsDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);      
+
+        private static string GetPathToEmployeesCardsDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_CARDS_DIRECTORY);
         
-        public static string GetPathToPatientsCardsDirectoty()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
-        }
-
-        private static string GetPathToEmployeesCardsDirectoty()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_CARDS_DIRECTORY);
-        }
-
-        public static string GetPathIdsDirectoty()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
-        }
-
-        private static string GetPathOrgDirectoty()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ORG_DIRECTORY);
-        }
-
-        public static string GetPathLogoDirectoty()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
-        }        
+        public static string GetPathIdsDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
         
-        public static string GetPathMyDocuments()
-        {
-            return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-        }
-
-        public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber)
-        {
-            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
-            return new DirectoryInfo(path);
-        }
-
-        public static DirectoryInfo GetEmployeeCardDirectory(string employeeCardNumber)
-        {
-            string path = Path.Combine(GetPathToEmployeesCardsDirectoty(), employeeCardNumber);
-            return new DirectoryInfo(path);
-        }
-
+        private static string GetPathOrgDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ORG_DIRECTORY);
+        
+        public static string GetPathLogoDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
+                       
+        public static string GetPathMyDocuments() => Environment.GetFolderPath(Environment.SpecialFolder.Personal);       
+        public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber) => new DirectoryInfo(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber));
+        
+        public static DirectoryInfo GetEmployeeCardDirectory(string employeeCardNumber) => new DirectoryInfo(Path.Combine(GetPathToEmployeesCardsDirectoty(), employeeCardNumber));
+       
         /** Get files from directories **/
 
-        public static IEnumerable<ClientFiles> GetFilesFromPatientCardDirectory(string patientCardNumber)
-        {
-            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
-            return GetFilesFromDirectory(path);
-        }
+        public static IEnumerable<FileInfo> GetFilesFromPatientCardDirectory(string patientCardNumber) => GetFilesFromDirectory(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber));
+        
+        public static IEnumerable<FileInfo> GetFilesFromOrgDirectory() => GetFilesFromDirectory(GetPathOrgDirectoty());
+        
+        public static IEnumerable<FileInfo> GetFilesFromLogoDirectory() => GetFilesFromDirectory(GetPathLogoDirectoty());
+        
+        private static IEnumerable<FileInfo> GetFilesFromDirectory(string path) => new DirectoryInfo(path).GetFiles();
 
-        public static IEnumerable<ClientFiles> GetFilesFromOrgDirectory()
-        {
-            string path = GetPathOrgDirectoty();
-            return GetFilesFromDirectory(path);
-        }
 
-        public static IEnumerable<ClientFiles> GetFilesFromLogoDirectory()
-        {
-            string path = GetPathLogoDirectoty();
-            return GetFilesFromDirectory(path);
-        }
-
-        private static IEnumerable<ClientFiles> GetFilesFromDirectory(string path)
-        {
-            FileInfo[] files = new DirectoryInfo(path).GetFiles();
-
-            List<ClientFiles> clientFiles = new List<ClientFiles>();
-
-            foreach (var i in files)
-            {
-                ClientFiles cf = new ClientFiles();
-                cf.Path = i.FullName;
-                cf.Name = Path.GetFileNameWithoutExtension(i.FullName);
-                cf.FullName = Path.GetFileName(i.FullName);
-                cf.Size = i.Length.ToString();
-                cf.DateCreated = i.CreationTime.ToShortDateString();
-                cf.Extension = i.Extension;
-                cf.Status = ClientFiles.STATUS_SAVE_RUS;
-
-                clientFiles.Add(cf);
-            }
-            return clientFiles;
-        }
-
-        public static ObservableCollection<FileInfo> GetIds() //////
+        public static ObservableCollection<FileInfo> GetIds() 
         {
             ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
             var path = GetPathIdsDirectoty();
@@ -139,55 +78,28 @@ namespace Dental.Services
                 var collection = Directory.EnumerateFiles(path, format).ToList();
                 if (collection.Count > 0) filesNames = filesNames.Union(collection);
             }
-
-            foreach (var filePath in filesNames)
-            {
-                Ids.Add(new FileInfo(filePath));
-            }
+            foreach (var filePath in filesNames)  Ids.Add(new FileInfo(filePath));
             return Ids;
         }
        
         /** Has directories **/
 
-        public static bool HasMainProgrammDirectory()
-        {
-            return Directory.Exists(GetPathToProgrammDirectory());
-        }
-
-        public static bool HasPatientsCardsDirectoty()
-        {
-            return Directory.Exists(GetPathToPatientsCardsDirectoty());
-        }
-
-        public static bool HasPatientCardDirectory(string patientCardNumber)
-        {
-            string path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber);
-            return Directory.Exists(path);
-        }
-
-        public static bool HasIdsDirectoty()
-        {
-            return Directory.Exists(GetPathIdsDirectoty());
-        }
-
-        public static bool HasOrgDirectoty()
-        {
-            return Directory.Exists(GetPathOrgDirectoty());
-        }
-
-        public static bool HasLogoDirectoty()
-        {
-            return Directory.Exists(GetPathLogoDirectoty());
-        }
-
+        public static bool HasMainProgrammDirectory() => Directory.Exists(GetPathToProgrammDirectory());       
+        public static bool HasPatientsCardsDirectoty() => Directory.Exists(GetPathToPatientsCardsDirectoty());
+        
+        public static bool HasPatientCardDirectory(string patientCardNumber) => Directory.Exists(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber));
+        
+        public static bool HasIdsDirectoty() => Directory.Exists(GetPathIdsDirectoty());      
+        public static bool HasOrgDirectoty() => Directory.Exists(GetPathOrgDirectoty());       
+        public static bool HasLogoDirectoty() => Directory.Exists(GetPathLogoDirectoty());
+        
        
         /** Create directories **/
 
-        public static DirectoryInfo CreateMainProgrammDirectoryForPatientCards()
-        {
-            if (HasPatientsCardsDirectoty()) return new DirectoryInfo(GetPathToPatientsCardsDirectoty());
-            return Directory.CreateDirectory(GetPathToPatientsCardsDirectoty());
-        }
+        public static DirectoryInfo CreateMainProgrammDirectoryForPatientCards() => (HasPatientsCardsDirectoty()) ?
+            new DirectoryInfo(GetPathToPatientsCardsDirectoty()) :
+            Directory.CreateDirectory(GetPathToPatientsCardsDirectoty());
+        
 
         public static DirectoryInfo CreatePatientCardDirectory(string patientCardNumber)
         {
@@ -212,27 +124,13 @@ namespace Dental.Services
 
         /** Remove directories **/
 
-        public static void RemoveFileFromPatientsCard(string patientCardNumber, ClientFiles file)
-        {
-            var path = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName));
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }                
-        }
-
-        public static void RemoveFileFromOrgDirectory(ClientFiles file)
-        {
-            var path = Path.Combine(GetPathOrgDirectoty(), (file.FullName));
-            if (File.Exists(path)) File.Delete(path);          
-        }
-
-        public static void RemoveIDSFile(FileInfo file)
-        {
-            var path = Path.Combine(GetPathIdsDirectoty(), (file.FullName));
-            if (File.Exists(path)) File.Delete(path);
-        }
-
+        public static void RemoveFileFromPatientsCard(string patientCardNumber, FileInfo file) => File.Delete(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName)));
+                           
+        
+        public static void RemoveFileFromOrgDirectory(FileInfo file) => file.Delete();          
+        
+        public static void RemoveIDSFile(FileInfo file) => file.Delete();
+        
         public static void RemoveAllOrgFiles()
         {
             var files = GetFilesFromOrgDirectory();
@@ -244,47 +142,25 @@ namespace Dental.Services
             try
             {
                 FileInfo[] files = new DirectoryInfo(GetPathLogoDirectoty()).GetFiles();
-                foreach (var file in files)
-                {
-                    if (file.Exists)
-                    {
-                        file.Delete();
-                    }
-
-                }
+                foreach (var file in files) file.Delete();    
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
-
-
-
         }
 
         /** Save files in directories **/
 
-        public static void SaveInPatientCardDirectory(string patientCardNumber, ClientFiles file)
-        {
-            var newPath = Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName));
-            File.Copy(file.Path, newPath, true);
-            file.Path = newPath;
-        }
+        public static void SaveInPatientCardDirectory(string patientCardNumber, FileInfo file) => File.Copy(file.FullName, Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName)), true);
+        
 
-        public static void SaveInOrgDirectory(ClientFiles file)
+        public static void SaveInOrgDirectory(FileInfo file) =>  File.Copy(file.FullName, Path.Combine(GetPathOrgDirectoty(), (file.FullName)), true);
+  
+        public static void SaveFileInLogoDirectory(FileInfo file)
         {
-            var newPath = Path.Combine(GetPathOrgDirectoty(), (file.FullName));
-            File.Copy(file.Path, newPath, true);
-            file.Path = newPath;
-        }
-
-        public static void SaveFileInLogoDirectory(ClientFiles file)
-        {
-
             RemoveLogoFile();
-            string newPath = Path.Combine(GetPathLogoDirectoty(), (file.Name));
-            File.Copy(file.Path, newPath, true);
-            file.Path = newPath;     
+            File.Copy(file.FullName, Path.Combine(GetPathLogoDirectoty(), (file.FullName)), true);   
         }
 
         /****/

@@ -40,7 +40,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Files = new ObservableCollection<ClientFiles>();
+                Files = new ObservableCollection<FileInfo>();
                 Model = GetModel();
                 LogoLoading();
                 if (Model != null)
@@ -51,7 +51,7 @@ namespace Dental.ViewModels
                     Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
                     if (ProgramDirectory.HasOrgDirectoty())
                     {
-                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<ClientFiles>();
+                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<FileInfo>();
                     }
                 } 
                 else
@@ -124,7 +124,6 @@ namespace Dental.ViewModels
             bool hasUnsavedChanges = false;
             if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-            if (HasUnsavedFiles()) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
 
@@ -189,7 +188,9 @@ namespace Dental.ViewModels
                     if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
                     if (Path.GetDirectoryName(Model.Logo) != ProgramDirectory.GetPathLogoDirectoty())
                     {
-                        ProgramDirectory.SaveFileInLogoDirectory(new ClientFiles() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo });
+                       /* ProgramDirectory.SaveFileInLogoDirectory(
+                            new FileInfo() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo }
+                            );*/
                         Model.Logo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Logo)));
                     }
                 }
@@ -262,7 +263,7 @@ namespace Dental.ViewModels
                 db.Entry(Model).State = EntityState.Deleted;
                 db.SaveChanges();
                 ProgramDirectory.RemoveAllOrgFiles();
-                Files = new ObservableCollection<ClientFiles>();
+                Files = new ObservableCollection<FileInfo>();
             }
             catch (Exception e)
             {
@@ -273,7 +274,7 @@ namespace Dental.ViewModels
 
         /////////////////////////////
 
-        #region команды, связанных с прикреплением к карте пациентов файлов     
+        #region команды, связанных с прикреплением файлов     
         public ICommand DeleteFileCommand { get; }
         public ICommand ExecuteFileCommand { get; }
         public ICommand AttachmentFileCommand { get; }
@@ -288,14 +289,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                var file = p as ClientFiles;
-                var dir = Path.GetDirectoryName(file?.Path);
-                Process.Start(dir);
+                if (p is FileInfo file) Process.Start(Path.GetDirectoryName(file.FullName));            
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть содержащую файл директорию!",
+                    text: "Невозможно открыть директорию, в которой находится файл!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -305,13 +304,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                var file = p as ClientFiles;
-                Process.Start(file?.Path);
+                if (p is FileInfo file) Process.Start(file.FullName);
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно запустить файл!",
+                   text: "Невозможно выполнить загрузку файл!",
                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -319,7 +317,7 @@ namespace Dental.ViewModels
 
         private void OnAttachmentFileCommandExecuted(object p)
         {
-            try
+            /*try
             {
                 var fileContent = string.Empty;
                 var filePath = string.Empty;
@@ -363,22 +361,22 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
-            }
+            }*/
         }
 
         private void OnDeleteFileCommandExecuted(object p)
         {
             try
             {
-                var file = p as ClientFiles;
-                var item = Files.Where<ClientFiles>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
+                var file = p as FileInfo;
+                var item = Files.Where<FileInfo>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
                 if (item == null) return;
-                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0)
-                {
+               
+
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     ProgramDirectory.RemoveFileFromOrgDirectory(file);
-                }
+                
                 Files.Remove(file);
             }
             catch (Exception e)
@@ -409,8 +407,6 @@ namespace Dental.ViewModels
                 {
                     var _ = ProgramDirectory.CreateOrgDirectory();
                 }
-
-                ProgramDirectory.Errors.Clear();
                 MoveFilesToOrgDirectory();
                 return true;
             }
@@ -423,33 +419,13 @@ namespace Dental.ViewModels
 
         private void MoveFilesToOrgDirectory()
         {
-            foreach (ClientFiles file in Files)
-            {
-                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0) continue;
-                ProgramDirectory.SaveInOrgDirectory(file);
-                file.Status = ClientFiles.STATUS_SAVE_RUS;
-            }
+            foreach (FileInfo file in Files) ProgramDirectory.SaveInOrgDirectory(file);
+
         }
         
-        public bool HasUnsavedFiles()
-        {
-            if (Files.Count > 0)
-            {
-                foreach (var i in Files)
-                {
-                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
-                    {
-                        Model.FieldsChanges.Add("Прикрепляемые файлы");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
 
-
-        public ObservableCollection<ClientFiles> _Files;
-        public ObservableCollection<ClientFiles> Files
+        public ObservableCollection<FileInfo> _Files;
+        public ObservableCollection<FileInfo> Files
         {
             get => _Files;
             set => Set(ref _Files, value);

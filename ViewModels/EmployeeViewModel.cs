@@ -310,7 +310,7 @@ namespace Dental.ViewModels
                 if (Model.Id == 0) db.Employes.Add(Model);
                 SaveEmployeeSpecialities();
                 //else SaveFiles();
-                SavePhoto();
+                //SavePhoto();
 
                 db.SaveChanges();
 
@@ -366,7 +366,7 @@ namespace Dental.ViewModels
             }
 
         }
-
+        /*
         private void SavePhoto()
         {
             try
@@ -385,7 +385,7 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        }
+        }*/
         #endregion
         #endregion
 

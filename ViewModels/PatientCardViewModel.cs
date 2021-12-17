@@ -40,7 +40,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Files = new ObservableCollection<ClientFiles>();
+                Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();
 
                 #region инициализация команд, связанных с общим функционалом карты пациента
@@ -117,7 +117,7 @@ namespace Dental.ViewModels
 
                     if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
                     {
-                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<ClientFiles>();                        
+                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<FileInfo>();                        
                     }
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
@@ -205,7 +205,7 @@ namespace Dental.ViewModels
                 else
                 {
                     notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
-                    SaveFiles();
+                    //SaveFiles();
                     // Update();
                     SaveTeeth();
                 }
@@ -231,7 +231,10 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        #region команды, связанных с прикреплением к карте пациентов файлов     
+        #region команды, связанных с прикреплением к карте пациентов файлов 
+        public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
+        private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
+
         public ICommand DeleteFileCommand { get; }
         public ICommand ExecuteFileCommand { get; }
         public ICommand AttachmentFileCommand { get; }
@@ -245,9 +248,8 @@ namespace Dental.ViewModels
         private void OnOpenDirectoryCommandExecuted(object p)
         {
             try
-            {               
-                var dir = Path.Combine(ProgramDirectory.GetPathToPatientsCardsDirectoty(), p.ToString());
-                Process.Start(dir);
+            {
+                if (Directory.Exists(GetPathToPatientCard())) Process.Start(GetPathToPatientCard());
             }
             catch (Exception e)
             {
@@ -262,13 +264,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                var file = p as ClientFiles;
-                Process.Start(file?.Path);
+                if (p is FileInfo file) Process.Start(file.FullName);
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно запустить файл!",
+                   text: "Невозможно выполнить загрузку файл!",
                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -278,43 +279,44 @@ namespace Dental.ViewModels
         {
             try
             {
-                var fileContent = string.Empty;
                 var filePath = string.Empty;
-                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
                 {
-                    openFileDialog.InitialDirectory = "c:\\";
-                    openFileDialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 2;
-                    openFileDialog.RestoreDirectory = true;
+                    dialog.InitialDirectory = "c:\\";
+                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+                    dialog.FilterIndex = 2;
+                    dialog.RestoreDirectory = true;
 
-                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+                    filePath = dialog.FileName;
+                    if (string.IsNullOrEmpty(filePath)) return;
+                }
+
+                FileInfo file = new FileInfo(filePath);
+
+                // проверяем на наличие существующего файла
+                foreach (var i in Files)
+                {
+                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
                     {
-                        filePath = openFileDialog.FileName;
-                        ClientFiles file = new ClientFiles();
-                        file.Path = filePath;
-                        file.DateCreated = DateTime.Today.ToShortDateString();
-                        file.Name = Path.GetFileNameWithoutExtension(filePath);
-                        file.FullName = Path.GetFileName(filePath);
-                        if (Path.HasExtension(filePath))
-                        {
-                            file.Extension = Path.GetExtension(filePath);
-                        }
-                        file.Size = new FileInfo(filePath).Length.ToString();
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
 
-                        if (FindDoubleFile(file.FullName))
-                        {
-                            var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                            if (response.ToString() == "No") return;
-                            var idx = Files.IndexOf(f => (string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0));
-                            if (idx == -1) return;
-                            file.Status = ClientFiles.STATUS_NEW_RUS;
-                            Files[idx] = file;
-                            return;
-                        }
-                        Files.Insert(0, file);
+                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
+                        i.Delete();
                     }
                 }
 
+                string path = GetPathToPatientCard();
+
+                if (!Directory.Exists(path))  Directory.CreateDirectory(path);
+                
+                File.Copy(file.FullName, Path.Combine(path, file.Name), true);
+
+                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name));
+                newFile.CreationTime = DateTime.Now;
+
+                Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -326,16 +328,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                var file = p as ClientFiles;
-                var item = Files.Where<ClientFiles>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
-                if (item == null) return;
-                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0)
+                if (p is FileInfo file)
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    ProgramDirectory.RemoveFileFromPatientsCard(Model.Id.ToString(), file);
+                     file.Delete();
+                    Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
                 }
-                Files.Remove(file);
             }
             catch (Exception e)
             {
@@ -343,72 +342,14 @@ namespace Dental.ViewModels
             }
         }
 
-        private bool FindDoubleFile(string fileName)
+        private string GetPathToPatientCard() => Path.Combine(PathToPatientsCards, Model.Id.ToString());
+    
+        public ObservableCollection<FileInfo> Files
         {
-            foreach (var file in Files)
-            {
-                if (string.Compare(file.FullName, fileName, StringComparison.CurrentCulture) == 0) return true;
-            }
-            return false;
+            get => files;
+            set => Set(ref files, value);
         }
-
-        private bool SaveFiles()
-        {
-            try
-            {
-                //если нет директории программы, то создаем ее
-                if (!ProgramDirectory.HasMainProgrammDirectory())
-                {
-                    var _ = ProgramDirectory.CreateMainProgrammDirectoryForPatientCards();
-                }
-                if (!ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
-                {
-                    var _ = ProgramDirectory.CreatePatientCardDirectory(Model.Id.ToString());
-                }
-
-                ProgramDirectory.Errors.Clear();
-                MoveFilesToPatientCardDirectory();
-                return true;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-                return false;
-            }
-        }
-
-        private void MoveFilesToPatientCardDirectory()
-        {
-            foreach (ClientFiles file in Files)
-            {
-                if (string.Compare(file.Status, ClientFiles.STATUS_SAVE_RUS, StringComparison.CurrentCulture) == 0) continue;
-                ProgramDirectory.SaveInPatientCardDirectory(Model.Id.ToString(), file);
-                file.Status = ClientFiles.STATUS_SAVE_RUS;
-            }
-        }
-
-        public bool HasUnsavedFiles()
-        {
-            if (Files.Count > 0)
-            {
-                foreach (var i in Files)
-                {
-                    if (i.Status == ClientFiles.STATUS_NEW_RUS)
-                    {
-                        Model.FieldsChanges["Административная"].Add("Прикрепляемые файлы");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public ObservableCollection<ClientFiles> _Files;
-        public ObservableCollection<ClientFiles> Files
-        {
-            get => _Files;
-            set => Set(ref _Files, value);
-        }
+        private ObservableCollection<FileInfo> files;
         #endregion
 
         #region Команды и связанный ф-нал с ИДС и документами
@@ -441,7 +382,7 @@ namespace Dental.ViewModels
                     richEdit.ReadOnly = true;
                     richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
 
-                    richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(ProgramDirectory.GetPathMyDocuments(), fileInfo.Name);
+                    richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), fileInfo.Name);
                     richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
                     IDSWindow.Show();                
                 }
@@ -483,9 +424,8 @@ namespace Dental.ViewModels
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить документ с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    FileInfo fileInfo = new FileInfo(fileName);
-                    ProgramDirectory.RemoveIDSFile(fileInfo);
-                    Ids.Remove(Ids.Where(f => f.FullName == fileInfo.FullName).FirstOrDefault());
+                    File.Delete(fileName);
+                    Ids = GetIds();
                 }
             }
             catch (Exception e)
@@ -500,9 +440,10 @@ namespace Dental.ViewModels
             {
                 var filePath = string.Empty;
                 var fileName = string.Empty;
+
                 using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
                 {
-                    openFileDialog.InitialDirectory = ProgramDirectory.GetPathMyDocuments();
+                    openFileDialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
 
                     openFileDialog.Filter = "Office Files(*.docx; *.doc; *.rtf; *.odt; *.epub; *.txt; *.html; *.htm; *.mht; *.xml) | *.docx; *.doc; *.rtf; *.odt; *.epub; *.txt; *.html; *.htm; *.mht; *.xml";
                     openFileDialog.FilterIndex = 2;
@@ -510,7 +451,7 @@ namespace Dental.ViewModels
 
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        var idsDirectory = ProgramDirectory.GetPathIdsDirectoty();
+                        string idsDirectory = GetPathIdsDirectoty();
    
                         foreach (var ids in Ids)
                         {
@@ -526,13 +467,10 @@ namespace Dental.ViewModels
                     openFileDialog.Dispose();
                     //ProgramDirectory.ImportIds(new FileInfo(openFileDialog.FileName));
                 }
-                var newPath = Path.Combine(ProgramDirectory.GetPathIdsDirectoty(), fileName);
+                var newPath = Path.Combine(GetPathIdsDirectoty(), fileName);
                 File.Copy(filePath, newPath, true);
-
-                //
-                //Ids.Add(new FileInfo(newPath));
                 Ids = ProgramDirectory.GetIds();
-            }
+    }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
@@ -543,8 +481,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                var dir = ProgramDirectory.GetPathIdsDirectoty();
-                Process.Start(dir);
+                var dir = GetPathIdsDirectoty();
+                if (Directory.Exists(dir)) Process.Start(dir);
             }
             catch (Exception e)
             {
@@ -578,6 +516,23 @@ namespace Dental.ViewModels
             {
                 return DocumentFormat.PlainText;
             }
+        }
+        private string GetPathIdsDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
+        public const string IDS_DIRECTORY = "Dental\\Ids";
+        private ObservableCollection<FileInfo> GetIds()
+        {
+            ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
+            var path = GetPathIdsDirectoty();
+
+            IEnumerable<string> filesNames = new List<string>();
+            string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
+            foreach (var format in formats)
+            {
+                var collection = Directory.EnumerateFiles(path, format).ToList();
+                if (collection.Count > 0) filesNames = filesNames.Union(collection);
+            }
+            foreach (var filePath in filesNames) Ids.Add(new FileInfo(filePath));
+            return Ids;
         }
 
         public IDSWindow IDSWindow { get; set; }
@@ -1076,7 +1031,6 @@ namespace Dental.ViewModels
             bool hasUnsavedChanges = false;
             if (Model.FieldsChanges != null) Model.FieldsChanges = PatientInfo.CreateFieldsChanges();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-            if (HasUnsavedFiles()) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
 

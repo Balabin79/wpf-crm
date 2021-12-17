@@ -294,7 +294,7 @@
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormPlanCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Создать план лечения" 
-                                IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
                             />
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
