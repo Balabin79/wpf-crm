@@ -28,6 +28,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
 
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+                AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
 
                 Doctors = db.Employes.ToObservableCollection();
                 Patients = db.PatientInfo.ToObservableCollection();
@@ -44,7 +45,22 @@ namespace Dental.ViewModels
         }
 
         public ICommand SaveCommand { get; }
+        public ICommand AppointmentAddedCommand { get; }
         private bool CanSaveCommandExecute(object p) => true;
+        private bool CanAppointmentAddedCommandExecute(object p) => true;
+        private void OnAppointmentAddedCommandExecuted(object p)
+        {
+            try
+            {
+                
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+               
+        
         private void OnSaveCommandExecuted(object p)
         {
             try

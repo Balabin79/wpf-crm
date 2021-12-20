@@ -136,8 +136,6 @@ namespace Dental.ViewModels
         }
 
 
-
-
         #region команды, связанные с общим функционалом карты пациента
        
         public ICommand EditableCommand { get; }

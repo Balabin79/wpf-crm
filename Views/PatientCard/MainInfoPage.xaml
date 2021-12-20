@@ -1,9 +1,10 @@
-﻿<Page x:Class="Dental.Views.PatientCard.MainInfoPage"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+﻿<Page 
+    x:Class="Dental.Views.PatientCard.MainInfoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
                       xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
                       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
                       xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
@@ -54,7 +55,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="{Binding NumberPatientCard, Mode=TwoWay, StringFormat={}Карта пациента №{0}}" FontSize="16" Padding="0 8 5 0"/>
+                    <TextBlock Padding="0 8 5 0" FontSize="16" Text="{Binding Mode=OneWay, Path=Model.Title, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     
@@ -84,8 +85,6 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
- 
-
                 <dxlc:LayoutControl  
                     Orientation="Vertical"  
                     Background="Transparent" 
@@ -101,40 +100,33 @@
                             </Style>
                         </dxlc:LayoutGroup.GroupBoxStyle>
 
-                        <dx:DXTabControl >
-                            <dx:DXTabItem Header="Административная" >
+                    <dx:DXTabControl >
+                        <dx:DXTabItem Header="Административная" >
                             <tp:MainInfo DataContext="{Binding}" />
-                            </dx:DXTabItem>
+                        </dx:DXTabItem>
 
-
-                            <dx:DXTabItem Header="ИДС, Документы">
-                  
-
-                                    <Grid DataContext="{Binding}">
-
-                                        <tp:Ids/>
-                                    </Grid>
-                             
-                            </dx:DXTabItem>
+                        <dx:DXTabItem Header="ИДС, Документы">
+                            <Grid DataContext="{Binding}">
+                                <tp:Ids/>
+                            </Grid>
+                        </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Планы лечения" >
                             <tp:TreatmentPlan DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                            <dx:DXTabItem Header="Планы посещений">
+                        <dx:DXTabItem Header="Визиты пациента">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:VisitStore DataContext="{Binding}"/>
                             </ScrollViewer>
                         </dx:DXTabItem>
-                            <dx:DXTabItem Header="Карта зубов">
+                        <dx:DXTabItem Header="Карта зубов">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:TeethPage DataContext="{Binding}" />
                             </ScrollViewer>
                         </dx:DXTabItem>
 
-                        </dx:DXTabControl>
-
-
-                    </dxlc:LayoutGroup>
+                    </dx:DXTabControl>
+                </dxlc:LayoutGroup>
                 </dxlc:LayoutControl>
       
         </Grid>

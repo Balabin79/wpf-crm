@@ -17,7 +17,8 @@
       xmlns:dxschv="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/visual"
       xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
       xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
-      x:Class="Dental.Views.Sheduler" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    x:Class="Dental.Views.Sheduler" 
       dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800">
@@ -29,7 +30,7 @@
             <converter:DateToStringConverter x:Key="DateToString"/>
             <converter:DoubleToStringConverter x:Key="DoubleToString"/>
             <converter:ImageConverter x:Key="ImageConv"/>
-
+            <converter:
 
 
 
@@ -206,12 +207,24 @@
             MaxHeight="2000"                   
             Margin="5"
             AllowAppointmentConflicts="False"
+           AppointmentAdded="{Binding AppointmentAddedCommand}"
             AppointmentWindowShowing="OnAppointmentWindowShowing"
             StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
             DropAppointment="OnDropAppointment"
-            dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
-            
-            
+            dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" >
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand 
+                                EventName="MouseDoubleClick" 
+                                 Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                    <dxmvvm:EventToCommand.CommandParameter>
+                        <MultiBinding Converter="{StaticResource multiConv}">
+                            <Binding ElementName="tree_view"/>
+                            <Binding ElementName="popup" />
+                        </MultiBinding>
+                    </dxmvvm:EventToCommand.CommandParameter>
+                </dxmvvm:EventToCommand>
+            </dxmvvm:Interaction.Behaviors>
+
             <dxsch:SchedulerControl.RibbonActions>
                 <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_LabelAs}"/>
                 <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>

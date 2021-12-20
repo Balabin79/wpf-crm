@@ -75,7 +75,16 @@ namespace Dental.Models
         [NotMapped]
         public string FullName
         {
-            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
+            get {
+                if (FirstName == null && LastName == null && MiddleName == null) return "";
+                return (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName; 
+            }
+        }
+
+        [NotMapped]
+        public string Title
+        {
+            get => String.IsNullOrEmpty(FullName) ? "Новый пациент" : ("Карта пациента №" + Id + " ("+ FullName +")");
         }
 
         [Display(Name = "Пол")]
