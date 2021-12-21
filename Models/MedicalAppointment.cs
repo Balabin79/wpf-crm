@@ -12,8 +12,8 @@ namespace Dental.Models
     {
         public string PatientName { get; set; }
         public string Description { get; set; }
-        public string StartTime { get; set; } //DateTime 
-        public string EndTime { get; set; } //DateTime 
+        public string StartTime { get; set; } 
+        public string EndTime { get; set; } 
         public int AppointmentType { get; set; }
         public string RecurrenceInfo { get; set; }
         public string ReminderInfo { get; set; }

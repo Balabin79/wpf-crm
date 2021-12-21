@@ -226,6 +226,7 @@
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.TypedStyles.ru" Version="20.1.4" />
+    <PackageReference Include="Firebird.Embedded" Version="3.0.0.32485" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="morelinq" Version="3.3.2" />
@@ -594,6 +595,82 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\fbclient.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\fbembed.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\ib_util.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icudt52.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icudt52l.dat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icuin52.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icuuc52.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\intl\fbintl.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\intl\fbintl.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\engine12.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\fbtrace.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\legacy_auth.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\legacy_usermanager.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\srp.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\udr_engine.conf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\udr_engine.dll" />
   </ItemGroup>
 
 </Project>

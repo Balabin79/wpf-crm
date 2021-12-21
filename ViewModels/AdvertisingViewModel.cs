@@ -11,9 +11,6 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Models.Base;
-using DevExpress.Xpf.Grid;
-using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
@@ -55,13 +52,15 @@ namespace Dental.ViewModels
                 if (p is Advertising model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-
-                    Collection.Remove(model);
                     if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
                     else db.Entry(model).State = EntityState.Detached;
-                    db.SaveChanges();
-                    CollectionBeforeChanges = new ObservableCollection<Advertising>();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                    int cnt = db.SaveChanges();
+                    Collection = GetCollection();
+                    if (cnt > 0) 
+                    {
+                        CollectionBeforeChanges.Clear();
+                        Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                    }                 
                 }
             }
             catch (Exception e)
@@ -76,22 +75,14 @@ namespace Dental.ViewModels
             {
                 foreach (var item in Collection)
                 {
-                    if (string.IsNullOrEmpty(item.Name)) continue;
-                    
-                    if (item.Id == 0) 
-                    {
-                        item.Guid = KeyGenerator.GetUniqueKey();
-                        db.Entry(item).State = EntityState.Added;
-                        continue;
-                    }  
-                    else if (string.IsNullOrEmpty(item.Guid)) item.Guid = KeyGenerator.GetUniqueKey();
+                    if (string.IsNullOrEmpty(item.Name)) continue;                   
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;        
                 }
-                int rows = db.SaveChanges();
-                Collection.Where(f => f.Id == 0).ToArray().ForEach(f => Collection.Remove(f));
-
-                CollectionBeforeChanges = new ObservableCollection<Advertising>();
+                int cnt = db.SaveChanges();
+                Collection = GetCollection();
+                CollectionBeforeChanges.Clear();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
-                if (rows != 0)
+                if (cnt > 0)
                 {
                     var notification = new Notification();
                     notification.Content = "Изменения сохранены в базу данных!";
@@ -122,11 +113,7 @@ namespace Dental.ViewModels
             {
                 if (string.IsNullOrEmpty(item.Name)) continue;
                 if (item.Id == 0) return true;
-                if (!item.Equals(
-                    CollectionBeforeChanges.
-                    Where(
-                        f => f.Guid == item.Guid)
-                    .FirstOrDefault())) return true;
+                if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
             }
             return false;
         }

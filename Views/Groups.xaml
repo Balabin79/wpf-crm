@@ -12,14 +12,38 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
-      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"     
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+      xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+      xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:ClientGroupViewModel x:Key="vm"/>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:BoolIntConverter x:Key="boolConverter"
+        />
+
+
+        <Style x:Key="CheckEditColumnPrintingStyle" 
+               TargetType="{x:Type dxe:TextEdit}"
+               BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
+               >
+            
+                <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
+                <Setter Property="DisplayTemplate">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="dxe:TextEdit">
+                            <dxe:CheckEdit 
+                                    HorizontalAlignment="Center" 
+                                   IsPrintingMode="True"
+                                    IsChecked="{Binding Path=Value, Converter={StaticResource boolConverter}}" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            
+        </Style>
+
     </Page.Resources>
 
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" 
@@ -89,7 +113,6 @@
                     VerticalScrollbarVisibility="Auto"                 
                     EnableImmediatePosting="True" 
                     CellValueChanging="TableView_CellValueChanging"
-                    
                     >
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"        
@@ -139,17 +162,19 @@
 
                     <dxg:GridColumn FieldName="IsActive"  
                                     Header="Активность" 
-                                    Width="1*" 
+                                    Width="1*"  
+                                    PrintCellStyle="{StaticResource ResourceKey=CheckEditColumnPrintingStyle}"
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:CheckEdit 
                                     HorizontalAlignment="Center" 
-                                    Name="PART_Editor" 
+                                   
                                     IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
+
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
                                 <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, 
@@ -162,6 +187,7 @@
                     <dxg:GridColumn FieldName="IsApplyRule"  
                                     Header="Применяется правило" 
                                     Width="1*"  
+                                    PrintCellStyle="{StaticResource ResourceKey=CheckEditColumnPrintingStyle}"
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>

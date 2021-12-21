@@ -17,7 +17,8 @@
       xmlns:dxschv="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/visual"
       xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
       xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+     xmlns:System="clr-namespace:System;assembly=mscorlib"
     x:Class="Dental.Views.Sheduler" 
       dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
@@ -30,7 +31,8 @@
             <converter:DateToStringConverter x:Key="DateToString"/>
             <converter:DoubleToStringConverter x:Key="DoubleToString"/>
             <converter:ImageConverter x:Key="ImageConv"/>
-            <converter:
+            <converter:MultiBindingConverter x:Key="MultiConv"/>
+
 
 
 
@@ -207,21 +209,17 @@
             MaxHeight="2000"                   
             Margin="5"
             AllowAppointmentConflicts="False"
-           AppointmentAdded="{Binding AppointmentAddedCommand}"
+            
             AppointmentWindowShowing="OnAppointmentWindowShowing"
             StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
             DropAppointment="OnDropAppointment"
             dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" >
             <dxmvvm:Interaction.Behaviors>
                 <dxmvvm:EventToCommand 
-                                EventName="MouseDoubleClick" 
-                                 Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
-                    <dxmvvm:EventToCommand.CommandParameter>
-                        <MultiBinding Converter="{StaticResource multiConv}">
-                            <Binding ElementName="tree_view"/>
-                            <Binding ElementName="popup" />
-                        </MultiBinding>
-                    </dxmvvm:EventToCommand.CommandParameter>
+                                EventName="AppointmentAdded" 
+                                PassEventArgsToCommand="True"
+                                Command="{Binding ElementName=scheduler, Path=DataContext.AppointmentAddedCommand }">
+     
                 </dxmvvm:EventToCommand>
             </dxmvvm:Interaction.Behaviors>
 
@@ -268,10 +266,10 @@
                                     </dxsch:DataSource.ResourceMappings>
 
                                     <dxsch:DataSource.AppointmentMappings>
-                                        <dxsch:AppointmentMappings
+                                        <dxsch:AppointmentMappings 
                                         Type="AppointmentType"
                                         StatusId="StatusId"
-                                        Start="StartTime"
+         
                                         Subject="PatientName"
                                         ResourceId="EmployeeId"
                                         RecurrenceInfo="RecurrenceInfo"
@@ -279,11 +277,35 @@
                                         LabelId="LabelId"
                                         Location="Location"
                                         Id="Id"
-                                        End="EndTime"
+                                      
                                         Description="Description"
                                         AllDay="AllDay">
+                            <dxsch:AppointmentMappings.Start>
+                                <dxsch:Mapping>
+                                    <dxsch:Mapping.FieldName>
+                                        <System:String>
+                                            StartTime
+                                        </System:String>
+                                    </dxsch:Mapping.FieldName>
+                                    <dxsch:Mapping.Converter>
+                                        <converter:DateToStringConverter/>
+                                    </dxsch:Mapping.Converter>
+                                </dxsch:Mapping>
+                            </dxsch:AppointmentMappings.Start>
+                            <dxsch:AppointmentMappings.End>
+                                <dxsch:Mapping>
+                                    <dxsch:Mapping.FieldName>
+                                        <System:String>
+                                            EndTime
+                                        </System:String>
+                                    </dxsch:Mapping.FieldName>
+                                    <dxsch:Mapping.Converter>
+                                        <converter:DateToStringConverter/>
+                                    </dxsch:Mapping.Converter>
+                                </dxsch:Mapping>
+                            </dxsch:AppointmentMappings.End>
 
-                                        </dxsch:AppointmentMappings>
+                        </dxsch:AppointmentMappings>
 
                                     </dxsch:DataSource.AppointmentMappings>
                                 </dxsch:DataSource>

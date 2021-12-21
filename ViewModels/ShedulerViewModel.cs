@@ -52,7 +52,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                
+                foreach(var i in Appointments)
+                {
+                    if (db.Entry(i).State == EntityState.Detached) db.Entry(i).State = EntityState.Added;
+                }
+
+                int cnt = db.SaveChanges();
             }
             catch (Exception e)
             {
