@@ -226,12 +226,10 @@
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.TypedStyles.ru" Version="20.1.4" />
-    <PackageReference Include="Firebird.Embedded" Version="3.0.0.32485" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
     <PackageReference Include="SharpVectors" Version="1.7.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
@@ -671,6 +669,16 @@
 
   <ItemGroup>
     <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\plugins\udr_engine.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\fbclient.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icuuc52.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

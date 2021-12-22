@@ -23,26 +23,55 @@
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:BoolIntConverter x:Key="boolConverter"
         />
-
+        <Style x:Key="TextPrintColumnHeaderStyle"
+               TargetType="{x:Type dxe:TextEdit}"
+               BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
+               >
+            <Setter Property="Background" Value="#C0C0C0"/>
+            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="PrintTextWrapping" Value="WrapWithOverflow"/>
+            <Setter Property="Text" Value="{Binding Path=Value}"/>
+            <Setter Property="Foreground" Value="#000"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
 
         <Style x:Key="CheckEditColumnPrintingStyle" 
                TargetType="{x:Type dxe:TextEdit}"
                BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
                >
             
-                <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
-                <Setter Property="DisplayTemplate">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="dxe:TextEdit">
-                            <dxe:CheckEdit 
+            <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
+            <Setter Property="DisplayTemplate">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxe:TextEdit">
+                        <dxe:CheckEdit 
                                     HorizontalAlignment="Center" 
                                    IsPrintingMode="True"
                                     IsChecked="{Binding Path=Value, Converter={StaticResource boolConverter}}" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+        <Style x:Key="TextEditColumnPrintingStyle" 
+               TargetType="{x:Type dxe:TextEdit}"
+               BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
+               >
+
+            <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
+            <Setter Property="DisplayTemplate">
+                <Setter.Value>
+                    <ControlTemplate TargetType="dxe:TextEdit">
+                        <dxe:TextEdit 
+                                   HorizontalAlignment="Center" 
+                                   IsPrintingMode="True"
+                            PrintTextWrapping="Wrap"
+                            TextWrapping="Wrap"
+                                   Text="{Binding Path=Value}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
     </Page.Resources>
 
@@ -163,13 +192,12 @@
                     <dxg:GridColumn FieldName="IsActive"  
                                     Header="Активность" 
                                     Width="1*"  
-                                    PrintCellStyle="{StaticResource ResourceKey=CheckEditColumnPrintingStyle}"
+                                    PrintCellStyle="{StaticResource ResourceKey=CheckEditColumnPrintingStyle}"                                    
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxe:CheckEdit 
-                                    HorizontalAlignment="Center" 
-                                   
+                                    HorizontalAlignment="Center"                                   
                                     IsChecked="{Binding RowData.Row.IsActive, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
                             </DataTemplate>
@@ -185,8 +213,9 @@
 
 
                     <dxg:GridColumn FieldName="IsApplyRule"  
-                                    Header="Применяется правило" 
+                                    Header="Применять правило" 
                                     Width="1*"  
+                                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                     PrintCellStyle="{StaticResource ResourceKey=CheckEditColumnPrintingStyle}"
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
@@ -209,8 +238,10 @@
           
                     <dxg:GridColumn 
                         FieldName="PercentOrCost" 
-                        Header="Процент/Сумма" 
+                        Header="Процент / Сумма" 
                         Width="1*" 
+                        PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                        PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                         HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -242,8 +273,10 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn FieldName="MoreOrLess" 
-                                    Header="Больше/Меньше тарифа" 
+                                    Header="Больше / Меньше тарифа" 
                                     Width="1*" 
+                                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                     HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -263,7 +296,7 @@
                                     ItemsSource="{Binding ElementName=BorderForm, Path=DataContext.MoreOrLess}"   
                                     DisplayMember="Name"
                                     SelectedItem="{Binding Row.MoreOrLess}"
-                                    NullText="Больше/Меньше базового" IsTextEditable="False"
+                                    NullText="Больше/Меньше тарифа" IsTextEditable="False"
                                     IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}">
                                     <dxe:ComboBoxEdit.StyleSettings>
                                         <dxe:RadioComboBoxStyleSettings />
@@ -277,6 +310,7 @@
                                     Header="Значение"       
                                     Width="1*"                                   
                                     HorizontalHeaderContentAlignment="Center"
+                                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
                                     >
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -289,8 +323,14 @@
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
                                 <dxe:TextEdit
+                                   EditValueChanged="TextEdit_EditValueChanged"
+                                   MaskType="Numeric"
+                                   Mask="F"
+                                   MaskUseAsDisplayFormat="True"           
                                     Text="{Binding Path=RowData.Row.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                     IsEnabled="{Binding RowData.Row.IsApplyRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}"/>
+
+
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

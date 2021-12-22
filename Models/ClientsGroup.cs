@@ -52,22 +52,6 @@ namespace Dental.Models
         {
             try
             {
-                Dictionary percentOrCost = new Dictionary
-                {
-                    Name = this.PercentOrCost?.Name,
-                    Id = this.PercentOrCost?.Id ?? 0,
-                    CategoryId = this.PercentOrCost?.CategoryId ?? 0,
-                    Guid = this.PercentOrCost?.Guid
-                };
-
-                Dictionary moreOrLess = new Dictionary
-                {
-                    Name = this.MoreOrLess?.Name,
-                    Id = this.MoreOrLess?.Id ?? 0,
-                    CategoryId = this.MoreOrLess?.CategoryId ?? 0,
-                    Guid = this.MoreOrLess?.Guid
-                };
-
                 return new ClientsGroup
                 {
                     Id = this.Id,
@@ -76,9 +60,9 @@ namespace Dental.Models
                     IsActive = this.IsActive,
                     Amount = this.Amount,
                     IsApplyRule = this.IsApplyRule,
-                    PercentOrCost = percentOrCost,
+                    PercentOrCost = this.PercentOrCost,
                     PercentOrCostId = this.PercentOrCostId,
-                    MoreOrLess = moreOrLess,
+                    MoreOrLess = this.MoreOrLess,
                     MoreOrLessId = this.MoreOrLessId
                 };
             } catch(Exception ex)
@@ -131,9 +115,9 @@ namespace Dental.Models
 
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.MoreOrLess?.Guid, other.MoreOrLess?.Guid);
-            StringParamsIsEquel(this.PercentOrCost?.Guid, other.PercentOrCost?.Guid);
             StringParamsIsEquel(this.Amount, other.Amount);
+            StringParamsIsEquel(this.PercentOrCost?.Guid, other.PercentOrCost?.Guid);
+            StringParamsIsEquel(this.MoreOrLess?.Guid, other.MoreOrLess?.Guid);
             if (this.IsActive != other.IsActive) return false;
             if (this.IsApplyRule != other.IsApplyRule) return false;
                 return NotIsChanges;

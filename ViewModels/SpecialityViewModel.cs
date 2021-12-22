@@ -54,13 +54,15 @@ namespace Dental.ViewModels
                 if (p is Speciality model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-
-                    Collection.Remove(model);
                     if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
                     else db.Entry(model).State = EntityState.Detached;
-                    db.SaveChanges();
-                    CollectionBeforeChanges = new ObservableCollection<Speciality>();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
+                    int cnt = db.SaveChanges();
+                    Collection = GetCollection();
+                    if (cnt > 0)
+                    {
+                        CollectionBeforeChanges.Clear();
+                        Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
+                    }
                 }
             }
             catch (Exception e)
@@ -76,21 +78,13 @@ namespace Dental.ViewModels
                 foreach (var item in Collection)
                 {
                     if (string.IsNullOrEmpty(item.Name)) continue;
-
-                    if (item.Id == 0)
-                    {
-                        item.Guid = KeyGenerator.GetUniqueKey();
-                        db.Entry(item).State = EntityState.Added;
-                        continue;
-                    }
-                    else if (string.IsNullOrEmpty(item.Guid)) item.Guid = KeyGenerator.GetUniqueKey();
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
                 }
-                int rows = db.SaveChanges();
-                Collection.Where(f => f.Id == 0).ToArray().ForEach(f => Collection.Remove(f));
-
-                CollectionBeforeChanges = new ObservableCollection<Speciality>();
+                int cnt = db.SaveChanges();
+                Collection = GetCollection();
+                CollectionBeforeChanges.Clear();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
-                if (rows != 0)
+                if (cnt > 0)
                 {
                     var notification = new Notification();
                     notification.Content = "Изменения сохранены в базу данных!";
