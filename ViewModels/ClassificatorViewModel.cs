@@ -246,31 +246,26 @@ namespace Dental.ViewModels
         private void CreateNewWindow() => Window = new ClassificatorWindow();
         private Classificator CreateNewModel() => new Classificator();
 
-        private Classificator GetModelById(int id)
-        {
-            return Collection.Where(f => f.Id == id).FirstOrDefault();
-        }
+        private Classificator GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
+     
 
         private void Add()
         {
-            Model.Guid = KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Added;
             db.SaveChanges();
             Collection.Add(Model);
         }
         private void Update()
         {
-            if (string.IsNullOrEmpty(Model.Guid)) Model.Guid = KeyGenerator.GetUniqueKey();
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
-            var index = Collection.IndexOf(Model);
-            if (index != -1) Collection[index] = Model;
+            Model.Update();
         }
 
         private void Delete(ObservableCollection<Classificator> collection)
         {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
+            Collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+            Collection.ForEach(f => Collection.Remove(f));
         }
     }
 }

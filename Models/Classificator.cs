@@ -20,7 +20,6 @@ namespace Dental.Models
             set 
             {
                 _Name = value?.Trim();
-                OnPropertyChanged(nameof(Name));
             } 
         }
         private string _Name;
@@ -56,6 +55,15 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
+        public void Update()
+        {
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(Code));
+            OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(Cost));
+            OnPropertyChanged(nameof(ParentId));
+            OnPropertyChanged(nameof(IsDir));
+        }
 
         public override string ToString()
         {

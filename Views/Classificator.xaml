@@ -91,7 +91,7 @@
 
 
             <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
+                 ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
 
                     <dxg:GridControl.View>
@@ -193,7 +193,7 @@
                         </dxg:TreeListView>
                     </dxg:GridControl.View>
 
-                <dxg:GridColumn FieldName="FullName"   Header="Наименование" Name="Name" MinWidth="200" Width="8*">
+                <dxg:GridColumn FieldName="FullName" Header="Наименование" Name="Name" MinWidth="200" Width="8*">
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -202,13 +202,11 @@
                             </StackPanel>
                         </DataTemplate>
                     </dxg:GridColumn.HeaderTemplate>
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock TextWrapping="Wrap" Text="{Binding Row.FullName}" />
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings TextWrapping="Wrap"/>
+                    </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Price"  Header="Цена" HorizontalHeaderContentAlignment="Center" Width="1*">
+                <dxg:GridColumn FieldName="Price"  Header="Стоимость" HorizontalHeaderContentAlignment="Center" Width="1*">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  Text="{Binding Row.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
@@ -217,7 +215,7 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Width="1*" FieldName="Cost"  Header="Стоимость работы" HorizontalHeaderContentAlignment="Center" >
+                <dxg:GridColumn Width="1*" FieldName="Cost"  Header="Размер выплаты сотруднику" HorizontalHeaderContentAlignment="Center" >
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock  Text="{Binding Row.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
