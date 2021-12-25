@@ -38,11 +38,12 @@
 
             <DataTemplate x:Key="Doctor.Template">
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="40" Height="40" Source="{Binding Path=Photo}">
+                    <Image Width="40" Height="40" Source="{Binding Path=Photo}" >
                         <Image.Clip>
                             <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
                         </Image.Clip>
                     </Image>
+                    
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
                         <TextBlock Text="{Binding Fio}"/>
                         <TextBlock Text="{Binding Department.Name}" Opacity="0.6"/>

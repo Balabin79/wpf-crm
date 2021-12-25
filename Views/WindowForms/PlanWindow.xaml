@@ -31,7 +31,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Новый план лечения" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
+                    <TextBlock Text="План лечения" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
                     <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>

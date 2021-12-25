@@ -1,4 +1,6 @@
-﻿using DevExpress.Xpf.Core.Native;
+﻿using Dental.Models.Base;
+using Dental.ViewModels;
+using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using Microsoft.Win32;
 using System;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -63,5 +66,14 @@ namespace Dental.Infrastructures.Extensions
             }
             return null;
         }
+
+        static ImageEditEx()
+        {
+            Type ownerType = typeof(ImageEditEx);
+            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(ApplicationCommands.Delete, (d, e) => {                            
+                ((IImageDeletable)((FrameworkElement)d).DataContext).ImageDelete(d);
+            }, (d, e) => ((ImageEditEx)d).CanDelete(d, e)));
+        }
+
     }
 }

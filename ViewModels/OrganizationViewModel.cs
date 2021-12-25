@@ -13,13 +13,14 @@ using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Models.Base;
 using Dental.Services;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel : ViewModelBase
+    class OrganizationViewModel : ViewModelBase, IImageDeletable
     {
         private readonly ApplicationContext db;
        
@@ -48,10 +49,9 @@ namespace Dental.ViewModels
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
-                    Image = !string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo) ? new BitmapImage(new Uri(Model.Logo)) : null;
-                    if (ProgramDirectory.HasOrgDirectoty())
+                    if (Directory.Exists(PathToOrgDirectory))
                     {
-                        Files = ProgramDirectory.GetFilesFromOrgDirectory().ToObservableCollection<FileInfo>();
+                        Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
                     }
                 } 
                 else
@@ -117,6 +117,77 @@ namespace Dental.ViewModels
         #endregion
 
         #region Управление моделью
+        public ICommand SaveCommand { get; }
+        public ICommand DeleteCommand { get; }
+
+        private bool CanSaveCommandExecute(object p) => true;
+        private bool CanDeleteCommandExecute(object p) => true;
+
+        private void OnSaveCommandExecuted(object p)
+        {
+            try
+            {
+                if (Model == null) return;
+                var notification = new Notification();
+                if (Model.Id == 0) db.Organizations.Add(Model);
+                SaveLogo();
+                db.SaveChanges();
+                notification.Content = "Изменения сохранены в базу данных!";
+
+                if (HasUnsavedChanges())
+                {
+                    notification.run();
+                    ModelBeforeChanges = (Organization)Model.Clone();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить данные организации?",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+                Delete();
+
+                Model = new Organization();
+                var notification = new Notification();
+                ModelBeforeChanges = (Organization)Model.Clone();
+
+                notification.Content = "Данные организации полностью удалены!";
+                notification.run();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void Delete()
+        {
+            try
+            {
+                if (db.Entry(Model).State == EntityState.Deleted) return;
+                db.Entry(Model).State = EntityState.Deleted;
+                db.SaveChanges();
+                Image = null;
+                Files.Clear();
+                new DirectoryInfo(PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
         public Organization ModelBeforeChanges { get; set; }
 
         public bool HasUnsavedChanges()
@@ -142,17 +213,20 @@ namespace Dental.ViewModels
             return response.ToString() == "Cancel";
         }
 
-        public Organization _Model;
+        public Organization model;
         public Organization Model
         {
-            get => _Model;
-            set => Set(ref _Model, value);
+            get => model;
+            set => Set(ref model, value);
         }
 
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
         #endregion
 
         #region Управление лого
+        private const string LOGO_DIRECTORY = "Dental\\Logo";
+        private string PathToLogoDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
+
         private void LogoLoading()
         {
             try
@@ -176,52 +250,33 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-
         }
 
         private void SaveLogo()
         {
             try
             {
+                if (Image == null) return;
+                if (Image is BitmapImage img)
+                {
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.Logo) return;
+                }
+
                 if (!string.IsNullOrEmpty(Model.Logo))
                 {
-                    if (!ProgramDirectory.HasLogoDirectoty()) ProgramDirectory.CreateLogoDirectory();
-                    if (Path.GetDirectoryName(Model.Logo) != ProgramDirectory.GetPathLogoDirectoty())
-                    {
-                       /* ProgramDirectory.SaveFileInLogoDirectory(
-                            new FileInfo() { Name = Path.GetFileName(Model.Logo), Path = Model.Logo }
-                            );*/
-                        Model.Logo = Path.Combine(ProgramDirectory.GetPathLogoDirectoty(), (Path.GetFileName(Model.Logo)));
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-        #endregion
+                    if (!Directory.Exists(PathToLogoDirectory)) Directory.CreateDirectory(PathToLogoDirectory);                  
+                    FileInfo logo = new FileInfo(Model.Logo);
+                    if (! logo.Exists) logo.Create();                          
+                    logo.CopyTo(Path.Combine(PathToLogoDirectory, logo.Name), true);
 
+                    FileInfo newFile = new FileInfo(Path.Combine(PathToLogoDirectory, logo.Name));
+                    newFile.CreationTime = DateTime.Now;
+                    Model.Logo = newFile.FullName;
 
-        public ICommand SaveCommand { get; }
-       
-        private bool CanSaveCommandExecute(object p) => true;
-
-        private void OnSaveCommandExecuted(object p)
-        {
-            try { 
-                if (Model == null) return;
-                var notification = new Notification();
-                if (Model.Id == 0) db.Organizations.Add(Model);
-                else SaveFiles();
-                SaveLogo();
-                db.SaveChanges();
-                notification.Content = "Изменения сохранены в базу данных!";
-               
-                if (HasUnsavedChanges())
-                {
-                    notification.run();
-                    ModelBeforeChanges = (Organization)Model.Clone();                  
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
+                    var files = new DirectoryInfo(PathToLogoDirectory).GetFiles();
+                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
+                    LogoLoading();
                 }
             }
             catch (Exception e)
@@ -230,26 +285,21 @@ namespace Dental.ViewModels
             }
         }
 
-        public ICommand DeleteCommand { get; }
-
-        private bool CanDeleteCommandExecute(object p) => true;
-
-        private void OnDeleteCommandExecuted(object p)
+        public void ImageDelete(object p)
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить данные организации?",
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл логотипа?",
+messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
-                Delete();
-            
-                Model = new Organization();
-                var notification = new Notification();
-                ModelBeforeChanges = (Organization)Model.Clone();
-
-                notification.Content = "Данные организации полностью удалены!";
-                notification.run();
+                if (Directory.Exists(PathToLogoDirectory))
+                {
+                    new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
+                }
+                
+                if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
+                LogoLoading();
             }
             catch (Exception e)
             {
@@ -257,24 +307,18 @@ namespace Dental.ViewModels
             }
         }
 
-        private void Delete()
-        { try
-            {
-                db.Entry(Model).State = EntityState.Deleted;
-                db.SaveChanges();
-                ProgramDirectory.RemoveAllOrgFiles();
-                Files = new ObservableCollection<FileInfo>();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
+        public ImageSource Image
+        {
+            get => image;
+            set => Set(ref image, value);
         }
+        public ImageSource image;
+        #endregion
 
-        /////////////////////////////
+        #region команды, связанных с прикреплением файлов 
+        private const string ORG_DIRECTORY = "Dental\\Organization";
+        private string PathToOrgDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ORG_DIRECTORY);
 
-        #region команды, связанных с прикреплением файлов     
         public ICommand DeleteFileCommand { get; }
         public ICommand ExecuteFileCommand { get; }
         public ICommand AttachmentFileCommand { get; }
@@ -289,12 +333,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is FileInfo file) Process.Start(Path.GetDirectoryName(file.FullName));            
+                if (Directory.Exists(PathToOrgDirectory)) Process.Start(PathToOrgDirectory);
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть директорию, в которой находится файл!",
+                    text: "Невозможно открыть содержащую файл директорию!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -309,7 +353,7 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файл!",
+                   text: "Невозможно выполнить загрузку файла!",
                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -317,6 +361,50 @@ namespace Dental.ViewModels
 
         private void OnAttachmentFileCommandExecuted(object p)
         {
+            try
+            {
+                var filePath = string.Empty;
+                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    dialog.InitialDirectory = "c:\\";
+                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+                    dialog.FilterIndex = 2;
+                    dialog.RestoreDirectory = true;
+
+                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+                    filePath = dialog.FileName;
+                    if (string.IsNullOrEmpty(filePath)) return;
+                }
+
+                FileInfo file = new FileInfo(filePath);
+
+                // проверяем на наличие существующего файла
+                foreach (var i in Files)
+                {
+                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
+
+                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
+                        i.Delete();
+                    }
+                }
+
+                if (!Directory.Exists(PathToOrgDirectory)) Directory.CreateDirectory(PathToOrgDirectory);
+
+                File.Copy(file.FullName, Path.Combine(PathToOrgDirectory, file.Name), true);
+
+                FileInfo newFile = new FileInfo(Path.Combine(PathToOrgDirectory, file.Name));
+                newFile.CreationTime = DateTime.Now;
+
+                Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
             /*try
             {
                 var fileContent = string.Empty;
@@ -368,16 +456,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                var file = p as FileInfo;
-                var item = Files.Where<FileInfo>(f => string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0).FirstOrDefault();
-                if (item == null) return;
-               
-
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Вы собираетесь физически удалить файл с компьютера! Вы уверены в своих действиях?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                if (p is FileInfo file)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    ProgramDirectory.RemoveFileFromOrgDirectory(file);
-                
-                Files.Remove(file);
+                    file.Delete();
+                    Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
+                }
             }
             catch (Exception e)
             {
@@ -385,59 +470,12 @@ namespace Dental.ViewModels
             }
         }
 
-        private bool FindDoubleFile(string fileName)
-        {
-            foreach (var file in Files)
-            {
-                if (string.Compare(file.FullName, fileName, StringComparison.CurrentCulture) == 0) return true;
-            }
-            return false;
-        }
-
-        private bool SaveFiles()
-        {
-            try
-            {
-                //если нет директории программы, то создаем ее
-                if (!ProgramDirectory.HasMainProgrammDirectory())
-                {
-                    var _ = ProgramDirectory.CreateMainProgrammDirectoryForPatientCards();
-                }
-                if (!ProgramDirectory.HasOrgDirectoty())
-                {
-                    var _ = ProgramDirectory.CreateOrgDirectory();
-                }
-                MoveFilesToOrgDirectory();
-                return true;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-                return false;
-            }
-        }
-
-        private void MoveFilesToOrgDirectory()
-        {
-            foreach (FileInfo file in Files) ProgramDirectory.SaveInOrgDirectory(file);
-
-        }
-        
-
-        public ObservableCollection<FileInfo> _Files;
+        public ObservableCollection<FileInfo> files;
         public ObservableCollection<FileInfo> Files
         {
-            get => _Files;
-            set => Set(ref _Files, value);
+            get => files;
+            set => Set(ref files, value);
         }
         #endregion
-
-        public ImageSource Image 
-        {
-            get => _Image;
-            set => Set(ref _Image, value); 
-        }
-        public ImageSource _Image;
-
     }
 }

@@ -156,7 +156,10 @@ namespace Dental.Services
         
 
         public static void SaveInOrgDirectory(FileInfo file) =>  File.Copy(file.FullName, Path.Combine(GetPathOrgDirectoty(), (file.FullName)), true);
-  
+  /// <summary>
+  /// ///////////////////////////////////////////////////////////
+  /// </summary>
+  /// <param name="file"></param>
         public static void SaveFileInLogoDirectory(FileInfo file)
         {
             RemoveLogoFile();

@@ -210,9 +210,8 @@
                                 <dxg:TableView.InputBindings>
                                     <KeyBinding 
                                         Key="Delete"
-                                        Modifiers="Ctrl"
-                                        Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}"
-                                        CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
+                                        Command="{Binding ElementName=attachFileTableView, Path=DataContext.DeleteRowInPlanCommand}"
+                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
 
                                     <KeyBinding 
                                         Key="N"     
@@ -220,6 +219,16 @@
                                         Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
 
+                                    <KeyBinding 
+                                        Key="R"     
+                                        Modifiers="Ctrl"
+                                        Command="{Binding ElementName=attachFileTableView, Path=DataContext.EditPlanItemCommand}"
+                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+
+                                    <MouseBinding 
+                                        Gesture="LeftDoubleClick"      
+                                        Command="{Binding ElementName=view, Path=DataContext.EditPlanItemCommand}"
+                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
 
                                 </dxg:TableView.InputBindings>
                                 <dxg:TableView.RowCellMenuCustomizations >
@@ -231,7 +240,17 @@
                                         CommandParameter="{Binding ElementName= view, Path=FocusedRow}"
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                         IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                        Content="Добавить запись" />
+                                        Content="Добавить запись" />                                    
+                                    
+                                    <dxb:BarButtonItem 
+                                        GlyphSize="Small" 
+                                        GlyphAlignment="Left"
+                                        KeyGesture="Ctrl+R"
+                                        Command="{Binding ElementName=view, Path=DataContext.EditPlanItemCommand}"
+                                        CommandParameter="{Binding ElementName= attachFileTableView, Path=FocusedRow}"
+                                        Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
+                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        Content="Редактировать запись" />
 
                                     <dxb:BarButtonItem 
                                         Content="Удалить" 
@@ -239,7 +258,7 @@
                                         IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}"
-                                        CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName= attachFileTableView, Path=FocusedRow}"/>
 
                                 </dxg:TableView.RowCellMenuCustomizations>
 

@@ -146,6 +146,7 @@
                                 HorizontalAlignment="Stretch">
                                 <dxe:TextEdit Name="Inn" 
                                       MaskType="Numeric"
+                                      EditValueChanged="TextEdit_EditValueChanged"
                                       Mask="##########" 
                                       Text="{Binding Model.Inn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -154,7 +155,8 @@
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
                                 <dxe:TextEdit Name="Kpp" 
-                                      MaskType="Numeric" 
+                                      MaskType="Numeric"
+                                      EditValueChanged="TextEdit_EditValueChanged"
                                       Mask="#########" 
                                       Text="{Binding Model.Kpp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -164,7 +166,8 @@
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="Ogrn" 
-                                                  MaskType="Numeric" 
+                                                  MaskType="Numeric"
+                                                  EditValueChanged="TextEdit_EditValueChanged"
                                                   Mask="#############" 
                                                   Text="{Binding Model.Ogrn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -174,6 +177,7 @@
                                       HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="Okved" 
                                       MaskType="Numeric"
+                                      EditValueChanged="TextEdit_EditValueChanged"            
                                       Mask="######" 
                                       Text="{Binding Model.Okved, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -183,6 +187,7 @@
                                       HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="Okpo" 
                                       MaskType="Numeric"
+                                      EditValueChanged="TextEdit_EditValueChanged"
                                       Mask="##########" 
                                       Text="{Binding Model.Okpo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -249,6 +254,7 @@
                                                   HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="Bik" 
                                                   MaskType="Numeric"
+                                                  EditValueChanged="TextEdit_EditValueChanged"
                                                   Mask="############" 
                                                   Text="{Binding Model.Bik, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -256,7 +262,8 @@
                                 <dxlc:LayoutItem  Label="Расчетный счет:"  
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit Name="AccountNumber" 
+                                    <dxe:TextEdit Name="AccountNumber"
+                                                  EditValueChanged="TextEdit_EditValueChanged"
                                                   MaskType="Numeric" 
                                                   Mask="####################" 
                                                   Text="{Binding Model.AccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
@@ -265,7 +272,8 @@
                                 <dxlc:LayoutItem  Label="Корреспондирующий счет:"  
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit Name="CorrAccountNumber" 
+                                    <dxe:TextEdit Name="CorrAccountNumber"
+                                                  EditValueChanged="TextEdit_EditValueChanged"
                                                   MaskType="Numeric" 
                                                   Mask="####################" 
                                                   Text="{Binding Model.CorrAccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
@@ -283,8 +291,8 @@
                                 <ext:ImageEditEx   Height="128" Width="128"  HorizontalAlignment="Left"                   
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
                                       ImagePath = "{Binding Model.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      EditValue = "{Binding Image, Mode=TwoWay}"                                 
-                                         
+                                      EditValue = "{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                                       
                                       ShowMenu="True"/>
@@ -320,20 +328,19 @@
                                 </DataTemplate>
                             </dxlc:LayoutGroup.HeaderTemplate>
 
-                            <dxg:GridControl  ItemsSource="{Binding Files, Mode=TwoWay}" 
+                            <dxg:GridControl  ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
                                 <dxg:GridControl.Columns>
                                     <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
                                     <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
-                                    <dxg:GridColumn FieldName="Size" Header="Размер файла" Width="1*" />
-                                    <dxg:GridColumn FieldName="DateCreated" Header="Дата добавления" Width="1*" />
-                                    <dxg:GridColumn  Width="1*" Header="Статус">
-                                        <dxg:GridColumn.CellTemplate>
+                                    <dxg:GridColumn FieldName="Length" Header="Размер файла" Width="1*" >
+                                        <dxg:GridColumn.CellDisplayTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding RowData.Row.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <TextBlock Text="{Binding Row.Length, Mode=OneWay}" />
                                             </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn.CellDisplayTemplate>
                                     </dxg:GridColumn>
+                                    <dxg:GridColumn FieldName="CreationTime" Header="Дата добавления" Width="1*" />
 
                                     <dxg:GridColumn Width="auto" >
                                         <dxg:GridColumn.CellTemplate>

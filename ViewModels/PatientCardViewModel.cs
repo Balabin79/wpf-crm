@@ -230,7 +230,7 @@ namespace Dental.ViewModels
         #endregion
 
         #region команды, связанных с прикреплением к карте пациентов файлов 
-        public const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
+        private const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
         private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
 
         public ICommand DeleteFileCommand { get; }
@@ -267,7 +267,7 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файл!",
+                   text: "Невозможно выполнить загрузку файла!",
                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 (new ViewModelLog(e)).run();
             }
@@ -565,6 +565,7 @@ namespace Dental.ViewModels
         private bool CanEditPlanItemCommandExecute(object p) => true;
         private bool CanSavePlanCommandExecute(object p) => true;
         private bool CanDeletePlanCommandExecute(object p) => true;
+
         private bool CanAddRowInPlanCommandExecute(object p) => true;
         private bool CanSaveRowInPlanCommandExecute(object p) => true;
         private bool CanDeleteRowInPlanCommandExecute(object p) => true;
