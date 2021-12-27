@@ -147,12 +147,7 @@ namespace Dental.Models
         [Display(Name = "Оклад фиксированный")]
         public int? IsFixRate { get; set; }
 
-        public List<EmployesSpecialities> EmployesSpecialities { get; set; }
-
-        public Employee()
-        {
-            EmployesSpecialities = new List<EmployesSpecialities>();
-        }
+        public List<EmployesSpecialities> EmployesSpecialities { get; set; } = new List<EmployesSpecialities>();
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

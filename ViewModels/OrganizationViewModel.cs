@@ -404,52 +404,6 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             {
                 (new ViewModelLog(e)).run();
             }
-
-            /*try
-            {
-                var fileContent = string.Empty;
-                var filePath = string.Empty;
-                using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    openFileDialog.InitialDirectory = "c:\\";
-                    openFileDialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
-                    openFileDialog.FilterIndex = 2;
-                    openFileDialog.RestoreDirectory = true;
-
-                    if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        filePath = openFileDialog.FileName;
-                        ClientFiles file = new ClientFiles();
-                        file.Path = filePath;
-                        file.DateCreated = DateTime.Today.ToShortDateString();
-                        file.Name = Path.GetFileNameWithoutExtension(filePath);
-                        file.FullName = Path.GetFileName(filePath);
-                        if (Path.HasExtension(filePath))
-                        {
-                            file.Extension = Path.GetExtension(filePath);
-                        }
-                        file.Size = new FileInfo(filePath).Length.ToString();
-
-                        if (FindDoubleFile(file.FullName))
-                        {
-                            var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                            if (response.ToString() == "No") return;
-
-                            var idx = Files.IndexOf(f => (string.Compare(f.FullName, file.FullName, StringComparison.CurrentCulture) == 0));
-                            if (idx == -1) return;
-                            file.Status = ClientFiles.STATUS_NEW_RUS;
-                            Files[idx] = file;                            
-                            return;
-                        }
-                        Files.Insert(0, file);
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }*/
         }
 
         private void OnDeleteFileCommandExecuted(object p)

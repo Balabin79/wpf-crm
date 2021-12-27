@@ -119,6 +119,10 @@ namespace Dental.ViewModels
                     {
                         Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<FileInfo>();                        
                     }
+                    if (Directory.Exists(GetPathToPatientCard()))
+                    {
+                        Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
+                    }
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
@@ -203,7 +207,6 @@ namespace Dental.ViewModels
                 else
                 {
                     notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
-                    //SaveFiles();
                     // Update();
                     SaveTeeth();
                 }
@@ -340,8 +343,13 @@ namespace Dental.ViewModels
             }
         }
 
-        private string GetPathToPatientCard() => Path.Combine(PathToPatientsCards, Model.Id.ToString());
-    
+        private string GetPathToPatientCard() => Path.Combine(PathToPatientsCards, GetGuid());
+        private string GetGuid()
+        {
+            if (Model.Guid == null) Model.Guid = KeyGenerator.GetUniqueKey();
+            return Model.Guid;
+        }
+
         public ObservableCollection<FileInfo> Files
         {
             get => files;

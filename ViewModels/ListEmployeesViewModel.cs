@@ -25,18 +25,28 @@ namespace Dental.ViewModels
             {
                 NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
                 db = new ApplicationContext();
-                Collection = db.Employes.OrderBy(d => d.LastName).ToList();
+                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
                 foreach (var i in Collection)
                 {
-                    if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo)) {
-                        i.Image = new BitmapImage(new Uri(i.Photo));
+                    if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
+                    {
+                        using (var stream = new FileStream(i.Photo, FileMode.Open))
+                        {
+                            var img = new BitmapImage();
+                            img.BeginInit();
+                            img.CacheOption = BitmapCacheOption.OnLoad;
+                            img.StreamSource = stream;
+                            img.EndInit();
+                            img.Freeze();
+                            i.Image = img;
+                        }
+                        //i.Image = new BitmapImage(new Uri(i.Photo));
                     }
-                }
+                    else i.Image = null;
 
-                    /*ForEach(f => f.Image = 
-                    !string.IsNullOrEmpty(f.Photo) && File.Exists(f.Photo) 
-                    ? new BitmapImage(new Uri(f.Photo)) : null);*/
-            }
+                    
+                }
+            }      
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",

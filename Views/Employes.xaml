@@ -20,8 +20,19 @@
 
     <Page.Resources>
         <vm:ListEmployeesViewModel x:Key="vm"/>
-        <DataTemplate x:Key="readonlyCardTemplate">
-            <StackPanel Orientation="Vertical">
+        <DataTemplate x:Key="HeaderCardTemplate">
+            <TextBlock 
+                FontWeight="Bold"
+                TextAlignment="Left"
+                FontStyle="Italic"
+                Width="260" 
+                Text="{Binding Path=RowData.Row.Fio}" 
+                TextWrapping="Wrap" />
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="readonlyCardTemplate" >
+            <StackPanel Orientation="Vertical" Width="260">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -29,26 +40,30 @@
                     </Grid.ColumnDefinitions>
                     <dxe:ImageEdit Grid.Column="0"
                                    Stretch="UniformToFill"
-                                   Height="70"
-                                   Width="64"
+                                   Height="100"
+                                   Width="90"
                                    Source="{Binding Path=Row.Image, Mode=OneWay}"
                                    ShowMenu="False"
                                    IsReadOnly="True" />
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,12,0" Grid.Column="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,8,0" Grid.Column="1">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Medium" Text="Осн. телефон: " />
+                            <TextBlock Text="{Binding Row.Phone}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Medium" Text="Доп. телефон: " />
+                            <TextBlock Text="{Binding Row.AddPhone}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Medium" Text="Email: " />
+                            <TextBlock Text="{Binding Row.Email}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Medium" Text="Статус: " />
+                            <TextBlock Text="{Binding Path=Row.Status}" />
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontWeight="Bold" Text="Фамилия: " />
-                            <TextBlock Text="{Binding Path=Row.LastName}" TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Bold" Text="Имя: " />
-                            <TextBlock Text="{Binding Path=Row.FirstName}" TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Bold" Text="Отчество: " />
-                            <TextBlock Text="{Binding Path=Row.MiddleName, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Bold" Text="Подробнее: " />
+                            <TextBlock FontWeight="Medium" Text="Подробнее: " />
                             <dxe:HyperlinkEdit 
                                 Text="Перейти" 
                                 Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
@@ -57,52 +72,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <dx:DXTabControl SelectedIndex="0"
-                                 Style="{DynamicResource demoTabControl}"
-                                 Margin="0,12,0,0">
-                    
-                    <dx:DXTabItem Header="Контакты" Style="{DynamicResource demoTabItem}">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="Hire Date: " />
-                                <TextBlock Text="{Binding Row.HireDate, StringFormat=D}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="Experience: " />
-                                <TextBlock Text="{DXBinding Expr='$sys:DateTime.Now.Year - Row.HireDate.Year'}" />
-                                <TextBlock Text=" years" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="E-mail: " />
-                                <TextBlock Text="{DXBinding Expr='Row.LastName.ToLower() + `@devexpress.com`'}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontWeight="Bold" Text="Phone: " />
-                                <TextBlock Text="{Binding Path=Row.Phone}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </dx:DXTabItem>
-                    <dx:DXTabItem Header="Специальности" Style="{DynamicResource demoTabItem}">
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="Address: " />
-                                <TextBlock Text="{Binding Path=Row.AddressLine1}" TextWrapping="Wrap" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="City: " />
-                                <TextBlock Text="{Binding Path=Row.City}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                                <TextBlock FontWeight="Bold" Text="Postal Code: " />
-                                <TextBlock Text="{Binding Path=Row.PostalCode}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock FontWeight="Bold" Text="Country: " />
-                                <TextBlock Text="{Binding Path=Row.CountryRegionName}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </dx:DXTabItem>
-                </dx:DXTabControl>
+
             </StackPanel>
         </DataTemplate>
         
@@ -111,7 +81,10 @@
 
 
 
-    <dxg:GridControl Name="grid" DataContext="{StaticResource vm}" ItemsSource="{Binding Collection}" ShowBorder="False">
+    <dxg:GridControl Name="grid" 
+                     DataContext="{StaticResource vm}" 
+                     ItemsSource="{Binding Collection}"
+                     ShowBorder="False">
             <!--#region Columns-->
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="FirstName" />
@@ -123,9 +96,8 @@
                 <dxg:CardView Name="view"
                               EditorButtonShowMode="ShowAlways"
                               ShowGroupedColumns="True"
-                              CardTemplate="{StaticResource readonlyCardTemplate}"
-                              
-                            
+                              CardTemplate="{StaticResource readonlyCardTemplate}"       
+                              CardHeaderTemplate="{StaticResource HeaderCardTemplate}"
                               PrintMaximumCardColumns="2"
                               PrintAutoCardWidth="True"
                               UseLegacyFilterPanel="False"
