@@ -59,7 +59,6 @@
     <None Remove="Resources\Icons\svg\trash-alt.svg" />
     <None Remove="Resources\Icons\svg\user-nurse.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
-    <None Remove="Resources\Icons\Template\.png" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Application-Form-Edit.png" />
@@ -135,6 +134,7 @@
     <None Remove="Resources\Icons\Template\Large-Tiles.png" />
     <None Remove="Resources\Icons\Template\License-Management.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
+    <None Remove="Resources\Icons\Template\logo.png" />
     <None Remove="Resources\Icons\Template\Mail-Server-Setting.png" />
     <None Remove="Resources\Icons\Template\moleskine_red.png" />
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
@@ -180,6 +180,7 @@
     <None Remove="Resources\Icons\Template\Transmit.png" />
     <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
+    <None Remove="Resources\Icons\Template\user-avatar.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\Icons\Template\User.png" />
     <None Remove="Resources\Icons\Template\Widescreen.png" />
@@ -383,6 +384,7 @@
     <Resource Include="Resources\Icons\Template\Key.png" />
     <Resource Include="Resources\Icons\Template\Large-Tiles.png" />
     <Resource Include="Resources\Icons\Template\License-Management.png" />
+    <Resource Include="Resources\Icons\Template\logo.png" />
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
     <Resource Include="Resources\Icons\Template\Monitor.png" />
@@ -422,6 +424,7 @@
     <Resource Include="Resources\Icons\Template\Transmit.png" />
     <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
+    <Resource Include="Resources\Icons\Template\user-avatar.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\Icons\Template\User.png" />
     <Resource Include="Resources\Icons\Template\Widescreen.png" />

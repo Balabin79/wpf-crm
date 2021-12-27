@@ -288,15 +288,22 @@
                         <dxlc:LayoutItem Margin="5 0 5 5" Width="128">
                             <StackPanel>
                             <Decorator   >
-                                <ext:ImageEditEx   Height="128" Width="128"  HorizontalAlignment="Left"                   
+                                    <ext:ImageEditEx   Height="128" Width="128"  HorizontalAlignment="Left"                   
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
                                       ImagePath = "{Binding Model.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      
+                                      Background="White"                        
+                                      ShowBorder="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                                       
-                                      ShowMenu="True"/>
-                            </Decorator>
+                                      ShowMenu="True">
+                                        <dxe:ImageEdit.EmptyContentTemplate>
+                                            <ControlTemplate>
+                                                <Image Source="pack://application:,,,/Resources/Icons/Template/logo.png"/>
+                                            </ControlTemplate>
+                                        </dxe:ImageEdit.EmptyContentTemplate>
+                                    </ext:ImageEditEx>
+                                </Decorator>
                                 <TextBlock Text="Логотип"  HorizontalAlignment="Center" Margin="0 10 0 0" />
                             </StackPanel>
                         </dxlc:LayoutItem>

@@ -132,7 +132,13 @@
                                       ImagePath = "{Binding Model.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      Height="128"  />
+                                      Height="128"  >
+                                                <dxe:ImageEdit.EmptyContentTemplate>
+                                                    <ControlTemplate >
+                                                        <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                                                    </ControlTemplate>
+                                                </dxe:ImageEdit.EmptyContentTemplate>
+                                            </ext:ImageEditEx>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                     <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">

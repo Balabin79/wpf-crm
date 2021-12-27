@@ -40,11 +40,18 @@
                     </Grid.ColumnDefinitions>
                     <dxe:ImageEdit Grid.Column="0"
                                    Stretch="UniformToFill"
+                                   Background="White"
                                    Height="100"
                                    Width="90"
                                    Source="{Binding Path=Row.Image, Mode=OneWay}"
                                    ShowMenu="False"
-                                   IsReadOnly="True" />
+                                   IsReadOnly="True" >
+                        <dxe:ImageEdit.EmptyContentTemplate>
+                            <ControlTemplate>
+                                <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                            </ControlTemplate>
+                        </dxe:ImageEdit.EmptyContentTemplate>
+                    </dxe:ImageEdit>
                     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,8,0" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Осн. телефон: " />
