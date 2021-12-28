@@ -10,7 +10,7 @@
        d:DesignHeight="400" d:DesignWidth="800" mc:Ignorable="d"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
-       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars">
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -52,8 +52,8 @@
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" 
                                            Content="Показать список пациентов" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" 
@@ -75,7 +75,7 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
                 <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
-                         AutoExpandAllGroups="False"               
+                         AutoExpandAllGroups="False"  
                          Margin="2"
                          MaxHeight="1800"
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -100,6 +100,17 @@
                             <dxg:GridColumn.Image >
                                 <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                             </dxg:GridColumn.Image>
+                            <dxg:GridColumn.CellDisplayTemplate>
+                                <DataTemplate>
+                                <dxe:HyperlinkEdit 
+                                    Margin="0 2 0 2"
+                                    Text="{Binding FullName}" 
+                                    ToolTip="Перейти в анкету сотрудника"
+                                    EditValue="{Binding Path=Row.FullName, Mode=OneWay}"
+                                    Command="{Binding Source={StaticResource vm}, Path=OpenPatientCardCommand}"
+                                    CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellDisplayTemplate>
                         </dxg:GridColumn>
 
                         <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
@@ -111,14 +122,16 @@
                     </dxg:GridControl.TotalSummary>
                     <dxg:GridControl.View>
                         <dxg:TableView 
-                            ShowFixedTotalSummary="True"
-                               AllowScrollAnimation="True"
-                               Name="view"
-                               AllowFixedGroups="True"
-                               NavigationStyle="Row"
-                               AllowPrintColumnHeaderImage="True"
-                               UseLegacyFilterPanel="False"
-                               HighlightItemOnHover="True">
+                            ShowColumnHeaders="False"
+                            ShowGroupPanel="False"
+                            ShowFixedTotalSummary="True"                           
+                            AllowScrollAnimation="True"
+                            Name="view"
+                            AllowFixedGroups="True"
+                            NavigationStyle="Row"
+                            AllowPrintColumnHeaderImage="True"
+                            UseLegacyFilterPanel="False"
+                            HighlightItemOnHover="True">
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
