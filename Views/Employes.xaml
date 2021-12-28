@@ -10,15 +10,21 @@
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:extens ="clr-namespace:Dental.Infrastructures.Extensions"
        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
+       xmlns:services="clr-namespace:Dental.Services"
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm ="clr-namespace:Dental.ViewModels"
-
-
-              d:DesignWidth="800">
+       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+       d:DesignWidth="800">
 
     <Page.Resources>
+        <commands:PrintCommand x:Key="Print"/>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
         <vm:ListEmployeesViewModel x:Key="vm"/>
         <DataTemplate x:Key="HeaderCardTemplate">
             <TextBlock 
@@ -27,12 +33,11 @@
                 FontStyle="Italic"
                 Width="260" 
                 Text="{Binding Path=RowData.Row.Fio}" 
-                TextWrapping="Wrap" />
-
+                ToolTip="{Binding Path=RowData.Row.Fio}" />
         </DataTemplate>
 
         <DataTemplate x:Key="readonlyCardTemplate" >
-            <StackPanel Orientation="Vertical" Width="260">
+            <StackPanel Orientation="Vertical" Width="270">
                 <Grid Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -52,16 +57,16 @@
                             </ControlTemplate>
                         </dxe:ImageEdit.EmptyContentTemplate>
                     </dxe:ImageEdit>
-                    <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,8,0" Grid.Column="1">
+                    <StackPanel ToolTip="{Binding Row.Phone}"  Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,0,0" Grid.Column="1">
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Осн. телефон: " />
                             <TextBlock Text="{Binding Row.Phone}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <StackPanel ToolTip="{Binding Row.AddPhone}" Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Доп. телефон: " />
-                            <TextBlock Text="{Binding Row.AddPhone}" />
+                            <TextBlock Text="{Binding Row.AddPhone}"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <StackPanel ToolTip="{Binding Row.Email}" Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Email: " />
                             <TextBlock Text="{Binding Row.Email}" />
                         </StackPanel>
@@ -73,43 +78,116 @@
                             <TextBlock FontWeight="Medium" Text="Подробнее: " />
                             <dxe:HyperlinkEdit 
                                 Text="Перейти" 
+                                ToolTip="Перейти в анкету сотрудника"
+                                EditValue="Перейти в анкету сотрудника"
                                 Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
                                 CommandParameter="{Binding Path=Row.Id}"
                                 Margin="0 -3 0 0" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-
             </StackPanel>
         </DataTemplate>
-        
-        
     </Page.Resources>
 
+    <Border 
+        BorderBrush="LightGray" 
+        BorderThickness="1" 
+        Margin="5" 
+        dx:ThemeManager.ThemeName="Office2019White" 
+        DataContext="{StaticResource vm}">
+
+        <Grid x:Name="gridMain" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel LastChildFill="True" Grid.Row="0">
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Image Height="23" Width="23" Margin="3 0 3 0">
+                        <Image.Source>
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Text="Список сотрудников" FontSize="16" Padding="0 8 5 0" />
+                </StackPanel>
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                        <dxb:BarButtonItem Name="bCreate" Content="Новая анкета сотрудника" 
+                                           DataContext="{x:Static services:Navigation.Instance}" 
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.Employee"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"/>
+
+                        <dxb:BarButtonItem Name="expandTree" 
+                                           Content="Развернуть или свернуть все карточки"  
+                                           DataContext="{StaticResource vm}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"                      
+                                           Command="{Binding ExpandAllCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
+                                           CommandParameter="{Binding ElementName=view}"
+                                           />
+                    </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
+            </DockPanel>
+    
+           
+            <dxg:GridControl
+                ShowBorder="True"
+                Grid.Row="2" 
+                Name="grid"                             
+                DataContext="{StaticResource vm}" 
+                ItemsSource="{Binding Collection}"               
+                Margin="2 0 2 2"
+                DefaultSorting="LastName"
+                >
+                
+                <dxg:GridControl.View>
+                    <dxg:CardView 
+                        ShowColumnHeaders="False"
+                        AllowSorting="True"
+                        Name="view"
+                        NavigationStyle="Row"
+                        EditorButtonShowMode="ShowAlways"
+                        ShowGroupPanel="False"                       
+                        ShowGroupedColumns="True"
+                        CardTemplate="{StaticResource readonlyCardTemplate}"       
+                        CardHeaderTemplate="{StaticResource HeaderCardTemplate}"
+                        PrintMaximumCardColumns="2"
+                        PrintAutoCardWidth="True"
+                        UseLegacyFilterPanel="False" AllowEditing="False" CardLayout="Columns">
 
 
-    <dxg:GridControl Name="grid" 
-                     DataContext="{StaticResource vm}" 
-                     ItemsSource="{Binding Collection}"
-                     ShowBorder="False">
-            <!--#region Columns-->
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="FirstName" />
-                <dxg:GridColumn FieldName="LastName" />
-                <dxg:GridColumn FieldName="Image" AllowColumnFiltering="False" />
-            </dxg:GridControl.Columns>
-            <!--#endregion-->
-            <dxg:GridControl.View>
-                <dxg:CardView Name="view"
-                              EditorButtonShowMode="ShowAlways"
-                              ShowGroupedColumns="True"
-                              CardTemplate="{StaticResource readonlyCardTemplate}"       
-                              CardHeaderTemplate="{StaticResource HeaderCardTemplate}"
-                              PrintMaximumCardColumns="2"
-                              PrintAutoCardWidth="True"
-                              UseLegacyFilterPanel="False"
-                              />
-            </dxg:GridControl.View>
-        </dxg:GridControl>
+                        <dxg:CardView.InputBindings>
+                            <KeyBinding 
+                                Key="E" 
+                                Modifiers="Ctrl" 
+                                Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
+                                CommandParameter="-1"/>
+
+                            <KeyBinding 
+                                Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"  />
+
+                            <MouseBinding 
+                                Gesture="LeftDoubleClick"      
+                                Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+
+                        </dxg:CardView.InputBindings>
+
+                    </dxg:CardView>
+                </dxg:GridControl.View>
+
+            </dxg:GridControl>
+        </Grid>
+    </Border>
 
 </Page>

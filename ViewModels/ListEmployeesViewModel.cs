@@ -24,6 +24,7 @@ namespace Dental.ViewModels
             try
             {
                 NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
+                ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
                 foreach (var i in Collection)
@@ -40,13 +41,10 @@ namespace Dental.ViewModels
                             img.Freeze();
                             i.Image = img;
                         }
-                        //i.Image = new BitmapImage(new Uri(i.Photo));
                     }
                     else i.Image = null;
-
-                    
                 }
-            }      
+            }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",
@@ -55,7 +53,27 @@ namespace Dental.ViewModels
         }
 
         public ICommand NavigateToCommand { get; }
+        public ICommand ExpandAllCommand { get; }
         private bool CanNavigateToCommandExecute(object p) => true;
+        private bool CanExpandAllCommandExecute(object p) => true;
+        private void OnExpandAllCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is DevExpress.Xpf.Grid.CardView card)
+                {
+                    if (card.IsCardExpanded(0)) card.CollapseAllCards(); 
+                    else card.ExpandAllCards();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        } 
+
+        public List<Employee> Collection { get; set; }
+
         private void OnNavigateToCommandExecuted(object p)
         {
             try
@@ -72,6 +90,5 @@ namespace Dental.ViewModels
             }
         }
 
-        public List<Employee> Collection { get; set; }
     }
 }

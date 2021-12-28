@@ -43,18 +43,21 @@
                         ShowDragWidget="False"
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" DataContext="{x:Static services:Navigation.Instance}"
-                                           Glyph="{dx:DXImage SvgImages/XAF/FilterEditor_User.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/FilterEditor_User.svg}" 
+                        <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" 
+                                           DataContext="{x:Static services:Navigation.Instance}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}" 
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
                         
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" Content="Показать список пациентов" 
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" 
+                                           Content="Показать список пациентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}" 
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" Content="Показать архивный список пациентов" 
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" 
+                                           Content="Показать архивный список пациентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
                                            Command="{Binding Path=ShowArchiveCommand}"/>

@@ -323,6 +323,11 @@
                                                                 ShowDragWidget="False" 
                                                                 AllowCustomizationMenu="False" 
                                                                 AllowQuickCustomization="False">
+                                                <dxb:BarButtonItem 
+                                                   Content="Директория"  
+                                                   Glyph="{dx:DXImage SvgImages/Actions/Open.svg}"
+                                                   GlyphSize="Small" 
+                                                   Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenDirectoryCommand}"/>
 
                                                 <dxb:BarButtonItem Command="{Binding ElementName=fileToolBar, Path=DataContext.AttachmentFileCommand}" 
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
@@ -364,14 +369,6 @@
                                            Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                           CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
-
-                                                        <dxb:BarButtonItem Name="bOpenDir" 
-                                           Content="Открыть содержащую файл директорию" 
-                                           IsEnabled="{Binding ElementName=GridControlAttachFile, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Actions/Open.svg}"
-                                           GlyphSize="Small" 
-                                           Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.OpenDirectoryCommand}"
                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
 
                                                         <dxb:BarButtonItem Name="bDeleteFile" 

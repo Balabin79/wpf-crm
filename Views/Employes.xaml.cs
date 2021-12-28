@@ -13,10 +13,5 @@ namespace Dental.Views
         {
             InitializeComponent();
         }
-
-        private void TextBlock_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
     }
 }
