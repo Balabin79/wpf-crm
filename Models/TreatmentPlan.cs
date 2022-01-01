@@ -10,7 +10,7 @@ using DevExpress.Mvvm;
 
 namespace Dental.Models
 {
-    [Table("TreatmentPlans")]
+    [Table("ServicePlans")]
     public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
     {
         public void Update()

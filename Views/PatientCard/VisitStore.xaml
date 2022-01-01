@@ -16,7 +16,7 @@
     </UserControl.Resources>
     <Grid MaxHeight="1200">
         <dxlc:LayoutGroup 
-            Header="План посещений" 
+            Header="Список обращений клиента" 
             Name="layoutGroup157" 
             View="GroupBox" 
             Orientation="Vertical" 
@@ -24,7 +24,7 @@
             <dxlc:LayoutGroup.HeaderTemplate>
                 <DataTemplate>
                     <DockPanel HorizontalAlignment="Stretch">
-                        <TextBlock Text="План посещений" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="Обращения клиента" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                         <dxb:BarContainerControl
                                     DockPanel.Dock="Right" 
                                     HorizontalAlignment="Right">

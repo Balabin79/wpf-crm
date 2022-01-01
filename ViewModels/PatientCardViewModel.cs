@@ -43,13 +43,12 @@ namespace Dental.ViewModels
                 Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();
 
-                #region инициализация команд, связанных с общим функционалом карты пациента
+                #region инициализация команд, связанных с общим функционалом карты клиента
                 // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
                 #endregion
-
 
                 #region инициализация команд, связанных с закладкой "Планы лечения"
                 OpenFormPlanCommand = new LambdaCommand(OnOpenFormPlanCommandExecuted, CanOpenFormPlanCommandExecute);
@@ -73,31 +72,19 @@ namespace Dental.ViewModels
                 OpenDirDocCommand = new LambdaCommand(OnOpenDirDocCommandExecuted, CanOpenDirDocCommandExecute);
                 #endregion
 
-                #region инициализация команд, связанных с картой зубов пациента
-                ClickToothGreenCommand = new LambdaCommand(OnClickToothGreenCommandExecuted, CanClickToothGreenCommandExecute);
-                ClickToothYelPlCommand = new LambdaCommand(OnClickToothYelPlCommandExecuted, CanClickToothYelPlCommandExecute);
-                ClickToothYelCorCommand = new LambdaCommand(OnClickToothYelCorCommandExecuted, CanClickToothYelCorCommandExecute);
-                ClickToothImpCommand = new LambdaCommand(OnClickToothImpCommandExecuted, CanClickToothImpCommandExecute);
-                ClickToothRedRCommand = new LambdaCommand(OnClickToothRedRCommandExecuted, CanClickToothRedRCommandExecute);
-                ClickToothRedPtCommand = new LambdaCommand(OnClickToothRedPtCommandExecuted, CanClickToothRedPtCommandExecute);
-                ClickToothRedPCommand = new LambdaCommand(OnClickToothRedPCommandExecuted, CanClickToothRedPCommandExecute);
-                ClickToothRedCCommand = new LambdaCommand(OnClickToothRedCCommandExecuted, CanClickToothRedCCommandExecute);
-                ClickToothGrayCommand = new LambdaCommand(OnClickToothGrayCommandExecuted, CanClickToothGrayCommandExecute);
-                #endregion
-
-                #region инициализация команд, связанных с прикреплением к карте пациента файлов
+                #region инициализация команд, связанных с прикреплением к карте клиента файлов
                 DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
                 ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
                 OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
                 AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
                 #endregion               
 
-                // Если patientCardNumber == 0, то это создается новая карта пациента, иначе загружаем данные существующего клиента
+                // Если patientCardNumber == 0, то это создается новая карта клиента, иначе загружаем данные существующего клиента
                 if (patientId == 0)
                 {
                     Model = new PatientInfo();
                     NumberPatientCard = (CreateNewNumberPatientCard()).ToString();
-                    Model.PatientCardCreatedAt = DateTime.Now.ToShortDateString();
+                    Model.ClientCardCreatedAt = DateTime.Now.ToShortDateString();
 
                     // для новой карты пациента все поля по-умолчанию доступны для редактирования
                     IsReadOnly = false;
@@ -126,7 +113,6 @@ namespace Dental.ViewModels
                 }
                 ModelBeforeChanges = (PatientInfo)Model.Clone();
                 LoadFieldsCollection();
-                LoadTeeth();
 
 
                 ClassificatorCategories = db.Classificator.ToList();
@@ -169,18 +155,27 @@ namespace Dental.ViewModels
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту пациента из базы данных, без возможности восстановления?",
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены планы услуг, записи в расписании, в рассылках, обращениях клиента и все файлы прикрепленные к карте клиента!",
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
-                if (!CheckingRelatedData())
-                {
-                    //показываем сообщение, что какие связанные с картой пациента данные необходимо удалить, чтобы стало возможным удалить карту пациента, либо программно удалить, но предупредить и показать какие связанные данные будут удалены с бд в том числе
-                }
 
-                Delete();
+                DeleteClientFiles();
+                db.TreatmentPlan.Include(f => f.TreatmentPlanItems).Where(f => f.PatientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+               /* db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);*/
+                db.ClientsRequests.Where(f => f.ClientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.ClientsSubscribes.Where(f => f.ClientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+                //удалить также в расписании
+                db.Entry(Model).State = EntityState.Deleted;
+                db.SaveChanges();
+                // подчищаем остатки
+                db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.SaveChanges();
+
                 var notification = new Notification();
-                notification.Content = "Карта пациента полностью удалена из базы данных!";
+                notification.Content = "Карта клиента полностью удалена из базы данных!";
                 var nav = Navigation.Instance;
                 notification.run();
                 nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
@@ -199,16 +194,14 @@ namespace Dental.ViewModels
                 var notification = new Notification();
                 if (Model.Id == 0)
                 {
-                    notification.Content = "Новый пациент успешно записан в базу данных!";
+                    notification.Content = "Новый клиент успешно записан в базу данных!";
                     db.PatientInfo.Add(Model);
-                    SaveTeeth();
                     BtnAfterSaveEnable = true;
                 }
                 else
                 {
-                    notification.Content = "Отредактированные данные пациента сохранены в базу данных!";
+                    notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();
-                    SaveTeeth();
                 }
                 db.SaveChanges();
                 if (HasUnsavedChanges())
@@ -224,16 +217,24 @@ namespace Dental.ViewModels
 
         }
 
-        // Поиск связанных с картой пациента данных перед их удалением
-        private bool CheckingRelatedData()
+        // Поиск связанных с картой клиента данных перед их удалением
+        private void DeleteClientFiles()
         {
-
-            return true;
+            try
+            {
+                string path = Path.Combine(PathToPatientsCards, Model.Guid);
+                if (Directory.Exists(path)) Directory.Delete(path, true);
+            } 
+            catch(Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Неудачная попытка удалить файлы, прикрепленные к карте клиента. Возможно файлы были запущены в другой программе! Попробуйте закрыть запущенные сторонние программы и повторить!",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+            }
         }
         #endregion
 
-        #region команды, связанных с прикреплением к карте пациентов файлов 
-        private const string PATIENTS_CARDS_DIRECTORY = "Dental\\PatientsCards";
+        #region команды, связанных с прикреплением к карте клиентов файлов 
+        private const string PATIENTS_CARDS_DIRECTORY = "Dental\\ClientsCards";
         private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
 
         public ICommand DeleteFileCommand { get; }
@@ -821,218 +822,6 @@ namespace Dental.ViewModels
 
         #endregion
 
-        #region команды, связанных с формулой зубов
-        public ICommand ClickToothGreenCommand { get; }
-        public ICommand ClickToothYelPlCommand { get; }
-        public ICommand ClickToothYelCorCommand { get; }
-        public ICommand ClickToothImpCommand { get; }
-        public ICommand ClickToothRedRCommand { get; }
-        public ICommand ClickToothRedPtCommand { get; }
-        public ICommand ClickToothRedPCommand { get; }
-        public ICommand ClickToothRedCCommand { get; }
-        public ICommand ClickToothGrayCommand { get; }
-
-        private bool CanClickToothGreenCommandExecute(object p) => true;
-        private bool CanClickToothYelPlCommandExecute(object p) => true;
-        private bool CanClickToothYelCorCommandExecute(object p) => true;
-        private bool CanClickToothImpCommandExecute(object p) => true;
-        private bool CanClickToothRedRCommandExecute(object p) => true;
-        private bool CanClickToothRedPtCommandExecute(object p) => true;
-        private bool CanClickToothRedPCommandExecute(object p) => true;
-        private bool CanClickToothRedCCommandExecute(object p) => true;
-        private bool CanClickToothGrayCommandExecute(object p) => true;
-
-        private void OnClickToothGreenCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothGreenCommandExecuted");
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothYelPlCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothYelPlCommandExecuted");
-
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothYelCorCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothYelCorCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothImpCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothImpCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothRedRCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothRedRCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothRedPtCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothRedPtCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothRedPCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothRedPCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothRedCCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothRedCCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnClickToothGrayCommandExecuted(object p)
-        {
-            try
-            {
-                SetToothState(p, "OnClickToothGrayCommandExecuted");
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        public PatientTeeth _Teeth;
-        public PatientTeeth Teeth
-        {
-            get => _Teeth;
-            set => Set(ref _Teeth, value);
-        }
-
-        private void SetToothState(object p, string methodName)
-        {
-            Tooth tooth = p as Tooth;
-            if (tooth == null) return;
-
-            switch (methodName)
-            {
-                case "OnClickToothGreenCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGreen; tooth.Abbr = ""; break;
-                case "OnClickToothYelPlCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Plomba; break;
-                case "OnClickToothYelCorCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathYellow; tooth.Abbr = PatientTeeth.Coronka; break;
-                case "OnClickToothImpCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathImp; tooth.Abbr = ""; break;
-                case "OnClickToothRedRCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Radiks; break;
-                case "OnClickToothRedPtCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Periodontit; break;
-                case "OnClickToothRedPCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Pulpit; break;
-                case "OnClickToothRedCCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathRed; tooth.Abbr = PatientTeeth.Caries; break;
-                case "OnClickToothGrayCommandExecuted": tooth.ToothImagePath = PatientTeeth.ImgPathGray; tooth.Abbr = ""; break;
-            }
-        }
-
-        private void SaveTeeth()
-        {
-            try
-            {
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                };
-                var jsonTeeth = JsonSerializer.Serialize<PatientTeeth>(Teeth, options);
-
-                var teeth = db.Teeth.Where(i => i.PatientInfoId == Model.Id).FirstOrDefault();
-                if (teeth == null)
-                {
-
-                    db.Teeth.Add(new Teeth()
-                    {
-                        Guid = KeyGenerator.GetUniqueKey(),
-                        PatientInfoId = Model.Id,
-                        PatientTeeth = jsonTeeth
-                    });
-                }
-                else teeth.PatientTeeth = jsonTeeth;
-                db.SaveChanges();
-            }
-            catch(Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }           
-        }
-
-        private void LoadTeeth()
-        {
-            try
-            {
-                var teeth = db.Teeth.Where(i => i.PatientInfoId == Model.Id).FirstOrDefault();
-                if (teeth == null)
-                {
-                    Teeth = new PatientTeeth();
-                    return;
-                }
-                var options = new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                };
-                var patientTeeth = JsonSerializer.Deserialize<PatientTeeth>(teeth.PatientTeeth, options);
-                Teeth = new PatientTeeth(patientTeeth);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-        #endregion
-
-
         public bool HasUnsavedChanges()
         {
             bool hasUnsavedChanges = false;
@@ -1095,7 +884,6 @@ namespace Dental.ViewModels
 
         public ICollection<string> AdvertisingList { get; set; }
         public IEnumerable<string> ClientsGroupList { get; set; }
-        //public ObservableCollection<ClientTreatmentPlans> ClientTreatmentPlans { get; set; }
 
         public ICollection<string> GenderList
         {
@@ -1129,24 +917,10 @@ namespace Dental.ViewModels
             AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
         }
-
-
-
-        private void Add()
-        {
-            db.Entry(Model).State = EntityState.Added;
-            db.SaveChanges();
-        }
         
         protected void Update()
         {
             db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-
-        private void Delete()
-        {
-            db.Entry(Model).State = EntityState.Deleted;
             db.SaveChanges();
         }
 

@@ -298,7 +298,7 @@
         <dxlc:LayoutGroup.HeaderTemplate>
             <DataTemplate >
                 <DockPanel  HorizontalAlignment="Stretch">
-                    <TextBlock Text="Планы лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                    <TextBlock Text="Планы услуг" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
@@ -312,7 +312,7 @@
                             <dxb:BarButtonItem 
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormPlanCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                Content="Создать план лечения" 
+                                Content="Создать план услуг" 
                                 IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
                             />
                         </dxb:ToolBarControl>

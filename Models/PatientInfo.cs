@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
-    [Table("PatientInfo")]
+    [Table("ClientInfo")]
     public class PatientInfo : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<PatientInfo>
     {
         public PatientInfo()
@@ -20,11 +20,11 @@ namespace Dental.Models
 
         public ObservableCollection<TreatmentPlan> TreatmentPlans { get; set; }
 
-        [Display(Name = "Номер медицинской карты")]
-        public string PatientCardNumber { get; set; } //номер карты
+        [Display(Name = "Номер карты клиента")]
+        public string ClientCardNumber { get; set; } //номер карты
 
-        [Display(Name = "Дата создания медицинской карты")]
-        public string PatientCardCreatedAt { get; set; } //дата заполнения карты
+        [Display(Name = "Дата создания клиентской карты")]
+        public string ClientCardCreatedAt { get; set; } //дата заполнения карты
 
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
@@ -84,7 +84,7 @@ namespace Dental.Models
         [NotMapped]
         public string Title
         {
-            get => String.IsNullOrEmpty(FullName) ? "Новый пациент" : ("Карта пациента №" + Id + " ("+ FullName +")");
+            get => String.IsNullOrEmpty(FullName) ? "Новый клиент" : ("Карта клиента №" + Id + " ("+ FullName +")");
         }
 
         [Display(Name = "Пол")]
@@ -169,8 +169,8 @@ namespace Dental.Models
             return new PatientInfo
             {
                 Id = this.Id,
-                PatientCardNumber = this.PatientCardNumber,
-                PatientCardCreatedAt = this.PatientCardCreatedAt,
+                ClientCardNumber = this.ClientCardNumber,
+                ClientCardCreatedAt = this.ClientCardCreatedAt,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 MiddleName = this.MiddleName,
@@ -202,8 +202,8 @@ namespace Dental.Models
         public PatientInfo Copy(PatientInfo model)
         {
             model.Id = this.Id;
-            model.PatientCardNumber = this.PatientCardNumber;
-            model.PatientCardCreatedAt = this.PatientCardCreatedAt;
+            model.ClientCardNumber = this.ClientCardNumber;
+            model.ClientCardCreatedAt = this.ClientCardCreatedAt;
             model.FirstName = this.FirstName;
             model.LastName = this.LastName;
             model.MiddleName = this.MiddleName;
@@ -268,8 +268,8 @@ namespace Dental.Models
             StringParamsIsEquel(this.Sex, other.Sex, "Административная", "Пол");
             StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
             StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
-            StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес");
-            StringParamsIsEquel(this.Note, other.Note, "Административная", "Дополнительно");
+            StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
+            StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
             StringParamsIsEquel(this.Advertising, other.Advertising, "Административная", "Рекламные источники");
             StringParamsIsEquel(this.ClientCategory, other.ClientCategory, "Административная", "Категории клиентов");
             StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
@@ -308,8 +308,7 @@ namespace Dental.Models
         {
             return new Dictionary<string, List<string>>() {
                 { "Административная", new List<string>() },
-                { "План лечения и счета", new List<string>() },
-                { "Карта зубов", new List<string>() }
+                { "Планы услуг", new List<string>() },
             };
         }
 

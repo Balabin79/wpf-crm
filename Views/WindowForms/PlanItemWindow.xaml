@@ -13,7 +13,7 @@
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         mc:Ignorable="d"
-        Title="Позиция в плане лечения"
+        Title="Позиция в плане услуг"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Height="360"
@@ -37,7 +37,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Позиция в плане лечения" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
+                    <TextBlock Text="Позиция в плане услуг" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                     <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>

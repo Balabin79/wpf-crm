@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Table("MedicalAppointment")]
+    [Table("Appointments")]
     public class MedicalAppointment : AbstractBaseModel, IDataErrorInfo
     {
         public string PatientName { get; set; }
@@ -18,7 +18,8 @@ namespace Dental.Models
         public string RecurrenceInfo { get; set; }
         public string ReminderInfo { get; set; }
         public string Location { get; set; }
-        public int EmployeeId { get; set; }
+        public int? PatientInfoId { get; set; }
+        public int? EmployeeId { get; set; }
         public int LabelId { get; set; }
         public int StatusId { get; set; }
         public int AllDay { get; set; }

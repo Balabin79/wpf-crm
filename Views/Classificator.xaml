@@ -36,7 +36,7 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -47,7 +47,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Классификатор" FontSize="16" Padding="0 8 5 0" />
+                    <TextBlock Text="Классификатор" FontSize="15" Padding="0 8 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -57,18 +57,24 @@
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-1"/>
                         <dxb:BarButtonItem Name="bCreateDir" Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-2"/>
                         <dxb:BarButtonItem Name="expandTree" Content="Развернуть или свернуть все позиции" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"                      
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding ExpandTreeCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
                                            CommandParameter="{Binding ElementName=view}"
@@ -80,7 +86,9 @@
                                            
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/Print.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"/>
                         

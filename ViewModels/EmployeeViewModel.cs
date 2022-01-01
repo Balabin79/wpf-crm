@@ -391,6 +391,9 @@ namespace Dental.ViewModels
         #endregion
 
         #region Управление моделью
+        public ICommand SaveCommand { get; }
+        private bool CanSaveCommandExecute(object p) => true;
+
         public Employee ModelBeforeChanges { get; set; }
 
         public bool HasUnsavedChanges()
@@ -432,9 +435,6 @@ namespace Dental.ViewModels
 
             return response.ToString() == "Cancel";
         }
-
-        public ICommand SaveCommand { get; }
-        private bool CanSaveCommandExecute(object p) => true;
 
         private void OnSaveCommandExecuted(object p)
         {

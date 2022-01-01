@@ -99,7 +99,7 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="2"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -111,7 +111,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Список сотрудников" FontSize="16" Padding="0 8 5 0" />
+                    <TextBlock Text="Список сотрудников" FontSize="15" Padding="0 8 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -122,15 +122,19 @@
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.Employee"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"/>
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"/>
 
                         <dxb:BarButtonItem Name="expandTree" 
                                            Content="Развернуть или свернуть все карточки"  
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"                      
-                                           Command="{Binding ExpandAllCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
-                                           CommandParameter="{Binding ElementName=view}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"                      
+                                           Command="{Binding ExpandAllCommand}"
+                                           CommandParameter="{Binding ElementName=view}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

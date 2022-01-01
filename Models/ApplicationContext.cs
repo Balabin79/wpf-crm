@@ -58,10 +58,11 @@ namespace Dental.Models
         public DbSet<EmployeeGroup> EmployeeGroup { get; set; }
         public DbSet<Classificator> Classificator { get; set; }
         public DbSet<Dictionary> Dictionary { get; set; }
-        public DbSet<Teeth> Teeth { get; set; }
         public DbSet<TreatmentPlan> TreatmentPlan { get; set; }
         public DbSet<TreatmentPlanItems> TreatmentPlanItems { get; set; }
         public DbSet<InvoiceItems> InvoiceItems { get; set; }
+        public DbSet<ClientsSubscribes> ClientsSubscribes { get; set; }
+        public DbSet<ClientsRequests> ClientsRequests { get; set; }
 
         public DbSet<MedicalAppointment> Appointments { get; set; }
         public DbSet<ResourceEntity> Resources { get; set; }

@@ -5,22 +5,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
-                      xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
-                      xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-                      xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
-                      xmlns:vm ="clr-namespace:Dental.ViewModels" 
-                      xmlns:tp ="clr-namespace:Dental.Views.PatientCard" 
-                      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-                      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-                      xmlns:sys="clr-namespace:System;assembly=netstandard"
-                      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
-                      mc:Ignorable="d"
-                      d:DesignHeight="300" d:DesignWidth="300"
-                      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-                     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-                     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-             dx:ThemeManager.ThemeName="Office2019White">
+    xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+    xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+    xmlns:vm ="clr-namespace:Dental.ViewModels" 
+    xmlns:tp ="clr-namespace:Dental.Views.PatientCard" 
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:sys="clr-namespace:System;assembly=netstandard"
+    xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+    mc:Ignorable="d"
+    d:DesignHeight="300" d:DesignWidth="300"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+    dx:ThemeManager.ThemeName="Office2019White">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -44,7 +44,7 @@
 
         <Grid x:Name="gridPC"  ScrollViewer.CanContentScroll="True">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -55,7 +55,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Padding="0 8 5 0" FontSize="16" Text="{Binding Mode=OneWay, Path=Model.Title, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Padding="0 8 5 0" FontSize="15" Text="{Binding Mode=OneWay, Path=Model.Title, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     
@@ -64,21 +64,30 @@
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding EditableCommand}"/>
                         
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" Content="Редактировать данные" 
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" 
+                                           Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding SaveCommand}"/>                    
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
                                            Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
@@ -112,20 +121,14 @@
                             </Grid>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Планы лечения" >
+                        <dx:DXTabItem Header="Планы услуг" >
                             <tp:TreatmentPlan DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                        <dx:DXTabItem Header="Визиты пациента">
+                        <dx:DXTabItem Header="Обращения клиента">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
                                 <tp:VisitStore DataContext="{Binding}"/>
                             </ScrollViewer>
                         </dx:DXTabItem>
-                        <dx:DXTabItem Header="Карта зубов">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
-                                <tp:TeethPage DataContext="{Binding}" />
-                            </ScrollViewer>
-                        </dx:DXTabItem>
-
                     </dx:DXTabControl>
                 </dxlc:LayoutGroup>
                 </dxlc:LayoutControl>

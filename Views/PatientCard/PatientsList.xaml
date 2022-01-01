@@ -10,7 +10,8 @@
        d:DesignHeight="400" d:DesignWidth="800" mc:Ignorable="d"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
-       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -22,7 +23,7 @@
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             
@@ -33,7 +34,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/people.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Список пациентов" FontSize="18" Padding="0 8 5 0"/>
+                    <TextBlock Text="Список клиентов" FontSize="15" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -46,7 +47,9 @@
                         <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" 
                                            DataContext="{x:Static services:Navigation.Instance}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
                         
@@ -54,17 +57,23 @@
                                            Content="Показать список пациентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" 
                                            Content="Показать архивный список пациентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem Name="bPrint" Content="Печать"  
                                            Glyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="27,27"
                                            Command="{StaticResource Print}"
                                            CommandParameter="{Binding ElementName=view}"/>
                         <dxb:BarItemLinkSeparator />

@@ -31,15 +31,15 @@
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Рабочий стол" >
                     <dxr:RibbonPageGroup Caption="Основное">
-                        <dxb:BarButtonItem Content="Новый пациент" RibbonStyle="Default" 
-                                           ToolTip="Новый пациент"
+                        <dxb:BarButtonItem Content="Новый клиент" RibbonStyle="Default" 
+                                           ToolTip="Новый клиент"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Add.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
 
-                        <dxb:BarButtonItem Content="Список пациентов" RibbonStyle="Default" 
-                                           ToolTip="Список пациентов"
+                        <dxb:BarButtonItem Content="Список клиентов" RibbonStyle="Default" 
+                                           ToolTip="Список клиентов"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/people.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/people.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/people.png"                                      
