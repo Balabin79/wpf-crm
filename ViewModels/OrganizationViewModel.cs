@@ -43,7 +43,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Files = new ObservableCollection<FileInfo>();
                 Model = GetModel();
-                LogoLoading();
+                ImagesLoading();
                 if (Model != null)
                 {
                     IsReadOnly = true;
@@ -131,6 +131,8 @@ namespace Dental.ViewModels
                 var notification = new Notification();
                 if (Model.Id == 0) db.Organizations.Add(Model);
                 SaveLogo();
+                SaveStamp();
+                SaveSignature();
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
@@ -176,10 +178,14 @@ namespace Dental.ViewModels
                 if (db.Entry(Model).State == EntityState.Deleted) return;
                 db.Entry(Model).State = EntityState.Deleted;
                 db.SaveChanges();
-                Image = null;
+                Logo = null;
+                Stamp = null;
+                Signature = null;
                 Files.Clear();
                 new DirectoryInfo(PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
                 new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(PathToStampDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(PathToSignatureDirectory).GetFiles()?.ForEach(f => f.Delete());
             }
             catch (Exception e)
             {
@@ -193,7 +199,7 @@ namespace Dental.ViewModels
         public bool HasUnsavedChanges()
         {
             bool hasUnsavedChanges = false;
-            if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
+            if (Model?.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
@@ -223,28 +229,42 @@ namespace Dental.ViewModels
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
         #endregion
 
-        #region Управление лого
+        #region Управление файлами лого, печати и подписи
         private const string LOGO_DIRECTORY = "Dental\\Logo";
-        private string PathToLogoDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
+        private const string STAMP_DIRECTORY = "Dental\\Stamp";
+        private const string SIGNATURE_DIRECTORY = "Dental\\Signature";
 
-        private void LogoLoading()
+        private string PathToLogoDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
+        private string PathToStampDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), STAMP_DIRECTORY);
+        private string PathToSignatureDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SIGNATURE_DIRECTORY);
+
+        private void ImagesLoading()
         {
             try
             {
-                if (!string.IsNullOrEmpty(Model.Logo) && File.Exists(Model.Logo))
+                string[] images = new string[] { Model.Logo, Model.Stamp, Model.Signature };
+                for (int i = 0; i < images.Length; i++)
                 {
-                    using (var stream = new FileStream(Model.Logo, FileMode.Open))
+                    if (!string.IsNullOrEmpty(images[i]) && File.Exists(images[i]))
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        Image = img;
+                        using (var stream = new FileStream(images[i], FileMode.Open))
+                        {
+                            var img = new BitmapImage();
+                            img.BeginInit();
+                            img.CacheOption = BitmapCacheOption.OnLoad;
+                            img.StreamSource = stream;
+                            img.EndInit();
+                            img.Freeze();
+                            switch (i)
+                            {
+                                case 0: Logo = img; break;
+                                case 1: Stamp = img; break;
+                                case 2: Signature = img; break;      
+                            }
+                        }
                     }
-                }
-                else Image = null;
+                    else images[i] = null;
+                }              
             }
             catch (Exception e)
             {
@@ -252,12 +272,15 @@ namespace Dental.ViewModels
             }
         }
 
+      
+
         private void SaveLogo()
         {
             try
             {
-                if (Image == null) return;
-                if (Image is BitmapImage img)
+                if (Logo == null) return;
+                if (Model?.Logo == ModelBeforeChanges?.Logo) return;
+                if (Logo is BitmapImage img)
                 {
                     if (((FileStream)img?.StreamSource)?.Name == Model?.Logo) return;
                 }
@@ -276,7 +299,7 @@ namespace Dental.ViewModels
                     // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
                     var files = new DirectoryInfo(PathToLogoDirectory).GetFiles();
                     foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                    LogoLoading();
+                    //LogoLoading();
                 }
             }
             catch (Exception e)
@@ -285,21 +308,112 @@ namespace Dental.ViewModels
             }
         }
 
+        private void SaveStamp()
+        {
+            try
+            {
+                if (Stamp == null) return;
+                if (Model?.Stamp == ModelBeforeChanges.Stamp) return;
+                if (Stamp is BitmapImage img)
+                {
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.Stamp) return;
+                }
+
+                if (!string.IsNullOrEmpty(Model.Stamp))
+                {
+                    if (!Directory.Exists(PathToStampDirectory)) Directory.CreateDirectory(PathToStampDirectory);
+                    FileInfo stamp = new FileInfo(Model.Stamp);
+                    if (!stamp.Exists) stamp.Create();
+                    stamp.CopyTo(Path.Combine(PathToStampDirectory, stamp.Name), true);
+
+                    FileInfo newFile = new FileInfo(Path.Combine(PathToStampDirectory, stamp.Name));
+                    newFile.CreationTime = DateTime.Now;
+                    Model.Stamp = newFile.FullName;
+
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве печати, остальные удаляем.
+                    var files = new DirectoryInfo(PathToStampDirectory).GetFiles();
+                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
+                    //StampLoading();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void SaveSignature()
+        {
+            try
+            {
+                if (Signature == null) return;
+                if (Model?.Signature == ModelBeforeChanges.Signature) return;
+                if (Signature is BitmapImage img)
+                {
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.Signature) return;
+                }
+
+                if (!string.IsNullOrEmpty(Model.Signature))
+                {
+                    if (!Directory.Exists(PathToSignatureDirectory)) Directory.CreateDirectory(PathToSignatureDirectory);
+                    FileInfo signature = new FileInfo(Model.Signature);
+                    if (!signature.Exists) signature.Create();
+                    signature.CopyTo(Path.Combine(PathToSignatureDirectory, signature.Name), true);
+
+                    FileInfo newFile = new FileInfo(Path.Combine(PathToSignatureDirectory, signature.Name));
+                    newFile.CreationTime = DateTime.Now;
+                    Model.Signature = newFile.FullName;
+
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве печати, остальные удаляем.
+                    var files = new DirectoryInfo(PathToSignatureDirectory).GetFiles();
+                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
+                    //SignatureLoading();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+       
         public void ImageDelete(object p)
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл логотипа?",
+                string path = "";
+                string msg = "";
+                if (p is FrameworkElement name)
+                {
+                    if (name?.Name == "Logo")
+                    {
+                        msg = "Удалить файл логотипа?";
+                        path = PathToLogoDirectory;
+                    }
+                    if (name?.Name == "Stamp")
+                    {
+                        msg = "Удалить файл печати?";
+                        path = PathToStampDirectory;
+                    }
+                    if (name?.Name == "Signature")
+                    {
+                        msg = "Удалить файл подписи?";
+                        path = PathToSignatureDirectory;
+                    }
+                    if (string.IsNullOrEmpty(path)) return;                   
+                }
+ 
+
+                var response = ThemedMessageBox.Show(title: "Внимание", text: msg,
 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
-                if (Directory.Exists(PathToLogoDirectory))
+                if (Directory.Exists(path))
                 {
-                    new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
+                    new DirectoryInfo(path).GetFiles()?.ForEach(f => f.Delete());
                 }
                 
                 if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
-                LogoLoading();
+                ImagesLoading();
             }
             catch (Exception e)
             {
@@ -307,12 +421,26 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             }
         }
 
-        public ImageSource Image
+        public ImageSource Logo
         {
-            get => image;
-            set => Set(ref image, value);
+            get => logo;
+            set => Set(ref logo, value);
         }
-        public ImageSource image;
+        private ImageSource logo;
+
+        public ImageSource Stamp
+        {
+            get => stamp;
+            set => Set(ref stamp, value);
+        }
+        private ImageSource stamp;
+
+        public ImageSource Signature
+        {
+            get => signature;
+            set => Set(ref signature, value);
+        }
+        private ImageSource signature;
         #endregion
 
         #region команды, связанных с прикреплением файлов 

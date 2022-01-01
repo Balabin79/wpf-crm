@@ -135,6 +135,7 @@
     <None Remove="Resources\Icons\Template\License-Management.png" />
     <None Remove="Resources\Icons\Template\lime.png" />
     <None Remove="Resources\Icons\Template\logo.png" />
+    <None Remove="Resources\Icons\Template\logo_1.png" />
     <None Remove="Resources\Icons\Template\Mail-Server-Setting.png" />
     <None Remove="Resources\Icons\Template\moleskine_red.png" />
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
@@ -164,6 +165,8 @@
     <None Remove="Resources\Icons\Template\Shape-Square-Key.png" />
     <None Remove="Resources\Icons\Template\Shedule.png" />
     <None Remove="Resources\Icons\Template\Sheduled-Task.png" />
+    <None Remove="Resources\Icons\Template\signature.png" />
+    <None Remove="Resources\Icons\Template\stamp.png" />
     <None Remove="Resources\Icons\Template\status11.png" />
     <None Remove="Resources\Icons\Template\Support.png" />
     <None Remove="Resources\Icons\Template\Table.png" />
@@ -385,6 +388,7 @@
     <Resource Include="Resources\Icons\Template\Large-Tiles.png" />
     <Resource Include="Resources\Icons\Template\License-Management.png" />
     <Resource Include="Resources\Icons\Template\logo.png" />
+    <Resource Include="Resources\Icons\Template\logo_1.png" />
     <Resource Include="Resources\Icons\Template\Mail-Server-Setting.png" />
     <Resource Include="Resources\Icons\Template\Money.png" />
     <Resource Include="Resources\Icons\Template\Monitor.png" />
@@ -408,6 +412,8 @@
     <Resource Include="Resources\Icons\Template\Shape-Square-Key.png" />
     <Resource Include="Resources\Icons\Template\Shedule.png" />
     <Resource Include="Resources\Icons\Template\Sheduled-Task.png" />
+    <Resource Include="Resources\Icons\Template\signature.png" />
+    <Resource Include="Resources\Icons\Template\stamp.png" />
     <Resource Include="Resources\Icons\Template\status11.png" />
     <Resource Include="Resources\Icons\Template\Support.png" />
     <Resource Include="Resources\Icons\Template\Table.png" />

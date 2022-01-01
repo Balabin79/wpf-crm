@@ -30,9 +30,7 @@
             dx:ThemeManager.ThemeName="Office2019White" 
             DataContext="{StaticResource vm}">
 
-        <Grid x:Name="gridMainorganization"  
-              ScrollViewer.CanContentScroll="True" 
-              ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="gridMainorganization"   >
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*" />
@@ -48,7 +46,6 @@
                     <TextBlock Text="Реквизиты организации" FontSize="15" Padding="0 8 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
-
                     <dxb:ToolBarControl x:Name="fileToolBar" 
                                         Caption="File" 
                                         ShowDragWidget="False"
@@ -58,7 +55,10 @@
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding EditableCommand}"/>
+                        
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
@@ -85,39 +85,48 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-                <StackPanel>
-                <GroupBox BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Общая информация" VerticalAlignment="Top">
-                    <dxlc:LayoutGroup Orientation="Horizontal" Header="Общая информация" Margin="0 0 0 5">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"   VerticalAlignment="Stretch" Grid.Row="1">
+                <Grid  >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <GroupBox  BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Общая информация" VerticalAlignment="Top">
+                        <dxlc:LayoutGroup Orientation="Horizontal" Header="Общая информация" Margin="0 0 0 5">
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
-                            <dxlc:LayoutItem  Label="Название:" 
+                                <dxlc:LayoutItem  Label="Название:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                <dxe:TextEdit Name="Name" 
+                                    <dxe:TextEdit Name="Name" 
                                       Text="{Binding Model.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                            <dxlc:LayoutItem  Label="Сокращенное наименование:" 
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Сокращенное наименование:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                <dxe:TextEdit Name="ShortName" 
+                                    <dxe:TextEdit Name="ShortName" 
                                       Text="{Binding Model.ShortName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                            <dxlc:LayoutItem  Label="Юридический адрес:" 
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Юридический адрес:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                <dxe:MemoEdit Name="LegalAddress" 
+                                    <dxe:MemoEdit Name="LegalAddress" 
                                       Text="{Binding Model.LegalAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                            <dxlc:LayoutItem  Label="Фактический адрес:" 
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Фактический адрес:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                <dxe:MemoEdit Name="Address" 
+                                    <dxe:MemoEdit Name="Address" 
                                       Text="{Binding Model.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
+                                </dxlc:LayoutItem>
                                 <dxlc:LayoutItem  Label="Телефон:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
@@ -146,28 +155,28 @@
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
-                        <dxlc:LayoutGroup Orientation="Vertical" Margin="2 0 0 0">
-                            <dxlc:LayoutItem  Label="ИНН:" 
+                            <dxlc:LayoutGroup Orientation="Vertical" Margin="2 0 0 0">
+                                <dxlc:LayoutItem  Label="ИНН:" 
                                 LabelPosition="Top"  
                                 HorizontalAlignment="Stretch">
-                                <dxe:TextEdit Name="Inn" 
+                                    <dxe:TextEdit Name="Inn" 
                                       MaskType="Numeric"
                                       EditValueChanged="TextEdit_EditValueChanged"
                                       Mask="##########" 
                                       Text="{Binding Model.Inn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
+                                </dxlc:LayoutItem>
                                 <dxlc:LayoutItem  Label="КПП:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                <dxe:TextEdit Name="Kpp" 
+                                    <dxe:TextEdit Name="Kpp" 
                                       MaskType="Numeric"
                                       EditValueChanged="TextEdit_EditValueChanged"
                                       Mask="#########" 
                                       Text="{Binding Model.Kpp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                             
+                                </dxlc:LayoutItem>
+
                                 <dxlc:LayoutItem  Label="ОГРН:"                                                   
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
@@ -208,10 +217,11 @@
                                 </dxlc:LayoutItem>
 
                             </dxlc:LayoutGroup>
-                    </dxlc:LayoutGroup>
-                </GroupBox>
-                    <GroupBox BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Регистрационные данные и банковские реквизиты" VerticalAlignment="Top">
-                        <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 0 0 5">
+                        </dxlc:LayoutGroup>
+                    </GroupBox>
+
+                        <GroupBox  BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Регистрационные данные и банковские реквизиты" VerticalAlignment="Top">
+                        <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 0 0 5" >
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
                                 <dxlc:LayoutItem  Label="Генеральный директор:"
                                                   LabelPosition="Top"  
@@ -245,6 +255,8 @@
                                                   Text="{Binding Model.WhoIssuedBy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
+
+
                             </dxlc:LayoutGroup>
 
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="2 0 0 0">
@@ -288,16 +300,18 @@
                             </dxlc:LayoutGroup>
                         </dxlc:LayoutGroup>
                     </GroupBox>
-  
-                    <dxlc:LayoutGroup  Orientation="Horizontal" Margin="5">
-                        
-                        <dxlc:LayoutItem Margin="5 0 5 5" Width="128">
+                    </StackPanel>
+                    <GroupBox  Grid.Column="1" BorderBrush="LightGray" 
+                              BorderThickness="1" Margin="5 5 5 5"  VerticalContentAlignment="Top" Padding="0"
+                              Header="Файлы">
+                        <StackPanel Margin="0">
+                        <dxlc:LayoutItem Margin="5 10 5 5" Width="128">
                             <StackPanel>
-                            <Decorator   >
-                                    <ext:ImageEditEx   Height="128" Width="128"  HorizontalAlignment="Left"                   
+                                <Decorator   >
+                                    <ext:ImageEditEx x:Name="Logo"   Height="128" Width="128"  HorizontalAlignment="Left"                   
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
                                       ImagePath = "{Binding Model.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      EditValue = "{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -305,18 +319,66 @@
                                       ShowMenu="True">
                                         <dxe:ImageEdit.EmptyContentTemplate>
                                             <ControlTemplate>
-                                                <Image Source="pack://application:,,,/Resources/Icons/Template/logo.png"/>
+                                                <Image Source="pack://application:,,,/Resources/Icons/Template/logo_1.png"/>
                                             </ControlTemplate>
                                         </dxe:ImageEdit.EmptyContentTemplate>
                                     </ext:ImageEditEx>
                                 </Decorator>
-                                <TextBlock Text="Логотип"  HorizontalAlignment="Center" Margin="0 10 0 0" />
+                                <TextBlock Text="Логотип"  HorizontalAlignment="Center" Margin="0 5 0 0" />
                             </StackPanel>
                         </dxlc:LayoutItem>
+                        <Separator Margin="5 0 5 10"/>
+                            <dxlc:LayoutItem Margin="5" Width="128">
+                                <StackPanel>
+                                    <Decorator   >
+                                        <ext:ImageEditEx x:Name="Stamp"  Height="128" Width="128"  HorizontalAlignment="Left"                   
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                      ImagePath = "{Binding Model.Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      Background="White"                        
+                                      ShowBorder="False"
+                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                      
+                                      ShowMenu="True">
+                                            <dxe:ImageEdit.EmptyContentTemplate>
+                                                <ControlTemplate>
+                                                    <Image Source="pack://application:,,,/Resources/Icons/Template/stamp.png"/>
+                                                </ControlTemplate>
+                                            </dxe:ImageEdit.EmptyContentTemplate>
+                                        </ext:ImageEditEx>
+                                    </Decorator>
+                                    <TextBlock Text="Печать"  HorizontalAlignment="Center" Margin="0 5 0 0" />
+                                </StackPanel>
+                            </dxlc:LayoutItem>
+                            <Separator Margin="5 0 5 10" />
+                            <dxlc:LayoutItem Margin="5" Width="128">
+                                <StackPanel>
+                                    <Decorator   >
+                                        <ext:ImageEditEx x:Name="Signature" Height="128" Width="128"  HorizontalAlignment="Left"                   
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                      ImagePath = "{Binding Model.Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      Background="White"                        
+                                      ShowBorder="False"
+                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                      
+                                      ShowMenu="True">
+                                            <dxe:ImageEdit.EmptyContentTemplate>
+                                                <ControlTemplate>
+                                                    <Image Source="pack://application:,,,/Resources/Icons/Template/signature.png"/>
+                                                </ControlTemplate>
+                                            </dxe:ImageEdit.EmptyContentTemplate>
+                                        </ext:ImageEditEx>
+                                    </Decorator>
+                                    <TextBlock Text="Подпись"  HorizontalAlignment="Center" Margin="0 5 0 0" />
+                                </StackPanel>
+                            </dxlc:LayoutItem>
+                            
+                        </StackPanel>
+                    </GroupBox>
 
-
-                        <dxlc:LayoutGroup HorizontalAlignment="Stretch"  
-                          Margin="0 0 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                    <dxlc:LayoutGroup HorizontalAlignment="Stretch" Grid.ColumnSpan="3" Grid.Row="2"
+                        Margin="5" MaxHeight="800" View="GroupBox" Orientation="Horizontal" ItemLabelsAlignment="Default" >
                             <dxlc:LayoutGroup.HeaderTemplate>
                                 <DataTemplate >
                                     <DockPanel  HorizontalAlignment="Stretch">
@@ -346,8 +408,8 @@
                                 </DataTemplate>
                             </dxlc:LayoutGroup.HeaderTemplate>
 
-                            <dxg:GridControl  ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 DataContext="{Binding}" Name="GridControlAttachFile" Width="auto">
+                            <dxg:GridControl ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 DataContext="{Binding}" Name="GridControlAttachFile" MaxHeight="1200" MaxWidth="2000">
                                 <dxg:GridControl.Columns>
                                     <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
                                     <dxg:GridColumn FieldName="Extension" Header="Тип файла" Width="1*"/>
@@ -393,7 +455,8 @@
 
                                 </dxg:GridControl.Columns>
                                 <dxg:GridControl.View>
-                                    <dxg:TableView ShowGroupPanel="False"
+                                    <dxg:TableView 
+                                        ShowGroupPanel="False"    
                                               x:Name="attachFileTableView"
                                                NavigationStyle="Row"
                                                AutoWidth="True"
@@ -401,6 +464,8 @@
                                                ShowVerticalLines="False"
                                                ShowHorizontalLines="False"
                                                UseEvenRowBackground="True"
+                                        HorizontalContentAlignment="Stretch"
+                                        HorizontalAlignment="Stretch"
                                                ShowIndicator="False" >
                                         <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"       
@@ -431,9 +496,10 @@
                                 </dxg:GridControl.View>
                             </dxg:GridControl>
                         </dxlc:LayoutGroup>
-
-                    </dxlc:LayoutGroup>
-                </StackPanel>
+                   
+                   
+                    
+                </Grid>
             </ScrollViewer>
 
         </Grid>

@@ -52,13 +52,29 @@ namespace Dental.Models
         private string _Kpp;
         // Общая информация
        
-        [Display(Name = "Лого")]
+        [Display(Name = "Логотип")]
         public string Logo
         {
             get => _Logo;
             set => _Logo = value?.Trim();
         }
-        private string _Logo;       
+        private string _Logo;
+
+        [Display(Name = "Фото печати")]
+        public string Stamp
+        {
+            get => stamp;
+            set => stamp = value?.Trim();
+        }
+        private string stamp;
+
+        [Display(Name = "Фото подписи")]
+        public string Signature
+        {
+            get => signature;
+            set => signature = value?.Trim();
+        }
+        private string signature;
 
         // Контактная инф-ция
         [Display(Name = "Фактический адрес")]
@@ -226,6 +242,8 @@ namespace Dental.Models
                 Kpp = this.Kpp,
                 Inn = this.Inn,
                 Logo = this.Logo,
+                Stamp = this.Stamp,
+                Signature = this.Signature,
                 Address = this.Address,
                 LegalAddress = this.LegalAddress,
                 Phone = this.Phone,
@@ -261,6 +279,8 @@ namespace Dental.Models
             model.Kpp = this.Kpp;
             model.Inn = this.Inn;
             model.Logo = this.Logo;
+            model.Stamp = this.Stamp;
+            model.Signature = this.Signature;
             model.Address = this.Address;
             model.LegalAddress = this.LegalAddress;
             model.Phone = this.Phone;
@@ -324,6 +344,8 @@ namespace Dental.Models
             StringParamsIsEquel(this.Kpp, other.Kpp, "КПП");
             StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
             StringParamsIsEquel(this.Logo, other.Logo, "Логотип");
+            StringParamsIsEquel(this.Stamp, other.Stamp, "Печать");
+            StringParamsIsEquel(this.Signature, other.Signature, "Подпись");
             StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
             StringParamsIsEquel(this.Email, other.Email, "Email");
             StringParamsIsEquel(this.Address, other.Address, "Фактический адрес");
