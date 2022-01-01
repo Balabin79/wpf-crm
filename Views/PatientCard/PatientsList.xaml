@@ -49,7 +49,7 @@
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
                         
@@ -58,7 +58,7 @@
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" 
@@ -66,14 +66,14 @@
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding Path=ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem Name="bPrint" Content="Печать"  
-                                           Glyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/PDF Viewer/Print.svg}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{StaticResource Print}"
                                            CommandParameter="{Binding ElementName=view}"/>
                         <dxb:BarItemLinkSeparator />

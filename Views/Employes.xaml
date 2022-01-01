@@ -124,7 +124,7 @@
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"/>
+                                           CustomGlyphSize="28,28"/>
 
                         <dxb:BarButtonItem Name="expandTree" 
                                            Content="Развернуть или свернуть все карточки"  
@@ -134,7 +134,7 @@
                                            CommandParameter="{Binding ElementName=view}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

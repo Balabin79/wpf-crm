@@ -169,17 +169,19 @@ namespace Dental.ViewModels
 
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;
-                db.SaveChanges();
+                int cnt = db.SaveChanges();
                 // подчищаем остатки
                 db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
 
-                var notification = new Notification();
-                notification.Content = "Карта клиента полностью удалена из базы данных!";
-                var nav = Navigation.Instance;
-                notification.run();
-                nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
-
+                if (cnt > 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Карта клиента полностью удалена из базы данных!";
+                    var nav = Navigation.Instance;
+                    notification.run();
+                    nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
+                }
             }
             catch (Exception e)
             {
@@ -191,6 +193,7 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0)
                 {

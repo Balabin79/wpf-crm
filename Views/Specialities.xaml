@@ -89,15 +89,15 @@
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem Name="bPrint" Content="Печать"                                
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/Print.svg}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"/>
                     </dxb:ToolBarControl>

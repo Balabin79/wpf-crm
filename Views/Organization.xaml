@@ -63,14 +63,14 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
@@ -78,7 +78,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="27,27"
+                                           CustomGlyphSize="28,28"
                                            Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>

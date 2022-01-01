@@ -33,7 +33,8 @@ namespace Dental.ViewModels
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
             ToggleSwitchedCommand = new LambdaCommand(OnToggleSwitchedCommandExecuted, CanToggleSwitchedCommandExecute);
 
-            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute); 
+            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
 
             #region инициализация команд, связанных с прикреплением файлов сотрудника
             DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
@@ -392,7 +393,10 @@ namespace Dental.ViewModels
 
         #region Управление моделью
         public ICommand SaveCommand { get; }
+        public ICommand DeleteCommand { get; }
+
         private bool CanSaveCommandExecute(object p) => true;
+        private bool CanDeleteCommandExecute(object p) => true;
 
         public Employee ModelBeforeChanges { get; set; }
 
@@ -450,11 +454,10 @@ namespace Dental.ViewModels
                 SaveEmployeeSpecialities();
                 SavePhoto();
 
-                db.SaveChanges();
-
+                int cnt = db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
-                if (HasUnsavedChanges())
+                if (cnt > 0)
                 {
                     notification.run();
                     ModelBeforeChanges = (Employee)Model.Clone();
@@ -463,6 +466,50 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить анкету сотрудника из базы данных, без возможности восстановления? Также будут удалены все прикрепленные к анкете сотрудника файлы!",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+
+                DeleteEmployeeFiles();
+
+                //удалить также в расписании
+                db.Entry(Model).State = EntityState.Deleted;
+                int cnt = db.SaveChanges();
+
+                if (cnt > 0) 
+                {
+                    var notification = new Notification();
+                    notification.Content = "Анкета сотрудника полностью удалена из базы данных!";
+                    var nav = Navigation.Instance;
+                    notification.run();
+                    nav.LeftMenuClick.Execute("Dental.Views.Employes");
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void DeleteEmployeeFiles()
+        {
+            try
+            {
+                string path = Path.Combine(PathToEmployees, Model.Guid);
+                if (Directory.Exists(path)) Directory.Delete(path, true);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Неудачная попытка удалить файлы, прикрепленные к анкете сотрудника. Возможно файлы были запущены в другой программе! Попробуйте закрыть запущенные сторонние программы и повторить!",
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
             }
         }
         #endregion
@@ -559,7 +606,6 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             }
         }
         #endregion
-
 
         private readonly ApplicationContext db;
 
