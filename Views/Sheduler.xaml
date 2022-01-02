@@ -38,15 +38,15 @@
 
             <DataTemplate x:Key="Doctor.Template">
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="40" Height="40" Source="{Binding Path=Photo}" >
+                    <Image Width="40" Height="40" Source="{Binding Path=Image}" >
                         <Image.Clip>
-                            <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
+                            <RectangleGeometry Rect="0 0 40 40" />
                         </Image.Clip>
                     </Image>
                     
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
-                        <TextBlock Text="{Binding Fio}"/>
-                        <TextBlock Text="{Binding Department.Name}" Opacity="0.6"/>
+                        <TextBlock Text="{Binding Path=Fio}" ToolTip="{Binding Path=Fio}" FontWeight="DemiBold"/>
+                        <TextBlock Text="{Binding Path=Specialities}" TextWrapping="Wrap" FontStyle="Italic" ToolTip="{Binding Path=Specialities}"/>
                     </StackPanel>
                 </StackPanel>
             </DataTemplate>
@@ -92,8 +92,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Image
-                        MaxWidth="120"
-                        MaxHeight="120"
+                        MaxWidth="96"
+                        MaxHeight="96"
                         HorizontalAlignment="Center"
                         DockPanel.Dock="Top"
                         RenderOptions.BitmapScalingMode="NearestNeighbor"
@@ -101,9 +101,15 @@
                         Stretch="Uniform" />
                     <StackPanel Grid.Row="1">
                         <TextBlock
-                    HorizontalAlignment="Center"
-                    FontWeight="Bold"
-                    Text="{Binding Resource.Caption}" />
+                            HorizontalAlignment="Center"
+                            FontWeight="Bold"
+                            ToolTip="{Binding Resource.Caption}"
+                            Text="{Binding Resource.Caption}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontStyle="Italic"
+                            ToolTip="{Binding Resource.CustomFields.SpecialitiesNames}"
+                            Text="{Binding Resource.CustomFields.SpecialitiesNames}" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
@@ -122,7 +128,7 @@
 
         <dxlc:LayoutControl 
             MaxHeight="2000" 
-            Width="300"            
+            Width="250"            
             Name="PART_Options" 
             Orientation="Vertical" 
             Padding="0" 
@@ -190,17 +196,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
         <dxsch:SchedulerControl 
             DataContext="{StaticResource vm}"
             x:Name="scheduler" 
@@ -226,7 +221,8 @@
 
             <dxsch:SchedulerControl.RibbonActions>
                 <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_LabelAs}"/>
-                <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
+                <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_ShowTimeAs}" 
+                                  Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
             </dxsch:SchedulerControl.RibbonActions>
             <dxsch:SchedulerControl.OptionsContextMenu>
                 <dxsch:OptionsContextMenu>
@@ -261,7 +257,8 @@
                 <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
                     <dxsch:DataSource.ResourceMappings>
                         <dxsch:ResourceMappings Caption="Fio" Id="Id" >
-                            <dxsch:CustomFieldMapping Mapping="SheduleImg" Name="ImageName" />
+                            <dxsch:CustomFieldMapping Mapping="Image" Name="ImageName" />
+                            <dxsch:CustomFieldMapping Mapping="Specialities" Name="SpecialitiesNames" />
                         </dxsch:ResourceMappings>
 
                                     </dxsch:DataSource.ResourceMappings>

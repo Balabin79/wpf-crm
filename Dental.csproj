@@ -186,6 +186,9 @@
     <None Remove="Resources\Icons\Template\user-avatar.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\Icons\Template\User.png" />
+    <None Remove="Resources\Icons\Template\user_s.png" />
+    <None Remove="Resources\Icons\Template\user_sheduler.png" />
+    <None Remove="Resources\Icons\Template\user_sheguler_gray.png" />
     <None Remove="Resources\Icons\Template\Widescreen.png" />
     <None Remove="Resources\Sounds\Notifications\scs.wav" />
     <None Remove="Resources\Sounds\Notifications\success.mp3" />
@@ -433,6 +436,9 @@
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\Icons\Template\User.png" />
+    <Resource Include="Resources\Icons\Template\user_s.png" />
+    <Resource Include="Resources\Icons\Template\user_sheduler.png" />
+    <Resource Include="Resources\Icons\Template\user_sheguler_gray.png" />
     <Resource Include="Resources\Icons\Template\Widescreen.png" />
     <Resource Include="Resources\Sounds\Notifications\scs.wav" />
     <Resource Include="Resources\Sounds\Notifications\success.wav" />

@@ -15,6 +15,8 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Dental.ViewModels
 {
@@ -30,7 +32,29 @@ namespace Dental.ViewModels
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
 
-                Doctors = db.Employes.ToObservableCollection();
+                Doctors = db.Employes.OrderBy(d => d.LastName).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToObservableCollection();
+                foreach (var i in Doctors)
+                {
+                    if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
+                    {
+                        using (var stream = new FileStream(i.Photo, FileMode.Open))
+                        {
+                            var img = new BitmapImage();
+                            img.BeginInit();
+                            img.CacheOption = BitmapCacheOption.OnLoad;
+                            img.StreamSource = stream;
+                            img.EndInit();
+                            img.Freeze();
+                            i.Image = img;
+                            stream.Close(); stream.Dispose();
+                        }
+                    }
+                    else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/user_s.png"));
+                    //специальности
+                    i.Specialities = string.Join(",", i?.EmployesSpecialities?.Select(f => f.Speciality.Name)?.ToArray());
+                    if (i.Specialities.Length < 1) i.Specialities = "Специальность не указана";
+                }
+
                 Patients = db.PatientInfo.ToObservableCollection();
 
                 CreateDoctors();

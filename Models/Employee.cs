@@ -22,10 +22,7 @@ namespace Dental.Models
         public ImageSource Image { get; set; }
 
         [NotMapped]
-        public ImageSource SheduleImg {
-            get => (!string.IsNullOrEmpty(Photo) && File.Exists(Photo)) ? new BitmapImage(new Uri(Photo)) : null;
-            
-        }
+        public string Specialities { get; set; }
 
         [NotMapped]
         public string Fio { 
