@@ -1,4 +1,5 @@
 using Dental.Models;
+using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Scheduling;
 using System.Windows.Controls;
@@ -14,7 +15,9 @@ namespace Dental.Views
 
         void OnAppointmentWindowShowing(object sender, AppointmentWindowShowingEventArgs e)
         {
-            //e.Window.DataContext = MedicalAppointmentWindowViewModel.Create(e.Appointment, this.scheduler);
+
+            e.Window.DataContext = ClientAppointmentWindowViewModel.Create(e.Appointment, this.scheduler, ((ShedulerViewModel)((System.Windows.FrameworkElement)e.Source).DataContext).Clients);
+            //e.Window.DataContext = ((System.Windows.FrameworkElement)e.Source).DataContext;
         }
         void OnDropAppointment(object sender, DropAppointmentEventArgs e)
         {
@@ -34,8 +37,8 @@ namespace Dental.Views
         AppointmentItem CreateAppointment(PatientInfo patient)
         {
             AppointmentItem result = new AppointmentItem();
-            result.CustomFields["PatientId"] = patient.Id;
-            result.Subject = patient.FullName;
+            //result.CustomFields["PatientId"] = patient.Id;
+            //result.Subject = patient.FullName;
            // result.StatusId = ReceptionDeskData.PaymentStateNotYetBilled.Id;
             //result.Start = DateTime.Today;
             result.End = result.Start.AddMinutes(20);

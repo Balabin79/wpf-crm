@@ -63,6 +63,7 @@
     <None Remove="Resources\Icons\Template\Advertising.png" />
     <None Remove="Resources\Icons\Template\Application-Form-Edit.png" />
     <None Remove="Resources\Icons\Template\Application-Key.png" />
+    <None Remove="Resources\Icons\Template\avatar.png" />
     <None Remove="Resources\Icons\Template\Barcode.png" />
     <None Remove="Resources\Icons\Template\Bell.png" />
     <None Remove="Resources\Icons\Template\Blackberry-White.png" />
@@ -186,9 +187,6 @@
     <None Remove="Resources\Icons\Template\user-avatar.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\Icons\Template\User.png" />
-    <None Remove="Resources\Icons\Template\user_s.png" />
-    <None Remove="Resources\Icons\Template\user_sheduler.png" />
-    <None Remove="Resources\Icons\Template\user_sheguler_gray.png" />
     <None Remove="Resources\Icons\Template\Widescreen.png" />
     <None Remove="Resources\Sounds\Notifications\scs.wav" />
     <None Remove="Resources\Sounds\Notifications\success.mp3" />
@@ -348,6 +346,7 @@
     <Resource Include="Resources\Icons\Template\Advertising.png" />
     <Resource Include="Resources\Icons\Template\Application-Form-Edit.png" />
     <Resource Include="Resources\Icons\Template\Application-Key.png" />
+    <Resource Include="Resources\Icons\Template\avatar.png" />
     <Resource Include="Resources\Icons\Template\Barcode.png" />
     <Resource Include="Resources\Icons\Template\Bell.png" />
     <Resource Include="Resources\Icons\Template\Blackberry-White.png" />
@@ -436,9 +435,6 @@
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\Icons\Template\User.png" />
-    <Resource Include="Resources\Icons\Template\user_s.png" />
-    <Resource Include="Resources\Icons\Template\user_sheduler.png" />
-    <Resource Include="Resources\Icons\Template\user_sheguler_gray.png" />
     <Resource Include="Resources\Icons\Template\Widescreen.png" />
     <Resource Include="Resources\Sounds\Notifications\scs.wav" />
     <Resource Include="Resources\Sounds\Notifications\success.wav" />
@@ -497,6 +493,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\PlanItemWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\LocationAppointmentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\PlanWindow.xaml.cs">
@@ -590,6 +589,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\WindowForms\PlanItemWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\WindowForms\LocationAppointmentWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+      xmlns:wind ="clr-namespace:Dental.Views.WindowForms" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
@@ -32,8 +33,6 @@
             <converter:DoubleToStringConverter x:Key="DoubleToString"/>
             <converter:ImageConverter x:Key="ImageConv"/>
             <converter:MultiBindingConverter x:Key="MultiConv"/>
-
-
 
 
             <DataTemplate x:Key="Doctor.Template">
@@ -70,21 +69,6 @@
                 <Setter Property="DropMarkerTemplate" Value="{x:Null}"/>
             </Style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <DataTemplate x:Key="resourceHeaderContentTemplate">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -106,6 +90,7 @@
                             ToolTip="{Binding Resource.Caption}"
                             Text="{Binding Resource.Caption}" />
                         <TextBlock
+                            Opacity="0.6" FontWeight="DemiBold" TextAlignment="Center"
                             HorizontalAlignment="Center"
                             FontStyle="Italic"
                             ToolTip="{Binding Resource.CustomFields.SpecialitiesNames}"
@@ -116,8 +101,6 @@
             <Style TargetType="dxschv:ResourceHeaderControl">
                 <Setter Property="ContentOrientation" Value="Horizontal" />
             </Style>
-
-
             <Style x:Key="ResourceHeader.Style" TargetType="dxschv:ResourceHeaderControl">
                 <Setter Property="ContentTemplate" Value="{StaticResource resourceHeaderContentTemplate}" />
                 <Setter Property="ContentOrientation" Value="Horizontal" />
@@ -126,31 +109,16 @@
     </Page.Resources>
     <DockPanel>
 
-        <dxlc:LayoutControl 
-            MaxHeight="2000" 
-            Width="250"            
-            Name="PART_Options" 
-            Orientation="Vertical" 
-            Padding="0" 
-            DockPanel.Dock="Right">
-            <dxe:DateNavigator
-                ShowTodayButton="False" 
-                ShowWeekNumbers="False" 
-                IsMultiSelect="True"
-                VerticalAlignment="Top" 
-                dxlc:LayoutControl.AllowVerticalSizing="True">
+        <dxlc:LayoutControl MaxHeight="2000" Width="250" Name="PART_Options" Orientation="Vertical" Padding="0" DockPanel.Dock="Right">
+            <dxe:DateNavigator ShowTodayButton="False" ShowWeekNumbers="False" IsMultiSelect="True" VerticalAlignment="Top" dxlc:LayoutControl.AllowVerticalSizing="True">
                 <dxe:DateNavigator.StyleSettings>
                     <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
                 </dxe:DateNavigator.StyleSettings>
             </dxe:DateNavigator>
-            <dx:DXTabControl
-                DataContext="{StaticResource vm}"
-                dxlc:LayoutControl.AllowVerticalSizing="True" 
-                Padding="0" 
-                Margin="-1,0,-1,-1">
-                <dx:DXTabItem Header="Doctors">
+            <dx:DXTabControl DataContext="{StaticResource vm}" dxlc:LayoutControl.AllowVerticalSizing="True" Padding="0" Margin="-1,0,-1,-1">
+                <dx:DXTabItem Header="Сотрудники">
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="Switch visible doctors" Opacity="0.6" Margin="6,3,6,3" />
+                        <TextBlock DockPanel.Dock="Top" Text="Фильтр по сотрудникам" Opacity="0.6" Margin="6,3,6,3" />
                         <dxe:ListBoxEdit 
                                     Style="{StaticResource DoctorsList.Style}"
                                     Margin="-1,0,-1,-1"
@@ -165,16 +133,22 @@
                         </dxe:ListBoxEdit>
                     </DockPanel>
                 </dx:DXTabItem>
-                <dx:DXTabItem Header="Patients">
+                <dx:DXTabItem Header="Клиенты">
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="Drag and drop a patient onto Scheduler" Opacity="0.6" Margin="6,3,6,3" />
+                        <TextBlock  DockPanel.Dock="Top" Text="Переместите клиента в расписание"
+                            ToolTip="Захватите кнопкой мыши клиента и переместите в ячейку расписания" Opacity="0.6" Margin="6,3,6,3" />
                         <dxg:GridControl
                         Style="{StaticResource PatientsGridControl.Style}"
                             Margin="-1,0,-1,-1"
-                            ItemsSource="{Binding Patients}">
+                            ItemsSource="{Binding Clients}">
                             <dxg:GridControl.Columns>
-                                <dxg:GridColumn FieldName="FullName" />
-                                <dxg:GridColumn FieldName="BirthDate" />
+                                <dxg:GridColumn FieldName="FullName"  >
+                                    <dxg:GridColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="ФИО клиента" FontWeight="DemiBold"/>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.HeaderTemplate>
+                                </dxg:GridColumn>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
                                 <dxg:TableView
@@ -191,11 +165,6 @@
             </dx:DXTabControl>
         </dxlc:LayoutControl>
 
-
-
-
-
-
         <dxsch:SchedulerControl 
             DataContext="{StaticResource vm}"
             x:Name="scheduler" 
@@ -210,6 +179,11 @@
             StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
             DropAppointment="OnDropAppointment"
             dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" >
+
+            <dxsch:SchedulerControl.OptionsWindows>
+                <dxsch:OptionsWindows AppointmentWindowType="{x:Type wind:AppointmentWindow}" 
+                                       />
+            </dxsch:SchedulerControl.OptionsWindows>
             <dxmvvm:Interaction.Behaviors>
                 <dxmvvm:EventToCommand 
                                 EventName="AppointmentAdded" 
@@ -222,13 +196,31 @@
             <dxsch:SchedulerControl.RibbonActions>
                 <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_LabelAs}"/>
                 <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.Items_Appointment_Options_ShowTimeAs}" 
-                                  Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
+                                  Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Статус"/>
+
+                <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="6">
+                    <dxr:RibbonPageGroup Caption="Справочники">
+                        <dxb:BarButtonItem  
+                            Content="Локации встреч"                           
+                            Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"
+                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"
+                            Command="{Binding Source={StaticResource vm}, Path=OpenWindowLocationCommand}"
+                            />
+                        <dxb:BarButtonItem  
+                            Content="Статусы"                           
+                            Glyph="{dx:DXImage SvgImages/Scheduling/ChangeStatus.svg}"
+                            LargeGlyph="{dx:DXImage SvgImages/Scheduling/ChangeStatus.svg}"
+                            Command="{Binding Source={StaticResource vm}, Path=OpenWindowStatusCommand}"
+                            />
+                    </dxr:RibbonPageGroup>
+                </dxb:InsertAction>
+                
             </dxsch:SchedulerControl.RibbonActions>
             <dxsch:SchedulerControl.OptionsContextMenu>
                 <dxsch:OptionsContextMenu>
                     <dxsch:OptionsContextMenu.AppointmentContextMenuActions>
                         <dxb:RemoveAction ElementName="{x:Static dxsch:DefaultBarItemNames.ContextMenu_Items_Appointment_Options_LabelAs}"/>
-                        <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.ContextMenu_Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Payment"/>
+                        <dxb:UpdateAction ElementName="{x:Static dxsch:DefaultBarItemNames.ContextMenu_Items_Appointment_Options_ShowTimeAs}" Property="{x:Static dxb:BarSubItem.ContentProperty}" Value="Статус"/>
                     </dxsch:OptionsContextMenu.AppointmentContextMenuActions>
                 </dxsch:OptionsContextMenu>
             </dxsch:SchedulerControl.OptionsContextMenu>
@@ -255,27 +247,27 @@
             </dxsch:TimelineView>
             <dxsch:SchedulerControl.DataSource>
                 <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
+
+
                     <dxsch:DataSource.ResourceMappings>
                         <dxsch:ResourceMappings Caption="Fio" Id="Id" >
                             <dxsch:CustomFieldMapping Mapping="Image" Name="ImageName" />
                             <dxsch:CustomFieldMapping Mapping="Specialities" Name="SpecialitiesNames" />
+                            <dxsch:CustomFieldMapping Mapping="Phone" Name="Phone" />
                         </dxsch:ResourceMappings>
+                    </dxsch:DataSource.ResourceMappings>
 
-                                    </dxsch:DataSource.ResourceMappings>
-
-                                    <dxsch:DataSource.AppointmentMappings>
-                                        <dxsch:AppointmentMappings 
-                                        Type="AppointmentType"
-                                        StatusId="StatusId"
-         
+                    <dxsch:DataSource.AppointmentMappings>
+                        <dxsch:AppointmentMappings 
+                            Type="AppointmentType"
+                                        StatusId="StatusId"        
                                         Subject="PatientName"
                                         ResourceId="EmployeeId"
                                         RecurrenceInfo="RecurrenceInfo"
                                         Reminder="ReminderInfo"
                                         LabelId="LabelId"
                                         Location="Location"
-                                        Id="Id"
-                                      
+                                        Id="Id"                                      
                                         Description="Description"
                                         AllDay="AllDay">
                             <dxsch:AppointmentMappings.Start>
@@ -302,13 +294,13 @@
                                     </dxsch:Mapping.Converter>
                                 </dxsch:Mapping>
                             </dxsch:AppointmentMappings.End>
-
+                            <dxsch:CustomFieldMapping Mapping="ClientInfo" Name="Client"/>
                         </dxsch:AppointmentMappings>
-
-                                    </dxsch:DataSource.AppointmentMappings>
-                                </dxsch:DataSource>
-                            </dxsch:SchedulerControl.DataSource>
-                        </dxsch:SchedulerControl>
+                    </dxsch:DataSource.AppointmentMappings>
+                    
+                </dxsch:DataSource>
+            </dxsch:SchedulerControl.DataSource>
+        </dxsch:SchedulerControl>
 
                     </DockPanel>
 
