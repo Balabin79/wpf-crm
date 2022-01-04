@@ -130,13 +130,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is DevExpress.Xpf.Scheduling.AppointmentEditedEventArgs appointment)
+                /*if (p is DevExpress.Xpf.Scheduling.AppointmentEditedEventArgs appointment)
                 {
                     foreach(var i in appointment.Appointments)
                     {
                         int x = 0;
                     }
-                }
+                }*/
                 int cnt = db.SaveChanges();
             }
             catch (Exception e)

@@ -72,7 +72,6 @@
                                         DisplayMember="FullName"
                                         IsPopupAutoWidth="False"
                                         IncrementalFiltering="True"
-                                        Name="ClientInfoValue"
                                         AutoPopulateColumns="False"
                                         ImmediatePopup="True">
                             <dxg:LookUpEdit.PopupContentTemplate>

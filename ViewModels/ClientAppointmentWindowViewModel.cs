@@ -99,7 +99,7 @@ namespace Dental.ViewModels
                 if (patient == newPatient)
                     return;
                 patient = newPatient;
-                CustomFields["PatientId"] = newPatient.Id;
+                CustomFields["ClientInfoId"] = newPatient.Id;
                 Subject = newPatient.FullName;
             }
         }
