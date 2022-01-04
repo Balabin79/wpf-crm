@@ -15,8 +15,14 @@ namespace Dental.Views
 
         void OnAppointmentWindowShowing(object sender, AppointmentWindowShowingEventArgs e)
         {
-
-            e.Window.DataContext = ClientAppointmentWindowViewModel.Create(e.Appointment, this.scheduler, ((ShedulerViewModel)((System.Windows.FrameworkElement)e.Source).DataContext).Clients);
+            var vm = (ShedulerViewModel)((System.Windows.FrameworkElement)e.Source).DataContext;
+            e.Window.DataContext = ClientAppointmentWindowViewModel.Create(
+                e.Appointment,
+                this.scheduler,
+                vm.Clients,
+                vm.ClassificatorCategories,
+                vm.LocationAppointments
+                );
             //e.Window.DataContext = ((System.Windows.FrameworkElement)e.Source).DataContext;
         }
         void OnDropAppointment(object sender, DropAppointmentEventArgs e)
@@ -57,11 +63,6 @@ namespace Dental.Views
         void OnDropRecord(object sender, DropRecordEventArgs e)
         {
             e.Handled = true;
-        }
-
-        private void ListBoxEdit_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            int x = 0;
         }
     }
 }

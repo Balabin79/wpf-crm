@@ -24,10 +24,5 @@ namespace Dental.Views.WindowForms
         {
             InitializeComponent();
         }
-
-        private void GridColumn_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

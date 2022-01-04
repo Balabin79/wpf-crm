@@ -17,9 +17,10 @@ namespace Dental.Models
         public int AppointmentType { get; set; }
         public string RecurrenceInfo { get; set; }
         public string ReminderInfo { get; set; }
-        public string Location { get; set; }
+        public string LocationName { get; set; }
+        public int? ServiceId { get; set; }
+        public int? LocationId { get; set; }
         public int? ClientInfoId { get; set; }
-        public PatientInfo ClientInfo { get; set; }
         public int? EmployeeId { get; set; }
         public int LabelId { get; set; }
         public int StatusId { get; set; }

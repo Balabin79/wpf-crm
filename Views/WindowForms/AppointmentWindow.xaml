@@ -14,10 +14,12 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"
         xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys"
-        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-       
-        >
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+                 >
     <dx:ThemedWindow.Resources>
+        <converter:MultiBindingConverter x:Key="multiConv" />
         <Style x:Key="{dxscht:AppointmentWindowThemeKey ResourceKey=ThemedWindow}"
                BasedOn="{StaticResource {dxscht:AppointmentWindowThemeKey ResourceKey=ThemedWindow}}"
                TargetType="dx:ThemedWindow">
@@ -63,13 +65,14 @@
                         <dxe:TextEdit EditValue="{Binding Resource.CustomFields.Phone}" IsReadOnly="True" />
                     </dxlc:LayoutItem>
 
+
                     <dxlc:LayoutItem Label="Клиент" Margin="0,10,0,0">
                         <dxg:LookUpEdit  EditValue="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding Patients}"
                                         DisplayMember="FullName"
                                         IsPopupAutoWidth="False"
                                         IncrementalFiltering="True"
-                                        
+                                        Name="ClientInfoValue"
                                         AutoPopulateColumns="False"
                                         ImmediatePopup="True">
                             <dxg:LookUpEdit.PopupContentTemplate>
@@ -97,11 +100,122 @@
                             </dxg:LookUpEdit.PopupContentTemplate>
                         </dxg:LookUpEdit>
                     </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Purpose">
-                        <dxe:TextEdit EditValue="{Binding Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <dxlc:LayoutItem Label="Место приема">
+                        <dxe:ComboBoxEdit 
+                            EditValue="{Binding LocationAppointment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            ItemsSource="{Binding Locations}" 
+      
+                            DisplayMember="Name"/>
                     </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Локация встречи">
-                        <dxe:ComboBoxEdit EditValue="{Binding CustomFields.LocationId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Locations}" ValueMember="Id" DisplayMember="Caption"/>
+
+
+                    <dxlc:LayoutItem Label="Цель визита">
+                        <dxe:PopupBaseEdit                           
+                                    x:Name="popup"                                                   
+                                    SelectAllOnMouseUp="True"
+                                    SelectAllOnGotFocus="True"
+                                    EditValue="{Binding Service, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                    NullText="Выберите позицию в классификаторе" IsTextEditable="False">
+
+                            <dxe:PopupBaseEdit.PopupContentTemplate>
+                                <ControlTemplate>
+                                    <dxg:TreeListControl                                             
+                                                AutoGenerateColumns="None"                         
+                                                MaxHeight="2000" 
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                ItemsSource="{Binding Services, Mode=OneWay}" 
+                                 >
+                                        <dxg:TreeListControl.View>
+                                            <dxg:TreeListView                                                          
+                                                        x:Name="tree_view"                                                
+                                                        KeyFieldName="Id"
+                                                        ParentFieldName="ParentId"
+                                                        TreeDerivationMode="Selfreference" 
+                                                        ShowTotalSummary="False" 
+                                                        PrintNodeImages="True"
+                                                        ShowNodeImages="True"
+                                                        NodeImageSize="15,15"
+                                                        ShowSearchPanelMode="Never"
+                                                        SearchPanelAllowFilter="True"
+                                                        AllowResizing="True"
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        AllowPrintColumnHeaderImage="True"                                                 
+                                                        ExpandNodesOnFiltering="True"
+                                                        FilterMode="Extended"    
+                                                        ImmediateUpdateRowPosition="True"
+                                                        VerticalAlignment="Stretch"                                                                                                                 
+                                                        AllowPerPixelScrolling="True"
+                                                        UseLegacyFilterPanel="True"
+                                                        ShowColumnHeaders="False"
+                                                        AllowScrollToFocusedRow="True"
+                                                        ShowVerticalLines="False"                                                      
+                                                        NavigationStyle="Row">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:EventToCommand 
+                                                                         EventName="MouseDoubleClick" 
+                                                                         Command="{Binding SelectPosInClassificatorCommand}">
+                                                        <dxmvvm:EventToCommand.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiConv}">
+                                                                <Binding ElementName="tree_view"/>
+                                                                <Binding ElementName="popup" />
+                                                            </MultiBinding>
+                                                        </dxmvvm:EventToCommand.CommandParameter>
+                                                    </dxmvvm:EventToCommand>
+
+                                                    <dxmvvm:EventToCommand 
+                                                                        EventName="MouseDown" 
+                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                                                        <dxmvvm:EventToCommand.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiConv}">
+                                                                <Binding ElementName="tree_view"/>
+                                                                <Binding ElementName="popup" />
+                                                            </MultiBinding>
+                                                        </dxmvvm:EventToCommand.CommandParameter>
+                                                    </dxmvvm:EventToCommand>
+                                                </dxmvvm:Interaction.Behaviors>
+
+                                                <dxg:TreeListView.NodeImageSelector>
+                                                    <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                                                </dxg:TreeListView.NodeImageSelector>
+
+                                            </dxg:TreeListView>
+                                        </dxg:TreeListControl.View>
+
+                                        <dxg:TreeListColumn 
+                                                        Width="auto"
+                                                        FieldName="FullName"
+                                                        >
+                                            <dxg:TreeListColumn.CellDisplayTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock
+                                                                        TextWrapping="Wrap"
+                                                                        Name="PART_Editor"
+                                                                        Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </dxg:TreeListColumn.CellDisplayTemplate>
+                                        </dxg:TreeListColumn>
+
+                                    </dxg:TreeListControl>
+                                </ControlTemplate>
+                            </dxe:PopupBaseEdit.PopupContentTemplate>
+                        </dxe:PopupBaseEdit>
+
+
+
+
+
+
+
+
+                        
+                        
+                        
+
+
+
+
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Телефон">
                         <dxe:TextEdit EditValue="{Binding Patient.Phone}" IsReadOnly="True" />

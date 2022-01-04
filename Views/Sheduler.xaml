@@ -173,8 +173,8 @@
             FirstDayOfWeek="Monday" 
             MaxHeight="2000"                   
             Margin="5"
-            AllowAppointmentConflicts="False"
             
+            AllowAppointmentConflicts="False"
             AppointmentWindowShowing="OnAppointmentWindowShowing"
             StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
             DropAppointment="OnDropAppointment"
@@ -188,9 +188,16 @@
                 <dxmvvm:EventToCommand 
                                 EventName="AppointmentAdded" 
                                 PassEventArgsToCommand="True"
-                                Command="{Binding ElementName=scheduler, Path=DataContext.AppointmentAddedCommand }">
-     
-                </dxmvvm:EventToCommand>
+                                Command="{Binding ElementName=scheduler, Path=DataContext.AppointmentAddedCommand }"/>
+                <dxmvvm:EventToCommand 
+                                EventName="AppointmentEdited" 
+                                PassEventArgsToCommand="True"
+                                Command="{Binding ElementName=scheduler, Path=DataContext.AppointmentEditedCommand }"/>
+                <dxmvvm:EventToCommand 
+                                EventName="AppointmentRemoved" 
+                                PassEventArgsToCommand="True"
+                                Command="{Binding ElementName=scheduler, Path=DataContext.AppointmentRemovedCommand }"/>
+
             </dxmvvm:Interaction.Behaviors>
 
             <dxsch:SchedulerControl.RibbonActions>
@@ -260,16 +267,16 @@
                     <dxsch:DataSource.AppointmentMappings>
                         <dxsch:AppointmentMappings 
                             Type="AppointmentType"
-                                        StatusId="StatusId"        
-                                        Subject="PatientName"
-                                        ResourceId="EmployeeId"
-                                        RecurrenceInfo="RecurrenceInfo"
-                                        Reminder="ReminderInfo"
-                                        LabelId="LabelId"
-                                        Location="Location"
-                                        Id="Id"                                      
-                                        Description="Description"
-                                        AllDay="AllDay">
+                            StatusId="StatusId"        
+                            Subject="PatientName"
+                            ResourceId="EmployeeId"
+                            RecurrenceInfo="RecurrenceInfo"
+                            Reminder="ReminderInfo"
+                            LabelId="LabelId"
+                            Location="LocationName"
+                            Id="Id"                                      
+                            Description="Description"
+                            AllDay="AllDay">
                             <dxsch:AppointmentMappings.Start>
                                 <dxsch:Mapping>
                                     <dxsch:Mapping.FieldName>
@@ -294,15 +301,20 @@
                                     </dxsch:Mapping.Converter>
                                 </dxsch:Mapping>
                             </dxsch:AppointmentMappings.End>
-                            <dxsch:CustomFieldMapping Mapping="ClientInfo" Name="Client"/>
+                            <dxsch:CustomFieldMapping Mapping="ClientInfoId" Name="ClientInfoId"/>
+                            <dxsch:CustomFieldMapping Mapping="LocationId" Name="LocationId"/>
+                            <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
                         </dxsch:AppointmentMappings>
                     </dxsch:DataSource.AppointmentMappings>
-                    
+
                 </dxsch:DataSource>
             </dxsch:SchedulerControl.DataSource>
-        </dxsch:SchedulerControl>
 
-                    </DockPanel>
+        </dxsch:SchedulerControl>
+        
+
+
+    </DockPanel>
 
 
 </Page>
