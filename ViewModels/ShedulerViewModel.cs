@@ -84,7 +84,9 @@ namespace Dental.ViewModels
 
                 Clients = db.PatientInfo.ToObservableCollection();
 
-                CreateDoctors();
+                //CreateDoctors();
+                SelectedDoctors = new List<object>();
+                Doctors.ForEach(f => SelectedDoctors.Add(f));
                 CreateCalendars();
                 Appointments = db.Appointments.ToObservableCollection();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
@@ -163,7 +165,6 @@ namespace Dental.ViewModels
             }
         }
         #endregion
-
 
         #region Справочник "Места встреч"
         public ICommand OpenWindowLocationCommand { get; }
@@ -394,9 +395,12 @@ namespace Dental.ViewModels
 
         public ObservableCollection<Classificator> ClassificatorCategories { get; set; }
         public virtual ObservableCollection<Employee> Doctors { get; set; }
+
         public virtual ObservableCollection<PatientInfo> Clients { get; set; }
         public virtual ObservableCollection<MedicalAppointment> Appointments { get; set; }
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
+
+        public virtual List<object> SelectedDoctors { get; set; }
 
         private void CreateDoctors() => Doctors = db.Employes.Include("EmployesSpecialities").ToObservableCollection();        
         private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();

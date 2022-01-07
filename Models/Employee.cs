@@ -22,6 +22,18 @@ namespace Dental.Models
         public ImageSource Image { get; set; }
 
         [NotMapped]
+        public bool IsVisible 
+        {
+            get => isVisible; 
+            set
+            {
+                isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
+            } 
+        }
+        private bool isVisible;
+
+        [NotMapped]
         public string Specialities { get; set; }
 
         [NotMapped]
