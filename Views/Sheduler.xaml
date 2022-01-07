@@ -13,6 +13,7 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+      xmlns:local="clr-namespace:Dental.Views" 
       xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"   
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:dxschv="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/visual"
@@ -23,18 +24,22 @@
     x:Class="Dental.Views.Sheduler" 
       dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+    xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
+    xmlns:col="clr-namespace:System.Collections;assembly=mscorlib" 
+    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+    >
     <Page.Resources>
         <ResourceDictionary>
- 
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+
             <commands:PrintCommand x:Key="Print"/>
             <vm:ShedulerViewModel x:Key="vm"/>
             <converter:DateToStringConverter x:Key="DateToString"/>
             <converter:DoubleToStringConverter x:Key="DoubleToString"/>
             <converter:ImageConverter x:Key="ImageConv"/>
             <converter:MultiBindingConverter x:Key="MultiConv"/>
-
-
             <DataTemplate x:Key="Doctor.Template">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="40" Height="40" Source="{Binding Path=Image}" >
@@ -42,7 +47,7 @@
                             <RectangleGeometry Rect="0 0 40 40" />
                         </Image.Clip>
                     </Image>
-                    
+
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
                         <TextBlock Text="{Binding Path=Fio}" ToolTip="{Binding Path=Fio}" FontWeight="DemiBold"/>
                         <TextBlock Text="{Binding Path=Specialities}" TextWrapping="Wrap" FontStyle="Italic" ToolTip="{Binding Path=Specialities}"/>
@@ -105,65 +110,77 @@
                 <Setter Property="ContentTemplate" Value="{StaticResource resourceHeaderContentTemplate}" />
                 <Setter Property="ContentOrientation" Value="Horizontal" />
             </Style>
+
+                </ResourceDictionary>
+                <ResourceDictionary Source="/Views/Ribbon1.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
+
     </Page.Resources>
     <DockPanel>
 
-        <dxlc:LayoutControl MaxHeight="2000" Width="250" Name="PART_Options" Orientation="Vertical" Padding="0" DockPanel.Dock="Right">
+
+
+
+        <dxlc:LayoutControl  MaxHeight="2000" Width="250" Name="PART_Options" Orientation="Vertical" 
+                            Padding="0" DockPanel.Dock="Right"
+               dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
             <dxe:DateNavigator ShowTodayButton="False" ShowWeekNumbers="False" IsMultiSelect="True" VerticalAlignment="Top" dxlc:LayoutControl.AllowVerticalSizing="True">
-                <dxe:DateNavigator.StyleSettings>
-                    <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
-                </dxe:DateNavigator.StyleSettings>
-            </dxe:DateNavigator>
-            <dx:DXTabControl DataContext="{StaticResource vm}" dxlc:LayoutControl.AllowVerticalSizing="True" Padding="0" Margin="-1,0,-1,-1">
-                <dx:DXTabItem Header="Сотрудники">
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Top" Text="Фильтр по сотрудникам" Opacity="0.6" Margin="6,3,6,3" />
-                        <dxe:ListBoxEdit 
+                    <dxe:DateNavigator.StyleSettings>
+                        <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
+                    </dxe:DateNavigator.StyleSettings>
+                </dxe:DateNavigator>
+                <dx:DXTabControl DataContext="{StaticResource vm}" dxlc:LayoutControl.AllowVerticalSizing="True" Padding="0" Margin="-1,0,-1,-1">
+                    <dx:DXTabItem Header="Сотрудники">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="Фильтр по сотрудникам" Opacity="0.6" Margin="6,3,6,3" />
+                            <dxe:ListBoxEdit 
                             
                                     Style="{StaticResource DoctorsList.Style}"
                                     Margin="-1,0,-1,-1"
                                     EditValue="{Binding SelectedDoctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding Doctors}" 
                                     DisplayMember="Fio">
-                            <dxe:ListBoxEdit.ItemContainerStyle>
-                                <Style TargetType="dxe:ListBoxEditItem">
-                                    <Setter Property="IsSelected" Value="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Style>
-                            </dxe:ListBoxEdit.ItemContainerStyle>
-                        </dxe:ListBoxEdit>
-                    </DockPanel>
-                </dx:DXTabItem>
-                <dx:DXTabItem Header="Клиенты">
-                    <DockPanel>
-                        <TextBlock  DockPanel.Dock="Top" Text="Переместите клиента в расписание"
+                                <dxe:ListBoxEdit.ItemContainerStyle>
+                                    <Style TargetType="dxe:ListBoxEditItem">
+                                        <Setter Property="IsSelected" Value="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Style>
+                                </dxe:ListBoxEdit.ItemContainerStyle>
+                            </dxe:ListBoxEdit>
+                        </DockPanel>
+                    </dx:DXTabItem>
+                    <dx:DXTabItem Header="Клиенты">
+                        <DockPanel>
+                            <TextBlock  DockPanel.Dock="Top" Text="Переместите клиента в расписание"
                             ToolTip="Захватите кнопкой мыши клиента и переместите в ячейку расписания" Opacity="0.6" Margin="6,3,6,3" />
-                        <dxg:GridControl
+                            <dxg:GridControl MaxHeight="2000"
                         Style="{StaticResource PatientsGridControl.Style}"
                             Margin="-1,0,-1,-1"
                             ItemsSource="{Binding Clients}">
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn FieldName="FullName"  >
-                                    <dxg:GridColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="ФИО клиента" FontWeight="DemiBold"/>
-                                        </DataTemplate>
-                                    </dxg:GridColumn.HeaderTemplate>
-                                </dxg:GridColumn>
-                            </dxg:GridControl.Columns>
-                            <dxg:GridControl.View>
-                                <dxg:TableView
-                                    Name="view"
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="FullName"  >
+                                        <dxg:GridColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="ФИО клиента" FontWeight="DemiBold"/>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.HeaderTemplate>
+                                    </dxg:GridColumn>
+                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TableView
+                                    Name="view" MaxHeight="2000"
                                     Style="{StaticResource PatientsTableView.Style}"
                                     StartRecordDrag="OnStartRecordDrag"
                                     CompleteRecordDragDrop="OnCompleteRecordDragDrop"
                                     DragRecordOver="OnDragRecordOver"
                                     DropRecord="OnDropRecord" />
-                            </dxg:GridControl.View>
-                        </dxg:GridControl>
-                    </DockPanel>
-                </dx:DXTabItem>
-            </dx:DXTabControl>
+                                </dxg:GridControl.View>
+                            </dxg:GridControl>
+                        </DockPanel>
+                    </dx:DXTabItem>
+                </dx:DXTabControl>
+
         </dxlc:LayoutControl>
 
         <dxsch:SchedulerControl 

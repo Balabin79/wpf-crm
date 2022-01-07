@@ -243,6 +243,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Dictionaries\" />
     <Folder Include="Images\Employes\" />
     <Folder Include="Images\Patients\" />
     <Folder Include="Images\Logos\" />
