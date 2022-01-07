@@ -173,8 +173,7 @@
             GroupType="Resource" 
             FirstDayOfWeek="Monday" 
             MaxHeight="2000"                   
-            Margin="5"
-            
+            Margin="5"           
             AllowAppointmentConflicts="False"
             AppointmentWindowShowing="OnAppointmentWindowShowing"
             StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"

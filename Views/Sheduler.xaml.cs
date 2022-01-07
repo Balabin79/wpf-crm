@@ -2,7 +2,11 @@ using Dental.Models;
 using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Scheduling;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
+using System;
 
 namespace Dental.Views
 {
@@ -15,7 +19,7 @@ namespace Dental.Views
 
         void OnAppointmentWindowShowing(object sender, AppointmentWindowShowingEventArgs e)
         {
-            var vm = (ShedulerViewModel)((System.Windows.FrameworkElement)e.Source).DataContext;
+            var vm = (ShedulerViewModel)((FrameworkElement)e.Source).DataContext;
             e.Window.DataContext = ClientAppointmentWindowViewModel.Create(
                 e.Appointment,
                 this.scheduler,
@@ -23,30 +27,29 @@ namespace Dental.Views
                 vm.ClassificatorCategories,
                 vm.LocationAppointments
                 );
-            //e.Window.DataContext = ((System.Windows.FrameworkElement)e.Source).DataContext;
         }
         void OnDropAppointment(object sender, DropAppointmentEventArgs e)
         {
-           // e.Cancel = e.ConflictedAppointments.Where(x => x.Count > 0).FirstOrDefault() != null;
+            e.Cancel = e.ConflictedAppointments.Where(x => x.Count > 0).FirstOrDefault() != null;
         }
         void OnStartAppointmentDragFromOutside(object sender, StartAppointmentDragFromOutsideEventArgs e)
         {
-           /* if (e.Data.GetDataPresent(typeof(IEnumerable<Patient>)))
-                ((IEnumerable<Patient>)e.Data.GetData(typeof(IEnumerable<Patient>))).ToList().ForEach(x => e.DragAppointments.Add(CreateAppointment(x)));*/
+            if (e.Data.GetDataPresent(typeof(IEnumerable<PatientInfo>)))
+                ((IEnumerable<PatientInfo>)e.Data.GetData(typeof(IEnumerable<PatientInfo>))).ToList().ForEach(x => e.DragAppointments.Add(CreateAppointment(x)));
         }
         void OnStartRecordDrag(object sender, StartRecordDragEventArgs e)
         {
-           // e.Data.SetData(typeof(IEnumerable<Patient>), e.Records.Cast<Patient>());
-           // e.Handled = true;
+            e.Data.SetData(typeof(IEnumerable<PatientInfo>), e.Records.Cast<PatientInfo>());
+            e.Handled = true;
         }
         
         AppointmentItem CreateAppointment(PatientInfo patient)
         {
             AppointmentItem result = new AppointmentItem();
-            //result.CustomFields["PatientId"] = patient.Id;
-            //result.Subject = patient.FullName;
-           // result.StatusId = ReceptionDeskData.PaymentStateNotYetBilled.Id;
-            //result.Start = DateTime.Today;
+            result.CustomFields["PatientId"] = patient.Id;
+            result.Subject = patient.FullName;
+            result.StatusId = 2; ////////////////
+            result.Start = DateTime.Today;
             result.End = result.Start.AddMinutes(20);
             return result;
         }
@@ -57,7 +60,7 @@ namespace Dental.Views
         }
         void OnDragRecordOver(object sender, DragRecordOverEventArgs e)
         {
-           // e.Effects = DragDropEffects.Move;
+            e.Effects = DragDropEffects.Move;
             e.Handled = true;
         }
         void OnDropRecord(object sender, DropRecordEventArgs e)
