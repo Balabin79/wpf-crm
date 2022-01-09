@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("ClientsSubscribes")]
-    public class ClientsSubscribes : AbstractBaseModel, IDataErrorInfo
+    public class ClientsSubscribes : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Display(Name = "Название")]
         public string Name
@@ -19,9 +19,28 @@ namespace Dental.Models
         }
         private string _Name;
 
+        public string Comment { get; set; }
+        public string Content { get; set; }
+        public string DateSubscribe { get; set; }
 
-        public PatientInfo ClientInfo { get; set; }
-        public int? ClientInfoId { get; set; } = 1;
+        public int? ParentId { get; set; }
+        public int? IsDir { get; set; }
+
+        public int? SubscribeTypeId { get; set; }
+        public TypeSubscribe TypeSubscribe { get; set; }
+
+        public int? ClientGroupId { get; set; }
+        public ClientsGroup ClientsGroup { get; set; }
+
+        public int? StatusSubscribeId { get; set; }
+        public StatusSubscribe StatusSubscribe { get; set; }
+
+        public int SendCnt { get; set; } = 0;
+        public int NotSendCnt { get; set; } = 0;
+
+
+        public Employee Employee { get; set; }
+        public int? EmployeeId { get; set; }
 
 
         public string Error { get => string.Empty; }
@@ -35,8 +54,18 @@ namespace Dental.Models
                 {
                     Id = this.Id,
                     Name = this.Name,
+                    Comment = this.Comment,
+                    Content = this.Content,
+                    DateSubscribe = this.DateSubscribe,
                     Guid = this.Guid,
-                    ClientInfo = this.ClientInfo,
+                    Employee = this.Employee,
+                    ParentId = this.ParentId,
+                    IsDir = this.IsDir,
+                    SubscribeTypeId = this.SubscribeTypeId,
+                    ClientGroupId = this.ClientGroupId,
+                    StatusSubscribeId = this.StatusSubscribeId,
+                    SendCnt = this.SendCnt,
+                    NotSendCnt = this.NotSendCnt
                 };
             } catch(Exception ex)
             {
@@ -51,7 +80,18 @@ namespace Dental.Models
             model.Id = this.Id;
             model.Name = this.Name;
             model.Guid = this.Guid;
-            model.ClientInfo = this.ClientInfo;
+            model.Content = this.Content;
+            model.Comment = this.Comment;
+            model.DateSubscribe = this.DateSubscribe;
+            model.Employee = this.Employee;
+            model.EmployeeId = this.EmployeeId;
+            model.ParentId = this.ParentId;
+            model.IsDir = this.IsDir;
+            model.SubscribeTypeId = this.SubscribeTypeId;
+            model.ClientGroupId = this.ClientGroupId;
+            model.StatusSubscribeId = this.StatusSubscribeId;
+            model.SendCnt = this.SendCnt;
+            model.NotSendCnt = this.NotSendCnt;
             return model;
         }
 
@@ -84,7 +124,18 @@ namespace Dental.Models
 
             StringParamsIsEquel(this.Name, other.Name);
             StringParamsIsEquel(this.Guid, other.Guid);
-            if (this.ClientInfo != other.ClientInfo) return false;
+            StringParamsIsEquel(this.Content, other.Content);
+            StringParamsIsEquel(this.Comment, other.Comment);
+            StringParamsIsEquel(this.DateSubscribe, other.DateSubscribe);
+            StringParamsIsEquel(this.Employee.Guid, other.Employee.Guid);
+            if (this.EmployeeId != other.EmployeeId) return false;
+            if (this.IsDir != other.IsDir) return false;
+            if (this.ParentId != other.ParentId) return false;
+            if (this.SubscribeTypeId != other.SubscribeTypeId) return false;
+            if (this.ClientGroupId != other.ClientGroupId) return false;
+            if (this.SendCnt != other.SendCnt) return false;
+            if (this.NotSendCnt != other.NotSendCnt) return false;
+            if (this.StatusSubscribeId != other.StatusSubscribeId) return false;
                 return NotIsChanges;
         }
 

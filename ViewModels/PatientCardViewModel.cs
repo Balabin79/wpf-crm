@@ -165,7 +165,7 @@ namespace Dental.ViewModels
 
                /* db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);*/
                 db.ClientsRequests.Where(f => f.ClientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                db.ClientsSubscribes.Where(f => f.ClientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.SubscribesLog.Where(f => f.ClientInfoId == Model.Id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;

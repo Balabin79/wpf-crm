@@ -259,7 +259,7 @@ namespace Dental.ViewModels
         {
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
-            Model.Update();
+            Model.UpdateFields();
         }
 
         private void Delete(ObservableCollection<Classificator> collection)

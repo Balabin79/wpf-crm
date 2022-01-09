@@ -126,6 +126,8 @@
         <dxlc:LayoutControl  MaxHeight="2000" Width="250" Name="PART_Options" Orientation="Vertical" 
                             Padding="0" DockPanel.Dock="Right"
                dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
+            
+            
             <dxe:DateNavigator ShowTodayButton="False" ShowWeekNumbers="False" IsMultiSelect="True" VerticalAlignment="Top" dxlc:LayoutControl.AllowVerticalSizing="True">
                     <dxe:DateNavigator.StyleSettings>
                         <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
