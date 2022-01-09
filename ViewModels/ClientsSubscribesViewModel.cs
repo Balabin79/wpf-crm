@@ -39,7 +39,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Классификация услуг\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Классификация услу\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -57,7 +57,6 @@ namespace Dental.ViewModels
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
-
         private bool CanExpandTreeCommandExecute(object p) => true;
 
         private void OnExpandTreeCommandExecuted(object p)
@@ -83,58 +82,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void OnDeleteCommandExecuted(object p)
-        {
-            try
-            {
-                if (p == null) return;
-                Model = GetModelById((int)p);
-                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
-
-                if (Model.IsDir == 0) Delete(new ObservableCollection<ClientsSubscribes>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<ClientsSubscribes>().ToObservableCollection());
-                db.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSaveCommandExecuted(object p)
-        {
-            try
-            {
-                //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Guid != f.Guid).ToList();
-
-                if (SelectedGroup != null) 
-                {
-                    int id = ((ClientsSubscribes)SelectedGroup).Id;
-                    if (id == 0) Model.ParentId = null;
-                    else Model.ParentId = id;
-                } 
-
-                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
-                {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
-                }
-
-                if (Model.Id == 0) Add(); else Update();
-                db.SaveChanges();
-
-                SelectedGroup = null;
-                Window.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
+        private void OnCancelFormCommandExecuted(object p) => Window.Close();
         private void OnOpenFormCommandExecuted(object p)
         {
             try
@@ -158,7 +106,7 @@ namespace Dental.ViewModels
                         Title = "Создать группу";
                         Model.IsDir = 1;
                         Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        Group.Add(WithoutCategory);
+                        if (Group.Count != 0) Group.Add(WithoutCategory);
                         VisibleItemGroup();
                         break;
                     default:
@@ -190,8 +138,61 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+        private void OnSaveCommandExecuted(object p)
+        {
+            try
+            {
+                //ищем совпадающий элемент
+                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Guid != f.Guid).ToList();
 
-        private void OnCancelFormCommandExecuted(object p) => Window.Close();
+                if (SelectedGroup != null)
+                {
+                    int id = ((ClientsSubscribes)SelectedGroup).Id;
+                    if (id == 0) Model.ParentId = null;
+                    else Model.ParentId = id;
+                }
+
+                if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
+                {
+                    new TryingCreatingDuplicate().run(Model.IsDir);
+                    return;
+                }
+
+                if (Model.Id == 0) Add(); else Update();
+                db.SaveChanges();
+
+                SelectedGroup = null;
+                Window.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+
+        private void OnDeleteCommandExecuted(object p)
+        {
+            try
+            {
+                if (p == null) return;
+                Model = GetModelById((int)p);
+                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
+
+                if (Model.IsDir == 0) Delete(new ObservableCollection<ClientsSubscribes>() { Model });
+                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                            .GetItemChilds().OfType<ClientsSubscribes>().ToObservableCollection());
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+
+
+        
 
         /************* Специфика этой ViewModel ******************/
         private ObservableCollection<ClientsSubscribes> _Group;
@@ -259,7 +260,7 @@ namespace Dental.ViewModels
         {
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
-            Model.Update();
+            Model.UpdateFields();
         }
 
         private void Delete(ObservableCollection<ClientsSubscribes> collection)

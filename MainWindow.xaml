@@ -64,7 +64,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes.xaml"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes"/>
 
                         <dxb:BarButtonItem Content="Счета и оплаты" RibbonStyle="Default" 
                                            ToolTip="Счета и оплаты"

@@ -11,6 +11,8 @@ namespace Dental.Models
     [Table("ClientsSubscribes")]
     public class ClientsSubscribes : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
+        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name
         {
@@ -27,16 +29,13 @@ namespace Dental.Models
         public int? IsDir { get; set; }
 
         public int? SubscribeTypeId { get; set; }
-        public TypeSubscribe TypeSubscribe { get; set; }
+        //public TypeSubscribe TypeSubscribe { get; set; }
 
         public int? ClientGroupId { get; set; }
-        public ClientsGroup ClientsGroup { get; set; }
+        //public ClientsGroup ClientsGroup { get; set; }
 
         public int? StatusSubscribeId { get; set; }
-        public StatusSubscribe StatusSubscribe { get; set; }
-
-        public int SendCnt { get; set; } = 0;
-        public int NotSendCnt { get; set; } = 0;
+        //public StatusSubscribe StatusSubscribe { get; set; }
 
 
         public Employee Employee { get; set; }
@@ -64,8 +63,6 @@ namespace Dental.Models
                     SubscribeTypeId = this.SubscribeTypeId,
                     ClientGroupId = this.ClientGroupId,
                     StatusSubscribeId = this.StatusSubscribeId,
-                    SendCnt = this.SendCnt,
-                    NotSendCnt = this.NotSendCnt
                 };
             } catch(Exception ex)
             {
@@ -90,11 +87,8 @@ namespace Dental.Models
             model.SubscribeTypeId = this.SubscribeTypeId;
             model.ClientGroupId = this.ClientGroupId;
             model.StatusSubscribeId = this.StatusSubscribeId;
-            model.SendCnt = this.SendCnt;
-            model.NotSendCnt = this.NotSendCnt;
             return model;
         }
-
 
         public override bool Equals(object other)
         {
@@ -127,14 +121,12 @@ namespace Dental.Models
             StringParamsIsEquel(this.Content, other.Content);
             StringParamsIsEquel(this.Comment, other.Comment);
             StringParamsIsEquel(this.DateSubscribe, other.DateSubscribe);
-            StringParamsIsEquel(this.Employee.Guid, other.Employee.Guid);
+            StringParamsIsEquel(this.Employee?.Guid, other.Employee?.Guid);
             if (this.EmployeeId != other.EmployeeId) return false;
             if (this.IsDir != other.IsDir) return false;
             if (this.ParentId != other.ParentId) return false;
             if (this.SubscribeTypeId != other.SubscribeTypeId) return false;
             if (this.ClientGroupId != other.ClientGroupId) return false;
-            if (this.SendCnt != other.SendCnt) return false;
-            if (this.NotSendCnt != other.NotSendCnt) return false;
             if (this.StatusSubscribeId != other.StatusSubscribeId) return false;
                 return NotIsChanges;
         }
@@ -149,5 +141,11 @@ namespace Dental.Models
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
 
+        public void UpdateFields()
+        {
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(IsDir));
+            OnPropertyChanged(nameof(ParentId));
+        }
     }
 }

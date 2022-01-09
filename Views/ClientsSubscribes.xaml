@@ -19,7 +19,7 @@
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
-        <vm:ClassificatorViewModel x:Key="vm"/>
+        <vm:ClientsSubscribesViewModel x:Key="vm"/>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>

@@ -158,7 +158,7 @@ namespace Dental.ViewModels
                         Title = "Создать группу";
                         Model.IsDir = 1;
                         Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        Group.Add(WithoutCategory);
+                        if (Group.Count != 0) Group.Add(WithoutCategory);
                         VisibleItemGroup();
                         break;
                     default:
