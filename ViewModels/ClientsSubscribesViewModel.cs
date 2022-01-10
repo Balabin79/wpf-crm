@@ -304,8 +304,8 @@ namespace Dental.ViewModels
 
         private void Delete(ObservableCollection<ClientsSubscribes> collection)
         {
-            Collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            Collection.ForEach(f => Collection.Remove(f));
+            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+            collection.ForEach(f => Collection.Remove(f));
         }
     }
 }
