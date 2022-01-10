@@ -38,10 +38,6 @@ namespace Dental.Models
         //public StatusSubscribe StatusSubscribe { get; set; }
 
 
-        public Employee Employee { get; set; }
-        public int? EmployeeId { get; set; }
-
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -57,7 +53,6 @@ namespace Dental.Models
                     Content = this.Content,
                     DateSubscribe = this.DateSubscribe,
                     Guid = this.Guid,
-                    Employee = this.Employee,
                     ParentId = this.ParentId,
                     IsDir = this.IsDir,
                     SubscribeTypeId = this.SubscribeTypeId,
@@ -80,8 +75,6 @@ namespace Dental.Models
             model.Content = this.Content;
             model.Comment = this.Comment;
             model.DateSubscribe = this.DateSubscribe;
-            model.Employee = this.Employee;
-            model.EmployeeId = this.EmployeeId;
             model.ParentId = this.ParentId;
             model.IsDir = this.IsDir;
             model.SubscribeTypeId = this.SubscribeTypeId;
@@ -121,8 +114,6 @@ namespace Dental.Models
             StringParamsIsEquel(this.Content, other.Content);
             StringParamsIsEquel(this.Comment, other.Comment);
             StringParamsIsEquel(this.DateSubscribe, other.DateSubscribe);
-            StringParamsIsEquel(this.Employee?.Guid, other.Employee?.Guid);
-            if (this.EmployeeId != other.EmployeeId) return false;
             if (this.IsDir != other.IsDir) return false;
             if (this.ParentId != other.ParentId) return false;
             if (this.SubscribeTypeId != other.SubscribeTypeId) return false;

@@ -24,6 +24,8 @@ namespace Dental.ViewModels
         private readonly ApplicationContext db;
         public ClientsSubscribesViewModel()
         {
+
+
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
@@ -115,6 +117,9 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<ClientsSubscribes>().ToObservableCollection();
                         if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
+                        SelectedClientGroup = ClientsGroups.Where(f => f.Id == Model?.ClientGroupId).FirstOrDefault();
+                        SelectedStatus = StatusesSubscribe.Where(f => f.Id == Model?.StatusSubscribeId).FirstOrDefault();
+                        SelectedType = TypesSubscribe.Where(f => f.Id == Model?.SubscribeTypeId).FirstOrDefault();
 
                         if (Model.IsDir == 0)
                         {
@@ -132,6 +137,9 @@ namespace Dental.ViewModels
                 Window.DataContext = this;
                 Window.ShowDialog();
                 SelectedGroup = null;
+                SelectedClientGroup = null;
+                SelectedStatus = null;
+                SelectedType = null;
             }
             catch (Exception e)
             {
@@ -157,11 +165,17 @@ namespace Dental.ViewModels
                     new TryingCreatingDuplicate().run(Model.IsDir);
                     return;
                 }
+                if (SelectedClientGroup != null) Model.ClientGroupId = ((ClientsGroup)SelectedClientGroup)?.Id;
+                if (SelectedStatus != null) Model.StatusSubscribeId = ((StatusSubscribe)SelectedStatus)?.Id;
+                if (SelectedType != null) Model.SubscribeTypeId = ((TypeSubscribe)SelectedType)?.Id;
 
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
 
                 SelectedGroup = null;
+                SelectedClientGroup = null;
+                SelectedStatus = null;
+                SelectedType = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -204,11 +218,32 @@ namespace Dental.ViewModels
 
         public ClientsSubscribes WithoutCategory { get; set; } = new ClientsSubscribes() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
-        private object _SelectedGroup;
+        private object selectedGroup;
         public object SelectedGroup
         {
-            get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
+            get => selectedGroup;
+            set => Set(ref selectedGroup, value);
+        }
+
+        private object selectedClientGroup;
+        public object SelectedClientGroup
+        {
+            get => selectedClientGroup;
+            set => Set(ref selectedClientGroup, value);
+        }
+
+        private object selectedStatus;
+        public object SelectedStatus
+        {
+            get => selectedStatus;
+            set => Set(ref selectedStatus, value);
+        }
+
+        private object selectedType;
+        public object SelectedType
+        {
+            get => selectedType;
+            set => Set(ref selectedType, value);
         }
 
         /******************************************************/
@@ -228,7 +263,7 @@ namespace Dental.ViewModels
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
             Window.Width = 800;
-            Window.Height = 328;
+            Window.Height = 450;
         }
         private void VisibleItemGroup()
         {
@@ -243,6 +278,10 @@ namespace Dental.ViewModels
         private ClientsSubscribesWindow Window;
 
         private ObservableCollection<ClientsSubscribes> GetCollection() => db.ClientsSubscribes.OrderBy(d => d.Name).ToObservableCollection();
+        public ICollection<ClientsGroup> ClientsGroups { get => db.ClientsGroup.ToArray(); }
+        public ICollection<StatusSubscribe> StatusesSubscribe { get => db.StatusSubscribe.ToArray(); }
+        public ICollection<TypeSubscribe> TypesSubscribe { get => db.TypeSubscribe.ToArray(); }
+ 
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();
         private ClientsSubscribes CreateNewModel() => new ClientsSubscribes();
