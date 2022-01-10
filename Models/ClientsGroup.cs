@@ -133,5 +133,6 @@ namespace Dental.Models
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
 
+        public override string ToString() => Name;      
     }
 }

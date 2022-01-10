@@ -22,6 +22,7 @@
         <vm:ClientsSubscribesViewModel x:Key="vm"/>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DateToStringShortDateConverter x:Key="DateToStringShortDate"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
@@ -216,15 +217,46 @@
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn 
-                    FieldName="ClientsGroup" Header="Категория клиентов" HorizontalHeaderContentAlignment="Center" Width="1*"/>
+                    FieldName="ClientsGroup" Header="Категория клиентов" HorizontalHeaderContentAlignment="Center" Width="1*">
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                TextAlignment="Center"
+                                Text="{Binding RowData.Row.ClientGroup, Mode=OneWay}"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate>
+                </dxg:GridColumn>
                 <dxg:GridColumn 
-                    FieldName="StatusSubscribe" Header="Статус рассылки" HorizontalHeaderContentAlignment="Center" Width="1*"/>
-                <dxg:GridColumn 
-                    FieldName="DateSubscribe" Header="Дата отправки" HorizontalHeaderContentAlignment="Center" Width="1*"/>
-                <dxg:GridColumn 
-                    FieldName="DateSubscribe" Header="Отправлено" HorizontalHeaderContentAlignment="Center" Width="1*"/>
-                <dxg:GridColumn 
-                    FieldName="DateSubscribe" Header="Не отправлено" HorizontalHeaderContentAlignment="Center" Width="1*"/>
+                    FieldName="SubscribeType" Header="Тип" HorizontalHeaderContentAlignment="Center" Width="1*">
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                TextAlignment="Center"
+                                Text="{Binding RowData.Row.SubscribeType, Mode=OneWay}"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="DateSubscribe"  Header="Дата отправки" HorizontalHeaderContentAlignment="Center" Width="1*">
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                TextAlignment="Center"
+                                Text="{Binding RowData.Row.DateSubscribe, Mode=OneWay, Converter={StaticResource DateToStringShortDate}}"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="StatusSubscribe" Header="Статус рассылки" 
+                                HorizontalHeaderContentAlignment="Center" Width="1*">
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                TextAlignment="Center"
+                                Text="{Binding RowData.Row.StatusSubscribe, Mode=OneWay}"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate> 
+                </dxg:GridColumn>
+
+
 
                 <dxg:GridColumn Width="auto">
                         <dxg:GridColumn.CellTemplate>

@@ -277,7 +277,11 @@ namespace Dental.ViewModels
         private ObservableCollection<ClientsSubscribes> _Collection;
         private ClientsSubscribesWindow Window;
 
-        private ObservableCollection<ClientsSubscribes> GetCollection() => db.ClientsSubscribes.OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<ClientsSubscribes> GetCollection() => db.ClientsSubscribes
+            .Include(f => f.StatusSubscribe)
+            .Include(f => f.ClientGroup)
+            .Include(f => f.SubscribeType)
+            .OrderBy(d => d.DateSubscribe).ToObservableCollection();
         public ICollection<ClientsGroup> ClientsGroups { get => db.ClientsGroup.ToArray(); }
         public ICollection<StatusSubscribe> StatusesSubscribe { get => db.StatusSubscribe.ToArray(); }
         public ICollection<TypeSubscribe> TypesSubscribe { get => db.TypeSubscribe.ToArray(); }

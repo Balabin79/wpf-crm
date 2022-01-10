@@ -29,13 +29,13 @@ namespace Dental.Models
         public int? IsDir { get; set; }
 
         public int? SubscribeTypeId { get; set; }
-        //public TypeSubscribe TypeSubscribe { get; set; }
+        public TypeSubscribe SubscribeType { get; set; }
 
         public int? ClientGroupId { get; set; }
-        //public ClientsGroup ClientsGroup { get; set; }
+        public ClientsGroup ClientGroup { get; set; }
 
         public int? StatusSubscribeId { get; set; }
-        //public StatusSubscribe StatusSubscribe { get; set; }
+        public StatusSubscribe StatusSubscribe { get; set; }
 
 
         public string Error { get => string.Empty; }
@@ -137,6 +137,10 @@ namespace Dental.Models
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(IsDir));
             OnPropertyChanged(nameof(ParentId));
+            OnPropertyChanged(nameof(DateSubscribe));
+            OnPropertyChanged(nameof(StatusSubscribe));
+            OnPropertyChanged(nameof(ClientGroup));
+            OnPropertyChanged(nameof(SubscribeType));
         }
     }
 }

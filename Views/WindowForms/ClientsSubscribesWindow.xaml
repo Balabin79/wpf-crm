@@ -55,7 +55,12 @@
                                 <dxe:TextEdit  Grid.Row="1" Grid.Column="0" Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
 
                                 <TextBlock  Grid.Row="0" Grid.Column="1" Text="Дата рассылки:"  Margin="0,0,8,3" />
-                                <dxe:DateEdit   Grid.Row="1" Grid.Column="1" Text="{Binding Model.DateSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DateToString}}" Margin="0,0,0,8" />
+                                <dxe:DateEdit   Grid.Row="1" 
+                                                Grid.Column="1" 
+                                                EditValue="{Binding Model.DateSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource DateToString}}" 
+                                                 MaskType="DateTimeAdvancingCaret" 
+                                                 Mask="d"
+                                                Margin="0,0,0,8" />
 
                                 
                                 <TextBlock  Grid.Row="2" Grid.Column="0" Text="Категория клиентов:"  Margin="0,0,8,3" />
