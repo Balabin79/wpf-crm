@@ -72,6 +72,7 @@ namespace Dental.Models
 
         public DbSet<TypeSubscribe> TypeSubscribe { get; set; }
         public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
     }
 }

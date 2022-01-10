@@ -23,9 +23,7 @@ namespace Dental.ViewModels
     {
         private readonly ApplicationContext db;
         public ClientsSubscribesViewModel()
-        {
-
-
+        {           
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
@@ -38,10 +36,14 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Collection = GetCollection();
+                ClientsGroups = db.ClientsGroup?.ToArray();
+                StatusesSubscribe = db.StatusSubscribe?.ToArray();
+                TypesSubscribe = db.TypeSubscribe?.ToArray();
+                ProgramSettings = db.Settings?.FirstOrDefault();
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Классификация услу\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -202,11 +204,7 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        }
-
-
-
-        
+        }  
 
         /************* Специфика этой ViewModel ******************/
         private ObservableCollection<ClientsSubscribes> _Group;
@@ -282,16 +280,16 @@ namespace Dental.ViewModels
             .Include(f => f.ClientGroup)
             .Include(f => f.SubscribeType)
             .OrderBy(d => d.DateSubscribe).ToObservableCollection();
-        public ICollection<ClientsGroup> ClientsGroups { get => db.ClientsGroup.ToArray(); }
-        public ICollection<StatusSubscribe> StatusesSubscribe { get => db.StatusSubscribe.ToArray(); }
-        public ICollection<TypeSubscribe> TypesSubscribe { get => db.TypeSubscribe.ToArray(); }
- 
+        public ICollection<ClientsGroup> ClientsGroups { get; }
+        public ICollection<StatusSubscribe> StatusesSubscribe { get; }
+        public ICollection<TypeSubscribe> TypesSubscribe { get; }
+        public Settings ProgramSettings { get;  }
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();
         private ClientsSubscribes CreateNewModel() => new ClientsSubscribes();
 
         private ClientsSubscribes GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
-     
+        
 
         private void Add()
         {

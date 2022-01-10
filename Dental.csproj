@@ -448,6 +448,9 @@
     <Compile Update="Views\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Settings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Sheduler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -532,6 +535,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ClientsSubscribes.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Settings.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
