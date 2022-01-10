@@ -185,6 +185,7 @@
     <None Remove="Resources\Icons\Template\Trash.png" />
     <None Remove="Resources\Icons\Template\User-Add.png" />
     <None Remove="Resources\Icons\Template\user-avatar.png" />
+    <None Remove="Resources\Icons\Template\User-Comment.png" />
     <None Remove="Resources\Icons\Template\User-Suit.png" />
     <None Remove="Resources\Icons\Template\User.png" />
     <None Remove="Resources\Icons\Template\Widescreen.png" />
@@ -434,6 +435,7 @@
     <Resource Include="Resources\Icons\Template\Trash.png" />
     <Resource Include="Resources\Icons\Template\User-Add.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
+    <Resource Include="Resources\Icons\Template\User-Comment.png" />
     <Resource Include="Resources\Icons\Template\User-Suit.png" />
     <Resource Include="Resources\Icons\Template\User.png" />
     <Resource Include="Resources\Icons\Template\Widescreen.png" />
@@ -443,6 +445,9 @@
 
   <ItemGroup>
     <Compile Update="Employes1.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ClientsRequests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ClientsSubscribes.xaml.cs">
@@ -531,6 +536,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ClientsRequests.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

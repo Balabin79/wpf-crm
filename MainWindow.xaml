@@ -44,12 +44,19 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/people.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/people.png"                                      
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                        <dxb:BarButtonItem Content="Список обращений" RibbonStyle="Default" 
+                                           ToolTip="Список обращений"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.ClientsRequests"/>
                         <dxb:BarButtonItem Content="Расписание сотрудников" RibbonStyle="Default" 
                                            ToolTip="Расписание сотрудников"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler"/>
+
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Дополнительно">
                         <dxb:BarButtonItem Content="Google календарь"

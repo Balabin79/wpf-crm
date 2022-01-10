@@ -11,17 +11,20 @@ namespace Dental.Models
     [Table("ClientsRequests")]
     public class ClientsRequests : AbstractBaseModel, IDataErrorInfo
     {
-        [Display(Name = "Название")]
-        public string Name
+        [Display(Name = "ФИО")]
+        public string Fio
         {
-            get => _Name;
-            set => _Name = value?.Trim();
+            get => fio;
+            set => fio = value?.Trim();
         }
-        private string _Name;
+        private string fio;
 
+        public string Note { get; set; }
+        public string Date { get; set; }
+        public string Time { get; set; }
 
         public PatientInfo ClientInfo { get; set; }
-        public int? ClientInfoId { get; set; } = 1;
+        public int? ClientInfoId { get; set; }
 
 
         public string Error { get => string.Empty; }
@@ -34,7 +37,10 @@ namespace Dental.Models
                 return new ClientsRequests
                 {
                     Id = this.Id,
-                    Name = this.Name,
+                    Fio = this.Fio,
+                    Note = this.Note,
+                    Date = this.Date,
+                    Time = this.Time,
                     Guid = this.Guid,
                     ClientInfo = this.ClientInfo,
                 };
@@ -49,7 +55,10 @@ namespace Dental.Models
         public ClientsRequests Copy(ClientsRequests model)
         {
             model.Id = this.Id;
-            model.Name = this.Name;
+            model.Fio = this.Fio;
+            model.Note = this.Note;
+            model.Date = this.Date;
+            model.Time = this.Time;
             model.Guid = this.Guid;
             model.ClientInfo = this.ClientInfo;
             return model;
@@ -82,8 +91,12 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;           
 
-            StringParamsIsEquel(this.Name, other.Name);
+            StringParamsIsEquel(this.Fio, other.Fio);
+            StringParamsIsEquel(this.Note, other.Note);
+            StringParamsIsEquel(this.Date, other.Date);
+            StringParamsIsEquel(this.Time, other.Time);
             StringParamsIsEquel(this.Guid, other.Guid);
+            StringParamsIsEquel(this.ClientInfo?.Guid, other.ClientInfo?.Guid);
             if (this.ClientInfo != other.ClientInfo) return false;
                 return NotIsChanges;
         }
@@ -97,6 +110,15 @@ namespace Dental.Models
 
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
+
+        public void FieldsUpdate()
+        {
+            OnPropertyChanged(nameof(Fio));
+            OnPropertyChanged(nameof(Note));
+            OnPropertyChanged(nameof(Date));
+            OnPropertyChanged(nameof(Time));
+            OnPropertyChanged(nameof(ClientInfo));
+        }
 
     }
 }
