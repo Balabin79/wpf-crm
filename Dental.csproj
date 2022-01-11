@@ -109,6 +109,7 @@
     <None Remove="Resources\Icons\Template\Exclamation.png" />
     <None Remove="Resources\Icons\Template\Eye.png" />
     <None Remove="Resources\Icons\Template\Fax.png" />
+    <None Remove="Resources\Icons\Template\Finance.png" />
     <None Remove="Resources\Icons\Template\floppy-disk.png" />
     <None Remove="Resources\Icons\Template\Folder.png" />
     <None Remove="Resources\Icons\Template\Glade-3-48.png" />
@@ -379,6 +380,7 @@
     <Resource Include="Resources\Icons\Template\emp.png" />
     <Resource Include="Resources\Icons\Template\Eye.png" />
     <Resource Include="Resources\Icons\Template\Fax.png" />
+    <Resource Include="Resources\Icons\Template\Finance.png" />
     <Resource Include="Resources\Icons\Template\floppy-disk.png" />
     <Resource Include="Resources\Icons\Template\Folder.png" />
     <Resource Include="Resources\Icons\Template\Gnome-Accessories-Calculator-48.png" />
@@ -450,10 +452,16 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AllPlans.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ClientsRequests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ClientsSubscribes.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AllSallary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Settings.xaml.cs">
@@ -536,11 +544,19 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AllPlans.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\ClientsRequests.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ClientsSubscribes.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AllSallary.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

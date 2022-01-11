@@ -73,12 +73,18 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes"/>
 
-                        <dxb:BarButtonItem Content="Счета и оплаты" RibbonStyle="Default" 
-                                           ToolTip="Счета и оплаты"
+                        <dxb:BarButtonItem Content="Зарплата сотрудников" RibbonStyle="Default" 
+                                           ToolTip="Зарплата сотрудников"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Coins.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Coins.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Coins.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.AllSalary"/>
+                        <dxb:BarButtonItem Content="Планы услуг и продажи" RibbonStyle="Default" 
+                                           ToolTip="Планы услуг и продажи"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Finance.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Finance.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Finance.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.AllPlans"/>
                     </dxr:RibbonPageGroup>
 
                     <dxr:RibbonPageGroup Caption="Отчеты" >
