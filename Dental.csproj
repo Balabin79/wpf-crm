@@ -58,6 +58,8 @@
     <None Remove="Resources\Icons\svg\tooth.svg" />
     <None Remove="Resources\Icons\svg\trash-alt.svg" />
     <None Remove="Resources\Icons\svg\user-nurse.svg" />
+    <None Remove="Resources\Icons\svg\user.svg" />
+    <None Remove="Resources\Icons\svg\user1.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
     <None Remove="Resources\Icons\Template\Account-Balances.png" />
     <None Remove="Resources\Icons\Template\Advertising.png" />
@@ -343,6 +345,7 @@
     <Resource Include="Resources\Icons\svg\tooth.svg" />
     <Resource Include="Resources\Icons\svg\trash-alt.svg" />
     <Resource Include="Resources\Icons\svg\user-nurse.svg" />
+    <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\Template\Account-Balances.png" />
     <Resource Include="Resources\Icons\Template\Advertising.png" />
@@ -477,13 +480,7 @@
     <Compile Update="Views\Groups.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\CommunicationLog\SmsView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Advertising.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\CommunicationLog\CommunicationLogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Specialities.xaml.cs">
@@ -579,15 +576,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\CommunicationLog\SmsView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Advertising.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\CommunicationLog\CommunicationLogView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

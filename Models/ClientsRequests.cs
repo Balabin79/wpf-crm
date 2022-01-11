@@ -11,13 +11,7 @@ namespace Dental.Models
     [Table("ClientsRequests")]
     public class ClientsRequests : AbstractBaseModel, IDataErrorInfo
     {
-        [Display(Name = "ФИО")]
-        public string Fio
-        {
-            get => fio;
-            set => fio = value?.Trim();
-        }
-        private string fio;
+        public string Contacts { get; set; }
 
         public string Note { get; set; }
         public string Date { get; set; }
@@ -37,7 +31,7 @@ namespace Dental.Models
                 return new ClientsRequests
                 {
                     Id = this.Id,
-                    Fio = this.Fio,
+                    Contacts = this.Contacts,
                     Note = this.Note,
                     Date = this.Date,
                     Time = this.Time,
@@ -55,7 +49,7 @@ namespace Dental.Models
         public ClientsRequests Copy(ClientsRequests model)
         {
             model.Id = this.Id;
-            model.Fio = this.Fio;
+            model.Contacts = this.Contacts;
             model.Note = this.Note;
             model.Date = this.Date;
             model.Time = this.Time;
@@ -91,7 +85,7 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;           
 
-            StringParamsIsEquel(this.Fio, other.Fio);
+            StringParamsIsEquel(this.Contacts, other.Contacts);
             StringParamsIsEquel(this.Note, other.Note);
             StringParamsIsEquel(this.Date, other.Date);
             StringParamsIsEquel(this.Time, other.Time);
@@ -113,7 +107,7 @@ namespace Dental.Models
 
         public void FieldsUpdate()
         {
-            OnPropertyChanged(nameof(Fio));
+            OnPropertyChanged(nameof(Contacts));
             OnPropertyChanged(nameof(Note));
             OnPropertyChanged(nameof(Date));
             OnPropertyChanged(nameof(Time));

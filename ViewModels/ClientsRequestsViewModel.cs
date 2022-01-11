@@ -29,6 +29,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
+                Clients = db.PatientInfo.ToArray();
             }
             catch (Exception e)
             {
@@ -75,10 +76,10 @@ namespace Dental.ViewModels
             {
                 foreach (var item in Collection)
                 {
-                    if (string.IsNullOrEmpty(item.Fio) && item.ClientInfo == null)
+                    if (string.IsNullOrEmpty(item.Note) && item.ClientInfo == null)
                     {
 
-                        var response = ThemedMessageBox.Show(title: "Внимание", text: "В списке имеются строки с одновременно незаполненными полями \"ФИО\" и \"Клиент\"! Данные строки не будут сохранены. Если хотите сохранить эти поля, то нажмите кнопку \"Отмена\", заполните одно из полей, а затем нажмите кнопку сохранить (иконка с дискетой). Для продолжения без сохранения, нажмите \"Ок\"",
+                        var response = ThemedMessageBox.Show(title: "Внимание", text: "В списке имеются строки с одновременно незаполненными полями \"Содержание\" и \"Клиент\"! Данные строки не будут сохранены. Если хотите сохранить эти поля, то нажмите кнопку \"Отмена\", заполните одно из полей, а затем нажмите кнопку сохранить (иконка с дискетой). Для продолжения без сохранения, нажмите \"Ок\"",
                            messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
 
                         if (response.ToString() == "Cancel") return; else continue; 
@@ -111,15 +112,25 @@ namespace Dental.ViewModels
             set => Set(ref _Collection, value);
         }
         private ObservableCollection<ClientsRequests> _Collection;
-        private ObservableCollection<ClientsRequests> GetCollection() => db.ClientsRequests.OrderBy(d => d.CreatedAt).ToObservableCollection();
+        private ObservableCollection<ClientsRequests> GetCollection() => db.ClientsRequests
+            .Include(f => f.ClientInfo)
+            .OrderBy(d => d.CreatedAt).ToObservableCollection();
         public ObservableCollection<ClientsRequests> CollectionBeforeChanges { get; set; } = new ObservableCollection<ClientsRequests>();
+        public ICollection<PatientInfo> Clients { get; }
+
+        public object SelectedClient
+        {
+            get => selectedClient;
+            set => Set(ref selectedClient, value);
+        }
+        private object selectedClient;
 
         public bool HasUnsavedChanges()
         {
             if (CollectionBeforeChanges?.Count != Collection.Count) return true;
             foreach (var item in Collection)
             {
-                if (string.IsNullOrEmpty(item.Fio) && item.ClientInfo == null) continue;
+                if (string.IsNullOrEmpty(item.Note) && item.ClientInfo == null) continue;
                 if (item.Id == 0) return true;
                 if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
             }

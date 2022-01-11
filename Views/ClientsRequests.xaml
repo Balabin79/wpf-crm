@@ -18,7 +18,30 @@
         <commands:PrintCommand x:Key="Print"/>
         <vm:ClientsRequestsViewModel x:Key="vm"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DateToStringShortDateConverter x:Key="DateToShortDateString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+
+        <ControlTemplate x:Key="popupContentTemplate">
+            <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True" >
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="FullName" Header="ФИО" />
+                    <dxg:GridColumn FieldName="Phone" Header="Телефон"/>
+                    <dxg:GridColumn FieldName="BirthDate" Header="Дата рождения"/>
+                    <dxg:GridColumn FieldName="Address" Header="Адрес" />
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView Name="View"
+                                       ShowGroupedColumns="True"
+                                       AutoWidth="True"
+                                       AllowPerPixelScrolling="True"
+                                       ScrollAnimationDuration="0"
+                                       ShowAutoFilterRow="True"
+                                       ShowTotalSummary="True"                                  
+                                       IsSynchronizedWithCurrentItem="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </ControlTemplate>
+
     </Page.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
 
@@ -121,23 +144,103 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Fio" Header="Наименование"  MinWidth="200" Width="5*">
+                    <dxg:GridColumn>
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
-                                    <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/user1.svg" Height="9"/>
+                                    <TextBlock Text="Клиент" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.HeaderTemplate>
-                        <dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock VerticalAlignment="Center"  
+                                           Text="{Binding Path=RowData.Row.ClientInfo, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <dxg:LookUpEdit Name="searchLookUpEdit"                               
+                                EditValue="{Binding Path=RowData.Row.ClientInfo,  UpdateSourceTrigger=PropertyChanged}"
+                                PopupHeight="500"
+                                PopupWidth="750"
+                                IsPopupAutoWidth="False"
+                                FilterCondition="StartsWith"
+                                FindButtonPlacement="Popup"
+                                FindMode="Always"
+                                PopupContentTemplate="{StaticResource popupContentTemplate}"
+                                ItemsSource="{Binding Clients, Source={StaticResource vm}}"
+                                AutoPopulateColumns="False"
+                                DisplayMember="FullName"
+                                >
+                                    <dxg:LookUpEdit.StyleSettings>
+                                        <dxg:SearchLookUpEditStyleSettings />
+                                    </dxg:LookUpEdit.StyleSettings>
+                                </dxg:LookUpEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellEditTemplate>
+                    </dxg:GridColumn>
+
+                    <dxg:GridColumn 
+                        FieldName="Note" Header="Содержание" HorizontalHeaderContentAlignment="Center" 
+                        MinWidth="200" Width="5*">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="{Binding RowData.Row.Note, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                        <dxg:GridColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <dxe:MemoEdit 
+                                    ShowIcon="False" NullText="Содержание просьбы, обращения клиента"
+                                    ShowNullTextForEmptyValue="True"
+                                    Text="{Binding RowData.Row.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{Binding RowData.Row.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellEditTemplate>
+                    </dxg:GridColumn>
+                
+                    <dxg:GridColumn FieldName="Date" Width="1*" Header="Дата/Время" HorizontalHeaderContentAlignment="Center" >
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="{Binding RowData.Row.Date, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                        <dxg:GridColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <dxe:DateEdit 
+                                     EditValue="{Binding RowData.Row.Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
+                                    x:Name="DateEditWithNavigatorAndTimePicker" Mask="G" MaskUseAsDisplayFormat="True">
+                                    <dxe:DateEdit.StyleSettings>
+                                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                                    </dxe:DateEdit.StyleSettings>
+                                </dxe:DateEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellEditTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn 
+                        FieldName="Contacts" Header="Контакты" HorizontalHeaderContentAlignment="Center" 
+                        Width="2*">
+                        <dxg:GridColumn.CellDisplayTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="{Binding RowData.Row.Contacts, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellDisplayTemplate>
+                        <dxg:GridColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <dxe:MemoEdit 
+                                    ShowIcon="False" NullText="Контакты"
+                                    ShowNullTextForEmptyValue="True"
+                                    
+                                    Text="{Binding RowData.Row.Contacts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{Binding RowData.Row.Contacts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

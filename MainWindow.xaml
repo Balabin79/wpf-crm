@@ -49,7 +49,7 @@
                                            Glyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/User-Comment.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.ClientsRequests"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsRequests"/>
                         <dxb:BarButtonItem Content="Расписание сотрудников" RibbonStyle="Default" 
                                            ToolTip="Расписание сотрудников"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"
