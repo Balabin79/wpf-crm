@@ -3,9 +3,9 @@ using DevExpress.Xpf.WindowsUI;
 
 namespace Dental.Views
 {
-    public partial class AllSallary : Page
+    public partial class EmployeeSummary : Page
     {
-        public AllSallary()
+        public EmployeeSummary()
         {
             InitializeComponent();
         }

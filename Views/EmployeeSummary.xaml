@@ -1,4 +1,4 @@
-﻿<Page  x:Class="Dental.Views.AllSallary"
+﻿<Page  x:Class="Dental.Views.EmployeeSummary"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -15,7 +15,7 @@
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
-        <vm:AllSallaryViewModel x:Key="vm"/>
+        <vm:EmployeeSummaryViewModel x:Key="vm"/>
     </Page.Resources>
     
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
@@ -31,10 +31,10 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Image Height="25" Width="25" Margin="2 0 2 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Coins.png" />
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Зарплаты сотрудников" FontSize="15" Padding="0 8 5 0"/>
+                    <TextBlock Text="Сводные данные по сотрудникам" FontSize="15" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 

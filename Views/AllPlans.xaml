@@ -44,7 +44,7 @@
                         ShowDragWidget="False"
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Name="expandTree" Content="Развернуть или свернуть все позиции" 
+                        <dxb:BarButtonItem Name="expandTree" Content="Развернуть/свернуть все позиции" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}" 

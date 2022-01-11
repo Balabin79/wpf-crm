@@ -15,10 +15,10 @@ using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
-    class AllSallaryViewModel : ViewModelBase
+    class EmployeeSummaryViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
-        public AllSallaryViewModel()
+        public EmployeeSummaryViewModel()
         {
             ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
 
