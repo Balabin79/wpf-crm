@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services.Smsc.Settings
+namespace Dental.Services.Smsc.SmsSettings
 {
     /// <summary>
     /// Второй в иерархии класс, содержит большинство настроек параметров к сервису.
@@ -12,7 +12,7 @@ namespace Dental.Services.Smsc.Settings
     /// 
     /// Конструктор инициализируется словарем params, ключи - имена передаваемых параметров
     /// </summary>
-    public abstract class BaseSettings : RequiredSettings
+    public abstract class Settings : BaseSettings
     {
 
         /*	

@@ -12,8 +12,7 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services.Smsc;
-using Dental.Services.Smsc.Settings;
+using Dental.Services.Smsc.SmsSettings;
 
 namespace Dental.ViewModels
 {
@@ -28,16 +27,13 @@ namespace Dental.ViewModels
 
             try
             {
-
-
-
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
 
                 string[] arr = new string[] { "fdfdfd", "9873894523", "45156987456" };
                 //var sms = new Sms("alex", "657913", arr, "ку-ку");
-                var sms = new Services.Smsc.Settings.Settings();
+                //var sms = new Services.Smsc.Settings.Settings();
 
             }
             catch (SettingsException e)

@@ -7,18 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dental.Services.Smsc.Settings
+namespace Dental.Services.Smsc.SmsSettings
 {
 
     /// <summary>
     /// Самый базовый (верхний) класс в иерархии настроек
     /// Его задача установить логин и пароль для доступа к сервису
     /// </summary>
-    public abstract class RequiredSettings
+    public abstract class BaseSettings
     {
        public readonly ApplicationContext db;
 
-        public RequiredSettings()
+        public BaseSettings()
         {
             db = new ApplicationContext();
             var settings = db.Settings.FirstOrDefault();

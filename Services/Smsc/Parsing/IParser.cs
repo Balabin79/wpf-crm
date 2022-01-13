@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services.Smsc.Interfaces
+namespace Dental.Services.Smsc.Parsing
 {
-    interface ILog
+    public interface IParser
     {
+        string Parse(string msg);
     }
 }

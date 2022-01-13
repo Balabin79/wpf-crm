@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services.Smsc.Settings
+namespace Dental.Services.Smsc.SmsSettings
 {
     public class SettingsException : Exception
     {
