@@ -13,24 +13,28 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+      xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+      xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"  
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
-        <commands:PrintCommand x:Key="Print"/>
-        <vm:ClientsRequestsViewModel x:Key="vm"/>
-        <converter:DateToStringConverter x:Key="DateToString"/>
-        <converter:DateToStringShortDateConverter x:Key="DateToShortDateString"/>
-        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-
-        <ControlTemplate x:Key="popupContentTemplate">
-            <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True" >
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="FullName" Header="ФИО" />
-                    <dxg:GridColumn FieldName="Phone" Header="Телефон"/>
-                    <dxg:GridColumn FieldName="BirthDate" Header="Дата рождения"/>
-                    <dxg:GridColumn FieldName="Address" Header="Адрес" />
-                </dxg:GridControl.Columns>
-                <dxg:GridControl.View>
-                    <dxg:TableView Name="View"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <vm:ClientsRequestsViewModel x:Key="vm"/>
+                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:DateToStringShortDateConverter x:Key="DateToShortDateString"/>
+                    <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                    <ControlTemplate x:Key="popupContentTemplate">
+                        <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True" >
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="FullName" Header="ФИО" />
+                                <dxg:GridColumn FieldName="Phone" Header="Телефон"/>
+                                <dxg:GridColumn FieldName="BirthDate" Header="Дата рождения"/>
+                                <dxg:GridColumn FieldName="Address" Header="Адрес" />
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView Name="View"
                                        ShowGroupedColumns="True"
                                        AutoWidth="True"
                                        AllowPerPixelScrolling="True"
@@ -38,9 +42,14 @@
                                        ShowAutoFilterRow="True"
                                        ShowTotalSummary="True"                                  
                                        IsSynchronizedWithCurrentItem="False" />
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-        </ControlTemplate>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
 
     </Page.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
@@ -97,8 +106,6 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-
-
                 <dxg:GridControl  AutoGenerateColumns="None" 
                                   MaxHeight="2000" 
                                   Name="grid"  
@@ -144,7 +151,11 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn>
+                    <dxg:GridColumn
+                        Header="ФИО"
+                        FieldName="ClientInfo"
+                         PrintCellStyle="{StaticResource ResourceKey=LookUpEditColumnPrintingStyle}"
+                         PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -155,8 +166,7 @@
                         </dxg:GridColumn.HeaderTemplate>
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center"  
-                                           Text="{Binding Path=RowData.Row.ClientInfo, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBlock Text="{Binding Path=RowData.Row.ClientInfo, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </dxg:GridColumn.CellDisplayTemplate>
                         <dxg:GridColumn.CellEditTemplate>
@@ -183,6 +193,8 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn 
+                         PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                         PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                         FieldName="Note" Header="Содержание" HorizontalHeaderContentAlignment="Center" 
                         MinWidth="200" Width="5*">
                         <dxg:GridColumn.CellDisplayTemplate>
@@ -203,7 +215,11 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
                 
-                    <dxg:GridColumn FieldName="Date" Width="1*" Header="Дата/Время" HorizontalHeaderContentAlignment="Center" >
+                    <dxg:GridColumn 
+                        FieldName="Date" Width="1*" 
+                        Header="Дата/Время" HorizontalHeaderContentAlignment="Center"
+                        PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                        PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
                                 <TextBlock 
@@ -224,6 +240,7 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
                     <dxg:GridColumn 
+                        AllowPrinting="False"
                         FieldName="Contacts" Header="Контакты" HorizontalHeaderContentAlignment="Center" 
                         Width="2*">
                         <dxg:GridColumn.CellDisplayTemplate>
@@ -245,7 +262,7 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn Width="auto">
+                    <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >

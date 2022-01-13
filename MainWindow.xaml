@@ -67,7 +67,14 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes"/>
-
+                        
+                        <dxb:BarButtonItem Content="Сводные данные" RibbonStyle="Default" 
+                                           ToolTip="Сводные данные"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"                                        
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeSummary"/>
+                        
                         <dxb:BarButtonItem Content="Планы услуг и продажи" RibbonStyle="Default" 
                                            ToolTip="Планы услуг и продажи"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Finance.png"
@@ -128,18 +135,7 @@
                                            ToolTip="Добавить сотрудника"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Employee"/>
 
-
-                        <dxb:BarButtonItem Content="Сводные данные" RibbonStyle="Default" 
-                                           ToolTip="Сводные данные"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.AllSallary"/>
-
                     </dxr:RibbonPageGroup >
-
-
-
 
                     <dxr:RibbonPageGroup Caption="Маркетинг">
                         <dxb:BarButtonItem Content="Категории клиентов"

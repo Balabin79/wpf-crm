@@ -19,13 +19,21 @@
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
-        <vm:ClientsSubscribesViewModel x:Key="vm"/>
-        <commands:PrintCommand x:Key="Print"/>
-        <converter:DateToStringConverter x:Key="DateToString"/>
-        <converter:DateToStringShortDateConverter x:Key="DateToStringShortDate"/>
-        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-        <converter:BoolIntConverter x:Key="boolConverter" />
-        <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <vm:ClientsSubscribesViewModel x:Key="vm"/>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:DateToStringShortDateConverter x:Key="DateToStringShortDate"/>
+                    <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                    <converter:BoolIntConverter x:Key="boolConverter" />
+                    <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
 
 
     </Page.Resources>
@@ -203,7 +211,12 @@
                         </dxg:TreeListView>
                     </dxg:GridControl.View>
 
-                <dxg:GridColumn FieldName="Name" Header="Название" Name="Name" MinWidth="200" Width="8*">
+                <dxg:GridColumn FieldName="Name" 
+                                Header="Название" 
+                                Name="Name" 
+                                MinWidth="200" Width="8*"
+                                PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -217,7 +230,10 @@
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn 
-                    FieldName="ClientsGroup" Header="Категория клиентов" HorizontalHeaderContentAlignment="Center" Width="1*">
+                    FieldName="ClientGroup" Header="Категория клиентов" 
+                    HorizontalHeaderContentAlignment="Center" Width="1*"
+                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                     <dxg:GridColumn.CellDisplayTemplate>
                         <DataTemplate>
                             <TextBlock 
@@ -225,9 +241,12 @@
                                 Text="{Binding RowData.Row.ClientGroup, Mode=OneWay}"/>
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
+
                 </dxg:GridColumn>
                 <dxg:GridColumn 
-                    FieldName="SubscribeType" Header="Тип" HorizontalHeaderContentAlignment="Center" Width="1*">
+                    FieldName="SubscribeType" Header="Тип" HorizontalHeaderContentAlignment="Center" Width="1*"
+                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                     <dxg:GridColumn.CellDisplayTemplate>
                         <DataTemplate>
                             <TextBlock 
@@ -236,7 +255,11 @@
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="DateSubscribe"  Header="Дата отправки" HorizontalHeaderContentAlignment="Center" Width="1*">
+                <dxg:GridColumn 
+                    FieldName="DateSubscribe"  Header="Дата отправки" 
+                    HorizontalHeaderContentAlignment="Center" Width="1*"
+                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                     <dxg:GridColumn.CellDisplayTemplate>
                         <DataTemplate>
                             <TextBlock 
@@ -245,8 +268,11 @@
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="StatusSubscribe" Header="Статус рассылки" 
-                                HorizontalHeaderContentAlignment="Center" Width="1*">
+                <dxg:GridColumn 
+                    FieldName="StatusSubscribe" Header="Статус рассылки" 
+                    HorizontalHeaderContentAlignment="Center" Width="1*"
+                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
                     <dxg:GridColumn.CellDisplayTemplate>
                         <DataTemplate>
                             <TextBlock 
@@ -258,7 +284,7 @@
 
 
 
-                <dxg:GridColumn Width="auto">
+                <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >

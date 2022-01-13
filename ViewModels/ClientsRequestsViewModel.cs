@@ -53,15 +53,18 @@ namespace Dental.ViewModels
                 if (p is ClientsRequests model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
-                    else db.Entry(model).State = EntityState.Detached;
-                    int cnt = db.SaveChanges();
-                    Collection = GetCollection();
-                    if (cnt > 0) 
+                    if (model.Id != 0) 
                     {
-                        CollectionBeforeChanges.Clear();
-                        Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
-                    }                 
+                        db.Entry(model).State = EntityState.Deleted;
+                        int cnt = db.SaveChanges();                        
+                        if (cnt > 0)
+                        {
+                            CollectionBeforeChanges.Clear();
+                            Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
+                        }
+                    } 
+                    else db.Entry(model).State = EntityState.Detached;
+                    Collection.Remove(model);
                 }
             }
             catch (Exception e)

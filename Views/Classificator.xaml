@@ -19,12 +19,20 @@
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
-        <vm:ClassificatorViewModel x:Key="vm"/>
-        <commands:PrintCommand x:Key="Print"/>
-        <converter:DateToStringConverter x:Key="DateToString"/>
-        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-        <converter:BoolIntConverter x:Key="boolConverter" />
-        <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <vm:ClassificatorViewModel x:Key="vm"/>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                    <converter:BoolIntConverter x:Key="boolConverter" />
+                    <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
 
 
     </Page.Resources>
@@ -203,7 +211,9 @@
                         </dxg:TreeListView>
                     </dxg:GridControl.View>
 
-                <dxg:GridColumn FieldName="FullName" Header="Наименование" x:Name="Name" MinWidth="200" Width="8*">
+                <dxg:GridColumn FieldName="FullName" 
+                                Header="Наименование" x:Name="Name" MinWidth="200" Width="8*"
+                                >
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -216,10 +226,12 @@
                         <dxe:TextEditSettings TextWrapping="Wrap"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Price"                             
-                                Header="Стоимость"                               
-                                HorizontalHeaderContentAlignment="Center" 
-                                Width="1*">
+                <dxg:GridColumn FieldName="Price" 
+                                 PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
+                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
+                                 Header="Стоимость"                               
+                                 HorizontalHeaderContentAlignment="Center" 
+                                 Width="1*">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
@@ -230,7 +242,12 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Width="1*" FieldName="Cost"  Header="Размер выплаты сотруднику" HorizontalHeaderContentAlignment="Center" >
+                <dxg:GridColumn Width="1*" FieldName="Cost"  
+                                Header="Размер выплаты сотруднику" 
+                                HorizontalHeaderContentAlignment="Center" 
+                                PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
+                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
+                                >
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock  Text="{Binding Row.Cost,Converter={StaticResource strToDecimalConverter}, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
@@ -239,7 +256,7 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Width="auto">
+                <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >

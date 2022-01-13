@@ -12,6 +12,8 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Services.Smsc;
+using Dental.Services.Smsc.Settings;
 
 namespace Dental.ViewModels
 {
@@ -26,9 +28,22 @@ namespace Dental.ViewModels
 
             try
             {
+
+
+
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+
+                string[] arr = new string[] { "fdfdfd", "9873894523", "45156987456" };
+                //var sms = new Sms("alex", "657913", arr, "ку-ку");
+                var sms = new Services.Smsc.Settings.Settings();
+
+            }
+            catch (SettingsException e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
             catch (Exception e)
             {
@@ -103,7 +118,7 @@ namespace Dental.ViewModels
             set => Set(ref _Collection, value);
         }
         private ObservableCollection<Advertising> _Collection;
-        private ObservableCollection<Advertising> GetCollection() => db.Advertising.OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<Advertising> GetCollection() => db.Advertising?.OrderBy(d => d.Name).ToObservableCollection();
         public ObservableCollection<Advertising> CollectionBeforeChanges { get; set; } = new ObservableCollection<Advertising>();
 
         public bool HasUnsavedChanges()
