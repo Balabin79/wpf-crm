@@ -244,6 +244,18 @@
 
                 </dxg:GridColumn>
                 <dxg:GridColumn 
+                    FieldName="Settings" Header="Настройки" HorizontalHeaderContentAlignment="Center" Width="1*"
+                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <TextBlock 
+                                TextAlignment="Center"
+                                Text="{Binding RowData.Row.Settings.TitleBtn, Mode=OneWay}"/>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn 
                     FieldName="SubscribeType" Header="Тип" HorizontalHeaderContentAlignment="Center" Width="1*"
                     PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
                     PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
@@ -255,6 +267,7 @@
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>
+
                 <dxg:GridColumn 
                     FieldName="DateSubscribe"  Header="Дата отправки" 
                     HorizontalHeaderContentAlignment="Center" Width="1*"

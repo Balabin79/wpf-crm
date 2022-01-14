@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Dental.Services.Smsc.SmsSettings
@@ -12,7 +13,9 @@ namespace Dental.Services.Smsc.SmsSettings
     /// 
     /// Конструктор инициализируется словарем params, ключи - имена передаваемых параметров
     /// </summary>
-    public abstract class Settings : BaseSettings
+
+    [Serializable]
+    sealed public class Settings
     {
 
         /*	
@@ -264,5 +267,18 @@ namespace Dental.Services.Smsc.SmsSettings
             При передаче данного параметра в виде "pp=<ID партнера>" Клиент с логином login временно становится рефералом партнера с ID <ID партнера>. Отчисления по партнерской программе будут сделаны именно для текущего запроса, постоянной привязки не происходит. Данный параметр позволяет временно устанавливать Клиента в качестве реферала из своих сервисов и программ, где нет возможности зарегистрировать Клиента по реферальной ссылке.
          */
         public int Pp { get; set; }
+
+
+        /*
+         Флаг изменения первоначальных настроек
+         */
+        public bool IsCustomEdited { get; set; } = false;
+
+        [JsonIgnore]
+        public string TitleBtn 
+        { 
+            get => IsCustomEdited ? "Пользовательские" : "По умолчанию";
+        }
+
     }
 }

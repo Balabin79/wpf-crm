@@ -5,6 +5,8 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
@@ -36,6 +38,17 @@ namespace Dental.Models
 
         public int? StatusSubscribeId { get; set; }
         public StatusSubscribe StatusSubscribe { get; set; }
+
+        public string JsonSettings { get; set; }
+
+        public string JsonReport { get; set; }
+
+
+        [NotMapped]
+        public Services.Smsc.SmsSettings.Settings Settings { get; set; }
+
+        [NotMapped]
+        public Services.Smsc.SmsSettings.Report Report { get; set; }
 
 
         public string Error { get => string.Empty; }

@@ -16,6 +16,7 @@ using DevExpress.Xpf.Grid;
 using Dental.Views.WindowForms;
 
 using Dental.Services;
+using System.Text.Json;
 
 namespace Dental.ViewModels
 {
@@ -27,15 +28,14 @@ namespace Dental.ViewModels
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-          
+            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);          
 
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
 
             try
             {
                 db = new ApplicationContext();
-                Collection = GetCollection();
+                SetCollection();
                 ClientsGroups = db.ClientsGroup?.ToArray();
                 StatusesSubscribe = db.StatusSubscribe?.ToArray();
                 TypesSubscribe = db.TypeSubscribe?.ToArray();
@@ -170,6 +170,28 @@ namespace Dental.ViewModels
                 if (SelectedClientGroup != null) Model.ClientGroupId = ((ClientsGroup)SelectedClientGroup)?.Id;
                 if (SelectedStatus != null) Model.StatusSubscribeId = ((StatusSubscribe)SelectedStatus)?.Id;
                 if (SelectedType != null) Model.SubscribeTypeId = ((TypeSubscribe)SelectedType)?.Id;
+                if (Model.Settings != null)
+                {
+                    try
+                    {
+                        Model.JsonSettings = JsonSerializer.Serialize(Model.Settings);
+                    } 
+                    catch(Exception e)
+                    {
+                        Model.JsonSettings = JsonSerializer.Serialize(new Services.Smsc.SmsSettings.Settings());
+                    }                    
+                }
+                if (Model.Report != null)
+                {
+                    try
+                    {
+                        Model.JsonReport = JsonSerializer.Serialize(Model.Report);
+                    }
+                    catch (Exception e)
+                    {
+                        Model.JsonReport = JsonSerializer.Serialize(new Services.Smsc.SmsSettings.Report());
+                    }
+                }
 
                 if (Model.Id == 0) Add(); else Update();
                 db.SaveChanges();
@@ -261,7 +283,7 @@ namespace Dental.ViewModels
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
             Window.Width = 800;
-            Window.Height = 450;
+            Window.Height = 480;
         }
         private void VisibleItemGroup()
         {
@@ -275,11 +297,45 @@ namespace Dental.ViewModels
         private ObservableCollection<ClientsSubscribes> _Collection;
         private ClientsSubscribesWindow Window;
 
-        private ObservableCollection<ClientsSubscribes> GetCollection() => db.ClientsSubscribes
+        private void SetCollection() 
+        {
+            Collection = db.ClientsSubscribes
             .Include(f => f.StatusSubscribe)
             .Include(f => f.ClientGroup)
             .Include(f => f.SubscribeType)
             .OrderBy(d => d.DateSubscribe).ToObservableCollection();
+
+            foreach (var i in Collection)
+            {
+                if (!string.IsNullOrEmpty(i.JsonSettings))
+                {
+                    try
+                    {
+                        i.Settings = JsonSerializer.Deserialize<Services.Smsc.SmsSettings.Settings>(i.JsonSettings);
+                    } 
+                    catch
+                    {
+                        i.Settings = new Services.Smsc.SmsSettings.Settings();
+                    }
+                    
+                }
+                else i.Settings = new Services.Smsc.SmsSettings.Settings();
+                
+                if (!string.IsNullOrEmpty(i.JsonReport))
+                {
+                    try
+                    {
+                        i.Report = JsonSerializer.Deserialize<Services.Smsc.SmsSettings.Report>(i.JsonReport);
+                    }
+                    catch
+                    {
+                        i.Report = new Services.Smsc.SmsSettings.Report();
+                    }
+
+                }
+                else i.Report = new Services.Smsc.SmsSettings.Report();
+            }
+        } 
         public ICollection<ClientsGroup> ClientsGroups { get; }
         public ICollection<StatusSubscribe> StatusesSubscribe { get; }
         public ICollection<TypeSubscribe> TypesSubscribe { get; }

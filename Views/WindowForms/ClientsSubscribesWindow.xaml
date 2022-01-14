@@ -49,6 +49,7 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                     <RowDefinition/>
+                                    <RowDefinition/>
                                 </Grid.RowDefinitions>
 
                                 <TextBlock  Grid.Row="0" Grid.Column="0" Text="Название:"  Margin="0,0,8,3" />
@@ -97,15 +98,35 @@
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Margin="0,0,0,8"
                                                />
+
+
+                                <TextBlock  Grid.Row="6" Grid.Column="0" Text="val1:"  Margin="0,0,8,3" />
+                                <dxe:ComboBoxEdit Grid.Row="7" Grid.Column="0"  
+                                                  ItemsSource="{Binding TypesSubscribe}"
+                                                  DisplayMember="Name" 
+                                                  NullText="Выберите тип рассылки"
+                                                  SelectedItem="{Binding SelectedType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsTextEditable="False" Margin="0,0,8,8"
+                                               />
+
+                                <TextBlock  Grid.Row="6" Grid.Column="1" Text="val2:"  Margin="0,0,0,3" />
+                                <dxe:ComboBoxEdit Grid.Row="7" Grid.Column="1"                  
+                                                  ItemsSource="{Binding StatusesSubscribe}"
+                                                  DisplayMember="Name" 
+                                                  NullText="Выберите категорию"
+                                                  SelectedItem="{Binding SelectedStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              IsTextEditable="False" Margin="0,0,0,8"
+                                               />
+
                                 
-                                <TextBlock  Grid.Row="6" Grid.ColumnSpan="2" Text="Содержимое сообщения:"  Margin="0,0,0,3" />
-                                <dxe:MemoEdit Grid.Row="7" Grid.ColumnSpan="2" Height="50" ShowIcon="False" ShowText="True" ShowNullTextForEmptyValue="True"
+                                <TextBlock  Grid.Row="8" Grid.ColumnSpan="2" Text="Содержимое сообщения:"  Margin="0,0,0,3" />
+                                <dxe:MemoEdit Grid.Row="9" Grid.ColumnSpan="2" Height="50" ShowIcon="False" ShowText="True" ShowNullTextForEmptyValue="True"
                                               EditValue="{Binding Model.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"
                                               NullText="Содержимое сообщения, отправляемого пользователям" VerticalContentAlignment="Top"
                                               MemoTextWrapping="Wrap" TextWrapping="Wrap"
                                                />
-                                <TextBlock  Grid.Row="8" Grid.ColumnSpan="2" Text="Комментарий:"  Margin="0,0,0,3" />
-                                <dxe:MemoEdit Grid.Row="9" Grid.ColumnSpan="2"  
+                                <TextBlock  Grid.Row="10" Grid.ColumnSpan="2" Text="Комментарий:"  Margin="0,0,0,3" />
+                                <dxe:MemoEdit Grid.Row="11" Grid.ColumnSpan="2"  
                                               MemoTextWrapping="Wrap" TextWrapping="Wrap"
                                               EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"
                                                />
