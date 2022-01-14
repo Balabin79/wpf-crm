@@ -8,7 +8,7 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
-        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Title="Рассылки"
         HorizontalAlignment="Center"
@@ -101,20 +101,99 @@
 
 
                                 <TextBlock  Grid.Row="6" Grid.Column="0" Text="val1:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit Grid.Row="7" Grid.Column="0"  
-                                                  NullText="Выберите настройки"
-                                                   Margin="0,0,8,8"
-                                                   Text="{Binding Path=Model.Settings.TitleBtn, Mode=OneWay}"
-                                              
+
+
+                                <dx:SplitButton Grid.Row="7" Grid.Column="0"  
+                                                Padding="0"
+                                                  Margin="0,0,8,8"                                                   
+                                                  Name="ButtonEditSettings"
+                                                  HorizontalContentAlignment="Left"
+                                                  Content="{Binding Model.Settings.TitleBtn, Mode=OneWay}"
                                                >
-                                    <dxe:TextEdit.EditValue>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <TextBlock Text="fcdfdfd"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </dxe:TextEdit.EditValue>
-                                </dxe:TextEdit>
+                                    <dx:SplitButton.PopupContent >
+                                        <GroupBox  BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Регистрационные данные и банковские реквизиты" VerticalAlignment="Top">
+                                            <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 0 0 5" >
+                                                <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
+                                                    <dxlc:LayoutItem  Label="Имя отправителя:"
+                                                  LabelPosition="Top"  
+                                                  HorizontalAlignment="Stretch">
+                                                        <dxe:TextEdit 
+                                                            ToolTip="Имя отправителя, отображаемое в телефоне получателя. Разрешены английские буквы, цифры, пробел и некоторые символы. Длина – 11 символов или 15 цифр. Все имена регистрируются в личном кабинете сервиса"
+                                                            Text="{Binding Model.Settings.Sender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  />
+                                                    </dxlc:LayoutItem>
+
+                                                    <dxlc:LayoutItem  Label="Транслит:"                                                   
+                                                  LabelPosition="Top"  
+                                                  HorizontalAlignment="Stretch">
+                                                        <dxe:ComboBoxEdit  
+                                                            ToolTip="Сообщение необходимо перевести в транслит"
+                                                            SelectedIndex="{Binding Model.Settings.Translit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            NullText="Транслит" 
+                                                            IsTextEditable="False">
+                                                            <dxe:ComboBoxEdit.Items>
+                                                                <dxe:ComboBoxEditItem Content="Не переводить в транслит (по умолчанию)"  />
+                                                                <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;translit&quot;" />
+                                                                <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;mpaHc / Ium'" />
+                                                            </dxe:ComboBoxEdit.Items>
+                                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                                <dxe:RadioComboBoxStyleSettings />
+                                                            </dxe:ComboBoxEdit.StyleSettings>
+                                                        </dxe:ComboBoxEdit>
+                                                    </dxlc:LayoutItem>
+
+                                                    <dxlc:LayoutItem  Label="Сокращенные ссылки:"                                                   
+                                                  LabelPosition="Top"  
+                                                  HorizontalAlignment="Stretch">
+                                                        <dxe:ComboBoxEdit 
+                                                            ToolTip="Автоматически сокращать ссылки в сообщениях. Позволяет заменять ссылки в тексте сообщения на короткие для сокращения длины, а также для отслеживания количества переходов в личном кабинете сервиса "
+                                                            SelectedIndex="{Binding Model.Settings.Tinyurl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            NullText="Транслит" 
+                                                            IsTextEditable="False">
+                                                            <dxe:ComboBoxEdit.Items>
+                                                                <dxe:ComboBoxEditItem Content="Оставить ссылки в тексте сообщения без изменений (по умолчанию)"  />
+                                                                <dxe:ComboBoxEditItem Content="Сократить ссылки" />
+                                                            </dxe:ComboBoxEdit.Items>
+                                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                                <dxe:RadioComboBoxStyleSettings />
+                                                            </dxe:ComboBoxEdit.StyleSettings>
+                                                        </dxe:ComboBoxEdit>
+                                                    </dxlc:LayoutItem>
+                                                </dxlc:LayoutGroup>
+
+
+
+                                               <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
+                                                    <dxlc:LayoutItem  Label="Имя отправителя:"
+                                                  LabelPosition="Top"  
+                                                  HorizontalAlignment="Stretch">
+                                                        <dxe:TextEdit 
+                                                            ToolTip="Имя отправителя, отображаемое в телефоне получателя. Разрешены английские буквы, цифры, пробел и некоторые символы. Длина – 11 символов или 15 цифр. Все имена регистрируются в личном кабинете сервиса"
+                                                            Text="{Binding Model.Settings.Sender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  />
+                                                    </dxlc:LayoutItem>
+
+                                                    <dxlc:LayoutItem  Label="Транслит:"                                                   
+                                                  LabelPosition="Top"  
+                                                  HorizontalAlignment="Stretch">
+                                                        
+                                                    </dxlc:LayoutItem>
+                                                </dxlc:LayoutGroup>
+                                                
+                                            </dxlc:LayoutGroup>
+                                        </GroupBox>
+                                    </dx:SplitButton.PopupContent>
+                                    
+
+
+
+
+
+
+
+
+
+
+                                </dx:SplitButton>
+
 
                                 <TextBlock  Grid.Row="6" Grid.Column="1" Text="val2:"  Margin="0,0,0,3" />
                                 <dxe:ComboBoxEdit Grid.Row="7" Grid.Column="1"                  

@@ -45,10 +45,10 @@ namespace Dental.Models
 
 
         [NotMapped]
-        public Services.Smsc.SmsSettings.Settings Settings { get; set; }
+        public Services.Smsc.SmsSettings.Settings Settings { get; set; } = new Services.Smsc.SmsSettings.Settings();
 
         [NotMapped]
-        public Services.Smsc.SmsSettings.Report Report { get; set; }
+        public Services.Smsc.SmsSettings.Report Report { get; set; } = new Services.Smsc.SmsSettings.Report();
 
 
         public string Error { get => string.Empty; }

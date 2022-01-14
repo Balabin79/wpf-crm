@@ -279,6 +279,12 @@ namespace Dental.Services.Smsc.SmsSettings
         { 
             get => IsCustomEdited ? "Пользовательские" : "По умолчанию";
         }
+    }
 
+
+    public class WrapList
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } 
     }
 }

@@ -17,5 +17,6 @@ namespace Dental.Views.WindowForms
             }
             e.Handled = true;
         }
+
     }
 }
