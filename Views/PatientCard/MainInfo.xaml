@@ -155,7 +155,7 @@
 
                 <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
                     <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}"  
-                                  IsTextEditable="False"
+                                  IsTextEditable="False"                                    
                                   SelectedItem="{Binding Model.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ComboBoxEdit.StyleSettings>

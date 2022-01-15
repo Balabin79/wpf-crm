@@ -29,6 +29,7 @@ namespace Dental.ViewModels
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);          
+            SendCommand = new LambdaCommand(OnSendCommandExecuted, CanSendCommandExecute);          
 
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
 
@@ -55,6 +56,8 @@ namespace Dental.ViewModels
  
         public ICommand ExpandTreeCommand { get; }
 
+        public ICommand SendCommand { get; }
+
 
 
         private bool CanDeleteCommandExecute(object p) => true;
@@ -62,6 +65,7 @@ namespace Dental.ViewModels
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
         private bool CanExpandTreeCommandExecute(object p) => true;
+        private bool CanSendCommandExecute(object p) => true;
 
         private void OnExpandTreeCommandExecuted(object p)
         {
@@ -226,7 +230,53 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        }  
+        }
+
+
+        private void OnSendCommandExecuted(object p) 
+        {
+            try
+            {
+                var s = db.ClientsSubscribes?.FirstOrDefault(f => f.Id == ((int)p));
+                if (s != null)
+                {
+                    if (string.IsNullOrEmpty(s.Content))
+                    {
+                        var res = ThemedMessageBox.Show(title: "Внимание", text: "Поле содержания сообщения не заполнено! Отправить пустое сообщение?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                        if (res.ToString() == "No") return;
+                    }
+
+                    // если не заполнена категория клиентов
+                    if (s.ClientGroupId == null)
+                    {
+                        var res = ThemedMessageBox.Show(title: "Внимание", text: "Не заполнено поле \"Категория клиентов\"! Сообщение будет отправлено всем клиентам, чья карта не находится в статусе \"В архиве\"!. Отправить всем клиентам?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                        if (res.ToString() == "No") return;
+                    }
+                    // получаем коллекцию пользователей, относящаюся к целевой категории 
+                    var clients = (s.ClientGroupId == null) ? db.PatientInfo.ToArray() : db.PatientInfo.Where(f => f.ClientCategoryId == s.ClientGroupId).ToArray();
+
+                    //если список клиентов пуст
+                    if (clients.Count() == 0)
+                    {
+                        var mes = "Список клиентов, предназначенных для данной рассылки пуст!";
+                        if (s.ClientGroupId != null) mes = "Список клиентов входящих в указанную категорию пуст!";
+
+                        ThemedMessageBox.Show(title: "Внимание", text: mes,
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                        return;
+                    }
+
+
+                    var msg = new MessageParse(s.Content, clients).Run();
+                }
+            }
+            catch (Exception e)
+            { }
+        }
 
         /************* Специфика этой ViewModel ******************/
         private ObservableCollection<ClientsSubscribes> _Group;
@@ -346,7 +396,6 @@ namespace Dental.ViewModels
 
         private ClientsSubscribes GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
         
-
         private void Add()
         {
             db.Entry(Model).State = EntityState.Added;

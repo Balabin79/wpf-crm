@@ -313,7 +313,16 @@
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                                        <dxb:BarButtonItem Name="bDelete" 
+                                    <dxb:BarButtonItem 
+                                           DataContext="{StaticResource vm}"
+                                           Content="Разослать клиентам"                                                            
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding SendCommand}"
+                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+
+                                    <dxb:BarButtonItem Name="bDelete" 
                                            DataContext="{StaticResource vm}"        
                                            Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 

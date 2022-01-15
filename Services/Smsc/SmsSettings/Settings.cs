@@ -87,6 +87,8 @@ namespace Dental.Services.Smsc.SmsSettings
            1 – wap-push сообщение. В параметре mes необходимо передать ссылку и заголовок через перевод строки.
          */
         public int Push { get; set; } = 0;
+        
+        public string TitleWap { get; set; } = "";
 
 
         /*

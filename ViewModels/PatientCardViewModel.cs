@@ -93,8 +93,9 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    Model = db.PatientInfo.Where(f => f.Id == patientId)?
-                        .Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems))
+                    Model = db.PatientInfo.Where(f => f.Id == patientId)
+                        ?.Include(f => f.ClientCategory)
+                        ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems))
                         .FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     NumberPatientCard = Model?.Id.ToString();
@@ -886,7 +887,7 @@ namespace Dental.ViewModels
         public PatientInfo ModelBeforeChanges { get; set; }
 
         public ICollection<string> AdvertisingList { get; set; }
-        public IEnumerable<string> ClientsGroupList { get; set; }
+        public ICollection<ClientsGroup> ClientsGroupList { get; set; }
 
         public ICollection<string> GenderList
         {
@@ -918,7 +919,7 @@ namespace Dental.ViewModels
         private void LoadFieldsCollection()
         {
             AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
-            ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).Select(f => f.Name).ToList();
+            ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToList();
         }
         
         protected void Update()

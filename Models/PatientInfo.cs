@@ -133,8 +133,9 @@ namespace Dental.Models
         }
         private string _Advertising;
 
-        [Display(Name = "Категория клиентов")]
-        public string ClientCategory { get; set; }
+
+        public int? ClientCategoryId { get; set; }       
+        public ClientsGroup ClientCategory { get; set; }
 
         [Display(Name = "Получает рассылки")]
         public bool? IsSubscribe { get; set; } = true;
@@ -184,6 +185,7 @@ namespace Dental.Models
                 IsInArchive = this.IsInArchive,
                 Advertising = this.Advertising,
                 ClientCategory = this.ClientCategory,
+                ClientCategoryId = this.ClientCategoryId,
                 PassportIssuanceDate = this.PassportIssuanceDate,
                 PassportNo = this.PassportNo,
                 PassportSeries = this.PassportSeries,
@@ -217,6 +219,7 @@ namespace Dental.Models
             model.IsInArchive = this.IsInArchive;
             model.Advertising = this.Advertising;
             model.ClientCategory = this.ClientCategory;
+            model.ClientCategoryId = this.ClientCategoryId;
             model.PassportIssuanceDate = this.PassportIssuanceDate;
             model.PassportNo = this.PassportNo;
             model.PassportSeries = this.PassportSeries;
@@ -271,12 +274,17 @@ namespace Dental.Models
             StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
             StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
             StringParamsIsEquel(this.Advertising, other.Advertising, "Административная", "Рекламные источники");
-            StringParamsIsEquel(this.ClientCategory, other.ClientCategory, "Административная", "Категории клиентов");
+            StringParamsIsEquel(this.ClientCategory?.Guid, other.ClientCategory?.Guid, "Административная", "Категории клиентов");
             StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
             StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
             StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
             StringParamsIsEquel(this.PassportNo, other.PassportNo, "Административная", "Номер паспорта");
 
+            if (this.ClientCategoryId != other.ClientCategoryId)
+            {
+                NotIsChanges = false;
+                FieldsChanges["Административная"].Add("Категория клиентов");
+            }
             if (this.IsSubscribe != other.IsSubscribe)
             {
                 NotIsChanges = false;
