@@ -38,8 +38,6 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 SetCollection();
                 ClientsGroups = db.ClientsGroup?.ToArray();
-                StatusesSubscribe = db.StatusSubscribe?.ToArray();
-                TypesSubscribe = db.TypeSubscribe?.ToArray();
                 ProgramSettings = db.Settings?.FirstOrDefault();
             }
             catch (Exception e)
@@ -123,9 +121,7 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<ClientsSubscribes>().ToObservableCollection();
                         if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-                        SelectedClientGroup = ClientsGroups.Where(f => f.Id == Model?.ClientGroupId).FirstOrDefault();
-                        SelectedStatus = StatusesSubscribe.Where(f => f.Id == Model?.StatusSubscribeId).FirstOrDefault();
-                        SelectedType = TypesSubscribe.Where(f => f.Id == Model?.SubscribeTypeId).FirstOrDefault();
+                        SelectedClientGroup = ClientsGroups.Where(f => f.Id == Model?.ClientGroupId).FirstOrDefault();                
 
                         if (Model.IsDir == 0)
                         {
@@ -144,8 +140,6 @@ namespace Dental.ViewModels
                 Window.ShowDialog();
                 SelectedGroup = null;
                 SelectedClientGroup = null;
-                SelectedStatus = null;
-                SelectedType = null;
             }
             catch (Exception e)
             {
@@ -172,8 +166,6 @@ namespace Dental.ViewModels
                     return;
                 }
                 if (SelectedClientGroup != null) Model.ClientGroupId = ((ClientsGroup)SelectedClientGroup)?.Id;
-                if (SelectedStatus != null) Model.StatusSubscribeId = ((StatusSubscribe)SelectedStatus)?.Id;
-                if (SelectedType != null) Model.SubscribeTypeId = ((TypeSubscribe)SelectedType)?.Id;
                 if (Model.Settings != null)
                 {
                     try
@@ -202,8 +194,6 @@ namespace Dental.ViewModels
 
                 SelectedGroup = null;
                 SelectedClientGroup = null;
-                SelectedStatus = null;
-                SelectedType = null;
                 Window.Close();
             }
             catch (Exception e)
@@ -302,19 +292,6 @@ namespace Dental.ViewModels
             set => Set(ref selectedClientGroup, value);
         }
 
-        private object selectedStatus;
-        public object SelectedStatus
-        {
-            get => selectedStatus;
-            set => Set(ref selectedStatus, value);
-        }
-
-        private object selectedType;
-        public object SelectedType
-        {
-            get => selectedType;
-            set => Set(ref selectedType, value);
-        }
 
         /******************************************************/
         public ObservableCollection<ClientsSubscribes> Collection
@@ -350,9 +327,7 @@ namespace Dental.ViewModels
         private void SetCollection() 
         {
             Collection = db.ClientsSubscribes
-            .Include(f => f.StatusSubscribe)
             .Include(f => f.ClientGroup)
-            .Include(f => f.SubscribeType)
             .OrderBy(d => d.DateSubscribe).ToObservableCollection();
 
             foreach (var i in Collection)
@@ -387,8 +362,6 @@ namespace Dental.ViewModels
             }
         } 
         public ICollection<ClientsGroup> ClientsGroups { get; }
-        public ICollection<StatusSubscribe> StatusesSubscribe { get; }
-        public ICollection<TypeSubscribe> TypesSubscribe { get; }
         public Settings ProgramSettings { get;  }
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();

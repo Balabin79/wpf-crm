@@ -30,14 +30,12 @@ namespace Dental.Models
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
 
-        public int? SubscribeTypeId { get; set; }
-        public TypeSubscribe SubscribeType { get; set; }
+        public int? SubscribeTypeIdx { get; set; } = 0;
 
         public int? ClientGroupId { get; set; }
         public ClientsGroup ClientGroup { get; set; }
 
-        public int? StatusSubscribeId { get; set; }
-        public StatusSubscribe StatusSubscribe { get; set; }
+        public string Status { get; set; }
 
         public string JsonSettings { get; set; }
 
@@ -68,9 +66,9 @@ namespace Dental.Models
                     Guid = this.Guid,
                     ParentId = this.ParentId,
                     IsDir = this.IsDir,
-                    SubscribeTypeId = this.SubscribeTypeId,
+                    SubscribeTypeIdx = this.SubscribeTypeIdx,
                     ClientGroupId = this.ClientGroupId,
-                    StatusSubscribeId = this.StatusSubscribeId,
+                    Status = this.Status,
                 };
             } catch(Exception ex)
             {
@@ -90,9 +88,9 @@ namespace Dental.Models
             model.DateSubscribe = this.DateSubscribe;
             model.ParentId = this.ParentId;
             model.IsDir = this.IsDir;
-            model.SubscribeTypeId = this.SubscribeTypeId;
+            model.SubscribeTypeIdx = this.SubscribeTypeIdx;
             model.ClientGroupId = this.ClientGroupId;
-            model.StatusSubscribeId = this.StatusSubscribeId;
+            model.Status = this.Status;
             return model;
         }
 
@@ -127,11 +125,11 @@ namespace Dental.Models
             StringParamsIsEquel(this.Content, other.Content);
             StringParamsIsEquel(this.Comment, other.Comment);
             StringParamsIsEquel(this.DateSubscribe, other.DateSubscribe);
+            StringParamsIsEquel(this.Status, other.Status);
             if (this.IsDir != other.IsDir) return false;
             if (this.ParentId != other.ParentId) return false;
-            if (this.SubscribeTypeId != other.SubscribeTypeId) return false;
+            if (this.SubscribeTypeIdx != other.SubscribeTypeIdx) return false;
             if (this.ClientGroupId != other.ClientGroupId) return false;
-            if (this.StatusSubscribeId != other.StatusSubscribeId) return false;
                 return NotIsChanges;
         }
 
@@ -151,9 +149,9 @@ namespace Dental.Models
             OnPropertyChanged(nameof(IsDir));
             OnPropertyChanged(nameof(ParentId));
             OnPropertyChanged(nameof(DateSubscribe));
-            OnPropertyChanged(nameof(StatusSubscribe));
+            OnPropertyChanged(nameof(Status));
             OnPropertyChanged(nameof(ClientGroup));
-            OnPropertyChanged(nameof(SubscribeType));
+            OnPropertyChanged(nameof(SubscribeTypeIdx));
         }
     }
 }
