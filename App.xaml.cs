@@ -1,5 +1,9 @@
+using Dental.Services;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Core;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -10,10 +14,15 @@ namespace Dental
     /// </summary>
     public partial class App : Application
     {
-
         public static string ApplicationID
         {
             get { return "FunWithNotifications_19_1"; }
+        }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            //Current.Properties["Router"] = new Navigator();
+            //Current.Properties["Relay"] = new Relay();
         }
     }
 

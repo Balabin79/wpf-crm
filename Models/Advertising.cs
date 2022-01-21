@@ -25,62 +25,24 @@ namespace Dental.Models
 
         public object Clone()
         {
-            return new Advertising
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Guid = this.Guid,
-            };
+            return this.MemberwiseClone();
         }
-
-        public Advertising Copy(Advertising model)
-        {
-            model.Id = this.Id;
-            model.Name = this.Name;
-            model.Guid = this.Guid;
-            return model;
-        }
-
 
         public override bool Equals(object other)
-        {           
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as Advertising);
-        }
-        public bool Equals(Advertising other)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.Name, other.Name);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            return NotIsChanges;
+            if (other is Advertising clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (StringParamsIsEquel(this.Name, clone.Name) && StringParamsIsEquel(this.Guid, clone.Guid)) return true;
+            }
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
     }
 }

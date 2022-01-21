@@ -1,3 +1,4 @@
+using Dental.ViewModels;
 using DevExpress.Xpf.Editors.Flyout;
 using DevExpress.Xpf.Grid;
 using System.Windows;

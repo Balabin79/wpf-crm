@@ -14,6 +14,8 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string LoginSmsCenter { get; set; }
         public string PasswordSmsCenter { get; set; }
+        public string StartPage { get; set; }
+        public int? StartWithLastPage { get; set; } = 0;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -25,6 +27,8 @@ namespace Dental.Models
                 Id = this.Id,
                 LoginSmsCenter = this.LoginSmsCenter,
                 PasswordSmsCenter = this.PasswordSmsCenter,
+                StartPage = this.StartPage,
+                StartWithLastPage = this.StartWithLastPage,
                 Guid = this.Guid,
             };
         }
@@ -34,6 +38,8 @@ namespace Dental.Models
             model.Id = this.Id;
             model.LoginSmsCenter = this.LoginSmsCenter;
             model.PasswordSmsCenter = this.PasswordSmsCenter;
+            model.StartPage = this.StartPage;
+            model.StartWithLastPage = this.StartWithLastPage;
             model.Guid = this.Guid;
             return model;
         }
@@ -65,8 +71,11 @@ namespace Dental.Models
             if (this.GetType() != other.GetType())
                 return false;
 
+            if (this.StartWithLastPage != other.StartWithLastPage) return false;
+
             StringParamsIsEquel(this.LoginSmsCenter, other.LoginSmsCenter);
             StringParamsIsEquel(this.PasswordSmsCenter, other.PasswordSmsCenter);
+            StringParamsIsEquel(this.StartPage, other.StartPage);
             StringParamsIsEquel(this.Guid, other.Guid);
             return NotIsChanges;
         }
@@ -88,6 +97,7 @@ namespace Dental.Models
         {
             OnPropertyChanged(nameof(LoginSmsCenter));
             OnPropertyChanged(nameof(PasswordSmsCenter));
+            OnPropertyChanged(nameof(StartPage));
         }
     }
 }

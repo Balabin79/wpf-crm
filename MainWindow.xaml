@@ -14,20 +14,24 @@
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"      
     xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" 
-                 dx:ThemeManager.ThemeName="Office2019White">
+                 dx:ThemeManager.ThemeName="Office2019White"
+                 Closing="ThemedWindow_Closing"
+                 DataContext="{StaticResource Router}"
+                 >
 
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />
     </dx:ThemedWindow.Resources>
 
-    <Grid VerticalAlignment="Stretch" Margin="0,0, 0, 0" DataContext="{x:Static services:Navigation.Instance}">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="10" />
-    </Grid.RowDefinitions>
+    <Grid VerticalAlignment="Stretch" Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
 
-    <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
+        <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
+
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Рабочий стол" >
                     <dxr:RibbonPageGroup Caption="Клиенты">
@@ -60,21 +64,21 @@
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Shedule.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler"/>
-                        
+
                         <dxb:BarButtonItem Content="Рассылки" RibbonStyle="Default" 
                                            ToolTip="Рассылки"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes"/>
-                        
+
                         <dxb:BarButtonItem Content="Сводные данные" RibbonStyle="Default" 
                                            ToolTip="Сводные данные"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeSummary"/>
-                        
+
                         <dxb:BarButtonItem Content="Планы услуг и продажи" RibbonStyle="Default" 
                                            ToolTip="Планы услуг и продажи"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Finance.png"
@@ -117,7 +121,7 @@
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 
-                    <dxr:RibbonPage Caption="Администрирование">
+                <dxr:RibbonPage Caption="Администрирование">
                     <dxr:RibbonPageGroup Caption="Кадры" >
                         <dxb:BarButtonItem Content="Список сотрудников"
                                            RibbonStyle="Default" 
@@ -209,23 +213,16 @@
 
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
-
             </dxr:RibbonDefaultPageCategory>
-
-    </dxr:RibbonControl>
-
+        </dxr:RibbonControl>
 
 
-
-<Frame DataContext="{x:Static services:Navigation.Instance}" Source="{Binding CurrentPage}" Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" Content="{Binding CurrentPage}" Opacity="{Binding FrameOpacity}" />
-
-<!--<t:Ticket x:Name="Ticket" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                      DataContext="{Binding Source={StaticResource TicketViewModel}}"
-                      Width="Auto" Height="Auto" Visibility="{Binding OpenModalWindow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Grid.ColumnSpan="3"  
-                      Grid.RowSpan="3"/>-->
-
-
+        <Frame  
+           Name="FramePage" VerticalAlignment="Stretch" 
+           Grid.Row="1" Grid.Column="1" 
+           HorizontalAlignment="Stretch" 
+           NavigationUIVisibility="Hidden" 
+           Content="{Binding CurrentPage}" 
+           Opacity="{Binding FrameOpacity}" />
     </Grid>
-
 </dx:ThemedWindow>

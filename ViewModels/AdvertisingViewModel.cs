@@ -12,13 +12,15 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services.Smsc.SmsSettings;
+using Dental.Services;
+
 
 namespace Dental.ViewModels
 {
     class AdvertisingViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
+
         public AdvertisingViewModel()
         {
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -29,17 +31,10 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Collection = GetCollection();
+                
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
-
-                string[] arr = new string[] { "fdfdfd", "9873894523", "45156987456" };
-                //var sms = new Sms("alex", "657913", arr, "ку-ку");
-                //var sms = new Services.Smsc.Settings.Settings();
-
-            }
-            catch (SettingsException e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Navigator.HasUnsavedChanges = HasUnsavedChanges;
+                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch (Exception e)
             {
@@ -63,7 +58,11 @@ namespace Dental.ViewModels
                 if (p is Advertising model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    if (model.Id != 0) 
+                    {
+                        db.Entry(model).State = EntityState.Deleted;
+                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Advertising"]);
+                    } 
                     else db.Entry(model).State = EntityState.Detached;
                     int cnt = db.SaveChanges();
                     Collection = GetCollection();
@@ -71,6 +70,10 @@ namespace Dental.ViewModels
                     {
                         CollectionBeforeChanges.Clear();
                         Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+
+                        var notification = new Notification();
+                        notification.Content = "Успешно удалено из базы данных!";
+                        notification.run();
                     }                 
                 }
             }
@@ -86,8 +89,16 @@ namespace Dental.ViewModels
             {
                 foreach (var item in Collection)
                 {
-                    if (string.IsNullOrEmpty(item.Name)) continue;                   
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;        
+                    if (string.IsNullOrEmpty(item.Name)) continue;
+                    if (item.Id == 0) 
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Advertising"]);
+                    }
+                    if (db.Entry(item).State == EntityState.Modified)
+                    {
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Advertising"]);
+                    }                       
                 }
                 int cnt = db.SaveChanges();
                 Collection = GetCollection();
@@ -131,11 +142,10 @@ namespace Dental.ViewModels
 
         public bool UserSelectedBtnCancel()
         {
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Продолжить без сохранения?",
+               messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning) ;
 
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Если хотите сохранить эти данные, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой). Для продолжения без сохранения, нажмите \"Ок\"",
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning) ;
-
-            return response.ToString() == "Cancel";
+            return response.ToString() == "No";
         }
     }
 }

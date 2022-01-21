@@ -1,10 +1,11 @@
 using Dental.Models.Base;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Dental.ViewModels
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged
+    abstract public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,6 +33,6 @@ namespace Dental.ViewModels
         {
             if (!Disposing || _Disposed) return;
             _Disposed = true;
-        }
+        }          
     }
 }

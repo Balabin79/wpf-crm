@@ -2,14 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Dental" 
+             xmlns:serv="clr-namespace:Dental.Services" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
              xmlns:dxe="clr-namespace:DevExpress.Xpf.Editors.Flyout;assembly=DevExpress.Xpf.Core.v20.1"
-             xmlns:viewModels="clr-namespace:Dental.ViewModels" 
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
+             StartupUri="MainWindow.xaml"  
+             Startup="Application_Startup"
+             >
 
+    <Application.Resources>
+        <serv:Navigator x:Key="Router"/>
         <dxmvvm:OpenFileDialogService x:Key="OpenFileDialogService" />
 
         <dxmvvm:DispatcherService x:Key="BackgroundDispatcherService" DispatcherPriority="Background" />

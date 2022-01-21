@@ -14,195 +14,31 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Data.Entity;
 using Dental.Models;
+using System.Collections.ObjectModel;
 
 namespace Dental.Services
 {
-    sealed class Navigation : ViewModelBase
+    sealed public class Navigation : ViewModelBase
     {
-        private static readonly Navigation instance = new Navigation();
+        private static  Navigator instance;
 
-        static Navigation(){}
-        private Navigation() { FrameOpacity = 1; LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute); }
+        static Navigation() {}
+        private Navigation() { }
 
-        public static Navigation Instance
+        public static Navigator Instance
         {
-            get
-            {
-                return instance;
-            }
-        }
-
-        /// <summary>
-        /// Текущая страница
-        /// </summary>
-        public Page CurrentPage
-        {
-            get => currentPage;
-            set => Set(ref currentPage, value);
-        }
-
-        /// <summary>
-        /// Используется для плавного переключения страниц разделов
-        /// </summary>
-        public Double FrameOpacity
-        {
-            get => frameOpacity;
-            set => Set(ref frameOpacity, value);
-        }
-
-
-        public ICommand LeftMenuClick { get; }
-        private bool CanLeftMenuClickCommandExecute(object p) => true;
-        private void OnLeftMenuClickCommandExecuted(object p)
-        {
-            try
-            {
-                if (CurrentPage?.ToString() == "Dental.Views.Advertising")
+            get {
+                if (instance == null)
                 {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is AdvertisingViewModel vm)
-                    {
-                       if(vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
+                    instance = new Navigator();
+                    return instance;
                 }
-
-                if (CurrentPage?.ToString() == "Dental.Views.Groups")
-                {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is ClientGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.EmployeeGroups")
-                {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.ClientsRequests")
-                {
-                    if (((FrameworkElement)CurrentPage.Content).DataContext is EmployeeGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.Specialities")
-                {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is SpecialityViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.Organization")
-                {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is OrganizationViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.Employee")
-                {
-                    if (CurrentPage?.DataContext is EmployeeViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                    /*if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-
-                    }*/
-                }
-
-
-                //////////////////////////
-                if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
-                {
-                    var viewModel = CurrentPage.DataContext as PatientCardViewModel;
-                    if (viewModel == null) return;
-                    if (viewModel.HasUnsavedChanges())
-                    {
-                        bool response = viewModel.UserSelectedBtnCancel();
-                        if (response) return;
-
-                        if (viewModel.Model.Id != 0)
-                        {
-                            var model = Db.Instance.Context.PatientInfo.Find(viewModel.Model.Id);
-                            if (model == null) return;
-                            model = (PatientInfo)viewModel.ModelBeforeChanges.Copy(model);
-                            Db.Instance.Context.Entry(model).State = EntityState.Modified;
-                            Db.Instance.Context.SaveChanges();
-                        }
-                    }
-                }
-
-
-                Page page;
-                if (p is Array) 
-                {
-                    string pageName = (string)((object[])p)[0];
-                    int id = (int)((object[])p)[1];
-                    page = CreatePage(pageName, id);
-                } 
-                else page = CreatePage(p.ToString());
-                SlowOpacity(page);
-            }
-            catch (Exception e)
-            {
-                var msg = "Не найден раздел";
-                int x = 0;
+                    
+                return instance;   
             }
 
         }
 
-        private Page CreatePage(string pageName)
-        {
-            Type type = GetTypeByPageName(pageName);
-            return (Page)Activator.CreateInstance(type);
-        }
-
-        private Page CreatePage(string pageName, int param)
-        {
-            Type type = GetTypeByPageName(pageName);
-            return (Page)Activator.CreateInstance(type, param);
-        }
-
-
-        private Type GetTypeByPageName(string pageName)
-        {
-            return Type.GetType(pageName);
-        }
-
-
-        /// <summary>
-        /// Обеспечивает плавное переключение разделов
-        /// </summary>
-        /// <param name="page"></param>
-        private async void SlowOpacity(Page page)
-        {
-            await Task.Factory.StartNew(() => {
-                for (double i = 1.0; i > 0.0; i -= 0.1)
-                {
-                    FrameOpacity = i;
-                    Thread.Sleep(20);
-                }
-
-                CurrentPage = page;
-                for (double i = 0.0; i < 1.1; i += 0.1)
-                {
-                    FrameOpacity = i;
-                    Thread.Sleep(20);
-                }
-            });
-        }
-
-        private Page currentPage;
-        private Double frameOpacity;
 
     }
 }

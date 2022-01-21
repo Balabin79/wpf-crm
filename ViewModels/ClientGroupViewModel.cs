@@ -12,6 +12,7 @@ using System.Windows;
 using Dental.Infrastructures.Collection;
 using System.Collections.Generic;
 using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -31,6 +32,8 @@ namespace Dental.ViewModels
                 Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsGroup)f.Clone()));
                 PercentOrCost = db.Dictionary.Where(f => f.CategoryId == 2).ToList();
                 MoreOrLess = db.Dictionary.Where(f => f.CategoryId == 3).ToList();
+                Navigator.HasUnsavedChanges = HasUnsavedChanges;
+                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch (Exception e)
             {
