@@ -15,6 +15,7 @@
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
       xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+      Title="Специальности сотрудников"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:SpecialityViewModel x:Key="vm"/>

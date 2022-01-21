@@ -18,12 +18,6 @@ namespace Dental
         {
             get { return "FunWithNotifications_19_1"; }
         }
-
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            //Current.Properties["Router"] = new Navigator();
-            //Current.Properties["Relay"] = new Relay();
-        }
     }
 
     [Guid("E343F8F2-CA68-4BF4-BB54-EEA4B3AC4A31"), ComVisible(true)]

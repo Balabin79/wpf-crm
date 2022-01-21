@@ -3,21 +3,15 @@ using Dental.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Dental.Views.Pages.UserControls;
-using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Data.Entity;
-using Dental.Views;
 using Dental.Models;
 using System.Collections.ObjectModel;
-using System.Windows.Navigation;
-using Advertising = Dental.Views.Advertising;
+
 
 namespace Dental.Services
 {
@@ -38,6 +32,7 @@ namespace Dental.Services
             CurrentPage = GetStartPage();
             FrameOpacity = 1.1;
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
+            GoToHistoryItem = new LambdaCommand(OnGoToHistoryItemExecuted, CanGoToHistoryItemExecute);
         }
 
         public static Func<bool> HasUnsavedChanges { get; set; }
@@ -47,7 +42,7 @@ namespace Dental.Services
         private readonly string defaultPage = "Dental.Views.Specialities";
 
         // коллекция просмотренных страниц
-        public ICollection<Page> BrowsingHistory { get; set; } = new ObservableCollection<Page>();
+        public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();
 
         public Page CurrentPage
         {
@@ -62,7 +57,10 @@ namespace Dental.Services
         public int? StartWithLastPage { get; set; }
 
         public ICommand LeftMenuClick { get; }
+        public ICommand GoToHistoryItem { get; }
         private bool CanLeftMenuClickCommandExecute(object p) => true;
+        private bool CanGoToHistoryItemExecute(object p) => true;
+
         private void OnLeftMenuClickCommandExecuted(object p)
         {
             try
@@ -147,8 +145,13 @@ namespace Dental.Services
 
 
 
-
-                BrowsingHistory.Add(CurrentPage);
+                var links = new Links()
+                {
+                    Path = CurrentPage?.ToString(),
+                    Id = 0,
+                    Name = CurrentPage?.Title
+                };
+                BrowsingHistory.Add(links);
                 Page page;
                 if (p is Array)
                 {
@@ -164,6 +167,21 @@ namespace Dental.Services
                 var msg = "Не найден раздел";
             }
 
+        }
+
+        private void OnGoToHistoryItemExecuted(object p)
+        {
+            try
+            {
+                if (p is Links link)
+                {
+                    if (string.IsNullOrEmpty(link?.Path)) return;
+                    LeftMenuClick?.Execute(link.Path);
+                }
+            } catch(Exception e)
+            {
+
+            }
         }
 
         public void LastPageSaving()
@@ -233,9 +251,22 @@ namespace Dental.Services
             });
         }
 
+        public static Dictionary<string, string> SectionPage { get; } = new Dictionary<string, string>() {
+            { "Advertising", "Рекламные источники" },
+            { "Speciality", "Специальности сотрудников" },
+        };
+
         private Page currentPage;
         private Double frameOpacity;
 
+    }
+
+    public class Links
+    {
+        public string Path { get; set; }
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public string Time { get; set; } = DateTime.Now.ToShortTimeString();
     }
 
 

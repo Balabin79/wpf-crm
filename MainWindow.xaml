@@ -17,6 +17,7 @@
                  dx:ThemeManager.ThemeName="Office2019White"
                  Closing="ThemedWindow_Closing"
                  DataContext="{StaticResource Router}"
+                 Name="win"
                  >
 
     <dx:ThemedWindow.Resources>
@@ -30,8 +31,49 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <dxr:RibbonControl RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
+        <dxr:RibbonControl AllowCustomization="False" RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
+            <dxr:RibbonControl.ToolbarItems>
+                <dxb:BarButtonItem  Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"/>
+                <dxb:BarButtonItem   Content="Вперед" Glyph="{dx:DXImage SvgImages/Arrows/Next.svg}"/>
+                <dxb:BarItemLinkSeparator/>
+                
 
+
+
+                <dxb:BarSplitButtonItem
+                    x:Name="bar"
+                    Content="История" 
+                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_Audit_ChangeHistory.svg}"
+                    ActAsDropDown="True"
+                    >
+                        <dxb:BarSplitButtonItem.PopupControl>
+                        <dxb:PopupControlContainer>
+                            <dxe:ListBoxEdit ItemsSource="{Binding BrowsingHistory}" DisplayMember="Name">
+                                <dxe:ListBoxEdit.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0">
+                                            <dxe:HyperlinkEdit 
+                                                EditValue="{Binding Name}"
+                                                ToolTip="{Binding Name}"
+                                                Text="{Binding Name}"                                           
+                                                Command="{Binding Source={StaticResource Router}, Path=GoToHistoryItem}"
+                                                CommandParameter="{Binding}"
+                                             
+                                                   />
+                                            <dxe:TextEdit Text="{Binding Time}" ShowBorder="False" />
+                                        </StackPanel>
+
+                                    </DataTemplate>
+                                </dxe:ListBoxEdit.ItemTemplate>
+                            </dxe:ListBoxEdit>
+                        </dxb:PopupControlContainer>
+                    </dxb:BarSplitButtonItem.PopupControl>
+                
+                </dxb:BarSplitButtonItem>
+                <dxb:BarItemLinkSeparator/>
+                <dxb:BarButtonItem Content="Справка" Glyph="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"/>
+
+            </dxr:RibbonControl.ToolbarItems>
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Рабочий стол" >
                     <dxr:RibbonPageGroup Caption="Клиенты">
