@@ -18,7 +18,9 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-       d:DesignWidth="800">
+       d:DesignWidth="800"
+       Title="Сотрудники"
+       >
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -118,7 +120,7 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem Name="bCreate" Content="Новая анкета сотрудника" 
-                                           DataContext="{x:Static services:Navigation.Instance}" 
+                                           DataContext="{StaticResource Router}" 
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.Employee"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 

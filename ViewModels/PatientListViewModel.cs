@@ -46,10 +46,14 @@ namespace Dental.ViewModels
         private void OnOpenPatientCardCommandExecuted(object p)
         {
             if (p == null) return;
-            var nav = Navigation.Instance;
-            int.TryParse(p.ToString(), out int param);
-            if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.MainInfoPage");  
-            else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.PatientCard.MainInfoPage", param });
+            if (Application.Current.Resources["Router"] is Navigator nav)
+            {
+                int.TryParse(p.ToString(), out int param);
+                if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.MainInfoPage");
+                else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.PatientCard.MainInfoPage", param });
+            }
+
+
         }
 
         public ICommand ShowArchiveCommand { get; }

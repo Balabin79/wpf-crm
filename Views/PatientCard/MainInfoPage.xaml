@@ -20,7 +20,8 @@
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
-    dx:ThemeManager.ThemeName="Office2019White">
+    dx:ThemeManager.ThemeName="Office2019White"
+    Title="{Binding Model.Title}">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>

@@ -17,6 +17,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
+      Title="Классификатор"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>

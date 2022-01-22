@@ -28,6 +28,7 @@
     xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
     xmlns:col="clr-namespace:System.Collections;assembly=mscorlib" 
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+    Title="Расписание"
     >
     <Page.Resources>
         <ResourceDictionary>

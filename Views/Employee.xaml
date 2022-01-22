@@ -14,7 +14,8 @@
     mc:Ignorable="d"
     x:Name="layoutGroup1"
     dx:ThemeManager.ThemeName="Office2019White" 
-    d:DesignHeight="300" d:DesignWidth="300">
+    d:DesignHeight="300" d:DesignWidth="300"
+    Title="{Binding Title, Mode=TwoWay}">
     <Page.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Page.Resources>

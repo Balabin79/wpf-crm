@@ -33,25 +33,30 @@
 
         <dxr:RibbonControl AllowCustomization="False" RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
             <dxr:RibbonControl.ToolbarItems>
-                <dxb:BarButtonItem  Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"/>
-                <dxb:BarButtonItem   Content="Вперед" Glyph="{dx:DXImage SvgImages/Arrows/Next.svg}"/>
+                <dxb:BarButtonItem  
+                    Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"
+                    Command="{Binding GoToPreviousItem}"
+                    CommandParameter="{Binding}"
+                    IsEnabled="{Binding EnablePreviousBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <dxb:BarButtonItem   
+                    Content="Вперед" Glyph="{dx:DXImage SvgImages/Arrows/Next.svg}"
+                    Command="{Binding GoToNextItem}"
+                    IsEnabled="{Binding EnableNextBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <dxb:BarItemLinkSeparator/>
-                
-
-
-
                 <dxb:BarSplitButtonItem
                     x:Name="bar"
                     Content="История" 
                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Audit_ChangeHistory.svg}"
                     ActAsDropDown="True"
+                    IsEnabled="{Binding EnableHistoryBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     >
                         <dxb:BarSplitButtonItem.PopupControl>
                         <dxb:PopupControlContainer>
-                            <dxe:ListBoxEdit ItemsSource="{Binding BrowsingHistory}" DisplayMember="Name">
+                            <dxe:ListBoxEdit SelectedItem="{Binding CurrentLink, UpdateSourceTrigger=PropertyChanged}" 
+                                             ItemsSource="{Binding BrowsingHistory}" DisplayMember="Name">
                                 <dxe:ListBoxEdit.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="0">
+                                        <StackPanel Orientation="Horizontal" Margin="0" >
                                             <dxe:HyperlinkEdit 
                                                 EditValue="{Binding Name}"
                                                 ToolTip="{Binding Name}"
@@ -61,7 +66,8 @@
                                              
                                                    />
                                             <dxe:TextEdit Text="{Binding Time}" ShowBorder="False" />
-                                        </StackPanel>
+
+                                            </StackPanel>
 
                                     </DataTemplate>
                                 </dxe:ListBoxEdit.ItemTemplate>

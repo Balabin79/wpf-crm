@@ -14,7 +14,8 @@
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
       xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-      xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"  
+      xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
+      Title="Список обращений"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>

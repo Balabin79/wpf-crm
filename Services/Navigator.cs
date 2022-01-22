@@ -33,6 +33,12 @@ namespace Dental.Services
             FrameOpacity = 1.1;
             LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
             GoToHistoryItem = new LambdaCommand(OnGoToHistoryItemExecuted, CanGoToHistoryItemExecute);
+            GoToPreviousItem = new LambdaCommand(OnGoToPreviousItemExecuted, CanGoToPreviousItemExecute);
+            GoToNextItem = new LambdaCommand(OnGoToNextItemExecuted, CanGoToNextItemExecute);
+
+            EnableNextBtn = false;
+            EnablePreviousBtn = false;
+            EnableHistoryBtn = false;
         }
 
         public static Func<bool> HasUnsavedChanges { get; set; }
@@ -41,6 +47,8 @@ namespace Dental.Services
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
         private readonly string defaultPage = "Dental.Views.Specialities";
 
+
+        #region Управление историей
         // коллекция просмотренных страниц
         public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();
 
@@ -58,8 +66,13 @@ namespace Dental.Services
 
         public ICommand LeftMenuClick { get; }
         public ICommand GoToHistoryItem { get; }
+        public ICommand GoToPreviousItem { get; }
+        public ICommand GoToNextItem { get; }
+
         private bool CanLeftMenuClickCommandExecute(object p) => true;
         private bool CanGoToHistoryItemExecute(object p) => true;
+        private bool CanGoToPreviousItemExecute(object p) => true;
+        private bool CanGoToNextItemExecute(object p) => true;
 
         private void OnLeftMenuClickCommandExecuted(object p)
         {
@@ -71,104 +84,19 @@ namespace Dental.Services
                     HasUnsavedChanges = null; 
                     UserSelectedBtnCancel = null;
                 }
-
-
-
-                if (CurrentPage?.ToString() == "Dental.Views.Groups")
-                {
-                    if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is ClientGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.EmployeeGroups")
-                {
-                    if (((FrameworkElement)CurrentPage.Content).DataContext is EmployeeGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.ClientsRequests")
-                {
-                    if (((FrameworkElement)CurrentPage.Content).DataContext is EmployeeGroupViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                }
-
-
-                if (CurrentPage?.ToString() == "Dental.Views.Organization")
-                {
-                    if (((FrameworkElement)CurrentPage.Content).DataContext is OrganizationViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-
-                    }
-                }
-
-                if (CurrentPage?.ToString() == "Dental.Views.Employee")
-                {
-                    if (CurrentPage?.DataContext is EmployeeViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-                    }
-                    /*if (((System.Windows.FrameworkElement)CurrentPage.Content).DataContext is EmployeeViewModel vm)
-                    {
-                        if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel()) return;
-
-                    }*/
-                }
-
-
-                //////////////////////////
-                if (CurrentPage?.ToString() == "Dental.Views.PatientCard.MainInfoPage")
-                {
-                    var viewModel = CurrentPage.DataContext as PatientCardViewModel;
-                    if (viewModel == null) return;
-                    if (viewModel.HasUnsavedChanges())
-                    {
-                        bool response = viewModel.UserSelectedBtnCancel();
-                        if (response) return;
-
-                        if (viewModel.Model.Id != 0)
-                        {
-                            var model = Db.Instance.Context.PatientInfo.Find(viewModel.Model.Id);
-                            if (model == null) return;
-                            model = (PatientInfo)viewModel.ModelBeforeChanges.Copy(model);
-                            Db.Instance.Context.Entry(model).State = EntityState.Modified;
-                            Db.Instance.Context.SaveChanges();
-                        }
-                    }
-                }
-
-
-
-                var links = new Links()
-                {
-                    Path = CurrentPage?.ToString(),
-                    Id = 0,
-                    Name = CurrentPage?.Title
-                };
-                BrowsingHistory.Add(links);
-                Page page;
-                if (p is Array)
-                {
-                    string pageName = (string)((object[])p)[0];
-                    int id = (int)((object[])p)[1];
-                    page = CreatePage(pageName, id);
-                }
-                else page = CreatePage(p.ToString());
-                SlowOpacity(page);
+                GoToPage(p);
+                var link = new Links() { Path = CurrentPage?.ToString(), Id = 0, Name = CurrentPage?.Title };
+                SetHistory(link, true);
     }
             catch (Exception e)
             {
+                // загрузить по умолчанию
                 var msg = "Не найден раздел";
             }
 
         }
 
+        // переходим по ссылке в истории
         private void OnGoToHistoryItemExecuted(object p)
         {
             try
@@ -176,13 +104,118 @@ namespace Dental.Services
                 if (p is Links link)
                 {
                     if (string.IsNullOrEmpty(link?.Path)) return;
-                    LeftMenuClick?.Execute(link.Path);
+                    CurrentLink = link;
+                    GoToPage(link.Path);
+                    SetHistory(link, false);
                 }
             } catch(Exception e)
+            {
+                // переход на страницу по умолчанию
+            }
+        }
+
+        private void OnGoToPreviousItemExecuted(object p)
+        {
+            try
+            {
+                if (CurrentLink == null) return;
+                int idx = BrowsingHistory.IndexOf(CurrentLink);
+                if (idx == -1 || idx == 0 || BrowsingHistory.Count == 1) return;
+
+                var goToItem = BrowsingHistory[idx-1];
+                CurrentLink = goToItem;
+                GoToPage(goToItem.Path);
+                SetHistory(goToItem, false);
+
+            }
+            catch(Exception e)
             {
 
             }
         }
+
+        private void OnGoToNextItemExecuted(object p)
+        {
+            try
+            {
+                if (CurrentLink == null) return;
+                int idx = BrowsingHistory.IndexOf(CurrentLink);
+                if (idx == -1 || BrowsingHistory.Count == 1 || idx == BrowsingHistory.Count - 1) return;
+
+                var goToItem = BrowsingHistory[idx + 1];
+                CurrentLink = goToItem;
+                GoToPage(goToItem.Path);
+                SetHistory(goToItem, false);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public bool EnableNextBtn 
+        {
+            get => enableNextBtn;
+            set => Set(ref enableNextBtn, value); 
+        }
+        private bool enableNextBtn;
+
+        public bool EnablePreviousBtn 
+        {
+            get => enablePreviousBtn;
+            set => Set(ref enablePreviousBtn, value);
+        }
+        private bool enablePreviousBtn;
+
+        public bool EnableHistoryBtn 
+        {
+            get => enableHistoryBtn;
+            set => Set(ref enableHistoryBtn, value);
+        }
+        private bool enableHistoryBtn;
+
+        public Links CurrentLink 
+        {
+            get => currentLink;
+            set => Set(ref currentLink, value);
+        }
+        private Links currentLink;
+
+        private void SetHistory(Links link, bool isNew)
+        {           
+            EnableHistoryBtn = true;
+
+            if (isNew == true)
+            {
+                 // получаем последний эл-т в истории, если это та же самая страница, то просто меняем у нее дату
+                 if (BrowsingHistory.Count != 0 && string.Compare(CurrentPage?.ToString(), BrowsingHistory.Last().Path, StringComparison.CurrentCulture) == 0)
+                 {
+                     link.Time = DateTime.Now.ToShortTimeString();
+                     return;
+                 }
+                 else BrowsingHistory.Add(link);
+
+                EnableNextBtn = false;
+                if (BrowsingHistory.Count > 1) EnablePreviousBtn = true;
+                CurrentLink = BrowsingHistory.Last();
+            }
+            else
+            {
+                if (BrowsingHistory.Count > 1) // элементов в истории больше 1
+                {
+                    // если позиция больше 0, то отбражаем кнопку назад
+                    int idx = BrowsingHistory.IndexOf(link);
+
+                    // если позиция больше 0, то отображаем кнопку назад
+                    if (idx > 0) EnablePreviousBtn = true; else EnablePreviousBtn = false;
+
+                    // если позиция равна позиции последнего эл-та, от отключаем кнопку вперед, иначе включаем
+                    if (idx == (BrowsingHistory.Count - 1)) EnableNextBtn = false; else EnableNextBtn = true;
+                    CurrentLink = link;
+                }
+            }
+        }
+        #endregion
 
         public void LastPageSaving()
         {
@@ -209,6 +242,21 @@ namespace Dental.Services
             Type type = Type.GetType(pageName);
             return (param == -1) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
         }
+
+
+        private void GoToPage(object p)
+        {
+            Page page;
+            if (p is Array)
+            {
+                string pageName = (string)((object[])p)[0];
+                int id = (int)((object[])p)[1];
+                page = CreatePage(pageName, id);
+            }
+            else page = CreatePage(p.ToString());
+            SlowOpacity(page);
+        }
+
 
         private Page GetStartPage()
         {
@@ -267,6 +315,7 @@ namespace Dental.Services
         public string Name { get; set; }
         public int Id { get; set; }
         public string Time { get; set; } = DateTime.Now.ToShortTimeString();
+        public string HistoryGuid { get; set; } = KeyGenerator.GetUniqueKey();
     }
 
 

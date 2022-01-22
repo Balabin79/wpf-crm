@@ -11,7 +11,8 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+       Title="Клиенты">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -34,7 +35,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/people.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Список клиентов" FontSize="15" Padding="0 8 5 0"/>
+                    <TextBlock Text="Клиенты" FontSize="15" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -45,7 +46,7 @@
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
                         <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" 
-                                           DataContext="{x:Static services:Navigation.Instance}"
+                                           DataContext="{StaticResource Router}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
                                            GlyphSize="Custom"

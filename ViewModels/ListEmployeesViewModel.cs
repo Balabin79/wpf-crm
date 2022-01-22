@@ -79,10 +79,13 @@ namespace Dental.ViewModels
             try
             {
                 if (string.IsNullOrEmpty(p.ToString())) return;
-                var nav = Navigation.Instance;
+
                 int.TryParse(p.ToString(), out int param);
-                if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.Employee");
-                else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.Employee", param });
+                if (Application.Current.Resources["Router"] is Navigator nav)
+                {
+                    if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.Employee");
+                    else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.Employee", param });
+                }                 
             }
             catch (Exception e)
             {

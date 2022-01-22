@@ -11,7 +11,8 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors">
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+       Title="Планы услуг">
 
     <Page.Resources>
         <commands:PrintCommand x:Key="Print"/>

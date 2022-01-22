@@ -15,7 +15,8 @@
       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
       xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"    
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Категории сотрудников">
     <Page.Resources>
         <vm:EmployeeGroupViewModel x:Key="vm"/>
         <commands:PrintCommand x:Key="Print"/>
