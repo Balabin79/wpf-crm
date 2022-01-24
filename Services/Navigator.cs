@@ -41,38 +41,13 @@ namespace Dental.Services
             EnableHistoryBtn = false;
         }
 
-        public static Func<bool> HasUnsavedChanges { get; set; }
-        public static Func<bool> UserSelectedBtnCancel { get; set; }
-
-        // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
-        private readonly string defaultPage = "Dental.Views.Specialities";
-
-
         #region Управление историей
-        // коллекция просмотренных страниц
-        public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();
 
         public Page CurrentPage
         {
             get => currentPage;
             set => Set(ref currentPage, value);
         }
-        public Double FrameOpacity
-        {
-            get => frameOpacity;
-            set => Set(ref frameOpacity, value);
-        }
-        public int? StartWithLastPage { get; set; }
-
-        public ICommand LeftMenuClick { get; }
-        public ICommand GoToHistoryItem { get; }
-        public ICommand GoToPreviousItem { get; }
-        public ICommand GoToNextItem { get; }
-
-        private bool CanLeftMenuClickCommandExecute(object p) => true;
-        private bool CanGoToHistoryItemExecute(object p) => true;
-        private bool CanGoToPreviousItemExecute(object p) => true;
-        private bool CanGoToNextItemExecute(object p) => true;
 
         private void OnLeftMenuClickCommandExecuted(object p)
         {
@@ -87,13 +62,12 @@ namespace Dental.Services
                 GoToPage(p);
                 var link = new Links() { Path = CurrentPage?.ToString(), Id = 0, Name = CurrentPage?.Title };
                 SetHistory(link, true);
-    }
+            }
             catch (Exception e)
             {
                 // загрузить по умолчанию
                 var msg = "Не найден раздел";
             }
-
         }
 
         // переходим по ссылке в истории
@@ -105,7 +79,7 @@ namespace Dental.Services
                 {
                     if (string.IsNullOrEmpty(link?.Path)) return;
                     CurrentLink = link;
-                    GoToPage(link.Path);
+                    GoToPage(link);
                     SetHistory(link, false);
                 }
             } catch(Exception e)
@@ -113,6 +87,16 @@ namespace Dental.Services
                 // переход на страницу по умолчанию
             }
         }
+
+        private void GoToPage(object p)
+        {
+           
+            if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));           
+            else if (p is Links link) SlowOpacity(CreatePage(link.Path, link.Id));
+            else SlowOpacity(CreatePage(p.ToString()));
+        }
+
+
 
         private void OnGoToPreviousItemExecuted(object p)
         {
@@ -152,34 +136,6 @@ namespace Dental.Services
 
             }
         }
-
-        public bool EnableNextBtn 
-        {
-            get => enableNextBtn;
-            set => Set(ref enableNextBtn, value); 
-        }
-        private bool enableNextBtn;
-
-        public bool EnablePreviousBtn 
-        {
-            get => enablePreviousBtn;
-            set => Set(ref enablePreviousBtn, value);
-        }
-        private bool enablePreviousBtn;
-
-        public bool EnableHistoryBtn 
-        {
-            get => enableHistoryBtn;
-            set => Set(ref enableHistoryBtn, value);
-        }
-        private bool enableHistoryBtn;
-
-        public Links CurrentLink 
-        {
-            get => currentLink;
-            set => Set(ref currentLink, value);
-        }
-        private Links currentLink;
 
         private void SetHistory(Links link, bool isNew)
         {           
@@ -240,23 +196,8 @@ namespace Dental.Services
         private Page CreatePage(string pageName, int param = -1)
         {
             Type type = Type.GetType(pageName);
-            return (param == -1) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
+            return (param == -1 || param == 0) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
         }
-
-
-        private void GoToPage(object p)
-        {
-            Page page;
-            if (p is Array)
-            {
-                string pageName = (string)((object[])p)[0];
-                int id = (int)((object[])p)[1];
-                page = CreatePage(pageName, id);
-            }
-            else page = CreatePage(p.ToString());
-            SlowOpacity(page);
-        }
-
 
         private Page GetStartPage()
         {
@@ -275,7 +216,6 @@ namespace Dental.Services
                 }
             }
         }
-
 
         /// <summary>
         /// Обеспечивает плавное переключение разделов
@@ -299,14 +239,69 @@ namespace Dental.Services
             });
         }
 
-        public static Dictionary<string, string> SectionPage { get; } = new Dictionary<string, string>() {
-            { "Advertising", "Рекламные источники" },
-            { "Speciality", "Специальности сотрудников" },
-        };
+        #region Объявление команд
+        public ICommand LeftMenuClick { get; }
+        public ICommand GoToHistoryItem { get; }
+        public ICommand GoToPreviousItem { get; }
+        public ICommand GoToNextItem { get; }
+
+        private bool CanLeftMenuClickCommandExecute(object p) => true;
+        private bool CanGoToHistoryItemExecute(object p) => true;
+        private bool CanGoToPreviousItemExecute(object p) => true;
+        private bool CanGoToNextItemExecute(object p) => true;
+        #endregion
+
+        #region Свойства
+        // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
+        private readonly string defaultPage = "Dental.Views.Specialities";
+
+        // коллекция просмотренных страниц
+        public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();
+
+        public Double FrameOpacity
+        {
+            get => frameOpacity;
+            set => Set(ref frameOpacity, value);
+        }
+
+        public int? StartWithLastPage { get; set; }
+
+        public bool EnableNextBtn
+        {
+            get => enableNextBtn;
+            set => Set(ref enableNextBtn, value);
+        }
+        private bool enableNextBtn;
+
+        public bool EnablePreviousBtn
+        {
+            get => enablePreviousBtn;
+            set => Set(ref enablePreviousBtn, value);
+        }
+        private bool enablePreviousBtn;
+
+        public bool EnableHistoryBtn
+        {
+            get => enableHistoryBtn;
+            set => Set(ref enableHistoryBtn, value);
+        }
+        private bool enableHistoryBtn;
+
+        public Links CurrentLink
+        {
+            get => currentLink;
+            set => Set(ref currentLink, value);
+        }
+        private Links currentLink;
 
         private Page currentPage;
         private Double frameOpacity;
+        #endregion
 
+        #region Делегаты
+        public static Func<bool> HasUnsavedChanges { get; set; }
+        public static Func<bool> UserSelectedBtnCancel { get; set; }
+        #endregion
     }
 
     public class Links
