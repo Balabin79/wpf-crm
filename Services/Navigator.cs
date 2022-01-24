@@ -43,12 +43,6 @@ namespace Dental.Services
 
         #region Управление историей
 
-        public Page CurrentPage
-        {
-            get => currentPage;
-            set => Set(ref currentPage, value);
-        }
-
         private void OnLeftMenuClickCommandExecuted(object p)
         {
             try
@@ -153,7 +147,6 @@ namespace Dental.Services
 
                 EnableNextBtn = false;
                 if (BrowsingHistory.Count > 1) EnablePreviousBtn = true;
-                CurrentLink = BrowsingHistory.Last();
             }
             else
             {
@@ -217,10 +210,6 @@ namespace Dental.Services
             }
         }
 
-        /// <summary>
-        /// Обеспечивает плавное переключение разделов
-        /// </summary>
-        /// <param name="page"></param>
         private async void SlowOpacity(Page page)
         {
             await Task.Factory.StartNew(() => {
@@ -252,6 +241,13 @@ namespace Dental.Services
         #endregion
 
         #region Свойства
+        public Page CurrentPage
+        {
+            get => currentPage;
+            set => Set(ref currentPage, value);
+        }
+        private Page currentPage;
+
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
         private readonly string defaultPage = "Dental.Views.Specialities";
 
@@ -263,6 +259,7 @@ namespace Dental.Services
             get => frameOpacity;
             set => Set(ref frameOpacity, value);
         }
+        private Double frameOpacity;
 
         public int? StartWithLastPage { get; set; }
 
@@ -293,9 +290,6 @@ namespace Dental.Services
             set => Set(ref currentLink, value);
         }
         private Links currentLink;
-
-        private Page currentPage;
-        private Double frameOpacity;
         #endregion
 
         #region Делегаты
