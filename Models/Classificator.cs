@@ -1,10 +1,8 @@
 using Dental.Models.Base;
-using Dental.Interfaces;
 using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace Dental.Models
 {
