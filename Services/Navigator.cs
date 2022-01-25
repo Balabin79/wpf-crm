@@ -41,8 +41,41 @@ namespace Dental.Services
             EnableHistoryBtn = false;
         }
 
-        #region Управление историей
+        #region Общий ф-нал
+        private void GoToPage(object p)
+        {
 
+            if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
+            else if (p is Links link) SlowOpacity(CreatePage(link.Path, link.Id));
+            else SlowOpacity(CreatePage(p.ToString()));
+        }
+
+        private Page CreatePage(string pageName, int param = -1)
+        {
+            Type type = Type.GetType(pageName);
+            return (param == -1 || param == 0) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
+        }
+
+        private async void SlowOpacity(Page page)
+        {
+            await Task.Factory.StartNew(() => {
+                for (double i = 1.0; i > 0.0; i -= 0.1)
+                {
+                    FrameOpacity = i;
+                    Thread.Sleep(20);
+                }
+
+                CurrentPage = page;
+                for (double i = 0.0; i < 1.1; i += 0.1)
+                {
+                    FrameOpacity = i;
+                    Thread.Sleep(20);
+                }
+            });
+        }
+        #endregion
+
+        #region Управление историей
         private void OnLeftMenuClickCommandExecuted(object p)
         {
             try
@@ -81,15 +114,6 @@ namespace Dental.Services
                 // переход на страницу по умолчанию
             }
         }
-
-        private void GoToPage(object p)
-        {
-           
-            if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));           
-            else if (p is Links link) SlowOpacity(CreatePage(link.Path, link.Id));
-            else SlowOpacity(CreatePage(p.ToString()));
-        }
-
 
 
         private void OnGoToPreviousItemExecuted(object p)
@@ -186,11 +210,6 @@ namespace Dental.Services
             }
         }
 
-        private Page CreatePage(string pageName, int param = -1)
-        {
-            Type type = Type.GetType(pageName);
-            return (param == -1 || param == 0) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
-        }
 
         private Page GetStartPage()
         {
@@ -208,24 +227,6 @@ namespace Dental.Services
                     return CreatePage(defaultPage);
                 }
             }
-        }
-
-        private async void SlowOpacity(Page page)
-        {
-            await Task.Factory.StartNew(() => {
-                for (double i = 1.0; i > 0.0; i -= 0.1)
-                {
-                    FrameOpacity = i;
-                    Thread.Sleep(20);
-                }
-
-                CurrentPage = page;
-                for (double i = 0.0; i < 1.1; i += 0.1)
-                {
-                    FrameOpacity = i;
-                    Thread.Sleep(20);
-                }
-            });
         }
 
         #region Объявление команд
