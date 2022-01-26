@@ -1,4 +1,5 @@
-﻿using Dental.ViewModels;
+﻿using Dental.Models.Base;
+using Dental.ViewModels;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System;
 using System.Windows.Controls;
@@ -8,7 +9,7 @@ namespace Dental.Views
     /// <summary>
     /// Логика взаимодействия для Employee.xaml
     /// </summary>
-    public partial class Employee : Page 
+    public partial class Employee : Page, IUser
     {
         public Employee() : this(0){}
 
@@ -16,6 +17,9 @@ namespace Dental.Views
         {
             InitializeComponent();
             this.DataContext = new EmployeeViewModel(id);
+            UserId = id;
         }
+
+        public int UserId { get; set; }
     }
 }

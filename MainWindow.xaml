@@ -14,11 +14,10 @@
     mc:Ignorable="d" 
     d:DesignHeight="450" d:DesignWidth="800"      
     xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" 
-                 dx:ThemeManager.ThemeName="Office2019White"
-                 Closing="ThemedWindow_Closing"
-                 DataContext="{StaticResource Router}"
-                 Name="win"
-                 >
+    dx:ThemeManager.ThemeName="Office2019White"
+    Closing="ThemedWindow_Closing"
+    DataContext="{StaticResource Router}"
+    Name="win">
 
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />

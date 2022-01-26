@@ -11,7 +11,7 @@ using System.Windows;
 using System.Data.Entity;
 using Dental.Models;
 using System.Collections.ObjectModel;
-
+using Dental.Views;
 
 namespace Dental.Services
 {
@@ -42,11 +42,10 @@ namespace Dental.Services
         }
 
         #region Общий ф-нал
+        
         private void GoToPage(object p)
         {
-
             if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
-            else if (p is Links link) SlowOpacity(CreatePage(link.Path, link.Id));
             else SlowOpacity(CreatePage(p.ToString()));
         }
 
@@ -73,9 +72,43 @@ namespace Dental.Services
                 }
             });
         }
+
+        private void SetHistory(Links link, bool isNew)
+        {
+            EnableHistoryBtn = true;
+
+            if (isNew == true)
+            {
+                // получаем последний эл-т в истории, если это та же самая страница, то просто меняем у нее дату
+                if (BrowsingHistory.Count != 0 && string.Compare(CurrentPage?.ToString(), BrowsingHistory.Last().Path, StringComparison.CurrentCulture) == 0)
+                {
+                    link.Time = DateTime.Now.ToShortTimeString();
+                    return;
+                }
+                else BrowsingHistory.Add(link);
+
+                EnableNextBtn = false;
+                if (BrowsingHistory.Count > 1) EnablePreviousBtn = true;
+            }
+            else
+            {
+                if (BrowsingHistory.Count > 1) // элементов в истории больше 1
+                {
+                    // если позиция больше 0, то отбражаем кнопку назад
+                    int idx = BrowsingHistory.IndexOf(link);
+
+                    // если позиция больше 0, то отображаем кнопку назад
+                    if (idx > 0) EnablePreviousBtn = true; else EnablePreviousBtn = false;
+
+                    // если позиция равна позиции последнего эл-та, от отключаем кнопку вперед, иначе включаем
+                    if (idx == (BrowsingHistory.Count - 1)) EnableNextBtn = false; else EnableNextBtn = true;
+                    CurrentLink = link;
+                }
+            }
+        }
         #endregion
 
-        #region Управление историей
+        #region Команды
         private void OnLeftMenuClickCommandExecuted(object p)
         {
             try
@@ -86,8 +119,10 @@ namespace Dental.Services
                     HasUnsavedChanges = null; 
                     UserSelectedBtnCancel = null;
                 }
+                var link = new Links() { Path = CurrentPage?.ToString(), Name = CurrentPage?.Title };
+                if (CurrentPage is IUser user) link.Id = user.UserId;
+
                 GoToPage(p);
-                var link = new Links() { Path = CurrentPage?.ToString(), Id = 0, Name = CurrentPage?.Title };
                 SetHistory(link, true);
             }
             catch (Exception e)
@@ -106,7 +141,8 @@ namespace Dental.Services
                 {
                     if (string.IsNullOrEmpty(link?.Path)) return;
                     CurrentLink = link;
-                    GoToPage(link);
+                    object[] param = new object[] {link.Path, link.Id};
+                    GoToPage(param);
                     SetHistory(link, false);
                 }
             } catch(Exception e)
@@ -114,7 +150,6 @@ namespace Dental.Services
                 // переход на страницу по умолчанию
             }
         }
-
 
         private void OnGoToPreviousItemExecuted(object p)
         {
@@ -155,39 +190,6 @@ namespace Dental.Services
             }
         }
 
-        private void SetHistory(Links link, bool isNew)
-        {           
-            EnableHistoryBtn = true;
-
-            if (isNew == true)
-            {
-                 // получаем последний эл-т в истории, если это та же самая страница, то просто меняем у нее дату
-                 if (BrowsingHistory.Count != 0 && string.Compare(CurrentPage?.ToString(), BrowsingHistory.Last().Path, StringComparison.CurrentCulture) == 0)
-                 {
-                     link.Time = DateTime.Now.ToShortTimeString();
-                     return;
-                 }
-                 else BrowsingHistory.Add(link);
-
-                EnableNextBtn = false;
-                if (BrowsingHistory.Count > 1) EnablePreviousBtn = true;
-            }
-            else
-            {
-                if (BrowsingHistory.Count > 1) // элементов в истории больше 1
-                {
-                    // если позиция больше 0, то отбражаем кнопку назад
-                    int idx = BrowsingHistory.IndexOf(link);
-
-                    // если позиция больше 0, то отображаем кнопку назад
-                    if (idx > 0) EnablePreviousBtn = true; else EnablePreviousBtn = false;
-
-                    // если позиция равна позиции последнего эл-та, от отключаем кнопку вперед, иначе включаем
-                    if (idx == (BrowsingHistory.Count - 1)) EnableNextBtn = false; else EnableNextBtn = true;
-                    CurrentLink = link;
-                }
-            }
-        }
         #endregion
 
         public void LastPageSaving()
@@ -303,10 +305,9 @@ namespace Dental.Services
     {
         public string Path { get; set; }
         public string Name { get; set; }
-        public int Id { get; set; }
         public string Time { get; set; } = DateTime.Now.ToShortTimeString();
         public string HistoryGuid { get; set; } = KeyGenerator.GetUniqueKey();
+        public int Id { get; set; } = 0;
     }
-
 
 }
