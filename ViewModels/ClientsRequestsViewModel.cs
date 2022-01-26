@@ -12,6 +12,7 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -30,6 +31,9 @@ namespace Dental.ViewModels
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
                 Clients = db.PatientInfo.ToArray();
+
+                Navigator.HasUnsavedChanges = HasUnsavedChanges;
+                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch (Exception e)
             {

@@ -124,6 +124,9 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
+
+            Navigator.HasUnsavedChanges = HasUnsavedChanges;
+            Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
         }
 
 

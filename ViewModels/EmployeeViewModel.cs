@@ -86,6 +86,9 @@ namespace Dental.ViewModels
                 Model = new Employee();
                 (new ViewModelLog(e)).run();
             }
+           
+            Navigator.HasUnsavedChanges = HasUnsavedChanges;
+            Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
         }
 
         #region Блокировка полей
