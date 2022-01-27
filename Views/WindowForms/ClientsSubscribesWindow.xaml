@@ -12,6 +12,7 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Title="Рассылки"
+        MaxHeight="930"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -21,237 +22,449 @@
     <Window.Icon>
         <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" />
     </Window.Icon>
-    <Grid>
-        <Grid Visibility="{Binding IsVisibleItemForm}">
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
-                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto"  >
+        <Grid >
+            <Grid Visibility="{Binding IsVisibleItemForm}">
+                <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
 
-                                <dxlc:LayoutItem Grid.Row="0" Grid.Column="0"  Label="Название рассылки:" Margin="0 0 4 4" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Grid.Row="0" Grid.Column="1"  Label="Родительская группа:" Margin="4 0 0 4" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
-                                         DisplayMember="Name" NullText="Выберите родительскую директорию"
-                                         SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                         IsTextEditable="False"/>
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Grid.Row="1" Grid.Column="0"  Label="Тип рассылки:" Margin="0 0 4 4" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:ComboBoxEdit NullText="Выберите тип рассылки"
-                                              SelectedIndex="{Binding Model.SubscribeTypeIdx, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" 
-                                               >
-                                        <dxe:ComboBoxEdit.Items>
-                                            <dxe:ComboBoxEditItem Content="SMS (по умолчанию)"/>
-                                            <dxe:ComboBoxEditItem Content="SMS - ping">
-                                                <dxe:ComboBoxEditItem.ToolTip>
-                                                    <TextBlock
-                                                    Text="Ping-SMS — это специальным образом сформированное бинарное SMS-сообщение, не отображаемое в телефоне получателя и предназначенное для проверки номера абонента на доступность в реальном времени. Тарифицируются данные SMS как обычные SMS-сообщения."
+                        <StackPanel Grid.Row="1">
+                            <GroupBox >
+                                <GroupBox.Header>
+                                    <TextBlock FontWeight="DemiBold" Text="Общие характеристики"/>
+                                </GroupBox.Header>
+                                <dxlc:LayoutGroup Orientation="Vertical" >
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Название рассылки:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem  Label="Родительская группа:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit 
+                                        ItemsSource="{Binding Group}"
+                                        DisplayMember="Name" NullText="Выберите родительскую директорию"
+                                        SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        IsTextEditable="False"/>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Тип рассылки:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit  
+                                        SelectedItem="{Binding SelectedTypeSubscribe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        ItemsSource="{Binding Path=TypeSubscribeParams}"
+                                        NullText="Выберите тип рассылки" 
+                                        DisplayMember="Name"
+                                        ValueMember="Param"
+                                          IsTextEditable="False">
+                                                <dxe:ComboBoxEdit.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock 
+                                                    Text="{Binding Name}" 
+                                                    TextWrapping="Wrap">
+                                                            <TextBlock.ToolTip>
+                                                                <TextBlock 
+                                                    Text="{Binding ToolTip}" 
                                                     TextWrapping="Wrap"/>
-                                                </dxe:ComboBoxEditItem.ToolTip>
-                                            </dxe:ComboBoxEditItem>
-                                            <dxe:ComboBoxEditItem Content="Email"  />
-                                            <dxe:ComboBoxEditItem Content="MMC"  />
-                                            <dxe:ComboBoxEditItem Content="Wap-push сообщение">
-                                                <dxe:ComboBoxEditItem.ToolTip>
-                                                    <TextBlock Text="Wap-push сообщения, с помощью которого можно отправить интернет-ссылку на телефон." 
-                                                    TextWrapping="Wrap"
-                                                    />
-                                                </dxe:ComboBoxEditItem.ToolTip>
-                                            </dxe:ComboBoxEditItem>
-                                            <dxe:ComboBoxEditItem Content="Flash сообщение">
-                                                <dxe:ComboBoxEditItem.ToolTip>
-                                                    <TextBlock Text="Flash SMS - это СМС-сообщение, которое отображается на экране мобильного телефона и обычно не сохраняется в памяти аппарата или SIM-карте." 
-                                                    TextWrapping="Wrap"
-                                                    />
-                                                </dxe:ComboBoxEditItem.ToolTip>
-                                            </dxe:ComboBoxEditItem>
-                                            <dxe:ComboBoxEditItem Content="HLR">
-                                                <dxe:ComboBoxEditItem.ToolTip>
-                                                    <TextBlock Text="HLR (Home Location Register) — это централизованная база данных, которая содержит подробную информацию о каждом абоненте данной сети GSM-оператора. С помощью HLR-запросов можно проверять статусы мобильных номеров и осуществлять чистку баз данных от неактуальных номеров. Сервис проверки номеров сохраняет конфиденциальность запроса и не беспокоит абонента." 
-                                                    TextWrapping="Wrap"
-                                                    />
-                                                </dxe:ComboBoxEditItem.ToolTip>
-                                            </dxe:ComboBoxEditItem>
-                                            <dxe:ComboBoxEditItem Content="Голосовые сообщения"  />
-                                            <dxe:ComboBoxEditItem Content="Viber"  />
-                                            <dxe:ComboBoxEditItem Content="Соц.сети(&quot;Одноклассники&quot;, &quot;ВКонтакте&quot;)"  />
-                                        </dxe:ComboBoxEdit.Items>
-                                        <dxe:ComboBoxEdit.StyleSettings>
-                                            <dxe:RadioComboBoxStyleSettings />
-                                        </dxe:ComboBoxEdit.StyleSettings>
-                                    </dxe:ComboBoxEdit>
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Grid.Row="1" Grid.Column="1"  Label="Категория клиентов:" Margin="4 0 0 4" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroups}"
-                                                  DisplayMember="Name" 
-                                                  NullText="Выберите категорию"
-                                                  SelectedItem="{Binding SelectedClientGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" 
-                                               />
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Grid.Row="2" Grid.Column="0"  Margin="0 0 4 4" Label="Дата/Время отправки:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:DateEdit 
+                                                            </TextBlock.ToolTip>
+                                                </TextBlock>
+                                                    </DataTemplate>
+                                                </dxe:ComboBoxEdit.ItemTemplate>
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Категория клиентов:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit 
+                                        ItemsSource="{Binding ClientsGroups}"
+                                        DisplayMember="Name" 
+                                        NullText="Выберите категорию"
+                                        SelectedItem="{Binding SelectedClientGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        IsTextEditable="False" />
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Дата/Время отправки:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:DateEdit 
                                         EditValue="{Binding Model.Settings.Time, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
                                         x:Name="DateEditWithNavigatorAndTimePicker" Mask="G" MaskUseAsDisplayFormat="True">
-                                        <dxe:DateEdit.ToolTip>
-                                            <TextBlock Text="Время отправки SMS-сообщения абоненту. Если указано уже прошедшее время, то сообщение будет отправлено немедленно"
+                                                <dxe:DateEdit.ToolTip>
+                                                    <TextBlock Text="Время отправки SMS-сообщения абоненту. Если указано уже прошедшее время, то сообщение будет отправлено немедленно"
                                                        TextWrapping="Wrap"/>
-                                        </dxe:DateEdit.ToolTip>
-                                        <dxe:DateEdit.StyleSettings>
-                                            <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
-                                        </dxe:DateEdit.StyleSettings>
-                                    </dxe:DateEdit>
-                                </dxlc:LayoutItem>
-
-
-                                <dxlc:LayoutItem Grid.Row="2" Grid.Column="1"  Margin="4 0 0 4" Label="Имя отправителя:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit                                        
+                                                </dxe:DateEdit.ToolTip>
+                                                <dxe:DateEdit.StyleSettings>
+                                                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                                                </dxe:DateEdit.StyleSettings>
+                                            </dxe:DateEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Имя отправителя:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit                                        
                                         Text="{Binding Model.Settings.Sender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  >
-                                        <dxe:TextEdit.ToolTip>
-                                            <TextBlock Text="Имя отправителя, отображаемое в телефоне получателя. Разрешены английские буквы, цифры, пробел и некоторые символы. Длина – 11 символов или 15 цифр. Все имена регистрируются в личном кабинете сервиса" 
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock Text="Имя отправителя, отображаемое в телефоне получателя. Разрешены английские буквы, цифры, пробел и некоторые символы. Длина – 11 символов или 15 цифр. Все имена регистрируются в личном кабинете сервиса" 
                                                        TextWrapping="Wrap"/>
-                                        </dxe:TextEdit.ToolTip> 
-                                    </dxe:TextEdit>
-                                </dxlc:LayoutItem>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Содержимое сообщения:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:MemoEdit Height="50" ShowIcon="False" ShowText="True" ShowNullTextForEmptyValue="True"
+                                         EditValue="{Binding Model.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         NullText="Содержимое сообщения, отправляемого пользователям" VerticalContentAlignment="Top"
+                                         MemoTextWrapping="Wrap" TextWrapping="Wrap"/>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Комментарий к сообщению (для себя):" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:MemoEdit  MemoTextWrapping="Wrap" TextWrapping="Wrap" EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Часовой пояс:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TrackBarEdit 
+                                            Value="{Binding Model.Settings.Tz, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="23"
+                                            Minimum="-23"
+                                        >
+                                                <dxe:TrackBarEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Часовой пояс, в котором задается параметр &quot;Дата/Время отправки&quot;. Указывается относительно московского времени. Параметр &quot;Часовой пояс&quot; может быть как положительным, так и отрицательным. Если &quot;Часовой пояс&quot; равен 0, то будет использован московский часовой пояс, если же параметр &quot;Часовой пояс&quot; не задан, то часовой пояс будет взят из настроек Клиента в личном кабинете сервиса."/>
+                                                </dxe:TrackBarEdit.ToolTip>
+                                            </dxe:TrackBarEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutGroup Orientation="Horizontal">
+                                            <dxlc:LayoutItem Label="Период:"  LabelPosition="Top" HorizontalAlignment="Stretch">
+                                                <dxe:TextEdit
+                                        EditValue="{Binding Model.Settings.Period, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        Text="{Binding Model.Settings.Period, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        EditValueChanged="TextEdit_EditValueChanged"
+                                        MaskType="Numeric"
+                                        Mask="f"
+                                        >
+                                                    <dxe:TextEdit.ToolTip>
+                                                        <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Промежуток времени, в течение которого необходимо отправить рассылку. Представляет собой число  диапазоне от 0.1 до 720 часов. Применяется совместно с параметром  &quot;Интервал &quot;. Данный параметр позволяет растянуть рассылку во времени для постепенного получения SMS-сообщений абонентами."/>
+                                                    </dxe:TextEdit.ToolTip>
+                                                </dxe:TextEdit>
+                                            </dxlc:LayoutItem>
 
-                                <dxlc:LayoutItem Grid.Row="3" Grid.Column="0"  Label="Имя отправителя:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:ComboBoxEdit  
+                                            <dxlc:LayoutItem   Label="Интервал (частота):" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                                <dxe:TextEdit
+                                        EditValue="{Binding Model.Settings.Freq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        Text="{Binding Model.Settings.Freq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        MaskType="Numeric"
+                                        Mask="d"
+                                        EditValueChanged="TextEdit_EditValueChanged"
+                                        >
+                                                    <dxe:TextEdit.ToolTip>
+                                                        <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Интервал или частота, с которой нужно отправлять SMS-рассылку на очередную группу номеров. Количество номеров в группе рассчитывается автоматически на основе параметров &quot;Период&quot; и &quot;Интервал&quot;. Задается в промежутке от 1 до 1440 минут. Без параметра &quot;Период&quot; параметр &quot;Интервал&quot; игнорируется."/>
+                                                    </dxe:TextEdit.ToolTip>
+                                                </dxe:TextEdit>
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutGroup Orientation="Horizontal">
+                                            <dxlc:LayoutItem Label="Стоимость:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                                <dxe:ComboBoxEdit 
+                                         ToolTip="Необходимость получения стоимости рассылки"
+                                          SelectedIndex="{Binding Model.Settings.Cost, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          IsTextEditable="False">
+                                                    <dxe:ComboBoxEdit.Items>
+                                                        <dxe:ComboBoxEditItem Content="Обычная отправка (по умолчанию)"  />
+                                                        <dxe:ComboBoxEditItem Content="Получить стоимость рассылки без реальной отправки" />
+                                                        <dxe:ComboBoxEditItem Content="Обычная отправка, но добавить в ответ стоимость выполненной рассылки" />
+                                                        <dxe:ComboBoxEditItem Content="Обычная отправка, но добавить в ответ стоимость и новый баланс Клиента" />
+                                                    </dxe:ComboBoxEdit.Items>
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings />
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Ошибочные номера:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                                <dxe:ComboBoxEdit 
+                                         ToolTip="Признак необходимости добавления в ответ сервера списка ошибочных номеров"
+                                          SelectedIndex="{Binding Model.Settings.Err, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"                   
+                                          IsTextEditable="False">
+                                                    <dxe:ComboBoxEdit.Items>
+                                                        <dxe:ComboBoxEditItem Content="Не добавлять список (обычный ответ сервера) (по умолчанию)"  />
+                                                        <dxe:ComboBoxEditItem Content="В ответ добавляется список ошибочных номеров телефонов с соответствующими статусами" />
+                                                    </dxe:ComboBoxEdit.Items>
+                                                    <dxe:ComboBoxEdit.StyleSettings>
+                                                        <dxe:RadioComboBoxStyleSettings />
+                                                    </dxe:ComboBoxEdit.StyleSettings>
+                                                </dxe:ComboBoxEdit>
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutGroup>
+
+                                </dxlc:LayoutGroup>
+                            </GroupBox>
+                            <GroupBox>
+                                <GroupBox.Header>
+                                    <TextBlock FontWeight="DemiBold" Text="Текстовые сообщения"/>
+                                </GroupBox.Header>
+                                <dxlc:LayoutGroup Orientation="Vertical" >
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Транслит:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit 
                                          ToolTip="Сообщение необходимо перевести в транслит"
                                           SelectedIndex="{Binding Model.Settings.Translit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                           NullText="Транслит" 
                                           IsTextEditable="False">
-                                        <dxe:ComboBoxEdit.Items>
-                                            <dxe:ComboBoxEditItem Content="Не переводить в транслит (по умолчанию)"  />
-                                            <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;translit&quot;" />
-                                            <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;mpaHc / Ium'" />
-                                        </dxe:ComboBoxEdit.Items>
-                                        <dxe:ComboBoxEdit.StyleSettings>
-                                            <dxe:RadioComboBoxStyleSettings />
-                                        </dxe:ComboBoxEdit.StyleSettings>
-                                    </dxe:ComboBoxEdit>
-                                </dxlc:LayoutItem>
+                                                <dxe:ComboBoxEdit.Items>
+                                                    <dxe:ComboBoxEditItem Content="Не переводить в транслит (по умолчанию)"  />
+                                                    <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;translit&quot;" />
+                                                    <dxe:ComboBoxEditItem Content="Перевести в транслит в виде &quot;mpaHc / Ium'" />
+                                                </dxe:ComboBoxEdit.Items>
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Короткие ссылки:"  LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit  
+                                          SelectedIndex="{Binding Model.Settings.Translit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          NullText="Транслит" 
+                                          IsTextEditable="False" >
+                                                <dxe:ComboBoxEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Автоматически сокращать ссылки в сообщениях. Позволяет заменять ссылки в тексте сообщения на короткие для сокращения длины, а также для отслеживания количества переходов в личном кабинете сервиса" />
+                                                </dxe:ComboBoxEdit.ToolTip>
+                                                <dxe:ComboBoxEdit.Items>
+                                                    <dxe:ComboBoxEditItem Content="Оставить ссылки в тексте сообщения без изменений (по умолчанию)"  />
+                                                    <dxe:ComboBoxEditItem Content="Сократить ссылки" />
+                                                </dxe:ComboBoxEdit.Items>
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem   Label="Максимальное количество SMS:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit
+                                        EditValue="{Binding Model.Settings.Maxsms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        Text="{Binding Model.Settings.Maxsms, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        MaskType="Numeric"
+                                        Mask="d"
+                                        EditValueChanged="TextEdit_EditValueChanged"
+                                        >
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Максимальное количество SMS, на которые может разбиться длинное сообщение. Слишком длинные сообщения будут обрезаться так, чтобы не переполнить количество SMS, требуемых для их передачи. Этим параметром вы можете ограничить максимальную стоимость сообщений, так как за каждое SMS снимается отдельная плата."/>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Срок &quot;жизни&quot; SMS-сообщения:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TrackBarEdit 
+                                            Value="{Binding Model.Settings.Valid, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="24"
+                                            Minimum="1"
+                                        >
+                                                <dxe:TrackBarEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Срок &quot;жизни&quot; SMS-сообщения. Определяет время, в течение которого оператор будет пытаться доставить сообщение абоненту. Диапазон от 1 до 24 часов."/>
+                                                </dxe:TrackBarEdit.ToolTip>
+                                            </dxe:TrackBarEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                </dxlc:LayoutGroup>
+                            </GroupBox>
+                            <GroupBox>
+                                <GroupBox.Header>
+                                    <TextBlock FontWeight="DemiBold" Text="Голосовые сообщения"/>
+                                </GroupBox.Header>
+                                <dxlc:LayoutGroup Orientation="Vertical" >
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Голос:"  LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:ComboBoxEdit  
+                                        SelectedItem="{Binding SelectedVoice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        ItemsSource="{Binding Path=VoiceParams}"
+                                        NullText="Голос" 
+                                        DisplayMember="Name"
+                                        ValueMember="Param"
+                                         IsTextEditable="False">
+                                                <dxe:ComboBoxEdit.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock 
+                                                    Text="{Binding Name}" 
+                                                    TextWrapping="Wrap">
+                                                            <TextBlock.ToolTip>
+                                                                <TextBlock 
+                                                    Text="{Binding ToolTip}" 
+                                                    TextWrapping="Wrap"/>
+                                                            </TextBlock.ToolTip>
+                                                </TextBlock>
+                                                    </DataTemplate>
+                                                </dxe:ComboBoxEdit.ItemTemplate>
 
-                                <dxlc:LayoutItem Grid.Row="3" Grid.Column="1"  Label="Имя отправителя:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                                <dxe:ComboBoxEdit.StyleSettings>
+                                                    <dxe:RadioComboBoxStyleSettings />
+                                                </dxe:ComboBoxEdit.StyleSettings>
+                                            </dxe:ComboBoxEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem   Label="Интервал повтора:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit
+                                        EditValue="{Binding Model.Settings.Param_i, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        Text="{Binding Model.Settings.Param_i, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        MaskType="Numeric"
+                                        Mask="d"
+                                        EditValueChanged="TextEdit_EditValueChanged"
+                                        >
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="интервал повтора, то есть промежуток времени, по истечении которого произойдет повторный звонок (в секундах). Рабочий диапазон параметра от 10 до 3600 (в случае, если значение меньше 10, то оно будет приведено к 10)."/>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Время ожидания:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TrackBarEdit 
+                                            Value="{Binding Model.Settings.Param_w, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="35"
+                                            Minimum="10">
+                                                <dxe:TrackBarEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Время ожидания поднятия трубки абонентом после начала звонка в секундах. Если в течение указанного времени абонент не поднимет трубку, то звонок уйдет на повтор с ошибкой &quot;абонент занят&quot;. Рабочий диапазон значений параметра от 10 до 35."/>
+                                                </dxe:TrackBarEdit.ToolTip>
+                                            </dxe:TrackBarEdit>
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Количество попыток дозвона:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TrackBarEdit 
+                                            Value="{Binding Model.Settings.Param_n, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="9"
+                                            Minimum="1">
+                                                <dxe:TrackBarEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Общее количество попыток дозвона"/>
+                                                </dxe:TrackBarEdit.ToolTip>
+                                            </dxe:TrackBarEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                </dxlc:LayoutGroup>
+                            </GroupBox>
+                            <GroupBox >
+                                <GroupBox.Header>
+                                    <TextBlock FontWeight="DemiBold" Text="Дополнительно"/>
+                                </GroupBox.Header>
+                                <dxlc:LayoutGroup Orientation="Vertical">
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Тема MMS или e-mail сообщения:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit 
+                                        Text="{Binding Model.Subj, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }">
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock 
+                                                TextWrapping="Wrap"
+                                                Text="Тема MMS или e-mail сообщения. При отправке e-mail указание темы, текста и адреса отправителя обязательно. Для MMS обязательным является указание темы или текста. Если не указать тему MMS, то в ее качестве будет использовано имя отправителя, переданное в запросе или используемое по умолчанию."/>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
 
-                                </dxlc:LayoutItem>
-
-                                
-                                
-
-                                <TextBlock  Grid.Row="6" Grid.Column="0" Text="val1:"  Margin="0,0,8,3" />
-
-                                
-
-
-                                <TextBlock  Grid.Row="6" Grid.Column="1" Text="val2:"  Margin="0,0,0,3" />
-                                <dxe:ComboBoxEdit Grid.Row="7" Grid.Column="1"                  
-                                                  ItemsSource="{Binding StatusesSubscribe}"
-                                                  DisplayMember="Name" 
-                                                  NullText="Выберите категорию"
-                                                  SelectedItem="{Binding SelectedStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Margin="0,0,0,8"
-                                               />
-
-                                
-                                <TextBlock  Grid.Row="8" Grid.ColumnSpan="2" Text="Содержимое сообщения:"  Margin="0,0,0,3" />
-                                <dxe:MemoEdit Grid.Row="9" Grid.ColumnSpan="2" Height="50" ShowIcon="False" ShowText="True" ShowNullTextForEmptyValue="True"
-                                              EditValue="{Binding Model.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"
-                                              NullText="Содержимое сообщения, отправляемого пользователям" VerticalContentAlignment="Top"
-                                              MemoTextWrapping="Wrap" TextWrapping="Wrap"
-                                               />
-                                <TextBlock  Grid.Row="10" Grid.ColumnSpan="2" Text="Комментарий:"  Margin="0,0,0,3" />
-                                <dxe:MemoEdit Grid.Row="11" Grid.ColumnSpan="2"  
-                                              MemoTextWrapping="Wrap" TextWrapping="Wrap"
-                                              EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,8"
-                                               />
- 
-
-                            </Grid>
+                                        <dxlc:LayoutItem Label="Кодировка переданного сообщения:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit 
+                                        Text="{Binding Model.Charset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }">
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock 
+                                                TextWrapping="Wrap"
+                                                Text="Кодировка переданного сообщения, если используется отличная от кодировки по умолчанию windows-1251. Варианты: utf-8 и koi8-r."/>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Заголовок Wap-сообщения:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit Text="{Binding Model.TitleWap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                                        </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Адрес файла:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                            <dxe:TextEdit
+                                        EditValue="{Binding Model.Settings.Fileurl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        Text="{Binding Model.Settings.Fileurl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                        >
+                                                <dxe:TextEdit.ToolTip>
+                                                    <TextBlock
+                                                TextWrapping="Wrap"
+                                                Text="Полный http-адрес файла для загрузки и передачи в сообщении."/>
+                                                </dxe:TextEdit.ToolTip>
+                                            </dxe:TextEdit>
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+                                </dxlc:LayoutGroup>
+                            </GroupBox>
                         </StackPanel>
-                    </GroupBox>
-                    
-                    <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-        </Grid>
 
 
-        <Grid Visibility="{Binding IsVisibleGroupForm}">
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
+                        <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                            <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+
+            <Grid Visibility="{Binding IsVisibleGroupForm}">
+                <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
+                        <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock  Grid.Row="0" Text="Название:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
+                                    <TextBlock  Grid.Row="0" Text="Название:"  Margin="0,0,8,3" />
+                                    <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
 
-                                <TextBlock  Grid.Row="2"  Text="Родительская группа:"  Margin="0,0,0,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
+                                    <TextBlock  Grid.Row="2"  Text="Родительская группа:"  Margin="0,0,0,3" />
+                                    <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name"
                                                           NullText="Выберите родительскую директорию"
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               IsTextEditable="False" Grid.Row="3"   Margin="0,0,0,8"
                                                />
-                            </Grid>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                        <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                            <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                            <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                         </StackPanel>
-                    </GroupBox>
-                    <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-
+                    </Grid>
+                </GroupBox>
+            </Grid>
         </Grid>
-
-
-    </Grid>
+    </ScrollViewer>
 </Window>
