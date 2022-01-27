@@ -107,6 +107,53 @@
                         </dxlc:LayoutGroup>
                     </GroupBox>
 
+                        <GroupBox  BorderBrush="LightGray" BorderThickness="1" Margin="5" Padding="10" Header="Системные настройки" VerticalAlignment="Top">
+                            <dxlc:LayoutGroup Orientation="Horizontal" Header="История" Margin="0 0 0 5">
+                                
+                                <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
+                                    <dxlc:LayoutItem  Label="История переходов в навигации:" 
+                                      LabelPosition="Top"  
+                                      HorizontalAlignment="Stretch">
+                                        <dxe:TrackBarEdit 
+                                            Value="20" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="30"
+                                            Minimum="0"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem  Label="История действий пользователя(за кол-во дней):" 
+                                      LabelPosition="Top"  
+                                      HorizontalAlignment="Stretch">
+                                        <dxe:TrackBarEdit 
+                                            Value="10" 
+                                            ValueToolTipPlacement="TopLeft"
+                                            Maximum="10"
+                                            Minimum="0"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+
+                                <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
+                                    <dxlc:LayoutItem  Label="Запуск программы:" 
+                                      LabelPosition="Top"  
+                                      HorizontalAlignment="Stretch">
+                                        <dxe:ComboBoxEdit 
+                                            ItemsSource="{Binding ProgramLaunchOptions}"
+                                            SelectedIndex="{Binding SelectedProgramLaunchOptionsIdx, UpdateSourceTrigger=PropertyChanged}"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem  Label="Начинать со страницы:" 
+                                      LabelPosition="Top"  
+                                      HorizontalAlignment="Stretch">
+                                        <dxe:ComboBoxEdit 
+                                            ItemsSource="{Binding PageList}"
+                                            SelectedIndex="{Binding SelectedStartPageIdx, UpdateSourceTrigger=PropertyChanged}"
+                                            IsReadOnly="{Binding EnabledPageList, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+                            </dxlc:LayoutGroup>
+                        </GroupBox>
+
                     </StackPanel>
 
                 </Grid>

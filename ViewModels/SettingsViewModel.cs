@@ -23,12 +23,11 @@ namespace Dental.ViewModels
     class SettingsViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
-       
+
         public SettingsViewModel()
         {
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
-
 
             IsReadOnly = true;
             try
@@ -40,7 +39,7 @@ namespace Dental.ViewModels
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
-                } 
+                }
                 else
                 {
                     IsReadOnly = false;
@@ -57,6 +56,13 @@ namespace Dental.ViewModels
 
             Navigator.HasUnsavedChanges = HasUnsavedChanges;
             Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
+            ProgramLaunchOptions = new string[]
+            {
+                "Расписание сотрудников(по умолчанию)",
+                "Начинать с последней посещенной страницы",
+                "Начинать с выбранной страницы"
+            };
+            PageList = Helper.Pages;
         }
 
         #region Блокировка полей
@@ -120,7 +126,7 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Settings.Add(Model);
-    
+
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
@@ -167,6 +173,24 @@ namespace Dental.ViewModels
             get => model;
             set => Set(ref model, value);
         }
+
+        public ICollection<string> ProgramLaunchOptions { get; }
+        public ICollection<string> PageList { get; }
+
+        public int? SelectedStartPageIdx { get; set; }
+        public int? SelectedProgramLaunchOptionsIdx 
+        {
+            get => selectedProgramLaunchOptionsIdx; 
+            set
+            {
+                if (selectedProgramLaunchOptionsIdx == 2 && IsReadOnly) EnabledPageList = true; 
+                else EnabledPageList = false;
+                Set(ref selectedProgramLaunchOptionsIdx, value);
+            } 
+        }
+        public int? selectedProgramLaunchOptionsIdx;
+
+        public bool EnabledPageList { get; set; } = false;
 
         private Settings GetModel() => db.Settings?.FirstOrDefault() ?? new Settings();
         #endregion
