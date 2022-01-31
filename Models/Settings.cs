@@ -20,75 +20,28 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            return new Settings
-            {
-                Id = this.Id,
-                LoginSmsCenter = this.LoginSmsCenter,
-                PasswordSmsCenter = this.PasswordSmsCenter,
-                StartPage = this.StartPage,
-                StartWithLastPage = this.StartWithLastPage,
-                Guid = this.Guid,
-            };
-        }
-
-        public Settings Copy(Settings model)
-        {
-            model.Id = this.Id;
-            model.LoginSmsCenter = this.LoginSmsCenter;
-            model.PasswordSmsCenter = this.PasswordSmsCenter;
-            model.StartPage = this.StartPage;
-            model.StartWithLastPage = this.StartWithLastPage;
-            model.Guid = this.Guid;
-            return model;
-        }
-
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
-        {           
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as Settings);
-        }
-        public bool Equals(Settings other)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            if (this.StartWithLastPage != other.StartWithLastPage) return false;
-
-            StringParamsIsEquel(this.LoginSmsCenter, other.LoginSmsCenter);
-            StringParamsIsEquel(this.PasswordSmsCenter, other.PasswordSmsCenter);
-            StringParamsIsEquel(this.StartPage, other.StartPage);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            return NotIsChanges;
+            if (other is Settings clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (StringParamsIsEquel(this.LoginSmsCenter, clone.LoginSmsCenter) && 
+                    StringParamsIsEquel(this.PasswordSmsCenter, clone.PasswordSmsCenter) && 
+                    StringParamsIsEquel(this.StartPage, clone.StartPage) && 
+                    this?.StartWithLastPage == clone.StartWithLastPage &&
+                    StringParamsIsEquel(this.Guid, clone.Guid)) return true;
+            }
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
 
         [NotMapped]
         public List<string> FieldsChanges { get; set; } = new List<string>();

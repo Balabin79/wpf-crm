@@ -4,20 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection;
 using Dental.Models.Base;
 using System.Windows.Media;
-using System.Globalization;
-using System.IO;
-using System.Windows.Media.Imaging;
 
 namespace Dental.Models
 {
     [Table("Employes")]
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
-
         [NotMapped]
         public ImageSource Image { get; set; }
 
@@ -161,189 +155,50 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-
-        public object Clone()
-        {
-            EmployeeGroup employeeGroup = new EmployeeGroup { 
-                Name = this.EmployeeGroup?.Name,
-                IsActive = this.EmployeeGroup?.IsActive,
-                IsApplyRule = this.EmployeeGroup?.IsApplyRule,
-                MoreOrLess = this.EmployeeGroup?.MoreOrLess,
-                PercentOrCost = this.EmployeeGroup?.PercentOrCost,
-                Amount = this.EmployeeGroup?.Amount,
-                Id = this.EmployeeGroup?.Id ?? 0,
-                Guid = this.EmployeeGroup?.Guid
-            };
-
-            Dictionary status = new Dictionary
-            {
-                Name = this.Status?.Name,
-                Id = this.Status?.Id ?? 0,
-                CategoryId = this.Status?.CategoryId ?? 0,
-                Guid = this.Status?.Guid
-            };
-
-            Dictionary sex = new Dictionary
-            {
-                Name = this.Sex?.Name,
-                Id = this.Sex?.Id ?? 0,
-                CategoryId = this.Sex?.CategoryId ?? 0,
-                Guid = this.Sex?.Guid
-            };
-
-            return new Employee
-            {
-                Id = this.Id,
-                Guid = this.Guid,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                MiddleName = this.MiddleName,
-                Inn = this.Inn,
-                Photo = this.Photo,
-                Address = this.Address,
-                Phone = this.Phone,
-                AddPhone = this.AddPhone,
-                Email = this.Email,
-                BirthDate = this.BirthDate,
-                DismissalDate = this.DismissalDate,
-                HireDate = this.HireDate,
-                Skype = this.Skype,
-                IsDismissed = this.IsDismissed,
-                Note = this.Note,
-                Amount = this.Amount,
-                IsFixRate = this.IsFixRate,
-                Status = status,
-                StatusId = this.StatusId,
-                EmployeeGroup = employeeGroup,
-                EmployeeGroupId = this.EmployeeGroupId,
-                Sex = sex,
-                SexId = this.SexId
-            };
-        }
-
-        public Employee Copy(Employee model)
-        {
-            model.Id = this.Id;
-            model.FirstName = this.FirstName;
-            model.LastName = this.LastName;
-            model.MiddleName = this.MiddleName;
-            model.Inn = this.Inn;
-            model.Photo = this.Photo;
-            model.Address = this.Address;
-            model.Phone = this.Phone;
-            model.AddPhone = this.AddPhone;
-            model.Email = this.Email;
-            model.BirthDate = this.BirthDate;
-            model.DismissalDate = this.DismissalDate;
-            model.Guid = this.Guid;
-            model.HireDate = this.HireDate;
-            model.Skype = this.Skype;
-            model.Status = this.Status;
-            model.IsFixRate = this.IsFixRate;
-            model.IsDismissed = this.IsDismissed;
-            model.Sex = this.Sex;
-            model.Amount = this.Amount;
-            model.EmployeeGroup = this.EmployeeGroup;
-            model.EmployeeGroupId = this.EmployeeGroupId;
-            model.Note = this.Note;
-            model.EmployesSpecialities = this.EmployesSpecialities;
-            return model;
-        }
-
-
-        public override bool Equals(object other)
-        {
-
-            //Последовательность проверки должна быть именно такой.
-            //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            //Если класс находится на вершине иерархии или просто не имеет наследников, то можно просто
-            //сделать Vehicle tmp = other as Vehicle; if(tmp==null) return false; 
-            //Затем вызвать экземплярный метод, сразу передав ему объект tmp.
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as Employee);
-        }
+        public object Clone() => this.MemberwiseClone();
+        
         public bool Equals(Employee other)
         {
             if (FieldsChanges != null) FieldsChanges = new List<string>();
-            NotIsChanges = true;
-            if (other == null)
-                return false;
 
-            //Здесь сравнение по ссылкам необязательно.
-            //Если вы уверены, что многие проверки на идентичность будут отсекаться на проверке по ссылке - //можно имплементировать.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            //Если по логике проверки, экземпляры родительского класса и класса потомка могут считаться равными,
-            //то проверять на идентичность необязательно и можно переходить сразу к сравниванию полей.
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.FirstName, other.FirstName, "Имя");
-            StringParamsIsEquel(this.LastName, other.LastName, "Фамилия");
-            StringParamsIsEquel(this.MiddleName, other.MiddleName, "Отчество");
-            StringParamsIsEquel(this.BirthDate, other.BirthDate, "Дата рождения");
-            StringParamsIsEquel(this.Photo, other.Photo, "Фото");
-            StringParamsIsEquel(this.Phone, other.Phone, "Домашний телефон");
-            StringParamsIsEquel(this.AddPhone, other.AddPhone, "Рабочий телефон");
-            StringParamsIsEquel(this.Email, other.Email, "Email");
-            StringParamsIsEquel(this.Address, other.Address, "Адрес");
-            StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
-            StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
-            StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
-            StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
-            StringParamsIsEquel(this.EmployeeGroup?.Guid, other.EmployeeGroup?.Guid, "Категория сотрудника");
-            StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
-            StringParamsIsEquel(this.Note, other.Note, "Примечание");
-
-            if (this.IsDismissed != other.IsDismissed)
+            if (other is Employee clone)
             {
-                NotIsChanges = false;
-                FieldsChanges.Add("Уволен");
-            }
+                if (object.ReferenceEquals(this, clone)) return true;
 
-            if (this.EmployeeGroupId != other.EmployeeGroupId)
-            {
-                NotIsChanges = false;
-                FieldsChanges.Add("Категории сотрудников");
-            }
+                StringParamsIsEquel(this.FirstName, other.FirstName, "Имя");
+                StringParamsIsEquel(this.LastName, other.LastName, "Фамилия");
+                StringParamsIsEquel(this.MiddleName, other.MiddleName, "Отчество");
+                StringParamsIsEquel(this.BirthDate, other.BirthDate, "Дата рождения");
+                StringParamsIsEquel(this.Photo, other.Photo, "Фото");
+                StringParamsIsEquel(this.Phone, other.Phone, "Домашний телефон");
+                StringParamsIsEquel(this.AddPhone, other.AddPhone, "Рабочий телефон");
+                StringParamsIsEquel(this.Email, other.Email, "Email");
+                StringParamsIsEquel(this.Address, other.Address, "Адрес");
+                StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
+                StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
+                StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
+                StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
+                StringParamsIsEquel(this.EmployeeGroup?.Guid, other.EmployeeGroup?.Guid, "Категория сотрудника");
+                StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
+                StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
-            if (this.IsFixRate != other.IsFixRate)
-            {
-                NotIsChanges = false;
-                FieldsChanges.Add("Тип оклада");
+                if (this.IsDismissed != other.IsDismissed) FieldsChanges.Add("Уволен");                
+                if (this.EmployeeGroupId != other.EmployeeGroupId) FieldsChanges.Add("Категории сотрудников");  
+                if (this.IsFixRate != other.IsFixRate) FieldsChanges.Add("Тип оклада");
             }
-
-            return NotIsChanges;
+            return FieldsChanges.Count == 0;
         }
 
         private void StringParamsIsEquel(string param1, string param2, string fieldName)
         {
             if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
             if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
             FieldsChanges.Add(fieldName);
         }
 
         [NotMapped]
         public List<string> FieldsChanges { get; set; } = new List<string>();
 
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
-
-        public override string ToString()
-        {
-            return (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
-        }
-
+        public override string ToString() => Fio;
     }
 }

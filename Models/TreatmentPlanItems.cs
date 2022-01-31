@@ -13,15 +13,7 @@ namespace Dental.Models
     [Table("ServicePlansItems")]
     public class TreatmentPlanItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
-        public void Update()
-        {
-            OnPropertyChanged(nameof(Classificator));
-            OnPropertyChanged(nameof(Employee));
-            OnPropertyChanged(nameof(Count));
-            OnPropertyChanged(nameof(Note));
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(Status));
-        }
+
 
         [Required(ErrorMessage = @"Поле ""Классификатор"" обязательно для заполнения")]
         public Classificator Classificator { get; set; }
@@ -41,89 +33,42 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            return new TreatmentPlanItems
-            {
-                Id = this.Id,
-                Guid = this.Guid,
-                ClassificatorId = this.ClassificatorId,
-                Count = this.Count,
-                Note = this.Note,
-                Price = this.Price,
-                Status = this.Status,
-                TreatmentPlanId = this.TreatmentPlanId,
-                TreatmentPlan = this.TreatmentPlan,
-                Employee = this.Employee
-            };
-        }
-
-        public TreatmentPlanItems Copy(TreatmentPlanItems model)
-        {
-            model.Id = this.Id;
-            model.Guid = this.Guid;
-            model.ClassificatorId = this.ClassificatorId;
-            model.Count = this.Count;
-            model.Note = this.Note;
-            model.Price = this.Price;
-            model.Status = this.Status;
-            model.TreatmentPlanId = this.TreatmentPlanId;
-            model.TreatmentPlan = this.TreatmentPlan;
-            model.Employee = this.Employee;
-            return model;
-        }
-
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as TreatmentPlanItems);
+            if (other is TreatmentPlanItems clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (
+                    StringParamsIsEquel(this.Note, clone.Note) &&
+                    StringParamsIsEquel(this.Guid, clone.Guid) &&
+                    StringParamsIsEquel(this.Price, clone.Price) &&
+                    StringParamsIsEquel(this.Status, clone.Status) &&
+                    this?.Classificator == clone?.Classificator &&
+                    this?.TreatmentPlan == clone?.TreatmentPlan &&
+                    this?.Employee == clone?.Employee &&
+                    this?.Count == clone?.Count
+                ) return true;
+            }
+            return false;
         }
-        public bool Equals(TreatmentPlanItems other)
+
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.Note, other.Note);
-            StringParamsIsEquel(this.Price, other.Price);
-            StringParamsIsEquel(this.Status, other.Status);
-            StringParamsIsEquel(this.Guid, other.Guid);        
-            StringParamsIsEquel(this?.TreatmentPlan?.Guid, other?.TreatmentPlan?.Guid);        
-            StringParamsIsEquel(this?.Classificator?.Guid, other?.Classificator?.Guid);        
-            StringParamsIsEquel(this?.Employee?.Guid, other?.Employee?.Guid);        
-
-            if (this.ClassificatorId != other.ClassificatorId) return false;
-            if (this.TreatmentPlanId != other.TreatmentPlanId) return false;
-            if (this.EmployeeId != other.EmployeeId) return false;
-
-            return NotIsChanges;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
+        public void Update()
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
+            OnPropertyChanged(nameof(Classificator));
+            OnPropertyChanged(nameof(Employee));
+            OnPropertyChanged(nameof(Count));
+            OnPropertyChanged(nameof(Note));
+            OnPropertyChanged(nameof(Price));
+            OnPropertyChanged(nameof(Status));
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
-
     }
 }

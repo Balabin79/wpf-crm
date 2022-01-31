@@ -143,7 +143,7 @@
                 </dxlc:LayoutItem>
 
                 <dxlc:LayoutItem Label="Источник привлечения клиента:" Grid.Row="0" LabelPosition="Top" >
-                    <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" 
+                    <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name" ValueMember="Id" 
                                   IsTextEditable="False"                                  
                                   SelectedItem="{Binding Model.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

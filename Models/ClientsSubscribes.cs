@@ -1,12 +1,9 @@
-﻿using Dental.Infrastructures.Logs;
-using Dental.Models.Base;
+﻿using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
@@ -48,100 +45,41 @@ namespace Dental.Models
         [NotMapped]
         public Services.Smsc.SmsSettings.Report Report { get; set; } = new Services.Smsc.SmsSettings.Report();
 
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            try
-            {
-                return new ClientsSubscribes
-                {
-                    Id = this.Id,
-                    Name = this.Name,
-                    Comment = this.Comment,
-                    Content = this.Content,
-                    DateSubscribe = this.DateSubscribe,
-                    Guid = this.Guid,
-                    ParentId = this.ParentId,
-                    IsDir = this.IsDir,
-                    SubscribeTypeIdx = this.SubscribeTypeIdx,
-                    ClientGroupId = this.ClientGroupId,
-                    Status = this.Status,
-                };
-            } catch(Exception ex)
-            {
-                (new ViewModelLog(ex)).run();
-                return new ClientsRequests();
-            }
-
-        }
-
-        public ClientsSubscribes Copy(ClientsSubscribes model)
-        {
-            model.Id = this.Id;
-            model.Name = this.Name;
-            model.Guid = this.Guid;
-            model.Content = this.Content;
-            model.Comment = this.Comment;
-            model.DateSubscribe = this.DateSubscribe;
-            model.ParentId = this.ParentId;
-            model.IsDir = this.IsDir;
-            model.SubscribeTypeIdx = this.SubscribeTypeIdx;
-            model.ClientGroupId = this.ClientGroupId;
-            model.Status = this.Status;
-            return model;
-        }
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as ClientsSubscribes);
+            if (other is ClientsSubscribes clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (
+                    StringParamsIsEquel(this.Name, clone.Name) &&
+                    StringParamsIsEquel(this.Guid, clone.Guid) &&
+                    StringParamsIsEquel(this.Comment, clone.Comment) &&
+                    StringParamsIsEquel(this.Content, clone.Content) &&
+                    StringParamsIsEquel(this.DateSubscribe, clone.DateSubscribe) &&
+                    StringParamsIsEquel(this.ClientGroup?.Guid, clone.ClientGroup?.Guid) &&
+                    StringParamsIsEquel(this.Status, clone.Status) &&
+                    StringParamsIsEquel(this.JsonSettings, clone.JsonSettings) &&
+                    StringParamsIsEquel(this.JsonReport, clone.JsonReport) &&
+                    this?.ParentId == clone?.ParentId &&
+                    this?.SubscribeTypeIdx == clone?.SubscribeTypeIdx
+                ) return true;
+            }
+            return false;
         }
-        public bool Equals(ClientsSubscribes other)
+
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;           
-
-            StringParamsIsEquel(this.Name, other.Name);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.Content, other.Content);
-            StringParamsIsEquel(this.Comment, other.Comment);
-            StringParamsIsEquel(this.DateSubscribe, other.DateSubscribe);
-            StringParamsIsEquel(this.Status, other.Status);
-            if (this.IsDir != other.IsDir) return false;
-            if (this.ParentId != other.ParentId) return false;
-            if (this.SubscribeTypeIdx != other.SubscribeTypeIdx) return false;
-            if (this.ClientGroupId != other.ClientGroupId) return false;
-                return NotIsChanges;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
-        {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
-        }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
+        public override string ToString() => Name;
 
         public void UpdateFields()
         {

@@ -23,11 +23,8 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
+        public object Clone() => this.MemberwiseClone();
+        
         public override bool Equals(object other)
         {
             if (other is Advertising clone)

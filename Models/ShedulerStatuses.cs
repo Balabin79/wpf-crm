@@ -29,67 +29,27 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
+        public object Clone() => this.MemberwiseClone();
+
+        public bool Equals(object other)
         {
-            return new LocationAppointment
+            if (other is ShedulerStatuses clone)
             {
-                Id = this.Id,
-                Name = this.Caption,
-                Address = this.Brush,
-                Guid = this.Guid,
-            };
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (
+                    StringParamsIsEquel(this.Caption, clone.Caption) &&
+                    StringParamsIsEquel(this.Brush, clone.Brush) &&
+                    StringParamsIsEquel(this.Guid, clone.Guid)
+                ) return true;
+            }
+            return false;
         }
 
-        public LocationAppointment Copy(LocationAppointment model)
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            model.Id = this.Id;
-            model.Name = this.Caption;
-            model.Address = this.Brush;
-            model.Guid = this.Guid;
-            return model;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
-
-
-        public override bool Equals(object other)
-        {           
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as LocationAppointment);
-        }
-        public bool Equals(LocationAppointment other)
-        {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.Caption, other.Name);
-            StringParamsIsEquel(this.Brush, other.Address);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            return NotIsChanges;
-        }
-
-        private void StringParamsIsEquel(string param1, string param2)
-        {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
-        }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
     }
 }

@@ -742,7 +742,6 @@ namespace Dental.ViewModels
                     if (cnt > 0) PlanItemModel.Update();
                     var notification = new Notification();
                     notification.Content = "Позиция в плане лечения сохранена!";
-                    var nav = Navigation.Instance;
                     notification.run();
                 }
                 PlanItemWindow.Close();
@@ -889,7 +888,7 @@ namespace Dental.ViewModels
 
         public PatientInfo ModelBeforeChanges { get; set; }
 
-        public ICollection<string> AdvertisingList { get; set; }
+        public ICollection<Advertising> AdvertisingList { get; set; }
         public ICollection<ClientsGroup> ClientsGroupList { get; set; }
 
         public ICollection<string> GenderList
@@ -921,7 +920,7 @@ namespace Dental.ViewModels
 
         private void LoadFieldsCollection()
         {
-            AdvertisingList = db.Advertising.OrderBy(f => f.Name).Select(f => f.Name).ToList();
+            AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
             ClientsGroupList = db.ClientsGroup.OrderBy(f => f.Name).ToList();
         }
         

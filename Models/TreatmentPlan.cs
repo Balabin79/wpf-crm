@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 
@@ -13,12 +11,6 @@ namespace Dental.Models
     [Table("ServicePlans")]
     public class TreatmentPlan : AbstractBaseModel, IDataErrorInfo
     {
-        public void Update()
-        {
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(DateTime));
-        }
-
         public TreatmentPlan()
         {
             TreatmentPlanItems = new ObservableCollection<TreatmentPlanItems>();
@@ -64,75 +56,35 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            return new TreatmentPlan
-            {
-                Id = this.Id,
-                Guid = this.Guid,
-                Name = this.Name,
-                DateTime = this.DateTime,
-                PatientInfo = this.PatientInfo,
-                PatientInfoId = this.PatientInfoId
-            };
-        }
-
-        public TreatmentPlan Copy(TreatmentPlan model)
-        {
-            model.Id = this.Id;
-            model.Guid = this.Guid;
-            model.DateTime = this.DateTime;
-            model.Name = this.Name;
-            model.PatientInfoId = this.PatientInfoId;
-            model.PatientInfo = this.PatientInfo;
-            return model;
-        }
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
+            if (other is TreatmentPlan clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (
+                    StringParamsIsEquel(this.Name, clone.Name) &&
+                    StringParamsIsEquel(this.Guid, clone.Guid) &&
+                    StringParamsIsEquel(this.DateTime, clone.DateTime) &&
+                    this?.PatientInfo == clone?.PatientInfo
 
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as TreatmentPlan);
+                ) return true;
+            }
+            return false;
         }
-        public bool Equals(TreatmentPlan other)
+
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.Name, other.Name);
-            StringParamsIsEquel(this.DateTime, other.DateTime);
-            StringParamsIsEquel(this?.PatientInfo?.Guid, other?.PatientInfo?.Guid);
-
-            if (this.PatientInfoId != other.PatientInfoId) return false;
-
-            return NotIsChanges;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
+        public void Update()
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
+            OnPropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(DateTime));
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
-
     }
 }

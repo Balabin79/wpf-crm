@@ -1,9 +1,7 @@
-﻿using Dental.Infrastructures.Logs;
-using Dental.Models.Base;
+﻿using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
@@ -12,7 +10,6 @@ namespace Dental.Models
     public class ClientsRequests : AbstractBaseModel, IDataErrorInfo
     {
         public string Contacts { get; set; }
-
         public string Note { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
@@ -24,95 +21,32 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            try
-            {
-                return new ClientsRequests
-                {
-                    Id = this.Id,
-                    Contacts = this.Contacts,
-                    Note = this.Note,
-                    Date = this.Date,
-                    Time = this.Time,
-                    Guid = this.Guid,
-                    ClientInfo = this.ClientInfo,
-                };
-            } catch(Exception ex)
-            {
-                (new ViewModelLog(ex)).run();
-                return new ClientsRequests();
-            }
-
-        }
-
-        public ClientsRequests Copy(ClientsRequests model)
-        {
-            model.Id = this.Id;
-            model.Contacts = this.Contacts;
-            model.Note = this.Note;
-            model.Date = this.Date;
-            model.Time = this.Time;
-            model.Guid = this.Guid;
-            model.ClientInfo = this.ClientInfo;
-            return model;
-        }
-
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
         {
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as ClientsRequests);
+            if (other is ClientsRequests clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (
+                    StringParamsIsEquel(this.Contacts, clone.Contacts) && 
+                    StringParamsIsEquel(this.Guid, clone.Guid) &&
+                    StringParamsIsEquel(this.Note, clone.Note) && 
+                    StringParamsIsEquel(this.Date, clone.Date) &&
+                    StringParamsIsEquel(this.Time, clone.Time) &&
+                    StringParamsIsEquel(this.ClientInfo?.Guid, clone.ClientInfo?.Guid)
+                ) return true;
+            }
+            return false;
         }
-        public bool Equals(ClientsRequests other)
+
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;           
-
-            StringParamsIsEquel(this.Contacts, other.Contacts);
-            StringParamsIsEquel(this.Note, other.Note);
-            StringParamsIsEquel(this.Date, other.Date);
-            StringParamsIsEquel(this.Time, other.Time);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            StringParamsIsEquel(this.ClientInfo?.Guid, other.ClientInfo?.Guid);
-            if (this.ClientInfo != other.ClientInfo) return false;
-                return NotIsChanges;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
-        {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
-        }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
-
-        public void FieldsUpdate()
-        {
-            OnPropertyChanged(nameof(Contacts));
-            OnPropertyChanged(nameof(Note));
-            OnPropertyChanged(nameof(Date));
-            OnPropertyChanged(nameof(Time));
-            OnPropertyChanged(nameof(ClientInfo));
-        }
-
+        public override string ToString() => Note;
     }
 }

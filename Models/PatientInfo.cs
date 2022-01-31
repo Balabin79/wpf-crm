@@ -126,13 +126,8 @@ namespace Dental.Models
         private string _Note;
 
         [Display(Name = "Канал привлечения")]
-        public string Advertising
-        {
-            get => _Advertising;
-            set => _Advertising = value?.Trim();
-        }
-        private string _Advertising;
-
+        public int? AdvertisingId { get; set; }
+        public Advertising Advertising { get; set; }
 
         public int? ClientCategoryId { get; set; }       
         public ClientsGroup ClientCategory { get; set; }
@@ -155,159 +150,49 @@ namespace Dental.Models
         [Display(Name = "Кем выдан")]
         public string WhomIssued { get; set; }
 
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public override string ToString()
-        {
-            return (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
-        }
+        public object Clone() => this.MemberwiseClone();
 
-        public object Clone()
-        {
-
-            return new PatientInfo
-            {
-                Id = this.Id,
-                ClientCardNumber = this.ClientCardNumber,
-                ClientCardCreatedAt = this.ClientCardCreatedAt,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                MiddleName = this.MiddleName,
-                BirthDate = this.BirthDate,
-                Sex = this.Sex,
-                Phone = this.Phone,
-                Email = this.Email,
-                Address = this.Address,
-                Note = this.Note,
-                IsSubscribe = this.IsSubscribe,
-                IsInArchive = this.IsInArchive,
-                Advertising = this.Advertising,
-                ClientCategory = this.ClientCategory,
-                ClientCategoryId = this.ClientCategoryId,
-                PassportIssuanceDate = this.PassportIssuanceDate,
-                PassportNo = this.PassportNo,
-                PassportSeries = this.PassportSeries,
-                WhomIssued = this.WhomIssued
-            };
-
-            /*Company company = new Company { Name = this.Work.Name };
-            return new Person
-            {
-                Name = this.Name,
-                Age = this.Age,
-                Work = company
-            };*/
-        }
-
-        public PatientInfo Copy(PatientInfo model)
-        {
-            model.Id = this.Id;
-            model.ClientCardNumber = this.ClientCardNumber;
-            model.ClientCardCreatedAt = this.ClientCardCreatedAt;
-            model.FirstName = this.FirstName;
-            model.LastName = this.LastName;
-            model.MiddleName = this.MiddleName;
-            model.BirthDate = this.BirthDate;
-            model.Sex = this.Sex;
-            model.Phone = this.Phone;
-            model.Email = this.Email;
-            model.Address = this.Address;
-            model.Note = this.Note;
-            model.IsSubscribe = this.IsSubscribe;
-            model.IsInArchive = this.IsInArchive;
-            model.Advertising = this.Advertising;
-            model.ClientCategory = this.ClientCategory;
-            model.ClientCategoryId = this.ClientCategoryId;
-            model.PassportIssuanceDate = this.PassportIssuanceDate;
-            model.PassportNo = this.PassportNo;
-            model.PassportSeries = this.PassportSeries;
-            model.WhomIssued = this.WhomIssued;
-            return model;
-        }
-
-        public override bool Equals(object other)
-        {
-
-            //Последовательность проверки должна быть именно такой.
-            //Если не проверить на null объект other, то other.GetType() может выбросить //NullReferenceException.            
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            //Если класс находится на вершине иерархии или просто не имеет наследников, то можно просто
-            //сделать Vehicle tmp = other as Vehicle; if(tmp==null) return false; 
-            //Затем вызвать экземплярный метод, сразу передав ему объект tmp.
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as PatientInfo);
-        }
         public bool Equals(PatientInfo other)
         {
             if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            //Здесь сравнение по ссылкам необязательно.
-            //Если вы уверены, что многие проверки на идентичность будут отсекаться на проверке по ссылке - //можно имплементировать.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            //Если по логике проверки, экземпляры родительского класса и класса потомка могут считаться равными,
-            //то проверять на идентичность необязательно и можно переходить сразу к сравниванию полей.
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.FirstName, other.FirstName, "Административная", "Имя");
-            StringParamsIsEquel(this.LastName, other.LastName, "Административная", "Фамилия");
-            StringParamsIsEquel(this.MiddleName, other.MiddleName, "Административная", "Отчество");
-            StringParamsIsEquel(this.BirthDate, other.BirthDate, "Административная", "Дата рождения");
-            StringParamsIsEquel(this.Sex, other.Sex, "Административная", "Пол");
-            StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
-            StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
-            StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
-            StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
-            StringParamsIsEquel(this.Advertising, other.Advertising, "Административная", "Рекламные источники");
-            StringParamsIsEquel(this.ClientCategory?.Guid, other.ClientCategory?.Guid, "Административная", "Категории клиентов");
-            StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
-            StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
-            StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
-            StringParamsIsEquel(this.PassportNo, other.PassportNo, "Административная", "Номер паспорта");
-
-            if (this.ClientCategoryId != other.ClientCategoryId)
+            if (other is PatientInfo clone)
             {
-                NotIsChanges = false;
-                FieldsChanges["Административная"].Add("Категория клиентов");
+                if (object.ReferenceEquals(this, clone)) return true;
+
+                StringParamsIsEquel(this.FirstName, other.FirstName, "Административная", "Имя");
+                StringParamsIsEquel(this.LastName, other.LastName, "Административная", "Фамилия");
+                StringParamsIsEquel(this.MiddleName, other.MiddleName, "Административная", "Отчество");
+                StringParamsIsEquel(this.BirthDate, other.BirthDate, "Административная", "Дата рождения");
+                StringParamsIsEquel(this.Sex, other.Sex, "Административная", "Пол");
+                StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
+                StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
+                StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
+                StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
+                StringParamsIsEquel(this.Advertising?.Guid, other.Advertising?.Guid, "Административная", "Рекламные источники");
+                StringParamsIsEquel(this.ClientCategory?.Guid, other.ClientCategory?.Guid, "Административная", "Категории клиентов");
+                StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
+                StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
+                StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
+                StringParamsIsEquel(this.PassportNo, other.PassportNo, "Административная", "Номер паспорта");
+
+                if (this.ClientCategoryId != other.ClientCategoryId) FieldsChanges["Административная"].Add("Категория клиентов");
+                
+                if (this.IsSubscribe != other.IsSubscribe) FieldsChanges["Административная"].Add("Участие в рассылках");
+                
+                if (this.IsInArchive != other.IsInArchive) FieldsChanges["Административная"].Add("Перемещена в архив");
             }
-            if (this.IsSubscribe != other.IsSubscribe)
-            {
-                NotIsChanges = false;
-                FieldsChanges["Административная"].Add("Участие в рассылках");
-            }            
-            if (this.IsInArchive != other.IsInArchive)
-            {
-                NotIsChanges = false;
-                FieldsChanges["Административная"].Add("Перемещена в архив");
-            }
-            return NotIsChanges;
+            return FieldsChanges["Административная"].Count == 0 && FieldsChanges["Планы услуг"].Count == 0;
         }
 
         private void StringParamsIsEquel(string param1, string param2, string section, string fieldName)
         {
             if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
             if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
             FieldsChanges[section].Add(fieldName);
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
 
         [NotMapped]
         public Dictionary<string, List<string>> FieldsChanges { get; set; } = CreateFieldsChanges();
@@ -320,5 +205,6 @@ namespace Dental.Models
             };
         }
 
+        public override string ToString() => FirstName;
     }
 }

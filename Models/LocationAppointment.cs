@@ -30,67 +30,25 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            return new LocationAppointment
-            {
-                Id = this.Id,
-                Name = this.Name,
-                Address = this.Address,
-                Guid = this.Guid,
-            };
-        }
-
-        public LocationAppointment Copy(LocationAppointment model)
-        {
-            model.Id = this.Id;
-            model.Name = this.Name;
-            model.Address = this.Address;
-            model.Guid = this.Guid;
-            return model;
-        }
-
+        public object Clone() => this.MemberwiseClone();
 
         public override bool Equals(object other)
-        {           
-            if (other == null)
-                return false;
-
-            //Если ссылки указывают на один и тот же адрес, то их идентичность гарантирована.
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            return this.Equals(other as LocationAppointment);
-        }
-        public bool Equals(LocationAppointment other)
         {
-            NotIsChanges = true;
-            if (other == null)
-                return false;
-
-            if (object.ReferenceEquals(this, other))
-                return true;
-
-            if (this.GetType() != other.GetType())
-                return false;
-
-            StringParamsIsEquel(this.Name, other.Name);
-            StringParamsIsEquel(this.Address, other.Address);
-            StringParamsIsEquel(this.Guid, other.Guid);
-            return NotIsChanges;
+            if (other is LocationAppointment clone)
+            {
+                if (object.ReferenceEquals(this, clone)) return true;
+                if (StringParamsIsEquel(this.Name, clone.Name) && 
+                    StringParamsIsEquel(this.Guid, clone.Guid) && 
+                    StringParamsIsEquel(this.Address, clone.Address))  return true;
+            }
+            return false;
         }
 
-        private void StringParamsIsEquel(string param1, string param2)
+        private bool StringParamsIsEquel(string param1, string param2)
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            NotIsChanges = false;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
+            return false;
         }
-
-        [NotMapped]
-        public bool NotIsChanges { get; set; } = true;
     }
 }
