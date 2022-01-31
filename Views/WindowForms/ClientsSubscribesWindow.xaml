@@ -55,7 +55,7 @@
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem Label="Тип рассылки:" LabelPosition="Top" HorizontalAlignment="Stretch">
                                             <dxe:ComboBoxEdit  
-                                        SelectedItem="{Binding SelectedTypeSubscribe, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        SelectedItem="{Binding Model.SubscribeParams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         ItemsSource="{Binding Path=TypeSubscribeParams}"
                                         NullText="Выберите тип рассылки" 
                                         DisplayMember="Name"

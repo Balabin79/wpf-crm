@@ -68,7 +68,7 @@ namespace Dental.Models
         public DbSet<ShedulerStatuses> ShedulerStatuses { get; set; }
         public DbSet<ResourceEntity> Resources { get; set; }
 
-        public DbSet<TypeSubscribe> TypeSubscribe { get; set; }
+        public DbSet<SubscribeParams> SubscribeParams { get; set; }
         public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
         public DbSet<Settings> Settings { get; set; }
         public DbSet<UserActions> UserActions { get; set; }

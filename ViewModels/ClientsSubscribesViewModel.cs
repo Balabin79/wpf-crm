@@ -39,6 +39,8 @@ namespace Dental.ViewModels
                 SetCollection();
                 ClientsGroups = db.ClientsGroup?.ToArray();
                 ProgramSettings = db.Settings?.FirstOrDefault();
+                TypeSubscribeParams = db.SubscribeParams.Where(f => f.Id < 11).ToObservableCollection();
+                VoiceParams = db.SubscribeParams.Where(f => f.Id > 10).ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -55,8 +57,6 @@ namespace Dental.ViewModels
         public ICommand ExpandTreeCommand { get; }
 
         public ICommand SendCommand { get; }
-
-
 
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
@@ -202,7 +202,6 @@ namespace Dental.ViewModels
             }
         }
 
-
         private void OnDeleteCommandExecuted(object p)
         {
             try
@@ -221,7 +220,6 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
 
         private void OnSendCommandExecuted(object p) 
         {
@@ -328,6 +326,7 @@ namespace Dental.ViewModels
         {
             Collection = db.ClientsSubscribes
             .Include(f => f.ClientGroup)
+            .Include(f => f.SubscribeParams)
             .OrderBy(d => d.DateSubscribe).ToObservableCollection();
 
             foreach (var i in Collection)
@@ -388,48 +387,11 @@ namespace Dental.ViewModels
             collection.ForEach(f => Collection.Remove(f));
         }
 
-        public List<Params> TypeSubscribeParams 
-        {
-            get => new List<Params>() 
-            { 
-                new Params() {Name = "SMS (по умолчанию)", Param = "sms", ToolTip = "SMS (по умолчанию)"},
-                new Params() {Name = "SMS - ping", Param = "ping", ToolTip = "Ping-SMS — это специальным образом сформированное бинарное SMS-сообщение, не отображаемое в телефоне получателя и предназначенное для проверки номера абонента на доступность в реальном времени. Тарифицируются данные SMS как обычные SMS-сообщения."},
-                new Params() {Name = "Email", Param = "email", ToolTip = "Email"},
-                new Params() {Name = "MMC", Param = "mms", ToolTip = "MMC"},
-                new Params() {Name = "Wap-push сообщение", Param = "push", ToolTip = "Wap-push сообщения, с помощью которого можно отправить интернет-ссылку на телефон."},
-                new Params() {Name = "Flash сообщение", Param = "flash", ToolTip = "Flash SMS - это СМС-сообщение, которое отображается на экране мобильного телефона и обычно не сохраняется в памяти аппарата или SIM-карте."},
-                new Params() {Name = "HLR", Param = "hlr", ToolTip = "HLR (Home Location Register) — это централизованная база данных, которая содержит подробную информацию о каждом абоненте данной сети GSM-оператора. С помощью HLR-запросов можно проверять статусы мобильных номеров и осуществлять чистку баз данных от неактуальных номеров. Сервис проверки номеров сохраняет конфиденциальность запроса и не беспокоит абонента."},
-                new Params() {Name = "Голосовые сообщения", Param = "call", ToolTip = "Голосовые сообщения"},
-                new Params() {Name = "Viber", Param = "viber", ToolTip = "Viber"},
-                new Params() {Name = "Соц.сети(\"Одноклассники\", \"ВКонтакте\")", Param = "soc", ToolTip = "Соц.сети(\"Одноклассники\", \"ВКонтакте\")"}
+        public ObservableCollection<SubscribeParams> TypeSubscribeParams { get; }
 
-            };
-        }
-
-        public List<Params> VoiceParams
-        {
-            get => new List<Params>()
-            { 
-                new Params {Param = "m", Name = "Мужской голос (по умолчанию)", ToolTip = "Мужской голос (по умолчанию)"},
-                new Params {Param = "m2", Name = "Мужской голос 2", ToolTip = "Мужской голос 2"},
-                new Params {Param = "m3", Name = "Мужской голос 3", ToolTip = "Мужской голос 3"},
-                new Params {Param = "m4", Name = "Мужской голос 4", ToolTip = "Мужской голос 4"},
-                new Params {Param = "w", Name = "Женский голос", ToolTip = "Женский голос"},
-                new Params {Param = "w2", Name = "Женский голос 2", ToolTip = "Женский голос 2"},
-                new Params {Param = "w3", Name = "Женский голос 3", ToolTip = "Женский голос 3"},
-                new Params {Param = "w4", Name = "Женский голос 4", ToolTip = "Женский голос 4"}
-            };
-        }
+        public ObservableCollection<SubscribeParams> VoiceParams { get; }    
 
         public object SelectedVoice { get; set; }
         public object SelectedTypeSubscribe { get; set; }
     }
-
-    class Params
-    {
-        public string Param { get; set; } 
-        public string Name { get; set; } 
-        public string ToolTip { get; set; } 
-    }
-
 }
