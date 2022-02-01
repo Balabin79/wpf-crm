@@ -182,9 +182,8 @@ namespace Dental.ViewModels
                 {
                     var notification = new Notification();
                     notification.Content = "Карта клиента полностью удалена из базы данных!";
-                    var nav = Navigation.Instance;
                     notification.run();
-                    nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
+                    if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
                 }
             }
             catch (Exception e)
@@ -850,10 +849,9 @@ namespace Dental.ViewModels
                  warningMessage = "\nВо вкладке \"" + tab.Key + "\", поля:" + fieldNames.Remove(fieldNames.Length - 1) + "\n";
             }
 
-             var response = ThemedMessageBox.Show(title: "Внимание", text: "В карте пациента содержатся несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-                messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-            return response.ToString() == "Cancel";
+            return response.ToString() == "No";
         }
 
 

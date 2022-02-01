@@ -27,20 +27,21 @@ namespace Dental.Models
             if (other is Settings clone)
             {
                 if (object.ReferenceEquals(this, clone)) return true;
-                if (StringParamsIsEquel(this.LoginSmsCenter, clone.LoginSmsCenter) && 
-                    StringParamsIsEquel(this.PasswordSmsCenter, clone.PasswordSmsCenter) && 
-                    StringParamsIsEquel(this.StartPage, clone.StartPage) && 
-                    this?.StartWithLastPage == clone.StartWithLastPage &&
-                    StringParamsIsEquel(this.Guid, clone.Guid)) return true;
+                if (object.ReferenceEquals(this, clone)) return true;
+
+                StringParamsIsEquel(this.LoginSmsCenter, clone.LoginSmsCenter, "Логин");
+                StringParamsIsEquel(this.PasswordSmsCenter, clone.PasswordSmsCenter, "Пароль");
+                StringParamsIsEquel(this.StartPage, clone.StartPage, "Начинать со страницы");
+                if (this?.StartWithLastPage == clone.StartWithLastPage) FieldsChanges.Add("Запуск программы");
             }
-            return false;
+            return FieldsChanges.Count == 0;
         }
 
-        private bool StringParamsIsEquel(string param1, string param2)
+        private void StringParamsIsEquel(string param1, string param2, string fieldName)
         {
-            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
-            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
-            return false;
+            if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
+            if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
+            FieldsChanges.Add(fieldName);
         }
 
         [NotMapped]

@@ -161,10 +161,9 @@ namespace Dental.ViewModels
             }
             warningMessage = warningMessage.Remove(warningMessage.Length - 1);
 
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме \"Настройки\" имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-            return response.ToString() == "Cancel";
+            return response.ToString() == "No";
         }
 
         public Settings model;

@@ -437,10 +437,9 @@ namespace Dental.ViewModels
             }
             warningMessage = warningMessage.Remove(warningMessage.Length - 1);
 
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-            return response.ToString() == "Cancel";
+            return response.ToString() == "No";
         }
 
         private void OnSaveCommandExecuted(object p)
@@ -491,9 +490,8 @@ namespace Dental.ViewModels
                 {
                     var notification = new Notification();
                     notification.Content = "Анкета сотрудника полностью удалена из базы данных!";
-                    var nav = Navigation.Instance;
                     notification.run();
-                    nav.LeftMenuClick.Execute("Dental.Views.Employes");
+                    if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.Employes");
                 }
             }
             catch (Exception e)

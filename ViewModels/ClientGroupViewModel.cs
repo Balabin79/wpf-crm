@@ -129,11 +129,10 @@ namespace Dental.ViewModels
 
         public bool UserSelectedBtnCancel()
         {
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Продолжить без сохранения?",
+               messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Если хотите сохранить эти данные, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой). Для продолжения без сохранения, нажмите \"Ок\"",
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
-
-            return response.ToString() == "Cancel";
+            return response.ToString() == "No";
         }
 
         public List<Dictionary> MoreOrLess { get; set; }
