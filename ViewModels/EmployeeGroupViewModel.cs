@@ -58,19 +58,22 @@ namespace Dental.ViewModels
                 if (p is EmployeeGroup model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) 
+                    if (model.Id != 0)
                     {
                         db.Entry(model).State = EntityState.Deleted;
                         ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["EmployeeGroup"]);
-                    } 
-                    else db.Entry(model).State = EntityState.Detached;
-                    int cnt = db.SaveChanges();
-                    Collection = GetCollection();
-                    if (cnt > 0)
-                    {
-                        CollectionBeforeChanges.Clear();
-                        Collection.ForEach(f => CollectionBeforeChanges.Add((EmployeeGroup)f.Clone()));
+                        int cnt = db.SaveChanges();
+                        if (cnt > 0)
+                        {
+                            var notification = new Notification();
+                            notification.Content = "Успешно удалено из базы данных!";
+                            notification.run();
+                        }
                     }
+                    else db.Entry(model).State = EntityState.Detached;
+                    Collection.Remove(model);
+                    CollectionBeforeChanges.Clear();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((EmployeeGroup)f.Clone()));
                 }
             }
             catch (Exception e)

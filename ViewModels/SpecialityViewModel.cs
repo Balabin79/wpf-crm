@@ -58,19 +58,18 @@ namespace Dental.ViewModels
                     {
                         db.Entry(model).State = EntityState.Deleted;
                         ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Speciality"]);
+                        int cnt = db.SaveChanges();
+                        if (cnt > 0)
+                        {
+                            var notification = new Notification();
+                            notification.Content = "Успешно удалено из базы данных!";
+                            notification.run();
+                        }
                     }
                     else db.Entry(model).State = EntityState.Detached;
-                    int cnt = db.SaveChanges();
-                    Collection = GetCollection();
-                    if (cnt > 0)
-                    {
-                        CollectionBeforeChanges.Clear();
-                        Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
-
-                        var notification = new Notification();
-                        notification.Content = "Успешно удалено из базы данных!";
-                        notification.run();
-                    }
+                    Collection.Remove(model);
+                    CollectionBeforeChanges.Clear();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
                 }
             }
             catch (Exception e)

@@ -57,19 +57,22 @@ namespace Dental.ViewModels
                 if (p is ClientsRequests model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) 
+                    if (model.Id != 0)
                     {
                         db.Entry(model).State = EntityState.Deleted;
                         ActionsLog.RegisterAction(model.Contacts, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientsRequests"]);
-                        int cnt = db.SaveChanges();                        
+                        int cnt = db.SaveChanges();
                         if (cnt > 0)
                         {
-                            CollectionBeforeChanges.Clear();
-                            Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
+                            var notification = new Notification();
+                            notification.Content = "Успешно удалено из базы данных!";
+                            notification.run();
                         }
-                    } 
+                    }
                     else db.Entry(model).State = EntityState.Detached;
                     Collection.Remove(model);
+                    CollectionBeforeChanges.Clear();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
                 }
             }
             catch (Exception e)
@@ -91,7 +94,6 @@ namespace Dental.ViewModels
                            messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
 
                         if (response.ToString() == "Cancel") return; else continue; 
-
                     }
                     if (item.Id == 0)
                     {
