@@ -60,6 +60,7 @@ namespace Dental.ViewModels
                     if (model.Id != 0) 
                     {
                         db.Entry(model).State = EntityState.Deleted;
+                        ActionsLog.RegisterAction(model.Contacts, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientsRequests"]);
                         int cnt = db.SaveChanges();                        
                         if (cnt > 0)
                         {
@@ -92,7 +93,15 @@ namespace Dental.ViewModels
                         if (response.ToString() == "Cancel") return; else continue; 
 
                     }
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;        
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                        ActionsLog.RegisterAction(item.Contacts, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientsRequests"]);
+                    }
+                    if (db.Entry(item).State == EntityState.Modified)
+                    {
+                        ActionsLog.RegisterAction(item.Contacts, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["ClientsRequests"]);
+                    }       
                 }
                 int cnt = db.SaveChanges();
                 Collection = GetCollection();

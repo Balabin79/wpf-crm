@@ -14,7 +14,6 @@ using System.Windows;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using Dental.Views.WindowForms;
-
 using Dental.Services;
 
 namespace Dental.ViewModels
@@ -93,8 +92,11 @@ namespace Dental.ViewModels
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
                 if (Model.IsDir == 0) Delete(new ObservableCollection<Classificator>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetItemChilds().OfType<Classificator>().ToObservableCollection());
+                else
+                {
+                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Classificator>().ToObservableCollection());
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Classificator"]);
+                }
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -246,20 +248,27 @@ namespace Dental.ViewModels
         private void CreateNewWindow() => Window = new ClassificatorWindow();
         private Classificator CreateNewModel() => new Classificator();
 
-        private Classificator GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
-     
+        private Classificator GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();     
 
         private void Add()
         {
             db.Entry(Model).State = EntityState.Added;
-            db.SaveChanges();
-            Collection.Add(Model);
+            int rows = db.SaveChanges();
+            if (rows > 0)
+            {
+                Collection.Add(Model);
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Classificator"]);
+            }            
         }
         private void Update()
         {
             db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-            Model.UpdateFields();
+            int rows = db.SaveChanges();
+            if (rows > 0)
+            {
+                Model.UpdateFields();
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Classificator"]);
+            }         
         }
 
         private void Delete(ObservableCollection<Classificator> collection)

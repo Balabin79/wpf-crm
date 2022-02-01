@@ -322,7 +322,11 @@ namespace Dental.ViewModels
                 if (p is ShedulerStatuses model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    if (model.Id != 0) 
+                    {
+                        db.Entry(model).State = EntityState.Deleted;
+                        ActionsLog.RegisterAction(model.Caption, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["StatusSheduler"]);
+                    } 
                     else db.Entry(model).State = EntityState.Detached;
                     int cnt = db.SaveChanges();
                     StatusesInSheduler = GetShedulerStatusesCollection();
@@ -347,17 +351,27 @@ namespace Dental.ViewModels
                 foreach (var item in StatusesInSheduler)
                 {
                     if (string.IsNullOrEmpty(item.Caption)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                }
-                int cnt = db.SaveChanges();
-                StatusesInSheduler = GetShedulerStatusesCollection();
-                ShedulerStatusesBeforeChanges.Clear();
-                StatusesInSheduler.ForEach(f => ShedulerStatusesBeforeChanges.Add((ShedulerStatuses)f.Clone()));
-                if (cnt > 0)
-                {
-                    var notification = new Notification();
-                    notification.Content = "Изменения сохранены в базу данных!";
-                    notification.run();
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                        ActionsLog.RegisterAction(item.Caption, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["StatusSheduler"]);
+                    }
+
+                    if (db.Entry(item).State == EntityState.Modified)
+                    {
+                        ActionsLog.RegisterAction(item.Caption, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["StatusSheduler"]);
+                    }
+                    int cnt = db.SaveChanges();
+
+                    StatusesInSheduler = GetShedulerStatusesCollection();
+                    ShedulerStatusesBeforeChanges.Clear();
+                    StatusesInSheduler.ForEach(f => ShedulerStatusesBeforeChanges.Add((ShedulerStatuses)f.Clone()));
+                    if (cnt > 0)
+                    {
+                        var notification = new Notification();
+                        notification.Content = "Изменения сохранены в базу данных!";
+                        notification.run();
+                    }
                 }
             }
             catch (Exception e)

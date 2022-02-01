@@ -211,8 +211,12 @@ namespace Dental.ViewModels
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
                 if (Model.IsDir == 0) Delete(new ObservableCollection<ClientsSubscribes>() { Model });
-                else Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                else 
+                {
+                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
                             .GetItemChilds().OfType<ClientsSubscribes>().ToObservableCollection());
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientsSubscribes"]); 
+                } 
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -371,14 +375,16 @@ namespace Dental.ViewModels
         private void Add()
         {
             db.Entry(Model).State = EntityState.Added;
-            db.SaveChanges();
+            ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientsSubscribes"]);
             Collection.Add(Model);
         }
         private void Update()
         {
-            db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-            Model.UpdateFields();
+            if (db.Entry(Model).State == EntityState.Modified)
+            {
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["ClientsSubscribes"]);
+                Model.UpdateFields();
+            }              
         }
 
         private void Delete(ObservableCollection<ClientsSubscribes> collection)

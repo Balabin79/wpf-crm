@@ -57,7 +57,11 @@ namespace Dental.ViewModels
                 if (p is ClientsGroup model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    if (model.Id != 0) 
+                    {
+                        db.Entry(model).State = EntityState.Deleted;
+                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientGroup"]);
+                    } 
                     else db.Entry(model).State = EntityState.Detached;
                     int cnt = db.SaveChanges();
                     Collection = GetCollection();
@@ -81,17 +85,25 @@ namespace Dental.ViewModels
                 foreach (var item in Collection)
                 {
                     if (string.IsNullOrEmpty(item.Name)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                }
-                int cnt = db.SaveChanges();
-                Collection = GetCollection();
-                CollectionBeforeChanges.Clear();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsGroup)f.Clone()));
-                if (cnt > 0)
-                {
-                    var notification = new Notification();
-                    notification.Content = "Изменения сохранены в базу данных!";
-                    notification.run();
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientGroup"]);
+                    }
+                    if (db.Entry(item).State == EntityState.Modified)
+                    {
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["ClientGroup"]);
+                    }
+                    int cnt = db.SaveChanges();
+                    Collection = GetCollection();
+                    CollectionBeforeChanges.Clear();
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsGroup)f.Clone()));
+                    if (cnt > 0)
+                    {
+                        var notification = new Notification();
+                        notification.Content = "Изменения сохранены в базу данных!";
+                        notification.run();
+                    }
                 }
             }
             catch (Exception e)
@@ -131,7 +143,6 @@ namespace Dental.ViewModels
         {
             var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Продолжить без сохранения?",
                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
             return response.ToString() == "No";
         }
 

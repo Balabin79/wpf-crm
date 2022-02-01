@@ -6,10 +6,8 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.POCO;
 using DevExpress.Xpf.Scheduling;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
 
 namespace Dental.ViewModels
 {
@@ -96,8 +94,7 @@ namespace Dental.ViewModels
             set
             {
                 PatientInfo newPatient = value;
-                if (patient == newPatient)
-                    return;
+                if (patient == newPatient) return;
                 patient = newPatient;
                 CustomFields["ClientInfoId"] = newPatient.Id;
                 Subject = newPatient.FullName;

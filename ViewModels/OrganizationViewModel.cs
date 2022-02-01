@@ -131,7 +131,16 @@ namespace Dental.ViewModels
             {
                 if (Model == null) return;
                 var notification = new Notification();
-                if (Model.Id == 0) db.Organizations.Add(Model);
+                if (Model.Id == 0) 
+                {
+                    db.Organizations.Add(Model);
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Organization"]);
+                }
+                if (db.Entry(Model).State == EntityState.Modified)
+                {
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Organization"]);
+                }
+                   
                 SaveLogo();
                 SaveStamp();
                 SaveSignature();
@@ -154,10 +163,10 @@ namespace Dental.ViewModels
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить данные организации?",
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Вы уверены, что хотите полностью удалить данные организации?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Organization"]);
                 Delete();
 
                 Model = new Organization();
@@ -193,7 +202,6 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-
         }
 
         public Organization ModelBeforeChanges { get; set; }
@@ -272,8 +280,6 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-      
 
         private void SaveLogo()
         {
@@ -527,6 +533,9 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                 FileInfo newFile = new FileInfo(Path.Combine(PathToOrgDirectory, file.Name));
                 newFile.CreationTime = DateTime.Now;
 
+                var names = new string[] { Model.Name, "добавлен файл", newFile.Name };
+                ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Organization"]);
+
                 Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
             }
             catch (Exception e)
@@ -544,6 +553,10 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     file.Delete();
+
+                    var names = new string[] { Model.Name, "удален файл", file.Name };
+                    ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Organization"]);
+
                     Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
                 }
             }

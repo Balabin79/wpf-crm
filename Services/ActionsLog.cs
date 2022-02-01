@@ -49,7 +49,7 @@ namespace Dental.Services
         {
             try
             {
-                string path = (name.Length > 1) ? string.Join(",", name) : name[0];
+                string path = (name.Length > 1) ? string.Join("->", name) : name[0];
                 db.UserActions.Add(
                     new UserActions() { 
                         Name = path, 
@@ -75,6 +75,22 @@ namespace Dental.Services
         public static Dictionary<string, string> SectionPage { get; } = new Dictionary<string, string>() {
             { "Advertising", "Рекламные источники" },
             { "Speciality", "Специальности сотрудников" },
+            { "Classificator", "Классификатор услуг" },
+            { "EmployeeGroup", "Категории сотрудников" },
+            { "ClientGroup", "Категории клиентов" },
+            { "ClientsRequests", "Список обращений" },
+            { "ClientsSubscribes", "Рассылки" },
+            { "Organization", "Организация" },
+            { "Settings", "Настройки" },
+            { "StatusSheduler", "Статусы в расписании" },
+
+            { "ClientInfo", "Карта клиента" },
+            { "Plan", "План услуг" },
+            { "PlanItem", "Позиция в план услуг" },
+            { "Ids", "ИДС" },
+
+            { "Employee", "Карта сотрудника" },
+            { "", "" },
         };
 
     }

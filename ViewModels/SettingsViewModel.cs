@@ -114,10 +114,9 @@ namespace Dental.ViewModels
 
         #region Управление моделью
         public ICommand SaveCommand { get; }
-        public ICommand DeleteCommand { get; }
 
         private bool CanSaveCommandExecute(object p) => true;
-        private bool CanDeleteCommandExecute(object p) => true;
+
 
         private void OnSaveCommandExecuted(object p)
         {
@@ -126,8 +125,11 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Settings.Add(Model);
-
-                db.SaveChanges();
+                if (db.Entry(Model).State == EntityState.Modified || db.Entry(Model).State == EntityState.Added)
+                {
+                    ActionsLog.RegisterAction("Настройки", ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Settings"]);
+                }
+                    db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
                 if (HasUnsavedChanges())

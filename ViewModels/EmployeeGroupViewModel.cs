@@ -58,7 +58,11 @@ namespace Dental.ViewModels
                 if (p is EmployeeGroup model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    if (model.Id != 0) 
+                    {
+                        db.Entry(model).State = EntityState.Deleted;
+                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["EmployeeGroup"]);
+                    } 
                     else db.Entry(model).State = EntityState.Detached;
                     int cnt = db.SaveChanges();
                     Collection = GetCollection();
@@ -82,7 +86,15 @@ namespace Dental.ViewModels
                 foreach (var item in Collection)
                 {
                     if (string.IsNullOrEmpty(item.Name)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    if (item.Id == 0) 
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["EmployeeGroup"]);
+                    }
+                    if (db.Entry(item).State == EntityState.Modified)
+                    {
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["EmployeeGroup"]);
+                    }
                 }
                 int cnt = db.SaveChanges();
                 Collection = GetCollection();

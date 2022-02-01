@@ -247,6 +247,9 @@ namespace Dental.ViewModels
                 FileInfo newFile = new FileInfo(Path.Combine(path, file.Name));
                 newFile.CreationTime = DateTime.Now;
 
+                var names = new string[] { Model.Fio, "добавлен файл", newFile.Name };
+                ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Employee"]);
+
                 Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
             }
             catch (Exception e)
@@ -264,6 +267,8 @@ namespace Dental.ViewModels
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     file.Delete();
+                    var names = new string[] { Model.Fio, "удален файл", file.Name };
+                    ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);
                     Files = new DirectoryInfo(GetPathToEmpDir()).GetFiles().ToObservableCollection();
                 }
             }
@@ -315,11 +320,8 @@ namespace Dental.ViewModels
         }
         public object _EmployeeSpecialities;
 
-        private List<Speciality> GetEmployeeSpecialities()
-        {
-            return Model?.EmployesSpecialities.Where(f => f.EmployeeId == Model?.Id).Select(f => f.Speciality).ToList();
-        }
-
+        private List<Speciality> GetEmployeeSpecialities() => Model?.EmployesSpecialities.Where(f => f.EmployeeId == Model?.Id).Select(f => f.Speciality).ToList();
+        
         private bool IsEqualEmployeeSpecialities()
         {
             if (EmployeeSpecialities?.ToString()?.Length > 0)
@@ -451,7 +453,12 @@ namespace Dental.ViewModels
                 if (Model.Id == 0) 
                 {
                     db.Employes.Add(Model);
+                    ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Employee"]);
                     BtnAfterSaveEnable = true;
+                }
+                if (db.Entry(Model).State == EntityState.Modified)
+                {
+                    ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Employee"]);
                 }
                 SaveEmployeeSpecialities();
                 SavePhoto();
@@ -484,6 +491,7 @@ namespace Dental.ViewModels
 
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;
+                ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);
                 int cnt = db.SaveChanges();
 
                 if (cnt > 0) 
@@ -589,8 +597,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото сотрудника?",
-messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото сотрудника?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
                 if (Directory.Exists(GetPathToPhoto()))

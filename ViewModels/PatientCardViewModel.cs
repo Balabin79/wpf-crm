@@ -180,6 +180,7 @@ namespace Dental.ViewModels
 
                 if (cnt > 0)
                 {
+                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
                     var notification = new Notification();
                     notification.Content = "Карта клиента полностью удалена из базы данных!";
                     notification.run();
@@ -203,9 +204,11 @@ namespace Dental.ViewModels
                     notification.Content = "Новый клиент успешно записан в базу данных!";
                     db.PatientInfo.Add(Model);
                     BtnAfterSaveEnable = true;
+                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
                 }
-                else
+                if (db.Entry(Model).State == EntityState.Modified)
                 {
+                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
                     notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();
                 }
@@ -229,7 +232,7 @@ namespace Dental.ViewModels
             try
             {
                 string path = Path.Combine(PathToPatientsCards, Model.Guid);
-                if (Directory.Exists(path)) Directory.Delete(path, true);
+                if (Directory.Exists(path))  Directory.Delete(path, true);
             } 
             catch(Exception e)
             {
@@ -324,6 +327,9 @@ namespace Dental.ViewModels
                 FileInfo newFile = new FileInfo(Path.Combine(path, file.Name));
                 newFile.CreationTime = DateTime.Now;
 
+                var names = new string[] { Model.FullName, "добавлен файл", newFile.Name };
+                ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
+
                 Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
             }
             catch (Exception e)
@@ -341,6 +347,10 @@ namespace Dental.ViewModels
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                      file.Delete();
+
+                    var names = new string[] { Model.FullName, "удален файл", file.Name };
+                    ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
+
                     Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
                 }
             }
