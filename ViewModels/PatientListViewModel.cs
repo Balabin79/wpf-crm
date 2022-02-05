@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
-using Dental.Models;
+using Dental.Views.PatientCard;
 using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
@@ -13,6 +13,7 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Services;
+using Dental.Models;
 
 namespace Dental.ViewModels
 {
@@ -31,10 +32,15 @@ namespace Dental.ViewModels
                 ShowArchiveCommand = new LambdaCommand(OnShowArchiveCommandExecuted, CanShowArchiveCommandExecute);
                 #endregion
 
+                OpenFormAdvertisingCommand = new LambdaCommand(OnOpenFormAdvertisingExecuted, CanOpenFormAdvertisingExecute);
+                OpenFormCategoryClientCommand = new LambdaCommand(OnOpenFormCategoryClientExecuted, CanOpenFormCategoryClientExecute);
+                CloseFormAdvertisingCommand = new LambdaCommand(OnCloseFormAdvertisingExecuted, CanCloseFormAdvertisingExecute);
+                CloseFormCategoryClientCommand = new LambdaCommand(OnCloseFormCategoryClientExecuted, CanCloseFormCategoryClientExecute);
+
                 BtnIconArchive = false;
                 BtnIconList = true;
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список пациентов\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -42,7 +48,50 @@ namespace Dental.ViewModels
         }
 
         public ICommand OpenPatientCardCommand { get; }
+        public ICommand ShowArchiveCommand { get; }
+        public ICommand OpenFormAdvertisingCommand { get; }
+        public ICommand OpenFormCategoryClientCommand { get; }
+        public ICommand CloseFormAdvertisingCommand { get; }
+        public ICommand CloseFormCategoryClientCommand { get; }
+
         private bool CanOpenPatientCardCommandExecute(object p) => true;
+        private bool CanShowArchiveCommandExecute(object p) => true;
+        private bool CanOpenFormAdvertisingExecute(object p) => true;
+        private bool CanOpenFormCategoryClientExecute(object p) => true;
+        private bool CanCloseFormAdvertisingExecute(object p) => true;
+        private bool CanCloseFormCategoryClientExecute(object p) => true;
+
+
+        private void OnOpenFormAdvertisingExecuted(object p)
+        {
+            try
+            {
+                AdvertisingWin = new AdvertisingWindow();
+                AdvertisingWin.ShowDialog();
+            } catch
+            {
+
+            }
+        }
+
+        private void OnOpenFormCategoryClientExecuted(object p)
+        {
+            try
+            {
+                GroupsWin = new GroupsWindow();
+                GroupsWin.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void OnCloseFormAdvertisingExecuted(object p) => AdvertisingWin.Close();
+        private void OnCloseFormCategoryClientExecuted(object p) => GroupsWin.Close();
+
+
+
         private void OnOpenPatientCardCommandExecuted(object p)
         {
             if (p == null) return;
@@ -54,10 +103,7 @@ namespace Dental.ViewModels
             }
 
 
-        }
-
-        public ICommand ShowArchiveCommand { get; }
-        private bool CanShowArchiveCommandExecute(object p) => true;
+        }         
         private void OnShowArchiveCommandExecuted(object p)
         {
             try
@@ -93,6 +139,9 @@ namespace Dental.ViewModels
             get => _Collection;
             set => Set(ref _Collection, value);
         }
+
+        public AdvertisingWindow AdvertisingWin { get; set; } 
+        public GroupsWindow GroupsWin { get; set; }
 
         private void SetCollection(bool isArhive=false)
         {

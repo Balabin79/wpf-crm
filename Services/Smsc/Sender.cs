@@ -16,17 +16,16 @@ namespace Dental.Services.Smsc
 {
     public class Sender
     {
-        public Sender(Settings settings, ICollection<PatientInfo> clients, string message, IParser parser)
+        public Sender(ICollection<PatientInfo> clients, string message, IParser parser)
         {
-            Settings = settings;
+           // Settings = settings;
             Clients = clients;
             Message = parser.Parse(message); // Вызов парсера
 
-            SMSC_LOGIN = settings.LoginSmsCenter;
-            SMSC_PASSWORD = settings.PasswordSmsCenter;
+            //SMSC_LOGIN = settings.LoginSmsCenter;
+            //SMSC_PASSWORD = settings.PasswordSmsCenter;
         }       
 
-        public Settings Settings { get; }
         public ICollection<PatientInfo> Clients { get; }
         public IParser Parser { get; }
         public string Message { get; set; }

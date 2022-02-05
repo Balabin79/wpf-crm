@@ -64,7 +64,7 @@ namespace Dental.Services
                     default: return "";
                 }
             }
-            catch(Exception e)
+            catch
             {
                 return "";
             }

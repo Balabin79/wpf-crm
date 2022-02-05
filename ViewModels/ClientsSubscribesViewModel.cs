@@ -38,7 +38,6 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 SetCollection();
                 ClientsGroups = db.ClientsGroup?.ToArray();
-                ProgramSettings = db.Settings?.FirstOrDefault();
                 TypeSubscribeParams = db.SubscribeParams.Where(f => f.Id < 11).ToObservableCollection();
                 VoiceParams = db.SubscribeParams.Where(f => f.Id > 10).ToObservableCollection();
             }
@@ -172,7 +171,7 @@ namespace Dental.ViewModels
                     {
                         Model.JsonSettings = JsonSerializer.Serialize(Model.Settings);
                     } 
-                    catch(Exception e)
+                    catch
                     {
                         Model.JsonSettings = JsonSerializer.Serialize(new Services.Smsc.SmsSettings.Settings());
                     }                    
@@ -365,7 +364,7 @@ namespace Dental.ViewModels
             }
         } 
         public ICollection<ClientsGroup> ClientsGroups { get; }
-        public Settings ProgramSettings { get;  }
+
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();
         private ClientsSubscribes CreateNewModel() => new ClientsSubscribes();

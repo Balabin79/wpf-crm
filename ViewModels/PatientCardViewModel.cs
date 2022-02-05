@@ -234,7 +234,7 @@ namespace Dental.ViewModels
                 string path = Path.Combine(PathToPatientsCards, Model.Guid);
                 if (Directory.Exists(path))  Directory.Delete(path, true);
             } 
-            catch(Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Неудачная попытка удалить файлы, прикрепленные к карте клиента. Возможно файлы были запущены в другой программе! Попробуйте закрыть запущенные сторонние программы и повторить!",
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);

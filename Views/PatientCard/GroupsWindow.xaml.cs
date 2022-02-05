@@ -1,20 +1,23 @@
-﻿using DevExpress.Xpf.Editors.Flyout;
 using DevExpress.Xpf.Grid;
 using System.Windows;
-using System.Windows.Controls;
 
-namespace Dental.Views
+namespace Dental.Views.PatientCard
 {
-    public partial class Settings : Page
+    public partial class GroupsWindow : Window
     {
-        public Settings()
-        {          
+        public GroupsWindow()
+        {
             InitializeComponent();
+        }
+
+        private void TableView_CellValueChanging(object sender, DevExpress.Xpf.Grid.CellValueChangedEventArgs e)
+        {
+            ((TableView)sender).PostEditor();
         }
 
         private void TextEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
         {
-            if (e.NewValue?.ToString() == "0")
+            if(e.NewValue?.ToString() == "0" )
             {
                 ((DevExpress.Xpf.Editors.BaseEdit)sender).EditValue = "";
             }

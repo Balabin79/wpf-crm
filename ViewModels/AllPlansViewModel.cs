@@ -27,7 +27,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Зарплаты сотрудников\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

@@ -45,7 +45,7 @@ namespace Dental.ViewModels
                     else i.Image = null;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

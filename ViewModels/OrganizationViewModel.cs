@@ -62,7 +62,7 @@ namespace Dental.ViewModels
                 }
                 ModelBeforeChanges = (Organization)Model.Clone();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Организации\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

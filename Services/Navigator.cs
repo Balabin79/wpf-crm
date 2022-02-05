@@ -145,7 +145,7 @@ namespace Dental.Services
                     GoToPage(param);
                     SetHistory(link, false);
                 }
-            } catch(Exception e)
+            } catch
             {
                 // переход на страницу по умолчанию
             }
@@ -192,26 +192,6 @@ namespace Dental.Services
 
         #endregion
 
-        public void LastPageSaving()
-        {
-            if (BrowsingHistory?.Count > 0)
-            {
-                using (var db = new ApplicationContext())
-                {
-                    try
-                    {
-                        if (StartWithLastPage == 1)
-                        {
-                            var settings = db.Settings.FirstOrDefault();
-                            settings.StartPage = BrowsingHistory.Last().ToString();
-                            db.SaveChanges();
-                        }
-                    }
-                    catch { }
-                }
-            }
-        }
-
 
         private Page GetStartPage()
         {
@@ -219,10 +199,7 @@ namespace Dental.Services
             {
                 try
                 {
-                    var settings = db.Settings.FirstOrDefault();
-                    StartWithLastPage = settings?.StartWithLastPage ?? 0;
-                    var startPage = db.Settings.FirstOrDefault()?.StartPage ?? defaultPage;
-                    return CreatePage(startPage);
+                    return CreatePage(defaultPage);
                 }
                 catch
                 {

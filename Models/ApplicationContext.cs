@@ -70,7 +70,6 @@ namespace Dental.Models
 
         public DbSet<SubscribeParams> SubscribeParams { get; set; }
         public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
-        public DbSet<Settings> Settings { get; set; }
         public DbSet<UserActions> UserActions { get; set; }
 
     }

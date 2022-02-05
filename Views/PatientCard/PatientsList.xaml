@@ -45,7 +45,7 @@
                         ShowDragWidget="False"
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать карту пациента" 
+                        <dxb:BarButtonItem Name="bCreate" Content="Создать карту клиента" 
                                            DataContext="{StaticResource Router}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
@@ -53,6 +53,22 @@
                                            CustomGlyphSize="28,28"
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
+                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarButtonItem Content="Категории клиентов" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="28,28"
+                                           Command="{Binding OpenFormCategoryClientCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}"/>
+                        
+                        <dxb:BarButtonItem Content="Источники привлечения клиентов" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="28,28"
+                                           Command="{Binding OpenFormAdvertisingCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}"/>
+                        
+                        <dxb:BarItemLinkSeparator/>
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" 
                                            Content="Показать список пациентов" 

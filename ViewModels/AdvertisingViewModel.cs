@@ -35,7 +35,7 @@ namespace Dental.ViewModels
                 Navigator.HasUnsavedChanges = HasUnsavedChanges;
                 Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Рекламные источники\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

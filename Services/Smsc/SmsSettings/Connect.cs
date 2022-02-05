@@ -18,12 +18,12 @@ namespace Dental.Services.Smsc.SmsSettings
         public Connect()
         {
             db = new ApplicationContext();
-            var settings = db.Settings.FirstOrDefault();
+            /*var settings = db.Settings.FirstOrDefault();
             if (settings == null || string.IsNullOrEmpty(settings?.LoginSmsCenter) || string.IsNullOrEmpty(settings?.PasswordSmsCenter))
                 throw new SettingsException("Не заполнен логин или пароль для центра уведомлений, продолжение невозможно! Заполните соответствующие поля в разделе \"Настройки\"!");
             
             Login = settings?.LoginSmsCenter;
-            Password = settings?.PasswordSmsCenter;
+            Password = settings?.PasswordSmsCenter;*/
         }
 
         public string Login { get; set; } 

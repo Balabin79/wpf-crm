@@ -23,8 +23,7 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             {
                 e.Cancel = true;
                 return;
-            }
-            if (Application.Current.Resources["Router"] is Navigator nav) nav?.LastPageSaving();           
+            }         
             e.Cancel = false;
             Application.Current.Shutdown();
         }

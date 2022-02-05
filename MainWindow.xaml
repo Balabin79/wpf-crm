@@ -239,24 +239,18 @@
                                             Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Программа" >
-                        <dxb:BarButtonItem Content="Настройки" RibbonStyle="Default" 
-                                           ToolTip="Настройки"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Setting-Tools.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Setting-Tools.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Setting-Tools.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Settings"/>
                         <dxb:BarButtonItem Content="Регистрация программы" RibbonStyle="Default" 
                                            ToolTip="Регистрация программы"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Nomenclatures.MainList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
                         <dxb:BarButtonItem Content="О программе Dental" RibbonStyle="Default" 
                                            ToolTip="О программе Dental"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Nomenclatures.MainList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
 
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
