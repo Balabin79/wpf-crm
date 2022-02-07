@@ -12,6 +12,7 @@ using Dental.Infrastructures.Commands.Base;
 using Dental.Services;
 using System.Collections.Generic;
 using Dental.Infrastructures.Logs;
+using Dental.Views.EmployeeDir;
 
 namespace Dental.ViewModels
 {
@@ -25,6 +26,10 @@ namespace Dental.ViewModels
             {
                 NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
                 ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
+
+                OpenFormSpecialitiesCommand = new LambdaCommand(OnOpenFormSpecialitiesExecuted, CanOpenFormSpecialitiesExecute);
+                OpenFormCategoryEmployesCommand = new LambdaCommand(OnOpenFormCategoryEmployesExecuted, CanOpenFormCategoryEmployesExecute);
+
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
                 foreach (var i in Collection)
@@ -54,8 +59,40 @@ namespace Dental.ViewModels
 
         public ICommand NavigateToCommand { get; }
         public ICommand ExpandAllCommand { get; }
+        public ICommand OpenFormSpecialitiesCommand { get; }
+        public ICommand OpenFormCategoryEmployesCommand { get; }
+
         private bool CanNavigateToCommandExecute(object p) => true;
         private bool CanExpandAllCommandExecute(object p) => true;
+        private bool CanOpenFormSpecialitiesExecute(object p) => true;
+        private bool CanOpenFormCategoryEmployesExecute(object p) => true;
+
+
+        private void OnOpenFormSpecialitiesExecuted(object p)
+        {
+            try
+            {
+                SpecialitiesWin = new SpecialitiesWindow();
+                SpecialitiesWin.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void OnOpenFormCategoryEmployesExecuted(object p)
+        {
+            try
+            {
+                GroupsWin = new EmployeeGroupsWindow();
+                GroupsWin.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
         private void OnExpandAllCommandExecuted(object p)
         {
             try
@@ -72,7 +109,10 @@ namespace Dental.ViewModels
             }
         } 
 
-        public List<Employee> Collection { get; set; }
+        public List<Models.Employee> Collection { get; set; }
+
+        public SpecialitiesWindow SpecialitiesWin { get; set; }
+        public EmployeeGroupsWindow GroupsWin { get; set; }
 
         private void OnNavigateToCommandExecuted(object p)
         {

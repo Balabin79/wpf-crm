@@ -8,7 +8,6 @@ namespace Dental.Services
 {
     public static class Helper
     {
-
         public static ICollection<string> Pages
         {
             get => new string[]

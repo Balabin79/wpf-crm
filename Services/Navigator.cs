@@ -229,7 +229,7 @@ namespace Dental.Services
         private Page currentPage;
 
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
-        private readonly string defaultPage = "Dental.Views.Specialities";
+        private readonly string defaultPage = "Dental.Views.Organization";
 
         // коллекция просмотренных страниц
         public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();

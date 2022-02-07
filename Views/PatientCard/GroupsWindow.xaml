@@ -16,6 +16,7 @@
       xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
       xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
       d:DesignHeight="450" d:DesignWidth="800"
+      Closing="Window_Closing"
       Title="Категории клиентов">
     <Window.Resources>
         <vm:ClientGroupViewModel x:Key="vm"/>
@@ -87,22 +88,18 @@
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Image Height="23" Width="23" Margin="2 0 3 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/status11.png" />
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="Категории клиентов" FontSize="15" Padding="0 8 5 0" />
+                    <dx:DXImage Height="23" Width="23" Source="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}"/>
+                    <TextBlock Text="Категории клиентов" FontSize="15" Padding="2 8 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar1" 
+                    <dxb:ToolBarControl 
                                         Caption="File"
                                         ShowDragWidget="False"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
@@ -110,14 +107,14 @@
                                            CustomGlyphSize="28,28"
                                            Command="{Binding AddCommand}"
                                            CommandParameter="-1"/>
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать"                                
+                        <dxb:BarButtonItem Content="Печать"                                
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
@@ -131,12 +128,12 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dxg:GridControl AutoGenerateColumns="None"  Name="grid"  
+                <dxg:GridControl AutoGenerateColumns="None"  Name="gridGr"  
                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" MaxHeight="2000">
 
                     <dxg:GridControl.View>
                         <dxg:TableView                   
-                    x:Name="view"
+                    x:Name="viewGr"
                     ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
@@ -161,14 +158,22 @@
 
 
                             <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" DataContext="{Binding Source={StaticResource vm}}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать"  Command="{Binding AddCommand}"/>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
+                                                    DataContext="{Binding Source={StaticResource vm}}"
+                                                    KeyGesture="Ctrl+N" Content="Создать"  
+                                                    Command="{Binding AddCommand}"/>
 
-                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" DataContext="{Binding Source={StaticResource vm}}"
-                            Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding SaveCommand}" />
+                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                                   DataContext="{Binding Source={StaticResource vm}}"
+                            KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding SaveCommand}" />
 
-                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
+                                <dxb:BarButtonItem  Content="Удалить" Command="{Binding DeleteCommand}"
+                                                    CommandParameter="{Binding ElementName=viewGr, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
+                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
+                                                    DataContext="{Binding Source={StaticResource vm}}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
@@ -212,7 +217,8 @@
 
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" IsChecked="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, 
+                                <dxe:CheckEdit HorizontalAlignment="Center" Name="PART_Editor" 
+                                               IsChecked="{Binding RowData.Row.IsApplyDiscount, Mode=TwoWay, 
                             UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" />
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
@@ -348,20 +354,20 @@
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                    <dxb:ToolBarControl x:Name="fileToolBar"
+                                    <dxb:ToolBarControl 
                                                         Caption="File" 
                                                         ShowDragWidget="False"
                                                         AllowCustomizationMenu="False" 
                                                         AllowQuickCustomization="False">
 
-                                        <dxb:BarButtonItem Name="bDelete" 
+                                        <dxb:BarButtonItem  
                                            DataContext="{StaticResource vm}"        
                                            Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                                           CommandParameter="{Binding ElementName=viewGr, Path=FocusedRow}"/>
 
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>

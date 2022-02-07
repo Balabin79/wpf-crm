@@ -36,6 +36,7 @@
     <None Remove="Resources\Icons\svg\file.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\folder.svg" />
+    <None Remove="Resources\Icons\svg\icon_key.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\megaphone.svg" />
@@ -50,6 +51,8 @@
     <None Remove="Resources\Icons\svg\plus-square.svg" />
     <None Remove="Resources\Icons\svg\price_tag.svg" />
     <None Remove="Resources\Icons\svg\print.svg" />
+    <None Remove="Resources\Icons\svg\reg1.svg" />
+    <None Remove="Resources\Icons\svg\reg2.svg" />
     <None Remove="Resources\Icons\svg\save.svg" />
     <None Remove="Resources\Icons\svg\settings.svg" />
     <None Remove="Resources\Icons\svg\settings2.svg" />
@@ -300,6 +303,7 @@
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\folder.svg" />
+    <Resource Include="Resources\Icons\svg\icon_key.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\megaphone.svg" />
@@ -313,6 +317,8 @@
     <Resource Include="Resources\Icons\svg\plus-square.svg" />
     <Resource Include="Resources\Icons\svg\price_tag.svg" />
     <Resource Include="Resources\Icons\svg\print.svg" />
+    <Resource Include="Resources\Icons\svg\reg1.svg" />
+    <Resource Include="Resources\Icons\svg\reg2.svg" />
     <Resource Include="Resources\Icons\svg\save.svg" />
     <Resource Include="Resources\Icons\svg\settings.svg" />
     <Resource Include="Resources\Icons\svg\settings2.svg" />
@@ -426,7 +432,7 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AllPlans.xaml.cs">
+    <Compile Update="Views\Reports\AllPlans.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ClientsRequests.xaml.cs">
@@ -435,13 +441,13 @@
     <Compile Update="Views\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeSummary.xaml.cs">
+    <Compile Update="Views\Reports\EmployeeSummary.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Sheduler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeGroups.xaml.cs">
+    <Compile Update="Views\EmployeeDir\EmployeeGroupsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\Ids.xaml.cs">
@@ -462,7 +468,7 @@
     <Compile Update="Views\PatientCard\AdvertisingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Specialities.xaml.cs">
+    <Compile Update="Views\EmployeeDir\SpecialitiesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -503,7 +509,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AllPlans.xaml">
+    <Page Update="Views\Reports\AllPlans.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -515,7 +521,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EmployeeSummary.xaml">
+    <Page Update="Views\Reports\EmployeeSummary.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -527,7 +533,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EmployeeGroups.xaml">
+    <Page Update="Views\EmployeeDir\EmployeeGroupsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -555,7 +561,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Specialities.xaml">
+    <Page Update="Views\EmployeeDir\SpecialitiesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -140,7 +140,7 @@ namespace Dental.ViewModels
 
         public bool UserSelectedBtnCancel()
         {
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Продолжить без сохранения?",
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Закрыть без сохранения?",
                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning) ;
 
             return response.ToString() == "No";

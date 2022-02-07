@@ -21,7 +21,9 @@
 
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />
+        <viewModels:MainWindowViewModel x:Key="mv"/>
     </dx:ThemedWindow.Resources>
+
 
     <Grid VerticalAlignment="Stretch" Margin="0,0,0,0">
         <Grid.RowDefinitions>
@@ -30,7 +32,17 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <dxr:RibbonControl AllowCustomization="False" RibbonStyle="Office2019" ShowApplicationButton="False" Grid.Row="0" Name="RibbonControl">
+        <dxr:RibbonControl 
+            AllowCustomization="False" 
+            RibbonStyle="Office2019" 
+            ShowApplicationButton="False" 
+            Grid.Row="0" 
+            Name="RibbonControl"
+            >
+
+
+
+
             <dxr:RibbonControl.ToolbarItems>
                 <dxb:BarButtonItem  
                     Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"
@@ -76,10 +88,34 @@
                 
                 </dxb:BarSplitButtonItem>
                 <dxb:BarItemLinkSeparator/>
-                <dxb:BarButtonItem Content="Справка" Glyph="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"/>
+                <dxb:BarButtonItem 
+                    Content="Справка" 
+                    Glyph="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"
+                    DataContext="{StaticResource mv}"
+                    Command="{Binding OpenFormHelpCommand}"/>
+
+                <dxb:BarButtonItem 
+                    Content="Регистрация программы"
+                    GlyphSize="Custom"
+                    Glyph="pack://application:,,,/Resources/Icons/svg/reg1.svg"
+                    GlyphAlignment="Bottom"
+                    Margin="0 2 0 0"
+                    AllowGlyphTheming="True"
+                    CustomGlyphSize="13,13" 
+                    DataContext="{StaticResource mv}"
+                    Command="{Binding OpenFormRegCommand}"/>
+
+                <dxb:BarButtonItem 
+                    Content="О программе" 
+                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Info.svg}"
+                    DataContext="{StaticResource mv}"
+                    Command="{Binding OpenFormAboutCommand}"/>
 
             </dxr:RibbonControl.ToolbarItems>
+
+
             <dxr:RibbonDefaultPageCategory>
+                
                 <dxr:RibbonPage Caption="Рабочий стол" >
                     <dxr:RibbonPageGroup Caption="Клиенты">
                         <dxb:BarButtonItem Content="Новый клиент" RibbonStyle="Default" 
@@ -119,142 +155,101 @@
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png"                                        
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsSubscribes"/>
 
-                        <dxb:BarButtonItem Content="Сводные данные" RibbonStyle="Default" 
-                                           ToolTip="Сводные данные"
+                        <dxb:BarButtonItem Content="Сотрудники"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/emp.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/emp.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/emp.png"   
+                                           ToolTip="Сотрудники"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes"
+                                           />
+
+
+                        <dxb:BarButtonItem Content="Организация"
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png"   
+                                           ToolTip="Организация"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Organization"/>
+
+                        <dxb:BarButtonItem Content="Услуги" 
+                                           RibbonStyle="Default" 
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
+                                            ToolTip="Услуги"
+                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator"/>
+                        
+                    </dxr:RibbonPageGroup>
+
+                    
+                </dxr:RibbonPage>
+                <dxr:RibbonPage Caption="Статистика" >
+                    <dxr:RibbonPageGroup Caption="Сводные таблицы" >
+                        <dxb:BarButtonItem Content="Сводные данные по сотрудникам" RibbonStyle="Default" 
+                                           ToolTip="Сводные данные по сотрудникам"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Sallary-Deferrais.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeSummary"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.EmployeeSummary"/>
 
                         <dxb:BarButtonItem Content="Планы услуг и продажи" RibbonStyle="Default" 
                                            ToolTip="Планы услуг и продажи"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Finance.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Finance.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Finance.png"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.AllPlans"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.AllPlans"/>
                     </dxr:RibbonPageGroup>
-
                     <dxr:RibbonPageGroup Caption="Отчеты" >
-                        <dxb:BarButtonItem Content="Счета и оплаты" RibbonStyle="Default" 
-                                           ToolTip="Статистика по счетам и оплатам"
+                        <dxb:BarButtonItem Content="Выручка по сотрудникам" RibbonStyle="Default" 
+                                           ToolTip="Выручка по сотрудникам"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Pie.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Pie.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Pie.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByEmployes"/>
+                        
                         <dxb:BarButtonItem Content="Выручка за периоды" RibbonStyle="Default" 
                                            ToolTip="Статистика по выручке по заданным периодам"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Curve.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Curve.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Curve.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByPeriods"/>
+                        
                         <dxb:BarButtonItem Content="Приемы пациентов" RibbonStyle="Default" 
                                            ToolTip="Статистика по приему пациентов"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Bar.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Bar.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Bar.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
-                        <dxb:BarButtonItem Content="Расход материалов" RibbonStyle="Default" 
-                                           ToolTip="Статистика по расходу материалов"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByVisits"/>
+                        
+                        <dxb:BarButtonItem Content="Выручка по услугам" RibbonStyle="Default" 
+                                           ToolTip="Выручка по услугам"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Table.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Table.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Table.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByServices"/>
+                        
                         <dxb:BarButtonItem Content="Каналы привлечения" RibbonStyle="Default" 
                                            ToolTip="Статистика по каналам привлечения"
                                            Glyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png" 
                                            LargeGlyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList"/>
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByAdvertising"/>
+
+                    </dxr:RibbonPageGroup>
+                    <dxr:RibbonPageGroup Caption="История" >
+                        <dxb:BarButtonItem Content="Действия пользователя" RibbonStyle="Default" 
+                                           ToolTip="Действия пользователя"
+                                           Glyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png"
+                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png" 
+                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Columnchart.png"                                    
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 
-                <dxr:RibbonPage Caption="Администрирование">
-                    <dxr:RibbonPageGroup Caption="Кадры" >
-                        <dxb:BarButtonItem Content="Список сотрудников"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/emp.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/emp.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/emp.png"   
-                                           ToolTip="Список сотрудников"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Employes"
-                                           />
-                        <dxb:BarButtonItem Content="Добавить сотрудника"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Client-Account-Template.png"   
-                                           ToolTip="Добавить сотрудника"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Employee"/>
-
-                    </dxr:RibbonPageGroup >
-
-                    <dxr:RibbonPageGroup Caption="Маркетинг">
-                        <dxb:BarButtonItem Content="Категории клиентов"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/status11.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/status11.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/status11.png"   
-                                            ToolTip="Категории клиентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Groups"/>
-                        <dxb:BarButtonItem Content="Категории сотрудников"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Reseller-Account-Template.png"   
-                                            ToolTip="Категории клиентов"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeGroups"/>
-                        <dxb:BarButtonItem Content="Рекламные источники"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Advertising.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Advertising.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Advertising.png"   
-                                            ToolTip="Рекламные источники"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Advertising"/>
-
-                    </dxr:RibbonPageGroup>
-
-                    <dxr:RibbonPageGroup Caption="Общие справочники">
-
-                        <dxb:BarButtonItem Content="Реквизиты организации"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Draw-Clone.png"   
-                                           ToolTip="Реквизиты организации"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Organization"/>
-
-                        <dxb:BarButtonItem Content="Специальности сотрудников"
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png" 
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Hotjobs.png"   
-                                           ToolTip="Специальности сотрудников"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
-                        <dxb:BarButtonItem Content="Классификатор услуг" 
-                                           RibbonStyle="Default" 
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png"   
-                                            ToolTip="Классификатор услуг"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator"/>
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Программа" >
-                        <dxb:BarButtonItem Content="Регистрация программы" RibbonStyle="Default" 
-                                           ToolTip="Регистрация программы"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Application-Key.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
-                        <dxb:BarButtonItem Content="О программе Dental" RibbonStyle="Default" 
-                                           ToolTip="О программе Dental"
-                                           Glyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png"
-                                           MediumGlyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png" 
-                                           LargeGlyph="pack://application:,,,/Resources/Icons/Template/Info-Rhombus.png"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Specialities"/>
-
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
             </dxr:RibbonDefaultPageCategory>
+            
         </dxr:RibbonControl>
 
 

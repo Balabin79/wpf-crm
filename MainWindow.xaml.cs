@@ -27,5 +27,6 @@ messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             e.Cancel = false;
             Application.Current.Shutdown();
         }
+
     }
 }

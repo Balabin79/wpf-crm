@@ -34,8 +34,6 @@ namespace Dental.ViewModels
 
                 OpenFormAdvertisingCommand = new LambdaCommand(OnOpenFormAdvertisingExecuted, CanOpenFormAdvertisingExecute);
                 OpenFormCategoryClientCommand = new LambdaCommand(OnOpenFormCategoryClientExecuted, CanOpenFormCategoryClientExecute);
-                CloseFormAdvertisingCommand = new LambdaCommand(OnCloseFormAdvertisingExecuted, CanCloseFormAdvertisingExecute);
-                CloseFormCategoryClientCommand = new LambdaCommand(OnCloseFormCategoryClientExecuted, CanCloseFormCategoryClientExecute);
 
                 BtnIconArchive = false;
                 BtnIconList = true;
@@ -51,15 +49,11 @@ namespace Dental.ViewModels
         public ICommand ShowArchiveCommand { get; }
         public ICommand OpenFormAdvertisingCommand { get; }
         public ICommand OpenFormCategoryClientCommand { get; }
-        public ICommand CloseFormAdvertisingCommand { get; }
-        public ICommand CloseFormCategoryClientCommand { get; }
 
         private bool CanOpenPatientCardCommandExecute(object p) => true;
         private bool CanShowArchiveCommandExecute(object p) => true;
         private bool CanOpenFormAdvertisingExecute(object p) => true;
         private bool CanOpenFormCategoryClientExecute(object p) => true;
-        private bool CanCloseFormAdvertisingExecute(object p) => true;
-        private bool CanCloseFormCategoryClientExecute(object p) => true;
 
 
         private void OnOpenFormAdvertisingExecuted(object p)
@@ -81,16 +75,11 @@ namespace Dental.ViewModels
                 GroupsWin = new GroupsWindow();
                 GroupsWin.ShowDialog();
             }
-            catch
+            catch 
             {
 
             }
         }
-
-        private void OnCloseFormAdvertisingExecuted(object p) => AdvertisingWin.Close();
-        private void OnCloseFormCategoryClientExecuted(object p) => GroupsWin.Close();
-
-
 
         private void OnOpenPatientCardCommandExecuted(object p)
         {

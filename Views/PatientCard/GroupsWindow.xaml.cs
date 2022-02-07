@@ -1,3 +1,4 @@
+using Dental.ViewModels;
 using DevExpress.Xpf.Grid;
 using System.Windows;
 
@@ -22,6 +23,19 @@ namespace Dental.Views.PatientCard
                 ((DevExpress.Xpf.Editors.BaseEdit)sender).EditValue = "";
             }
             e.Handled = true;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.Resources["vm"] is ClientGroupViewModel vm)
+            {
+                if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel())
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                e.Cancel = false;
+            }
         }
     }
 }

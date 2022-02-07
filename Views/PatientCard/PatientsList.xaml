@@ -53,7 +53,7 @@
                                            CustomGlyphSize="28,28"
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
-                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarItemSeparator/>
                         <dxb:BarButtonItem Content="Категории клиентов" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
