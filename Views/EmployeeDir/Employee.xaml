@@ -314,6 +314,45 @@
                     <GroupBox BorderBrush="LightGray" Margin="5" Header="Дополнительно" Grid.Row="1">
                         
                         <dxlc:LayoutControl  Orientation="Vertical" Padding="0">
+                            <dxlc:LayoutGroup Orientation="Horizontal">
+
+                                <dxlc:LayoutItem Label="Уведомлять при добавлении записи в расписание:" LabelPosition="Top" >
+                                    <dxe:ComboBoxEdit       
+                                        SelectedIndex="{Binding Model.NotificationShedulerIdx, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        NullText="Канал уведомления" 
+                                        IsTextEditable="False"
+                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                        <dxe:ComboBoxEdit.Items>
+                                            <dxe:ComboBoxEditItem Content="Не уведомлять"  />
+                                            <dxe:ComboBoxEditItem Content="Sms" />
+                                            <dxe:ComboBoxEditItem Content="Email" />
+                                            <dxe:ComboBoxEditItem Content="Viber" />
+                                        </dxe:ComboBoxEdit.Items>
+                                        <dxe:ComboBoxEdit.StyleSettings>
+                                            <dxe:RadioComboBoxStyleSettings />
+                                        </dxe:ComboBoxEdit.StyleSettings>
+                                    </dxe:ComboBoxEdit>
+                                </dxlc:LayoutItem>
+
+                                <dxlc:LayoutItem Label="Уведомлять при добавлении записи в список обращений:" LabelPosition="Top" >
+                                    <dxe:ComboBoxEdit   
+                                        SelectedIndex="{Binding Model.NotificationRequestIdx, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                        NullText="Канал уведомления" 
+                                        IsTextEditable="False"
+                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                        <dxe:ComboBoxEdit.Items>
+                                            <dxe:ComboBoxEditItem Content="Не уведомлять"  />
+                                            <dxe:ComboBoxEditItem Content="Sms" />
+                                            <dxe:ComboBoxEditItem Content="Email" />
+                                            <dxe:ComboBoxEditItem Content="Viber" />
+                                        </dxe:ComboBoxEdit.Items>
+                                        <dxe:ComboBoxEdit.StyleSettings>
+                                            <dxe:RadioComboBoxStyleSettings />
+                                        </dxe:ComboBoxEdit.StyleSettings>
+                                    </dxe:ComboBoxEdit>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                            
                             <dxlc:LayoutGroup>
                             <dxlc:LayoutItem Label="Примечание" AddColonToLabel="True" LabelPosition="Top">
                                 <dxe:MemoEdit 

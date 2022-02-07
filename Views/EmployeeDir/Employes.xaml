@@ -145,7 +145,7 @@
                         <dxb:BarButtonItem Content="Настройка рассылки уведомлений для сотрудников" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
-                                           Command="{Binding OpenFormSpecialitiesCommand}" 
+                                           Command="{Binding OpenFormNotificationSettingsCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"/>
 
                         <dxb:BarItemSeparator/>

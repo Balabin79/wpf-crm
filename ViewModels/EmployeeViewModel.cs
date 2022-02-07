@@ -29,6 +29,12 @@ namespace Dental.ViewModels
         {
             db = new ApplicationContext();
             Files = new ObservableCollection<FileInfo>();
+            CommunicationList = new List<CommunicationType>() {
+                new CommunicationType {  Id=0, Name="Не уведомлять" },
+                new CommunicationType {  Id=1, Name="Sms" },
+                new CommunicationType {  Id=2, Name="Email" },
+                new CommunicationType {  Id=3, Name="Viber" },
+            };
 
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
             ToggleSwitchedCommand = new LambdaCommand(OnToggleSwitchedCommandExecuted, CanToggleSwitchedCommandExecute);
@@ -90,9 +96,9 @@ namespace Dental.ViewModels
             Navigator.HasUnsavedChanges = HasUnsavedChanges;
             Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
         }
-
-        #region Блокировка полей
-        public bool IsReadOnly
+        
+    #region Блокировка полей
+    public bool IsReadOnly
         {
             get => _IsReadOnly;
             set => Set(ref _IsReadOnly, value);
@@ -615,7 +621,12 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        private readonly ApplicationContext db;
-
+    private readonly ApplicationContext db;
+    public List<CommunicationType> CommunicationList { get; }
+}
+    public class CommunicationType
+    {
+        public int? Id { get; set; }
+        public string Name { get; set; }
     }
 }

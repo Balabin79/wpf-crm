@@ -145,7 +145,10 @@ namespace Dental.Models
 
         [Display(Name = "Пол")]
         public Dictionary Sex { get; set; }
-        public int? SexId { get; set; }
+        public int? SexId { get; set; }       
+        
+        public int? NotificationShedulerIdx { get; set; }
+        public int? NotificationRequestIdx { get; set; }
 
         [Display(Name = "Оклад фиксированный")]
         public int? IsFixRate { get; set; }
@@ -185,6 +188,8 @@ namespace Dental.Models
                 if (this.IsDismissed != other.IsDismissed) FieldsChanges.Add("Уволен");                
                 if (this.EmployeeGroupId != other.EmployeeGroupId) FieldsChanges.Add("Категории сотрудников");  
                 if (this.IsFixRate != other.IsFixRate) FieldsChanges.Add("Тип оклада");
+                if (this.NotificationRequestIdx != other.NotificationRequestIdx) FieldsChanges.Add("Уведомления по обращению");
+                if (this.NotificationShedulerIdx != other.NotificationShedulerIdx) FieldsChanges.Add("Уведомления по расписанию");
             }
             return FieldsChanges.Count == 0;
         }

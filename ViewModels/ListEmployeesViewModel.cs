@@ -28,7 +28,8 @@ namespace Dental.ViewModels
                 ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
 
                 OpenFormSpecialitiesCommand = new LambdaCommand(OnOpenFormSpecialitiesExecuted, CanOpenFormSpecialitiesExecute);
-                OpenFormCategoryEmployesCommand = new LambdaCommand(OnOpenFormCategoryEmployesExecuted, CanOpenFormCategoryEmployesExecute);
+                OpenFormCategoryEmployesCommand = new LambdaCommand(OnOpenFormCategoryEmployesExecuted, CanOpenFormCategoryEmployesExecute);               
+                OpenFormNotificationSettingsCommand = new LambdaCommand(OnOpenFormNotificationSettingExecuted, CanOpenFormNotificationSettingExecute);
 
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
@@ -61,11 +62,13 @@ namespace Dental.ViewModels
         public ICommand ExpandAllCommand { get; }
         public ICommand OpenFormSpecialitiesCommand { get; }
         public ICommand OpenFormCategoryEmployesCommand { get; }
+        public ICommand OpenFormNotificationSettingsCommand { get; }
 
         private bool CanNavigateToCommandExecute(object p) => true;
         private bool CanExpandAllCommandExecute(object p) => true;
         private bool CanOpenFormSpecialitiesExecute(object p) => true;
         private bool CanOpenFormCategoryEmployesExecute(object p) => true;
+        private bool CanOpenFormNotificationSettingExecute(object p) => true;
 
 
         private void OnOpenFormSpecialitiesExecuted(object p)
@@ -93,6 +96,20 @@ namespace Dental.ViewModels
 
             }
         }
+        
+        private void OnOpenFormNotificationSettingExecuted(object p)
+        {
+            try
+            {
+                NotificationSettingsWin = new NotificationSettingsWindow();
+                NotificationSettingsWin.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
+
         private void OnExpandAllCommandExecuted(object p)
         {
             try
@@ -107,12 +124,7 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-        } 
-
-        public List<Models.Employee> Collection { get; set; }
-
-        public SpecialitiesWindow SpecialitiesWin { get; set; }
-        public EmployeeGroupsWindow GroupsWin { get; set; }
+        }
 
         private void OnNavigateToCommandExecuted(object p)
         {
@@ -120,12 +132,12 @@ namespace Dental.ViewModels
             {
                 if (string.IsNullOrEmpty(p.ToString())) return;
 
-                int.TryParse(p.ToString(), out int param);
-                if (Application.Current.Resources["Router"] is Navigator nav)
+                if (!int.TryParse(p.ToString(), out int param)) param = 0;                
+                if(Application.Current.Resources["Router"] is Navigator nav)
                 {
-                    if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.Employee");
-                    else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.Employee", param });
-                }                 
+                    if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employee");
+                    else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.EmployeeDir.Employee", param });
+                }
             }
             catch (Exception e)
             {
@@ -133,5 +145,10 @@ namespace Dental.ViewModels
             }
         }
 
+        public List<Models.Employee> Collection { get; set; }
+
+        public SpecialitiesWindow SpecialitiesWin { get; set; }
+        public EmployeeGroupsWindow GroupsWin { get; set; }
+        public NotificationSettingsWindow NotificationSettingsWin { get; set; }       
     }
 }
