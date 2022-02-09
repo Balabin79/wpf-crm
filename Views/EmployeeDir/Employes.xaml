@@ -141,12 +141,6 @@
                                            CustomGlyphSize="28,28"
                                            Command="{Binding OpenFormSpecialitiesCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position_v92.svg}" Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Briefcase.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Настройка рассылки уведомлений для сотрудников" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
-                                           Command="{Binding OpenFormNotificationSettingsCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"/>
 
                         <dxb:BarItemSeparator/>
 

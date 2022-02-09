@@ -78,7 +78,7 @@
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
@@ -86,14 +86,14 @@
                                            CustomGlyphSize="28,28"
                                            Command="{Binding AddCommand}"
                                            CommandParameter="-1"/>
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать"                                
+                        <dxb:BarButtonItem Content="Печать"                                
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"

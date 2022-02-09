@@ -29,7 +29,6 @@ namespace Dental.ViewModels
 
                 OpenFormSpecialitiesCommand = new LambdaCommand(OnOpenFormSpecialitiesExecuted, CanOpenFormSpecialitiesExecute);
                 OpenFormCategoryEmployesCommand = new LambdaCommand(OnOpenFormCategoryEmployesExecuted, CanOpenFormCategoryEmployesExecute);               
-                OpenFormNotificationSettingsCommand = new LambdaCommand(OnOpenFormNotificationSettingExecuted, CanOpenFormNotificationSettingExecute);
 
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
@@ -62,14 +61,11 @@ namespace Dental.ViewModels
         public ICommand ExpandAllCommand { get; }
         public ICommand OpenFormSpecialitiesCommand { get; }
         public ICommand OpenFormCategoryEmployesCommand { get; }
-        public ICommand OpenFormNotificationSettingsCommand { get; }
 
         private bool CanNavigateToCommandExecute(object p) => true;
         private bool CanExpandAllCommandExecute(object p) => true;
         private bool CanOpenFormSpecialitiesExecute(object p) => true;
         private bool CanOpenFormCategoryEmployesExecute(object p) => true;
-        private bool CanOpenFormNotificationSettingExecute(object p) => true;
-
 
         private void OnOpenFormSpecialitiesExecuted(object p)
         {
@@ -90,19 +86,6 @@ namespace Dental.ViewModels
             {
                 GroupsWin = new EmployeeGroupsWindow();
                 GroupsWin.ShowDialog();
-            }
-            catch
-            {
-
-            }
-        }
-        
-        private void OnOpenFormNotificationSettingExecuted(object p)
-        {
-            try
-            {
-                NotificationSettingsWin = new NotificationSettingsWindow();
-                NotificationSettingsWin.ShowDialog();
             }
             catch
             {
@@ -148,7 +131,6 @@ namespace Dental.ViewModels
         public List<Models.Employee> Collection { get; set; }
 
         public SpecialitiesWindow SpecialitiesWin { get; set; }
-        public EmployeeGroupsWindow GroupsWin { get; set; }
-        public NotificationSettingsWindow NotificationSettingsWin { get; set; }       
+        public EmployeeGroupsWindow GroupsWin { get; set; }     
     }
 }

@@ -17,6 +17,7 @@ using Dental.Views.WindowForms;
 
 using Dental.Services;
 using System.Text.Json;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
@@ -33,6 +34,10 @@ namespace Dental.ViewModels
 
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
 
+            SaveSmsCenterCommand = new LambdaCommand(OnSaveSmsCenterExecuted, CanSaveSmsCenterExecute);
+            OpenFormSmsCenterCommand = new LambdaCommand(OnOpenFormSmsCenterExecuted, CanOpenFormSmsCenterExecute);
+            CancelFormSmsCenterCommand = new LambdaCommand(OnCancelFormSmsCenterExecuted, CanCancelFormSmsCenterExecute);
+
             try
             {
                 db = new ApplicationContext();
@@ -40,6 +45,7 @@ namespace Dental.ViewModels
                 ClientsGroups = db.ClientsGroup?.ToArray();
                 TypeSubscribeParams = db.SubscribeParams.Where(f => f.Id < 11).ToObservableCollection();
                 VoiceParams = db.SubscribeParams.Where(f => f.Id > 10).ToObservableCollection();
+                SmsCenter = GetSmsCenter();
             }
             catch (Exception e)
             {
@@ -52,6 +58,10 @@ namespace Dental.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
+
+        public ICommand SaveSmsCenterCommand { get; }
+        public ICommand OpenFormSmsCenterCommand { get; }
+        public ICommand CancelFormSmsCenterCommand { get; }
  
         public ICommand ExpandTreeCommand { get; }
 
@@ -63,6 +73,47 @@ namespace Dental.ViewModels
         private bool CanCancelFormCommandExecute(object p) => true;
         private bool CanExpandTreeCommandExecute(object p) => true;
         private bool CanSendCommandExecute(object p) => true;
+
+        private bool CanSaveSmsCenterExecute(object p) => true;
+        private bool CanOpenFormSmsCenterExecute(object p) => true;
+        private bool CanCancelFormSmsCenterExecute(object p) => true;
+
+        private void OnCancelFormSmsCenterExecuted(object p) => SmsCenterSettingsWindow.Close();
+        private void OnOpenFormSmsCenterExecuted(object p)
+        {
+            try
+            {
+                SmsCenter = GetSmsCenter();
+                SmsCenterSettingsWindow = new Views.Subscribes.ServiceSettingsWindow();
+                SmsCenterSettingsWindow.DataContext = this;
+                SmsCenterSettingsWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        private void OnSaveSmsCenterExecuted(object p)
+        {
+            try
+            {
+                if (SmsCenterSettingsWindow == null) return;
+                if (SmsCenter?.Id == 0) db.Entry(SmsCenter).State = EntityState.Added;
+                int cnt = db.SaveChanges();
+                if (cnt > 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Изменения успешно записаны в базу данных!";
+                    notification.run();
+                }
+                SmsCenterSettingsWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
 
         private void OnExpandTreeCommandExecuted(object p)
         {
@@ -368,7 +419,6 @@ namespace Dental.ViewModels
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();
         private ClientsSubscribes CreateNewModel() => new ClientsSubscribes();
-
         private ClientsSubscribes GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
         
         private void Add()
@@ -398,5 +448,10 @@ namespace Dental.ViewModels
 
         public object SelectedVoice { get; set; }
         public object SelectedTypeSubscribe { get; set; }
+
+        /******************************************************/
+        public Views.Subscribes.ServiceSettingsWindow SmsCenterSettingsWindow { get; set; }
+        public SmsCenter SmsCenter{ get; set; }
+        public SmsCenter GetSmsCenter() => db.SmsCenter?.FirstOrDefault() ?? new SmsCenter();
     }
 }

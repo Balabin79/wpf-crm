@@ -438,7 +438,7 @@
     <Compile Update="Views\ClientsRequests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ClientsSubscribes.xaml.cs">
+    <Compile Update="Views\Subscribes\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Reports\EmployeeSummary.xaml.cs">
@@ -517,7 +517,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ClientsSubscribes.xaml">
+    <Page Update="Views\Subscribes\ClientsSubscribes.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -34,9 +34,7 @@ namespace Dental.Models
         public ClientsGroup ClientGroup { get; set; }
 
         public string Status { get; set; }
-
         public string JsonSettings { get; set; }
-
         public string JsonReport { get; set; }
 
 
