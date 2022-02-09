@@ -81,7 +81,7 @@ namespace Dental.Services
             { "ClientsRequests", "Список обращений" },
             { "ClientsSubscribes", "Рассылки" },
             { "Organization", "Организация" },
-            { "Settings", "Настройки" },
+            { "SmsCenter", "Настройки SmsCenter" },
             { "StatusSheduler", "Статусы в расписании" },
 
             { "ClientInfo", "Карта клиента" },

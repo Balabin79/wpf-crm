@@ -102,6 +102,7 @@ namespace Dental.ViewModels
                 int cnt = db.SaveChanges();
                 if (cnt > 0)
                 {
+                    ActionsLog.RegisterAction("Настройки SmsCenter", ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["SmsCenter"]);
                     var notification = new Notification();
                     notification.Content = "Изменения успешно записаны в базу данных!";
                     notification.run();
