@@ -253,7 +253,7 @@
                                            ToolTip="Уведомления"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" 
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NotificationLogPage" 
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>

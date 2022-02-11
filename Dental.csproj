@@ -474,6 +474,9 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\NotificationLogPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\WindowForms\ClientsSubscribesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -569,6 +572,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\PatientCard\PatientsList.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NotificationLogPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
