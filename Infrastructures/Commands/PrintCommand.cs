@@ -1,6 +1,7 @@
 ﻿using System;
 using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
+using DevExpress.Xpf.Charts;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.Infrastructures.Commands
@@ -20,6 +21,11 @@ namespace Dental.Infrastructures.Commands
                 if (p is TableView tableView)
                 {
                     tableView.ShowPrintPreview(tableView);
+                }
+
+                if (p is ChartControl chart)
+                {
+                    chart.Print();
                 }
             }
 

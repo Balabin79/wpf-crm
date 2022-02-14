@@ -35,13 +35,11 @@ namespace Dental.Views.PatientCard
             {
                 if (e.Row == null) return;
                 var items = ((TreatmentPlanItems)e.Row)?.TreatmentPlan?.TreatmentPlanItems;
-                decimal price = 0;
+                decimal? price = 0;
                 foreach (var item in items)
-                {
-                    if (decimal.TryParse(item.Classificator?.Price?.ToString(), out decimal result))
-                    {
-                        if (item.Count > 0) price += (result * item.Count);
-                    }
+                {              
+                    if (item.Count > 0 && item.Classificator?.Price != null) 
+                            price += (item.Classificator?.Price * item.Count);                 
                 }
                 e.TotalValue = price;
             }

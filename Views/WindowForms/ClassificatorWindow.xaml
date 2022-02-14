@@ -8,6 +8,7 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Классификатор"
         HorizontalAlignment="Center"
@@ -54,14 +55,17 @@
 
                                 <TextBlock  Grid.Row="2" Grid.Column="0" Text="Стоимость для клиента:"  Margin="0,0,8,3" />
                                 <dxe:TextEdit                                   
-                                    EditValueChanged="TextEdit_EditValueChanged"
-                                    MaskType="Numeric" Mask="F"  Grid.Row="3" Grid.Column="0" Text="{Binding Model.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
+                                    MaskType="Numeric" Mask="c"  Grid.Row="3" Grid.Column="0" 
+                                    Text="{Binding Model.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                    ValidatesOnDataErrors=True, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture} 
+                                    }" Margin="0,0,8,8" />
 
                                 <TextBlock  Grid.Row="2" Grid.Column="1" Text="Размер выплаты сотруднику:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit 
-                                    EditValueChanged="TextEdit_EditValueChanged"
-                                    MaskType="Numeric" Mask="F2" Grid.Row="3" Grid.Column="1" 
-                                    Text="{Binding Model.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat={}{0:c2} }" Margin="0,0,0,8" />
+                                <dxe:TextEdit                                    
+                                    MaskType="Numeric" Mask="c" Grid.Row="3" Grid.Column="1" 
+                                    Text="{Binding Model.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                    ValidatesOnDataErrors=True, 
+                                    StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture} }" Margin="0,0,0,8" />
 
                                 <TextBlock  Grid.Row="4"  Text="Родительская группа:"  Margin="0,0,0,3" />
                                 <dxe:ComboBoxEdit Grid.Row="5" Grid.ColumnSpan="2"  ItemsSource="{Binding Group}"

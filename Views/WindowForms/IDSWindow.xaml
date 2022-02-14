@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
-        xmlns:local="clr-namespace:Dental.Views.WindowForms"
+        xmlns:local="clr-namespace:Dental.Views.WindowForms" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
         Title="Документы, ИДС" >
     <Grid>
-        <dxre:RichEditControl
-            x:Name="RichEdit"
-            CommandBarStyle="Ribbon"/>
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
+            <dxre:RichEditControl x:Name="RichEdit" CommandBarStyle="Ribbon"/>
+        </dx:LoadingDecorator>
     </Grid>
 </Window>

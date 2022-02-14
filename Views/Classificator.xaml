@@ -236,7 +236,7 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
-                                Text="{Binding Row.Price, Mode=TwoWay, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource strToDecimalConverter}}" 
+                                Text="{Binding Row.Price, Mode=TwoWay, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                 HorizontalAlignment="Center"
                                 />
                         </DataTemplate>
@@ -251,7 +251,7 @@
                                 >
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock  Text="{Binding Row.Cost,Converter={StaticResource strToDecimalConverter}, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            <TextBlock  Text="{Binding Row.Cost, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                        HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>

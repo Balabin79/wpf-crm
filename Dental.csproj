@@ -229,6 +229,7 @@
     <Folder Include="Images\Patients\" />
     <Folder Include="Images\Logos\" />
     <Folder Include="Infrastructures\Pages\" />
+    <Folder Include="Infrastructures\Reports\" />
     <Folder Include="Models\Actions\" />
     <Folder Include="Reports\OtherDocuments\" />
   </ItemGroup>

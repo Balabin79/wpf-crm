@@ -36,7 +36,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Классификация услуг\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

@@ -33,19 +33,19 @@ namespace Dental.Models
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
     
-        public string Price
+        public decimal? Price
         {
             get => _Price;
-            set => _Price = value?.Trim();
+            set => _Price = value;
         }
-        private string _Price;
+        private decimal? _Price;
 
-        public string Cost
+        public decimal? Cost
         {
             get => _Cost;
-            set => _Cost = value?.Trim();
+            set => _Cost = value;
         }
-        private string _Cost;
+        private decimal? _Cost;
 
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }

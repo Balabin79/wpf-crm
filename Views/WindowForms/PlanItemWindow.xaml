@@ -11,6 +11,7 @@
         xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Позиция в плане услуг"
         HorizontalAlignment="Center"
@@ -22,6 +23,7 @@
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
         <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:DecimalToStringConverter x:Key="decimalConverter" />
         <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
     <Window.Icon>
@@ -200,12 +202,11 @@
                                     Margin="0,0,0,3" />
 
                                 <dxe:TextEdit 
-                                    Grid.Row="7"
-                                    Grid.Column="0"
-                                    Mask="d"
+                                    Grid.Row="7" Grid.Column="0"
+                                    Mask="c"
                                     MaskType="Numeric"
                                     IsReadOnly="True"
-                                    EditValue="{Binding ElementName=popup, Path=EditValue.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" 
+                                    EditValue="{Binding ElementName=popup, Path=EditValue.Price,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}}" 
                                     Margin="0 0 5 0" />
 
                                 <TextBlock  
@@ -217,10 +218,10 @@
                                 <dxe:TextEdit 
                                     Grid.Row="7"
                                     Grid.Column="1"
-                                    Mask="d"
+                                    Mask="c"
                                     MaskType="Numeric"
                                     IsReadOnly="True"
-                                    EditValue="{Binding ElementName=popup, Path=EditValue.Cost, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" 
+                                    EditValue="{Binding ElementName=popup, Path=EditValue.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}}" 
                                     Margin="0 0 5 0" />
 
                                 <TextBlock  
