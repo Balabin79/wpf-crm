@@ -1,5 +1,6 @@
+using System.Windows;
 using System.Windows.Controls;
-using DevExpress.Xpf.WindowsUI;
+
 
 namespace Dental.Views.PatientCard
 {

@@ -47,8 +47,8 @@
                         AllowQuickCustomization="False">
                         <dxb:BarButtonItem Name="bCreate" Content="Создать карту клиента" 
                                            DataContext="{StaticResource Router}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewCustomer.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding LeftMenuClick}" 

@@ -117,6 +117,13 @@
 
                 <dxr:RibbonPage Caption="Рабочий стол" >
                     <dxr:RibbonPageGroup Caption="Клиенты">
+                        <dxb:BarButtonItem Content="Рабочий стол" RibbonStyle="Default" 
+                                           ToolTip="Рабочий стол"
+                                           MediumGlyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.DesktopPage" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}" 
+                                           />
                         <dxb:BarButtonItem Content="Новый клиент" RibbonStyle="Default" 
                                            ToolTip="Новый клиент"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
@@ -239,10 +246,11 @@
 
                         <dxb:BarButtonItem Content="Выручка по сотрудникам" RibbonStyle="Default" 
                                            ToolTip="Выручка по сотрудникам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_Pie.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Pie.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByEmployes"
-                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_Pie.svg}"/>
+                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"                                    
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.Reports.ByEmployes"
+                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"/>
 
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="История" >

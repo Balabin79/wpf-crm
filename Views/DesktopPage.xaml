@@ -1,0 +1,35 @@
+﻿<Page x:Class="Dental.Views.DesktopPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Dental.Views" 
+      xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
+      xmlns:vm ="clr-namespace:Dental.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Рабочий стол">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <vm:DesctopViewModel x:Key="vm"/>
+                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:DateToStringShortDateConverter x:Key="DateToShortDateString"/>
+                    <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+
+    </Page.Resources>
+
+    <Grid>
+        <TextBlock Text="Desktop"/>
+    </Grid>
+</Page>
