@@ -1,6 +1,7 @@
 ﻿using Dental.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dental.Services
 {
@@ -39,7 +40,7 @@ namespace Dental.Services
                 );
                 db.SaveChanges();
             } 
-            catch (Exception e)
+            catch
             { 
             
             }
@@ -92,6 +93,23 @@ namespace Dental.Services
             { "Employee", "Карта сотрудника" },
             { "", "" },
         };
+
+        public static void ClearHistoryActions()
+        {
+            try
+            {
+
+                int currentTimeStamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970,1,1)).TotalSeconds;
+                int delta = currentTimeStamp - 10 * 24 * 60 * 60;
+                var q = db.UserActions.Where(f => f.CreatedAt < delta).ToArray();
+                db.UserActions.RemoveRange(q);
+                db.SaveChanges();
+            }
+            catch
+            {
+
+            }
+        }
 
     }
 }

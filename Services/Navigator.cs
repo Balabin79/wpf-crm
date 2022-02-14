@@ -12,6 +12,7 @@ using System.Data.Entity;
 using Dental.Models;
 using System.Collections.ObjectModel;
 using Dental.Views;
+using DevExpress.Xpf.Core;
 
 namespace Dental.Services
 {
@@ -125,10 +126,9 @@ namespace Dental.Services
                 GoToPage(p);
                 SetHistory(link, true);
             }
-            catch (Exception e)
+            catch
             {
-                // загрузить по умолчанию
-                var msg = "Не найден раздел";
+                ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -145,9 +145,10 @@ namespace Dental.Services
                     GoToPage(param);
                     SetHistory(link, false);
                 }
-            } catch
+            }
+            catch
             {
-                // переход на страницу по умолчанию
+                ThemedMessageBox.Show(title: "Ошибка", text: "Переход по ссылке в истории невозможен! Данная страница отсутствует или была удалена.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -165,9 +166,9 @@ namespace Dental.Services
                 SetHistory(goToItem, false);
 
             }
-            catch(Exception e)
+            catch
             {
-
+                ThemedMessageBox.Show(title: "Ошибка", text: "Переход по ссылке в истории невозможен! Данная страница отсутствует или была удалена.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -184,9 +185,9 @@ namespace Dental.Services
                 GoToPage(goToItem.Path);
                 SetHistory(goToItem, false);
             }
-            catch (Exception e)
+            catch
             {
-
+                ThemedMessageBox.Show(title: "Ошибка", text: "Переход по ссылке в истории невозможен! Данная страница отсутствует или была удалена.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -229,7 +230,7 @@ namespace Dental.Services
         private Page currentPage;
 
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
-        private readonly string defaultPage = "Dental.Views.Organization";
+        private readonly string defaultPage = "Dental.Views.DesktopPage";
 
         // коллекция просмотренных страниц
         public ObservableCollection<Links> BrowsingHistory { get; set; } = new ObservableCollection<Links>();

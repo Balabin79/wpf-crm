@@ -119,7 +119,7 @@ namespace Dental.ViewModels
                 ClassificatorCategories = db.Classificator.ToList();
                 Employes = db.Employes.ToList();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
