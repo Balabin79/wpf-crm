@@ -474,6 +474,7 @@ namespace Dental.ViewModels
 
                 if (cnt > 0)
                 {
+                    Model.UpdateFields();
                     notification.run();
                     ModelBeforeChanges = (Employee)Model.Clone();
                 }
@@ -495,7 +496,9 @@ namespace Dental.ViewModels
 
                 DeleteEmployeeFiles();
 
-                //удалить также в расписании
+                db.NotificationsLog.Where(f => f.EmployeeId == Model.Id).ToArray()
+                    .ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                
                 db.Entry(Model).State = EntityState.Deleted;
                 ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);
                 int cnt = db.SaveChanges();
@@ -505,7 +508,7 @@ namespace Dental.ViewModels
                     var notification = new Notification();
                     notification.Content = "Анкета сотрудника полностью удалена из базы данных!";
                     notification.run();
-                    if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.Employes");
+                    if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employes");
                 }
             }
             catch (Exception e)

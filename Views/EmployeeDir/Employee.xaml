@@ -15,7 +15,7 @@
     x:Name="layoutGroup1"
     dx:ThemeManager.ThemeName="Office2019White" 
     d:DesignHeight="300" d:DesignWidth="300"
-    Title="{Binding Title, Mode=TwoWay}">
+    Title="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}">
     <Page.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Page.Resources>
@@ -38,7 +38,7 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Reseller-Account.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="{Binding Title, Mode=TwoWay}" FontSize="15" Padding="0 8 5 0" />
+                    <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="0 8 5 0" />
                 </StackPanel>
                 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">

@@ -1,5 +1,6 @@
 using Dental.Models.Base;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
@@ -7,7 +8,8 @@ namespace Dental.Models
     [Table("NotificationsLog")]
     public class NotificationsLog : AbstractBaseModel
     {
-        public int? EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }  
+        
         public Employee Employee { get; set; }
 
         public string UserName { get; set; }

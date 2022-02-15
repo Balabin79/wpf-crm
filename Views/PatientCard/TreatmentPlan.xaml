@@ -102,15 +102,15 @@
                             </dxg:GridColumn>
 
                             <dxg:GridColumn
-                                FieldName="Note" 
-                                Header="Комментарий" 
+                                FieldName="Status" 
+                                Header="Статус" 
                                 Width="1*"                              
                                 HorizontalHeaderContentAlignment="Center">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
                                             TextWrapping="Wrap"
-                                            Text="{Binding Path=Row.Note, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>

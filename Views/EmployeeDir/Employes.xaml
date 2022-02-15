@@ -34,8 +34,8 @@
                 TextAlignment="Left"
                 FontStyle="Italic"
                 Width="260" 
-                Text="{Binding Path=RowData.Row.Fio}" 
-                ToolTip="{Binding Path=RowData.Row.Fio}" />
+                Text="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName + ` ` + RowData.Row.MiddleName'}" 
+                ToolTip="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName + ` ` + RowData.Row.MiddleName'}" />
         </DataTemplate>
 
         <DataTemplate x:Key="readonlyCardTemplate" >
@@ -122,7 +122,7 @@
                         <dxb:BarButtonItem  Content="Новая анкета сотрудника" 
                                            DataContext="{StaticResource Router}" 
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Employee"
+                                           CommandParameter="Dental.Views.EmployeeDir.Employee"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"

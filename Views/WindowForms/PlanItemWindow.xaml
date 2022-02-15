@@ -54,9 +54,8 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 
                                 <TextBlock  
@@ -66,7 +65,7 @@
                                     Margin="0,0,8,3" />
                                 <StackPanel          
                                     Grid.Row="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="2"
                                     Margin="0 0 0 5">
                                 <dxe:PopupBaseEdit                           
                                     x:Name="popup"                                                   
@@ -169,7 +168,7 @@
 
                                 <dxe:ComboBoxEdit  
                                     Grid.Row="3" 
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="2"
                                     Margin="0 0 0 5"
                                     ItemsSource="{Binding Employes, Mode=OneWay}"                                       
                                     NullText="Сотрудник" 
@@ -184,17 +183,41 @@
 
                                 <TextBlock  
                                     Grid.Row="4"
-                                    Grid.ColumnSpan="3"
-                                    Text="Комментарий:"  
+                                    Grid.Column="0"
+                                    Text="Количество:"  
                                     Margin="0,0,0,3" />
 
-                                <dxe:MemoEdit  
+                                <dxe:TextEdit 
                                     Grid.Row="5"
-                                    Grid.ColumnSpan="3"
-                                    Margin="0 0 0 5"
-                                    HorizontalAlignment="Stretch" 
-                                    Text="{Binding PlanItemModel.Note, Mode=TwoWay}" />
+                                    Grid.Column="0"
+                                    Mask="d"
+                                    MaskType="Numeric"
+                                    Text="{Binding PlanItemModel.Count, Mode=TwoWay}"
+                                    Margin="0 0 5 0"
+                                    />                                
+                                                    
+                                <TextBlock  
+                                    Grid.Row="4"
+                                    Grid.Column="1"
+                                    Text="Статус:"  
+                                    Margin="0,0,0,3" />
 
+                                <dxe:ComboBoxEdit  
+                                    Grid.Row="5" 
+                                    Grid.Column="1"
+                                    Margin="0 0 0 5"
+                                    ItemsSource="{Binding ServicePlanItemsStatuses, Mode=OneWay}"                                       
+                                    NullText="Статус" 
+                                    IsTextEditable="False"
+                                    DisplayMember="Name"
+                                    SelectedItem ="{Binding PlanItemModel.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    EditValue ="{Binding PlanItemModel.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
+                                
+                                
                                 <TextBlock  
                                     Grid.Row="6"
                                     Grid.Column="0"
@@ -222,20 +245,9 @@
                                     MaskType="Numeric"
                                     IsReadOnly="True"
                                     EditValue="{Binding ElementName=popup, Path=EditValue.Cost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}}" 
-                                    Margin="0 0 5 0" />
+                                    Margin="0 0 0 0" />
 
-                                <TextBlock  
-                                    Grid.Row="6"
-                                    Grid.Column="2"
-                                    Text="Количество:"  
-                                    Margin="0,0,0,3" />
 
-                                <dxe:TextEdit 
-                                    Grid.Row="7"
-                                    Grid.Column="2"
-                                    Mask="d"
-                                    MaskType="Numeric"
-                                    Text="{Binding PlanItemModel.Count, Mode=TwoWay}" />
 
                             </Grid>
                         </StackPanel>

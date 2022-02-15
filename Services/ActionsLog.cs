@@ -7,15 +7,7 @@ namespace Dental.Services
 {
     public static class ActionsLog
     {
-        private static readonly ApplicationContext db;
-
         static string sessionGuid;
-
-        static ActionsLog()
-        {
-            db = new ApplicationContext();
-        }
-
         static string SessionGuid 
         { 
             get
@@ -29,18 +21,21 @@ namespace Dental.Services
         {
             try 
             {
-                db.UserActions.Add(
-                    new UserActions() {
-                        Name = name, 
-                        Type = type, 
-                        UserName = Environment.UserName,
-                        SectionPage = sectionPage,
-                        SessionGuid = SessionGuid
-                    }
-                );
-                db.SaveChanges();
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    db.UserActions.Add(
+                        new UserActions()
+                        {
+                            Name = name,
+                            Type = type,
+                            UserName = Environment.UserName,
+                            SectionPage = sectionPage,
+                            SessionGuid = SessionGuid
+                        });
+                    db.SaveChanges();
+                }
             } 
-            catch
+            catch (Exception e)
             { 
             
             }
@@ -50,16 +45,20 @@ namespace Dental.Services
         {
             try
             {
-                string path = (name.Length > 1) ? string.Join("->", name) : name[0];
-                db.UserActions.Add(
-                    new UserActions() { 
-                        Name = path, 
-                        Type = type, 
-                        UserName = Environment.UserName,
-                        SectionPage = sectionPage
-                    }
-                );
-                db.SaveChanges();
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    string path = (name.Length > 1) ? string.Join("->", name) : name[0];
+                    db.UserActions.Add(
+                        new UserActions()
+                        {
+                            Name = path,
+                            Type = type,
+                            UserName = Environment.UserName,
+                            SectionPage = sectionPage
+                        }
+                    );
+                    db.SaveChanges();
+                }
             }
             catch
             {
@@ -98,12 +97,14 @@ namespace Dental.Services
         {
             try
             {
-
-                int currentTimeStamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970,1,1)).TotalSeconds;
-                int delta = currentTimeStamp - 10 * 24 * 60 * 60;
-                var q = db.UserActions.Where(f => f.CreatedAt < delta).ToArray();
-                db.UserActions.RemoveRange(q);
-                db.SaveChanges();
+                using (ApplicationContext db = new ApplicationContext())
+                {
+                    int currentTimeStamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                    int delta = currentTimeStamp - 10 * 24 * 60 * 60;
+                    var q = db.UserActions.Where(f => f.CreatedAt < delta).ToArray();
+                    db.UserActions.RemoveRange(q);
+                    db.SaveChanges();
+                }
             }
             catch
             {

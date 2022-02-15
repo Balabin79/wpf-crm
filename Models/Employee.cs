@@ -12,18 +12,25 @@ namespace Dental.Models
     [Table("Employes")]
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
+        public Employee()
+        {
+            NotificationsLog = new List<NotificationsLog>();
+        }
+
+        public ICollection<NotificationsLog> NotificationsLog { get; set; }
+
         [NotMapped]
         public ImageSource Image { get; set; }
 
         [NotMapped]
-        public bool IsVisible 
+        public bool IsVisible
         {
-            get => isVisible; 
+            get => isVisible;
             set
             {
                 isVisible = value;
                 OnPropertyChanged(nameof(IsVisible));
-            } 
+            }
         }
         private bool isVisible;
 
@@ -31,9 +38,10 @@ namespace Dental.Models
         public string Specialities { get; set; }
 
         [NotMapped]
-        public string Fio { 
-            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName; 
+        public string Fio {
+            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
         }
+
         // Общая информация
         [Display(Name = "Фото")]
         public string Photo { get; set; }
@@ -205,5 +213,12 @@ namespace Dental.Models
         public List<string> FieldsChanges { get; set; } = new List<string>();
 
         public override string ToString() => Fio;
+
+        public void UpdateFields()
+        {
+            OnPropertyChanged(nameof(FirstName));
+            OnPropertyChanged(nameof(LastName));
+            OnPropertyChanged(nameof(MiddleName));
+        }
     }
 }

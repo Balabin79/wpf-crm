@@ -126,7 +126,7 @@ namespace Dental.Services
                 GoToPage(p);
                 SetHistory(link, true);
             }
-            catch
+            catch 
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }

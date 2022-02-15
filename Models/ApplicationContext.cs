@@ -10,7 +10,10 @@ namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base("DefaultConnection"){}
+        public ApplicationContext() : base("DefaultConnection")
+        {
+
+        }
 
         /*
         public List<ValidationResult> CustomErrors { get; set; } = new List<ValidationResult>();
@@ -59,6 +62,7 @@ namespace Dental.Models
         public DbSet<Dictionary> Dictionary { get; set; }
         public DbSet<TreatmentPlan> TreatmentPlan { get; set; }
         public DbSet<TreatmentPlanItems> TreatmentPlanItems { get; set; }
+        public DbSet<ServicePlanItemStatuses> ServicePlanItemStatuses { get; set; }
         public DbSet<ClientsSubscribes> ClientsSubscribes { get; set; }
         public DbSet<SubscribesLog> SubscribesLog { get; set; }
         public DbSet<ClientsRequests> ClientsRequests { get; set; }

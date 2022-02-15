@@ -206,5 +206,12 @@ namespace Dental.Models
         }
 
         public override string ToString() => FirstName;
+
+        public void UpdateFields()
+        {
+            OnPropertyChanged(nameof(FirstName));
+            OnPropertyChanged(nameof(LastName));
+            OnPropertyChanged(nameof(MiddleName));
+        }
     }
 }

@@ -56,7 +56,10 @@
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Padding="0 8 5 0" FontSize="15" Text="{Binding Mode=OneWay, Path=Model.Title, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock 
+                        Padding="0 8 5 0" 
+                        FontSize="15"  
+                        Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     

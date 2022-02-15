@@ -41,7 +41,7 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Files = new ObservableCollection<FileInfo>();
-                Ids = ProgramDirectory.GetIds();
+                Ids = ProgramDirectory.GetIds();                
 
                 #region инициализация команд, связанных с общим функционалом карты клиента
                 // Команда включения - отключения редактирования полей
@@ -80,6 +80,7 @@ namespace Dental.ViewModels
                 #endregion               
 
                 // Если patientCardNumber == 0, то это создается новая карта клиента, иначе загружаем данные существующего клиента
+
                 if (patientId == 0)
                 {
                     Model = new PatientInfo();
@@ -95,7 +96,7 @@ namespace Dental.ViewModels
                 {
                     Model = db.PatientInfo.Where(f => f.Id == patientId)
                         ?.Include(f => f.ClientCategory)
-                        ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems))
+                        ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(k => k.Status)))
                         .FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     NumberPatientCard = Model?.Id.ToString();
@@ -118,6 +119,7 @@ namespace Dental.ViewModels
 
                 ClassificatorCategories = db.Classificator.ToList();
                 Employes = db.Employes.ToList();
+                ServicePlanItemsStatuses = db.ServicePlanItemStatuses.ToArray();
             }
             catch
             {
@@ -212,6 +214,7 @@ namespace Dental.ViewModels
                     notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();
                 }
+                Model.UpdateFields();
                 db.SaveChanges();
                 if (HasUnsavedChanges())
                 {
@@ -898,6 +901,7 @@ namespace Dental.ViewModels
 
         public ICollection<Advertising> AdvertisingList { get; set; }
         public ICollection<ClientsGroup> ClientsGroupList { get; set; }
+        public ICollection<ServicePlanItemStatuses> ServicePlanItemsStatuses { get; set; }
 
         public ICollection<string> GenderList
         {
