@@ -35,6 +35,8 @@ namespace Dental.ViewModels
                 OpenFormAdvertisingCommand = new LambdaCommand(OnOpenFormAdvertisingExecuted, CanOpenFormAdvertisingExecute);
                 OpenFormCategoryClientCommand = new LambdaCommand(OnOpenFormCategoryClientExecuted, CanOpenFormCategoryClientExecute);
 
+                OpenFormIdsCommand = new LambdaCommand(OnOpenFormIdsExecuted, CanOpenFormIdsExecute);
+
                 BtnIconArchive = false;
                 BtnIconList = true;
             }
@@ -49,12 +51,26 @@ namespace Dental.ViewModels
         public ICommand ShowArchiveCommand { get; }
         public ICommand OpenFormAdvertisingCommand { get; }
         public ICommand OpenFormCategoryClientCommand { get; }
+        public ICommand OpenFormIdsCommand { get; }
 
         private bool CanOpenPatientCardCommandExecute(object p) => true;
         private bool CanShowArchiveCommandExecute(object p) => true;
         private bool CanOpenFormAdvertisingExecute(object p) => true;
         private bool CanOpenFormCategoryClientExecute(object p) => true;
+        private bool CanOpenFormIdsExecute(object p) => true;
 
+        private void OnOpenFormIdsExecuted(object p)
+        {
+            try
+            {
+                IdsWin = new IdsWindow();
+                IdsWin.ShowDialog();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
 
         private void OnOpenFormAdvertisingExecuted(object p)
         {
@@ -131,6 +147,7 @@ namespace Dental.ViewModels
 
         public AdvertisingWindow AdvertisingWin { get; set; } 
         public GroupsWindow GroupsWin { get; set; }
+        public IdsWindow IdsWin { get; set; }
 
         private void SetCollection(bool isArhive=false)
         {

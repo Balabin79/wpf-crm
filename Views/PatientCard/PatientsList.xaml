@@ -67,7 +67,7 @@
                         <dxb:BarButtonItem Content="Шаблоны документов" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormCategoryEmployesCommand}" 
+                                           Command="{Binding OpenFormIdsCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
                                            MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>

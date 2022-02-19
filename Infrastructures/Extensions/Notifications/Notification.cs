@@ -9,7 +9,7 @@ namespace Dental.Infrastructures.Extensions.Notifications
     public class Notification : AbstractNotification
     {
         public override string Content { get; set; } = "Новый сотрудник успешно записан в базу данных!";
-        public override ImageSource Icon { get; set; } = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Gnome-Document-Save-64.png"));
+        public override ImageSource Icon { get; set; } = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/save.png"));
 
         public override StreamResourceInfo Sound
         {

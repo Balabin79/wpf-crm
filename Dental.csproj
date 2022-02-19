@@ -61,6 +61,7 @@
     <None Remove="Resources\Icons\Template\Gnome-Applications-Engineering.png" />
     <None Remove="Resources\Icons\Template\Gnome-Applications-Office-48.png" />
     <None Remove="Resources\Icons\Template\Gnome-Dialog-Information-64.png" />
+    <None Remove="Resources\Icons\Template\Gnome-Document-Save-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-Edit-Delete-32.png" />
     <None Remove="Resources\Icons\Template\Gnome-Emblem-Important-64.png" />
     <None Remove="Resources\Icons\Template\Gnome-X-Office-Spreadsheet-48.png" />
@@ -75,6 +76,7 @@
     <None Remove="Resources\Icons\Template\Pill.png" />
     <None Remove="Resources\Icons\Template\red.png" />
     <None Remove="Resources\Icons\Template\Report.png" />
+    <None Remove="Resources\Icons\Template\save.png" />
     <None Remove="Resources\Icons\Template\user-avatar.png" />
     <None Remove="Resources\Sounds\Notifications\scs.wav" />
     <None Remove="Resources\Sounds\Notifications\success.mp3" />
@@ -182,6 +184,7 @@
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\Template\avatar.png" />
+    <Resource Include="Resources\Icons\Template\save.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
     <Resource Include="Resources\Sounds\Notifications\scs.wav" />
     <Resource Include="Resources\Sounds\Notifications\success.wav" />
