@@ -53,7 +53,8 @@
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" Source="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}"/>
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
+                                Source="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"/>
                     <TextBlock Text="Справочник услуг" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">

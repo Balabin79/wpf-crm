@@ -30,11 +30,6 @@
             
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Image Height="25" Width="25" Margin="2 0 2 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Finance.png" />
-                        </Image.Source>
-                    </Image>
                     <TextBlock Text="Планы услуг" FontSize="15" Padding="0 8 5 0"/>
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">

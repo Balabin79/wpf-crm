@@ -31,12 +31,16 @@
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
-                <TextBlock DockPanel.Dock="Left" Text="Отправленные сотрудникам уведомления" FontSize="15" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                                Source="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"/>
+                    <TextBlock Text="Отправленные сотрудникам уведомления" FontSize="15" Padding="2 5 5 0" />
+                </StackPanel>
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     <dxb:ToolBarControl
