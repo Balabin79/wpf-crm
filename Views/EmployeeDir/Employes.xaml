@@ -101,23 +101,25 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="2"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Image Height="23" Width="23" Margin="3 0 3 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/emp.png" />
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="Список сотрудников" FontSize="15" Padding="0 8 5 0" />
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                                Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
+                    <TextBlock Text="Сотрудники" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:ToolBarControl 
+                        x:Name="fileToolBar" 
+                        ShowDragWidget="False" 
+                        Caption="File" 
+                        AllowCustomizationMenu="False" 
+                        AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem  Content="Новая анкета сотрудника" 
                                            DataContext="{StaticResource Router}" 
@@ -126,21 +128,22 @@
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"/>
+                                           CustomGlyphSize="24,24"/>
                         <dxb:BarItemSeparator/>
 
                         <dxb:BarButtonItem Content="Категории сотрудников" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormCategoryEmployesCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}"/>
 
                         <dxb:BarButtonItem Content="Специальности" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormSpecialitiesCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position_v92.svg}" Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Briefcase.svg}"/>
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position_v92.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Briefcase.svg}"/>
 
                         <dxb:BarItemSeparator/>
 
@@ -152,7 +155,7 @@
                                            CommandParameter="{Binding ElementName=view}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

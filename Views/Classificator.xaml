@@ -17,7 +17,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
-      Title="Классификатор"
+      Title="Справочник услуг"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>
@@ -47,45 +47,41 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Image Height="23" Width="23" Margin="3 0 3 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" />
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="Классификатор" FontSize="15" Padding="0 8 5 0" />
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" Source="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}"/>
+                    <TextBlock Text="Справочник услуг" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать новую позицию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem  Content="Создать новую позицию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-1"/>
-                        <dxb:BarButtonItem Name="bCreateDir" Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormCommand}"
                                            CommandParameter="-2"/>
-                        <dxb:BarButtonItem Name="expandTree" Content="Развернуть или свернуть все позиции" 
+                        <dxb:BarButtonItem Content="Развернуть или свернуть все позиции" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}" 
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding ExpandTreeCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
                                            CommandParameter="{Binding ElementName=view}"
@@ -99,7 +95,7 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"/>
                         

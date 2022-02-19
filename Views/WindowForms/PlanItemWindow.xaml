@@ -26,9 +26,6 @@
         <converter:DecimalToStringConverter x:Key="decimalConverter" />
         <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Calculator-Edit.png" />
-    </Window.Icon>
     <Grid>
         <Grid x:Name="view">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >

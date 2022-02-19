@@ -6,6 +6,7 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:commands="clr-namespace:Dental.Infrastructures.Commands" 
+       xmlns:converters="clr-namespace:Dental.Infrastructures.Converters" 
        xmlns:services="clr-namespace:Dental.Services" 
        d:DesignHeight="400" d:DesignWidth="800" mc:Ignorable="d"
        dx:ThemeManager.ThemeName="Office2019White"
@@ -20,6 +21,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
+                    <converters:TotalInReportConverter x:Key="totalConv"/>
                     <vm:ReportsByEmpViewModel x:Key="vm"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
@@ -37,7 +39,7 @@
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
-                <TextBlock DockPanel.Dock="Left" Text="Отчет выручке сотрудников" 
+                <TextBlock DockPanel.Dock="Left" Text="Данные по количеству клиентов и оказанных услуг в разрезе сотрудников" 
                            FontSize="15" Margin="5 0 0 0" VerticalAlignment="Center"/>
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -66,40 +68,39 @@
                           Grid.Row="1" MaxHeight="1800">
 
                 <Grid>
-                    <dxc:ChartControl Name="chartControl1" AnimationMode="OnLoad">
+                    <dxc:ChartControl 
+                        Name="chartControl1" 
+                        AnimationMode="OnLoad" >
+
 
                         <dxc:ChartControl.PrintOptions>
-                            <dxc:ChartPrintOptions                                
-                                SizeMode="Stretch"/>
+                            <dxc:ChartPrintOptions SizeMode="Stretch"/>
                         </dxc:ChartControl.PrintOptions>
 
                         <dxc:ChartControl.Diagram >
-                            <dxc:XYDiagram2D  >
-                                
+                            <dxc:XYDiagram2D >
                                 <dxc:XYDiagram2D.Series >
-
                                     <dxc:BarStackedSeries2D 
-                                        DisplayName="Оплата за услуги"
+                                        DisplayName="Выручка сотрудника за оказанные услуги"
                                         ShowInLegend="True"
                                         DataSource="{Binding Employes}"
                                         ArgumentDataMember="Name"
                                         ValueDataMember="Prices"
-                                        LabelsVisibility="True"                                       
+                                        LabelsVisibility="True" 
+                                       
                                         >
                                         <dxc:BarStackedSeries2D.Model>
                                             <dxc:GlassCylinderBar2DModel />
                                         </dxc:BarStackedSeries2D.Model>
-
-                                        
                                     </dxc:BarStackedSeries2D>
 
-                                    <dxc:BarStackedSeries2D 
-                                        DisplayName="Выплаты сотруднику"
+                                    <dxc:BarStackedSeries2D
+                                        DisplayName="Размер выплат сотруднику"
                                         ShowInLegend="True"
                                         DataSource="{Binding Employes}"
                                         ArgumentDataMember="Name"
-                                        ValueDataMember="Costs"
-                                        LabelsVisibility="True"
+                                        ValueDataMember="Costs"                                        
+                                        LabelsVisibility="True"                              
                                         >
                                         <dxc:BarStackedSeries2D.Model>
                                             <dxc:GlassCylinderBar2DModel />
@@ -109,14 +110,23 @@
                                     
                                     
                                 </dxc:XYDiagram2D.Series>
-
                                 <dxc:XYDiagram2D.DefaultPane>
                                     <dxc:Pane>
-                                        <dxc:BarStackedSeries2D.TotalLabel>
-                                            <dxc:StackedBarTotalLabel  TextPattern="Total:ddddd" ConnectorVisible="True"/>
-                                        </dxc:BarStackedSeries2D.TotalLabel>
-                                    </dxc:Pane>
-                                </dxc:XYDiagram2D.DefaultPane>
+                                            <dxc:BarStackedSeries2D.TotalLabel>
+                                            <dxc:StackedBarTotalLabel Visible="True" >
+                                                    <dxc:StackedBarTotalLabel.ElementTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock
+                                                                
+                                                                Text="{Binding Converter={StaticResource totalConv}}"></TextBlock>
+                                                        </DataTemplate>
+                                                    </dxc:StackedBarTotalLabel.ElementTemplate>
+                                                </dxc:StackedBarTotalLabel>
+                                            </dxc:BarStackedSeries2D.TotalLabel>
+                                        </dxc:Pane>
+                                    </dxc:XYDiagram2D.DefaultPane>
+                                    
+                             
                             </dxc:XYDiagram2D>
                         </dxc:ChartControl.Diagram>
                         <dxc:ChartControl.Legend>

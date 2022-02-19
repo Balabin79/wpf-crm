@@ -27,20 +27,17 @@
               ScrollViewer.CanContentScroll="True" 
               ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel  DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal" >
-                    <Image Height="23" Width="23" Margin="3 0 3 0">
-                        <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Reseller-Account.png" />
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="0 8 5 0" />
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                                Source="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"/>
+                    <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
-                
+
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl x:Name="fileToolBar" 
@@ -57,23 +54,23 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" 
+                        <dxb:BarButtonItem  Content="Сохранить" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
-                        <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
+                        <dxb:BarButtonItem  Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           CustomGlyphSize="24,24"
                                            Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>

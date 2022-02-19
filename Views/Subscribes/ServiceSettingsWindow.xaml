@@ -10,16 +10,13 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         mc:Ignorable="d"
         Height="280"
-        Title="Настройки сервиса &quot;Smscenter&quot;"
+        Title="Настройки сервиса &quot;SmsCenter&quot;"
         HorizontalAlignment="Center"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="{dx:DXImage SvgImages/Icon Builder/Actions_Settings.svg}">
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Calculator-Edit.png" />
-    </Window.Icon>
     <Grid>
 
         <Grid>
@@ -30,7 +27,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Настройки сервиса &quot;Smscenter&quot;" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
+                    <TextBlock Text="Настройки сервиса &quot;SmsСenter&quot;" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                     <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
                           Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
                         <StackPanel>

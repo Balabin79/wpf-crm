@@ -10,16 +10,13 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Классификатор"
+        Title="Справочник услуг"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Chart-Organisation.png" />
-    </Window.Icon>
     <Grid>
         <Grid Visibility="{Binding IsVisibleItemForm}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >

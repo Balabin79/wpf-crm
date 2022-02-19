@@ -7,10 +7,14 @@
         xmlns:local="clr-namespace:Dental.Views.WindowForms" 
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
-        Title="Документы, ИДС" >
+        Title="Документы, ИДС" Closing="RichEdit_DocumentClosing">
     <Grid>
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
-            <dxre:RichEditControl x:Name="RichEdit" CommandBarStyle="Ribbon"/>
+            <dxre:RichEditControl                
+                x:Name="RichEdit" 
+                
+                CommandBarStyle="Ribbon" 
+                />
         </dx:LoadingDecorator>
     </Grid>
 </Window>

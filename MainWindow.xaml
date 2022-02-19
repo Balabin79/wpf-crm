@@ -182,10 +182,10 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Organization" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertBubbleMap.svg}"/>
 
-                        <dxb:BarButtonItem Content="Услуги и расценки" 
+                        <dxb:BarButtonItem Content="Справочник услуг" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"   
-                                            ToolTip="Услуги и расценки"
+                                            ToolTip="Справочник услуг"
                                             Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"/>
@@ -244,13 +244,13 @@
 
 
 
-                        <dxb:BarButtonItem Content="Выручка по сотрудникам" RibbonStyle="Default" 
-                                           ToolTip="Выручка по сотрудникам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"                                    
+                        <dxb:BarButtonItem Content="Загруженность сотрудников" RibbonStyle="Default" 
+                                           ToolTip="Загруженность сотрудников"
+                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"                                    
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.Reports.ByEmployes"
-                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_SideBySideBarStacked.svg}"/>
 
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="История" >

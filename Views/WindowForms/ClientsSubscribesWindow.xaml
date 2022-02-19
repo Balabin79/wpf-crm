@@ -13,14 +13,11 @@
         Title="Рассылки"
         MaxHeight="930"
         HorizontalAlignment="Center"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}">
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Transmit-Blue.png" />
-    </Window.Icon>
     <ScrollViewer VerticalScrollBarVisibility="Auto"  >
         <Grid >
             <Grid Visibility="{Binding IsVisibleItemForm}">

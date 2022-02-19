@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Models;
 using System.Windows;
 using DevExpress.Xpf.Core;
-using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels
 {
@@ -21,14 +17,13 @@ namespace Dental.ViewModels
                 Adv = db.PatientInfo.Include("Advertising").Select(f => f.Advertising).ToArray();
                 Stat2D = Adv.GroupBy(f => f.Name).Select(i => new StatByAdv
                 {
-                   // Id = i.Key,
                     Cnt = i.Count(),
                     Name = i.Select(f => f.Name).FirstOrDefault()
                 }).ToList();
-                //Collection = db.UserActions.OrderBy(f => f.CreatedAt).ToArray();
-            } catch
+            } 
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Действия пользователя\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Отчет по источникам привлечения\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -41,7 +36,6 @@ namespace Dental.ViewModels
 
     public class StatByAdv
     {
-        //public int Id { get; set; }
         public int Cnt { get; set; }
         public string Name { get; set; }
     }
