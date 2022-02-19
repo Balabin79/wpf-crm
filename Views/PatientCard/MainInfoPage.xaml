@@ -113,7 +113,7 @@
                             <tp:MainInfo DataContext="{Binding}" />
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="ИДС, Документы">
+                        <dx:DXTabItem Header="Документы">
                             <Grid DataContext="{Binding}">
                                 <tp:Ids/>
                             </Grid>

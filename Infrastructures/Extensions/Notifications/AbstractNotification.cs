@@ -12,7 +12,7 @@ namespace Dental.Infrastructures.Extensions.Notifications
     {
         public virtual string Caption { get; set; } = "Уведомление";
         public virtual string Content { get; set; } = "Новая запись";
-        public virtual ImageSource Icon { get; set; } = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/Gnome-Document-Save-64.png"));
+        public virtual ImageSource Icon { get; set; } = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/save.png"));
     
         public virtual StreamResourceInfo Sound
         {

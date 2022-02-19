@@ -100,7 +100,7 @@
                             <dxg:TableView.RowCellMenuCustomizations >
                             <dxb:BarButtonItem 
                                     GlyphSize="Small" GlyphAlignment="Left"
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                    Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
                                     KeyGesture="Ctrl+O" Content="Открыть документ" 
                                     Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
                                     CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
