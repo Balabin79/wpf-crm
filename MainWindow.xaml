@@ -39,9 +39,6 @@
             Name="RibbonControl"
             >
 
-
-
-
             <dxr:RibbonControl.ToolbarItems>
                 <dxb:BarButtonItem  
                     Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"

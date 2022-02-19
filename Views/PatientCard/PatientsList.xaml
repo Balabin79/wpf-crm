@@ -30,7 +30,8 @@
             
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
+                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
+                                Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
                     <TextBlock Text="Клиенты" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -41,7 +42,7 @@
                         ShowDragWidget="False"
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать карту клиента" 
+                        <dxb:BarButtonItem Content="Создать карту клиента" 
                                            DataContext="{StaticResource Router}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
@@ -63,7 +64,13 @@
                                            Command="{Binding OpenFormAdvertisingCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}"/>
-                        
+                        <dxb:BarButtonItem Content="Шаблоны документов" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding OpenFormCategoryEmployesCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
+                                           MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
                         <dxb:BarItemLinkSeparator/>
                         
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" 
@@ -118,19 +125,23 @@
                                 Width="2*"
                                 UnboundType="String"
                                 UnboundExpression="[LastName] + ' ' + [FirstName] + ' ' + [MiddleName]"
-                                ReadOnly="True">
-                            <dxg:GridColumn.Image >
-                                <BitmapImage DecodePixelWidth="15" UriSource="pack://application:,,,/Resources/Icons/Template/User.png" />
-                            </dxg:GridColumn.Image>
+                                ReadOnly="True"                                
+                                >
+       
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                <dxe:HyperlinkEdit 
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <dx:DXImage Height="14" 
+                                                    Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}"/>
+                                        <dxe:HyperlinkEdit 
                                     Margin="0 2 0 2"
                                     Text="{Binding FullName}" 
                                     ToolTip="Перейти в анкету сотрудника"
                                     EditValue="{Binding Path=Row.FullName, Mode=OneWay}"
                                     Command="{Binding Source={StaticResource vm}, Path=OpenPatientCardCommand}"
                                     CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </dxg:GridColumn.CellDisplayTemplate>
                         </dxg:GridColumn>

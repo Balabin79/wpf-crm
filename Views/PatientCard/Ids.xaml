@@ -52,7 +52,7 @@
             </dxlc:LayoutGroup.HeaderTemplate>
     
                 <dxg:GridControl  
-                    ItemsSource="{Binding Ids, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Ids}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     MaxHeight="2000"
                     DataContext="{Binding}" 
