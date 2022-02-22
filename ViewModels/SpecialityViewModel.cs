@@ -29,8 +29,6 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Speciality)f.Clone()));
-                Navigator.HasUnsavedChanges = HasUnsavedChanges;
-                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch
             {

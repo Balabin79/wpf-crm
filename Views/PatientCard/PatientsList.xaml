@@ -43,13 +43,11 @@
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
                         <dxb:BarButtonItem Content="Создать карту клиента" 
-                                           DataContext="{StaticResource Router}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.PatientCard.MainInfoPage"/>
+                                           Command="{Binding OpenClientCardCommand}" />
                         <dxb:BarItemSeparator/>
                         <dxb:BarButtonItem Content="Категории клиентов" 
                                            GlyphSize="Custom"
@@ -136,10 +134,10 @@
                                                     Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}"/>
                                         <dxe:HyperlinkEdit 
                                     Margin="0 2 0 2"
-                                    Text="{Binding FullName}" 
-                                    ToolTip="Перейти в анкету сотрудника"
-                                    EditValue="{Binding Path=Row.FullName, Mode=OneWay}"
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenPatientCardCommand}"
+                                    Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ToolTip="Перейти в анкету клиента"                                 
+                                    Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
                                     CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"/>
                                     </StackPanel>
                                 </DataTemplate>

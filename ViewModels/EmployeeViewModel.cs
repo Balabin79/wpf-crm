@@ -23,12 +23,15 @@ namespace Dental.ViewModels
 {
     class EmployeeViewModel : ViewModelBase, IImageDeletable
     {
-        public EmployeeViewModel() : this(0) { }
+        private ListEmployeesViewModel VmList;
 
-        public EmployeeViewModel(int? employeeId = 0)
+        public EmployeeViewModel(Employee emp, ListEmployeesViewModel vmList)
         {
             db = new ApplicationContext();
+            VmList = vmList;
+            Model = emp;
             Files = new ObservableCollection<FileInfo>();
+
             CommunicationList = new List<CommunicationType>() {
                 new CommunicationType {  Id=0, Name="Не уведомлять" },
                 new CommunicationType {  Id=1, Name="Sms" },
@@ -55,21 +58,20 @@ namespace Dental.ViewModels
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
             RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
             Specialities = db.Specialities.ToList();
+
             RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
             RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
 
             try
             {
-                if (!int.TryParse(employeeId.ToString(), out int id) || id == 0)
+                if (Model.Id == 0)
                 {
-                    Model = GetModel(0);
                     IsReadOnly = false;
                     _BtnIconEditableHide = false;
                     _BtnIconEditableVisible = true;
                 }
                 else
                 {
-                    Model = GetModel(id);
                     EmployeeSpecialities = GetEmployeeSpecialities();
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
@@ -92,9 +94,6 @@ namespace Dental.ViewModels
                 Model = new Employee();
                 (new ViewModelLog(e)).run();
             }
-           
-            Navigator.HasUnsavedChanges = HasUnsavedChanges;
-            Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
         }
         
     #region Блокировка полей
@@ -459,11 +458,13 @@ namespace Dental.ViewModels
                 if (Model.Id == 0) 
                 {
                     db.Employes.Add(Model);
+                    VmList?.Collection?.Add(Model);
                     ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Employee"]);
                     BtnAfterSaveEnable = true;
                 }
-                if (db.Entry(Model).State == EntityState.Modified)
+                else
                 {
+                    db.Entry(Model).State = EntityState.Modified;
                     ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Employee"]);
                 }
                 SaveEmployeeSpecialities();

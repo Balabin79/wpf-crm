@@ -32,9 +32,6 @@ namespace Dental.ViewModels
                 Collection.ForEach(f => CollectionBeforeChanges.Add((EmployeeGroup)f.Clone()));
                 PercentOrCost = db.Dictionary.Where(f => f.CategoryId == 2).ToList();
                 MoreOrLess = db.Dictionary.Where(f => f.CategoryId == 3).ToList();
-
-                Navigator.HasUnsavedChanges = HasUnsavedChanges;
-                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch
             {

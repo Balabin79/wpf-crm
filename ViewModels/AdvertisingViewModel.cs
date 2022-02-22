@@ -32,8 +32,6 @@ namespace Dental.ViewModels
                 Collection = GetCollection();
                 
                 Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
-                Navigator.HasUnsavedChanges = HasUnsavedChanges;
-                Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
             }
             catch
             {

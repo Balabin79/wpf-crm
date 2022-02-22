@@ -13,6 +13,7 @@ using Dental.Models;
 using System.Collections.ObjectModel;
 using Dental.Views;
 using DevExpress.Xpf.Core;
+using Dental.Views.PatientCard;
 
 namespace Dental.Services
 {

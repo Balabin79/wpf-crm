@@ -1,5 +1,5 @@
-﻿<Page 
-    x:Class="Dental.Views.EmployeeDir.Employee"
+﻿<Window
+    x:Class="Dental.Views.EmployeeDir.EmployeeCardWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,12 +13,13 @@
     xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
     mc:Ignorable="d"
     x:Name="layoutGroup1"
+    Closing="Window_Closing"
     dx:ThemeManager.ThemeName="Office2019White" 
     d:DesignHeight="300" d:DesignWidth="300"
     Title="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}">
-    <Page.Resources>
+    <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
-    </Page.Resources>
+    </Window.Resources>
 
     <Border BorderBrush="LightGray" 
             BorderThickness="1" 
@@ -46,11 +47,16 @@
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Content="Редактировать данные" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            Command="{Binding EditableCommand}"/>
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" Content="Редактировать данные" 
+                        
+                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}"
+                                           Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
                                            GlyphSize="Custom"
@@ -508,4 +514,4 @@
             </ScrollViewer>
         </Grid>
     </Border>
-</Page>
+</Window>

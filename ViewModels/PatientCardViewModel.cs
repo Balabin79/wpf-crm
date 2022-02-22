@@ -32,16 +32,18 @@ namespace Dental.ViewModels
     class PatientCardViewModel : ViewModelBase
     {
         private  ApplicationContext db;
+        private PatientListViewModel VmList;
 
-        public PatientCardViewModel() : this(0) { }
-
-        public PatientCardViewModel(int patientId)
+        public PatientCardViewModel(PatientInfo client, PatientListViewModel vmList)
         {
             try
             {
                 db = new ApplicationContext();
+                VmList = vmList;
+                Model = client;
                 Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();
+
                 #region инициализация команд, связанных с общим функционалом карты клиента
                 // Команда включения - отключения редактирования полей
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
@@ -74,9 +76,8 @@ namespace Dental.ViewModels
 
                 // Если patientCardNumber == 0, то это создается новая карта клиента, иначе загружаем данные существующего клиента
 
-                if (patientId == 0)
+                if (Model.Id == 0)
                 {
-                    Model = new PatientInfo();
                     NumberPatientCard = (CreateNewNumberPatientCard()).ToString();
                     Model.ClientCardCreatedAt = DateTime.Now.ToShortDateString();
 
@@ -87,10 +88,6 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    Model = db.PatientInfo.Where(f => f.Id == patientId)
-                        ?.Include(f => f.ClientCategory)
-                        ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(k => k.Status)))
-                        .FirstOrDefault();
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     NumberPatientCard = Model?.Id.ToString();
                     IsReadOnly = true;
@@ -119,9 +116,6 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-
-            Navigator.HasUnsavedChanges = HasUnsavedChanges;
-            Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;
         }
 
 
@@ -198,11 +192,13 @@ namespace Dental.ViewModels
                 {
                     notification.Content = "Новый клиент успешно записан в базу данных!";
                     db.PatientInfo.Add(Model);
+                    VmList?.Collection?.Add(Model);
                     BtnAfterSaveEnable = true;
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
                 }
-                if (db.Entry(Model).State == EntityState.Modified)
+                else 
                 {
+                    db.Entry(Model).State = EntityState.Modified;
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
                     notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();
@@ -763,7 +759,5 @@ namespace Dental.ViewModels
         }
 
         public ObservableCollection<FileInfo> Ids { get; }
-
-
     }
 }

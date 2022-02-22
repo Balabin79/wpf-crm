@@ -17,7 +17,7 @@ using Dental.Models;
 
 namespace Dental.ViewModels
 {
-    class PatientListViewModel : ViewModelBase
+    public class PatientListViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
         public PatientListViewModel()
@@ -28,7 +28,7 @@ namespace Dental.ViewModels
                 SetCollection();
 
                 #region инициализация команд, связанных с общим функционалом карты пациента
-                OpenPatientCardCommand = new LambdaCommand(OnOpenPatientCardCommandExecuted, CanOpenPatientCardCommandExecute);
+                OpenClientCardCommand = new LambdaCommand(OnOpenClientCardCommandExecuted, CanOpenClientCardCommandExecute);
                 ShowArchiveCommand = new LambdaCommand(OnShowArchiveCommandExecuted, CanShowArchiveCommandExecute);
                 #endregion
 
@@ -47,13 +47,13 @@ namespace Dental.ViewModels
             }
         }
 
-        public ICommand OpenPatientCardCommand { get; }
+        public ICommand OpenClientCardCommand { get; }
         public ICommand ShowArchiveCommand { get; }
         public ICommand OpenFormAdvertisingCommand { get; }
         public ICommand OpenFormCategoryClientCommand { get; }
         public ICommand OpenFormIdsCommand { get; }
 
-        private bool CanOpenPatientCardCommandExecute(object p) => true;
+        private bool CanOpenClientCardCommandExecute(object p) => true;
         private bool CanShowArchiveCommandExecute(object p) => true;
         private bool CanOpenFormAdvertisingExecute(object p) => true;
         private bool CanOpenFormCategoryClientExecute(object p) => true;
@@ -66,9 +66,9 @@ namespace Dental.ViewModels
                 IdsWin = new IdsWindow();
                 IdsWin.ShowDialog();
             }
-            catch (Exception e)
+            catch 
             {
-
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -93,22 +93,26 @@ namespace Dental.ViewModels
             }
             catch 
             {
-
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Категории клиентов\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        private void OnOpenPatientCardCommandExecuted(object p)
+        private void OnOpenClientCardCommandExecuted(object p)
         {
-            if (p == null) return;
-            if (Application.Current.Resources["Router"] is Navigator nav)
+            try
             {
-                int.TryParse(p.ToString(), out int param);
-                if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.MainInfoPage");
-                else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.PatientCard.MainInfoPage", param });
+                ClientCardWin = (p != null) ? 
+                    new ClientCardWindow(Collection.Where(f => f.Id ==(int)p).FirstOrDefault(), this) 
+                    : 
+                    new ClientCardWindow(new PatientInfo(), this);
+                ClientCardWin.ShowDialog();
             }
-
-
-        }         
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта клиента\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        } 
+        
         private void OnShowArchiveCommandExecuted(object p)
         {
             try
@@ -148,11 +152,16 @@ namespace Dental.ViewModels
         public AdvertisingWindow AdvertisingWin { get; set; } 
         public GroupsWindow GroupsWin { get; set; }
         public IdsWindow IdsWin { get; set; }
+        public ClientCardWindow ClientCardWin { get; set; }
 
         private void SetCollection(bool isArhive=false)
         {
-           Collection = db.PatientInfo.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
-        }
+           Collection = 
+                db.PatientInfo
+                ?.Include(f => f.ClientCategory)
+                ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(k => k.Status)))
+                .OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
 
+        }
     }
 }
