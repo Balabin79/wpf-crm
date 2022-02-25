@@ -216,7 +216,7 @@ namespace Dental.ViewModels
         }
         private ObservableCollection<FileInfo> ids;
 
-        public void OpenFormDoc(PatientInfo Model, string fileName)
+        public void OpenFormDoc(Client Model, string fileName)
         {
             try
             {

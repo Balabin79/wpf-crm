@@ -49,13 +49,7 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding OpenClientCardCommand}" />
                         <dxb:BarItemSeparator/>
-                        <dxb:BarButtonItem Content="Категории клиентов" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormCategoryClientCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_Business_Object_Model.svg}"/>
-                        
+
                         <dxb:BarButtonItem Content="Источники привлечения клиентов" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"

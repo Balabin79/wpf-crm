@@ -16,7 +16,7 @@ namespace Dental.Services.Smsc
 {
     public class Sender
     {
-        public Sender(ICollection<PatientInfo> clients, string message, IParser parser)
+        public Sender(ICollection<Client> clients, string message, IParser parser)
         {
            // Settings = settings;
             Clients = clients;
@@ -26,7 +26,7 @@ namespace Dental.Services.Smsc
             //SMSC_PASSWORD = settings.PasswordSmsCenter;
         }       
 
-        public ICollection<PatientInfo> Clients { get; }
+        public ICollection<Client> Clients { get; }
         public IParser Parser { get; }
         public string Message { get; set; }
 

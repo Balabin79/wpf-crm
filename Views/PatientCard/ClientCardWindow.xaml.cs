@@ -9,15 +9,15 @@ namespace Dental.Views.PatientCard
 {
     public partial class ClientCardWindow : Window
     {
-        public ClientCardWindow(PatientInfo client, PatientListViewModel vm)
+        public ClientCardWindow(Client client, PatientListViewModel vm)
         {
             InitializeComponent();
-            this.DataContext = new PatientCardViewModel(client, vm); 
+            this.DataContext = new ClientCardViewModel(client, vm); 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (this.DataContext is PatientCardViewModel vm)
+            if (this.DataContext is ClientCardViewModel vm)
             {
                 if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel())
                 {

@@ -28,13 +28,10 @@ namespace Dental.ViewModels
                 NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
                 ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
 
-                OpenFormEmployeeCardCommand = new LambdaCommand(OnOpenFormEmployeeCardExecuted, CanOpenFormEmployeeCardExecute);
-
-                OpenFormSpecialitiesCommand = new LambdaCommand(OnOpenFormSpecialitiesExecuted, CanOpenFormSpecialitiesExecute);
-                OpenFormCategoryEmployesCommand = new LambdaCommand(OnOpenFormCategoryEmployesExecuted, CanOpenFormCategoryEmployesExecute);               
+                OpenFormEmployeeCardCommand = new LambdaCommand(OnOpenFormEmployeeCardExecuted, CanOpenFormEmployeeCardExecute);               
 
                 db = new ApplicationContext();
-                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToObservableCollection();
+                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).ToObservableCollection();
                 foreach (var i in Collection)
                 {
                     if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
@@ -63,14 +60,10 @@ namespace Dental.ViewModels
         public ICommand NavigateToCommand { get; }
         public ICommand ExpandAllCommand { get; }
         public ICommand OpenFormEmployeeCardCommand { get; }
-        public ICommand OpenFormSpecialitiesCommand { get; }
-        public ICommand OpenFormCategoryEmployesCommand { get; }
 
         private bool CanNavigateToCommandExecute(object p) => true;
         private bool CanExpandAllCommandExecute(object p) => true;
         private bool CanOpenFormEmployeeCardExecute(object p) => true;
-        private bool CanOpenFormSpecialitiesExecute(object p) => true;
-        private bool CanOpenFormCategoryEmployesExecute(object p) => true;
 
         private void OnOpenFormEmployeeCardExecuted(object p)
         {
@@ -84,32 +77,6 @@ namespace Dental.ViewModels
             catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        private void OnOpenFormSpecialitiesExecuted(object p)
-        {
-            try
-            {
-                SpecialitiesWin = new SpecialitiesWindow();
-                SpecialitiesWin.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Специальности\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        private void OnOpenFormCategoryEmployesExecuted(object p)
-        {
-            try
-            {
-                GroupsWin = new EmployeeGroupsWindow();
-                GroupsWin.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Категории сотрудников\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -149,9 +116,7 @@ namespace Dental.ViewModels
         }
 
         public ObservableCollection<Models.Employee> Collection { get; set; }
-
-        public SpecialitiesWindow SpecialitiesWin { get; set; }
-        public EmployeeGroupsWindow GroupsWin { get; set; }     
+   
         public EmployeeCardWindow EmployeeWin { get; set; }     
     }
 }

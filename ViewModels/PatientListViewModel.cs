@@ -33,7 +33,6 @@ namespace Dental.ViewModels
                 #endregion
 
                 OpenFormAdvertisingCommand = new LambdaCommand(OnOpenFormAdvertisingExecuted, CanOpenFormAdvertisingExecute);
-                OpenFormCategoryClientCommand = new LambdaCommand(OnOpenFormCategoryClientExecuted, CanOpenFormCategoryClientExecute);
 
                 OpenFormIdsCommand = new LambdaCommand(OnOpenFormIdsExecuted, CanOpenFormIdsExecute);
 
@@ -50,13 +49,11 @@ namespace Dental.ViewModels
         public ICommand OpenClientCardCommand { get; }
         public ICommand ShowArchiveCommand { get; }
         public ICommand OpenFormAdvertisingCommand { get; }
-        public ICommand OpenFormCategoryClientCommand { get; }
         public ICommand OpenFormIdsCommand { get; }
 
         private bool CanOpenClientCardCommandExecute(object p) => true;
         private bool CanShowArchiveCommandExecute(object p) => true;
         private bool CanOpenFormAdvertisingExecute(object p) => true;
-        private bool CanOpenFormCategoryClientExecute(object p) => true;
         private bool CanOpenFormIdsExecute(object p) => true;
 
         private void OnOpenFormIdsExecuted(object p)
@@ -84,19 +81,6 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenFormCategoryClientExecuted(object p)
-        {
-            try
-            {
-                GroupsWin = new GroupsWindow();
-                GroupsWin.ShowDialog();
-            }
-            catch 
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Категории клиентов\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
         private void OnOpenClientCardCommandExecuted(object p)
         {
             try
@@ -104,7 +88,7 @@ namespace Dental.ViewModels
                 ClientCardWin = (p != null) ? 
                     new ClientCardWindow(Collection.Where(f => f.Id ==(int)p).FirstOrDefault(), this) 
                     : 
-                    new ClientCardWindow(new PatientInfo(), this);
+                    new ClientCardWindow(new Client(), this);
                 ClientCardWin.ShowDialog();
             }
             catch
@@ -142,24 +126,24 @@ namespace Dental.ViewModels
             set => Set(ref _BtnIconList, value);
         }
 
-        public ObservableCollection<PatientInfo> _Collection;
-        public ObservableCollection<PatientInfo> Collection 
+        public ObservableCollection<Client> _Collection;
+        public ObservableCollection<Client> Collection 
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
 
         public AdvertisingWindow AdvertisingWin { get; set; } 
-        public GroupsWindow GroupsWin { get; set; }
         public IdsWindow IdsWin { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 
         private void SetCollection(bool isArhive=false)
         {
-           Collection = 
-                db.PatientInfo
-                ?.Include(f => f.ClientCategory)
-                ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(k => k.Status)))
+            Collection =
+                 db.PatientInfo
+                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Classificator)))
+                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Employee)))
+                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Status)))
                 .OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
 
         }

@@ -42,7 +42,6 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 SetCollection();
-                ClientsGroups = db.ClientsGroup?.ToArray();
                 TypeSubscribeParams = db.SubscribeParams.Where(f => f.Id < 11).ToObservableCollection();
                 VoiceParams = db.SubscribeParams.Where(f => f.Id > 10).ToObservableCollection();
                 SmsCenter = GetSmsCenter();
@@ -172,7 +171,7 @@ namespace Dental.ViewModels
                             .GetDirectories().OfType<ClientsSubscribes>().ToObservableCollection();
                         if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-                        SelectedClientGroup = ClientsGroups.Where(f => f.Id == Model?.ClientGroupId).FirstOrDefault();                
+                          
 
                         if (Model.IsDir == 0)
                         {
@@ -216,7 +215,6 @@ namespace Dental.ViewModels
                     new TryingCreatingDuplicate().run(Model.IsDir);
                     return;
                 }
-                if (SelectedClientGroup != null) Model.ClientGroupId = ((ClientsGroup)SelectedClientGroup)?.Id;
                 if (Model.Settings != null)
                 {
                     try
@@ -290,31 +288,6 @@ namespace Dental.ViewModels
 
                         if (res.ToString() == "No") return;
                     }
-
-                    // если не заполнена категория клиентов
-                    if (s.ClientGroupId == null)
-                    {
-                        var res = ThemedMessageBox.Show(title: "Внимание", text: "Не заполнено поле \"Категория клиентов\"! Сообщение будет отправлено всем клиентам, чья карта не находится в статусе \"В архиве\"!. Отправить всем клиентам?",
-                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                        if (res.ToString() == "No") return;
-                    }
-                    // получаем коллекцию пользователей, относящаюся к целевой категории 
-                    var clients = (s.ClientGroupId == null) ? db.PatientInfo.ToArray() : db.PatientInfo.Where(f => f.ClientCategoryId == s.ClientGroupId).ToArray();
-
-                    //если список клиентов пуст
-                    if (clients.Count() == 0)
-                    {
-                        var mes = "Список клиентов, предназначенных для данной рассылки пуст!";
-                        if (s.ClientGroupId != null) mes = "Список клиентов входящих в указанную категорию пуст!";
-
-                        ThemedMessageBox.Show(title: "Внимание", text: mes,
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                        return;
-                    }
-
-
-                    var msg = new MessageParse(s.Content, clients).Run();
                 }
             }
             catch (Exception e)
@@ -380,7 +353,6 @@ namespace Dental.ViewModels
         private void SetCollection() 
         {
             Collection = db.ClientsSubscribes
-            .Include(f => f.ClientGroup)
             .Include(f => f.SubscribeParams)
             .OrderBy(d => d.DateSubscribe).ToObservableCollection();
 
@@ -415,8 +387,6 @@ namespace Dental.ViewModels
                 else i.Report = new Services.Smsc.SmsSettings.Report();
             }
         } 
-        public ICollection<ClientsGroup> ClientsGroups { get; }
-
 
         private void CreateNewWindow() => Window = new ClientsSubscribesWindow();
         private ClientsSubscribes CreateNewModel() => new ClientsSubscribes();

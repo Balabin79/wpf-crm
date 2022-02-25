@@ -17,9 +17,6 @@
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
-    <Window.Icon>
-        <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/Calculator-Edit.png" />
-    </Window.Icon>
     <Grid>
 
         <Grid>

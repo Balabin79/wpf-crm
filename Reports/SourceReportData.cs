@@ -9,7 +9,7 @@ namespace Dental.Reports
     {
         public Organization Organization { get; set; }
         public Employee Employee { get; set; }
-        public PatientInfo PatientInfo { get; set; }
+        public Client PatientInfo { get; set; }
 
         public string AditionalString1 { get; set; }
         public string AditionalString2 { get; set; }

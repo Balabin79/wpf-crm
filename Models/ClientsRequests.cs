@@ -14,7 +14,7 @@ namespace Dental.Models
         public string Date { get; set; }
         public string Time { get; set; }
 
-        public PatientInfo ClientInfo { get; set; }
+        public Client ClientInfo { get; set; }
         public int? ClientInfoId { get; set; }
 
 

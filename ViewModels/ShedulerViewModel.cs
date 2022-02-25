@@ -59,7 +59,7 @@ namespace Dental.ViewModels
 
                 AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
 
-                Doctors = db.Employes.OrderBy(d => d.LastName).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToObservableCollection();
+                Doctors = db.Employes.OrderBy(d => d.LastName).ToObservableCollection();
                 foreach (var i in Doctors)
                 {
                     if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
@@ -78,8 +78,7 @@ namespace Dental.ViewModels
                     }
                     else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
                     //специальности
-                    i.Specialities = string.Join(",", i?.EmployesSpecialities?.Select(f => f.Speciality.Name)?.ToArray());
-                    if (i.Specialities.Length < 1) i.Specialities = "Специальность не указана";
+                    if (i.Post == null ||  i.Post.Length < 1) i.Post = "Должность не указана";
                 }
 
                 Clients = db.PatientInfo.ToObservableCollection();
@@ -410,7 +409,7 @@ namespace Dental.ViewModels
         public ObservableCollection<Classificator> ClassificatorCategories { get; set; }
         public virtual ObservableCollection<Employee> Doctors { get; set; }
 
-        public virtual ObservableCollection<PatientInfo> Clients { get; set; }
+        public virtual ObservableCollection<Client> Clients { get; set; }
         public virtual ObservableCollection<MedicalAppointment> Appointments { get; set; }
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
 

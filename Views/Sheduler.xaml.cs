@@ -34,16 +34,16 @@ namespace Dental.Views
         }
         void OnStartAppointmentDragFromOutside(object sender, StartAppointmentDragFromOutsideEventArgs e)
         {
-            if (e.Data.GetDataPresent(typeof(IEnumerable<PatientInfo>)))
-                ((IEnumerable<PatientInfo>)e.Data.GetData(typeof(IEnumerable<PatientInfo>))).ToList().ForEach(x => e.DragAppointments.Add(CreateAppointment(x)));
+            if (e.Data.GetDataPresent(typeof(IEnumerable<Client>)))
+                ((IEnumerable<Client>)e.Data.GetData(typeof(IEnumerable<Client>))).ToList().ForEach(x => e.DragAppointments.Add(CreateAppointment(x)));
         }
         void OnStartRecordDrag(object sender, StartRecordDragEventArgs e)
         {
-            e.Data.SetData(typeof(IEnumerable<PatientInfo>), e.Records.Cast<PatientInfo>());
+            e.Data.SetData(typeof(IEnumerable<Client>), e.Records.Cast<Client>());
             e.Handled = true;
         }
         
-        AppointmentItem CreateAppointment(PatientInfo patient)
+        AppointmentItem CreateAppointment(Client patient)
         {
             AppointmentItem result = new AppointmentItem();
             result.CustomFields["PatientId"] = patient.Id;

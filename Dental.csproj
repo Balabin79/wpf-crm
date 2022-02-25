@@ -31,6 +31,7 @@
     <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\message.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
+    <None Remove="Resources\Icons\svg\odnoklassniki.svg" />
     <None Remove="Resources\Icons\svg\opened_folder.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
     <None Remove="Resources\Icons\svg\reg1.svg" />
@@ -39,6 +40,7 @@
     <None Remove="Resources\Icons\svg\user.svg" />
     <None Remove="Resources\Icons\svg\user1.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
+    <None Remove="Resources\Icons\svg\vk.svg" />
     <None Remove="Resources\Icons\Template\avatar.png" />
     <None Remove="Resources\Icons\Template\Book-Keeping.png" />
     <None Remove="Resources\Icons\Template\Book.png" />
@@ -178,11 +180,13 @@
     <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\message.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
+    <Resource Include="Resources\Icons\svg\odnoklassniki.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
     <Resource Include="Resources\Icons\svg\reg1.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
+    <Resource Include="Resources\Icons\svg\vk.svg" />
     <Resource Include="Resources\Icons\Template\avatar.png" />
     <Resource Include="Resources\Icons\Template\save.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
@@ -209,9 +213,6 @@
     <Compile Update="Views\Sheduler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EmployeeDir\EmployeeGroupsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\PatientCard\Ids.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -221,16 +222,10 @@
     <Compile Update="Views\PatientCard\VisitStore.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\TreatmentPlan.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\GroupsWindow.xaml.cs">
+    <Compile Update="Views\PatientCard\ServicesPlans.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\AdvertisingWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\EmployeeDir\SpecialitiesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -298,10 +293,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EmployeeDir\EmployeeGroupsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\PatientCard\Ids.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -314,19 +305,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\TreatmentPlan.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\GroupsWindow.xaml">
+    <Page Update="Views\PatientCard\ServicesPlans.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\AdvertisingWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\EmployeeDir\SpecialitiesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

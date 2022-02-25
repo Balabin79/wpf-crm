@@ -25,7 +25,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).Include(f => f.EmployesSpecialities.Select(i => i.Speciality)).ToList();
+                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).ToList();
             }
             catch
             {

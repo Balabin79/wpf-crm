@@ -53,11 +53,9 @@ namespace Dental.ViewModels
             #endregion
          
             // подгружаем вспомогательные справочники
-            EmployeeGroups = db.EmployeeGroup.ToList();
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
             RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
-            Specialities = db.Specialities.ToList();
 
             RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
             RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
@@ -72,7 +70,6 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    EmployeeSpecialities = GetEmployeeSpecialities();
                     IsReadOnly = true;
                     _BtnIconEditableHide = true;
                     _BtnIconEditableVisible = false;
@@ -302,104 +299,14 @@ namespace Dental.ViewModels
         #region Вспомогательные справочники, заголовок
         public IEnumerable<Dictionary> Statuses { get; set; }
         public IEnumerable<Dictionary> GenderList { get; set; }
-        public IEnumerable<EmployeeGroup> EmployeeGroups { get; set; }
         public List<Dictionary> RateType { get; set; }
 
         public string RateCheckedStateContent { get; set; }
         public string RateUncheckedStateContent { get; set; }
 
         public string Title { get; set; } = "Анкета сотрудника";
-
-        public List<Speciality> Specialities { get; set; }
         #endregion
 
-        #region Должности сотрудника
-        public object EmployeeSpecialities
-        {
-            get => _EmployeeSpecialities;
-            set
-            {
-                Set(ref _EmployeeSpecialities, value);
-            }
-
-        }
-        public object _EmployeeSpecialities;
-
-        private List<Speciality> GetEmployeeSpecialities() => Model?.EmployesSpecialities.Where(f => f.EmployeeId == Model?.Id).Select(f => f.Speciality).ToList();
-        
-        private bool IsEqualEmployeeSpecialities()
-        {
-            if (EmployeeSpecialities?.ToString()?.Length > 0)
-            {
-                if (EmployeeSpecialities is List<object> employeeSpecialities)
-                {
-                    var employeeSpecialitiesFromDb = GetEmployeeSpecialities();
-
-                    if (employeeSpecialities.Count() != employeeSpecialitiesFromDb.Count())
-                    {
-                        return false;
-                    }
-
-                    for (int i = 0; i < employeeSpecialities.Count(); i++)
-                    {
-                        var es = (Speciality)employeeSpecialities[i];
-                        if (!es.Equals(employeeSpecialitiesFromDb[i]))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
-        private void SaveEmployeeSpecialities()
-        {
-            try
-            {
-                if (Model.EmployesSpecialities == null) return;
-                if (EmployeeSpecialities is List<object> employeeSpecialities)
-                {
-                    var col = employeeSpecialities.Cast<Speciality>();
-                    foreach (var item in col)
-                    {
-                        // если эл-т содержится, то пропускаем
-                        if (Model.EmployesSpecialities.Select(f => f.Speciality).Contains(item)) continue;
-
-                        //если эл-та нет - то добавляем
-                        Model.EmployesSpecialities.Add(new EmployesSpecialities()
-                        {
-                            Guid = KeyGenerator.GetUniqueKey(),
-                            Employee = Model,
-                            EmployeeId = Model.Id,
-                            EmployeeGuid = Model.Guid,
-                            Speciality = item,
-                            SpecialityId = item.Id
-                        }
-                        );
-                    }
-
-                    // сравниваем две коллекции, если равно то возврат
-                    if (col.Count() == Model.EmployesSpecialities.Count) return;
-
-                    // если не равны, то какие-то элементы убрали из коллекции, находим их и удаляем.
-                    var removedSpecialities = Model.EmployesSpecialities.Select(f => f.Speciality).Except(col).ToArray();
-
-                    for (int i = 0; i < removedSpecialities.Count(); i++)
-                    {
-                        var item = Model.EmployesSpecialities.Where(f => f.Speciality.Id == removedSpecialities[i].Id).FirstOrDefault();
-                        if (item == null) continue;
-                        db.Entry(item).State = EntityState.Deleted;
-                        db.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-        #endregion
 
         #region Управление моделью
         public ICommand SaveCommand { get; }
@@ -416,11 +323,6 @@ namespace Dental.ViewModels
             if (Model.FieldsChanges != null) Model.FieldsChanges = new List<string>();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
 
-            if (!IsEqualEmployeeSpecialities())
-            {
-                hasUnsavedChanges = true;
-                Model.FieldsChanges.Add("Должности сотрудника");
-            }
             return hasUnsavedChanges;
         }
 
@@ -467,7 +369,6 @@ namespace Dental.ViewModels
                     db.Entry(Model).State = EntityState.Modified;
                     ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Employee"]);
                 }
-                SaveEmployeeSpecialities();
                 SavePhoto();
 
                 int cnt = db.SaveChanges();
@@ -509,12 +410,16 @@ namespace Dental.ViewModels
                     var notification = new Notification();
                     notification.Content = "Анкета сотрудника полностью удалена из базы данных!";
                     notification.run();
-                    if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employes");
                 }
+                if (Application.Current.Resources["Router"] is Navigator nav)
+                {
+                    nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employes");
+                }
+                VmList.EmployeeWin.Close();                                       
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты сотрудника произошла ошибка, перейдите в раздел \"Сотрудники\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 

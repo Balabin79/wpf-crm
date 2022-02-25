@@ -122,7 +122,7 @@
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Планы услуг" >
-                            <tp:TreatmentPlan DataContext="{Binding}"/>
+                            <tp:ServicesPlans DataContext="{Binding}"/>
                         </dx:DXTabItem>
                         <dx:DXTabItem Header="Обращения клиента">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >

@@ -10,7 +10,7 @@ namespace Dental.Services
 {
     public class RtfParse
     {
-        public RtfParse(string txt, PatientInfo model)
+        public RtfParse(string txt, Client model)
         {
             ApplicationContext db = new ApplicationContext();
             RtfText = txt;
@@ -69,7 +69,7 @@ namespace Dental.Services
         }           
 
         private string RtfText { get; set; }
-        private PatientInfo Model { get; set; }
+        private Client Model { get; set; }
         private Organization Org { get; set; }
     }
 }

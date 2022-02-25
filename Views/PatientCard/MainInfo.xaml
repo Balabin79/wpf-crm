@@ -69,7 +69,10 @@
                     </dxlc:LayoutItem>
 
                 </dxlc:LayoutGroup>
-
+                <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
+                    <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Серия паспорта:"  Name="PassportSeries" LabelPosition="Top" >
                         <dxe:TextEdit 
@@ -89,13 +92,11 @@
                 </dxlc:LayoutGroup>
 
                 <dxlc:LayoutItem Label="Дата выдачи:"  Name="PassportIssuanceDate" LabelPosition="Top" >
-                    <dxe:DateEdit   EditValue="{Binding Model.PassportIssuanceDate, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
+                    <dxe:DateEdit   EditValue="{Binding Model.PassportIssuanceDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Кем выдан:"  Name="WhomIssued" LabelPosition="Top" >
-                    <dxe:MemoEdit Text="{Binding Model.WhomIssued, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                    <dxe:MemoEdit Text="{Binding Model.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
 
@@ -136,10 +137,26 @@
                     </dxe:ButtonEdit>
                 </dxlc:LayoutItem>
 
-                <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
-                    <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <dxlc:LayoutItem Label="ВКонтакте" AddColonToLabel="True" LabelPosition="Top">
+                    <dxe:ButtonEdit 
+                        IsTextEditable="True"
+                        AllowDefaultButton="False"
+                        EditValue="{Binding Path=Model.Vk, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/vk.svg"  Margin="0 2 3 2"/>
+                    </dxe:ButtonEdit>
+                </dxlc:LayoutItem>
+
+                <dxlc:LayoutItem Label="Одноклассники" AddColonToLabel="True" LabelPosition="Top">
+                    <dxe:ButtonEdit 
+                        IsTextEditable="True"
+                        AllowDefaultButton="False"
+                        EditValue="{Binding Path=Model.Ok, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/odnoklassniki.svg"  Margin="0 2 3 2"/>
+                    </dxe:ButtonEdit>
                 </dxlc:LayoutItem>
 
                 <dxlc:LayoutItem Label="Источник привлечения клиента:" Grid.Row="0" LabelPosition="Top" >
@@ -153,16 +170,25 @@
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
 
-                <dxlc:LayoutItem Label="Категория клиентов:"  LabelPosition="Top" >
-                    <dxe:ComboBoxEdit ItemsSource="{Binding ClientsGroupList, Mode=TwoWay}"  
-                                  IsTextEditable="False"                                    
-                                  SelectedItem="{Binding Model.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:RadioComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
+                <dxlc:LayoutItem 
+                    Label="Повышающий/понижающий коэффицент от базового тарифа:"
+                    LabelPosition="Top" 
+                    HorizontalAlignment="Stretch">
+                    <dxe:TextEdit 
+                        EditValue="{Binding Model.KDiscount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Mask="F2"
+                        MaskType="Numeric" >
+                        <dxe:TextEdit.ToolTip>
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                Text="Повышающий или понижающий кооэфицент от базового тарифа, установленного в прайсе. При понижающем кооэфиценте необходимо поставить перед числом знак минус."/>
+                        </dxe:TextEdit.ToolTip>
+                    </dxe:TextEdit>
                 </dxlc:LayoutItem>
+
+
+
                 <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" >
                     <dxe:MemoEdit  EditValue="{Binding Model.Note, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 

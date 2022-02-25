@@ -41,7 +41,7 @@ namespace Dental.Models
         private ObservableCollection<TreatmentPlanItems> _TreatmentPlanItems;
 
         public int PatientInfoId { get; set; }
-        public PatientInfo PatientInfo { get; set; }
+        public Client PatientInfo { get; set; }
 
         public string DateTime
         {

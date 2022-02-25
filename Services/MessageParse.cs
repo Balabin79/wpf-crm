@@ -10,7 +10,7 @@ namespace Dental.Services
 {
     public class MessageParse
     {
-        public MessageParse(string txt, PatientInfo[] clients)
+        public MessageParse(string txt, Client[] clients)
         {
             ApplicationContext db = new ApplicationContext();
             Text = txt;
@@ -50,7 +50,7 @@ namespace Dental.Services
             }
         }
 
-        private string GetValueProperty(string param, PatientInfo client) 
+        private string GetValueProperty(string param, Client client) 
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Dental.Services
         }           
 
         private string Text { get; set; }
-        private PatientInfo[] Clients { get; set; }
+        private Client[] Clients { get; set; }
         private List<string> Msgs { get; set; }
         private Organization Org { get; set; }
     }

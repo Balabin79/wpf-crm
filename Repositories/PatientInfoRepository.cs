@@ -9,8 +9,8 @@ namespace Dental.Repositories
 {
     public static class PatientInfoRepository
     {
-        public static List<PatientInfo> PatientInfo { get => GetPatientInfo();  }
+        public static List<Client> PatientInfo { get => GetPatientInfo();  }
 
-        public static List<PatientInfo> GetPatientInfo() => new ApplicationContext().PatientInfo.ToList();        
+        public static List<Client> GetPatientInfo() => new ApplicationContext().PatientInfo.ToList();        
     }
 }

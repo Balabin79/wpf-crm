@@ -51,7 +51,7 @@
 
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
                                 <TextBlock Text="{Binding Path=Fio}" ToolTip="{Binding Path=Fio}" FontWeight="DemiBold"/>
-                                <TextBlock Text="{Binding Path=Specialities}" TextWrapping="Wrap" FontStyle="Italic" ToolTip="{Binding Path=Specialities}"/>
+                                <TextBlock Text="{Binding Path=Post}" TextWrapping="Wrap" FontStyle="Italic" ToolTip="{Binding Path=Post}"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
@@ -99,8 +99,8 @@
                             Opacity="0.6" FontWeight="DemiBold" TextAlignment="Center"
                             HorizontalAlignment="Center"
                             FontStyle="Italic"
-                            ToolTip="{Binding Resource.CustomFields.SpecialitiesNames}"
-                            Text="{Binding Resource.CustomFields.SpecialitiesNames}" />
+                            ToolTip="{Binding Resource.CustomFields.Post}"
+                            Text="{Binding Resource.CustomFields.Post}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -217,7 +217,7 @@
                 <dxsch:SchedulerControl 
             DataContext="{StaticResource vm}"
             x:Name="scheduler" 
-            CommandBarStyle="Ribbon"
+            CommandBarStyle="Empty"                   
             GroupType="Resource" 
             FirstDayOfWeek="Monday" 
             MaxHeight="2000"                   
@@ -307,7 +307,7 @@
                             <dxsch:DataSource.ResourceMappings>
                                 <dxsch:ResourceMappings Caption="Fio" Id="Id" Visible="IsVisible" >
                                     <dxsch:CustomFieldMapping Mapping="Image" Name="ImageName" />
-                                    <dxsch:CustomFieldMapping Mapping="Specialities" Name="SpecialitiesNames" />
+                                    <dxsch:CustomFieldMapping Mapping="Post" Name="Post" />
                                     <dxsch:CustomFieldMapping Mapping="Phone" Name="Phone" />
                                 </dxsch:ResourceMappings>
                             </dxsch:DataSource.ResourceMappings>

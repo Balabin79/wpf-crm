@@ -30,9 +30,6 @@ namespace Dental.Models
         public int? SubscribeParamsId { get; set; }
         public SubscribeParams SubscribeParams { get; set; }
 
-        public int? ClientGroupId { get; set; }
-        public ClientsGroup ClientGroup { get; set; }
-
         public string Status { get; set; }
         public string JsonSettings { get; set; }
         public string JsonReport { get; set; }
@@ -60,7 +57,6 @@ namespace Dental.Models
                     StringParamsIsEquel(this.Comment, clone.Comment) &&
                     StringParamsIsEquel(this.Content, clone.Content) &&
                     StringParamsIsEquel(this.DateSubscribe, clone.DateSubscribe) &&
-                    StringParamsIsEquel(this.ClientGroup?.Guid, clone.ClientGroup?.Guid) &&
                     StringParamsIsEquel(this.Status, clone.Status) &&
                     StringParamsIsEquel(this.JsonSettings, clone.JsonSettings) &&
                     StringParamsIsEquel(this.JsonReport, clone.JsonReport) &&
@@ -87,7 +83,6 @@ namespace Dental.Models
             OnPropertyChanged(nameof(ParentId));
             OnPropertyChanged(nameof(DateSubscribe));
             OnPropertyChanged(nameof(Status));
-            OnPropertyChanged(nameof(ClientGroup));
             OnPropertyChanged(nameof(SubscribeParams));
         }
     }

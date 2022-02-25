@@ -134,7 +134,7 @@ namespace Dental.ViewModels
             .Include(f => f.ClientInfo)
             .OrderBy(d => d.CreatedAt).ToObservableCollection();
         public ObservableCollection<ClientsRequests> CollectionBeforeChanges { get; set; } = new ObservableCollection<ClientsRequests>();
-        public ICollection<PatientInfo> Clients { get; }
+        public ICollection<Client> Clients { get; }
 
         public object SelectedClient
         {

@@ -16,7 +16,7 @@ namespace Dental.ViewModels
         public static ClientAppointmentWindowViewModel Create(
             AppointmentItem appointmentItem, 
             SchedulerControl scheduler, 
-            ObservableCollection<PatientInfo> clients, 
+            ObservableCollection<Client> clients, 
             ObservableCollection<Classificator> services,
             ObservableCollection<LocationAppointment> locations
             )
@@ -33,7 +33,7 @@ namespace Dental.ViewModels
         protected ClientAppointmentWindowViewModel(
             AppointmentItem appointmentItem, 
             SchedulerControl scheduler, 
-            ObservableCollection<PatientInfo> clients, 
+            ObservableCollection<Client> clients, 
             ObservableCollection<Classificator> services,
             ObservableCollection<LocationAppointment> locations
             ) : base(appointmentItem, scheduler)
@@ -80,20 +80,20 @@ namespace Dental.ViewModels
 
 
 
-        public ObservableCollection<PatientInfo> Patients {
+        public ObservableCollection<Client> Patients {
             get => patients;
             set => patients = value;
         }
-        private ObservableCollection<PatientInfo> patients;
+        private ObservableCollection<Client> patients;
 
-        PatientInfo patient;
+        Client patient;
         [BindableProperty]
-        public virtual PatientInfo Patient
+        public virtual Client Patient
         {
             get { return patient; }
             set
             {
-                PatientInfo newPatient = value;
+                Client newPatient = value;
                 if (patient == newPatient) return;
                 patient = newPatient;
                 CustomFields["ClientInfoId"] = newPatient.Id;

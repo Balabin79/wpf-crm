@@ -32,13 +32,14 @@
         </Grid.RowDefinitions>
 
         <dxr:RibbonControl 
-            AllowCustomization="False" 
+            AllowCustomizingDefaultGroups="False"
+            AllowCustomization="False"      
             RibbonStyle="Office2019" 
             ShowApplicationButton="False" 
             Grid.Row="0" 
             Name="RibbonControl"
             >
-
+           
             <dxr:RibbonControl.ToolbarItems>
                 <dxb:BarButtonItem  
                     Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"
@@ -109,11 +110,13 @@
 
             </dxr:RibbonControl.ToolbarItems>
 
+            <dxr:RibbonDefaultPageCategory >
 
-            <dxr:RibbonDefaultPageCategory>
-
-                <dxr:RibbonPage Caption="Рабочий стол" >
+                <dxr:RibbonPage Caption="Рабочий стол">
+                    
                     <dxr:RibbonPageGroup Caption="Основное">
+                        
+                        
                         <dxb:BarButtonItem Content="Рабочий стол" RibbonStyle="Default" 
                                            ToolTip="Рабочий стол"
                                            MediumGlyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}"
@@ -135,7 +138,7 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" 
                                            />
-                        
+
                         <dxb:BarButtonItem Content="Обращения клиентов" RibbonStyle="Default" 
                                            ToolTip="Список обращений клиентов"
                                            MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/EditComment.svg}" 
@@ -143,7 +146,7 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.ClientsRequests" 
                                            Glyph="{dx:DXImage SvgImages/Spreadsheet/EditComment.svg}" 
                                            />
-                        
+
                         <dxb:BarButtonItem Content="Рассылки" RibbonStyle="Default" 
                                            ToolTip="Рассылки" 
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"                                        
@@ -152,7 +155,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"/>
 
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Организация">
+                    <dxr:RibbonPageGroup Caption="Справочники">
                         <dxb:BarButtonItem Content="Сотрудники"
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}" 
@@ -260,6 +263,7 @@
                 </dxr:RibbonPage>
 
             </dxr:RibbonDefaultPageCategory>
+
 
         </dxr:RibbonControl>
         <Frame  

@@ -35,9 +35,6 @@ namespace Dental.Models
         private bool isVisible;
 
         [NotMapped]
-        public string Specialities { get; set; }
-
-        [NotMapped]
         public string Fio {
             get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
         }
@@ -99,12 +96,19 @@ namespace Dental.Models
         }
         private string _Email;
 
-        public string Skype
+        public string Ok
         {
-            get => _Skype;
-            set => _Skype = value?.Trim();
+            get => _Ok;
+            set => _Ok = value?.Trim();
         }
-        private string _Skype;
+        private string _Ok;
+
+        public string Vk
+        {
+            get => _Vk;
+            set => _Vk = value?.Trim();
+        }
+        private string _Vk;
 
         [Display(Name = "Примечание")]
         public string Note
@@ -117,10 +121,6 @@ namespace Dental.Models
         [Display(Name = "Телефон")]
         [Phone(ErrorMessage = @"В поле ""Телефон"" введено некорректное значение")]
         public string Phone { get; set; }
-
-        [Display(Name = "Доп.телефон")]
-        [Phone(ErrorMessage = @"В поле ""Дополнительный телефон"" введено некорректное значение")]
-        public string AddPhone { get; set; }
 
         [Display(Name = "Дата приема")]
         public string HireDate { get; set; } // дата приема на работу
@@ -143,9 +143,14 @@ namespace Dental.Models
         }
         private string _Address;
 
-        [Display(Name = "Категория сотрудника")]
-        public EmployeeGroup EmployeeGroup { get; set; }
-        public int? EmployeeGroupId { get; set; }
+        [Display(Name = "Должность")]
+        public string Post
+        {
+            get => _Post;
+            set => _Post = value?.Trim();
+        }
+        private string _Post;
+
 
         [Display(Name = "Статус")]
         public Dictionary Status { get; set; }
@@ -155,13 +160,13 @@ namespace Dental.Models
         public Dictionary Sex { get; set; }
         public int? SexId { get; set; }       
         
-        public int? NotificationShedulerIdx { get; set; }
-        public int? NotificationRequestIdx { get; set; }
+        public int? IsNotificate { get; set; }
+        public int? IsInSheduler { get; set; }
+        public int? DurationWorkTime { get; set; }
+        public decimal? KPieceRate { get; set; }
 
         [Display(Name = "Оклад фиксированный")]
         public int? IsFixRate { get; set; }
-
-        public List<EmployesSpecialities> EmployesSpecialities { get; set; } = new List<EmployesSpecialities>();
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -181,23 +186,25 @@ namespace Dental.Models
                 StringParamsIsEquel(this.MiddleName, other.MiddleName, "Отчество");
                 StringParamsIsEquel(this.BirthDate, other.BirthDate, "Дата рождения");
                 StringParamsIsEquel(this.Photo, other.Photo, "Фото");
-                StringParamsIsEquel(this.Phone, other.Phone, "Домашний телефон");
-                StringParamsIsEquel(this.AddPhone, other.AddPhone, "Рабочий телефон");
+                StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
+                StringParamsIsEquel(this.Ok, other.Ok, "Одноклассники");
+                StringParamsIsEquel(this.Vk, other.Vk, "В контакте");
                 StringParamsIsEquel(this.Email, other.Email, "Email");
                 StringParamsIsEquel(this.Address, other.Address, "Адрес");
                 StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
+                StringParamsIsEquel(this.Post, other.Post, "Должность");
                 StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
                 StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
                 StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
-                StringParamsIsEquel(this.EmployeeGroup?.Guid, other.EmployeeGroup?.Guid, "Категория сотрудника");
                 StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
                 StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
                 if (this.IsDismissed != other.IsDismissed) FieldsChanges.Add("Уволен");                
-                if (this.EmployeeGroupId != other.EmployeeGroupId) FieldsChanges.Add("Категории сотрудников");  
                 if (this.IsFixRate != other.IsFixRate) FieldsChanges.Add("Тип оклада");
-                if (this.NotificationRequestIdx != other.NotificationRequestIdx) FieldsChanges.Add("Уведомления по обращению");
-                if (this.NotificationShedulerIdx != other.NotificationShedulerIdx) FieldsChanges.Add("Уведомления по расписанию");
+                if (this.IsNotificate != other.IsNotificate) FieldsChanges.Add("Получает уведомления");
+                if (this.IsInSheduler != other.IsInSheduler) FieldsChanges.Add("В расписании");
+                if (this.DurationWorkTime != other.DurationWorkTime) FieldsChanges.Add("Продолжительность рабочего дня");
+                if (this.KPieceRate != other.KPieceRate) FieldsChanges.Add("Пониж/повыш коэф. сдельной оплаты");
             }
             return FieldsChanges.Count == 0;
         }
