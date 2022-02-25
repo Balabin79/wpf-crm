@@ -16,7 +16,7 @@ namespace Dental.Models
 
 
         [Required(ErrorMessage = @"Поле ""Классификатор"" обязательно для заполнения")]
-        public Classificator Classificator { get; set; }
+        public Service Classificator { get; set; }
         public int? ClassificatorId { get; set; }
 
         public int? TreatmentPlanId { get; set; }

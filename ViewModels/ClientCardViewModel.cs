@@ -107,7 +107,7 @@ namespace Dental.ViewModels
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
 
 
-                ClassificatorCategories = db.Classificator.ToList();
+                ClassificatorCategories = db.Services.ToList();
                 Employes = db.Employes.ToList();
                 ServicePlanItemsStatuses = db.ServicePlanItemStatuses.ToArray();
             }
@@ -192,7 +192,7 @@ namespace Dental.ViewModels
                 if (Model.Id == 0)
                 {
                     notification.Content = "Новый клиент успешно записан в базу данных!";
-                    db.PatientInfo.Add(Model);
+                    db.Clients.Add(Model);
                     VmList?.Collection?.Add(Model);
                     BtnAfterSaveEnable = true;
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
@@ -502,7 +502,7 @@ namespace Dental.ViewModels
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Classificator classificator)
+                    if (parameters.Tree.FocusedRow is Service classificator)
                     {
                         if (classificator.IsDir == 1) return;
                         parameters.Popup.EditValue = classificator;
@@ -652,7 +652,7 @@ namespace Dental.ViewModels
             set => Set(ref _PlanGroup, value);
         }
 
-        public List<Classificator> ClassificatorCategories { get; set; }
+        public List<Service> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }
 
         #endregion
@@ -728,7 +728,7 @@ namespace Dental.ViewModels
 
         private int CreateNewNumberPatientCard()
         {
-            var id = db.PatientInfo?.Max(e => e.Id);
+            var id = db.Clients?.Max(e => e.Id);
             if (id == null) return 1;
             return (int)++id;
         }

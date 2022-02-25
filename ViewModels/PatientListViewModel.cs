@@ -140,7 +140,7 @@ namespace Dental.ViewModels
         private void SetCollection(bool isArhive=false)
         {
             Collection =
-                 db.PatientInfo
+                 db.Clients
                  ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Classificator)))
                  ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Employee)))
                  ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Status)))

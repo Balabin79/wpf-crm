@@ -30,7 +30,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 Collection.ForEach(f => CollectionBeforeChanges.Add((ClientsRequests)f.Clone()));
-                Clients = db.PatientInfo.ToArray();
+                Clients = db.Clients.ToArray();
 
                 Navigator.HasUnsavedChanges = HasUnsavedChanges;
                 Navigator.UserSelectedBtnCancel = UserSelectedBtnCancel;

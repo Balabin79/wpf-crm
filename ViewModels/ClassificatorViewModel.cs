@@ -91,10 +91,10 @@ namespace Dental.ViewModels
                 Model = GetModelById((int)p);
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Classificator>() { Model });
+                if (Model.IsDir == 0) Delete(new ObservableCollection<Service>() { Model });
                 else
                 {
-                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Classificator>().ToObservableCollection());
+                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection());
                     ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Classificator"]);
                 }
                 db.SaveChanges();
@@ -114,7 +114,7 @@ namespace Dental.ViewModels
 
                 if (SelectedGroup != null) 
                 {
-                    int id = ((Classificator)SelectedGroup).Id;
+                    int id = ((Service)SelectedGroup).Id;
                     if (id == 0) Model.ParentId = null;
                     else Model.ParentId = id;
                 } 
@@ -166,7 +166,7 @@ namespace Dental.ViewModels
                     default:
                         Model = GetModelById(param);
                         Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Classificator>().ToObservableCollection();
+                            .GetDirectories().OfType<Service>().ToObservableCollection();
                         if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
                         SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
 
@@ -196,14 +196,14 @@ namespace Dental.ViewModels
         private void OnCancelFormCommandExecuted(object p) => Window.Close();
 
         /************* Специфика этой ViewModel ******************/
-        private ObservableCollection<Classificator> _Group;
-        public ObservableCollection<Classificator> Group
+        private ObservableCollection<Service> _Group;
+        public ObservableCollection<Service> Group
         {
             get => _Group;
             set => Set(ref _Group, value);
         }
 
-        public Classificator WithoutCategory { get; set; } = new Classificator() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
+        public Service WithoutCategory { get; set; } = new Service() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
         private object _SelectedGroup;
         public object SelectedGroup
@@ -213,12 +213,12 @@ namespace Dental.ViewModels
         }
 
         /******************************************************/
-        public ObservableCollection<Classificator> Collection
+        public ObservableCollection<Service> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        public Classificator Model { get; set; }
+        public Service Model { get; set; }
         public string Title { get; set; }
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
@@ -240,15 +240,15 @@ namespace Dental.ViewModels
         }
 
 
-        private ObservableCollection<Classificator> _Collection;
+        private ObservableCollection<Service> _Collection;
         private ClassificatorWindow Window;
 
-        private ObservableCollection<Classificator> GetCollection() => db.Classificator.OrderBy(d => d.Name).ToObservableCollection();
+        private ObservableCollection<Service> GetCollection() => db.Services.OrderBy(d => d.Name).ToObservableCollection();
 
         private void CreateNewWindow() => Window = new ClassificatorWindow();
-        private Classificator CreateNewModel() => new Classificator();
+        private Service CreateNewModel() => new Service();
 
-        private Classificator GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();     
+        private Service GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();     
 
         private void Add()
         {
@@ -271,7 +271,7 @@ namespace Dental.ViewModels
             }         
         }
 
-        private void Delete(ObservableCollection<Classificator> collection)
+        private void Delete(ObservableCollection<Service> collection)
         {
             collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
             collection.ForEach(f => Collection.Remove(f));

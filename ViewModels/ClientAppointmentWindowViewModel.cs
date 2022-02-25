@@ -17,7 +17,7 @@ namespace Dental.ViewModels
             AppointmentItem appointmentItem, 
             SchedulerControl scheduler, 
             ObservableCollection<Client> clients, 
-            ObservableCollection<Classificator> services,
+            ObservableCollection<Service> services,
             ObservableCollection<LocationAppointment> locations
             )
         {
@@ -34,7 +34,7 @@ namespace Dental.ViewModels
             AppointmentItem appointmentItem, 
             SchedulerControl scheduler, 
             ObservableCollection<Client> clients, 
-            ObservableCollection<Classificator> services,
+            ObservableCollection<Service> services,
             ObservableCollection<LocationAppointment> locations
             ) : base(appointmentItem, scheduler)
         {
@@ -62,7 +62,7 @@ namespace Dental.ViewModels
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Classificator classificator)
+                    if (parameters.Tree.FocusedRow is Service classificator)
                     {
                         if (classificator.IsDir == 1) return;
                         parameters.Popup.EditValue = classificator;
@@ -101,21 +101,21 @@ namespace Dental.ViewModels
             }
         }
 
-        public ObservableCollection<Classificator> Services
+        public ObservableCollection<Service> Services
         {
             get => services;
             set => services = value;
         }
-        private ObservableCollection<Classificator> services;
+        private ObservableCollection<Service> services;
 
-        Classificator service;
+        Service service;
         [BindableProperty]
-        public virtual Classificator Service
+        public virtual Service Service
         {
             get { return service; }
             set
             {
-                Classificator newService = value;
+                Service newService = value;
                 if (service == newService) return;
                 service = newService;
                 Description = newService.FullName;

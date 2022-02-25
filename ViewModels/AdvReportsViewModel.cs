@@ -14,7 +14,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Adv = db.PatientInfo.Include("Advertising").Select(f => f.Advertising).ToArray();
+                Adv = db.Clients.Include("Advertising").Select(f => f.Advertising).ToArray();
                 Stat2D = Adv.GroupBy(f => f.Name).Select(i => new StatByAdv
                 {
                     Cnt = i.Count(),

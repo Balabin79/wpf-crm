@@ -31,7 +31,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 LocationAppointments = GetLocationCollection();
                 StatusesInSheduler = GetShedulerStatusesCollection();
-                ClassificatorCategories = db.Classificator.ToObservableCollection();
+                ClassificatorCategories = db.Services.ToObservableCollection();
 
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
 
@@ -81,7 +81,7 @@ namespace Dental.ViewModels
                     if (i.Post == null ||  i.Post.Length < 1) i.Post = "Должность не указана";
                 }
 
-                Clients = db.PatientInfo.ToObservableCollection();
+                Clients = db.Clients.ToObservableCollection();
 
                 //CreateDoctors();
                 SelectedDoctors = new List<object>();
@@ -406,7 +406,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public ObservableCollection<Classificator> ClassificatorCategories { get; set; }
+        public ObservableCollection<Service> ClassificatorCategories { get; set; }
         public virtual ObservableCollection<Employee> Doctors { get; set; }
 
         public virtual ObservableCollection<Client> Clients { get; set; }

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Classificator")]
-    public class Classificator : AbstractBaseModel, IDataErrorInfo, ITreeModel
+    public class Service : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
