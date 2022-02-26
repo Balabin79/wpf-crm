@@ -121,12 +121,17 @@
                             </Grid>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Планы услуг" >
-                            <tp:ServicesPlans DataContext="{Binding}"/>
+                        <dx:DXTabItem Header="Услуги" >
+                            <tp:Services DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                        <dx:DXTabItem Header="Обращения клиента">
+                        <dx:DXTabItem Header="Обращения">
                             <ScrollViewer VerticalScrollBarVisibility="Auto"  >
-                                <tp:VisitStore DataContext="{Binding}"/>
+                                <tp:Requests DataContext="{Binding}"/>
+                            </ScrollViewer>
+                        </dx:DXTabItem>
+                        <dx:DXTabItem Header="Рассылки">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
+                                <tp:Subscribes DataContext="{Binding}"/>
                             </ScrollViewer>
                         </dx:DXTabItem>
                     </dx:DXTabControl>

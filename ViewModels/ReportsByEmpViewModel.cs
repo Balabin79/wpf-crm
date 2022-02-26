@@ -15,7 +15,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                ServicesItems = db.TreatmentPlanItems.Include("Employee").Include("Classificator").ToArray();
+                ServicesItems = db.Items.Include("Employee").Include("Services").ToArray();
 
                 Employes = ServicesItems.GroupBy(f => f.EmployeeId).Select(i => new Employes
                 {
@@ -25,14 +25,14 @@ namespace Dental.ViewModels
 
                 }).ToList();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Действия пользователя\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public IEnumerable<TreatmentPlanItems> ServicesItems { get; }
+        public IEnumerable<Items> ServicesItems { get; }
         public IEnumerable<Employes> Employes { get; }
 
         ApplicationContext db;

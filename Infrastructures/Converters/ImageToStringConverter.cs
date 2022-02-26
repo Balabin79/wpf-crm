@@ -21,7 +21,7 @@ namespace Dental.Infrastructures.Converters
             {
                 if (string.IsNullOrEmpty(value.ToString())) return "";
                 return value.ToString();
-            } catch(Exception e)
+            } catch
             {
                 return null;
             }
@@ -35,7 +35,7 @@ namespace Dental.Infrastructures.Converters
             {
                 if (string.IsNullOrEmpty(value.ToString())) return null;
                 return new ImageSourceConverter().ConvertFromString(value.ToString()) as ImageSource;
-            } catch (Exception e)
+            } catch
             {
                 return null;
             }

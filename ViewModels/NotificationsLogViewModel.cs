@@ -21,7 +21,7 @@ namespace Dental.ViewModels
 
                 db = new ApplicationContext();
                 Collection = db.NotificationsLog.Include("Employee").OrderBy(f => f.CreatedAt).ToArray();
-            } catch (Exception e)
+            } catch 
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Отправленные сотрудникам уведомления\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

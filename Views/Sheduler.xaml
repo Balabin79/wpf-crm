@@ -217,7 +217,7 @@
                 <dxsch:SchedulerControl 
             DataContext="{StaticResource vm}"
             x:Name="scheduler" 
-            CommandBarStyle="Empty"                   
+            CommandBarStyle="Ribbon"                   
             GroupType="Resource" 
             FirstDayOfWeek="Monday" 
             MaxHeight="2000"                   

@@ -198,6 +198,9 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\Requests.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Reports\AllPlans.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -219,10 +222,10 @@
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\VisitStore.xaml.cs">
+    <Compile Update="Views\PatientCard\Subscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\ServicesPlans.xaml.cs">
+    <Compile Update="Views\PatientCard\Services.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\AdvertisingWindow.xaml.cs">
@@ -246,9 +249,6 @@
     <Compile Update="Views\WindowForms\LocationAppointmentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\WindowForms\PlanWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\WindowForms\ClassificatorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,6 +266,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\Requests.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -301,11 +305,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\VisitStore.xaml">
+    <Page Update="Views\PatientCard\Subscribes.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\ServicesPlans.xaml">
+    <Page Update="Views\PatientCard\Services.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -337,10 +341,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\WindowForms\LocationAppointmentWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\PlanWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -13,13 +13,6 @@ namespace Dental.Models
     [Table("ClientInfo")]
     public class Client : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<Client>
     {
-        public Client()
-        {
-            TreatmentPlans = new ObservableCollection<TreatmentPlan>();
-        }
-
-        public ObservableCollection<TreatmentPlan> TreatmentPlans { get; set; }
-
         [Display(Name = "Номер карты клиента")]
         public string ClientCardNumber { get; set; } //номер карты
 

@@ -41,7 +41,7 @@ namespace Dental.Services
                 }
                 return RtfText;
             }
-            catch (Exception e)
+            catch
             {
                 return RtfText;
             }
@@ -61,7 +61,7 @@ namespace Dental.Services
                     default: return "";
                 }
             }
-            catch(Exception e)
+            catch
             {
                 return "";
             }

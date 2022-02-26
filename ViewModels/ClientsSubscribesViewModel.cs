@@ -290,8 +290,10 @@ namespace Dental.ViewModels
                     }
                 }
             }
-            catch (Exception e)
-            { }
+            catch
+            { 
+            
+            }
         }
 
         /************* Специфика этой ViewModel ******************/

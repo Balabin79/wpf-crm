@@ -141,9 +141,9 @@ namespace Dental.ViewModels
         {
             Collection =
                  db.Clients
-                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Classificator)))
-                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Employee)))
-                 ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Status)))
+                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Classificator)))
+                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Employee)))
+                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Status)))
                 .OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
 
         }

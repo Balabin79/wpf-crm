@@ -90,7 +90,7 @@ namespace Dental.ViewModels
                 Appointments = db.Appointments.ToObservableCollection();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -153,7 +153,7 @@ namespace Dental.ViewModels
                 if (p is DevExpress.Xpf.Scheduling.AppointmentRemovedEventArgs arg)
                 foreach (var i in arg.Appointments)
                 {
-                    var item = db.Appointments.Where(f => f.Guid == ((MedicalAppointment)i.SourceObject).Guid)?.FirstOrDefault();
+                    var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
                     if (item != null) db.Entry(item).State = EntityState.Deleted;                   
                 }
                 int cnt = db.SaveChanges();
@@ -410,7 +410,7 @@ namespace Dental.ViewModels
         public virtual ObservableCollection<Employee> Doctors { get; set; }
 
         public virtual ObservableCollection<Client> Clients { get; set; }
-        public virtual ObservableCollection<MedicalAppointment> Appointments { get; set; }
+        public virtual ObservableCollection<Appointments> Appointments { get; set; }
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
 
         public virtual List<object> SelectedDoctors { get; set; }

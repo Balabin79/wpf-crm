@@ -181,7 +181,7 @@ namespace Dental.ViewModels
                     default: return DocumentFormat.PlainText;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return DocumentFormat.PlainText;
             }

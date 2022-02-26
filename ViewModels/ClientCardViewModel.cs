@@ -52,16 +52,13 @@ namespace Dental.ViewModels
                 #endregion
 
                 #region инициализация команд, связанных с закладкой "Планы лечения"
-                OpenFormPlanCommand = new LambdaCommand(OnOpenFormPlanCommandExecuted, CanOpenFormPlanCommandExecute);
                 EditPlanItemCommand = new LambdaCommand(OnEditPlanItemCommandExecuted, CanEditPlanItemCommandExecute);
-                SavePlanCommand = new LambdaCommand(OnSavePlanCommandExecuted, CanSavePlanCommandExecute);
-                DeletePlanCommand = new LambdaCommand(OnDeletePlanCommandExecuted, CanDeletePlanCommandExecute);
 
                 SelectPosInClassificatorCommand = new LambdaCommand(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
                 AddRowInPlanCommand = new LambdaCommand(OnAddRowInPlanCommandExecuted, CanAddRowInPlanCommandExecute);
                 SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
                 DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
-                CancelFormPlanCommand = new LambdaCommand(OnCancelFormPlanCommandExecuted, CanCancelFormPlanCommandExecute);
+
                 CancelFormPlanItemCommand = new LambdaCommand(OnCancelFormPlanItemCommandExecuted, CanCancelFormPlanItemCommandExecute);
                 #endregion
 
@@ -156,7 +153,6 @@ namespace Dental.ViewModels
                 DeleteClientFiles();
                 var id = Model?.Id;
                 //удалить также в расписании
-                Model.TreatmentPlans = null;
                 db.Entry(Model).State = EntityState.Deleted;
 
                 db.ClientsRequests.Where(f => f.ClientInfoId == id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
@@ -177,7 +173,7 @@ namespace Dental.ViewModels
                 if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
                 VmList.ClientCardWin.Close();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка, перейдите в раздел \"Клиенты\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -390,13 +386,6 @@ namespace Dental.ViewModels
 
         #region Команды и ф-нал связанный с Планом лечения
 
-        // открыть форму плана лечения
-        public ICommand OpenFormPlanCommand { get; }
-        // сохранить новый или отредактированный план лечения
-        public ICommand SavePlanCommand { get; }
-        //удалить план лечения
-        public ICommand DeletePlanCommand { get; }
-
         public ICommand EditPlanItemCommand { get; }
         public ICommand SelectPosInClassificatorCommand { get; }
         public ICommand AddRowInPlanCommand { get; }
@@ -417,85 +406,7 @@ namespace Dental.ViewModels
         private bool CanCancelFormPlanCommandExecute(object p) => true;
         private bool CanCancelFormPlanItemCommandExecute(object p) => true;
 
-        private void OnOpenFormPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p != null)
-                {
-                    PlanModel = db.TreatmentPlan.FirstOrDefault(i => i.Id == (int)p);
-                }
-                else
-                {
-                    PlanModel = new TreatmentPlan();
-                    PlanModel.PatientInfoId = Model.Id;
-                    PlanModel.DateTime = PlanModel.DateTime != null ? PlanModel.DateTime : DateTime.Now.ToShortDateString();
-                }
-                PlanWindow = new PlanWindow();
-                PlanWindow.DataContext = this;
-                PlanWindow.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSavePlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (PlanModel.Id == 0) 
-                {
-                    if (!string.IsNullOrEmpty(PlanModel["Name"])) return;
-                    db.TreatmentPlan.Add(PlanModel);
-                }                            
-                int cnt = db.SaveChanges();
-                if (cnt > 0) PlanModel.Update();
-                PlanWindow.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnDeletePlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is TreatmentPlan plan)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-                    db.TreatmentPlanItems.Where(f => f.TreatmentPlanId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);                   
-                    db.TreatmentPlan.Remove(plan);                   
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnCancelFormPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (db.Entry(PlanModel).State == EntityState.Modified)
-                {
-                    db.Entry(PlanModel).State = EntityState.Unchanged;
-                }
-                db.SaveChanges();
-                PlanWindow.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
+       
         private void OnSelectPosInClassificatorCommandExecuted(object p)
         {
             try
@@ -520,16 +431,11 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is TreatmentPlan plan) 
-                {
-                    PlanItemModel = new TreatmentPlanItems();
-                    PlanItemModel.TreatmentPlanId = plan.Id;
-                    PlanItemModel.TreatmentPlan = plan;
-
+                    PlanItemModel = new Items();
                     PlanItemWindow = new PlanItemWindow();
                     PlanItemWindow.DataContext = this;
                     PlanItemWindow.ShowDialog();
-                }
+                
             }
             catch (Exception e)
             {
@@ -541,7 +447,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is TreatmentPlanItems item) 
+                if (p is Items item) 
                 {
                     PlanItemModel = item;
                     PlanItemWindow = new PlanItemWindow();
@@ -560,10 +466,6 @@ namespace Dental.ViewModels
             try
             {
                 if (!string.IsNullOrEmpty(PlanItemModel["Classificator"])) return;
-                if (PlanItemModel.Id == 0) 
-                {
-                    db.TreatmentPlan.FirstOrDefault(f => f.Id == PlanItemModel.TreatmentPlanId)?.TreatmentPlanItems.Add(PlanItemModel);
-                } 
 
                 int cnt = db.SaveChanges();
                 if (cnt > 0)
@@ -591,7 +493,7 @@ namespace Dental.ViewModels
                 {
                     int x = 0;
                 }
-                if (p is TreatmentPlanItems item)
+                if (p is Items item)
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
@@ -624,33 +526,17 @@ namespace Dental.ViewModels
 
         }
 
-
-        private PlanWindow PlanWindow;
         private PlanItemWindow PlanItemWindow;
 
-        public TreatmentPlanItems PlanItemModel
+        public Items PlanItemModel
         {
             get => _PlanItemModel;
             set => Set(ref _PlanItemModel, value);
         }
-        private TreatmentPlanItems _PlanItemModel;
-
-        public TreatmentPlan PlanModel
-        {
-            get => _PlanModel;
-            set => Set(ref _PlanModel, value);
-        }
-        private TreatmentPlan _PlanModel;
+        private Items _PlanItemModel;
 
         public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
-
-        private ObservableCollection<TreatmentPlan> _PlanGroup;
-        public ObservableCollection<TreatmentPlan> PlanGroup
-        {
-            get => _PlanGroup;
-            set => Set(ref _PlanGroup, value);
-        }
 
         public List<Service> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }

@@ -35,7 +35,7 @@ namespace Dental.Services
                     db.SaveChanges();
                 }
             } 
-            catch (Exception e)
+            catch
             { 
             
             }

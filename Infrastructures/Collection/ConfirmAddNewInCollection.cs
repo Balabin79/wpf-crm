@@ -22,7 +22,7 @@ namespace Dental.Infrastructures.Collection
                 return false;
 
             }
-            catch (Exception e)
+            catch
             {
                 return false;
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
@@ -44,7 +44,7 @@ namespace Dental.Infrastructures.Collection
                 return false;
 
             }
-            catch (Exception e)
+            catch
             {
                 return false;
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message

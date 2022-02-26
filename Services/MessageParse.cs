@@ -44,7 +44,7 @@ namespace Dental.Services
 
                 return Msgs;
             }
-            catch (Exception e)
+            catch
             {
                 return Msgs;
             }
