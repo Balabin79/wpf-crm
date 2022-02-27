@@ -87,7 +87,17 @@ namespace Dental.ViewModels
                 SelectedDoctors = new List<object>();
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
                 CreateCalendars();
-                Appointments = db.Appointments.ToObservableCollection();
+
+                Appointments = db.Appointments
+                    .Include(f => f.Service)
+                    .Include(f => f.Employee)
+                    .Include(f => f.ClientInfo)
+                    .Include(f => f.Location)
+                    .Where(f => !string.IsNullOrEmpty(f.StartTime))
+                    .OrderBy(f => f.CreatedAt)
+                    .ToObservableCollection();
+
+
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
             }
             catch
@@ -116,7 +126,25 @@ namespace Dental.ViewModels
             {
                 foreach (var i in Appointments)
                 {
-                    if (db.Entry(i).State == EntityState.Detached) db.Entry(i).State = EntityState.Added;
+                    if (db.Entry(i).State == EntityState.Detached)
+                    {
+                        var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
+                        var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
+                        var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
+
+                        i.Cost = serv?.Cost;
+                        i.Price = serv?.Price;
+                        i.KPieceRate = emp?.KPieceRate;
+                        i.KDiscount = client?.KDiscount;
+                        i.CalcCost = (i.Cost == null || i.Cost == 0 || i.KPieceRate == null || i.KPieceRate == 0)
+                            ? i.Cost
+                            : i.Cost + (i.Cost * i.KPieceRate);
+                        i.CalcPrice = (i.Price == null || i.Price == 0 || i.KDiscount == null || i.KDiscount == 0)
+                            ? i.Price
+                            : i.Price + (i.Price * i.KDiscount);
+
+                        db.Entry(i).State = EntityState.Added;
+                    }
                 }
 
                 int cnt = db.SaveChanges();
@@ -414,8 +442,7 @@ namespace Dental.ViewModels
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
 
         public virtual List<object> SelectedDoctors { get; set; }
-
-        private void CreateDoctors() => Doctors = db.Employes.Include("EmployesSpecialities").ToObservableCollection();        
+        
         private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
 
 

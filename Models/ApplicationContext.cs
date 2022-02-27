@@ -51,8 +51,7 @@ namespace Dental.Models
         }
 
         public DbSet<Employee> Employes { get; set; }
-        public DbSet<Advertising> Advertising { get; set; }
-        public DbSet<Organization> Organizations { get; set; }       
+        public DbSet<Advertising> Advertising { get; set; }     
         public DbSet<Client> Clients { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Dictionary> Dictionary { get; set; }
@@ -72,6 +71,5 @@ namespace Dental.Models
         public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
         public DbSet<UserActions> UserActions { get; set; }
         public DbSet<NotificationsLog> NotificationsLog { get; set; }
-
     }
 }

@@ -26,9 +26,7 @@ namespace Dental.ViewModels
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
-          
-
+            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);         
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
 
             try
@@ -47,16 +45,11 @@ namespace Dental.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
- 
         public ICommand ExpandTreeCommand { get; }
-
-
-
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
-
         private bool CanExpandTreeCommandExecute(object p) => true;
 
         private void OnExpandTreeCommandExecuted(object p)
@@ -95,7 +88,7 @@ namespace Dental.ViewModels
                 else
                 {
                     Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection());
-                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Classificator"]);
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ServicesItems"]);
                 }
                 db.SaveChanges();
             }
@@ -239,7 +232,6 @@ namespace Dental.ViewModels
             Window.Height = 280;
         }
 
-
         private ObservableCollection<Service> _Collection;
         private ClassificatorWindow Window;
 
@@ -257,7 +249,7 @@ namespace Dental.ViewModels
             if (rows > 0)
             {
                 Collection.Add(Model);
-                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Classificator"]);
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ServicesItems"]);
             }            
         }
         private void Update()
@@ -267,7 +259,7 @@ namespace Dental.ViewModels
             if (rows > 0)
             {
                 Model.UpdateFields();
-                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Classificator"]);
+                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["ServicesItems"]);
             }         
         }
 

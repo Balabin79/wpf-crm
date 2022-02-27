@@ -59,16 +59,19 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem  Content="Создать новую позицию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem  Content="Создать новую позицию" 
+                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}" 
+                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-1"/>
+                                           CommandParameter="-1" 
+                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
                         <dxb:BarButtonItem Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
@@ -90,7 +93,7 @@
 
                         <dxb:BarItemLinkSeparator />
 
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать" 
+                        <dxb:BarButtonItem Content="Печать" 
                                            
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
@@ -109,8 +112,7 @@
             <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
-
-                    <dxg:GridControl.View>
+                <dxg:GridControl.View>
                         <dxg:TreeListView  
                     x:Name="view"
                     KeyFieldName="Id"

@@ -112,7 +112,6 @@
     <Folder Include="Infrastructures\Pages\" />
     <Folder Include="Infrastructures\Reports\" />
     <Folder Include="Models\Actions\" />
-    <Folder Include="Reports\OtherDocuments\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -201,16 +200,13 @@
     <Compile Update="Views\PatientCard\Requests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Reports\AllPlans.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\ClientsRequests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Subscribes\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Reports\EmployeeSummary.xaml.cs">
+    <Compile Update="Views\ServicesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Sheduler.xaml.cs">
@@ -273,10 +269,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Reports\AllPlans.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\ClientsRequests.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -285,7 +277,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Reports\EmployeeSummary.xaml">
+    <Page Update="Views\ServicesPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

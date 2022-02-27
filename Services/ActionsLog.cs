@@ -74,21 +74,13 @@ namespace Dental.Services
 
         public static Dictionary<string, string> SectionPage { get; } = new Dictionary<string, string>() {
             { "Advertising", "Рекламные источники" },
-            { "Speciality", "Специальности сотрудников" },
-            { "Classificator", "Классификатор услуг" },
-            { "EmployeeGroup", "Категории сотрудников" },
-            { "ClientGroup", "Категории клиентов" },
+            { "ServicesItems", "Справочник услуг" },
             { "ClientsRequests", "Список обращений" },
             { "ClientsSubscribes", "Рассылки" },
-            { "Organization", "Организация" },
             { "SmsCenter", "Настройки SmsCenter" },
             { "StatusSheduler", "Статусы в расписании" },
-
             { "ClientInfo", "Карта клиента" },
-            { "Plan", "План услуг" },
-            { "PlanItem", "Позиция в план услуг" },
             { "Ids", "ИДС" },
-
             { "Employee", "Карта сотрудника" },
             { "", "" },
         };

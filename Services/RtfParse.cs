@@ -15,7 +15,6 @@ namespace Dental.Services
             ApplicationContext db = new ApplicationContext();
             RtfText = txt;
             Model = model;
-            Org = db.Organizations.FirstOrDefault();
         }
 
         public string Run()
@@ -56,7 +55,6 @@ namespace Dental.Services
 
                 switch (modelName)
                 {
-                    case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Org)?.ToString() ?? "";
                     case "Client": return Model?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     default: return "";
                 }
@@ -70,6 +68,5 @@ namespace Dental.Services
 
         private string RtfText { get; set; }
         private Client Model { get; set; }
-        private Organization Org { get; set; }
     }
 }

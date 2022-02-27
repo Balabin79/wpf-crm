@@ -15,7 +15,6 @@ namespace Dental.Services
             ApplicationContext db = new ApplicationContext();
             Text = txt;
             Clients = clients;
-            Org = db.Organizations.FirstOrDefault();
             Msgs = new List<string>();
         }
 
@@ -59,7 +58,6 @@ namespace Dental.Services
 
                 switch (modelName)
                 {
-                    case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Org)?.ToString() ?? "";
                     case "Client": return Clients[0]?.GetType().GetProperty(propertyName)?.GetValue(client)?.ToString() ?? "";
                     default: return "";
                 }
@@ -74,6 +72,5 @@ namespace Dental.Services
         private string Text { get; set; }
         private Client[] Clients { get; set; }
         private List<string> Msgs { get; set; }
-        private Organization Org { get; set; }
     }
 }

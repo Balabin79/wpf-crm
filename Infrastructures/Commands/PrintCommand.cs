@@ -3,6 +3,7 @@ using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using DevExpress.Xpf.Charts;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.PivotGrid;
 
 namespace Dental.Infrastructures.Commands
 {
@@ -26,6 +27,11 @@ namespace Dental.Infrastructures.Commands
                 if (p is ChartControl chart)
                 {
                     chart.Print();
+                }
+
+                if (p is PivotGridControl pivot)
+                {
+                    pivot.ShowPrintPreview(pivot);
                 }
             }
 

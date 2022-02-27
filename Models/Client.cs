@@ -215,7 +215,7 @@ namespace Dental.Models
             };
         }
 
-        public override string ToString() => FirstName;
+        public override string ToString() => FullName;
 
         public void UpdateFields()
         {

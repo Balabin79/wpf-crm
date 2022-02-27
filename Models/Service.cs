@@ -65,7 +65,7 @@ namespace Dental.Models
 
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")";
+            return Name;
         }
 
     }

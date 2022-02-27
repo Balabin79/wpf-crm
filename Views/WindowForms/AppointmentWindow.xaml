@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental.Views.WindowForms"
         mc:Ignorable="d"
-        Title="MedicalAppointmentWindow" Height="450" Width="800"
+        Title="Запись в расписание" Height="450" Width="800"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -199,20 +199,6 @@
                                 </ControlTemplate>
                             </dxe:PopupBaseEdit.PopupContentTemplate>
                         </dxe:PopupBaseEdit>
-
-
-
-
-
-
-
-
-                        
-                        
-                        
-
-
-
 
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Телефон">

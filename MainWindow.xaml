@@ -39,51 +39,8 @@
             Grid.Row="0" 
             Name="RibbonControl"
             >
-           
+
             <dxr:RibbonControl.ToolbarItems>
-                <dxb:BarButtonItem  
-                    Content="Назад" Glyph="{dx:DXImage SvgImages/Arrows/Prev.svg}"
-                    Command="{Binding GoToPreviousItem}"
-                    CommandParameter="{Binding}"
-                    IsEnabled="{Binding EnablePreviousBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <dxb:BarButtonItem   
-                    Content="Вперед" Glyph="{dx:DXImage SvgImages/Arrows/Next.svg}"
-                    Command="{Binding GoToNextItem}"
-                    IsEnabled="{Binding EnableNextBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <dxb:BarItemLinkSeparator/>
-                <dxb:BarSplitButtonItem
-                    x:Name="bar"
-                    Content="История" 
-                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_Audit_ChangeHistory.svg}"
-                    ActAsDropDown="True"
-                    IsEnabled="{Binding EnableHistoryBtn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    >
-                    <dxb:BarSplitButtonItem.PopupControl>
-                        <dxb:PopupControlContainer>
-                            <dxe:ListBoxEdit SelectedItem="{Binding CurrentLink, UpdateSourceTrigger=PropertyChanged}" 
-                                             ItemsSource="{Binding BrowsingHistory}" DisplayMember="Name">
-                                <dxe:ListBoxEdit.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="0" >
-                                            <dxe:HyperlinkEdit 
-                                                EditValue="{Binding Name}"
-                                                ToolTip="{Binding Name}"
-                                                Text="{Binding Name}"                                           
-                                                Command="{Binding Source={StaticResource Router}, Path=GoToHistoryItem}"
-                                                CommandParameter="{Binding}"
-                                             
-                                                   />
-                                            <dxe:TextEdit Text="{Binding Time}" ShowBorder="False" />
-
-                                        </StackPanel>
-
-                                    </DataTemplate>
-                                </dxe:ListBoxEdit.ItemTemplate>
-                            </dxe:ListBoxEdit>
-                        </dxb:PopupControlContainer>
-                    </dxb:BarSplitButtonItem.PopupControl>
-
-                </dxb:BarSplitButtonItem>
                 <dxb:BarItemLinkSeparator/>
                 <dxb:BarButtonItem 
                     Content="Справка" 
@@ -115,14 +72,21 @@
                 <dxr:RibbonPage Caption="Рабочий стол">
                     
                     <dxr:RibbonPageGroup Caption="Основное">
-                        
-                        
-                        <dxb:BarButtonItem Content="Рабочий стол" RibbonStyle="Default" 
-                                           ToolTip="Рабочий стол"
-                                           MediumGlyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.DesktopPage" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Chart_ShowDesigner.svg}" 
+
+                        <dxb:BarButtonItem Content="Услуги" RibbonStyle="Default" 
+                                           ToolTip="Сводные данные по услугам"
+                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"                                        
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.ServicesPage" 
+                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+
+                        <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
+                                           ToolTip="Расписание сотрудников"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" 
                                            />
 
                         <dxb:BarButtonItem Content="Клиенты" RibbonStyle="Default" 
@@ -131,13 +95,7 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList" 
                                            LargeGlyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}" 
                                            Glyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
-                        <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
-                                           ToolTip="Расписание сотрудников"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" 
-                                           />
+
 
                         <dxb:BarButtonItem Content="Обращения клиентов" RibbonStyle="Default" 
                                            ToolTip="Список обращений клиентов"
@@ -155,7 +113,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"/>
 
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Справочники">
+                    <dxr:RibbonPageGroup Caption="Организация">
                         <dxb:BarButtonItem Content="Сотрудники"
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}" 
@@ -164,15 +122,6 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes" 
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
                                            />
-
-
-                        <dxb:BarButtonItem Content="Реквизиты организации"
-                                           RibbonStyle="Default" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Dashboards/InsertBubbleMap.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertBubbleMap.svg}"   
-                                           ToolTip="Организация"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Organization" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertBubbleMap.svg}"/>
 
                         <dxb:BarButtonItem Content="Справочник услуг" 
                                            RibbonStyle="Default"
@@ -187,21 +136,7 @@
 
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Статистика" >
-                    <dxr:RibbonPageGroup Caption="Сводные таблицы" >
-                        <dxb:BarButtonItem Content="Сводные данные по сотрудникам" RibbonStyle="Default" 
-                                           ToolTip="Сводные данные по сотрудникам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.EmployeeSummary" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
 
-                        <dxb:BarButtonItem Content="Планы услуг и продажи" RibbonStyle="Default" 
-                                           ToolTip="Планы услуг и продажи"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.AllPlans" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Opportunity.svg}"/>
-                    </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Отчеты" >
 
                         <dxb:BarButtonItem Content="Выручка за периоды" RibbonStyle="Default" 
@@ -227,22 +162,16 @@
                                            Glyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"/>
 
-                        <dxb:BarButtonItem Content="Прием клиентов" RibbonStyle="Default" 
-                                           ToolTip="Статистика по приему клиентов"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/Chart.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByVisits" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/Chart.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Chart/Chart.svg}"/>
+                     
 
 
 
                         <dxb:BarButtonItem Content="Загруженность сотрудников" RibbonStyle="Default" 
                                            ToolTip="Загруженность сотрудников"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}"                                    
+                                           MediumGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"                                    
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.Reports.ByEmployes"
-                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_BarStacked100.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_SideBySideBarStacked.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}" LargeGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"/>
 
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="История" >
