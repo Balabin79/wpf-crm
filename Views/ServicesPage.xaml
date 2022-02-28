@@ -65,6 +65,7 @@
                     Grid.Row="1"
                     HorizontalContentAlignment="Stretch"
                     BestFitMode="Smart"
+  
                     >
                 <dxpg:PivotGridControl.Fields>
 
@@ -86,14 +87,26 @@
                         Caption="Услуга" 
                         FieldName="Service" />
 
-                    <dxpg:PivotGridField Area="DataArea" Caption="Стоимость" 
-                                     FieldName="Service.Price" />
+                    <dxpg:PivotGridField Area="DataArea" Caption="Базовая стоимость" 
+                                         ToolTip="Базовая стоимость для клиента, без учета повыш. или пониж. коэффицента"
+                                     FieldName="Price" />
+                    
+                    <dxpg:PivotGridField Area="DataArea" Caption="Стоимость с коэф." 
+                                         ToolTip="Стоимость с учетом коэфицента"
+                                     FieldName="CalcPrice" />
 
-                    <dxpg:PivotGridField Area="DataArea" Caption="Выплата сотруднику" 
-                                     FieldName="Service.Cost" />
+                    <dxpg:PivotGridField Area="DataArea" Caption="Базовая выплата" 
+                                         ToolTip="Базовая выплата сотруднику, без учета понижающего и повышающего коэффицента"
+                                     FieldName="Cost" />
+                    
+                    <dxpg:PivotGridField Area="DataArea" Caption="Выплаты с учетом коэф." 
+                                         ToolTip="Выплаты с учетом коэф."
+                                     FieldName="CalcCost" />
 
                     <dxpg:PivotGridField  Area="FilterArea" Caption="Дата" 
                                      FieldName="Date" />
+
+
 
                 </dxpg:PivotGridControl.Fields>
             </dxpg:PivotGridControl>

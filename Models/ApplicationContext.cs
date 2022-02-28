@@ -59,7 +59,6 @@ namespace Dental.Models
         public DbSet<ServicePlanItemStatuses> ServicePlanItemStatuses { get; set; }
         public DbSet<ClientsSubscribes> ClientsSubscribes { get; set; }
         public DbSet<SubscribesLog> SubscribesLog { get; set; }
-        public DbSet<ClientsRequests> ClientsRequests { get; set; }
         public DbSet<SmsCenter> SmsCenter { get; set; }
 
         public DbSet<Appointments> Appointments { get; set; }

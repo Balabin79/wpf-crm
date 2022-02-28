@@ -154,8 +154,6 @@ namespace Dental.ViewModels
                 var id = Model?.Id;
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;
-
-                db.ClientsRequests.Where(f => f.ClientInfoId == id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SubscribesLog.Where(f => f.ClientInfoId == id).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
                 int cnt = db.SaveChanges();

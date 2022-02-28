@@ -200,9 +200,6 @@
     <Compile Update="Views\PatientCard\Requests.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ClientsRequests.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Subscribes\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,10 +263,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\Requests.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\ClientsRequests.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
