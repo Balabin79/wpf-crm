@@ -124,16 +124,7 @@
                         <dx:DXTabItem Header="Услуги" >
                             <tp:Services DataContext="{Binding}"/>
                         </dx:DXTabItem>
-                        <dx:DXTabItem Header="Обращения">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
-                                <tp:Requests DataContext="{Binding}"/>
-                            </ScrollViewer>
-                        </dx:DXTabItem>
-                        <dx:DXTabItem Header="Рассылки">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto"  >
-                                <tp:Subscribes DataContext="{Binding}"/>
-                            </ScrollViewer>
-                        </dx:DXTabItem>
+
                     </dx:DXTabControl>
                 </dxlc:LayoutGroup>
                 </dxlc:LayoutControl>

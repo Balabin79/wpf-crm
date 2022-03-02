@@ -53,8 +53,8 @@
                     </dxg:GridColumn>
 
                     <dxg:GridColumn Width="auto" >
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
                                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
@@ -69,10 +69,8 @@
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
                             </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-
-
-                        </dxg:GridColumn>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
 
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>

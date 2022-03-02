@@ -70,16 +70,8 @@
             <dxr:RibbonDefaultPageCategory >
 
                 <dxr:RibbonPage Caption="Рабочий стол">
-                    
-                    <dxr:RibbonPageGroup Caption="Основное">
 
-                        <dxb:BarButtonItem Content="Услуги" RibbonStyle="Default" 
-                                           ToolTip="Сводные данные по услугам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"                                        
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.ServicesPage" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+                    <dxr:RibbonPageGroup Caption="Основное">
 
                         <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
                                            ToolTip="Расписание сотрудников"
@@ -129,22 +121,22 @@
                 <dxr:RibbonPage Caption="Статистика" >
 
                     <dxr:RibbonPageGroup Caption="Отчеты" >
+                        <dxb:BarButtonItem Content="Сводные данные по услугам" RibbonStyle="Default" 
+                                           ToolTip="Сводные данные по услугам"
+                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"                                        
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.ServicesPage" 
+                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+
 
                         <dxb:BarButtonItem Content="Выручка за периоды" RibbonStyle="Default" 
                                            ToolTip="Статистика по выручке по заданным периодам"
                                            MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByPeriods" 
+                                           Command="{Binding LeftMenuClick}"
+                                           CommandParameter="Dental.Views.Reports.ByPeriods" 
                                            Glyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}"/>
-
-
-                        <dxb:BarButtonItem Content="Выручка по услугам" RibbonStyle="Default" 
-                                           ToolTip="Выручка по услугам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/PivotTable.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/PivotTable.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByServices" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/PivotTable.svg}"/>
-
 
                         <dxb:BarButtonItem Content="Каналы привлечения" RibbonStyle="Default" 
                                            ToolTip="Статистика по каналам привлечения"

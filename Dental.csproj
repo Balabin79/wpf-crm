@@ -197,9 +197,6 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\Requests.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Subscribes\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -213,9 +210,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\Subscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\Services.xaml.cs">
@@ -262,10 +256,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\Requests.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\Subscribes\ClientsSubscribes.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -287,10 +277,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\MainInfo.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\Subscribes.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

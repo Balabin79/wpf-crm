@@ -9,23 +9,13 @@ using Dental.Models;
 using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using System.IO;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Dental.Models.Base;
-using DevExpress.Xpf.Grid;
-using DevExpress.Xpf.Editors;
 using Dental.Infrastructures.Converters;
-using System.Data.Entity.Validation;
-using System.Windows.Documents;
-using DevExpress.XtraRichEdit;
 
 namespace Dental.ViewModels
 {
@@ -49,18 +39,7 @@ namespace Dental.ViewModels
                 EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
                 DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-                #endregion
-
-                #region инициализация команд, связанных с закладкой "Планы лечения"
-                EditPlanItemCommand = new LambdaCommand(OnEditPlanItemCommandExecuted, CanEditPlanItemCommandExecute);
-
-                SelectPosInClassificatorCommand = new LambdaCommand(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
-                AddRowInPlanCommand = new LambdaCommand(OnAddRowInPlanCommandExecuted, CanAddRowInPlanCommandExecute);
-                SaveRowInPlanCommand = new LambdaCommand(OnSaveRowInPlanCommandExecuted, CanSaveRowInPlanCommandExecute);
-                DeleteRowInPlanCommand = new LambdaCommand(OnDeleteRowInPlanCommandExecuted, CanDeleteRowInPlanCommandExecute);
-
-                CancelFormPlanItemCommand = new LambdaCommand(OnCancelFormPlanItemCommandExecuted, CanCancelFormPlanItemCommandExecute);
-                #endregion
+                #endregion           
 
                 #region инициализация команд, связанных с прикреплением к карте клиента файлов
                 DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
@@ -75,7 +54,7 @@ namespace Dental.ViewModels
 
                 if (Model.Id == 0)
                 {
-                    NumberPatientCard = (CreateNewNumberPatientCard()).ToString();
+                    NumberPatientCard = CreateNewNumberPatientCard().ToString();
                     Model.ClientCardCreatedAt = DateTime.Now.ToShortDateString();
 
                     // для новой карты пациента все поля по-умолчанию доступны для редактирования
@@ -103,10 +82,13 @@ namespace Dental.ViewModels
                 ModelBeforeChanges = (Client)Model.Clone();
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
 
-
-                ClassificatorCategories = db.Services.ToList();
-                Employes = db.Employes.ToList();
-                ServicePlanItemsStatuses = db.ServicePlanItemStatuses.ToArray();
+                Appointments = db.Appointments
+                    .Include(f => f.Service)
+                    .Include(f => f.Employee)
+                    .Include(f => f.Location)
+                    .Where(f => f.ClientInfoId == Model.Id)
+                    .OrderBy(f => f.CreatedAt)
+                    .ToArray();
             }
             catch
             {
@@ -364,7 +346,6 @@ namespace Dental.ViewModels
 
         public ICommand OpenFormDocCommand { get; }
         private bool CanOpenFormDocCommandExecute(object p) => true;
-
         private void OnOpenFormDocCommandExecuted(object p)
         {
             try
@@ -381,166 +362,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        #region Команды и ф-нал связанный с Планом лечения
-
-        public ICommand EditPlanItemCommand { get; }
-        public ICommand SelectPosInClassificatorCommand { get; }
-        public ICommand AddRowInPlanCommand { get; }
-        public ICommand SaveRowInPlanCommand { get; }
-        public ICommand DeleteRowInPlanCommand { get; }
-        public ICommand CancelFormPlanCommand { get; }
-        public ICommand CancelFormPlanItemCommand { get; }
-
-        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
-        private bool CanOpenFormPlanCommandExecute(object p) => true;
-        private bool CanEditPlanItemCommandExecute(object p) => true;
-        private bool CanSavePlanCommandExecute(object p) => true;
-        private bool CanDeletePlanCommandExecute(object p) => true;
-
-        private bool CanAddRowInPlanCommandExecute(object p) => true;
-        private bool CanSaveRowInPlanCommandExecute(object p) => true;
-        private bool CanDeleteRowInPlanCommandExecute(object p) => true;
-        private bool CanCancelFormPlanCommandExecute(object p) => true;
-        private bool CanCancelFormPlanItemCommandExecute(object p) => true;
-
        
-        private void OnSelectPosInClassificatorCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.FocusedRow is Service classificator)
-                    {
-                        if (classificator.IsDir == 1) return;
-                        parameters.Popup.EditValue = classificator;
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnAddRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                    PlanItemModel = new Items();
-                    PlanItemWindow = new PlanItemWindow();
-                    PlanItemWindow.DataContext = this;
-                    PlanItemWindow.ShowDialog();
-                
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnEditPlanItemCommandExecuted(object p)
-        {
-            try
-            {
-                if (p is Items item) 
-                {
-                    PlanItemModel = item;
-                    PlanItemWindow = new PlanItemWindow();
-                    PlanItemWindow.DataContext = this;
-                    PlanItemWindow.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnSaveRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(PlanItemModel["Classificator"])) return;
-
-                int cnt = db.SaveChanges();
-                if (cnt > 0)
-                {
-                    if (cnt > 0) PlanItemModel.Update();
-                    var notification = new Notification();
-                    notification.Content = "Позиция в плане лечения сохранена!";
-                    notification.run();
-                }
-                PlanItemWindow.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-                PlanItemModel = null;
-                PlanItemWindow.Close();
-            }
-        }
-
-        private void OnDeleteRowInPlanCommandExecuted(object p)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(PlanItemModel["Classificator"]))
-                {
-                    int x = 0;
-                }
-                if (p is Items item)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-
-                    db.Entry(item).State = EntityState.Deleted;
-                    db.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private void OnCancelFormPlanItemCommandExecuted(object p) 
-        { 
-            try
-            {
-                if (db.Entry(PlanItemModel).State == EntityState.Modified)
-                {
-                    db.Entry(PlanItemModel).State = EntityState.Unchanged;
-                }                                    
-                db.SaveChanges();
-                PlanItemWindow.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
-        }
-
-        private PlanItemWindow PlanItemWindow;
-
-        public Items PlanItemModel
-        {
-            get => _PlanItemModel;
-            set => Set(ref _PlanItemModel, value);
-        }
-        private Items _PlanItemModel;
-
-        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
-
-        public List<Service> ClassificatorCategories { get; set; }
-        public List<Employee> Employes { get; set; }
-
-        #endregion
-
         public bool HasUnsavedChanges()
         {
             bool hasUnsavedChanges = false;
@@ -567,7 +389,6 @@ namespace Dental.ViewModels
 
             return response.ToString() == "No";
         }
-
 
         private bool _IsReadOnly;
         public bool IsReadOnly
@@ -601,7 +422,7 @@ namespace Dental.ViewModels
         public Client ModelBeforeChanges { get; set; }
 
         public ICollection<Advertising> AdvertisingList { get; set; }
-        public ICollection<ServicePlanItemStatuses> ServicePlanItemsStatuses { get; set; }
+        public ICollection<Appointments> Appointments { get; set; }
 
         public ICollection<string> GenderList
         {

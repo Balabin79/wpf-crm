@@ -74,7 +74,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                new ViewModelLog(e).run();
             }
         }
 

@@ -32,11 +32,13 @@ namespace Dental.Views
         {
             e.Cancel = e.ConflictedAppointments.Where(x => x.Count > 0).FirstOrDefault() != null;
         }
+
         void OnStartAppointmentDragFromOutside(object sender, StartAppointmentDragFromOutsideEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(IEnumerable<Client>)))
                 ((IEnumerable<Client>)e.Data.GetData(typeof(IEnumerable<Client>))).ToList().ForEach(x => e.DragAppointments.Add(CreateAppointment(x)));
         }
+
         void OnStartRecordDrag(object sender, StartRecordDragEventArgs e)
         {
             e.Data.SetData(typeof(IEnumerable<Client>), e.Records.Cast<Client>());
@@ -58,11 +60,13 @@ namespace Dental.Views
         {
             e.Handled = true;
         }
+
         void OnDragRecordOver(object sender, DragRecordOverEventArgs e)
         {
             e.Effects = DragDropEffects.Move;
             e.Handled = true;
         }
+
         void OnDropRecord(object sender, DropRecordEventArgs e)
         {
             e.Handled = true;
