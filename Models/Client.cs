@@ -102,22 +102,6 @@ namespace Dental.Models
         }
         private string _Email;
 
-        [Display(Name = "Одноклассники")]
-        public string Ok
-        {
-            get => _Ok;
-            set => _Ok = value?.Trim();
-        }
-        private string _Ok;
-
-        [Display(Name = "ВКонтакте")]
-        public string Vk
-        {
-            get => _Vk;
-            set => _Vk = value?.Trim();
-        }
-        private string _Vk;
-
         [Display(Name = "Адрес проживания")]
         public string Address
         {
@@ -177,8 +161,6 @@ namespace Dental.Models
                 StringParamsIsEquel(this.Sex, other.Sex, "Административная", "Пол");
                 StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
                 StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
-                StringParamsIsEquel(this.Ok, other.Ok, "Административная", "Одноклассники");
-                StringParamsIsEquel(this.Vk, other.Vk, "Административная", "ВКонтакте");
                 StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
                 StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
                 StringParamsIsEquel(this.Advertising?.Guid, other.Advertising?.Guid, "Административная", "Рекламные источники");

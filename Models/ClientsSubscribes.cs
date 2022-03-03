@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("ClientsSubscribes")]
-    public class ClientsSubscribes : AbstractBaseModel, IDataErrorInfo, ITreeModel
+    public class ClientsSubscribes : AbstractBaseModel, IDataErrorInfo
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
@@ -23,9 +23,6 @@ namespace Dental.Models
         public string Comment { get; set; }
         public string Content { get; set; }
         public string DateSubscribe { get; set; }
-
-        public int? ParentId { get; set; }
-        public int? IsDir { get; set; }
 
         public int? SubscribeParamsId { get; set; }
         public SubscribeParams SubscribeParams { get; set; }
@@ -60,7 +57,6 @@ namespace Dental.Models
                     StringParamsIsEquel(this.Status, clone.Status) &&
                     StringParamsIsEquel(this.JsonSettings, clone.JsonSettings) &&
                     StringParamsIsEquel(this.JsonReport, clone.JsonReport) &&
-                    this?.ParentId == clone?.ParentId &&
                     this?.SubscribeParamsId == clone?.SubscribeParamsId
                 ) return true;
             }
@@ -79,8 +75,6 @@ namespace Dental.Models
         public void UpdateFields()
         {
             OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(IsDir));
-            OnPropertyChanged(nameof(ParentId));
             OnPropertyChanged(nameof(DateSubscribe));
             OnPropertyChanged(nameof(Status));
             OnPropertyChanged(nameof(SubscribeParams));

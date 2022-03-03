@@ -23,7 +23,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:ClientsSubscribesViewModel x:Key="vm"/>
+                    <vm:SubscribesViewModel x:Key="vm"/>
                     <commands:PrintCommand x:Key="Print"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DateToStringShortDateConverter x:Key="DateToStringShortDate"/>
@@ -62,32 +62,17 @@
 
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Name="bCreate" Content="Создать новую позицию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-1"/>
-                        <dxb:BarButtonItem Name="bCreateDir" Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-2"/>
-                        <dxb:BarButtonItem Name="expandTree" Content="Развернуть или свернуть все позиции" 
+                        <dxb:BarButtonItem Content="Создать новую позицию" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding ExpandTreeCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
-                                           CommandParameter="{Binding ElementName=view}"
-                                           />
+                                           Command="{Binding OpenFormCommand}"
+                                           CommandParameter="-1" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+
                         <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}"
@@ -97,7 +82,7 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}"/>
                         <dxb:BarItemLinkSeparator />
 
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать" 
+                        <dxb:BarButtonItem Content="Печать" 
                                            
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
@@ -118,11 +103,8 @@
                          >
 
                     <dxg:GridControl.View>
-                        <dxg:TreeListView  
+                        <dxg:TableView  
                     x:Name="view"
-                    KeyFieldName="Id"
-                    ParentFieldName="ParentId"
-                    TreeDerivationMode="Selfreference" 
                     ShowTotalSummary="False" 
                     UseLegacyFilterPanel="True"
                     ShowSearchPanelMode="Always"
@@ -132,15 +114,10 @@
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True" 
-                    PrintNodeImages="True"
-                    ShowNodeImages="True"
-                    NodeImageSize="15,15"
-                    ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"    
+                    AllowPrintColumnHeaderImage="True"    
                     ImmediateUpdateRowPosition="True"
                     >
-                            <dxg:TreeListView.InputBindings>
+                            <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
@@ -161,9 +138,9 @@
                                 <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                            </dxg:TreeListView.InputBindings>
+                            </dxg:TableView.InputBindings>
 
-                            <dxg:TreeListView.RowCellMenuCustomizations>
+                            <dxg:TableView.RowCellMenuCustomizations>
                                 <dxb:BarButtonItem  
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
@@ -207,12 +184,9 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                     DataContext="{Binding Source={StaticResource vm}}"/>
-                            </dxg:TreeListView.RowCellMenuCustomizations>
+                            </dxg:TableView.RowCellMenuCustomizations>
 
-                            <dxg:TreeListView.NodeImageSelector>
-                                <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                            </dxg:TreeListView.NodeImageSelector>
-                        </dxg:TreeListView>
+                        </dxg:TableView>
                     </dxg:GridControl.View>
 
                 <dxg:GridColumn FieldName="Name" 
@@ -233,32 +207,7 @@
                         <dxe:TextEditSettings TextWrapping="Wrap"/>
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
-                <dxg:GridColumn 
-                    FieldName="ClientGroup" Header="Категория клиентов" 
-                    HorizontalHeaderContentAlignment="Center" Width="1*"
-                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
-                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
-                    <dxg:GridColumn.CellDisplayTemplate>
-                        <DataTemplate>
-                            <TextBlock 
-                                TextAlignment="Center"
-                                Text="{Binding RowData.Row.ClientGroup, Mode=OneWay}"/>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellDisplayTemplate>
-
-                </dxg:GridColumn>
-                <dxg:GridColumn 
-                    FieldName="Settings" Header="Настройки" HorizontalHeaderContentAlignment="Center" Width="1*"
-                    PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
-                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
-                    <dxg:GridColumn.CellDisplayTemplate>
-                        <DataTemplate>
-                            <TextBlock 
-                                TextAlignment="Center"
-                                Text="{Binding RowData.Row.Settings.TitleBtn, Mode=OneWay}"/>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellDisplayTemplate>
-                </dxg:GridColumn>
+                     
                 <dxg:GridColumn 
                     FieldName="SubscribeType" Header="Тип" HorizontalHeaderContentAlignment="Center" Width="1*"
                     PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
@@ -296,10 +245,8 @@
                                 TextAlignment="Center"
                                 Text="{Binding RowData.Row.StatusSubscribe, Mode=OneWay}"/>
                         </DataTemplate>
-                    </dxg:GridColumn.CellDisplayTemplate> 
+                    </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>
-
-
 
                 <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
@@ -308,7 +255,7 @@
 
                                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                                        <dxb:BarButtonItem Name="bOpen"
+                                        <dxb:BarButtonItem
                                            DataContext="{StaticResource vm}"
                                            Content="Открыть форму"                                                            
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"

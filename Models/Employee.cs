@@ -85,7 +85,7 @@ namespace Dental.Models
         [NotMapped]
         public string FullName
         {
-            get => (string.IsNullOrEmpty(MiddleName)) ? FirstName + " " + LastName : FirstName + " " + MiddleName + " " + LastName;
+            get => (string.IsNullOrEmpty(MiddleName)) ? LastName + " " + FirstName : LastName + " " + FirstName + " " + MiddleName;
         }
         // Контактная информация
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
@@ -95,20 +95,6 @@ namespace Dental.Models
             set => _Email = value?.Trim();
         }
         private string _Email;
-
-        public string Ok
-        {
-            get => _Ok;
-            set => _Ok = value?.Trim();
-        }
-        private string _Ok;
-
-        public string Vk
-        {
-            get => _Vk;
-            set => _Vk = value?.Trim();
-        }
-        private string _Vk;
 
         [Display(Name = "Примечание")]
         public string Note
@@ -187,8 +173,6 @@ namespace Dental.Models
                 StringParamsIsEquel(this.BirthDate, other.BirthDate, "Дата рождения");
                 StringParamsIsEquel(this.Photo, other.Photo, "Фото");
                 StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
-                StringParamsIsEquel(this.Ok, other.Ok, "Одноклассники");
-                StringParamsIsEquel(this.Vk, other.Vk, "В контакте");
                 StringParamsIsEquel(this.Email, other.Email, "Email");
                 StringParamsIsEquel(this.Address, other.Address, "Адрес");
                 StringParamsIsEquel(this.Inn, other.Inn, "ИНН");

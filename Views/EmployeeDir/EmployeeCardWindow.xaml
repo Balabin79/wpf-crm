@@ -14,9 +14,8 @@
     mc:Ignorable="d"
     x:Name="layoutGroup1"
     Closing="Window_Closing"
-    dx:ThemeManager.ThemeName="Office2019White" 
-    d:DesignHeight="300" d:DesignWidth="300"
-    Title="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}">
+    dx:ThemeManager.ThemeName="Office2019White"
+    Title="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" >
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Window.Resources>
@@ -54,7 +53,7 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            Command="{Binding EditableCommand}"/>
-                        
+
                         <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}"
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
@@ -89,7 +88,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    
+
                     <GroupBox BorderBrush="LightGray" Margin="5" Header="Общая информация" Grid.Row="0">
                         <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical">
                             <dxlc:LayoutGroup Orientation="Horizontal">
@@ -117,7 +116,7 @@
                                                     MaskUseAsDisplayFormat ="True"
                                                     EditValue="{Binding Path=Model.BirthDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                                    
+
                                             </dxlc:LayoutItem>
 
                                             <dxlc:LayoutItem Label="Пол:" LabelPosition="Left" >
@@ -152,15 +151,15 @@
                                             </ext:ImageEditEx>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
-                                    
+
                                     <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
                                         <dxe:MemoEdit 
                                                 EditValue="{Binding Path=Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
-                                    
+
                                     <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0 10 0 0">
-                                                                            
+
                                         <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True">
                                             <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
@@ -173,7 +172,7 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                                             </dxe:ButtonEdit>
                                         </dxlc:LayoutItem>
-                                        
+
                                         <dxlc:LayoutItem Label="Email" AddColonToLabel="True">
                                             <dxe:ButtonEdit IsTextEditable="True"
                                             AllowDefaultButton="False"
@@ -186,30 +185,16 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                                             </dxe:ButtonEdit>
                                         </dxlc:LayoutItem>
-                                        
-                                        <dxlc:LayoutItem Label="ВКонтакте" AddColonToLabel="True">
-                                            <dxe:ButtonEdit 
-                                                IsTextEditable="True" AllowDefaultButton="False" 
-                                                EditValue="{Binding Path=Model.Vk, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/vk.svg"  Margin="0 2 2 2"/>
-                                            </dxe:ButtonEdit>
-                                        </dxlc:LayoutItem>
 
-                                        <dxlc:LayoutItem Label="Одноклассники" AddColonToLabel="True">
-                                            <dxe:ButtonEdit 
-                                                IsTextEditable="True" AllowDefaultButton="False" 
-                                                EditValue="{Binding Path=Model.Ok, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/odnoklassniki.svg"  Margin="0 2 2 2"/>
-                                            </dxe:ButtonEdit>
+                                        <dxlc:LayoutItem Label="Примечание"  LabelPosition="Left" Height="45">
+                                            <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
+                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
                                 </dxlc:LayoutGroup>
-                                
+
                                 <dxlc:LayoutGroup Orientation="Vertical">
                                     <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
                                         <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
@@ -247,7 +232,7 @@
                                                 EditValue="{Binding Model.Post, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                />
-                                      
+
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem  Label="Тип оклада (з/п)" 
                                                           LabelPosition="Left"  
@@ -295,7 +280,7 @@
                                                 </dxe:TextEdit.ToolTip>
                                             </dxe:TextEdit>
                                         </dxlc:LayoutItem>
-                                        
+
                                         <dxlc:LayoutItem 
                                             Label="Продолж. рабочего дня:"
                                             LabelPosition="Left" 
@@ -333,32 +318,21 @@
 
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
-                                
+
                             </dxlc:LayoutGroup>
                         </dxlc:LayoutControl>
                     </GroupBox>
-                    
-                    
-                    
-                    
+
+
+
+
                     <GroupBox BorderBrush="LightGray" Margin="5" Header="Дополнительно" Grid.Row="1">
-                        
+
                         <dxlc:LayoutControl  Orientation="Vertical" Padding="0">
-                   
-                                
-                            
-                            <dxlc:LayoutGroup>
-                            <dxlc:LayoutItem Label="Примечание" AddColonToLabel="True" LabelPosition="Top">
-                                <dxe:MemoEdit 
-                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                            </dxlc:LayoutGroup>
 
                             <dxlc:LayoutGroup  
                 Grid.Row="2" 
-                Grid.ColumnSpan="2"
-                Margin="0 10 0 0" 
+                Grid.ColumnSpan="2" 
                 MaxHeight="800" 
                 View="GroupBox" 
                 Orientation="Vertical" 
@@ -501,7 +475,7 @@
                         </dxlc:LayoutControl>
                     </GroupBox>
                 </Grid>
-                
+
             </ScrollViewer>
         </Grid>
     </Border>
