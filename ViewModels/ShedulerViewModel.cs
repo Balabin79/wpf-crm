@@ -240,11 +240,17 @@ namespace Dental.ViewModels
             {
                 if (p is LocationAppointment model)
                 {
-                    if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) db.Entry(model).State = EntityState.Deleted;
+                    int cnt = 0;
+                    if (model.Id != 0)
+                    {
+                        if (!new ConfirDeleteInCollection().run(0)) return;
+                        db.Entry(model).State = EntityState.Deleted;
+                        cnt = db.SaveChanges();
+                    }
+
                     else db.Entry(model).State = EntityState.Detached;
-                    int cnt = db.SaveChanges();
-                    LocationAppointments = GetLocationCollection();
+                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                    //LocationAppointments = GetLocationCollection();
                     if (cnt > 0)
                     {
                         LocationAppointmentsBeforeChanges.Clear();
