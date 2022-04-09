@@ -37,9 +37,7 @@ namespace Dental
             finally
             {
                 Application.Current.Shutdown();
-            }
-            
-            
+            }                    
         }
 
     }

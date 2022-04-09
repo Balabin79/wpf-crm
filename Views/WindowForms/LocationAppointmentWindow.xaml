@@ -15,7 +15,9 @@
         xmlns:commands="clr-namespace:Dental.Infrastructures.Commands"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-        Icon="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}">
+        Icon="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"
+        Closing="Window_Closing"
+        >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
