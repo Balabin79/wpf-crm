@@ -129,31 +129,17 @@
                 <TextBlock Text="Расписание сотрудников" FontSize="15" Padding="2 5 5 0" />
                 <dxb:BarContainerControl HorizontalAlignment="Right" HorizontalContentAlignment="Right" DockPanel.Dock="Right">
 
-                    <dxb:ToolBarControl Orientation="Horizontal"  HorizontalAlignment="Right" 
-                                        Caption="File"
-                                        ShowDragWidget="False"
-                                        AllowCustomizationMenu="False" 
-                                        AllowQuickCustomization="False">
-                        <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Content="Печать"                                
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=viewAd}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
-                    </dxb:ToolBarControl>
+         
                 </dxb:BarContainerControl>
             </DockPanel>
             <DockPanel LastChildFill="True" Grid.Row="1" >
-                <dxa:AccordionControl DockPanel.Dock="Right" 
-                         
+                <dxa:AccordionControl DockPanel.Dock="Right"                         
                                       AllowAnimation="True" 
                                       AllowPopupMenu="True" 
                                       ShowPopupOnHover="True"
                                       CollapsedItemDisplayMode="ContentAndGlyph"                               
                                       IsCollapseButtonVisible="True"
+                                      SubItemExpandButtonPosition="Left"
                                       SummaryItemHeader="Все ресурсы"
                                       SummaryItemPosition="Top">
 
@@ -219,23 +205,23 @@
                     </dxlc:LayoutControl>
 
                 </dxa:AccordionControl>
-                <dxsch:SchedulerControl DockPanel.Dock="Left" 
-            DataContext="{StaticResource vm}"
-            x:Name="scheduler" 
-            CommandBarStyle="Ribbon"                   
-            GroupType="Resource" 
-            FirstDayOfWeek="Monday" 
-            MaxHeight="2000"                   
-            Margin="5 0 5 5"           
-            AllowAppointmentConflicts="False"
-            AppointmentWindowShowing="OnAppointmentWindowShowing"
-            StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
-            DropAppointment="OnDropAppointment"
-            dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" >
+                <dxsch:SchedulerControl 
+                    DockPanel.Dock="Left" 
+                    DataContext="{StaticResource vm}"
+                    x:Name="scheduler" 
+                    CommandBarStyle="Ribbon"                   
+                    GroupType="Resource" 
+                    FirstDayOfWeek="Monday" 
+                    MaxHeight="2000"                   
+                    Margin="5 0 5 5"           
+                    AllowAppointmentConflicts="False"
+                    AppointmentWindowShowing="OnAppointmentWindowShowing"
+                    StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
+                    DropAppointment="OnDropAppointment"
+                    dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap" >
 
                     <dxsch:SchedulerControl.OptionsWindows>
-                        <dxsch:OptionsWindows AppointmentWindowType="{x:Type wind:AppointmentWindow}" 
-                                       />
+                        <dxsch:OptionsWindows AppointmentWindowType="{x:Type wind:AppointmentWindow}" />
                     </dxsch:SchedulerControl.OptionsWindows>
                     <dxmvvm:Interaction.Behaviors>
                         <dxmvvm:EventToCommand 
@@ -274,7 +260,15 @@
                             />
                             </dxr:RibbonPageGroup>
                         </dxb:InsertAction>
-
+                        <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="6">
+                            <dxr:RibbonPageGroup Caption="Печать">
+                                <dxb:BarButtonItem
+                Command="{Binding Source={StaticResource Print}}"                                        
+                CommandParameter="{DXBinding '@ElementName(scheduler)'}"
+                Content="Печать"
+                LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
+                            </dxr:RibbonPageGroup>
+                        </dxb:InsertAction>
                     </dxsch:SchedulerControl.RibbonActions>
                     <dxsch:SchedulerControl.OptionsContextMenu>
                         <dxsch:OptionsContextMenu>

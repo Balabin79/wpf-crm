@@ -87,18 +87,22 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Mvvm" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Utils.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Charts.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Diagram.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Dialogs.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Grid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Layout.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Navigation.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.PivotGrid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Printing.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.PropertyGrid.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Reporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.RichEdit.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduler.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.Scheduling" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
+    <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="SharpVectors" Version="1.7.1" />
@@ -168,6 +172,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Deployment" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,6 +4,9 @@ using Dental.Infrastructures.Logs;
 using DevExpress.Xpf.Charts;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.PivotGrid;
+using DevExpress.Xpf.Scheduling;
+using DevExpress.Xpf.Printing;
+
 
 namespace Dental.Infrastructures.Commands
 {
@@ -32,6 +35,11 @@ namespace Dental.Infrastructures.Commands
                 if (p is PivotGridControl pivot)
                 {
                     pivot.ShowPrintPreview(pivot);
+                }                
+                
+                if (p is SchedulerControl scheduler)
+                {
+                    MyPrintHelper.PrintScheduler(scheduler);
                 }
             }
 
