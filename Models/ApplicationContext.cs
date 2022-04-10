@@ -65,10 +65,11 @@ namespace Dental.Models
         public DbSet<LocationAppointment> LocationAppointment { get; set; }
         public DbSet<ShedulerStatuses> ShedulerStatuses { get; set; }
         public DbSet<ResourceEntity> Resources { get; set; }
+        public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
 
         public DbSet<SubscribeParams> SubscribeParams { get; set; }
         public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
         public DbSet<UserActions> UserActions { get; set; }
-        public DbSet<NotificationsLog> NotificationsLog { get; set; }
+        public DbSet<NotificationsLog> NotificationsLog { get; set; }     
     }
 }

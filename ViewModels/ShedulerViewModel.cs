@@ -18,6 +18,8 @@ using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Dental.Views.WindowForms;
+using System.Text.Json;
+using System.Windows.Media;
 
 namespace Dental.ViewModels
 {
@@ -30,7 +32,8 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 LocationAppointments = GetLocationCollection();
-                StatusesInSheduler = GetShedulerStatusesCollection();
+                StatusAppointments = GetStatusCollection();
+
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -50,11 +53,11 @@ namespace Dental.ViewModels
                 #endregion
 
                 #region Команды статусы
-                OpenWindowStatusesCommand = new LambdaCommand(OnOpenWindowStatusesExecuted, CanOpenWindowStatusesExecute);
-                CloseWindowStatusesCommand = new LambdaCommand(OnCloseWindowStatusesExecuted, CanCloseWindowStatusesExecute);
-                AddStatusesCommand = new LambdaCommand(OnAddStatusesExecuted, CanAddStatusesExecute);
-                DeleteStatusesCommand = new LambdaCommand(OnDeleteStatusesExecuted, CanDeleteStatusesExecute);
-                SaveStatusesCommand = new LambdaCommand(OnSaveStatusesExecuted, CanSaveStatusesExecute);
+                OpenWindowStatusCommand = new LambdaCommand(OnOpenWindowStatusExecuted, CanOpenWindowStatusExecute);
+                CloseWindowStatusCommand = new LambdaCommand(OnCloseWindowStatusExecuted, CanCloseWindowStatusExecute);
+                AddStatusCommand = new LambdaCommand(OnAddStatusExecuted, CanAddStatusExecute);
+                DeleteStatusCommand = new LambdaCommand(OnDeleteStatusExecuted, CanDeleteStatusExecute);
+                SaveStatusCommand = new LambdaCommand(OnSaveStatusExecuted, CanSaveStatusExecute);
                 #endregion
 
                 AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
@@ -100,7 +103,7 @@ namespace Dental.ViewModels
 
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -308,25 +311,25 @@ namespace Dental.ViewModels
         #endregion
 
         #region Справочник "Статусы в шедулере"
-        public ICommand OpenWindowStatusesCommand { get; }
-        public ICommand CloseWindowStatusesCommand { get; }
+        public ICommand OpenWindowStatusCommand { get; }
+        public ICommand CloseWindowStatusCommand { get; }
 
-        public ICommand AddStatusesCommand { get; }
-        public ICommand DeleteStatusesCommand { get; }
-        public ICommand SaveStatusesCommand { get; }
-        private bool CanOpenWindowStatusesExecute(object p) => true;
-        private bool CanCloseWindowStatusesExecute(object p) => true;
-        private bool CanAddStatusesExecute(object p) => true;
-        private bool CanDeleteStatusesExecute(object p) => true;
-        private bool CanSaveStatusesExecute(object p) => true;
+        public ICommand AddStatusCommand { get; }
+        public ICommand DeleteStatusCommand { get; }
+        public ICommand SaveStatusCommand { get; }
+        private bool CanOpenWindowStatusExecute(object p) => true;
+        private bool CanCloseWindowStatusExecute(object p) => true;
+        private bool CanAddStatusExecute(object p) => true;
+        private bool CanDeleteStatusExecute(object p) => true;
+        private bool CanSaveStatusExecute(object p) => true;
 
-        private void OnOpenWindowStatusesExecuted(object p)
+        private void OnOpenWindowStatusExecuted(object p)
         {
             try
             {
-                StatusesWindow = new ShedulerStatusesWindow();
-                StatusesWindow.DataContext = this;
-                StatusesWindow.ShowDialog();
+                StatusWindow = new StatusAppointmentWindow();
+                StatusWindow.DataContext = this;
+                StatusWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -334,13 +337,13 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCloseWindowStatusesExecuted(object p) => StatusesWindow.Close();
+        private void OnCloseWindowStatusExecuted(object p) => StatusWindow.Close();
 
-        private void OnAddStatusesExecuted(object p)
+        private void OnAddStatusExecuted(object p)
         {
             try
             {
-                LocationAppointments.Add(new LocationAppointment());
+                StatusAppointments.Add(new AppointmentStatus());
             }
             catch (Exception e)
             {
@@ -348,62 +351,60 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteStatusesExecuted(object p)
+        private void OnSaveStatusExecuted(object p)
         {
             try
             {
-                if (p is ShedulerStatuses model)
-                {
-                    if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) 
-                    {
-                        db.Entry(model).State = EntityState.Deleted;
-                        ActionsLog.RegisterAction(model.Caption, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["StatusSheduler"]);
-                    } 
-                    else db.Entry(model).State = EntityState.Detached;
-                    int cnt = db.SaveChanges();
-                    StatusesInSheduler = GetShedulerStatusesCollection();
-                    if (cnt > 0)
-                    {
-                        ShedulerStatusesBeforeChanges.Clear();
-                        StatusesInSheduler.ForEach(f => ShedulerStatusesBeforeChanges.Add((ShedulerStatuses)f.Clone()));
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-
-        private void OnSaveStatusesExecuted(object p)
-        {
-            try
-            {
-                foreach (var item in StatusesInSheduler)
+                foreach (var item in StatusAppointments)
                 {
                     if (string.IsNullOrEmpty(item.Caption)) continue;
-                    if (item.Id == 0)
+
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
+                    if (db.Entry(item).State == EntityState.Added
+                        || StatusAppointmentsBeforeChanges.Where(f => item.Guid == f.Guid && item.Brush != f.Brush).FirstOrDefault() != null)
                     {
-                        db.Entry(item).State = EntityState.Added;
-                        ActionsLog.RegisterAction(item.Caption, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["StatusSheduler"]);
+                        item.BrushColor = item.Brush?.Color.ToString();
+                    }
+                }
+                int cnt = db.SaveChanges();
+                StatusAppointmentsBeforeChanges.Clear();
+                StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
+                
+                if (cnt > 0)
+                {
+                    var notification = new Notification();
+                    notification.Content = "Изменения сохранены в базу данных!";
+                    notification.run();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteStatusExecuted(object p)
+        {
+            try
+            {
+                if (p is AppointmentStatus model)
+                {
+                    int cnt = 0;
+                    if (model.Id != 0)
+                    {
+                        if (!new ConfirDeleteInCollection().run(0)) return;
+                        db.Entry(model).State = EntityState.Deleted;
+                        cnt = db.SaveChanges();
                     }
 
-                    if (db.Entry(item).State == EntityState.Modified)
-                    {
-                        ActionsLog.RegisterAction(item.Caption, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["StatusSheduler"]);
-                    }
-                    int cnt = db.SaveChanges();
+                    else db.Entry(model).State = EntityState.Detached;
+                    StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
 
-                    StatusesInSheduler = GetShedulerStatusesCollection();
-                    ShedulerStatusesBeforeChanges.Clear();
-                    StatusesInSheduler.ForEach(f => ShedulerStatusesBeforeChanges.Add((ShedulerStatuses)f.Clone()));
                     if (cnt > 0)
                     {
-                        var notification = new Notification();
-                        notification.Content = "Изменения сохранены в базу данных!";
-                        notification.run();
+                        StatusAppointmentsBeforeChanges.Clear();
+                        StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
                     }
                 }
             }
@@ -413,21 +414,38 @@ namespace Dental.ViewModels
             }
         }
 
-        public ShedulerStatusesWindow StatusesWindow { get; set; }
-        public ObservableCollection<ShedulerStatuses> StatusesInSheduler
+        public StatusAppointmentWindow StatusWindow { get; set; }
+        public ObservableCollection<AppointmentStatus> StatusAppointments
         {
-            get => shedulerStatuses;
-            set => Set(ref shedulerStatuses, value);
+            get => statusAppointments;
+            set => Set(ref statusAppointments, value);
         }
-        private ObservableCollection<ShedulerStatuses> shedulerStatuses;
+        private ObservableCollection<AppointmentStatus> statusAppointments;
 
-        public ObservableCollection<ShedulerStatuses> ShedulerStatusesBeforeChanges { get; set; } = new ObservableCollection<ShedulerStatuses>();
-        private ObservableCollection<ShedulerStatuses> GetShedulerStatusesCollection() => db.ShedulerStatuses.OrderBy(f => f.Caption).ToObservableCollection();
+        public ObservableCollection<AppointmentStatus> StatusAppointmentsBeforeChanges { get; set; } = new ObservableCollection<AppointmentStatus>();
+        private ObservableCollection<AppointmentStatus> GetStatusCollection()
+        {
+            var collection = db.AppointmentStatus.OrderBy(f => f.Caption).ToObservableCollection();
+            foreach (var i in collection)
+            {
+                try
+                {
+                    Color colorName = (Color)ColorConverter.ConvertFromString(i.BrushColor);
+                    i.Brush = new SolidColorBrush(colorName);
+                }
+                catch
+                {
+                    i.Brush = null;
+                }
+            }
+
+            return collection;
+        }
         #endregion
 
 
 
-        
+
         private void OnSaveCommandExecuted(object p)
         {
             try

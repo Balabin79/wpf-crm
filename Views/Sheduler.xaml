@@ -214,6 +214,9 @@
                     </dx:DXTabControl>
 
                 </dxlc:LayoutControl>
+                
+                
+                
                 <dxsch:SchedulerControl 
             DataContext="{StaticResource vm}"
             x:Name="scheduler" 
@@ -301,9 +304,8 @@
                         </dxsch:TimelineView.TimeScales>
                     </dxsch:TimelineView>
                     <dxsch:SchedulerControl.DataSource>
-                        <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}">
-
-
+                        <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}" AppointmentStatusesSource="{Binding StatusAppointments}">
+                            
                             <dxsch:DataSource.ResourceMappings>
                                 <dxsch:ResourceMappings Caption="Fio" Id="Id" Visible="IsVisible" >
                                     <dxsch:CustomFieldMapping Mapping="Image" Name="ImageName" />
@@ -314,17 +316,17 @@
 
                             <dxsch:DataSource.AppointmentMappings>
                                 <dxsch:AppointmentMappings 
-                            Type="AppointmentType"
-                            StatusId="StatusId"        
-                            Subject="PatientName"
-                            ResourceId="EmployeeId"
-                            RecurrenceInfo="RecurrenceInfo"
-                            Reminder="ReminderInfo"
-                            LabelId="LabelId"
-                            Location="LocationName"
-                            Id="Id"                                      
-                            Description="Description"
-                            AllDay="AllDay">
+                                    Type="AppointmentType"
+                                    StatusId="StatusId"        
+                                    Subject="PatientName"
+                                    ResourceId="EmployeeId"
+                                    RecurrenceInfo="RecurrenceInfo"
+                                    Reminder="ReminderInfo"
+                                    LabelId="LabelId"
+                                    Location="LocationName"
+                                    Id="Id"                                      
+                                    Description="Description"
+                                    AllDay="AllDay">
                                     <dxsch:AppointmentMappings.Start>
                                         <dxsch:Mapping>
                                             <dxsch:Mapping.FieldName>
@@ -354,6 +356,10 @@
                                     <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
                                 </dxsch:AppointmentMappings>
                             </dxsch:DataSource.AppointmentMappings>
+
+                            <dxsch:DataSource.AppointmentStatusMappings>
+                                <dxsch:AppointmentStatusMappings Brush="Brush" Caption="Caption" Id="Id" />
+                            </dxsch:DataSource.AppointmentStatusMappings>
 
                         </dxsch:DataSource>
                     </dxsch:SchedulerControl.DataSource>
