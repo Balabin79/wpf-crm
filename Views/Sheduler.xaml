@@ -121,16 +121,12 @@
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
     <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="23"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" >
                 <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"/>
-                <TextBlock Text="Расписание сотрудников" FontSize="15" Padding="2 5 5 0" />
-                <dxb:BarContainerControl HorizontalAlignment="Right" HorizontalContentAlignment="Right" DockPanel.Dock="Right">
-
-         
-                </dxb:BarContainerControl>
+                <TextBlock Text="Расписание сотрудников" FontSize="15" Padding="2 0 5 0" />
             </DockPanel>
             <DockPanel LastChildFill="True" Grid.Row="1" >
                 <dxa:AccordionControl DockPanel.Dock="Right"                         
@@ -262,11 +258,11 @@
                         </dxb:InsertAction>
                         <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="6">
                             <dxr:RibbonPageGroup Caption="Печать">
-                                <dxb:BarButtonItem
-                Command="{Binding Source={StaticResource Print}}"                                        
-                CommandParameter="{DXBinding '@ElementName(scheduler)'}"
-                Content="Печать"
-                LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
+                                <dxb:BarButtonItem 
+                                    Command="{Binding Source={StaticResource Print}}"                                        
+                                    CommandParameter="{DXBinding '@ElementName(scheduler)'}"
+                                    Content="Печать"
+                                    LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />
                             </dxr:RibbonPageGroup>
                         </dxb:InsertAction>
                     </dxsch:SchedulerControl.RibbonActions>
@@ -280,20 +276,20 @@
                     </dxsch:SchedulerControl.OptionsContextMenu>
 
                     <dxsch:DayView
-                x:Name="dayView"
-                NavigationButtonsVisibility="Never"
-                ResourcesPerPage="5"
-                ShowAllDayArea="False"
-                ShowWorkTimeOnly="True"
-                SnapToCellsMode="Never"
-                TimeScale="00:10:00"
-                ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
-                ResourceHeaderContentTemplate="{StaticResource resourceHeaderContentTemplate}"/>
+                        x:Name="dayView"
+                        NavigationButtonsVisibility="Never"
+                        ResourcesPerPage="5"
+                        ShowAllDayArea="False"
+                        ShowWorkTimeOnly="True"
+                        SnapToCellsMode="Never"
+                        TimeScale="00:10:00"
+                        ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
+                        ResourceHeaderContentTemplate="{StaticResource resourceHeaderContentTemplate}"/>
                     <dxsch:TimelineView
-                x:Name="timelineView"
-                ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
-                NavigationButtonsVisibility="Never"
-                ResourcesPerPage="5">
+                        x:Name="timelineView"
+                        ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
+                        NavigationButtonsVisibility="Never"
+                        ResourcesPerPage="5">
                         <dxsch:TimelineView.TimeScales>
                             <dxsch:TimeScaleDay />
                             <dxsch:TimeScaleWorkHour />

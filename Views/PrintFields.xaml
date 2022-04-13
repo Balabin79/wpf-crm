@@ -100,7 +100,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="dxe:TextEdit">
                     <dxe:TextEdit  
-                                Text="{Binding Path=Value, Mode=TwoWay, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Converter={StaticResource strToDecimalConverter}}" 
+                                Text="{Binding Path=Value, Mode=TwoWay, StringFormat={}{0:c2}, 
+                        ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, 
+                        UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                 HorizontalAlignment="Center"
                                 />
                 </ControlTemplate>

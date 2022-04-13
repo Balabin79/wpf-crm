@@ -96,7 +96,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"/>
 
                     </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Организация">
+                    <dxr:RibbonPageGroup Caption="Справочники">
                         <dxb:BarButtonItem Content="Сотрудники"
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}" 
@@ -105,17 +105,23 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes" 
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
                                            />
-
-                        <dxb:BarButtonItem Content="Справочник услуг" 
+                        
+                        <dxb:BarButtonItem Content="Перечень товаров" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"   
-                                            ToolTip="Справочник услуг"
-                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
+                                           ToolTip="Товары"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" 
                                            LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"/>
-
+                        
+                        <dxb:BarButtonItem Content="Перечень услуг" 
+                                           RibbonStyle="Default"
+                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"   
+                                           ToolTip="Справочник услуг"
+                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
                     </dxr:RibbonPageGroup>
-
 
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Статистика" >

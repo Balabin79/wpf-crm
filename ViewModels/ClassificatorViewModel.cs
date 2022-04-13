@@ -36,7 +36,7 @@ namespace Dental.ViewModels
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Классификация услуг\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Перечень услуг\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }

@@ -17,7 +17,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
-      Title="Справочник услуг"
+      Title="Перечень услуг"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>
@@ -33,9 +33,6 @@
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
-
-
     </Page.Resources>
 
     <Border 
@@ -54,8 +51,8 @@
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
-                                Source="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"/>
-                    <TextBlock Text="Справочник услуг" FontSize="15" Padding="2 5 5 0" />
+                                Source="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
+                    <TextBlock Text="Перечень услуг" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -93,8 +90,7 @@
 
                         <dxb:BarItemLinkSeparator />
 
-                        <dxb:BarButtonItem Content="Печать" 
-                                           
+                        <dxb:BarButtonItem Content="Печать"                                           
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
@@ -107,34 +103,32 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-
-
             <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
                 <dxg:GridControl.View>
                         <dxg:TreeListView  
-                    x:Name="view"
-                    KeyFieldName="Id"
-                    ParentFieldName="ParentId"
-                    TreeDerivationMode="Selfreference" 
-                    ShowTotalSummary="False" 
-                    UseLegacyFilterPanel="True"
-                    ShowSearchPanelMode="Always"
-                    SearchPanelAllowFilter="True"
-                    AllowResizing="True"
-                    BestFitModeOnSourceChange="VisibleRows"            
-                    NavigationStyle="Row"
-                    AllowScrollToFocusedRow="True" 
-                    VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True" 
-                    PrintNodeImages="True"
-                    ShowNodeImages="True"
-                    NodeImageSize="15,15"
-                    ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"    
-                    ImmediateUpdateRowPosition="True"
-                    >
+                            x:Name="view"
+                            KeyFieldName="Id"
+                            ParentFieldName="ParentId"
+                            TreeDerivationMode="Selfreference" 
+                            ShowTotalSummary="False" 
+                            UseLegacyFilterPanel="True"
+                            ShowSearchPanelMode="Always"
+                            SearchPanelAllowFilter="True"
+                            AllowResizing="True"
+                            BestFitModeOnSourceChange="VisibleRows"            
+                            NavigationStyle="Row"
+                            AllowScrollToFocusedRow="True" 
+                            VerticalScrollbarVisibility="Auto"
+                            AllowPrintColumnHeaderImage="True" 
+                            PrintNodeImages="True"
+                            ShowNodeImages="True"
+                            NodeImageSize="15,15"
+                            ExpandNodesOnFiltering="True"
+                            FilterMode="Extended"    
+                            ImmediateUpdateRowPosition="True"
+                            >
                             <dxg:TreeListView.InputBindings>
                                 <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
@@ -235,7 +229,9 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
-                                Text="{Binding Row.Price, Mode=TwoWay, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                Text="{Binding Row.Price, Mode=TwoWay, StringFormat={}{0:c2}, 
+                                ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, 
+                                UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                 HorizontalAlignment="Center"
                                 />
                         </DataTemplate>
@@ -243,8 +239,7 @@
                 </dxg:GridColumn>
 
                 <dxg:GridColumn Width="1*" FieldName="Cost"  
-                                Header="Размер выплаты сотруднику" 
-                                HorizontalHeaderContentAlignment="Center" 
+                                Header="Размер выплаты сотруднику"                           
                                 PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                 >
