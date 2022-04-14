@@ -202,6 +202,37 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать %282%29 - Копировать.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow - Копировать (2).xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать %283%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать - Копировать %282%29.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow - Копировать.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать - Копировать - Копировать.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow - Копировать - Копировать.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать - Копировать.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow - Копировать.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow - Копировать.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>WarehouseWindow.xaml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NomenclatureDir\WarehouseWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\NomenclatureDir\NomenclatureWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -267,6 +298,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NomenclatureDir\WarehouseWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

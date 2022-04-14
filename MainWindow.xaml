@@ -108,19 +108,19 @@
                         
                         <dxb:BarButtonItem Content="Перечень товаров" 
                                            RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"   
+                                           MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"   
                                            ToolTip="Товары"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}"/>
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
                         
                         <dxb:BarButtonItem Content="Перечень услуг" 
                                            RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"   
+                                           MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"   
                                            ToolTip="Справочник услуг"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"/>
                     </dxr:RibbonPageGroup>
 
                 </dxr:RibbonPage>

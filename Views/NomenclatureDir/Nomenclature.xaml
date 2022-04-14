@@ -89,6 +89,25 @@
                                            />
 
                         <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem Content="Склады" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           DataContext="{StaticResource vm}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding ExpandTreeCommand}"
+                                           CommandParameter="{Binding ElementName=view}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}"
+                                           />
+                        <dxb:BarButtonItem Content="Единицы измерения" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           DataContext="{StaticResource vm}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding ExpandTreeCommand}"
+                                           CommandParameter="{Binding ElementName=view}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Show_PivotGrid_Designer.svg}"
+                                           />
+                        <dxb:BarItemLinkSeparator />
 
                         <dxb:BarButtonItem Content="Печать"                                           
                                            IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -127,8 +146,7 @@
                     NodeImageSize="15,15"
                     ExpandNodesOnFiltering="True"
                     FilterMode="Extended"    
-                    ImmediateUpdateRowPosition="True"
-                    >
+                    ImmediateUpdateRowPosition="True">
                         <dxg:TreeListView.InputBindings>
                             <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
@@ -151,7 +169,6 @@
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         </dxg:TreeListView.InputBindings>
-
 
                         <dxg:TreeListView.RowCellMenuCustomizations>
                             <dxb:BarButtonItem  
@@ -205,9 +222,7 @@
                     </dxg:TreeListView>
                 </dxg:GridControl.View>
 
-                <dxg:GridColumn FieldName="Name" 
-                                Header="Наименование" x:Name="Name" MinWidth="200" Width="8*"
-                                >
+                <dxg:GridColumn FieldName="Name" Header="Наименование" x:Name="Name" MinWidth="200" Width="8*">
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

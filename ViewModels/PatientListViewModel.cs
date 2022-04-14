@@ -75,9 +75,10 @@ namespace Dental.ViewModels
             {
                 AdvertisingWin = new AdvertisingWindow();
                 AdvertisingWin.ShowDialog();
-            } catch
+            }
+            catch (Exception e)
             {
-
+                (new ViewModelLog(e)).run();
             }
         }
 

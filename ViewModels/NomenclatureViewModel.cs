@@ -46,11 +46,42 @@ namespace Dental.ViewModels
         public ICommand OpenFormCommand { get; }
         public ICommand CancelFormCommand { get; }
         public ICommand ExpandTreeCommand { get; }
+        public ICommand OpenFormWarehouseCommand { get; }
+        public ICommand OpenFormMeasureCommand { get; }
+
         private bool CanDeleteCommandExecute(object p) => true;
         private bool CanSaveCommandExecute(object p) => true;
         private bool CanOpenFormCommandExecute(object p) => true;
         private bool CanCancelFormCommandExecute(object p) => true;
         private bool CanExpandTreeCommandExecute(object p) => true;
+        private bool CanOpenFormWarehouseExecute(object p) => true;
+        private bool CanOpenFormMeasureExecute(object p) => true;
+
+        private void OnOpenFormWarehouseExecuted(object p)
+        {
+            try
+            {
+                AdvertisingWin = new AdvertisingWindow();
+                AdvertisingWin.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnOpenFormMeasureExecuted(object p)
+        {
+            try
+            {
+                AdvertisingWin = new AdvertisingWindow();
+                AdvertisingWin.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
 
         private void OnExpandTreeCommandExecuted(object p)
         {
