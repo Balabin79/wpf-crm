@@ -47,7 +47,10 @@ namespace Dental.Models
         {
             var entities = ChangeTracker.Entries()
                 .Where(x => x.Entity is AbstractBaseModel && (x.State == EntityState.Added || x.State == EntityState.Modified));
-            foreach (var entity in entities) ((AbstractBaseModel)entity.Entity).Update();           
+            foreach (var entity in entities)
+            { 
+                ((AbstractBaseModel)entity.Entity).Update(); 
+            }       
         }
 
         public DbSet<Employee> Employes { get; set; }

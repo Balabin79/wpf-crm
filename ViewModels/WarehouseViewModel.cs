@@ -12,7 +12,7 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
-
+using System.Collections.Generic;
 
 namespace Dental.ViewModels
 {
@@ -29,13 +29,13 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Collection = GetCollection();
-                
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                Collection = GetCollection();                
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Warehouse)f.Clone()));
+                Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Единицы измерения\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Склады\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -52,13 +52,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is Advertising model)
+                if (p is Warehouse model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
                     if (model.Id != 0) 
                     {
                         db.Entry(model).State = EntityState.Deleted;
-                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Warehouse"]);
                         int cnt = db.SaveChanges();
                         if (cnt > 0)
                         {
@@ -70,7 +70,7 @@ namespace Dental.ViewModels
                     else db.Entry(model).State = EntityState.Detached;
                     Collection.Remove(model);
                     CollectionBeforeChanges.Clear();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((Warehouse)f.Clone()));
                 }
             }
             catch (Exception e)
@@ -89,17 +89,17 @@ namespace Dental.ViewModels
                     if (item.Id == 0) 
                     {
                         db.Entry(item).State = EntityState.Added;
-                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Warehouse"]);
                     }
                     if (db.Entry(item).State == EntityState.Modified)
                     {
-                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Warehouse"]);
                     }                       
                 }
                 int cnt = db.SaveChanges();
                 Collection = GetCollection();
                 CollectionBeforeChanges.Clear();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Warehouse)f.Clone()));
                 if (cnt > 0)
                 {
                     var notification = new Notification();
@@ -113,16 +113,16 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAddCommandExecuted(object p) => Collection.Add(new Advertising());
+        private void OnAddCommandExecuted(object p) => Collection.Add(new Warehouse());
 
-        public ObservableCollection<Advertising> Collection
+        public ObservableCollection<Warehouse> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        private ObservableCollection<Advertising> _Collection;
-        private ObservableCollection<Advertising> GetCollection() => db.Advertising?.OrderBy(d => d.Name).ToObservableCollection();
-        public ObservableCollection<Advertising> CollectionBeforeChanges { get; set; } = new ObservableCollection<Advertising>();
+        private ObservableCollection<Warehouse> _Collection;
+        private ObservableCollection<Warehouse> GetCollection() => db.Warehouse?.Include(f => f.Employee).OrderBy(d => d.Name).ToObservableCollection();
+        public ObservableCollection<Warehouse> CollectionBeforeChanges { get; set; } = new ObservableCollection<Warehouse>();
 
         public bool HasUnsavedChanges()
         {
@@ -143,5 +143,7 @@ namespace Dental.ViewModels
 
             return response.ToString() == "No";
         }
+
+        public ICollection<Employee> Employees { get; }
     }
 }

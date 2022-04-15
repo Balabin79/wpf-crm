@@ -51,7 +51,7 @@
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
-                                Source="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
+                                Source="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
                     <TextBlock Text="Перечень товаров" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -94,17 +94,17 @@
                                            DataContext="{StaticResource vm}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding ExpandTreeCommand}"
-                                           CommandParameter="{Binding ElementName=view}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}"
+                                           Command="{Binding OpenFormWarehouseCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" 
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}"
                                            />
                         <dxb:BarButtonItem Content="Единицы измерения" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding ExpandTreeCommand}"
-                                           CommandParameter="{Binding ElementName=view}" 
+                                           Command="{Binding OpenFormMeasureCommand}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Show_PivotGrid_Designer.svg}"
                                            />
                         <dxb:BarItemLinkSeparator />

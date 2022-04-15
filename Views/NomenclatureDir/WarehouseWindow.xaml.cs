@@ -12,9 +12,9 @@ namespace Dental.Views.NomenclatureDir
             InitializeComponent();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Warehouse_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (this.Resources["vm"] is AdvertisingViewModel vm)
+            if (this.Resources["vm"] is WarehouseViewModel vm)
             {
                 if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel())
                 {

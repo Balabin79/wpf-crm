@@ -12,7 +12,9 @@
         mc:Ignorable="d"
         Title="Товар"
         HorizontalAlignment="Center"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        >
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>

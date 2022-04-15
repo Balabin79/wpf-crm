@@ -74,6 +74,8 @@ namespace Dental.Services
 
         public static Dictionary<string, string> SectionPage { get; } = new Dictionary<string, string>() {
             { "Advertising", "Рекламные источники" },
+            { "Measure", "Единицы измерения" },
+            { "Warehouse", "Склады" },
             { "ServicesItems", "Перечень услуг" },
             { "NomenclatureItems", "Перечень товаров" },
             { "ClientsRequests", "Список обращений" },

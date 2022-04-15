@@ -27,6 +27,8 @@ namespace Dental.ViewModels
             OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
             CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
             ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
+            OpenFormWarehouseCommand = new LambdaCommand(OnOpenFormWarehouseExecuted, CanOpenFormWarehouseExecute);
+            OpenFormMeasureCommand = new LambdaCommand(OnOpenFormMeasureExecuted, CanOpenFormMeasureExecute);
 
             try
             {
@@ -61,8 +63,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                AdvertisingWin = new AdvertisingWindow();
-                AdvertisingWin.ShowDialog();
+                WarehouseWin = new Views.NomenclatureDir.WarehouseWindow();
+                WarehouseWin.ShowDialog();
             }
             catch (Exception e)
             {
@@ -74,8 +76,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                AdvertisingWin = new AdvertisingWindow();
-                AdvertisingWin.ShowDialog();
+                MeasureWin = new Views.NomenclatureDir.MeasureWindow();
+                MeasureWin.ShowDialog();
             }
             catch (Exception e)
             {
@@ -274,6 +276,8 @@ namespace Dental.ViewModels
 
         private ObservableCollection<Nomenclature> _Collection;
         private Views.NomenclatureDir.NomenclatureWindow Window;
+        private Views.NomenclatureDir.WarehouseWindow WarehouseWin;
+        private Views.NomenclatureDir.MeasureWindow MeasureWin;
 
         private ObservableCollection<Nomenclature> GetCollection() => db.Nomenclature.OrderBy(d => d.Name).Include(f => f.Measure).ToObservableCollection();
 

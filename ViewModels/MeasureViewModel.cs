@@ -31,7 +31,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Collection = GetCollection();
                 
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
             }
             catch
             {
@@ -52,13 +52,13 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is Advertising model)
+                if (p is Measure model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
                     if (model.Id != 0) 
                     {
                         db.Entry(model).State = EntityState.Deleted;
-                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Measure"]);
                         int cnt = db.SaveChanges();
                         if (cnt > 0)
                         {
@@ -70,7 +70,7 @@ namespace Dental.ViewModels
                     else db.Entry(model).State = EntityState.Detached;
                     Collection.Remove(model);
                     CollectionBeforeChanges.Clear();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                    Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
                 }
             }
             catch (Exception e)
@@ -89,17 +89,17 @@ namespace Dental.ViewModels
                     if (item.Id == 0) 
                     {
                         db.Entry(item).State = EntityState.Added;
-                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Measure"]);
                     }
                     if (db.Entry(item).State == EntityState.Modified)
                     {
-                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Advertising"]);
+                        ActionsLog.RegisterAction(item.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Measure"]);
                     }                       
                 }
                 int cnt = db.SaveChanges();
                 Collection = GetCollection();
                 CollectionBeforeChanges.Clear();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Advertising)f.Clone()));
+                Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
                 if (cnt > 0)
                 {
                     var notification = new Notification();
@@ -113,16 +113,16 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAddCommandExecuted(object p) => Collection.Add(new Advertising());
+        private void OnAddCommandExecuted(object p) => Collection.Add(new Measure());
 
-        public ObservableCollection<Advertising> Collection
+        public ObservableCollection<Measure> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        private ObservableCollection<Advertising> _Collection;
-        private ObservableCollection<Advertising> GetCollection() => db.Advertising?.OrderBy(d => d.Name).ToObservableCollection();
-        public ObservableCollection<Advertising> CollectionBeforeChanges { get; set; } = new ObservableCollection<Advertising>();
+        private ObservableCollection<Measure> _Collection;
+        private ObservableCollection<Measure> GetCollection() => db.Measure?.OrderBy(d => d.Name).ToObservableCollection();
+        public ObservableCollection<Measure> CollectionBeforeChanges { get; set; } = new ObservableCollection<Measure>();
 
         public bool HasUnsavedChanges()
         {

@@ -3,18 +3,18 @@ using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using System.Windows;
 
-namespace Dental.Views.PatientCard
+namespace Dental.Views.NomenclatureDir
 {
-    public partial class AdvertisingWindow : Window
+    public partial class MeasureWindow : Window
     {
-        public AdvertisingWindow()
+        public MeasureWindow()
         {
             InitializeComponent();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (this.Resources["vm"] is AdvertisingViewModel vm)
+            if (this.Resources["vm"] is MeasureViewModel vm)
             {
                 if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel())
                 {
