@@ -49,8 +49,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                PurchaseInvoiceWindow = new PurchaseInvoiceWindow();
-                PurchaseInvoiceWindow.ShowDialog();
+               // PurchaseInvoiceWindow = new PurchaseInvoiceWindow();
+               // PurchaseInvoiceWindow.ShowDialog();
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace Dental.ViewModels
 
         public CompletionActWindow CompletionActWindow { get; set;  }
         public MovementGoodsWindow MovementGoodsWindow { get; set;  }
-        public PurchaseInvoiceWindow PurchaseInvoiceWindow { get; set;  }
+        //public PurchaseInvoiceWindow PurchaseInvoiceWindow { get; set;  }
 
 
         /***/

@@ -77,6 +77,11 @@ namespace Dental.Models
         
         public DbSet<Nomenclature> Nomenclature { get; set; }     
         public DbSet<Measure> Measure { get; set; }     
-        public DbSet<Warehouse> Warehouse { get; set; }     
+        public DbSet<Warehouse> Warehouse { get; set; }   
+        
+        public DbSet<PurchaseInvoice> PurchaseInvoice { get; set; }     
+        public DbSet<MovementGoods> MovementGoods { get; set; }     
+        public DbSet<CompletionAct> CompletionAct { get; set; }     
+        public DbSet<Contractor> Contractor { get; set; }     
     }
 }

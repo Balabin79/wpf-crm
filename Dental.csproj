@@ -202,13 +202,13 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Documents\CompletionActWindow.xaml.cs">
+    <Compile Update="Views\Documents\CompletionAct.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Documents\MovementGoodsWindow.xaml.cs">
+    <Compile Update="Views\Documents\MovementGoods.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Documents\PurchaseInvoiceWindow.xaml.cs">
+    <Compile Update="Views\Documents\PurchaseInvoice.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\NomenclatureDir\MeasureWindow.xaml.cs">
@@ -285,15 +285,15 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Documents\CompletionActWindow.xaml">
+    <Page Update="Views\Documents\CompletionAct.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Documents\MovementGoodsWindow.xaml">
+    <Page Update="Views\Documents\MovementGoods.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Documents\PurchaseInvoiceWindow.xaml">
+    <Page Update="Views\Documents\PurchaseInvoice.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

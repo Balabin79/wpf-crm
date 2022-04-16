@@ -1,0 +1,200 @@
+﻿<Window x:Class="Dental.Views.Documents.MovementGoodsWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      xmlns:vm ="clr-namespace:Dental.ViewModels" 
+      xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+      xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+      xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+      xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
+      Title="Перемещение товаров"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Closing="Window_Closing">
+    <Window.Resources>
+        <commands:PrintCommand x:Key="Print"/>
+        <vm:DocumentsViewModel x:Key="vm"/>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+    </Window.Resources>
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
+
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}"/>
+                    <TextBlock Text="Перемещение товаров" FontSize="15" Padding="2 5 5 0" />
+                </StackPanel>
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+
+                    <dxb:ToolBarControl  
+                                        Caption="File"
+                                        ShowDragWidget="False"
+                                        AllowCustomizationMenu="False" 
+                                        AllowQuickCustomization="False">
+
+                        <dxb:BarButtonItem Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           DataContext="{StaticResource vm}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding AddCommand}"
+                                           CommandParameter="-1"/>
+                        <dxb:BarButtonItem Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding SaveCommand}"/>
+                        <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem Content="Печать"                                
+                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding Source={StaticResource Print}}"
+                                           CommandParameter="{Binding ElementName=viewAd}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
+                    </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
+
+
+
+                <dxg:GridControl  AutoGenerateColumns="None" 
+                                  MaxHeight="2000" 
+                                  Name="gridAd"  
+                                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  Margin="2">
+
+                    <dxg:GridControl.View>
+                        <dxg:TableView                   
+                    x:Name="viewAd"
+                    ShowTotalSummary="False" 
+                    UseLegacyFilterPanel="True"
+                    ShowSearchPanelMode="Always"
+                    SearchPanelAllowFilter="True"
+                    AutoWidth="True" 
+                    PrintAutoWidth="True"
+                    BestFitModeOnSourceChange="VisibleRows"            
+                    NavigationStyle="Cell"
+                    AllowScrollToFocusedRow="True" 
+                    VerticalScrollbarVisibility="Auto"
+                    AllowPrintColumnHeaderImage="True"
+                    ShowGroupPanel="False"
+                    >
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="Delete"        
+                                Command="{Binding DeleteCommand}"
+                                CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}" />
+                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=AddCommand}"/>
+                                <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+                                
+                            </dxg:TableView.InputBindings>
+
+
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
+                                                    DataContext="{Binding Source={StaticResource vm}}"
+                                                    KeyGesture="Ctrl+N" Content="Создать"  
+                                                    Command="{Binding AddCommand}"/>
+
+                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                                   DataContext="{Binding Source={StaticResource vm}}"
+                            Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  
+                                                   Command="{Binding SaveCommand}" />
+                                
+                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить" 
+                                                   Command="{Binding DeleteCommand}" 
+                                                   CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+
+                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="5*">
+                        <dxg:GridColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                    <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </dxg:GridColumn.HeaderTemplate>
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <dxe:TextEdit Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            </DataTemplate>
+                        </dxg:GridColumn.CellEditTemplate>
+                    </dxg:GridColumn>
+
+                    <dxg:GridColumn FieldName="Employee.Fio" Header="Сотрудник"  MinWidth="200" Width="5*">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Margin="3 0 0 0" Text="{Binding Path=RowData.Row.Employee.Fio, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                        <dxg:GridColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <dxe:ComboBoxEdit 
+                                     ItemsSource="{Binding Source={StaticResource vm}, Path=Employees, Mode=OneWay}"                                      
+                                     SelectedItem="{Binding RowData.Row.Employee, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                     DisplayMember="Fio"
+                                    
+                                     NullText="Сотрудник" 
+                                     IsTextEditable="False" Margin="3 0 0 0">
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellEditTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Width="auto" AllowPrinting="False">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+
+                                    <dxb:ToolBarControl 
+                                                        Caption="File" 
+                                                        ShowDragWidget="False"
+                                                        AllowCustomizationMenu="False" 
+                                                        AllowQuickCustomization="False">
+
+                                        <dxb:BarButtonItem  
+                                           DataContext="{StaticResource vm}"        
+                                           Content="Удалить" 
+                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding DeleteCommand}" 
+                                           CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"/>
+                                   
+                                    </dxb:ToolBarControl>
+                                </dxb:BarContainerControl>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                </dxg:GridControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>
