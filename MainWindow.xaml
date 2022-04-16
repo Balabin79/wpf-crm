@@ -22,6 +22,7 @@
     <dx:ThemedWindow.Resources>
         <conv:ImageConverter x:Key="ImageConverter" />
         <viewModels:MainWindowViewModel x:Key="mv"/>
+        <viewModels:DocumentsViewModel x:Key="doc"/>
     </dx:ThemedWindow.Resources>
 
     <Grid VerticalAlignment="Stretch" Margin="0,0,0,0">
@@ -106,7 +107,7 @@
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
                                            />
                         
-                        <dxb:BarButtonItem Content="Перечень товаров" 
+                        <dxb:BarButtonItem Content="Справочник товаров" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"   
                                            ToolTip="Товары"
@@ -114,7 +115,7 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
                         
-                        <dxb:BarButtonItem Content="Перечень услуг" 
+                        <dxb:BarButtonItem Content="Справочник услуг" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"   
                                            ToolTip="Справочник услуг"
@@ -122,7 +123,31 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"/>
                     </dxr:RibbonPageGroup>
-
+                    <dxr:RibbonPageGroup Caption="Документы" DataContext="{StaticResource doc}">
+                        <dxb:BarButtonItem Content="Поступление товаров"
+                                           RibbonStyle="Default"
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}"   
+                                           ToolTip="Поступление товаров"
+                                           Command="{Binding OpenFormPurchaseInvoiceCommand}" 
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}"
+                                           />
+                        <dxb:BarButtonItem Content="Перемещение товаров" 
+                                           RibbonStyle="Default"
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}"   
+                                           ToolTip="Перемещение товаров"
+                                           Command="{Binding OpenFormMovementGoodsCommand}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}"/>
+                        
+                        <dxb:BarButtonItem Content="Акт выполненных работ" 
+                                           RibbonStyle="Default"
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"   
+                                           ToolTip="Акт выполненных работ"
+                                           Command="{Binding OpenFormCompletionActCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"/>
+                    </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Статистика" >
 

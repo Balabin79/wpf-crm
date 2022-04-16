@@ -202,6 +202,15 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Documents\CompletionActWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Documents\MovementGoodsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Documents\PurchaseInvoiceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\NomenclatureDir\MeasureWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -273,6 +282,18 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Documents\CompletionActWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Documents\MovementGoodsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Documents\PurchaseInvoiceWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
