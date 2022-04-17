@@ -25,20 +25,41 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                PurchaseInvoices = db.PurchaseInvoice.Include(f => f).Include(f => f.Nomenclature).Include(f => f.Contractor).OrderBy(f => f.PurchasePrice).ToObservableCollection();
+                PurchaseInvoices = db.PurchaseInvoice.Include(f => f.Nomenclature).Include(f => f.Warehouse).Include(f => f.Contractor).OrderBy(f => f.PurchasePrice).ToObservableCollection();                
+
+                OpenFormPurchaseInvoice = new LambdaCommand(OnOpenFormPurchaseExecuted, CanOpenFormPurchaseExecute);
 
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Поступление товаров\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICommand OpenClientCardCommand { get; }
-       
+        public ICommand OpenFormPurchaseInvoice { get; set; }
+
+        private bool CanOpenFormPurchaseExecute(object p) => true;
+
+        private void OnOpenFormPurchaseExecuted(object p)
+        {
+            try
+            {
+                NomenclatureList = db.Nomenclature.ToList();
+                PurchaseInvoiceWindow = new PurchaseInvoiceWindow();
+                PurchaseInvoiceWindow.DataContext = this;
+                PurchaseInvoiceWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public PurchaseInvoiceWindow PurchaseInvoiceWindow { get; set; }
 
         public ICollection<PurchaseInvoice> PurchaseInvoices { get; set; }
+        public ICollection<Nomenclature> NomenclatureList { get; set; }
 
     }
 }

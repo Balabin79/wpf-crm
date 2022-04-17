@@ -208,6 +208,9 @@
     <Compile Update="Views\Documents\MovementGoods.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Documents\PurchaseInvoiceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Documents\PurchaseInvoice.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -290,6 +293,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Documents\MovementGoods.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Documents\PurchaseInvoiceWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

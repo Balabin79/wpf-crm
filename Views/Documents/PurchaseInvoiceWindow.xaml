@@ -1,0 +1,131 @@
+﻿<Window x:Class="Dental.Views.WindowForms.PurchaseInvoiceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:vm ="clr-namespace:Dental.ViewModels"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        mc:Ignorable="d"
+        Title="Поступление товаров"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterScreen"
+        Height="360"
+        MaxHeight="360"
+        x:Name="Window"
+        >
+    <Window.Resources>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:FloatToStringConverter x:Key="FloatToString"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:DecimalToStringConverter x:Key="decimalConverter" />
+        <converter:MultiBindingConverter x:Key="multiConv" />
+    </Window.Resources>
+
+    <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
+        <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 10 0" >
+            <TextBlock Text="Поступление товаров" FontSize="15" FontWeight="DemiBold"/>
+            <dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutItem Label="*Номенклатура:"  Name="Nomenclature" LabelPosition="Top" IsRequired="True" >
+                    <dxe:PopupBaseEdit                           
+                                    x:Name="popup"                                                   
+                                    SelectAllOnMouseUp="True"
+                                    SelectAllOnGotFocus="True"                                            
+                                    EditValue="{Binding Model.Nomenclature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                    NullText="Выберите позицию в товарах" IsTextEditable="False">
+
+                        <dxe:PopupBaseEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <dxg:TreeListControl                                             
+                                                AutoGenerateColumns="None"                         
+                                                MaxHeight="2000" 
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                ItemsSource="{Binding ElementName=tree_view, Path=DataContext.NomenclatureList, Mode=OneWay}" 
+                                 >
+                                    <dxg:TreeListControl.View>
+                                        <dxg:TreeListView                                                          
+                                                        x:Name="tree_view"
+                                                        KeyFieldName="Id"
+                                                        ParentFieldName="ParentId"
+                                                        TreeDerivationMode="Selfreference" 
+                                                        ShowTotalSummary="False" 
+                                                        PrintNodeImages="True"
+                                                        ShowNodeImages="True"
+                                                        NodeImageSize="15,15"
+                                                        ShowSearchPanelMode="Never"
+                                                        SearchPanelAllowFilter="True"
+                                                        AllowResizing="True"
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        AllowPrintColumnHeaderImage="True"                                                 
+                                                        ExpandNodesOnFiltering="True"
+                                                        FilterMode="Extended"    
+                                                        ImmediateUpdateRowPosition="True"
+                                                        VerticalAlignment="Stretch"                                                                                                                 
+                                                        AllowPerPixelScrolling="True"
+                                                        UseLegacyFilterPanel="True"
+                                                        ShowColumnHeaders="False"
+                                                        AllowScrollToFocusedRow="True"
+                                                        ShowVerticalLines="False"                                                      
+                                                        NavigationStyle="Row">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:EventToCommand EventName="MouseDoubleClick" 
+                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                                                    <dxmvvm:EventToCommand.CommandParameter>
+                                                        <MultiBinding Converter="{StaticResource multiConv}">
+                                                            <Binding ElementName="tree_view"/>
+                                                            <Binding ElementName="popup" />
+                                                        </MultiBinding>
+                                                    </dxmvvm:EventToCommand.CommandParameter>
+                                                </dxmvvm:EventToCommand>
+
+                                                <dxmvvm:EventToCommand 
+                                                                        EventName="MouseDown" 
+                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                                                    <dxmvvm:EventToCommand.CommandParameter>
+                                                        <MultiBinding Converter="{StaticResource multiConv}">
+                                                            <Binding ElementName="tree_view"/>
+                                                            <Binding ElementName="popup" />
+                                                        </MultiBinding>
+                                                    </dxmvvm:EventToCommand.CommandParameter>
+                                                </dxmvvm:EventToCommand>
+                                            </dxmvvm:Interaction.Behaviors>
+
+                                            <dxg:TreeListView.NodeImageSelector>
+                                                <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                                            </dxg:TreeListView.NodeImageSelector>
+
+                                        </dxg:TreeListView>
+                                    </dxg:TreeListControl.View>
+
+                                    <dxg:TreeListColumn 
+                                                        Width="auto"
+                                                        FieldName="Name"
+                                                        >
+                                        <dxg:TreeListColumn.CellDisplayTemplate>
+                                            <DataTemplate>
+                                                <TextBlock 
+                                                    TextWrapping="Wrap"
+                                                    Name="PART_Editor"
+                                                    Text="{Binding Path=RowData.Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </DataTemplate>
+                                        </dxg:TreeListColumn.CellDisplayTemplate>
+                                    </dxg:TreeListColumn>
+
+                                </dxg:TreeListControl>
+                            </ControlTemplate>
+                        </dxe:PopupBaseEdit.PopupContentTemplate>
+                    </dxe:PopupBaseEdit>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+
+        </dxlc:LayoutGroup>
+    </GroupBox>
+</Window>
