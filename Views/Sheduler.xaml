@@ -27,7 +27,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
     xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
     xmlns:col="clr-namespace:System.Collections;assembly=mscorlib" 
-    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion" xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
+    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion" 
+    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
     Title="Расписание"
     >
     <Page.Resources>
@@ -99,8 +100,8 @@
                             Opacity="0.6" FontWeight="DemiBold" TextAlignment="Center"
                             HorizontalAlignment="Center"
                             FontStyle="Italic"
-                            ToolTip="{Binding Resource.CustomFields.Post}"
-                            Text="{Binding Resource.CustomFields.Post}" />
+              
+                            Text="{DXBinding Resource.CustomFields.Post ?? `Не указана`, Mode=OneWay}" />
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -125,7 +126,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
             <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" >
-                <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"/>
+                <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}" />
                 <TextBlock Text="Расписание сотрудников" FontSize="15" Padding="2 0 5 0" />
             </DockPanel>
             <DockPanel LastChildFill="True" Grid.Row="1" >

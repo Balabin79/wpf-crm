@@ -40,13 +40,6 @@ namespace Dental.Models
         }
         private decimal? _Price;
 
-        public decimal? Cost
-        {
-            get => _Cost;
-            set => _Cost = value;
-        }
-        private decimal? _Cost;
-
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
 
@@ -58,7 +51,6 @@ namespace Dental.Models
             OnPropertyChanged(nameof(Name));
             OnPropertyChanged(nameof(Code));
             OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(Cost));
             OnPropertyChanged(nameof(ParentId));
             OnPropertyChanged(nameof(IsDir));
         }

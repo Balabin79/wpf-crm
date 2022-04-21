@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
@@ -122,9 +121,6 @@ namespace Dental.Models
         public int? AdvertisingId { get; set; }
         public Advertising Advertising { get; set; }
 
-        [Display(Name = "Получает рассылки")]
-        public bool? IsSubscribe { get; set; } = true;
-
         [Display(Name = "Перемещена в архив")]
         public bool? IsInArchive { get; set; } = false;
 
@@ -139,8 +135,6 @@ namespace Dental.Models
 
         [Display(Name = "Кем выдан")]
         public string WhomIssued { get; set; }
-
-        public decimal? KDiscount { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -168,13 +162,8 @@ namespace Dental.Models
                 StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
                 StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
                 StringParamsIsEquel(this.PassportNo, other.PassportNo, "Административная", "Номер паспорта");
-
-                
-                if (this.IsSubscribe != other.IsSubscribe) FieldsChanges["Административная"].Add("Участие в рассылках");
                 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges["Административная"].Add("Перемещена в архив");
-
-                if (this.KDiscount != other.KDiscount) FieldsChanges["Административная"].Add("Повыш./пониж. коэффицент");
             }
             return FieldsChanges["Административная"].Count == 0 && FieldsChanges["Планы услуг"].Count == 0;
         }

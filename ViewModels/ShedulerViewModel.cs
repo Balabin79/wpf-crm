@@ -11,14 +11,10 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Models.Base;
-using DevExpress.Xpf.Grid;
-using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Dental.Views.WindowForms;
-using System.Text.Json;
 using System.Windows.Media;
 
 namespace Dental.ViewModels
@@ -33,7 +29,6 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 LocationAppointments = GetLocationCollection();
                 StatusAppointments = GetStatusCollection();
-
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
                 SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -80,13 +75,9 @@ namespace Dental.ViewModels
                         }
                     }
                     else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
-                    //специальности
-                    if (i.Post == null ||  i.Post.Length < 1) i.Post = "Должность не указана";
                 }
 
                 Clients = db.Clients.ToObservableCollection();
-
-                //CreateDoctors();
                 SelectedDoctors = new List<object>();
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
                 CreateCalendars();
@@ -135,13 +126,8 @@ namespace Dental.ViewModels
                         var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
                         var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
 
-                        i.Cost = serv?.Cost;
                         i.Price = serv?.Price;
-                        i.KPieceRate = emp?.KPieceRate;
-                        i.KDiscount = client?.KDiscount;
-                        i.CalcCost = (i.Cost == null || i.Cost == 0 || i.KPieceRate == null || i.KPieceRate == 0)
-                            ? i.Cost
-                            : i.Cost + (i.Cost * i.KPieceRate);
+                        i.CalcCost = 0;
                         i.CalcPrice = (i.Price == null || i.Price == 0 || i.KDiscount == null || i.KDiscount == 0)
                             ? i.Price
                             : i.Price + (i.Price * i.KDiscount);
@@ -149,7 +135,6 @@ namespace Dental.ViewModels
                         db.Entry(i).State = EntityState.Added;
                     }
                 }
-
                 int cnt = db.SaveChanges();
             }
             catch (Exception e)
@@ -443,9 +428,6 @@ namespace Dental.ViewModels
         }
         #endregion
 
-
-
-
         private void OnSaveCommandExecuted(object p)
         {
             try
@@ -468,7 +450,5 @@ namespace Dental.ViewModels
         public virtual List<object> SelectedDoctors { get; set; }
         
         private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
-
-
     }
 }

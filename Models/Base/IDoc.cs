@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services.Smsc.SmsSettings
+namespace Dental.Models.Base
 {
-    public class Report
+    public interface IDoc
     {
+        string Date { get; set; }
     }
 }

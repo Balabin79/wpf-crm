@@ -217,16 +217,10 @@
     <Compile Update="Views\NomenclatureDir\MeasureWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\NomenclatureDir\WarehouseWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\NomenclatureDir\NomenclatureWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\NomenclatureDir\Nomenclature.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Subscribes\ClientsSubscribes.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ServicesPage.xaml.cs">
@@ -248,12 +242,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\NotificationLogPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\WindowForms\ClientsSubscribesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\WindowForms\StatusAppointmentWindow.xaml.cs">
@@ -308,19 +296,11 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\NomenclatureDir\WarehouseWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\NomenclatureDir\NomenclatureWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NomenclatureDir\Nomenclature.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Subscribes\ClientsSubscribes.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -356,14 +336,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\PatientCard\PatientsList.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\NotificationLogPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\WindowForms\ClientsSubscribesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

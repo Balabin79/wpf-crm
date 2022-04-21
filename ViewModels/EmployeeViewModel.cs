@@ -40,7 +40,6 @@ namespace Dental.ViewModels
             };
 
             EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
-            ToggleSwitchedCommand = new LambdaCommand(OnToggleSwitchedCommandExecuted, CanToggleSwitchedCommandExecute);
 
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute); 
             DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
@@ -81,7 +80,6 @@ namespace Dental.ViewModels
                     
 
                 }
-                IsNotFixRate = Model?.IsFixRate == 1 ? false : true;
                 PhotoLoading();
                 
                 ModelBeforeChanges = (Employee)Model.Clone();
@@ -122,15 +120,8 @@ namespace Dental.ViewModels
             set => Set(ref _BtnAfterSaveEnable, value);
         }
 
-        public bool IsNotFixRate
-        {
-            get => _IsNotFixRate;
-            set => Set(ref _IsNotFixRate, value);
-        }
-        private bool _IsNotFixRate;
 
         public ICommand EditableCommand { get; }
-        public ICommand ToggleSwitchedCommand { get; }
 
         private bool CanEditableCommandExecute(object p) => true;
         private void OnEditableCommandExecuted(object p)
@@ -148,19 +139,6 @@ namespace Dental.ViewModels
             }
         }
 
-        private bool CanToggleSwitchedCommandExecute(object p) => true;
-        private void OnToggleSwitchedCommandExecuted(object p)
-        {
-            try
-            {
-                if (Model?.IsFixRate == 1) IsNotFixRate = false;
-                else IsNotFixRate = true;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
         #endregion
 
         #region Прикрепление файлов
@@ -397,9 +375,6 @@ namespace Dental.ViewModels
                 if (response.ToString() == "No") return;
 
                 DeleteEmployeeFiles();
-
-                db.NotificationsLog.Where(f => f.EmployeeId == Model.Id).ToArray()
-                    .ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 
                 db.Entry(Model).State = EntityState.Deleted;
                 ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);

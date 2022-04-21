@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Table("Warehouse")]
-    public class Warehouse : AbstractBaseModel, IDataErrorInfo
+    [Table("Counterparties")]
+    public class Counterparty : AbstractBaseModel, IDataErrorInfo
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
-        [MaxLength(500, ErrorMessage = @"Длина не более 500 символов")]
+        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Name
         {
@@ -23,17 +23,12 @@ namespace Dental.Models
         }
         private string _Name;
 
-        [Display(Name = "Ответственное лицо")]
-        public Employee Employee { get; set; }
-        public int? EmployeeId { get; set; }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         public void UpdateFields()
         {
             OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(Employee));
         }
 
         public override string ToString()
@@ -45,10 +40,10 @@ namespace Dental.Models
 
         public override bool Equals(object other)
         {
-            if (other is Warehouse clone)
+            if (other is Measure clone)
             {
                 if (object.ReferenceEquals(this, clone)) return true;
-                if (StringParamsIsEquel(this.Name, clone.Name) && StringParamsIsEquel(this.Guid, clone.Guid) && StringParamsIsEquel(this.Employee?.Guid, clone.Employee?.Guid)) return true;
+                if (StringParamsIsEquel(this.Name, clone.Name) && StringParamsIsEquel(this.Guid, clone.Guid)) return true;
             }
             return false;
         }

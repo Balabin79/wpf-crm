@@ -10,7 +10,7 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Товар"
+        Title="Материал"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"

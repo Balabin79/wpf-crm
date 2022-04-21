@@ -85,6 +85,7 @@ namespace Dental.Services
             { "ClientInfo", "Карта клиента" },
             { "Ids", "ИДС" },
             { "Employee", "Карта сотрудника" },
+            { "PurchaseInvoice", "Поступление товаров" },
             { "", "" },
         };
 

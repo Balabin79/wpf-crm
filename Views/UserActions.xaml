@@ -88,6 +88,7 @@
                     </dxg:GridControl.GroupSummary>
                     <dxg:GridControl.Columns>
                         <dxg:GridColumn 
+                            GroupInterval="Date"
                             FieldName="Date"           
                             Header="Дата" 
                             GroupIndex="0"  

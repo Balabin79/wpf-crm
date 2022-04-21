@@ -144,40 +144,17 @@
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-
-                <dxlc:LayoutItem 
-                    Label="Повышающий/понижающий коэффицент от базового тарифа:"
-                    LabelPosition="Top" 
-                    HorizontalAlignment="Stretch">
-                    <dxe:TextEdit 
-                        EditValue="{Binding Model.KDiscount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        Mask="F2"
-                        MaskType="Numeric" >
-                        <dxe:TextEdit.ToolTip>
-                            <TextBlock
-                                TextWrapping="Wrap"
-                                Text="Повышающий или понижающий кооэфицент от базового тарифа, установленного в прайсе. При понижающем кооэфиценте необходимо поставить перед числом знак минус."/>
-                        </dxe:TextEdit.ToolTip>
-                    </dxe:TextEdit>
-                </dxlc:LayoutItem>
-
                 <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
-                    <dxe:MemoEdit  EditValue="{Binding Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" >
-                    <dxe:MemoEdit ShowIcon="False"  EditValue="{Binding Model.Note, Mode=TwoWay, 
+                <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" Height="86">
+                    <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding Model.Note, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutGroup Orientation="Horizontal">
-                    <dxlc:LayoutItem  Label="Получает рассылки:" LabelPosition="Top"  HorizontalAlignment="Left">
-                        <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
-                                  IsChecked="{Binding Model.IsSubscribe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                    </dxlc:LayoutItem>
-                    <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top"  HorizontalAlignment="Right">
+                    <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top" >
                         <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding Model.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>

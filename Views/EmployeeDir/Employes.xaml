@@ -64,13 +64,13 @@
                             <TextBlock FontWeight="Medium" Text="Осн. телефон: " />
                             <TextBlock Text="{Binding Row.Phone}" />
                         </StackPanel>
-                        <StackPanel ToolTip="{Binding Row.AddPhone}" Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Medium" Text="Доп. телефон: " />
-                            <TextBlock Text="{Binding Row.AddPhone}"/>
-                        </StackPanel>
                         <StackPanel ToolTip="{Binding Row.Email}" Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Email: " />
                             <TextBlock Text="{Binding Row.Email}" />
+                        </StackPanel>
+                        <StackPanel ToolTip="{Binding Row.Post}" Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock FontWeight="Medium" Text="Должность: " />
+                            <TextBlock Text="{Binding Row.Post}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Статус: " />

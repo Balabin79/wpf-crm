@@ -185,12 +185,6 @@
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                                             </dxe:ButtonEdit>
                                         </dxlc:LayoutItem>
-
-                                        <dxlc:LayoutItem Label="Примечание"  LabelPosition="Left" Height="45">
-                                            <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
-                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
                                 </dxlc:LayoutGroup>
@@ -234,55 +228,8 @@
                                                />
 
                                         </dxlc:LayoutItem>
-                                        <dxlc:LayoutItem  Label="Тип оклада (з/п)" 
-                                                          LabelPosition="Left"  
-                                                          HorizontalAlignment="Left"
-                                                          AddColonToLabel="True">
-                                            <dxe:ToggleSwitch
-                                                ContentPlacement="Far" 
-                                                HorizontalAlignment="Left"
-                                                CheckedStateContent="{Binding RateCheckedStateContent}" 
-                                                UncheckedStateContent="{Binding RateUncheckedStateContent}"
-                                                Name="TypeRate"
-                                                Command="{Binding Path=ToggleSwitchedCommand}"
-                                  IsChecked="{Binding Model.IsFixRate, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
-                                                ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
 
-                                        <dxlc:LayoutItem Label="Размер оклада:"  LabelPosition="Left" >
-                                            <dxe:TextEdit 
-                                                MaskType="Numeric"
-                                                Mask="c2"
-                                                EditValue="{Binding Model.Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                               IsEnabled="{Binding Path=IsNotFixRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                        </dxlc:LayoutItem>
-
-
-                                        <dxlc:LayoutItem 
-                                            Label="Коэф. сдельной оплаты:"
-                                            LabelPosition="Left" 
-                                            HorizontalAlignment="Stretch"
-                                            Margin="0 10 0 0">
-                                            <dxe:TextEdit 
-                                                EditValue="{Binding Model.KPieceRate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                IsEnabled="{DXBinding Expr=!IsNotFixRate, UpdateSourceTrigger=PropertyChanged}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                Mask="F2"
-                                                MaskType="Numeric"
-                                                
-                                                >
-                                                <dxe:TextEdit.ToolTip>
-                                                    <TextBlock
-                                                TextWrapping="Wrap"
-                                                Text="Повышающий или понижающий кооэфицент для сотрудников на сдельной оплате труда. При понижающем кооэфиценте необходимо поставить перед числом знак минус."/>
-                                                </dxe:TextEdit.ToolTip>
-                                            </dxe:TextEdit>
-                                        </dxlc:LayoutItem>
-
-                                        <dxlc:LayoutItem 
-                                            Label="Продолж. рабочего дня:"
+                                        <dxlc:LayoutItem Label="Продолж. рабочего дня:"
                                             LabelPosition="Left" 
                                             HorizontalAlignment="Stretch"
                                             Margin="0 3 0 3"
@@ -296,26 +243,18 @@
                                             </dxe:TrackBarEdit>
                                         </dxlc:LayoutItem>
 
-
-
-                                        <dxlc:LayoutItem 
-                                            Label="Получает уведомления:"
+                                        <dxlc:LayoutItem Label="В расписании:"
                                             LabelPosition="Left" >
                                             <dxe:CheckEdit         
                                                 EditValue="{Binding Model.IsNotificate, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
-
-                                        <dxlc:LayoutItem 
-                                            Label="В расписании:"
-                                            LabelPosition="Left" >
-                                            <dxe:CheckEdit         
-                                                EditValue="{Binding Model.IsNotificate, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <dxlc:LayoutItem Label="Примечание"  LabelPosition="Top" Height="58">
+                                            <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
+                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
-
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
 

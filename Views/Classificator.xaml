@@ -238,19 +238,6 @@
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn Width="1*" FieldName="Cost"  
-                                Header="Размер выплаты сотруднику"                           
-                                PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
-                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
-                                >
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock  Text="{Binding Row.Cost, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                       HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
-                </dxg:GridColumn>
-
                 <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>

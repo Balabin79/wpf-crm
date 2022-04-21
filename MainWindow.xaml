@@ -89,13 +89,6 @@
                                            LargeGlyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}" 
                                            Glyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
 
-                        <dxb:BarButtonItem Content="Рассылки" RibbonStyle="Default" 
-                                           ToolTip="Рассылки" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"                                        
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Subscribes.ClientsSubscribes" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Send.svg}"/>
-
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Справочники">
                         <dxb:BarButtonItem Content="Сотрудники"
@@ -107,62 +100,33 @@
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
                                            />
                         
-                        <dxb:BarButtonItem Content="Справочник товаров" 
+                        <dxb:BarButtonItem Content="Материалы" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"   
-                                           ToolTip="Товары"
+                                           ToolTip="Материалы"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Справочник услуг" 
+
+                        <dxb:BarButtonItem Content="Перечень услуг" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"   
-                                           ToolTip="Справочник услуг"
+                                           ToolTip="Перечень услуг"
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"/>
                         
-                        <dxb:BarButtonItem Content="Контрагенты" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeQuickWelcome.svg}"   
-                                           ToolTip="Контрагенты"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeQuickWelcome.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeQuickWelcome.svg}"/>
                     </dxr:RibbonPageGroup>
                     <dxr:RibbonPageGroup Caption="Документы" >
-                        <dxb:BarButtonItem Content="Поступление товаров"
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}"   
-                                           ToolTip="Поступление товаров"                                           
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Documents.PurchaseInvoice" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order_Item.svg}"
-                                           />
-                        <dxb:BarButtonItem Content="Перемещение товаров" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}"   
-                                           ToolTip="Перемещение товаров"
-                                           Command="{Binding OpenFormMovementGoodsCommand}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Vendor.svg}"/>
-                        
+
                         <dxb:BarButtonItem Content="Сметы" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Data/Summary.svg}"   
                                            ToolTip="Сметы"
-                                           Command="{Binding OpenFormCompletionActCommand}" 
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.Documents.PurchaseInvoice"
                                            LargeGlyph="{dx:DXImage SvgImages/Data/Summary.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Data/Summary.svg}"/>
-
-                        <dxb:BarButtonItem Content="Акты сделанных работ" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"   
-                                           ToolTip="Акты выполненных работ"
-                                           Command="{Binding OpenFormCompletionActCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Report.svg}"/>
 
                         <dxb:BarButtonItem Content="Зарплатные ведомости" 
                                            RibbonStyle="Default"
@@ -211,8 +175,6 @@
                                            CommandParameter="Dental.Views.Reports.ByEmployes"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}" LargeGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"/>
 
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="История" >
                         <dxb:BarButtonItem Content="Действия пользователя" RibbonStyle="Default" 
                                            ToolTip="Действия пользователя (добавление, редактирование, удаление)" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"                                    
@@ -220,12 +182,6 @@
                                            Glyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}" 
                                            MediumGlyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
 
-                        <dxb:BarButtonItem Content="Отправленные уведомления" RibbonStyle="Default" 
-                                           ToolTip="Уведомления"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NotificationLogPage" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Notifications.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
 

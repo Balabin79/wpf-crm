@@ -20,9 +20,7 @@ namespace Dental.ViewModels
                 Employes = ServicesItems.GroupBy(f => f.EmployeeId).Select(i => new Employes
                 {
                     Name = i.Select(f => f.Employee?.Fio).FirstOrDefault(),
-                    Prices = i.Select(f => f.Classificator?.Price).Sum(),
-                    Costs = i.Select(f => f.Classificator?.Cost).Sum(),
-
+                    Prices = i.Select(f => f.Classificator?.Price).Sum()
                 }).ToList();
             }
             catch

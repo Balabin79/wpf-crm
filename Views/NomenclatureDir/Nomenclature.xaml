@@ -17,7 +17,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
-      Title="Перечень товаров"
+      Title="Материалы"
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <ResourceDictionary>
@@ -52,7 +52,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
-                    <TextBlock Text="Перечень товаров" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Материалы" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -89,16 +89,7 @@
                                            />
 
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Content="Склады" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormWarehouseCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Order.svg}"
-                                           />
+                       
                         <dxb:BarButtonItem Content="Единицы измерения" 
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}" 

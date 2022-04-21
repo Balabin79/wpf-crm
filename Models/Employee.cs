@@ -12,13 +12,6 @@ namespace Dental.Models
     [Table("Employes")]
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
-        public Employee()
-        {
-            NotificationsLog = new List<NotificationsLog>();
-        }
-
-        public ICollection<NotificationsLog> NotificationsLog { get; set; }
-
         [NotMapped]
         public ImageSource Image { get; set; }
 
@@ -69,15 +62,7 @@ namespace Dental.Models
             get => _MiddleName;
             set => _MiddleName = value?.Trim();
         }
-        private string _MiddleName;
-
-        [Display(Name = "Размер оклада")]
-        public string Amount
-        {
-            get => _Amount;
-            set => _Amount = value?.Trim();
-        }
-        private string _Amount;
+        private string _MiddleName; 
 
         [Display(Name = "Дата рождения")]
         public string BirthDate { get; set; }
@@ -145,14 +130,9 @@ namespace Dental.Models
         [Display(Name = "Пол")]
         public Dictionary Sex { get; set; }
         public int? SexId { get; set; }       
-        
-        public int? IsNotificate { get; set; }
+
         public int? IsInSheduler { get; set; }
         public int? DurationWorkTime { get; set; }
-        public decimal? KPieceRate { get; set; }
-
-        [Display(Name = "Оклад фиксированный")]
-        public int? IsFixRate { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -180,15 +160,11 @@ namespace Dental.Models
                 StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
                 StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
                 StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
-                StringParamsIsEquel(this.Amount, other.Amount, "Размер оклада");
                 StringParamsIsEquel(this.Note, other.Note, "Примечание");
 
                 if (this.IsDismissed != other.IsDismissed) FieldsChanges.Add("Уволен");                
-                if (this.IsFixRate != other.IsFixRate) FieldsChanges.Add("Тип оклада");
-                if (this.IsNotificate != other.IsNotificate) FieldsChanges.Add("Получает уведомления");
                 if (this.IsInSheduler != other.IsInSheduler) FieldsChanges.Add("В расписании");
                 if (this.DurationWorkTime != other.DurationWorkTime) FieldsChanges.Add("Продолжительность рабочего дня");
-                if (this.KPieceRate != other.KPieceRate) FieldsChanges.Add("Пониж/повыш коэф. сдельной оплаты");
             }
             return FieldsChanges.Count == 0;
         }

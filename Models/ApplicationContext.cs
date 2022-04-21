@@ -60,9 +60,6 @@ namespace Dental.Models
         public DbSet<Dictionary> Dictionary { get; set; }
         public DbSet<Items> Items { get; set; }
         public DbSet<ServicePlanItemStatuses> ServicePlanItemStatuses { get; set; }
-        public DbSet<ClientsSubscribes> ClientsSubscribes { get; set; }
-        public DbSet<SubscribesLog> SubscribesLog { get; set; }
-        public DbSet<SmsCenter> SmsCenter { get; set; }
 
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<LocationAppointment> LocationAppointment { get; set; }
@@ -70,18 +67,14 @@ namespace Dental.Models
         public DbSet<ResourceEntity> Resources { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
 
-        public DbSet<SubscribeParams> SubscribeParams { get; set; }
-        public DbSet<StatusSubscribe> StatusSubscribe { get; set; }
-        public DbSet<UserActions> UserActions { get; set; }
-        public DbSet<NotificationsLog> NotificationsLog { get; set; }  
-        
+        public DbSet<UserActions> UserActions { get; set; }       
         public DbSet<Nomenclature> Nomenclature { get; set; }     
         public DbSet<Measure> Measure { get; set; }     
-        public DbSet<Warehouse> Warehouse { get; set; }   
         
         public DbSet<PurchaseInvoice> PurchaseInvoice { get; set; }     
         public DbSet<MovementGoods> MovementGoods { get; set; }     
         public DbSet<CompletionAct> CompletionAct { get; set; }     
-        public DbSet<Contractor> Contractor { get; set; }     
+        public DbSet<Counterparty> Counterparties { get; set; }  
+
     }
 }
