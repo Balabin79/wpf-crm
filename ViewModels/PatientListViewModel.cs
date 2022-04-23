@@ -87,9 +87,9 @@ namespace Dental.ViewModels
             try
             {
                 ClientCardWin = (p != null) ? 
-                    new ClientCardWindow(Collection.Where(f => f.Id ==(int)p).FirstOrDefault(), this) 
+                    new ClientCardWindow((int)p, this) 
                     : 
-                    new ClientCardWindow(new Client(), this);
+                    new ClientCardWindow(0, this);
                 ClientCardWin.ShowDialog();
             }
             catch

@@ -132,7 +132,8 @@
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"   
                                            ToolTip="Зарплатные ведомости"
-                                           Command="{Binding OpenFormCompletionActCommand}" 
+                                           Command="{Binding LeftMenuClick}" 
+                                           CommandParameter="Dental.Views.Estimates.EstimatesPage" 
                                            LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
                     </dxr:RibbonPageGroup>
@@ -163,17 +164,15 @@
                                            Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByAdvertising" 
                                            Glyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"/>
-
-                     
-
-
+                   
 
                         <dxb:BarButtonItem Content="Загруженность сотрудников" RibbonStyle="Default" 
                                            ToolTip="Загруженность сотрудников"
                                            MediumGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"                                    
                                            Command="{Binding LeftMenuClick}" 
                                            CommandParameter="Dental.Views.Reports.ByEmployes"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}" LargeGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"/>
 
                         <dxb:BarButtonItem Content="Действия пользователя" RibbonStyle="Default" 
                                            ToolTip="Действия пользователя (добавление, редактирование, удаление)" 

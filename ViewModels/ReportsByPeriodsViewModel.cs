@@ -26,17 +26,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Appointments = db.Appointments
-                    .Include(f => f.Service)
-                    .Where(f => !string.IsNullOrEmpty(f.StartTime))
-                    .GroupBy(f => f.Service.Name)
-                    .Select(i => new ServicesCalc() {
 
-                            CalcCost = i.Sum(p => p.CalcCost),
-                            CalcPrice = i.Sum(p => p.CalcPrice)
-                    }
-                        )
-                    .ToArray();
             }
             catch (Exception e)
             {
@@ -45,7 +35,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public IEnumerable<ServicesCalc> Appointments { get; }
+     
 
         ApplicationContext db;
 
@@ -55,10 +45,4 @@ namespace Dental.ViewModels
     }
 
 
-    public class ServicesCalc
-    {
-        public decimal? CalcPrice { get; set; }
-        public decimal? CalcCost { get; set; }
-        public string Service { get; set; }
-    }
 }

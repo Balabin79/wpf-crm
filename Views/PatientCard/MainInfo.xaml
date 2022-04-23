@@ -93,7 +93,7 @@
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Кем выдан:"  Name="WhomIssued" LabelPosition="Top" >
-                    <dxe:MemoEdit Text="{Binding Model.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                    <dxe:MemoEdit ShowIcon="False" ShowText="True" Text="{Binding Model.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
 
@@ -149,7 +149,7 @@
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" Height="86">
-                    <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding Model.Note, Mode=TwoWay, 
+                    <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding Model.Note, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>

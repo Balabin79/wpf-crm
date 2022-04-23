@@ -9,7 +9,7 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         mc:Ignorable="d"
         MinHeight="380"
-        Title="Статусы встреч"
+        Title="Статусы"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:commands="clr-namespace:Dental.Infrastructures.Commands"

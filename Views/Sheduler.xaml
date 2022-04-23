@@ -244,7 +244,7 @@
                         <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="6">
                             <dxr:RibbonPageGroup Caption="Справочники">
                                 <dxb:BarButtonItem  
-                            Content="Локации встреч"                           
+                            Content="Локации"                           
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"
                             LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"
                             Command="{Binding Source={StaticResource vm}, Path=OpenWindowLocationCommand}"

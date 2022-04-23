@@ -24,13 +24,13 @@ namespace Dental.ViewModels
         private  ApplicationContext db;
         private PatientListViewModel VmList;
 
-        public ClientCardViewModel(Client client, PatientListViewModel vmList)
+        public ClientCardViewModel(int clientId, PatientListViewModel vmList)
         {
             try
             {
                 db = new ApplicationContext();
                 VmList = vmList;
-                Model = client;
+                Model = db.Clients.Where(f => f.Id == clientId).Include(f => f.Advertising).FirstOrDefault() ?? new Client();
                 Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();
 
@@ -135,8 +135,8 @@ namespace Dental.ViewModels
                 DeleteClientFiles();
                 var id = Model?.Id;
                 //удалить также в расписании
-                db.Entry(Model).State = EntityState.Deleted;                
-
+                db.Entry(Model).State = EntityState.Deleted;
+                ModelBeforeChanges = null;
                 int cnt = db.SaveChanges();
                 // подчищаем остатки
                 //db.TreatmentPlanItems.Where(f => f.ClientId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
@@ -174,7 +174,7 @@ namespace Dental.ViewModels
                 }
                 else 
                 {
-                    db.Entry(Model).State = EntityState.Modified;
+                    //db.Entry(Model).State = EntityState.Modified;
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
                     notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();

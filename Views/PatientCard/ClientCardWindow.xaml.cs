@@ -9,10 +9,10 @@ namespace Dental.Views.PatientCard
 {
     public partial class ClientCardWindow : Window
     {
-        public ClientCardWindow(Client client, PatientListViewModel vm)
+        public ClientCardWindow(int clientId, PatientListViewModel vm)
         {
             InitializeComponent();
-            this.DataContext = new ClientCardViewModel(client, vm); 
+            this.DataContext = new ClientCardViewModel(clientId, vm); 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

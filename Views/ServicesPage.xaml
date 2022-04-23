@@ -17,100 +17,77 @@
        >
 
     <Page.Resources>
-        <commands:PrintCommand x:Key="Print"/>
-        <vm:ServiceViewModel x:Key="vm"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <vm:ServiceViewModel x:Key="vm"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
-    
+
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
-        <Grid DataContext="{StaticResource vm}"
-                  ScrollViewer.CanContentScroll="True" 
-                  ScrollViewer.VerticalScrollBarVisibility="Auto">
+        
+            <Grid DataContext="{StaticResource vm}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            
-            <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
-                                Source="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
-                    <TextBlock Text="Услуги" FontSize="15" Padding="2 5 5 0" />
-                </StackPanel>
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl
+            <DockPanel LastChildFill="True" Grid.Row="0">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
+                                Source="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+                        <TextBlock Text="Услуги" FontSize="15" Padding="2 5 5 0" />
+                    </StackPanel>
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+
+                        <dxb:ToolBarControl
                         x:Name="fileToolBar" 
                         Caption="File"
                         ShowDragWidget="False"
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать"  
+                            <dxb:BarButtonItem Name="bPrint" Content="Печать"  
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{StaticResource Print}"
                                            CommandParameter="{Binding ElementName=pivot}"/>
-                        <dxb:BarItemLinkSeparator />
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
-
-                <dxpg:PivotGridControl 
-                 
-                    Name="pivot"
-                    DataSource="{Binding Collection}" 
-                    MaxHeight="1800"
-                    Grid.Row="1"
-                    HorizontalContentAlignment="Stretch"
-                    BestFitMode="Smart"
-  
-                    >
-                <dxpg:PivotGridControl.Fields>
-
-                    <dxpg:PivotGridField 
-                        
-                            Area="RowArea"
-                            Caption="Сотрудник"
-                            FieldName="Employee">
-               
-                    </dxpg:PivotGridField>
-
-                    <dxpg:PivotGridField 
-                        Area="RowArea" 
-                        Caption="Клиент" 
-                        FieldName="ClientInfo" />
-
-                    <dxpg:PivotGridField 
-                        Area="RowArea" 
-                        Caption="Услуга" 
-                        FieldName="Service" />
-
-                    <dxpg:PivotGridField Area="DataArea" Caption="Базовая стоимость" 
-                                         ToolTip="Базовая стоимость для клиента, без учета повыш. или пониж. коэффицента"
-                                     FieldName="Price" />
+                            <dxb:BarItemLinkSeparator />
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
+          
+                <dxpg:PivotGridControl  
+                    PrintColumnHeaders="True" PrintFilterHeaders="False" PrintLayoutMode="Auto" Grid.Row="1"
                     
-                    <dxpg:PivotGridField Area="DataArea" Caption="Стоимость с коэф." 
-                                         ToolTip="Стоимость с учетом коэфицента"
-                                     FieldName="CalcPrice" />
-
-                    <dxpg:PivotGridField Area="DataArea" Caption="Базовая выплата" 
-                                         ToolTip="Базовая выплата сотруднику, без учета понижающего и повышающего коэффицента"
-                                     FieldName="Cost" />
-                    
-                    <dxpg:PivotGridField Area="DataArea" Caption="Выплаты с учетом коэф." 
-                                         ToolTip="Выплаты с учетом коэф."
-                                     FieldName="CalcCost" />
-
-                    <dxpg:PivotGridField  Area="FilterArea" Caption="Дата" 
-                                     FieldName="Date" />
+                     ShowColumnGrandTotals="True"  Name="pivot" DataSource="{Binding Collection}">
 
 
+                    <dxpg:PivotGridControl.Fields>
+                        <dxpg:PivotGridField Area="ColumnArea"  Caption="Сотрудник" FieldName="Employee" />
 
-                </dxpg:PivotGridControl.Fields>
-            </dxpg:PivotGridControl>
-            
+                        <dxpg:PivotGridField Area="RowArea" Caption="Услуга" FieldName="Service" />
+                        <dxpg:PivotGridField Area="DataArea" Caption="Цена" ToolTip="Цена" FieldName="Price" Width="70" />
+
+
+                        <dxpg:PivotGridField  Area="RowArea" Caption="Клиент" FieldName="ClientInfo" >
+                            <dxpg:PivotGridField.ValueTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Value}" TextWrapping="Wrap" ToolTip="{Binding Value}"/>
+                                </DataTemplate>
+                            </dxpg:PivotGridField.ValueTemplate>
+                        </dxpg:PivotGridField>
+
+                        <dxpg:PivotGridField  Area="FilterArea" Caption="Дата" FieldName="Date" />
+                    </dxpg:PivotGridControl.Fields>
+                </dxpg:PivotGridControl>
+       
         </Grid>
     </Border>
 </Page>

@@ -9,5 +9,6 @@ namespace Dental.Views
         {
             InitializeComponent();
         }
+
     }
 }

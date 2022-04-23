@@ -59,7 +59,6 @@ namespace Dental.Models
         public DbSet<Service> Services { get; set; }
         public DbSet<Dictionary> Dictionary { get; set; }
         public DbSet<Items> Items { get; set; }
-        public DbSet<ServicePlanItemStatuses> ServicePlanItemStatuses { get; set; }
 
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<LocationAppointment> LocationAppointment { get; set; }
@@ -69,12 +68,17 @@ namespace Dental.Models
 
         public DbSet<UserActions> UserActions { get; set; }       
         public DbSet<Nomenclature> Nomenclature { get; set; }     
-        public DbSet<Measure> Measure { get; set; }     
-        
+        public DbSet<Measure> Measure { get; set; }
+
+        public DbSet<Estimate> Estimates { get; set; }
+        public DbSet<EstimateServiceItem> EstimateServiceItems  { get; set; }
+        public DbSet<EstimateMaterialItem> EstimateMaterialItems { get; set; }
+
         public DbSet<PurchaseInvoice> PurchaseInvoice { get; set; }     
         public DbSet<MovementGoods> MovementGoods { get; set; }     
-        public DbSet<CompletionAct> CompletionAct { get; set; }     
-        public DbSet<Counterparty> Counterparties { get; set; }  
+        public DbSet<CompletionAct> CompletionAct { get; set; }   
+        
+
 
     }
 }

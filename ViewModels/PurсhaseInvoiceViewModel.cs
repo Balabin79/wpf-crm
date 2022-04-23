@@ -92,7 +92,7 @@ namespace Dental.ViewModels
                 else SetStateModel();
 
                 NomenclatureList = db.Nomenclature.ToList();
-                Counterparties = db.Counterparties.ToList();
+                //Counterparties = db.Counterparties.ToList();
 
                 PurchaseInvoiceWindow = new PurchaseInvoiceWindow();
                 PurchaseInvoiceWindow.DataContext = this;

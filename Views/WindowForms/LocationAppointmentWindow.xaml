@@ -9,7 +9,7 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         mc:Ignorable="d"
         MinHeight="380"
-        Title="Места встреч"
+        Title="Расположение"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:commands="clr-namespace:Dental.Infrastructures.Commands"
@@ -36,7 +36,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
                                 Source="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"/>
-                    <TextBlock Text="Локации встреч" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Локация встречи" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -158,7 +158,7 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn Width="auto">
+                    <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >

@@ -82,15 +82,8 @@ namespace Dental.ViewModels
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
                 CreateCalendars();
 
-                Appointments = db.Appointments
-                    .Include(f => f.Service)
-                    .Include(f => f.Employee)
-                    .Include(f => f.ClientInfo)
-                    .Include(f => f.Location)
-                    .Where(f => !string.IsNullOrEmpty(f.StartTime))
-                    .OrderBy(f => f.CreatedAt)
-                    .ToObservableCollection();
-
+                Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
+                    .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
 
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
             }
@@ -105,7 +98,6 @@ namespace Dental.ViewModels
         
         private bool CanSaveCommandExecute(object p) => true;
         
-
         #region "Форма Appointment"
         public ICommand AppointmentAddedCommand { get; }
         public ICommand AppointmentEditedCommand { get; }
@@ -125,12 +117,6 @@ namespace Dental.ViewModels
                         var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
                         var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
                         var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
-
-                        i.Price = serv?.Price;
-                        i.CalcCost = 0;
-                        i.CalcPrice = (i.Price == null || i.Price == 0 || i.KDiscount == null || i.KDiscount == 0)
-                            ? i.Price
-                            : i.Price + (i.Price * i.KDiscount);
 
                         db.Entry(i).State = EntityState.Added;
                     }
@@ -252,7 +238,6 @@ namespace Dental.ViewModels
             }
         }
 
-
         private void OnSaveLocationExecuted(object p)
         {
             try
@@ -278,11 +263,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        /*
-        public object SelectedLocation { get; set; }
-        public object SelectedService { get; set; }
-        public object SelectedClient { get; set; }
-        */
+
         public LocationAppointmentWindow LocationWindow { get; set; }
         public ObservableCollection<LocationAppointment> LocationAppointments 
         {

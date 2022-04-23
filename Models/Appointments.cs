@@ -47,11 +47,6 @@ namespace Dental.Models
 
 
         public decimal? Price { get; set; }
-        public decimal? Cost { get; set; }
-        public decimal? KDiscount { get; set; }
-        public decimal? KPieceRate { get; set; }
-        public decimal? CalcPrice { get; set; }
-        public decimal? CalcCost { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

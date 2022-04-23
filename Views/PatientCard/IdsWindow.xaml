@@ -35,7 +35,7 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl ShowDragWidget="False" AllowCustomizationMenu="False"  AllowQuickCustomization="False">
+                    <dxb:ToolBarControl ShowDragWidget="False" AllowCustomizationMenu="False"  AllowQuickCustomization="False" Margin="0 0 10 0">
                         <dxb:BarButtonItem 
                                     Command="{Binding ImportDocCommand}" 
                                     Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"                     
@@ -52,15 +52,6 @@
                                     GlyphSize="Custom"
                                     CustomGlyphSize="24,24"
                                     Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"/>
-                        <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Content="Печать"                                
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=viewAd}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>

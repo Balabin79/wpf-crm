@@ -118,8 +118,8 @@ namespace Dental.Models
         private string _Note;
 
         [Display(Name = "Канал привлечения")]
-        public int? AdvertisingId { get; set; }
         public Advertising Advertising { get; set; }
+        public int? AdvertisingId { get; set; }
 
         [Display(Name = "Перемещена в архив")]
         public bool? IsInArchive { get; set; } = false;
@@ -139,7 +139,14 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+
+        public object Clone() 
+        {
+            var clone = (Client)this.MemberwiseClone();
+            clone.Advertising = this.Advertising;
+            clone.AdvertisingId = this.AdvertisingId;
+            return clone;
+        } 
 
         public bool Equals(Client other)
         {
@@ -156,8 +163,8 @@ namespace Dental.Models
                 StringParamsIsEquel(this.Phone, other.Phone, "Административная", "Телефон");
                 StringParamsIsEquel(this.Email, other.Email, "Административная", "Email");
                 StringParamsIsEquel(this.Address, other.Address, "Административная", "Адрес проживания");
-                StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");
                 StringParamsIsEquel(this.Advertising?.Guid, other.Advertising?.Guid, "Административная", "Рекламные источники");
+                StringParamsIsEquel(this.Note, other.Note, "Административная", "Примечание");              
                 StringParamsIsEquel(this.PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
                 StringParamsIsEquel(this.WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
                 StringParamsIsEquel(this.PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
@@ -194,5 +201,6 @@ namespace Dental.Models
             OnPropertyChanged(nameof(LastName));
             OnPropertyChanged(nameof(MiddleName));
         }
+
     }
 }
