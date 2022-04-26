@@ -61,12 +61,12 @@ namespace Dental.ViewModels
 
                 if (p == null || !int.TryParse(p.ToString(), out int param))
                 {
-                    Estimate = new Estimate() { EstimateCategory = new EstimateCategory()};
+                    //Estimate = new Estimate() { EstimateServiseItems = new EstimateServiceItem()};
                     Title = "Новая смета";
                 }
                 else
                 {
-                    Estimate = db.Estimates.Where(f => f.Id == param).Include(f => f.EstimateCategory).FirstOrDefault();
+                   // Estimate = db.Estimates.Where(f => f.Id == param).Include(f => f.EstimateServiceItems).FirstOrDefault();
                     Title = "Редактирование сметы №" + param;
                 }                      
                 
@@ -83,15 +83,7 @@ namespace Dental.ViewModels
             try
             {
                 // Если нет корневой директории (ФИО клиента, то создаем ее)               
-                var category = db.EstimateCategories.Where(f => f.ClientId == Estimate.EstimateCategory.Client.Id).FirstOrDefault();
-                if (category == null) Estimate.EstimateCategory.Name = Estimate.EstimateCategory.Client.FullName;
-                else 
-                { 
-                    Estimate.EstimateCategoryId = category.Id;
-                    Estimate.EstimateCategory = null; 
-                }
-
-                if (Estimate.Id == 0) db.Estimates.Local.Add(Estimate);
+               
                 
                 db.SaveChanges();
 
@@ -106,10 +98,11 @@ namespace Dental.ViewModels
 
         private int CreateRootDir()
         {
-            var model = new EstimateCategory() { Name = Estimate.EstimateCategory.Client.FullName };
-            db.EstimateCategories.Add(model);
+           // var model = new EstimateServiceItems() { Name = Estimate.EstimateServiceItems.Client.FullName };
+            //db.EstimateServiceItems.Add(model);
             db.SaveChanges();
-            return model.Id;
+            //return model.Id;
+            return 0;
         }
 
         private void OnDeleteEstimateCommandExecuted(object p)
@@ -140,7 +133,7 @@ namespace Dental.ViewModels
 
         public ICollection<Client> Clients { get; set; }
         public Estimate Estimate { get; set; }
-        public EstimateCategory EstimateCategory { get; set; }
+        public EstimateServiceItem EstimateCategory { get; set; }
         public string Title { get; set; }
 
 
@@ -171,7 +164,7 @@ namespace Dental.ViewModels
         }
 
         /******************************************************/
-        public ObservableCollection<EstimateCategory> Collection
+        public ObservableCollection<EstimateServiceItem> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
@@ -197,13 +190,13 @@ namespace Dental.ViewModels
             Window.Height = 280;
         }
 
-        private ObservableCollection<EstimateCategory> _Collection;
+        private ObservableCollection<EstimateServiceItem> _Collection;
         private EstimateWindow Window;
 
-        private ObservableCollection<EstimateCategory> GetCollection() 
+        private ObservableCollection<EstimateServiceItem> GetCollection() 
         {
-            db.EstimateCategories.Include(f => f.Estimates).Include(f => f.Client).OrderBy(d => d.Name).Load();
-            return db.EstimateCategories.Local;
+           // db.EstimateServiceItems.Include(f => f.Estimates).Include(f => f.Client).OrderBy(d => d.Name).Load();
+            return db.EstimateServiceItems.Local;
 
         }     
     }

@@ -15,33 +15,26 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Название сметы"" обязательно для заполнения")]
         public string Name { get; set; }
 
-        public EstimateCategory EstimateCategory { get; set; }
-        public int? EstimateCategoryId { get; set; }
-
         [Display(Name = "Дата начала")]
-        public string StartDate{ get; set; }
+        public string StartDate { get; set; }
+
+        public Client Client { get; set; }
+        public int ClientId { get; set; }
+
+        public ObservableCollection<EstimateServiceItem> EstimateServiseItems { get; set; } = new ObservableCollection<EstimateServiceItem>();       
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone()
-        {
-            var clone = this.MemberwiseClone();
-            ((Estimate)clone).EstimateCategory = this.EstimateCategory;
-            return clone;
-        }
+        public object Clone() => this.MemberwiseClone();
+
 
         public override bool Equals(object other)
         {
             if (other is Estimate model)
             {
                 if (object.ReferenceEquals(this, model)) return true;
-                if (
-                    StringParamsIsEquel(this.StartDate, model.StartDate) &&
-                    StringParamsIsEquel(this.Name, model.Name) &&
-                    this?.EstimateCategory == model?.EstimateCategory
-
-                ) return true;
+                if ( StringParamsIsEquel(this.StartDate, model.StartDate) && StringParamsIsEquel(this.Name, model.Name)) return true;
             }
             return false;
         }
@@ -58,7 +51,6 @@ namespace Dental.Models
         public void UpdateFields()
         {
             OnPropertyChanged(nameof(StartDate));
-            OnPropertyChanged(nameof(EstimateCategory));
             OnPropertyChanged(nameof(Name));
         }
     }

@@ -120,6 +120,10 @@
                                 <tp:Ids/>
                             </Grid>
                         </dx:DXTabItem>
+                        
+                        <dx:DXTabItem Header="Сметы" >
+                            <tp:EctimatesControl DataContext="{Binding}"/>
+                        </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Услуги" >
                             <tp:Services DataContext="{Binding}"/>

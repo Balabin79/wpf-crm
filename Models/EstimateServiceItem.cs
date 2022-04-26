@@ -23,8 +23,6 @@ namespace Dental.Models
         public int Count { get; set; }
         public decimal Price { get; set; }
 
-        public string Status { get; set; }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -37,7 +35,6 @@ namespace Dental.Models
                 if (object.ReferenceEquals(this, clone)) return true;
                 if (
                     StringParamsIsEquel(this.Guid, clone.Guid) &&
-                    StringParamsIsEquel(this.Status, clone.Status) &&
                     StringParamsIsEquel(this.Service?.Guid, clone.Service?.Guid) &&
                     StringParamsIsEquel(this.Estimate?.Guid, clone.Estimate?.Guid) &&
                     StringParamsIsEquel(this.Employee?.Guid, clone.Employee?.Guid) &&
@@ -61,7 +58,6 @@ namespace Dental.Models
             OnPropertyChanged(nameof(Employee));
             OnPropertyChanged(nameof(Count));
             OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(Status));
         }
     }
 }

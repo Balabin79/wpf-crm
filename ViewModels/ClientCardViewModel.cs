@@ -16,6 +16,8 @@ using System.Diagnostics;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Converters;
+using Dental.Views.Estimates;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -46,6 +48,20 @@ namespace Dental.ViewModels
                 ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
                 OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
                 AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
+                #endregion
+
+                #region инициализация команд, связанных с закладкой "Сметы"
+                OpenFormEstimateCommand = new LambdaCommand(OnOpenFormEstimateCommandExecuted, CanOpenFormEstimateCommandExecute);
+                EditEstimateItemCommand = new LambdaCommand(OnEditEstimateItemCommandExecuted, CanEditEstimateItemCommandExecute);
+                SaveEstimateCommand = new LambdaCommand(OnSaveEstimateCommandExecuted, CanSaveEstimateCommandExecute);
+                DeleteEstimateCommand = new LambdaCommand(OnDeleteEstimateCommandExecuted, CanDeleteEstimateCommandExecute);
+
+                SelectPosInClassificatorCommand = new LambdaCommand(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
+                AddRowInEstimateCommand = new LambdaCommand(OnAddRowInEstimateCommandExecuted, CanAddRowInEstimateCommandExecute);
+                SaveRowInEstimateCommand = new LambdaCommand(OnSaveRowInEstimateCommandExecuted, CanSaveRowInEstimateCommandExecute);
+                DeleteRowInEstimateCommand = new LambdaCommand(OnDeleteRowInEstimateCommandExecuted, CanDeleteRowInEstimateCommandExecute);
+                CancelFormEstimateCommand = new LambdaCommand(OnCancelFormEstimateCommandExecuted, CanCancelFormEstimateCommandExecute);
+                CancelFormEstimateItemCommand = new LambdaCommand(OnCancelFormEstimateItemCommandExecuted, CanCancelFormEstimateItemCommandExecute);
                 #endregion
 
                 OpenFormDocCommand = new LambdaCommand(OnOpenFormDocCommandExecuted, CanOpenFormDocCommandExecute);
@@ -97,9 +113,277 @@ namespace Dental.ViewModels
             }
         }
 
+        #region Команды и ф-нал связанный с Планом лечения
+
+        // открыть форму плана лечения
+        public ICommand OpenFormEstimateCommand { get; }
+        // сохранить новый или отредактированный план лечения
+        public ICommand SaveEstimateCommand { get; }
+        //удалить план лечения
+        public ICommand DeleteEstimateCommand { get; }
+
+        public ICommand EditEstimateItemCommand { get; }
+        public ICommand SelectPosInClassificatorCommand { get; }
+        public ICommand AddRowInEstimateCommand { get; }
+        public ICommand SaveRowInEstimateCommand { get; }
+        public ICommand DeleteRowInEstimateCommand { get; }
+        public ICommand CancelFormEstimateCommand { get; }
+        public ICommand CancelFormEstimateItemCommand { get; }
+
+        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
+        private bool CanOpenFormEstimateCommandExecute(object p) => true;
+        private bool CanEditEstimateItemCommandExecute(object p) => true;
+        private bool CanSaveEstimateCommandExecute(object p) => true;
+        private bool CanDeleteEstimateCommandExecute(object p) => true;
+
+        private bool CanAddRowInEstimateCommandExecute(object p) => true;
+        private bool CanSaveRowInEstimateCommandExecute(object p) => true;
+        private bool CanDeleteRowInEstimateCommandExecute(object p) => true;
+        private bool CanCancelFormEstimateCommandExecute(object p) => true;
+        private bool CanCancelFormEstimateItemCommandExecute(object p) => true;
+
+        private void OnOpenFormEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (p != null)
+                {
+                    Estimate = db.Estimates.FirstOrDefault(i => i.Id == (int)p);
+                }
+                else
+                {
+                    Estimate = new Estimate();
+                    Estimate.ClientId = Model.Id;
+                    Estimate.StartDate = Estimate.StartDate != null ? Estimate.StartDate : DateTime.Now.ToShortDateString();
+                }
+                EstimateWindow = new EstimateWindow();
+                EstimateWindow.DataContext = this;
+                EstimateWindow.ShowDialog();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSaveEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (Estimate.Id == 0)
+                {
+                    if (!string.IsNullOrEmpty(Estimate["Name"])) return;
+                    db.Estimates.Add(Estimate);
+                }
+                int cnt = db.SaveChanges();
+                if (cnt > 0) Estimate.Update();
+                EstimateWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnDeleteEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is Estimate plan)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    db.EstimateServiceItems.Where(f => f.EstimateId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.Estimates.Remove(plan);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelFormEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (db.Entry(Estimate).State == EntityState.Modified)
+                {
+                    db.Entry(Estimate).State = EntityState.Unchanged;
+                }
+                db.SaveChanges();
+                EstimateWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSelectPosInClassificatorCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.FocusedRow is Service service)
+                    {
+                        if (service.IsDir == 1) return;
+                        parameters.Popup.EditValue = service;
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnAddRowInEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is Estimate estimate)
+                {
+                    EstimateServiceItem = new EstimateServiceItem();
+                    EstimateServiceItem.EstimateId = estimate.Id;
+                    EstimateServiceItem.Estimate = estimate;
+
+                    EstimateServiceWindow = new EstimateServiceWindow();
+                    EstimateServiceWindow.DataContext = this;
+                    EstimateServiceWindow.ShowDialog();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnEditEstimateItemCommandExecuted(object p)
+        {
+            try
+            {
+                if (p is EstimateServiceItem item)
+                {
+                    EstimateServiceItem = item;
+                    EstimateServiceWindow = new EstimateServiceWindow();
+                    EstimateServiceWindow.DataContext = this;
+                    EstimateServiceWindow.ShowDialog();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnSaveRowInEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(EstimateServiceItem["Classificator"])) return;
+                if (EstimateServiceItem.Id == 0)
+                {
+                    db.Estimates.FirstOrDefault(f => f.Id == EstimateServiceItem.EstimateId)?.EstimateServiseItems.Add(EstimateServiceItem);
+                }
+
+                int cnt = db.SaveChanges();
+                if (cnt > 0)
+                {
+                    if (cnt > 0) EstimateServiceItem.Update();
+                    var notification = new Notification();
+                    notification.Content = "Позиция в плане лечения сохранена!";
+                    notification.run();
+                }
+                EstimateServiceWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+                EstimateServiceItem = null;
+                EstimateServiceWindow.Close();
+            }
+        }
+
+        private void OnDeleteRowInEstimateCommandExecuted(object p)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(EstimateServiceItem["Classificator"]))
+                {
+                    int x = 0;
+                }
+                if (p is EstimateServiceItem item)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в смете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+
+                    db.Entry(item).State = EntityState.Deleted;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void OnCancelFormEstimateItemCommandExecuted(object p)
+        {
+            try
+            {
+                if (db.Entry(EstimateServiceItem).State == EntityState.Modified)
+                {
+                    db.Entry(EstimateServiceItem).State = EntityState.Unchanged;
+                }
+                db.SaveChanges();
+                EstimateWindow.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
+
+        private EstimateWindow EstimateWindow;
+        private EstimateServiceWindow EstimateServiceWindow;
+
+        public EstimateServiceItem EstimateServiceItem
+        {
+            get => estimateServiceItem;
+            set => Set(ref estimateServiceItem, value);
+        }
+        private EstimateServiceItem estimateServiceItem;
+
+        public Estimate Estimate
+        {
+            get => estimate;
+            set => Set(ref estimate, value);
+        }
+        private Estimate estimate;
+
+        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
+        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
+
+        private ObservableCollection<Estimate> _PlanGroup;
+        public ObservableCollection<Estimate> PlanGroup
+        {
+            get => _PlanGroup;
+            set => Set(ref _PlanGroup, value);
+        }
+
+        public List<Service> ClassificatorCategories { get; set; }
+        public List<Employee> Employes { get; set; }
+
+        #endregion
 
         #region команды, связанные с общим функционалом карты пациента
-       
+
         public ICommand EditableCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand SaveCommand { get; }
@@ -342,6 +626,8 @@ namespace Dental.ViewModels
         }
         private ObservableCollection<FileInfo> files;
         #endregion
+
+
 
         public ICommand OpenFormDocCommand { get; }
         private bool CanOpenFormDocCommandExecute(object p) => true;
