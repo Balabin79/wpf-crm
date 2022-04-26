@@ -124,7 +124,7 @@
                                            MediumGlyph="{dx:DXImage SvgImages/Data/Summary.svg}"   
                                            ToolTip="Сметы"
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Documents.PurchaseInvoice"
+                                           CommandParameter="Dental.Views.Estimates.EstimatesPage"
                                            LargeGlyph="{dx:DXImage SvgImages/Data/Summary.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Data/Summary.svg}"/>
 

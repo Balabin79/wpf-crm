@@ -104,6 +104,7 @@
     <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="SharpVectors" Version="1.7.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

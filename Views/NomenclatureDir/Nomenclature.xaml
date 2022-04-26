@@ -96,7 +96,9 @@
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormMeasureCommand}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Show_PivotGrid_Designer.svg}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
+                                           MediumGlyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
                                            />
                         <dxb:BarItemLinkSeparator />
 

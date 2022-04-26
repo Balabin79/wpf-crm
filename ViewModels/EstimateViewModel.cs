@@ -24,10 +24,10 @@ namespace Dental.ViewModels
         private readonly ApplicationContext db;
         public EstimateViewModel()
         {
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);
+            DeleteEstimateCommand = new LambdaCommand(OnDeleteEstimateCommandExecuted, CanDeleteEstimateCommandExecute);
+            SaveEstimateCommand = new LambdaCommand(OnSaveEstimateCommandExecuted, CanSaveEstimateCommandExecute);
+            OpenFormEstimateCommand = new LambdaCommand(OnOpenFormEstimateCommandExecuted, CanOpenFormEstimateCommandExecute);
+            CancelFormEstimateCommand = new LambdaCommand(OnCancelFormEstimateCommandExecuted, CanCancelFormEstimateCommandExecute);
 
             try
             {
@@ -40,22 +40,37 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+        #region Работа со сметами
+        public ICommand DeleteEstimateCommand { get; }
+        public ICommand SaveEstimateCommand { get; }
+        public ICommand OpenFormEstimateCommand { get; }
+        public ICommand CancelFormEstimateCommand { get; }
 
-        public ICommand DeleteCommand { get; }
-        public ICommand SaveCommand { get; }
-        public ICommand OpenFormCommand { get; }
-        public ICommand CancelFormCommand { get; }
+        private bool CanDeleteEstimateCommandExecute(object p) => true;
+        private bool CanSaveEstimateCommandExecute(object p) => true;
+        private bool CanOpenFormEstimateCommandExecute(object p) => true;
+        private bool CanCancelFormEstimateCommandExecute(object p) => true;
 
-        private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanSaveCommandExecute(object p) => true;
-        private bool CanOpenFormCommandExecute(object p) => true;
-        private bool CanCancelFormCommandExecute(object p) => true;
-
-        private void OnDeleteCommandExecuted(object p)
+        private void OnOpenFormEstimateCommandExecuted(object p)
         {
             try
             {
+                Window = new EstimateWindow();
+                Window.DataContext = this;
+                Clients = db.Clients.ToList();
 
+                if (p == null || !int.TryParse(p.ToString(), out int param))
+                {
+                    Estimate = new Estimate() { EstimateCategory = new EstimateCategory()};
+                    Title = "Новая смета";
+                }
+                else
+                {
+                    Estimate = db.Estimates.Where(f => f.Id == param).Include(f => f.EstimateCategory).FirstOrDefault();
+                    Title = "Редактирование сметы №" + param;
+                }                      
+                
+                Window.ShowDialog();
             }
             catch (Exception e)
             {
@@ -63,11 +78,25 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveCommandExecuted(object p)
+        private void OnSaveEstimateCommandExecuted(object p)
         {
             try
             {
+                // Если нет корневой директории (ФИО клиента, то создаем ее)               
+                var category = db.EstimateCategories.Where(f => f.ClientId == Estimate.EstimateCategory.Client.Id).FirstOrDefault();
+                if (category == null) Estimate.EstimateCategory.Name = Estimate.EstimateCategory.Client.FullName;
+                else 
+                { 
+                    Estimate.EstimateCategoryId = category.Id;
+                    Estimate.EstimateCategory = null; 
+                }
 
+                if (Estimate.Id == 0) db.Estimates.Local.Add(Estimate);
+                
+                db.SaveChanges();
+
+
+                Window.Close();
             }
             catch (Exception e)
             {
@@ -75,11 +104,29 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenFormCommandExecuted(object p)
+        private int CreateRootDir()
+        {
+            var model = new EstimateCategory() { Name = Estimate.EstimateCategory.Client.FullName };
+            db.EstimateCategories.Add(model);
+            db.SaveChanges();
+            return model.Id;
+        }
+
+        private void OnDeleteEstimateCommandExecuted(object p)
         {
             try
-            {
+            {/*
+                if (p == null) return;
+                Model = GetModelById((int)p);
+                if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
+                if (Model.IsDir == 0) Delete(new ObservableCollection<Estimate>() { Model });
+                else
+                {
+                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Estimate>().ToObservableCollection());
+                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Estimates"]);
+                }
+                db.SaveChanges();*/
             }
             catch (Exception e)
             {
@@ -87,10 +134,34 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormCommandExecuted(object p) => Window.Close();
+
+        private void OnCancelFormEstimateCommandExecuted(object p) => Window.Close();
+        #endregion
+
+        public ICollection<Client> Clients { get; set; }
+        public Estimate Estimate { get; set; }
+        public EstimateCategory EstimateCategory { get; set; }
+        public string Title { get; set; }
+
+
+
+
+
+
+
+
+
+
 
         /************* Специфика этой ViewModel ******************/
-        public ICollection<EstimateMaterialItem> Group { get; set; }
+        private ObservableCollection<Estimate> _Group;
+        public ObservableCollection<Estimate> Group
+        {
+            get => _Group;
+            set => Set(ref _Group, value);
+        }
+
+        public Estimate WithoutCategory { get; set; } = new Estimate() { Id = 0,  Name = "Без категории" };
 
         private object _SelectedGroup;
         public object SelectedGroup
@@ -100,13 +171,13 @@ namespace Dental.ViewModels
         }
 
         /******************************************************/
-        public ObservableCollection<Estimate> Collection
+        public ObservableCollection<EstimateCategory> Collection
         {
             get => _Collection;
             set => Set(ref _Collection, value);
         }
-        public Estimate Model { get; set; }
-        public string Title { get; set; }
+
+
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
 
@@ -115,46 +186,26 @@ namespace Dental.ViewModels
         {
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
-            Window.Height = 330;
+            Window.Width = 800;
+            Window.Height = 328;
         }
         private void VisibleItemGroup()
         {
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
+            Window.Width = 800;
             Window.Height = 280;
         }
 
-        private ObservableCollection<Estimate> _Collection;
+        private ObservableCollection<EstimateCategory> _Collection;
         private EstimateWindow Window;
-        private ObservableCollection<Estimate> GetCollection() => db.Estimates.OrderBy(d => d.Name).ToObservableCollection();
-        private void CreateNewWindow() => Window = new EstimateWindow();
-        private Estimate CreateNewModel() => new Estimate();
 
-        private Estimate GetModelById(int id)
+        private ObservableCollection<EstimateCategory> GetCollection() 
         {
-            return Collection.Where(f => f.Id == id).FirstOrDefault();
-        }
+            db.EstimateCategories.Include(f => f.Estimates).Include(f => f.Client).OrderBy(d => d.Name).Load();
+            return db.EstimateCategories.Local;
 
-        private void Add()
-        {
-            db.Entry(Model).State = EntityState.Added;
-            db.SaveChanges();
-            Collection.Add(Model);
-        }
-        private void Update()
-        {
-            db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-            var index = Collection.IndexOf(Model);
-            if (index != -1) Collection[index] = Model;
-        }
-
-        private void Delete(ObservableCollection<Estimate> collection)
-        {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
-        }
+        }     
     }
 }
-   
 

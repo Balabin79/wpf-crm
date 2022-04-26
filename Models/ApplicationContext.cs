@@ -71,6 +71,7 @@ namespace Dental.Models
         public DbSet<Measure> Measure { get; set; }
 
         public DbSet<Estimate> Estimates { get; set; }
+        public DbSet<EstimateCategory> EstimateCategories{ get; set; }
         public DbSet<EstimateServiceItem> EstimateServiceItems  { get; set; }
         public DbSet<EstimateMaterialItem> EstimateMaterialItems { get; set; }
 

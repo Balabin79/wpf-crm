@@ -32,8 +32,7 @@
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage 
-                        Height="24" Width="24" Margin="2 0 0 0" 
-                        Source="{dx:DXImage SvgImages/XAF/Action_Show_PivotGrid_Designer.svg}"/>
+                        Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"/>
                     <TextBlock Text="Единицы измерения" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
