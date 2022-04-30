@@ -16,8 +16,9 @@ using System.Diagnostics;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Converters;
-using Dental.Views.Estimates;
-using Dental.Models.Base;
+using Dental.Views.PatientCard;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 
 namespace Dental.ViewModels
 {
@@ -32,7 +33,9 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 VmList = vmList;
-                Model = db.Clients.Where(f => f.Id == clientId).Include(f => f.Advertising).FirstOrDefault() ?? new Client();
+                Model = db.Clients.Where(f => f.Id == clientId)
+                    .Include(f => f.Estimates)
+                    .Include(f => f.Advertising).FirstOrDefault() ?? new Client();
                 Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();
 
@@ -113,7 +116,7 @@ namespace Dental.ViewModels
             }
         }
 
-        #region Команды и ф-нал связанный с Планом лечения
+        #region Команды и ф-нал связанный со сметами
 
         // открыть форму плана лечения
         public ICommand OpenFormEstimateCommand { get; }
@@ -142,22 +145,35 @@ namespace Dental.ViewModels
         private bool CanCancelFormEstimateCommandExecute(object p) => true;
         private bool CanCancelFormEstimateItemCommandExecute(object p) => true;
 
+        #region Сметы
+        private EstimateWindow EstimateWindow;
+        
+        public Estimate Estimate
+        {
+            get => estimate;
+            set => Set(ref estimate, value);
+        }
+        private Estimate estimate;
+
+        public Estimate EstimateClone { get; set; }
+
         private void OnOpenFormEstimateCommandExecuted(object p)
         {
             try
             {
-                if (p != null)
-                {
-                    Estimate = db.Estimates.FirstOrDefault(i => i.Id == (int)p);
-                }
+                if (p != null) Estimate = db.Estimates.Include(f => f.Client).Include(f => f.EstimateServiseItems).FirstOrDefault(i => i.Id == (int)p);
                 else
                 {
-                    Estimate = new Estimate();
-                    Estimate.ClientId = Model.Id;
-                    Estimate.StartDate = Estimate.StartDate != null ? Estimate.StartDate : DateTime.Now.ToShortDateString();
+                    Estimate = new Estimate()
+                    {
+                        Client = Model,
+                        ClientId = Model.Id,
+                        StartDate = DateTime.Now.ToShortDateString()
+                    };
                 }
-                EstimateWindow = new EstimateWindow();
-                EstimateWindow.DataContext = this;
+               
+                EstimateClone = (Estimate)Estimate.Clone();
+                EstimateWindow = new EstimateWindow() { DataContext = this };
                 EstimateWindow.ShowDialog();
             }
             catch (Exception e)
@@ -170,18 +186,21 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (Estimate.Id == 0)
+                if (string.IsNullOrEmpty(Estimate.Name)) 
                 {
-                    if (!string.IsNullOrEmpty(Estimate["Name"])) return;
-                    db.Estimates.Add(Estimate);
-                }
-                int cnt = db.SaveChanges();
-                if (cnt > 0) Estimate.Update();
-                EstimateWindow.Close();
+                    Estimate = EstimateClone;
+                    return;
+                } 
+                if (Estimate.Id == 0) Model.Estimates.Add(Estimate);
+                if (db.SaveChanges() > 0) EstimateClone = Estimate;
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+            }
+            finally
+            {
+                EstimateWindow?.Close();
             }
         }
 
@@ -189,12 +208,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is Estimate plan)
+                if (p is Estimate estimate)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план лечения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить смету?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    db.EstimateServiceItems.Where(f => f.EstimateId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                    db.Estimates.Remove(plan);
+                    db.EstimateServiceItems.Where(f => f.EstimateId == estimate.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.Estimates.Local.Remove(estimate);
                     db.SaveChanges();
                 }
             }
@@ -208,18 +227,27 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (db.Entry(Estimate).State == EntityState.Modified)
+                if (!string.IsNullOrEmpty(Estimate.Name) && !Estimate.Equals(EstimateClone))
                 {
-                    db.Entry(Estimate).State = EntityState.Unchanged;
+                    Estimate.Name = EstimateClone.Name;
+                    Estimate.StartDate = EstimateClone.StartDate;
                 }
-                db.SaveChanges();
-                EstimateWindow.Close();
-            }
-            catch (Exception e)
+                
+            } 
+            catch(Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
+            finally
+            {
+                EstimateWindow?.Close();
+            }
+
         }
+
+        #endregion
+
+
 
         private void OnSelectPosInClassificatorCommandExecuted(object p)
         {
@@ -241,6 +269,7 @@ namespace Dental.ViewModels
             }
         }
 
+
         private void OnAddRowInEstimateCommandExecuted(object p)
         {
             try
@@ -251,9 +280,9 @@ namespace Dental.ViewModels
                     EstimateServiceItem.EstimateId = estimate.Id;
                     EstimateServiceItem.Estimate = estimate;
 
-                    EstimateServiceWindow = new EstimateServiceWindow();
+                   /* EstimateServiceWindow = new EstimateServiceWindow();
                     EstimateServiceWindow.DataContext = this;
-                    EstimateServiceWindow.ShowDialog();
+                    EstimateServiceWindow.ShowDialog();*/
                 }
             }
             catch (Exception e)
@@ -269,9 +298,9 @@ namespace Dental.ViewModels
                 if (p is EstimateServiceItem item)
                 {
                     EstimateServiceItem = item;
-                    EstimateServiceWindow = new EstimateServiceWindow();
+                  /*  EstimateServiceWindow = new EstimateServiceWindow();
                     EstimateServiceWindow.DataContext = this;
-                    EstimateServiceWindow.ShowDialog();
+                    EstimateServiceWindow.ShowDialog();*/
                 }
             }
             catch (Exception e)
@@ -298,13 +327,13 @@ namespace Dental.ViewModels
                     notification.Content = "Позиция в плане лечения сохранена!";
                     notification.run();
                 }
-                EstimateServiceWindow.Close();
+                //EstimateServiceWindow.Close();
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
                 EstimateServiceItem = null;
-                EstimateServiceWindow.Close();
+               // EstimateServiceWindow.Close();
             }
         }
 
@@ -350,32 +379,17 @@ namespace Dental.ViewModels
         }
 
 
-        private EstimateWindow EstimateWindow;
-        private EstimateServiceWindow EstimateServiceWindow;
-
         public EstimateServiceItem EstimateServiceItem
         {
             get => estimateServiceItem;
             set => Set(ref estimateServiceItem, value);
         }
         private EstimateServiceItem estimateServiceItem;
+        //private EstimateServiceWindow EstimateServiceWindow;
 
-        public Estimate Estimate
-        {
-            get => estimate;
-            set => Set(ref estimate, value);
-        }
-        private Estimate estimate;
 
         public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
-
-        private ObservableCollection<Estimate> _PlanGroup;
-        public ObservableCollection<Estimate> PlanGroup
-        {
-            get => _PlanGroup;
-            set => Set(ref _PlanGroup, value);
-        }
 
         public List<Service> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }

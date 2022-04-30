@@ -12,16 +12,15 @@
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
     xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+    xmlns:vm="clr-namespace:Dental.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="400"
     dx:ThemeManager.ThemeName="Office2019White"
     d:DesignWidth="800"
-    x:Name="UTreatmentPlan"
-              >
+    x:Name="UTreatmentPlan">
     <UserControl.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:MultiBindingConverter x:Key="multiConv" />
-
         <DataTemplate x:Key="ContentDetail" >
             <Grid 
                 VerticalAlignment="Stretch"
@@ -284,7 +283,6 @@
             </Grid>
 
         </DataTemplate>
-
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
 
@@ -296,7 +294,7 @@
         <dxlc:LayoutGroup.HeaderTemplate>
             <DataTemplate >
                 <DockPanel  HorizontalAlignment="Stretch">
-                    <TextBlock Text="Планы услуг" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                    <TextBlock Text="Сметы" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
@@ -308,7 +306,7 @@
                             AllowQuickCustomization="False">
 
                             <dxb:BarButtonItem 
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormPlanCommand}" 
+                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormEstimateCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Создать смету" 
                                 IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
@@ -320,7 +318,7 @@
         </dxlc:LayoutGroup.HeaderTemplate>
 
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Model.Estimate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
+                 ItemsSource="{Binding Path=Model.Estimates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
                          >
             <dxg:GridControl.View>
                 <dxg:TableView  
@@ -335,30 +333,20 @@
                     NavigationStyle="Row"
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True" 
-                    
-                    >
+                    AllowPrintColumnHeaderImage="True"  >
 
                     <dxg:TableView.InputBindings>
+                        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ElementName=grid, Path=DataContext.OpenFormEstimateCommand}"/>
 
-                        <KeyBinding 
-                            Key="N"     
-                            Modifiers="Ctrl"
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"/>
-
-                        <KeyBinding 
-                            Key="E"     
-                            Modifiers="Ctrl"
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
+                        <KeyBinding Key="E" Modifiers="Ctrl"
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormEstimateCommand}"
                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}" />
 
-                        <KeyBinding 
-                            Key="Delete"         
+                        <KeyBinding  Key="Delete"         
                             Command="{Binding ElementName=grid, Path=DataContext.DeletePlanCommand}"
                             CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
-
-                        <MouseBinding 
-                            Gesture="LeftDoubleClick"      
+                        
+                        <MouseBinding Gesture="LeftDoubleClick"      
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
                             CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
 
@@ -378,14 +366,14 @@
                             GlyphAlignment="Left"
                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                             KeyGesture="Ctrl+E"
-                            Content="Редактировать план лечения" 
+                            Content="Редактировать смету" 
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormPlanCommand}"
                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
                             IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                     />
 
                         <dxb:BarButtonItem  
-                            Content="Удалить план лечения"
+                            Content="Удалить смету"
                             Command="{Binding ElementName=grid, Path=DataContext.DeletePlanCommand}"
                             CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
@@ -407,10 +395,11 @@
                 </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="0 4 0 0">
-                          <Run Text="{Binding Row.Name, Mode=OneWay}"/>
-                          <Run Text="{Binding Row.StartDate, Mode=OneWay, StringFormat={} {0:D}}" />
-                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0 3 0 0"  Text="{Binding Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                            <TextBlock Margin="3 3 0 0"  Text="{Binding Row.StartDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+  
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
@@ -425,7 +414,7 @@
                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=view, Path=DataContext.OpenFormPlanCommand}"
+                                           Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateCommand}"
                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
                                 <dxb:BarButtonItem Name="bDelete"                                             
@@ -433,7 +422,7 @@
                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=view, Path=DataContext.DeletePlanCommand}" 
+                                           Command="{Binding ElementName=view, Path=DataContext.DeleteEstimateCommand}" 
                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>

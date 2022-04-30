@@ -6,12 +6,18 @@ using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace Dental.Models
 {
     [Table("ClientInfo")]
-    public class Client : AbstractBaseModel, IDataErrorInfo, ICloneable, IEquatable<Client>
+    public class Client : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged, ICloneable, IEquatable<Client>
     {
+        public Client()
+        {
+            Estimates = new ObservableCollection<Estimate>();
+        }
+
         [Display(Name = "Номер карты клиента")]
         public string ClientCardNumber { get; set; } //номер карты
 
@@ -136,6 +142,17 @@ namespace Dental.Models
         [Display(Name = "Кем выдан")]
         public string WhomIssued { get; set; }
 
+        public ObservableCollection<Estimate> Estimates 
+        { 
+            get => estimates; 
+            set
+            {
+                estimates = value;
+                OnPropertyChanged(nameof(Estimates));
+            }
+        }
+        private ObservableCollection<Estimate> estimates;
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -199,7 +216,7 @@ namespace Dental.Models
         {
             OnPropertyChanged(nameof(FirstName));
             OnPropertyChanged(nameof(LastName));
-            OnPropertyChanged(nameof(MiddleName));
+            OnPropertyChanged(nameof(MiddleName));           
         }
 
     }

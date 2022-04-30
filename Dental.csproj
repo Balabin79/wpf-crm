@@ -8,10 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Actions\**" />
     <Compile Remove="Resources\Icons\fa\**" />
+    <EmbeddedResource Remove="Models\Actions\**" />
     <EmbeddedResource Remove="Resources\Icons\fa\**" />
+    <EntityDeploy Remove="Models\Actions\**" />
     <EntityDeploy Remove="Resources\Icons\fa\**" />
+    <None Remove="Models\Actions\**" />
     <None Remove="Resources\Icons\fa\**" />
+    <Page Remove="Models\Actions\**" />
     <Page Remove="Resources\Icons\fa\**" />
   </ItemGroup>
 
@@ -116,7 +121,6 @@
   <ItemGroup>
     <Folder Include="Infrastructures\Pages\" />
     <Folder Include="Infrastructures\Reports\" />
-    <Folder Include="Models\Actions\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -227,6 +231,9 @@
     <Compile Update="Views\NomenclatureDir\Nomenclature.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\EstimateWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ServicesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -303,6 +310,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NomenclatureDir\Nomenclature.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\EstimateWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

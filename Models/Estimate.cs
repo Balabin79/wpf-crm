@@ -13,10 +13,28 @@ namespace Dental.Models
     {
         [Display(Name = "Название сметы")]
         [Required(ErrorMessage = @"Поле ""Название сметы"" обязательно для заполнения")]
-        public string Name { get; set; }
+        public string Name 
+        { 
+            get => name; 
+            set 
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            } 
+        }
+        private string name;
 
         [Display(Name = "Дата начала")]
-        public string StartDate { get; set; }
+        public string StartDate 
+        {
+            get => startDate;
+            set
+            {
+                startDate = value;
+                OnPropertyChanged(nameof(StartDate));
+            }
+        }
+        private string startDate;
 
         public Client Client { get; set; }
         public int ClientId { get; set; }
@@ -27,7 +45,6 @@ namespace Dental.Models
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         public object Clone() => this.MemberwiseClone();
-
 
         public override bool Equals(object other)
         {
@@ -46,12 +63,6 @@ namespace Dental.Models
             if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;
             if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return true;
             return false;
-        }
-    
-        public void UpdateFields()
-        {
-            OnPropertyChanged(nameof(StartDate));
-            OnPropertyChanged(nameof(Name));
         }
     }
 }

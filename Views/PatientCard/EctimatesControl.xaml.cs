@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Dental.Models;
+using Dental.ViewModels;
+using DevExpress.Xpf.Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,35 @@ namespace Dental.Views.PatientCard
         public EctimatesControl()
         {
             InitializeComponent();
+        }
+
+        private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
+        {
+            if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
+            {
+                if (e.Row == null) return;
+                var items = ((EstimateServiceItem)e.Row)?.Estimate?.EstimateServiseItems;
+                decimal price = 0;
+                foreach (var item in items)
+                {
+                    if (decimal.TryParse(item.Service?.Price?.ToString(), out decimal result))
+                    {
+                        if (item.Count > 0) price += (result * item.Count);
+                    }
+                }
+                e.TotalValue = price;
+            }
+            e.TotalValueReady = true;
+        }
+
+        private void attachFileTableView_CustomRowAppearance(object sender, CustomRowAppearanceEventArgs e)
+        {
+            if (e.Source.DataControl is GridControl dataControl)
+            {
+                e.Handled = true;
+                dataControl.UpdateTotalSummary();
+                return;
+            }
         }
     }
 }
