@@ -14,7 +14,9 @@
         MaxHeight="230"
         Name="Window"
         >
-
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateCommand}" PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DateToStringConverter x:Key="dateToString" />

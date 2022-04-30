@@ -176,17 +176,17 @@ namespace Dental.ViewModels
                     Estimate.Name = EstimateClone.Name;
                     Estimate.StartDate = EstimateClone.StartDate;
                 }
-                
+                if (p is System.ComponentModel.CancelEventArgs arg)
+                {
+                    arg.Cancel = false;
+                    return;
+                }
+                EstimateWindow?.Close();
             } 
             catch(Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
-            finally
-            {
-                EstimateWindow?.Close();
-            }
-
         }
         #endregion
 
