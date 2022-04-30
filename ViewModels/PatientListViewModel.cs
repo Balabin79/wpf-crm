@@ -92,7 +92,7 @@ namespace Dental.ViewModels
                     new ClientCardWindow(0, this);
                 ClientCardWin.ShowDialog();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта клиента\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }

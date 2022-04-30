@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Views.WindowForms;
@@ -19,10 +18,11 @@ using Dental.Infrastructures.Converters;
 using Dental.Views.PatientCard;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class ClientCardViewModel : ViewModelBase
+    class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private  ApplicationContext db;
         private PatientListViewModel VmList;
@@ -37,37 +37,7 @@ namespace Dental.ViewModels
                     .Include(f => f.Estimates)
                     .Include(f => f.Advertising).FirstOrDefault() ?? new Client();
                 Files = new ObservableCollection<FileInfo>();
-                Ids = ProgramDirectory.GetIds();
-
-                #region инициализация команд, связанных с общим функционалом карты клиента
-                // Команда включения - отключения редактирования полей
-                EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
-                SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-                DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-                #endregion           
-
-                #region инициализация команд, связанных с прикреплением к карте клиента файлов
-                DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
-                ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
-                OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
-                AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
-                #endregion
-
-                #region инициализация команд, связанных с закладкой "Сметы"
-                OpenFormEstimateCommand = new LambdaCommand(OnOpenFormEstimateCommandExecuted, CanOpenFormEstimateCommandExecute);
-                EditEstimateItemCommand = new LambdaCommand(OnEditEstimateItemCommandExecuted, CanEditEstimateItemCommandExecute);
-                SaveEstimateCommand = new LambdaCommand(OnSaveEstimateCommandExecuted, CanSaveEstimateCommandExecute);
-                DeleteEstimateCommand = new LambdaCommand(OnDeleteEstimateCommandExecuted, CanDeleteEstimateCommandExecute);
-
-                SelectPosInClassificatorCommand = new LambdaCommand(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
-                AddRowInEstimateCommand = new LambdaCommand(OnAddRowInEstimateCommandExecuted, CanAddRowInEstimateCommandExecute);
-                SaveRowInEstimateCommand = new LambdaCommand(OnSaveRowInEstimateCommandExecuted, CanSaveRowInEstimateCommandExecute);
-                DeleteRowInEstimateCommand = new LambdaCommand(OnDeleteRowInEstimateCommandExecuted, CanDeleteRowInEstimateCommandExecute);
-                CancelFormEstimateCommand = new LambdaCommand(OnCancelFormEstimateCommandExecuted, CanCancelFormEstimateCommandExecute);
-                CancelFormEstimateItemCommand = new LambdaCommand(OnCancelFormEstimateItemCommandExecuted, CanCancelFormEstimateItemCommandExecute);
-                #endregion
-
-                OpenFormDocCommand = new LambdaCommand(OnOpenFormDocCommandExecuted, CanOpenFormDocCommandExecute);
+                Ids = ProgramDirectory.GetIds();    
 
                 // Если patientCardNumber == 0, то это создается новая карта клиента, иначе загружаем данные существующего клиента
 
@@ -78,16 +48,16 @@ namespace Dental.ViewModels
 
                     // для новой карты пациента все поля по-умолчанию доступны для редактирования
                     IsReadOnly = false;
-                    _BtnIconEditableHide = false;
-                    _BtnIconEditableVisible = true;
+                    BtnIconEditableHide = false;
+                    BtnIconEditableVisible = true;
                 }
                 else
                 {
                     //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
                     NumberPatientCard = Model?.Id.ToString();
                     IsReadOnly = true;
-                    _BtnIconEditableHide = true;
-                    _BtnIconEditableVisible = false;
+                    BtnIconEditableHide = true;
+                    BtnIconEditableVisible = false;
 
                     if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
                     {
@@ -115,49 +85,20 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
-        #region Команды и ф-нал связанный со сметами
-
-        // открыть форму плана лечения
-        public ICommand OpenFormEstimateCommand { get; }
-        // сохранить новый или отредактированный план лечения
-        public ICommand SaveEstimateCommand { get; }
-        //удалить план лечения
-        public ICommand DeleteEstimateCommand { get; }
-
-        public ICommand EditEstimateItemCommand { get; }
-        public ICommand SelectPosInClassificatorCommand { get; }
-        public ICommand AddRowInEstimateCommand { get; }
-        public ICommand SaveRowInEstimateCommand { get; }
-        public ICommand DeleteRowInEstimateCommand { get; }
-        public ICommand CancelFormEstimateCommand { get; }
-        public ICommand CancelFormEstimateItemCommand { get; }
-
-        private bool CanSelectPosInClassificatorCommandExecute(object p) => true;
-        private bool CanOpenFormEstimateCommandExecute(object p) => true;
-        private bool CanEditEstimateItemCommandExecute(object p) => true;
-        private bool CanSaveEstimateCommandExecute(object p) => true;
-        private bool CanDeleteEstimateCommandExecute(object p) => true;
-
-        private bool CanAddRowInEstimateCommandExecute(object p) => true;
-        private bool CanSaveRowInEstimateCommandExecute(object p) => true;
-        private bool CanDeleteRowInEstimateCommandExecute(object p) => true;
-        private bool CanCancelFormEstimateCommandExecute(object p) => true;
-        private bool CanCancelFormEstimateItemCommandExecute(object p) => true;
-
+   
         #region Сметы
         private EstimateWindow EstimateWindow;
         
         public Estimate Estimate
         {
-            get => estimate;
-            set => Set(ref estimate, value);
+            get { return GetProperty(() => Estimate); }
+            set { SetProperty(() => Estimate, value); }
         }
-        private Estimate estimate;
 
         public Estimate EstimateClone { get; set; }
 
-        private void OnOpenFormEstimateCommandExecuted(object p)
+        [Command]
+        public void OpenFormEstimate(object p)
         {
             try
             {
@@ -182,7 +123,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveEstimateCommandExecuted(object p)
+        [Command]
+        public void SaveEstimate(object p)
         {
             try
             {
@@ -204,7 +146,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteEstimateCommandExecuted(object p)
+        [Command]
+        public void DeleteEstimate(object p)
         {
             try
             {
@@ -223,7 +166,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormEstimateCommandExecuted(object p)
+        [Command]
+        public void CancelFormEstimate(object p)
         {
             try
             {
@@ -244,12 +188,10 @@ namespace Dental.ViewModels
             }
 
         }
-
         #endregion
 
-
-
-        private void OnSelectPosInClassificatorCommandExecuted(object p)
+        [Command]
+        public void SelectPosInClassificator(object p)
         {
             try
             {
@@ -269,8 +211,8 @@ namespace Dental.ViewModels
             }
         }
 
-
-        private void OnAddRowInEstimateCommandExecuted(object p)
+        [Command]
+        public void AddRowInEstimate(object p)
         {
             try
             {
@@ -291,7 +233,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnEditEstimateItemCommandExecuted(object p)
+        [Command]
+        public void EditEstimateItem(object p)
         {
             try
             {
@@ -309,7 +252,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveRowInEstimateCommandExecuted(object p)
+        [Command]
+        public void SaveRowInEstimate(object p)
         {
             try
             {
@@ -337,7 +281,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteRowInEstimateCommandExecuted(object p)
+        [Command]
+        public void DeleteRowInEstimate(object p)
         {
             try
             {
@@ -360,7 +305,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCancelFormEstimateItemCommandExecuted(object p)
+        [Command]
+        public void CancelFormEstimateItem(object p)
         {
             try
             {
@@ -378,13 +324,12 @@ namespace Dental.ViewModels
 
         }
 
-
         public EstimateServiceItem EstimateServiceItem
         {
-            get => estimateServiceItem;
-            set => Set(ref estimateServiceItem, value);
+            get { return GetProperty(() => EstimateServiceItem); }
+            set {SetProperty(() => EstimateServiceItem, value); }
         }
-        private EstimateServiceItem estimateServiceItem;
+
         //private EstimateServiceWindow EstimateServiceWindow;
 
 
@@ -394,19 +339,10 @@ namespace Dental.ViewModels
         public List<Service> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }
 
-        #endregion
-
         #region команды, связанные с общим функционалом карты пациента
 
-        public ICommand EditableCommand { get; }
-        public ICommand DeleteCommand { get; }
-        public ICommand SaveCommand { get; }
-
-        private bool CanEditableCommandExecute(object p) => true;
-        private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanSaveCommandExecute(object p) => true;
-
-        private void OnEditableCommandExecuted(object p)
+        [Command]
+        public void Editable(object p)
         {
             try
             {
@@ -420,8 +356,9 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        
-        private void OnDeleteCommandExecuted(object p)
+
+        [Command]
+        public void Delete(object p)
         {
             try
             {
@@ -455,8 +392,9 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка, перейдите в раздел \"Клиенты\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-              
-        private void OnSaveCommandExecuted(object p)
+
+        [Command]
+        public void Save(object p)
         {
             try
             {
@@ -512,17 +450,8 @@ namespace Dental.ViewModels
         private const string PATIENTS_CARDS_DIRECTORY = "Dental\\ClientsCards";
         private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
 
-        public ICommand DeleteFileCommand { get; }
-        public ICommand ExecuteFileCommand { get; }
-        public ICommand AttachmentFileCommand { get; }
-        public ICommand OpenDirectoryCommand { get; }
-
-        private bool CanDeleteFileCommandExecute(object p) => true;
-        private bool CanExecuteFileCommandExecute(object p) => true;
-        private bool CanAttachmentFileCommandExecute(object p) => true;
-        private bool CanOpenDirectoryCommandExecute(object p) => true;
-
-        private void OnOpenDirectoryCommandExecuted(object p)
+        [Command]
+        public void OpenDirectory(object p)
         {
             try
             {
@@ -537,7 +466,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnExecuteFileCommandExecuted(object p)
+        [Command]
+        public void OExecuteFile(object p)
         {
             try
             {
@@ -552,7 +482,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAttachmentFileCommandExecuted(object p)
+        [Command]
+        public void AttachmentFile(object p)
         {
             try
             {
@@ -604,7 +535,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteFileCommandExecuted(object p)
+        [Command]
+        public void DeleteFile(object p)
         {
             try
             {
@@ -635,17 +567,13 @@ namespace Dental.ViewModels
 
         public ObservableCollection<FileInfo> Files
         {
-            get => files;
-            set => Set(ref files, value);
+            get { return GetProperty(() => Files); }
+            set { SetProperty(() => Files, value); }
         }
-        private ObservableCollection<FileInfo> files;
         #endregion
 
-
-
-        public ICommand OpenFormDocCommand { get; }
-        private bool CanOpenFormDocCommandExecute(object p) => true;
-        private void OnOpenFormDocCommandExecuted(object p)
+        [Command]
+        public void OpenFormDoc(object p)
         {
             try
             {
@@ -689,33 +617,28 @@ namespace Dental.ViewModels
             return response.ToString() == "No";
         }
 
-        private bool _IsReadOnly;
         public bool IsReadOnly
         {
-            get => _IsReadOnly;
-            set => Set(ref _IsReadOnly, value);
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public string _NumberPatientCard;
-        public string NumberPatientCard 
-        { 
-            get => _NumberPatientCard;
-            set => Set(ref _NumberPatientCard, value);
+        public string NumberPatientCard
+        {
+            get { return GetProperty(() => NumberPatientCard); }
+            set { SetProperty(() => NumberPatientCard, value); }
         }
 
-        public bool _BtnAfterSaveEnable = false;
         public bool BtnAfterSaveEnable
         {
-            get => _BtnAfterSaveEnable;
-            set => Set(ref _BtnAfterSaveEnable, value);
+            get { return GetProperty(() => BtnAfterSaveEnable); }
+            set { SetProperty(() => BtnAfterSaveEnable, value); }
         }
 
-
-        private Client _Model;
         public Client Model
         {
-            get => _Model;
-            set => Set(ref _Model, value);
+            get { return GetProperty(() => Model); }
+            set { SetProperty(() => Model, value); }
         }
 
         public Client ModelBeforeChanges { get; set; }
@@ -736,20 +659,18 @@ namespace Dental.ViewModels
             if (id == null) return 1;
             return (int)++id;
         }
-        private bool _BtnIconEditableVisible;
+
         public bool BtnIconEditableVisible
         {
-            get => _BtnIconEditableVisible;
-            set => Set(ref _BtnIconEditableVisible, value);
+            get { return GetProperty(() => BtnIconEditableVisible); }
+            set { SetProperty(() => BtnIconEditableVisible, value); }
         }
 
-        private bool _BtnIconEditableHide;
         public bool BtnIconEditableHide
         {
-            get => _BtnIconEditableHide;
-            set => Set(ref _BtnIconEditableHide, value);
+            get { return GetProperty(() => BtnIconEditableHide); }
+            set { SetProperty(() => BtnIconEditableHide, value); }
         }
-
         
         protected void Update()
         {
