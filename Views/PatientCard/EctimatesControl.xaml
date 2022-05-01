@@ -48,7 +48,7 @@
                                         AllowQuickCustomization="False"
                                         ShowDragWidget="False">
                                         <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.AddRowInPlanCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.AddRowInEstimateCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
@@ -73,12 +73,12 @@
                         ScrollViewer.VerticalScrollBarVisibility="Auto"                        
                         >
                         <dxg:GridControl.Columns>
-                            <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Classificator">
+                            <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Service">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
                                             TextWrapping="Wrap"
-                                            Text="{Binding Path=Row.Classificator, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -98,20 +98,6 @@
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
 
-                            <dxg:GridColumn
-                                FieldName="Note" 
-                                Header="Комментарий" 
-                                Width="1*"                              
-                                HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            TextWrapping="Wrap"
-                                            Text="{Binding Path=Row.Note, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-
                             <dxg:GridColumn 
                                 FieldName="Price"
                                 HorizontalHeaderContentAlignment="Center"            
@@ -123,25 +109,11 @@
                                             x:Name="PART_Editor"
                                             TextWrapping="Wrap"
                                             TextAlignment="Center"
-                                            Text="{Binding Path=Row.Classificator.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
 
-                            <dxg:GridColumn 
-                                FieldName="Cost"
-                                HorizontalHeaderContentAlignment="Center"            
-                                Header="Выплата сотруднику" 
-                                Width="1*" >
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            TextWrapping="Wrap"
-                                            TextAlignment="Center"
-                                            Text="{Binding Path=Row.Classificator.Cost, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
 
                             <dxg:GridColumn 
                                     FieldName="Count"

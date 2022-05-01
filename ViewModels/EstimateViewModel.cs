@@ -167,11 +167,10 @@ namespace Dental.ViewModels
             Estimate = EstimateClone;
             EstimateWindow?.Close();
         }
-
         #endregion
 
 
-
+        #region Состав сметы
         private void OnSelectPosInClassificatorCommandExecuted(object p)
         {
             try
@@ -191,7 +190,6 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
 
         private void OnAddRowInEstimateCommandExecuted(object p)
         {
@@ -245,7 +243,7 @@ namespace Dental.ViewModels
                 int cnt = db.SaveChanges();
                 if (cnt > 0)
                 {
-                    if (cnt > 0) EstimateServiceItem.Update();
+                    //if (cnt > 0) EstimateServiceItem.Update();
                     var notification = new Notification();
                     notification.Content = "Позиция в плане лечения сохранена!";
                     notification.run();
@@ -316,6 +314,8 @@ namespace Dental.ViewModels
 
         public List<Service> ClassificatorCategories { get; set; }
         public List<Employee> Employes { get; set; }
+
+        #endregion
 
     }
 }

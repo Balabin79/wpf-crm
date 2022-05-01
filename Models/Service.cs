@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Table("Classificator")]
     public class Service : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]

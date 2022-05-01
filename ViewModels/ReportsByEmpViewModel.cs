@@ -15,12 +15,12 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                ServicesItems = db.Items.Include("Employee").Include("Services").ToArray();
+                ServicesItems = db.EstimateServiceItems.Include("Employee").Include("Services").ToArray();
 
                 Employes = ServicesItems.GroupBy(f => f.EmployeeId).Select(i => new Employes
                 {
                     Name = i.Select(f => f.Employee?.Fio).FirstOrDefault(),
-                    Prices = i.Select(f => f.Classificator?.Price).Sum()
+                    Prices = i.Select(f => f.Service?.Price).Sum()
                 }).ToList();
             }
             catch
@@ -30,7 +30,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public IEnumerable<Items> ServicesItems { get; }
+        public IEnumerable<EstimateServiceItem> ServicesItems { get; }
         public IEnumerable<Employes> Employes { get; }
 
         ApplicationContext db;

@@ -124,7 +124,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void SaveEstimate(object p)
+        public void SaveEstimate()
         {
             try
             {
@@ -190,8 +190,9 @@ namespace Dental.ViewModels
         }
         #endregion
 
+        #region Состав сметы
         [Command]
-        public void SelectPosInClassificator(object p)
+        public void SelectItemInServiceField(object p)
         {
             try
             {
@@ -218,13 +219,10 @@ namespace Dental.ViewModels
             {
                 if (p is Estimate estimate)
                 {
-                    EstimateServiceItem = new EstimateServiceItem();
-                    EstimateServiceItem.EstimateId = estimate.Id;
-                    EstimateServiceItem.Estimate = estimate;
-
-                   /* EstimateServiceWindow = new EstimateServiceWindow();
-                    EstimateServiceWindow.DataContext = this;
-                    EstimateServiceWindow.ShowDialog();*/
+                    Services = db.Services.ToArray();
+                    EstimateServiceItem = new EstimateServiceItem() { EstimateId = estimate.Id, Estimate = estimate };
+                    EstimateServiceWindow = new EstimateServiceWindow() { DataContext = this };
+                    EstimateServiceWindow.ShowDialog();
                 }
             }
             catch (Exception e)
@@ -330,19 +328,19 @@ namespace Dental.ViewModels
             set {SetProperty(() => EstimateServiceItem, value); }
         }
 
-        //private EstimateServiceWindow EstimateServiceWindow;
-
+        private EstimateServiceWindow EstimateServiceWindow;
 
         public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
 
-        public List<Service> ClassificatorCategories { get; set; }
-        public List<Employee> Employes { get; set; }
+        public ICollection<Service> Services { get; set; }
+        public ICollection<Employee> Employes { get; set; }
+        #endregion
 
         #region команды, связанные с общим функционалом карты пациента
 
         [Command]
-        public void Editable(object p)
+        public void Editable()
         {
             try
             {

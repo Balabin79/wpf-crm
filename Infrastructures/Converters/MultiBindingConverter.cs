@@ -16,13 +16,21 @@ namespace Dental.Infrastructures.Converters
     {
         public object Convert(object[] Values, Type Target_Type, object Parameter, CultureInfo culture)
         {
-            var findCommandParameters = new FindCommandParameters();
-           
-            findCommandParameters.Tree = (TreeListView) (System.Windows.FrameworkElement)Values[0];
+            try
+            {
+                var findCommandParameters = new FindCommandParameters();
 
-            findCommandParameters.Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1];
+                findCommandParameters.Tree = (TreeListView)(System.Windows.FrameworkElement)Values[0];
 
-            return findCommandParameters;
+                findCommandParameters.Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1];
+
+                return findCommandParameters;
+            } 
+            catch (Exception e)
+            {
+                return new object();
+            }
+
         }
         
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
