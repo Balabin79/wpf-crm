@@ -34,7 +34,8 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 VmList = vmList;
                 Model = db.Clients.Where(f => f.Id == clientId)
-                    .Include(f => f.Estimates)
+                    .Include(f => f.Estimates.Select(i => i.EstimateServiseItems.Select(x => x.Employee)))
+                    .Include(f => f.Estimates.Select(i => i.EstimateServiseItems.Select(x => x.Service)))
                     .Include(f => f.Advertising).FirstOrDefault() ?? new Client();
                 Files = new ObservableCollection<FileInfo>();
                 Ids = ProgramDirectory.GetIds();    
@@ -79,7 +80,7 @@ namespace Dental.ViewModels
                     .OrderBy(f => f.CreatedAt)
                     .ToArray();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -191,6 +192,19 @@ namespace Dental.ViewModels
         #endregion
 
         #region Состав сметы
+        public EstimateServiceWindow EstimateServiceWindow;
+
+        public ICollection<Measure> Measuries { get; set; }
+        public ICollection<Employee> Employees { get; set; }
+        public ICollection<Service> Services { get; set; }
+
+        public EstimateServiceItem EstimateServiceItemClone { get; set; } = new EstimateServiceItem();
+        public EstimateServiceItem EstimateServiceItem
+        {
+            get { return GetProperty(() => EstimateServiceItem); }
+            set { SetProperty(() => EstimateServiceItem, value); }
+        }
+
         [Command]
         public void SelectItemInServiceField(object p)
         {
@@ -213,17 +227,19 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void AddRowInEstimate(object p)
+        public void OpenFormEstimateService(object p)
         {
             try
             {
+                Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+                Services = db.Services.ToArray();
                 if (p is Estimate estimate)
                 {
-                    Services = db.Services.ToArray();
-                    EstimateServiceItem = new EstimateServiceItem() { EstimateId = estimate.Id, Estimate = estimate };
+                    EstimateServiceItem = new EstimateServiceItem() { EstimateId = estimate.Id, Estimate = estimate };                   
                     EstimateServiceWindow = new EstimateServiceWindow() { DataContext = this };
                     EstimateServiceWindow.ShowDialog();
                 }
+                EstimateServiceItemClone = (EstimateServiceItem)EstimateServiceItem.Clone();
             }
             catch (Exception e)
             {
@@ -232,16 +248,18 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void EditEstimateItem(object p)
+        public void EditEstimateService(object p)
         {
             try
             {
                 if (p is EstimateServiceItem item)
                 {
+                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+                    Services = db.Services.ToArray();
                     EstimateServiceItem = item;
-                  /*  EstimateServiceWindow = new EstimateServiceWindow();
-                    EstimateServiceWindow.DataContext = this;
-                    EstimateServiceWindow.ShowDialog();*/
+                    EstimateServiceWindow = new EstimateServiceWindow() { DataContext = this };
+                    EstimateServiceItemClone = (EstimateServiceItem)EstimateServiceItem.Clone();
+                    EstimateServiceWindow.ShowDialog();
                 }
             }
             catch (Exception e)
@@ -255,32 +273,26 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (!string.IsNullOrEmpty(EstimateServiceItem["Classificator"])) return;
+
                 if (EstimateServiceItem.Id == 0)
                 {
-                    db.Estimates.FirstOrDefault(f => f.Id == EstimateServiceItem.EstimateId)?.EstimateServiseItems.Add(EstimateServiceItem);
+                    Model.Estimates.Where(f => f.Id == EstimateServiceItem.EstimateId).FirstOrDefault().EstimateServiseItems.Add(EstimateServiceItem);
                 }
 
-                int cnt = db.SaveChanges();
-                if (cnt > 0)
-                {
-                    if (cnt > 0) EstimateServiceItem.Update();
-                    var notification = new Notification();
-                    notification.Content = "Позиция в плане лечения сохранена!";
-                    notification.run();
-                }
-                //EstimateServiceWindow.Close();
+                if (db.SaveChanges() > 0) EstimateServiceItemClone = EstimateServiceItem;
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
-                EstimateServiceItem = null;
-               // EstimateServiceWindow.Close();
+            }
+            finally
+            {
+                EstimateServiceWindow?.Close();
             }
         }
 
         [Command]
-        public void DeleteRowInEstimate(object p)
+        public void DeleteEstimateService(object p)
         {
             try
             {
@@ -308,12 +320,16 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (db.Entry(EstimateServiceItem).State == EntityState.Modified)
+                if (!string.IsNullOrEmpty(EstimateServiceItem.Service?.Name) && !EstimateServiceItem.Equals(EstimateServiceItemClone))
                 {
-                    db.Entry(EstimateServiceItem).State = EntityState.Unchanged;
+                    EstimateServiceItem = (EstimateServiceItem)EstimateServiceItemClone.Clone();
                 }
-                db.SaveChanges();
-                EstimateWindow.Close();
+                if (p is System.ComponentModel.CancelEventArgs arg)
+                {
+                    arg.Cancel = false;
+                    return;
+                }
+                EstimateServiceWindow?.Close();
             }
             catch (Exception e)
             {
@@ -321,20 +337,6 @@ namespace Dental.ViewModels
             }
 
         }
-
-        public EstimateServiceItem EstimateServiceItem
-        {
-            get { return GetProperty(() => EstimateServiceItem); }
-            set {SetProperty(() => EstimateServiceItem, value); }
-        }
-
-        private EstimateServiceWindow EstimateServiceWindow;
-
-        public Visibility IsVisibleItemPlanForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupPlanForm { get; set; } = Visibility.Hidden;
-
-        public ICollection<Service> Services { get; set; }
-        public ICollection<Employee> Employes { get; set; }
         #endregion
 
         #region команды, связанные с общим функционалом карты пациента

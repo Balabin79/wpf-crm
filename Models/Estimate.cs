@@ -11,18 +11,24 @@ namespace Dental.Models
     [Table("Estimates")]
     public class Estimate : AbstractBaseModel, IDataErrorInfo
     {
+        public Estimate()
+        {
+            EstimateServiseItems = new ObservableCollection<EstimateServiceItem>();
+        }
+
         [Display(Name = "Название сметы")]
         [Required(ErrorMessage = @"Поле ""Название сметы"" обязательно для заполнения")]
         public string Name 
         { 
             get => name; 
-            set 
+            set
             {
                 name = value;
                 OnPropertyChanged(nameof(Name));
-            } 
+            }
         }
         private string name;
+
 
         [Display(Name = "Дата начала")]
         public string StartDate 
@@ -36,10 +42,19 @@ namespace Dental.Models
         }
         private string startDate;
 
-        public Client Client { get; set; }
+        public Client Client 
+        { 
+            get => client;
+            set
+            {
+                client = value;
+                OnPropertyChanged(nameof(Client));
+            } 
+        }
         public int ClientId { get; set; }
+        private Client client;
 
-        public ObservableCollection<EstimateServiceItem> EstimateServiseItems { get; set; } = new ObservableCollection<EstimateServiceItem>();       
+        public ObservableCollection<EstimateServiceItem> EstimateServiseItems { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

@@ -30,8 +30,8 @@ namespace Dental.Models
         }
         private string _Code;
 
-        [Display(Name = "Описание")]
-        public string Description { get; set; }
+        [NotMapped]
+        public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 
         [Display(Name = "Единица измерения")]
         public Measure Measure { get; set; }
@@ -58,7 +58,6 @@ namespace Dental.Models
             OnPropertyChanged(nameof(Code));
             OnPropertyChanged(nameof(Price));
             OnPropertyChanged(nameof(Measure));
-            OnPropertyChanged(nameof(Description));
             OnPropertyChanged(nameof(ParentId));
             OnPropertyChanged(nameof(IsDir));
         }

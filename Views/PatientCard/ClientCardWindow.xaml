@@ -123,7 +123,7 @@
                         </dx:DXTabItem>
                         
                         <dx:DXTabItem Header="Сметы" >
-                            <tp:EctimatesControl DataContext="{Binding}"/>
+                            <tp:EctimatesControl DataContext="{Binding}" x:Name="Estimates"/>
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Услуги" >

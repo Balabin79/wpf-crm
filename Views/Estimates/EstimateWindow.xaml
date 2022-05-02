@@ -1,10 +1,12 @@
 ﻿<Window x:Class="Dental.Views.Estimates.EstimateWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"  
-        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         Title="Смета"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
@@ -12,6 +14,9 @@
         MaxHeight="230"
         Name="Window"
         >
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateCommand}" PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DateToStringConverter x:Key="dateToString" />
@@ -19,15 +24,15 @@
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-            <TextBlock Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
+            <TextBlock Text="{Binding Path=EstimateVM.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
             <dxlc:LayoutItem Label="Название сметы*:"  LabelPosition="Top" IsRequired="True">
-                <dxe:TextEdit EditValue="{Binding Estimate.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <dxe:TextEdit EditValue="{Binding EstimateVM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             </dxlc:LayoutItem>
             <dxlc:LayoutGroup Orientation="Horizontal">
-                <dxlc:LayoutItem Label="Клиент*:" Name="Client" LabelPosition="Top" IsRequired="True">
+                <dxlc:LayoutItem Label="Клиент*:" Name="Client" LabelPosition="Top" IsRequired="True" Visibility="{Binding EstimateVM.ClientFieldVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
                     <dxe:ComboBoxEdit 
-                                        ItemsSource="{Binding Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        ItemsSource="{Binding EstimateVM.Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Клиенты" 
                                         IsTextEditable="False"
                                         DisplayMember="FullName"
@@ -35,15 +40,15 @@
                                         IncrementalSearch="True"
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding Estimate.EstimateCategory.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                        EditValue ="{Binding Estimate.EstimateCategory.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                                        SelectedItem ="{Binding EstimateVM.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                        EditValue ="{Binding EstimateVM.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Дата начала:"  LabelPosition="Top" >
-                    <dxe:DateEdit EditValue="{Binding Model.StartDate, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <dxe:DateEdit EditValue="{Binding EstimateVM.StartDate, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">

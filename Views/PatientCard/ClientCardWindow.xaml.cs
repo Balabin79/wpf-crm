@@ -1,8 +1,10 @@
 ﻿using Dental.Models;
+using Dental.ViewModels.Estimates;
 using Dental.ViewModels;
 using DevExpress.Xpf.WindowsUI;
 using System;
 using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace Dental.Views.PatientCard
@@ -12,7 +14,10 @@ namespace Dental.Views.PatientCard
         public ClientCardWindow(int clientId, PatientListViewModel vm)
         {
             InitializeComponent();
-            this.DataContext = new ClientCardViewModel(clientId, vm); 
+            ApplicationContext db = new ApplicationContext();
+            var client = db.Clients.FirstOrDefault(f => f.Id == clientId);
+            this.DataContext = new ClientCardViewModel(clientId, vm);
+            this.Estimates.DataContext = new EstimatesViewModel(client, db, true);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

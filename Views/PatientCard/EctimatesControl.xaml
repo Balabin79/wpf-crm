@@ -48,12 +48,20 @@
                                         AllowQuickCustomization="False"
                                         ShowDragWidget="False">
                                         <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.AddRowInEstimateCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateServiceCommand}"
+                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.Client.BtnIconEditableVisible, Mode=TwoWay}"
+                                            Content="Добавить услугу" >
+                                        </dxb:BarButtonItem>
+
+                                        <dxb:BarButtonItem 
+                                            Margin="5 0 0 0"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateMaterialCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                            Content="Добавить запись" >
-
+                                            Content="Добавить материал" >
                                         </dxb:BarButtonItem>
 
                                     </dxb:ToolBarControl>
@@ -62,10 +70,10 @@
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
 
-                    <dxg:GridControl                                       
+                    <dxg:GridControl 
                         x:Name="TreatmentPlanItems"
                         CustomSummary="TreatmentPlanItems_CustomSummary"                  
-                        ItemsSource="{Binding TreatmentPlanItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        ItemsSource="{Binding Path=EstimateServiseItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                         MinHeight="50" 
                         VerticalAlignment="Stretch"
                         MaxHeight="1500"
@@ -78,7 +86,7 @@
                                     <DataTemplate>
                                         <TextBlock
                                             TextWrapping="Wrap"
-                                            Text="{Binding Path=Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -99,6 +107,20 @@
                             </dxg:GridColumn>
 
                             <dxg:GridColumn 
+                                    FieldName="Count"
+                                    Header="Кол-во" 
+                                    Width="1*" 
+                                    HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            TextAlignment="Center"
+                                            Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellTemplate>
+                            </dxg:GridColumn>
+
+                            <dxg:GridColumn 
                                 FieldName="Price"
                                 HorizontalHeaderContentAlignment="Center"            
                                 Header="Стоимость" 
@@ -109,22 +131,7 @@
                                             x:Name="PART_Editor"
                                             TextWrapping="Wrap"
                                             TextAlignment="Center"
-                                            Text="{Binding Path=Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                    </DataTemplate>
-                                </dxg:GridColumn.CellTemplate>
-                            </dxg:GridColumn>
-
-
-                            <dxg:GridColumn 
-                                    FieldName="Count"
-                                    Header="Кол-во" 
-                                    Width="1*" 
-                                    HorizontalHeaderContentAlignment="Center">
-                                <dxg:GridColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            TextAlignment="Center"
-                                            Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            Text="{Binding Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -145,14 +152,14 @@
                                                 IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                                 Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                 GlyphSize="Small"
-                                                Command="{Binding ElementName=view, Path=DataContext.EditPlanItemCommand}" 
+                                                Command="{Binding ElementName=view, Path=DataContext.EditEstimateServiceCommand}" 
                                                 CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                 <dxb:BarButtonItem      
                                                 Content="Удалить" 
                                                 IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"
-                                                Command="{Binding ElementName=view, Path=DataContext.DeleteRowInPlanCommand}" 
+                                                Command="{Binding ElementName=view, Path=DataContext.DeleteEstimateServiceCommand}" 
                                                 CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                             </dxb:ToolBarControl>
                                         </dxb:BarContainerControl>
@@ -251,9 +258,7 @@
                         </dxg:GridControl.TotalSummary>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
-
             </Grid>
-
         </DataTemplate>
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
@@ -290,7 +295,7 @@
         </dxlc:LayoutGroup.HeaderTemplate>
 
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Model.Estimates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
+                 ItemsSource="{Binding Path=Estimates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
                          >
             <dxg:GridControl.View>
                 <dxg:TableView  
