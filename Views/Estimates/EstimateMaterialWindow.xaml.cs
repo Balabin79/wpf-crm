@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard
+namespace Dental.Views.Estimates
 {
     /// <summary>
     /// Логика взаимодействия для EstimateMaterialWindow.xaml

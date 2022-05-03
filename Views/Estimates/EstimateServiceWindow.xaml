@@ -13,8 +13,8 @@
         Title="Позиция в плане услуг"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Height="230"
-        MaxHeight="230"
+        Height="270"
+        MaxHeight="270"
         Name="Window"
         >
     <dxmvvm:Interaction.Behaviors>
@@ -28,20 +28,17 @@
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-            <TextBlock Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
+            <TextBlock Text="{Binding Path=EstimateServiceItemVM.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
             <dxlc:LayoutItem Label="Услуга*:"  LabelPosition="Top" IsRequired="True">
                 <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
-                     EditValue="{Binding EstimateServiceItem.Service, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
-                     NullText="Выберите позицию в услугах" IsTextEditable="False">
-
+                     EditValue="{Binding Path=EstimateServiceItemVM.Service, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                                                
+                     NullText="Выберите услугу" IsTextEditable="False">
                     <dxe:PopupBaseEdit.PopupContentTemplate>
                         <ControlTemplate>
-                            <dxg:TreeListControl   AutoGenerateColumns="None"                         
-                                                MaxHeight="2000" 
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Stretch"
-                                                ItemsSource="{Binding ElementName=view, Path=DataContext.Services, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <dxg:TreeListControl AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding ElementName=tree_view, Path=DataContext.Services, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  >
                                 <dxg:TreeListControl.View>
                                     <dxg:TreeListView                                                          
@@ -69,9 +66,8 @@
                                                         ShowVerticalLines="False"                                                      
                                                         NavigationStyle="Row">
                                         <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm2:EventToCommand 
-                                                                         EventName="MouseDoubleClick" 
-                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                                            <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                         <Binding ElementName="tree_view"/>
@@ -80,9 +76,8 @@
                                                 </dxmvvm2:EventToCommand.CommandParameter>
                                             </dxmvvm2:EventToCommand>
 
-                                            <dxmvvm2:EventToCommand 
-                                                                        EventName="MouseDown" 
-                                                                         Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
+                                            <dxmvvm2:EventToCommand EventName="MouseDown" 
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                         <Binding ElementName="tree_view"/>
@@ -99,16 +94,11 @@
                                     </dxg:TreeListView>
                                 </dxg:TreeListControl.View>
 
-                                <dxg:TreeListColumn 
-                                                        Width="auto"
-                                                        FieldName="FullName"
-                                                        >
+                                <dxg:TreeListColumn Width="auto"  FieldName="FullName">
                                     <dxg:TreeListColumn.CellDisplayTemplate>
                                         <DataTemplate>
-                                            <TextBlock
-                                                                        TextWrapping="Wrap"
-                                                                        Name="PART_Editor"
-                                                                        Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock TextWrapping="Wrap" Name="PART_Editor"
+                                                Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </dxg:TreeListColumn.CellDisplayTemplate>
                                 </dxg:TreeListColumn>
@@ -118,34 +108,41 @@
                     </dxe:PopupBaseEdit.PopupContentTemplate>
                 </dxe:PopupBaseEdit>
             </dxlc:LayoutItem>
-            
-            <dxlc:LayoutGroup Orientation="Horizontal">
-                <dxlc:LayoutItem Label="Дата начала:"  LabelPosition="Top" >
-                    <dxe:ComboBoxEdit  
-                        IncrementalFiltering="True"
-                        IncrementalSearch="True"
-                        IsCaseSensitiveFilter="False"
-                        ValidateOnTextInput="False"
-                        Margin="0 0 0 5"
-                        ItemsSource="{Binding Employes, Mode=OneWay}"                                       
-                        NullText="Сотрудник" 
-                        IsTextEditable="False"
-                        DisplayMember="Fio"
-                        SelectedItem ="{Binding PlanItemModel.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        EditValue ="{Binding PlanItemModel.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+            <dxlc:LayoutItem Label="Сотрудник:" Name="Employee" LabelPosition="Top" >
+                    <dxe:ComboBoxEdit 
+                                        ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        NullText="Сотрудники" 
+                                        IsTextEditable="False"
+                                        DisplayMember="FullName"
+                                        IncrementalFiltering="True"
+                                        IncrementalSearch="True"
+                                        IsCaseSensitiveFilter="False"
+                                        ValidateOnTextInput="False"
+                                        SelectedItem ="{Binding EstimateServiceItemVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        EditValue ="{Binding EstimateServiceItemVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
+            <dxlc:LayoutGroup Orientation="Horizontal">
+                <dxlc:LayoutItem Label="Количество:"  LabelPosition="Top" >
+                    <dxe:TextEdit Mask="d" MaskType="Numeric" 
+                         EditValue="{Binding EstimateServiceItemVM.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Цена(*из услуг):"  LabelPosition="Top" >
+                    <dxe:TextEdit Mask="d" MaskType="Numeric" IsReadOnly="True"
+                         EditValue="{Binding ElementName=popup, Path=EditValue.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" />
+                </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
                 <dx:SimpleButton 
                     Height="23" Content="Сохранить" 
-                    IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Estimate.Name)' }"
-                                 VerticalContentAlignment="Center" Command="{Binding SaveEstimateCommand}" />
-                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormEstimateCommand}" Margin="4 0 0 0"/>
+                    IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(EstimateServiceItem.Service)' }"
+                                 VerticalContentAlignment="Center" Command="{Binding SaveRowInEstimateCommand}" />
+                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormEstimateItemCommand}" Margin="4 0 0 0"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
     </GroupBox>
 </Window>
+

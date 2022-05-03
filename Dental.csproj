@@ -219,6 +219,9 @@
     <Compile Update="Views\Documents\PurchaseInvoice.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Estimates\EstimateServiceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Estimates\EstimateWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -296,6 +299,11 @@
     <Page Update="Views\Documents\PurchaseInvoice.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Estimates\EstimateServiceWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Estimates\EstimateWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
