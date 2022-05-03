@@ -13,7 +13,7 @@ namespace Dental.ViewModels.Estimates
             set { SetProperty(() => Estimate, value); }
         }
 
-        [Required(ErrorMessage = @"Поле ""Услуга"" обязательно для заполнения")]
+        [Required(ErrorMessage = @"Поле ""Название сметы"" обязательно для заполнения")]
         public Service Service
         {
             get { return GetProperty(() => Service); }

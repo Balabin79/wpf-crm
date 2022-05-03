@@ -138,11 +138,6 @@ namespace Dental.ViewModels.Estimates
         {
             try
             {
-                /*if (!string.IsNullOrEmpty(Estimate.Name) && !Estimate.Equals(EstimateClone))
-                {
-                    Estimate.Name = EstimateClone.Name;
-                    Estimate.StartDate = EstimateClone.StartDate;
-                }*/
                 if (p is System.ComponentModel.CancelEventArgs arg)
                 {
                     arg.Cancel = false;
@@ -189,6 +184,7 @@ namespace Dental.ViewModels.Estimates
                 Services = db.Services.ToArray();
                 if (p is Estimate estimate)
                 {
+                    EstimateServiceItem = new EstimateServiceItem();
                     EstimateServiceItemVM = new EstimateServiceItemVM() { Estimate = estimate, Title = "Добавление новой услуги" };
                     EstimateServiceWindow = new EstimateServiceWindow() { DataContext = this };
                     EstimateServiceWindow.ShowDialog();
@@ -218,6 +214,7 @@ namespace Dental.ViewModels.Estimates
                         Price = item.Price,
                         Title = "Редактирование услуги"
                     };
+                    EstimateServiceItem = item;
                     EstimateServiceWindow = new EstimateServiceWindow() { DataContext = this };
                     EstimateServiceWindow.ShowDialog();
                 }
@@ -231,15 +228,19 @@ namespace Dental.ViewModels.Estimates
         [Command]
         public void SaveRowInEstimate(object p)
         {
+            if (string.IsNullOrEmpty(EstimateServiceItemVM.Service?.Name)) return;
             try
             {
+                EstimateServiceItem.Estimate = EstimateServiceItemVM.Estimate;
+                EstimateServiceItem.Service = EstimateServiceItemVM.Service;
+                EstimateServiceItem.Employee = EstimateServiceItemVM.Employee;
+                EstimateServiceItem.Count = EstimateServiceItemVM.Count;
 
                 if (EstimateServiceItem.Id == 0)
                 {
-                   // Model.Estimates.Where(f => f.Id == EstimateServiceItem.EstimateId).FirstOrDefault().EstimateServiseItems.Add(EstimateServiceItem);
+                    db.Entry(EstimateServiceItem).State = EntityState.Added;
                 }
-
-                //if (db.SaveChanges() > 0) EstimateServiceItemClone = EstimateServiceItem;
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -256,13 +257,9 @@ namespace Dental.ViewModels.Estimates
         {
             try
             {
-                if (!string.IsNullOrEmpty(EstimateServiceItem["Classificator"]))
-                {
-                    int x = 0;
-                }
                 if (p is EstimateServiceItem item)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в смете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в смете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
 
                     db.Entry(item).State = EntityState.Deleted;
@@ -280,10 +277,6 @@ namespace Dental.ViewModels.Estimates
         {
             try
             {
-               /* if (!string.IsNullOrEmpty(EstimateServiceItem.Service?.Name) && !EstimateServiceItem.Equals(EstimateServiceItemClone))
-                {
-                    EstimateServiceItem = (EstimateServiceItem)EstimateServiceItemClone.Clone();
-                }*/
                 if (p is System.ComponentModel.CancelEventArgs arg)
                 {
                     arg.Cancel = false;
@@ -295,7 +288,6 @@ namespace Dental.ViewModels.Estimates
             {
                 (new ViewModelLog(e)).run();
             }
-
         }
 
         public ICollection<Estimate> Estimates { get; set; }
