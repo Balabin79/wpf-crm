@@ -94,6 +94,8 @@ namespace Dental.Models
             return false;
         }
 
+        public override int GetHashCode() => Guid.GetHashCode();
+
         private bool StringParamsIsEquel(string param1, string param2)
         {
             if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return true;

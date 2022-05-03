@@ -28,7 +28,9 @@ namespace Dental.Models
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         public object Clone() => this.MemberwiseClone();
-        
+
+        public override int GetHashCode() => Guid.GetHashCode();
+
         public override bool Equals(object other)
         {
             if (other is PurchaseInvoice clone)

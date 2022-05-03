@@ -37,6 +37,8 @@ namespace Dental.ViewModels.Estimates
                     db.Estimates.Where(f => f.ClientId == Client.Id)
                         .Include(f => f.EstimateServiseItems.Select(x => x.Employee))
                         .Include(f => f.EstimateServiseItems.Select(x => x.Service))
+                        .Include(f => f.EstimateMaterialItems.Select(x => x.Measure))
+                        .Include(f => f.EstimateMaterialItems.Select(x => x.Nomenclature))
                     .ToObservableCollection() : 
                     new ObservableCollection<Estimate>();
             }
@@ -153,7 +155,7 @@ namespace Dental.ViewModels.Estimates
         #endregion
 
 
-        #region Состав сметы
+        #region Услуги в смете
         [Command]
         public void SelectItemInServiceField(object p)
         {
@@ -289,18 +291,166 @@ namespace Dental.ViewModels.Estimates
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
+
+        #region Материалы в смете
+        [Command]
+        public void SelectItemInMaterialField(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.FocusedRow is Nomenclature material)
+                    {
+                        if (material.IsDir == 1) return;
+                        parameters.Popup.EditValue = material;
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void OpenFormEstimateMaterial(object p)
+        {
+            try
+            {
+                Materials = db.Nomenclature.ToArray();
+                Measuries = db.Measure.OrderBy(f => f.Name).ToArray();
+                if (p is Estimate estimate)
+                {
+                    EstimateMaterialItem = new EstimateMaterialItem();
+                    EstimateMaterialItemVM = new EstimateMaterialItemVM() { Estimate = estimate, Title = "Добавление нового материала" };
+                    EstimateMaterialWindow = new EstimateMaterialWindow() { DataContext = this };
+                    EstimateMaterialWindow.ShowDialog();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void EditEstimateMaterial(object p)
+        {
+            try
+            {
+                if (p is EstimateMaterialItem item)
+                {
+                    Materials = db.Nomenclature.ToArray();
+                    Measuries = db.Measure.OrderBy(f => f.Name).ToArray();
+                    EstimateMaterialItemVM = new EstimateMaterialItemVM()
+                    {
+                        Estimate = item.Estimate,
+                        Measure = item.Measure,
+                        Nomenclature = item.Nomenclature,
+                        Count = item.Count,
+                        Price = item.Price,
+                        Title = "Редактирование материала"
+                    };
+                    EstimateMaterialItem = item;
+                    EstimateMaterialWindow = new EstimateMaterialWindow() { DataContext = this };
+                    EstimateMaterialWindow.ShowDialog();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void SaveMaterialRowInEstimate(object p)
+        {
+            if (string.IsNullOrEmpty(EstimateMaterialItemVM.Nomenclature?.Name)) return;
+            try
+            {
+                EstimateMaterialItem.Estimate = EstimateMaterialItemVM.Estimate;
+                EstimateMaterialItem.Measure = EstimateMaterialItemVM.Measure;
+                EstimateMaterialItem.Nomenclature = EstimateMaterialItemVM.Nomenclature;
+                EstimateMaterialItem.Count = EstimateMaterialItemVM.Count;
+
+                if (EstimateMaterialItem.Id == 0)
+                {
+                    db.Entry(EstimateMaterialItem).State = EntityState.Added;
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+            finally
+            {
+                EstimateMaterialWindow?.Close();
+            }
+        }
+
+        [Command]
+        public void DeleteEstimateMaterial(object p)
+        {
+            try
+            {
+                if (p is EstimateMaterialItem item)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить материал в смете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+
+                    db.Entry(item).State = EntityState.Deleted;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void CancelFormEstimateMaterialItem(object p)
+        {
+            try
+            {
+                if (p is System.ComponentModel.CancelEventArgs arg)
+                {
+                    arg.Cancel = false;
+                    return;
+                }
+                EstimateMaterialWindow?.Close();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
 
         public ICollection<Estimate> Estimates { get; set; }
         public ICollection<Employee> Employees { get; set; }
         public ICollection<Measure> Measuries { get; set; }
         public ICollection<Service> Services { get; set; }
+        public ICollection<Nomenclature> Materials { get; set; }
         public EstimateVM EstimateVM { get; set; }
         public EstimateServiceItemVM EstimateServiceItemVM { get; set; }
+        public EstimateMaterialItemVM EstimateMaterialItemVM { get; set; }
         public Estimate Estimate { get; set; }
         public EstimateServiceItem EstimateServiceItem { get; set; }
+        public EstimateMaterialItem EstimateMaterialItem { get; set; }
         public Client Client { get; set; }
         private EstimateWindow EstimateWindow;
         public EstimateServiceWindow EstimateServiceWindow;
+        public EstimateMaterialWindow EstimateMaterialWindow;
+       
+
+
+        #region Материалы в смете
+
         #endregion
     }
 }

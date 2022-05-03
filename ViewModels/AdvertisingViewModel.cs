@@ -59,13 +59,9 @@ namespace Dental.ViewModels
                     {
                         db.Entry(model).State = EntityState.Deleted;
                         ActionsLog.RegisterAction(model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Advertising"]);
-                        int cnt = db.SaveChanges();
-                        if (cnt > 0)
-                        {
-                            var notification = new Notification();
-                            notification.Content = "Успешно удалено из базы данных!";
-                            notification.run();
-                        }
+                        db.SaveChanges();
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
+                        
                     } 
                     else db.Entry(model).State = EntityState.Detached;
                     Collection.Remove(model);

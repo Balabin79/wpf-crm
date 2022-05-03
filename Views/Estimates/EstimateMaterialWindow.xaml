@@ -18,7 +18,7 @@
         Name="Window"
         >
     <dxmvvm:Interaction.Behaviors>
-        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateItemCommand}" PassEventArgsToCommand="True"/>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateMaterialItem}" PassEventArgsToCommand="True"/>
     </dxmvvm:Interaction.Behaviors>
     <Window.Resources>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
@@ -32,7 +32,7 @@
 
                 <dxlc:LayoutItem Label="Материал*:"  LabelPosition="Top" IsRequired="True">
                 <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
-                     EditValue="{Binding EstimateServiceItem.Nomenclature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                     EditValue="{Binding EstimateMaterialItemVM.Nomenclature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                      NullText="Выберите материал" IsTextEditable="False">
                     <dxe:PopupBaseEdit.PopupContentTemplate>
                         <ControlTemplate>
@@ -66,7 +66,7 @@
                                                         NavigationStyle="Row">
                                         <dxmvvm:Interaction.Behaviors>
                                             <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
-                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInMaterialFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                         <Binding ElementName="tree_view"/>
@@ -76,7 +76,7 @@
                                             </dxmvvm2:EventToCommand>
 
                                             <dxmvvm2:EventToCommand EventName="MouseDown" 
-                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInMaterialFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                         <Binding ElementName="tree_view"/>
@@ -117,8 +117,8 @@
                                         IncrementalSearch="True"
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding EstimateServiceItem.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                        EditValue ="{Binding EstimateServiceItem.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                                        SelectedItem ="{Binding EstimateMaterialItemVM.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                        EditValue ="{Binding EstimateMaterialItemVM.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
@@ -128,7 +128,7 @@
             <dxlc:LayoutGroup Orientation="Horizontal">
                 <dxlc:LayoutItem Label="Количество:"  LabelPosition="Top" >
                     <dxe:TextEdit Mask="d" MaskType="Numeric" 
-                         EditValue="{Binding EstimateServiceItem.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                         EditValue="{Binding EstimateMaterialItemVM.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Цена(*из услуг):"  LabelPosition="Top" >
                     <dxe:TextEdit Mask="d" MaskType="Numeric" IsReadOnly="True"
@@ -139,8 +139,8 @@
                 <dx:SimpleButton 
                     Height="23" Content="Сохранить" 
                     IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(EstimateServiceItem.Service)' }"
-                                 VerticalContentAlignment="Center" Command="{Binding SaveRowInEstimateCommand}" />
-                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormEstimateItemCommand}" Margin="4 0 0 0"/>
+                                 VerticalContentAlignment="Center" Command="{Binding SaveMaterialRowInEstimateCommand}" />
+                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormEstimateMaterialItemCommand}" Margin="4 0 0 0"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
     </GroupBox>

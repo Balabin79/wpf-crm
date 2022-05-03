@@ -31,6 +31,8 @@ namespace Dental.Models
 
         public object Clone() => this.MemberwiseClone();
 
+        public override int GetHashCode() => Guid.GetHashCode();
+
         public bool Equals(object other)
         {
             if (other is ShedulerStatuses clone)

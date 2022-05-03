@@ -138,7 +138,9 @@ namespace Dental.Models
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
         public object Clone() => this.MemberwiseClone();
-        
+
+        public override int GetHashCode() => Guid.GetHashCode();
+
         public bool Equals(Employee other)
         {
             if (FieldsChanges != null) FieldsChanges = new List<string>();

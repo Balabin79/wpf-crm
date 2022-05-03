@@ -163,7 +163,9 @@ namespace Dental.Models
             clone.Advertising = this.Advertising;
             clone.AdvertisingId = this.AdvertisingId;
             return clone;
-        } 
+        }
+
+        public override int GetHashCode() => Guid.GetHashCode();
 
         public bool Equals(Client other)
         {

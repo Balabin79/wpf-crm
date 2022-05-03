@@ -14,6 +14,7 @@ namespace Dental.Models
         public Estimate()
         {
             EstimateServiseItems = new ObservableCollection<EstimateServiceItem>();
+            EstimateMaterialItems = new ObservableCollection<EstimateMaterialItem>();
         }
 
         [Display(Name = "Название сметы")]
@@ -28,7 +29,6 @@ namespace Dental.Models
             }
         }
         private string name;
-
 
         [Display(Name = "Дата начала")]
         public string StartDate 
@@ -55,6 +55,7 @@ namespace Dental.Models
         private Client client;
 
         public ObservableCollection<EstimateServiceItem> EstimateServiseItems { get; set; }
+        public ObservableCollection<EstimateMaterialItem> EstimateMaterialItems { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
