@@ -23,7 +23,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:EstimatesViewModel x:Key="vm"/>
+                    <vm:ClientEstimatesViewModel x:Key="vm"/>
                     <commands:PrintCommand x:Key="Print"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -82,151 +82,94 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
-                         >
-                <dxg:GridControl.View>
-                    <dxg:TreeListView  TreeDerivationMode="ChildNodesSelector" ChildNodesPath="Estimates"
-                            x:Name="view"
-                            ShowTotalSummary="False" 
-                            UseLegacyFilterPanel="True"
-                            ShowSearchPanelMode="Always"
-                            SearchPanelAllowFilter="True"
-                            AllowResizing="True"
-                            BestFitModeOnSourceChange="VisibleRows"            
-                            NavigationStyle="Row"
-                            AllowScrollToFocusedRow="True" 
-                            VerticalScrollbarVisibility="Auto"
-                            AllowPrintColumnHeaderImage="True" 
-                            PrintNodeImages="True"
-                   
-                 
-                            ExpandNodesOnFiltering="True"
-                            FilterMode="Extended"    
-                            ImmediateUpdateRowPosition="True"
-                            >
-                        <dxg:TreeListView.InputBindings>
-                            <KeyBinding Key="Delete"         
-                                Command="{Binding DeleteEstimateCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                            <KeyBinding Key="N"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"
-                                    />
-                            <KeyBinding Key="E"     
-                                Modifiers="Ctrl"
-                                Command="{Binding OpenFormEstimateCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                            <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding OpenFormEstimateCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                        </dxg:TreeListView.InputBindings>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
-
-                        <dxg:TreeListView.RowCellMenuCustomizations>
-                            <dxb:BarButtonItem  
-                                    GlyphSize="Small" 
-                                    GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"
-                                    Name="addRow" 
-                                    KeyGesture="Ctrl+N" 
-                                    Content="Добавить"  
-                                    Command="{Binding OpenFormEstimateCommand}" />
-
-
-                            <dxb:BarButtonItem 
-                                    GlyphSize="Small" 
-                                    GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"
-                                    Name="editRow" 
-                                    KeyGesture="Ctrl+E" 
-                                    Content="Редактировать"  
-                                    Command="{Binding OpenFormEstimateCommand}" 
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-
-                            <dxb:BarButtonItem 
-                                    Name="deleteRow" 
-                                    Content="Удалить" 
-                                    Command="{Binding DeleteEstimateCommand}" 
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
-                                    KeyGesture="Delete" 
-                                    GlyphSize="Small" 
-                                    GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"/>
-                        </dxg:TreeListView.RowCellMenuCustomizations>
-
-           
-                    </dxg:TreeListView>
-                </dxg:GridControl.View>
-
-                <dxg:GridColumn FieldName="Name" 
-                                Header="Наименование" MinWidth="200" Width="8*"
+                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
+                         AutoExpandAllGroups="False"  
+                         Margin="2"
+                         MaxHeight="1800"
+                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         AllowColumnMRUFilterList="False"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                         ShowBorder="True">
+                    <dxg:GridControl.GroupSummary>
+                        <dxg:GridSummaryItem SummaryType="Count" />
+                    </dxg:GridControl.GroupSummary>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="Client.LastName" 
+                                Header="Фамилии" 
+                                GroupIndex="0" 
+                                GroupInterval="Alphabetical" 
+                                Width="1*"/>
+                        <dxg:GridColumn FieldName="ClientId"
+                                GroupIndex="1"
+                                GroupInterval="Default"
+                                Width="2*" 
+                                ReadOnly="True"                                
                                 >
-                    <dxg:GridColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
-                                <TextBlock Text="Наименование" Margin="3 0 0 0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </dxg:GridColumn.HeaderTemplate>
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings TextWrapping="Wrap"/>
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Price" 
-                                 PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
-                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
-                                 Header="Стоимость"                               
-                                 HorizontalHeaderContentAlignment="Center" 
-                                 Width="1*">
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate >
-                            <TextBlock  
-                                Text="{Binding Row.Price, Mode=TwoWay, StringFormat={}{0:c2}, 
-                                ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture}, 
-                                UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                HorizontalAlignment="Center"
-                                />
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
-                </dxg:GridColumn>
+                            <dxg:GridColumn.GroupValueTemplate>
+                                <DataTemplate>
+                                    <TextBlock Loaded="TextBlock_Loaded" Text="{Binding Path=RowData.Row.Client, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.GroupValueTemplate>
+                        </dxg:GridColumn>
+                        
+         
 
-                <dxg:GridColumn Width="auto" AllowPrinting="False">
-                    <dxg:GridColumn.CellTemplate>
-                        <DataTemplate>
-                            <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+                        <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
+                    </dxg:GridControl.Columns>
 
-                                <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxg:GridControl.TotalSummary>
+                        <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
+                        <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
+                    </dxg:GridControl.TotalSummary>
+                    <dxg:GridControl.View>
+                        <dxg:TableView 
+                            ShowColumnHeaders="False"
+                            ShowGroupPanel="False"
+                            ShowFixedTotalSummary="True"                           
+                            AllowScrollAnimation="True"
+                            Name="view"
+                            AllowFixedGroups="True"
+                            NavigationStyle="Row"
+                            AllowPrintColumnHeaderImage="True"
+                            UseLegacyFilterPanel="False"
+                            HighlightItemOnHover="True">
+                            <dxg:TableView.InputBindings>
+                                <KeyBinding Key="N"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Path=OpenPatientCardCommand}"
+                                CommandParameter="-1"  
+                                    />
+                                <KeyBinding Key="O"     
+                                Modifiers="Ctrl"
+                                Command="{Binding Path=OpenPatientCardCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <KeyBinding Key="Return"     
+                                Command="{Binding Path=OpenPatientCardCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding Path=OpenPatientCardCommand}"
+                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                            </dxg:TableView.InputBindings>
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
+                                            Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту пациента"  
+                                            Command="{Binding Path=OpenPatientCardCommand}"
+                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                                    <dxb:BarButtonItem Name="bOpen"
-                                           DataContext="{StaticResource vm}"
-                                           Content="Открыть форму"                                                            
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
-                                           GlyphSize="Small"
-                                           Command="{Binding OpenFormEstimateCommand}"
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту пациента"  
+                                            Command="{Binding Path=OpenPatientCardCommand}"
+                                            CommandParameter="-1"/>
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
 
-                                    <dxb:BarButtonItem Name="bDelete" 
-                                           DataContext="{StaticResource vm}"        
-                                           Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Small"
-                                           Command="{Binding DeleteEstimateCommand}" 
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                    <dxb:BarItemLinkSeparator />
-                                </dxb:ToolBarControl>
-                            </dxb:BarContainerControl>
-                        </DataTemplate>
-                    </dxg:GridColumn.CellTemplate>
-                </dxg:GridColumn>
-            </dxg:GridControl>
-
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </ScrollViewer>
         </Grid>
     </Border>
 </Page>

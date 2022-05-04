@@ -24,5 +24,10 @@ namespace Dental.Views.Estimates
         {
             InitializeComponent();
         }
+
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

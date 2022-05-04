@@ -10,6 +10,7 @@
     xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
     xmlns:vm ="clr-namespace:Dental.ViewModels" 
     xmlns:tp ="clr-namespace:Dental.Views.PatientCard" 
+    xmlns:es ="clr-namespace:Dental.Views.Estimates" 
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
     xmlns:sys="clr-namespace:System;assembly=netstandard"
@@ -123,7 +124,7 @@
                         </dx:DXTabItem>
                         
                         <dx:DXTabItem Header="Сметы" >
-                            <tp:EctimatesControl DataContext="{Binding}" x:Name="Estimates"/>
+                            <es:EctimatesControl  x:Name="Estimates"/>
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Услуги" >

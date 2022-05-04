@@ -234,9 +234,6 @@
     <Compile Update="Views\NomenclatureDir\Nomenclature.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\EstimateWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\ServicesPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -318,10 +315,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NomenclatureDir\Nomenclature.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\EstimateWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

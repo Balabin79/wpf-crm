@@ -10,7 +10,7 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-        Title="Позиция в плане услуг"
+        Title="Услуга в смете"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Height="270"

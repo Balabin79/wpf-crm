@@ -155,7 +155,6 @@ namespace Dental.ViewModels.Estimates
         }
         #endregion
 
-
         #region Услуги в смете
         [Command]
         public void SelectItemInServiceField(object p)

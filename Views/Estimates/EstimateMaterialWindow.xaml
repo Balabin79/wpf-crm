@@ -10,11 +10,11 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-        Title="Позиция в плане услуг"
+        Title="Материал в смете"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Height="260"
-        MaxHeight="260"
+        Height="270"
+        MaxHeight="270"
         Name="Window"
         >
     <dxmvvm:Interaction.Behaviors>
@@ -28,7 +28,7 @@
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-            <TextBlock Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
+            <TextBlock Text="{Binding Path=EstimateMaterialItemVM.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
                 <dxlc:LayoutItem Label="Материал*:"  LabelPosition="Top" IsRequired="True">
                 <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
