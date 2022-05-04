@@ -24,7 +24,12 @@
        
         <DataTemplate x:Key="ContentDetail" >
             <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="GridFileRowDetailsTemplate">
-                <dxlc:LayoutGroup Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                               
+                <dxlc:LayoutGroup Grid.Row="0" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                     <dxlc:LayoutGroup.HeaderTemplate>
                         <DataTemplate>
                             <DockPanel HorizontalAlignment="Stretch">
@@ -38,16 +43,6 @@
                                             IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.Client.BtnIconEditableVisible, Mode=TwoWay}"
                                             Content="Добавить услугу" >
                                         </dxb:BarButtonItem>
-
-                                        <dxb:BarButtonItem 
-                                            Margin="5 0 0 0"
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateMaterialCommand}"
-                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
-                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
-                                            Content="Добавить материал" >
-                                        </dxb:BarButtonItem>
-
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
                             </DockPanel>
@@ -205,11 +200,34 @@
                              SummaryType="Custom" />
                         </dxg:GridControl.TotalSummary>
                     </dxg:GridControl>
+                </dxlc:LayoutGroup>
+                             
+                <dxlc:LayoutGroup Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                    <dxlc:LayoutGroup.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel HorizontalAlignment="Stretch">
+                                <TextBlock Text="Список материалов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                    <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                        <dxb:BarButtonItem 
+                                            Margin="5 0 0 0"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateMaterialCommand}"
+                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                            Content="Добавить материал" >
+                                        </dxb:BarButtonItem>
+
+                                    </dxb:ToolBarControl>
+                                </dxb:BarContainerControl>
+                            </DockPanel>
+                        </DataTemplate>
+                    </dxlc:LayoutGroup.HeaderTemplate>
 
                     <dxg:GridControl 
                         x:Name="MaterialItems" CustomSummary="MaterialItems_CustomSummary"                 
                         ItemsSource="{Binding Path=EstimateMaterialItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                         VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn  Header="Материал" Width="6*" MinWidth="250" FieldName="Nomenclature">
                                 <dxg:GridColumn.CellTemplate>
@@ -239,7 +257,7 @@
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
-                                            Text="{Binding Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Row.Nomenclature.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -358,6 +376,7 @@
                         </dxg:GridControl.TotalSummary>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
+
             </Grid>
         </DataTemplate>
         

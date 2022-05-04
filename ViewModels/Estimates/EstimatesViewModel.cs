@@ -124,6 +124,7 @@ namespace Dental.ViewModels.Estimates
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить смету?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     db.EstimateServiceItems.Where(f => f.EstimateId == estimate.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.EstimateMaterialItems.Where(f => f.EstimateId == estimate.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                     db.Entry(estimate).State = EntityState.Deleted;
                     Estimates.Remove(estimate);
                     db.SaveChanges();

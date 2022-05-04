@@ -62,11 +62,11 @@ namespace Dental.Views.PatientCard
             if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
             {
                 if (e.Row == null) return;
-                var items = ((EstimateMaterialItem)e.Row)?.Estimate?.EstimateServiseItems;
+                var items = ((EstimateMaterialItem)e.Row)?.Estimate?.EstimateMaterialItems;
                 decimal price = 0;
                 foreach (var item in items)
                 {
-                    if (decimal.TryParse(item.Service?.Price?.ToString(), out decimal result))
+                    if (decimal.TryParse(item.Nomenclature?.Price?.ToString(), out decimal result))
                     {
                         if (item.Count > 0) price += (result * item.Count);
                     }
