@@ -21,14 +21,13 @@
     <UserControl.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:MultiBindingConverter x:Key="multiConv" />
-       
         <DataTemplate x:Key="ContentDetail" >
             <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="GridFileRowDetailsTemplate">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                               
+
                 <dxlc:LayoutGroup Grid.Row="0" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                     <dxlc:LayoutGroup.HeaderTemplate>
                         <DataTemplate>
@@ -197,7 +196,7 @@
                         </dxg:GridControl.TotalSummary>
                     </dxg:GridControl>
                 </dxlc:LayoutGroup>
-                             
+
                 <dxlc:LayoutGroup Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                     <dxlc:LayoutGroup.HeaderTemplate>
                         <DataTemplate>
@@ -370,7 +369,6 @@
 
             </Grid>
         </DataTemplate>
-        
         <converter:DateToStringConverter x:Key="dateToString" />
     </UserControl.Resources>
 
@@ -522,6 +520,7 @@
                 <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor"/>
             </dxg:GridControl.DetailDescriptor>
         </dxg:GridControl>
+        
     </dxlc:LayoutGroup>
 
 </UserControl>
