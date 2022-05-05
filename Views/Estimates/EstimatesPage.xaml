@@ -413,17 +413,6 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding OpenFormEstimateCommand}"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Show_PivotGrid_Designer.svg}"/>
-
-                        <dxb:BarItemLinkSeparator />
-
-                        <dxb:BarButtonItem Content="Печать"                                           
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=view}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
