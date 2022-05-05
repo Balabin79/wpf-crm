@@ -93,10 +93,10 @@
                                     </dxg:TreeListView>
                                 </dxg:TreeListControl.View>
 
-                                <dxg:TreeListColumn Width="auto"  FieldName="FullName">
+                                <dxg:TreeListColumn Width="auto" MinWidth="150"  FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
                                     <dxg:TreeListColumn.CellDisplayTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" Name="PART_Editor"
+                                            <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
                                                 Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </dxg:TreeListColumn.CellDisplayTemplate>
