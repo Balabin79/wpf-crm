@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Dental.ViewModels.Estimates
 {
-    class EstimateVM : BindableBase, IDataErrorInfo
+    public class EstimateVM : BindableBase, IDataErrorInfo
     {
         private readonly ApplicationContext db;
         public EstimateVM(ApplicationContext db)
@@ -24,16 +24,17 @@ namespace Dental.ViewModels.Estimates
             set { SetProperty(() => Name, value); }
         }
 
-        public string StartDate
-        {
-            get { return GetProperty(() => StartDate); }
-            set { SetProperty(() => StartDate, value); }
-        }
-
+        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
         public Client Client
         {
             get { return GetProperty(() => Client); }
             set { SetProperty(() => Client, value); }
+        }
+
+        public string StartDate
+        {
+            get { return GetProperty(() => StartDate); }
+            set { SetProperty(() => StartDate, value); }
         }
 
         public string Title

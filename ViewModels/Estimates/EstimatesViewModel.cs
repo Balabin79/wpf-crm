@@ -22,25 +22,38 @@ using Dental.ViewModels.Estimates;
 
 namespace Dental.ViewModels.Estimates
 {
-    class EstimatesViewModel : DevExpress.Mvvm.ViewModelBase
+    public class EstimatesViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
         private readonly bool fromPatientCard;
-        public EstimatesViewModel(Client client, ApplicationContext db, bool fromPatientCard = false)
+        public EstimatesViewModel(Client client = null, ApplicationContext context = null, bool fromPatientCard = false)
         {
             try
             {
-                this.db = db;
                 this.fromPatientCard = fromPatientCard;
-                Client = client;
-                Estimates = (Client.Id > 0) ? 
-                    db.Estimates.Where(f => f.ClientId == Client.Id)
+                db = context ?? new ApplicationContext();
+                Client = client ?? new Client();
+                if (fromPatientCard)
+                {
+                    Estimates = (Client.Id > 0) ?
+                        db.Estimates.Where(f => f.ClientId == Client.Id)
+                            .Include(f => f.EstimateServiseItems.Select(x => x.Employee))
+                            .Include(f => f.EstimateServiseItems.Select(x => x.Service))
+                            .Include(f => f.EstimateMaterialItems.Select(x => x.Measure))
+                            .Include(f => f.EstimateMaterialItems.Select(x => x.Nomenclature))
+                        .ToObservableCollection() : new ObservableCollection<Estimate>();
+                } 
+                else
+                {
+                    Estimates = db.Estimates
+                        .Include(f => f.Client)
                         .Include(f => f.EstimateServiseItems.Select(x => x.Employee))
                         .Include(f => f.EstimateServiseItems.Select(x => x.Service))
                         .Include(f => f.EstimateMaterialItems.Select(x => x.Measure))
                         .Include(f => f.EstimateMaterialItems.Select(x => x.Nomenclature))
-                    .ToObservableCollection() : 
-                    new ObservableCollection<Estimate>();
+                        .ToObservableCollection();
+                }
+
             }
             catch (Exception e)
             {

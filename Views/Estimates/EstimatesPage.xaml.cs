@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dental.Models;
 using Dental.ViewModels;
+using Dental.ViewModels.Estimates;
 using DevExpress.Xpf.Grid;
 
 namespace Dental.Views.Estimates
@@ -26,6 +27,7 @@ namespace Dental.Views.Estimates
         public EstimatesPage()
         {
             InitializeComponent();
+            this.DataContext = new EstimatesViewModel();
         }
 
         private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)

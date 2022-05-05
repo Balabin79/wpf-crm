@@ -30,6 +30,19 @@ namespace Dental.Models
         }
         private string name;
 
+        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
+        public Client Client
+        {
+            get => client;
+            set
+            {
+                client = value;
+                OnPropertyChanged(nameof(Client));
+            }
+        }
+        public int ClientId { get; set; }
+        private Client client;
+
         [Display(Name = "Дата начала")]
         public string StartDate 
         {
@@ -41,18 +54,6 @@ namespace Dental.Models
             }
         }
         private string startDate;
-
-        public Client Client 
-        { 
-            get => client;
-            set
-            {
-                client = value;
-                OnPropertyChanged(nameof(Client));
-            } 
-        }
-        public int ClientId { get; set; }
-        private Client client;
 
         public ObservableCollection<EstimateServiceItem> EstimateServiseItems { get; set; }
         public ObservableCollection<EstimateMaterialItem> EstimateMaterialItems { get; set; }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.ViewModels.Estimates
 {
-    class EstimateMaterialItemVM : BindableBase, IDataErrorInfo
+    public class EstimateMaterialItemVM : BindableBase, IDataErrorInfo
     {
         public Estimate Estimate
         {

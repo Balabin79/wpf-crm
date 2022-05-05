@@ -23,7 +23,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:ClientEstimatesViewModel x:Key="vm"/>
                     <commands:PrintCommand x:Key="Print"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -389,8 +388,7 @@
         BorderBrush="LightGray" 
         BorderThickness="1" 
         Margin="5" 
-        dx:ThemeManager.ThemeName="Office2019White" 
-        DataContext="{StaticResource vm}">
+        dx:ThemeManager.ThemeName="Office2019White">
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
@@ -409,8 +407,7 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Content="Создать новую смету" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
+                        <dxb:BarButtonItem Content="Создать новую смету" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
@@ -427,7 +424,6 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"/>
-
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -435,11 +431,11 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
                 <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
-                                  DataContext="{StaticResource vm}"
+                          
                          AutoExpandAllGroups="False"  
                          Margin="2"
                          MaxHeight="1800"
-                         ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         ItemsSource="{Binding Path=Estimates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          AllowColumnMRUFilterList="False"
                          dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                          ShowBorder="True">
@@ -899,13 +895,13 @@
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                             </dxg:TableView.InputBindings>
                             <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту пациента"  
                                             Command="{Binding Path=OpenPatientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту пациента"  
                                             Command="{Binding Path=OpenPatientCardCommand}"
