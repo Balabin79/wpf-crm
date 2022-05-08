@@ -37,6 +37,11 @@ namespace Dental.ViewModels
             Locations = locations;
 
             Patient = clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
+            if (CustomFields["Client"] is Client client)
+            {
+                Patient = client;
+            }
+
                 //?? clients?.FirstOrDefault(x => x.Id.Equals(appointmentItem?.ResourceId));
 
             Service = services?.FirstOrDefault(x => x.Id.Equals(CustomFields["ServiceId"]));
@@ -86,6 +91,7 @@ namespace Dental.ViewModels
                 if (patient == newPatient) return;
                 patient = newPatient;
                 CustomFields["ClientInfoId"] = newPatient.Id;
+                CustomFields["Client"] = newPatient;
                 Subject = newPatient.FullName;
             }
         }

@@ -77,7 +77,7 @@ namespace Dental.ViewModels
                     else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
                 }
 
-                Clients = db.Clients.ToObservableCollection();
+                Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
                 SelectedDoctors = new List<object>();
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
                 CreateCalendars();
@@ -114,14 +114,14 @@ namespace Dental.ViewModels
                 {
                     if (db.Entry(i).State == EntityState.Detached)
                     {
-                        var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
-                        var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
+                        //var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
+                        //var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
                         var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
-
+                        i.Price = serv?.Price;
                         db.Entry(i).State = EntityState.Added;
                     }
                 }
-                int cnt = db.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -133,14 +133,17 @@ namespace Dental.ViewModels
         {
             try
             {
-                /*if (p is DevExpress.Xpf.Scheduling.AppointmentEditedEventArgs appointment)
+                if (p is DevExpress.Xpf.Scheduling.AppointmentEditedEventArgs appointment)
                 {
-                    foreach(var i in appointment.Appointments)
+                    foreach(var i in Appointments)
                     {
-                        int x = 0;
+                        var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
+                        var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
+                        var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
+                        i.Price = serv?.Price;
                     }
-                }*/
-                int cnt = db.SaveChanges();
+                }
+                db.SaveChanges();
             }
             catch (Exception e)
             {

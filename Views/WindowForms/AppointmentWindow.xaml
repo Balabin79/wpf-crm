@@ -67,6 +67,7 @@
 
                     <dxlc:LayoutItem Label="Клиент" Margin="0,10,0,0">
                         <dxg:LookUpEdit  EditValue="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         SelectedItem="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding Patients}"
                                         DisplayMember="FullName"
                                         IsPopupAutoWidth="False"

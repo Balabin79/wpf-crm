@@ -128,7 +128,7 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Data/Summary.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Data/Summary.svg}"/>
 
-                        <dxb:BarButtonItem Content="Счета" 
+                        <dxb:BarButtonItem Content="Оказанные услуги" 
                                            RibbonStyle="Default"
                                            MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"   
                                            ToolTip="Счета"
@@ -138,7 +138,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
-                <dxr:RibbonPage Caption="Статистика" >
+                <dxr:RibbonPage Caption="Статистика"  >
 
                     <dxr:RibbonPageGroup Caption="Отчеты" >
                         <dxb:BarButtonItem Content="Сводные данные по услугам" RibbonStyle="Default" 

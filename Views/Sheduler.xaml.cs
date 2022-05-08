@@ -49,6 +49,7 @@ namespace Dental.Views
         {
             AppointmentItem result = new AppointmentItem();
             result.CustomFields["PatientId"] = patient.Id;
+            result.CustomFields["Client"] = patient;
             result.Subject = patient.FullName;
             result.StatusId = 2; ////////////////
             result.Start = DateTime.Today;
@@ -56,10 +57,8 @@ namespace Dental.Views
             return result;
         }
 
-        void OnCompleteRecordDragDrop(object sender, CompleteRecordDragDropEventArgs e)
-        {
-            e.Handled = true;
-        }
+        void OnCompleteRecordDragDrop(object sender, CompleteRecordDragDropEventArgs e) => e.Handled = true;
+        
 
         void OnDragRecordOver(object sender, DragRecordOverEventArgs e)
         {
@@ -67,9 +66,7 @@ namespace Dental.Views
             e.Handled = true;
         }
 
-        void OnDropRecord(object sender, DropRecordEventArgs e)
-        {
-            e.Handled = true;
-        }
+        void OnDropRecord(object sender, DropRecordEventArgs e) => e.Handled = true;
+        
     }
 }
