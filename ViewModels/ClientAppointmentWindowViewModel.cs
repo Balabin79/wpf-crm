@@ -21,13 +21,7 @@ namespace Dental.ViewModels
             ObservableCollection<LocationAppointment> locations
             )
         {
-            return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(
-                appointmentItem, 
-                scheduler, 
-                clients, 
-                services,
-                locations
-                ));
+            return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(appointmentItem, scheduler, clients, services, locations));
         }
         
         protected ClientAppointmentWindowViewModel(
@@ -48,10 +42,7 @@ namespace Dental.ViewModels
             Service = services?.FirstOrDefault(x => x.Id.Equals(CustomFields["ServiceId"]));
             LocationAppointment = locations?.FirstOrDefault(x => x.Id.Equals(CustomFields["LocationId"]));
 
-            SelectPosInClassificatorCommand = new DelegateCommand<object>(
-                OnSelectPosInClassificatorCommandExecuted, 
-                CanSelectPosInClassificatorCommandExecute
-                );
+            SelectPosInClassificatorCommand = new DelegateCommand<object>(OnSelectPosInClassificatorCommandExecuted, CanSelectPosInClassificatorCommandExecute);
         }
 
         public DelegateCommand<object> SelectPosInClassificatorCommand { get; private set; }
@@ -77,8 +68,6 @@ namespace Dental.ViewModels
                 new ViewModelLog(e).run();
             }
         }
-
-
 
         public ObservableCollection<Client> Patients {
             get => patients;
@@ -138,8 +127,7 @@ namespace Dental.ViewModels
             set
             {
                 LocationAppointment newLocation = value;
-                if (location == newLocation)
-                    return;
+                if (location == newLocation) return;
                 location = newLocation;
                 CustomFields["LocationId"] = newLocation.Id;
                 Location = newLocation.Name;

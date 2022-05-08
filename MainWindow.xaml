@@ -128,14 +128,14 @@
                                            LargeGlyph="{dx:DXImage SvgImages/Data/Summary.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Data/Summary.svg}"/>
 
-                        <dxb:BarButtonItem Content="Зарплатные ведомости" 
+                        <dxb:BarButtonItem Content="Счета" 
                                            RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"   
-                                           ToolTip="Зарплатные ведомости"
+                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"   
+                                           ToolTip="Счета"
                                            Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Estimates.EstimatesPage" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Accounting.svg}"/>
+                                           CommandParameter="Dental.Views.Payrolls.Main" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"/>
                     </dxr:RibbonPageGroup>
                 </dxr:RibbonPage>
                 <dxr:RibbonPage Caption="Статистика" >
