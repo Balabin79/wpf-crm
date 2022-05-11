@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Dental.Views.Header"
         mc:Ignorable="d"
         Closing="Window_Closing"
-        Title="Регистрация программы" Height="450" Width="800">
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" 
+        Height="450" Width="800">
     <Grid>
         
     </Grid>

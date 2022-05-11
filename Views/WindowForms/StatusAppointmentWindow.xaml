@@ -9,13 +9,13 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         mc:Ignorable="d"
         MinHeight="380"
-        Title="Статусы"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:commands="clr-namespace:Dental.Infrastructures.Commands"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-        Icon="{dx:DXImage SvgImages/Scheduling/ChangeStatus.svg}"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler"
         Closing="Window_Closing"
         >
     <Window.Resources>

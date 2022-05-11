@@ -121,15 +121,9 @@
     </Page.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
     <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="23"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-            <DockPanel Grid.Row="0" HorizontalAlignment="Stretch" >
-                <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}" />
-                <TextBlock Text="Расписание сотрудников" FontSize="15" Padding="2 0 5 0" />
-            </DockPanel>
-            <DockPanel LastChildFill="True" Grid.Row="1" >
+
+
+            <DockPanel LastChildFill="True">
                 <dxa:AccordionControl DockPanel.Dock="Right"                         
                                       AllowAnimation="True" 
                                       AllowPopupMenu="True" 

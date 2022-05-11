@@ -15,7 +15,8 @@
     x:Name="layoutGroup1"
     Closing="Window_Closing"
     dx:ThemeManager.ThemeName="Office2019White"
-    Title="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" >
+    Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+    Title="B6 Sheduler">
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Window.Resources>

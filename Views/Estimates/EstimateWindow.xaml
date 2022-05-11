@@ -7,12 +7,13 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
-        Title="Смета"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Height="230"
         MaxHeight="230"
         Name="Window"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" 
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateCommand}" PassEventArgsToCommand="True"/>

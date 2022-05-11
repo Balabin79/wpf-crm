@@ -10,12 +10,13 @@
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-        Title="Услуга в смете"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Height="270"
         MaxHeight="270"
         Name="Window"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" 
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormEstimateItemCommand}" PassEventArgsToCommand="True"/>

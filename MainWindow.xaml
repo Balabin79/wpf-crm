@@ -1,5 +1,5 @@
 ﻿<dx:ThemedWindow x:Class="Dental.MainWindow" 
-    Title="{Binding Path=Title}" Visibility="Visible" 
+    Visibility="Visible" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -15,14 +15,36 @@
     d:DesignHeight="450" d:DesignWidth="800"      
     xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" 
     dx:ThemeManager.ThemeName="Office2019White"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
     Closing="ThemedWindow_Closing"
     DataContext="{StaticResource Router}"
-    Name="win">
+    Name="win"
+    Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+    Title="B6 Sheduler">
 
     <dx:ThemedWindow.Resources>
-        <conv:ImageConverter x:Key="ImageConverter" />
-        <viewModels:MainWindowViewModel x:Key="mv"/>
-        <viewModels:DocumentsViewModel x:Key="doc"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <conv:ImageConverter x:Key="ImageConverter" />
+                    <viewModels:MainWindowViewModel x:Key="mv"/>
+                    <viewModels:DocumentsViewModel x:Key="doc"/>
+                    <DataTemplate x:Key="cont">
+                        <TextBlock FontWeight="Bold" Text="{Binding Source=ToolTip, Mode=TwoWay}"/>
+                    </DataTemplate>
+                </ResourceDictionary>
+                <ResourceDictionary>
+                    <Style x:Key="baseKeyGestureStyle" TargetType="{x:Type dxb:BarItem}">
+                        <Setter Property="BarItemDisplayMode" Value="ContentAndGlyph"/>
+                        <Setter Property="GlyphAlignment" Value="Top"/>
+                    </Style>
+                    <Style TargetType="{x:Type dxb:BarButtonItem}" BasedOn="{StaticResource baseKeyGestureStyle}"/>
+                </ResourceDictionary>
+               
+
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </dx:ThemedWindow.Resources>
 
     <Grid VerticalAlignment="Stretch" Margin="0,0,0,0">
@@ -32,162 +54,224 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <dxr:RibbonControl 
-            AllowCustomizingDefaultGroups="False"
-            AllowCustomization="False"      
-            RibbonStyle="Office2019" 
-            ShowApplicationButton="False" 
-            Grid.Row="0" 
-            Name="RibbonControl"
-            >
 
-            <dxr:RibbonControl.ToolbarItems>
-                <dxb:BarItemLinkSeparator/>
-                <dxb:BarButtonItem 
-                    Content="Справка" 
-                    Glyph="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"
-                    DataContext="{StaticResource mv}"
-                    Command="{Binding OpenFormHelpCommand}"/>
+        <dxb:ToolBarControl Grid.Row="0" VerticalAlignment="Top" AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
+            <dxb:BarButtonItem 
+                 ToolTip="Расписание сотрудников" 
+                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage Margin="0 2 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"/>
+                            <TextBlock   
+                                Text="Расписание"
+                                TextAlignment="Center" Margin="0 3 0 0" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Sheduler`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Sheduler`  ? `Underline` : `None`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                  
+                              />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
-                <dxb:BarButtonItem 
-                    Content="Регистрация программы"
-                    GlyphSize="Custom"
-                    Glyph="pack://application:,,,/Resources/Icons/svg/reg1.svg"
-                    GlyphAlignment="Bottom"
-                    Margin="0 2 0 0"
-                    AllowGlyphTheming="True"
-                    CustomGlyphSize="13,13" 
-                    DataContext="{StaticResource mv}"
-                    Command="{Binding OpenFormRegCommand}"/>
-
-                <dxb:BarButtonItem 
-                    Content="О программе" 
-                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Info.svg}"
-                    DataContext="{StaticResource mv}"
-                    Command="{Binding OpenFormAboutCommand}"/>
-
-            </dxr:RibbonControl.ToolbarItems>
-
-            <dxr:RibbonDefaultPageCategory >
-
-                <dxr:RibbonPage Caption="Рабочий стол">
-
-                    <dxr:RibbonPageGroup Caption="Основное">
-
-                        <dxb:BarButtonItem Content="Расписание" RibbonStyle="Default" 
-                                           ToolTip="Расписание сотрудников"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" 
-                                           />
-
-                        <dxb:BarButtonItem Content="Клиенты" RibbonStyle="Default" 
-                                           ToolTip="Список клиентов"
-                                           MediumGlyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"                                      
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList" 
-                                           LargeGlyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
-
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Справочники">
-                        <dxb:BarButtonItem Content="Сотрудники"
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"   
-                                           ToolTip="Сотрудники"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes" 
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"
-                                           />
-                        
-                        <dxb:BarButtonItem Content="Материалы" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"   
-                                           ToolTip="Материалы"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
-
-                        <dxb:BarButtonItem Content="Перечень услуг" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"   
-                                           ToolTip="Перечень услуг"
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"/>
-                        
-                    </dxr:RibbonPageGroup>
-                    <dxr:RibbonPageGroup Caption="Документы" >
-
-                        <dxb:BarButtonItem Content="Сметы" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Data/Summary.svg}"   
-                                           ToolTip="Сметы"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Estimates.EstimatesPage"
-                                           LargeGlyph="{dx:DXImage SvgImages/Data/Summary.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Data/Summary.svg}"/>
-
-                        <dxb:BarButtonItem Content="Оказанные услуги" 
-                                           RibbonStyle="Default"
-                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"   
-                                           ToolTip="Счета"
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Payrolls.Main" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"/>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-                <dxr:RibbonPage Caption="Статистика"  >
-
-                    <dxr:RibbonPageGroup Caption="Отчеты" >
-                        <dxb:BarButtonItem Content="Сводные данные по услугам" RibbonStyle="Default" 
-                                           ToolTip="Сводные данные по услугам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"                                        
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.ServicesPage" 
-                                           Glyph="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+            <dxb:BarButtonItem 
+                 ToolTip="Список клиентов" 
+                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Клиенты" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
 
-                        <dxb:BarButtonItem Content="Выручка за периоды" RibbonStyle="Default" 
-                                           ToolTip="Статистика по выручке по заданным периодам"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}"                                    
-                                           Command="{Binding LeftMenuClick}"
-                                           CommandParameter="Dental.Views.Reports.ByPeriods" 
-                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_Line3DStacked100.svg}"/>
 
-                        <dxb:BarButtonItem Content="Каналы привлечения" RibbonStyle="Default" 
-                                           ToolTip="Статистика по каналам привлечения"
-                                           MediumGlyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByAdvertising" 
-                                           Glyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"/>
-                   
+            <dxb:BarButtonItem 
+                ToolTip="Сметы"
+                Command="{Binding LeftMenuClick}" 
+                CommandParameter="Dental.Views.Estimates.EstimatesPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Data/Summary.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Сметы" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Estimates.EstimatesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Estimates.EstimatesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Загруженность сотрудников" RibbonStyle="Default" 
-                                           ToolTip="Загруженность сотрудников"
-                                           MediumGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" 
-                                           CommandParameter="Dental.Views.Reports.ByEmployes"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/DashboardDesigner.svg}"/>
+            <dxb:BarItemSeparator/>
 
-                        <dxb:BarButtonItem Content="Действия пользователя" RibbonStyle="Default" 
-                                           ToolTip="Действия пользователя (добавление, редактирование, удаление)" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"                                    
-                                           Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
+            <dxb:BarButtonItem  
+                 ToolTip="Сотрудники"
+                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Сотрудники" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
+            <dxb:BarButtonItem   
+                 ToolTip="Каталог"
+                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/ProductQuickShippments.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Каталог" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Classificator`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Classificator`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
-            </dxr:RibbonDefaultPageCategory>
+            <dxb:BarButtonItem
+                 ToolTip="Материалы"
+                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/ProductOrderDetail-21.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Материалы" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.NomenclatureDir.Nomenclature`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.NomenclatureDir.Nomenclature`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarItemSeparator/>
+
+            <dxb:BarButtonItem
+                Command="{Binding LeftMenuClick}" 
+                CommandParameter="Dental.Views.Payrolls.Main">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Business_Money.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Продажи" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Payrolls.Main`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Payrolls.Main`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem                
+                ToolTip="Сводные данные"                                                       
+                Command="{Binding LeftMenuClick}" 
+                CommandParameter="Dental.Views.ServicesPage" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Сводные данные" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem 
+                ToolTip="Статистика по каналам привлечения"                                   
+                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByAdvertising" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Каналы" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Reports.ByAdvertising`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Reports.ByAdvertising`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem 
+                ToolTip="История действий пользователя (добавление, редактирование, удаление)"                                     
+                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="История" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem 
+                ToolTip="Справка"                                     
+                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Справка" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem 
+                ToolTip="О программе"                                     
+                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="О программе" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
 
-        </dxr:RibbonControl>
+        </dxb:ToolBarControl>
+
         <Frame  
            Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"            
            HorizontalAlignment="Stretch" 

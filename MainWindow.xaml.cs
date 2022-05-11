@@ -1,5 +1,6 @@
 using Dental.Models;
 using Dental.Services;
+using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
 using System;
 using System.Windows;
@@ -39,6 +40,5 @@ namespace Dental
                 Application.Current.Shutdown();
             }                    
         }
-
     }
 }

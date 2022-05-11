@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental.Views.Header"
         mc:Ignorable="d"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" 
         Closing="Window_Closing"
-        Title="О программе" Height="450" Width="800">
+        Height="450" Width="800">
     <Grid>
         
     </Grid>

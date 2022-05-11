@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental.Views.WindowForms"
         mc:Ignorable="d"
-        Title="Запись в расписание" Height="450" Width="800"
+        Height="450" Width="800"
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -15,7 +15,9 @@
         xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys"
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler"
                  >
     <dx:ThemedWindow.Resources>
         <converter:MultiBindingConverter x:Key="multiConv" />

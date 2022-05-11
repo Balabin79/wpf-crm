@@ -22,6 +22,8 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
     dx:ThemeManager.ThemeName="Office2019White"
+    Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+    Title="B6 Sheduler"
     Closing="Window_Closing"
     x:Name="win"
     >

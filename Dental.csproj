@@ -8,32 +8,50 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructures\Pages\**" />
+    <Compile Remove="Infrastructures\Reports\**" />
     <Compile Remove="Models\Actions\**" />
     <Compile Remove="Resources\Icons\fa\**" />
+    <EmbeddedResource Remove="Infrastructures\Pages\**" />
+    <EmbeddedResource Remove="Infrastructures\Reports\**" />
     <EmbeddedResource Remove="Models\Actions\**" />
     <EmbeddedResource Remove="Resources\Icons\fa\**" />
+    <EntityDeploy Remove="Infrastructures\Pages\**" />
+    <EntityDeploy Remove="Infrastructures\Reports\**" />
     <EntityDeploy Remove="Models\Actions\**" />
     <EntityDeploy Remove="Resources\Icons\fa\**" />
+    <None Remove="Infrastructures\Pages\**" />
+    <None Remove="Infrastructures\Reports\**" />
     <None Remove="Models\Actions\**" />
     <None Remove="Resources\Icons\fa\**" />
+    <Page Remove="Infrastructures\Pages\**" />
+    <Page Remove="Infrastructures\Reports\**" />
     <Page Remove="Models\Actions\**" />
     <Page Remove="Resources\Icons\fa\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Resources\Icons\Closed_Folder_32.png" />
+    <None Remove="Resources\Icons\ddd.png" />
     <None Remove="Resources\Icons\document_gnome_32.png" />
     <None Remove="Resources\Icons\folder_closed_32.png" />
     <None Remove="Resources\Icons\folder_closed_gnone_32.png" />
     <None Remove="Resources\Icons\folder_open_32.png" />
     <None Remove="Resources\Icons\folder_open_gnone_32.png" />
+    <None Remove="Resources\Icons\logo.ico" />
+    <None Remove="Resources\Icons\logo.png" />
     <None Remove="Resources\Icons\Page.png" />
+    <None Remove="Resources\Icons\path878.ico" />
     <None Remove="Resources\Icons\svg\document.png" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
+    <None Remove="Resources\Icons\svg\logo.svg" />
+    <None Remove="Resources\Icons\svg\logo2.svg" />
+    <None Remove="Resources\Icons\svg\logo3.svg" />
+    <None Remove="Resources\Icons\svg\logo33.svg" />
     <None Remove="Resources\Icons\svg\message.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
     <None Remove="Resources\Icons\svg\odnoklassniki.svg" />
@@ -46,6 +64,13 @@
     <None Remove="Resources\Icons\svg\user1.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
     <None Remove="Resources\Icons\svg\vk.svg" />
+    <None Remove="Resources\Icons\te.ico" />
+    <None Remove="Resources\Icons\te2.ico" />
+    <None Remove="Resources\Icons\te3.ico" />
+    <None Remove="Resources\Icons\te4.ico" />
+    <None Remove="Resources\Icons\te5.ico" />
+    <None Remove="Resources\Icons\te6.ico" />
+    <None Remove="Resources\Icons\te6.png" />
     <None Remove="Resources\Icons\Template\avatar.png" />
     <None Remove="Resources\Icons\Template\Book-Keeping.png" />
     <None Remove="Resources\Icons\Template\Book.png" />
@@ -116,11 +141,6 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructures\Pages\" />
-    <Folder Include="Infrastructures\Reports\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -196,6 +216,8 @@
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\svg\vk.svg" />
+    <Resource Include="Resources\Icons\te4.ico" />
+    <Resource Include="Resources\Icons\te5.ico" />
     <Resource Include="Resources\Icons\Template\avatar.png" />
     <Resource Include="Resources\Icons\Template\save.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />

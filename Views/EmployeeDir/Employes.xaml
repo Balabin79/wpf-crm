@@ -115,6 +115,7 @@
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl 
+                        
                         x:Name="fileToolBar" 
                         ShowDragWidget="False" 
                         Caption="File" 
@@ -122,6 +123,7 @@
                         AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem  Content="Новая анкета сотрудника" 
+
                                            Command="{Binding OpenFormEmployeeCardCommand}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"

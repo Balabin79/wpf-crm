@@ -13,8 +13,9 @@
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-        Title="Документы" >
+       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <vm:IdsViewModel x:Key="vm"/>

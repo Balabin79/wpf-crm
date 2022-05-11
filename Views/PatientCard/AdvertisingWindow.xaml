@@ -12,8 +12,9 @@
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
-      Title="Источники привлечения клиентов"
       d:DesignHeight="450" d:DesignWidth="800"
+      Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+      Title="B6 Sheduler"
       Closing="Window_Closing">
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>

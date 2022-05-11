@@ -13,12 +13,13 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-        Title="Поступление товаров"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Height="275"
         MaxHeight="275"
         Name="Window"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler"
         >
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>

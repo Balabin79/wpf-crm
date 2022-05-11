@@ -37,11 +37,15 @@ namespace Dental.Services
         }
 
         #region Общий ф-нал
-        
+
         private void GoToPage(object p)
         {
             if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
-            else SlowOpacity(CreatePage(p.ToString()));
+            else
+            {
+                SlowOpacity(CreatePage(p.ToString()));
+                IsSelected = p.ToString();
+            }
         }
 
         private Page CreatePage(string pageName, int param = -1)
@@ -52,7 +56,8 @@ namespace Dental.Services
 
         private async void SlowOpacity(Page page)
         {
-            await Task.Factory.StartNew(() => {
+            await Task.Factory.StartNew(() =>
+            {
                 for (double i = 1.0; i > 0.0; i -= 0.1)
                 {
                     FrameOpacity = i;
@@ -77,12 +82,12 @@ namespace Dental.Services
                 if (HasUnsavedChanges != null && UserSelectedBtnCancel != null)
                 {
                     if (HasUnsavedChanges.Invoke() && UserSelectedBtnCancel.Invoke()) return;
-                    HasUnsavedChanges = null; 
+                    HasUnsavedChanges = null;
                     UserSelectedBtnCancel = null;
                 }
                 GoToPage(p);
             }
-            catch 
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -129,6 +134,15 @@ namespace Dental.Services
         private Double frameOpacity;
 
         public int? StartWithLastPage { get; set; }
+
+
+        public string IsSelected
+        {
+            get => isSelected;
+            set => Set(ref isSelected, value);
+            
+        }
+        private string isSelected;
         #endregion
 
         #region Делегаты
@@ -136,5 +150,4 @@ namespace Dental.Services
         public static Func<bool> UserSelectedBtnCancel { get; set; }
         #endregion
     }
-
 }
