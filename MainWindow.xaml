@@ -21,7 +21,6 @@
     Name="win"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
     Title="B6 Sheduler">
-
     <dx:ThemedWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -40,9 +39,6 @@
                     </Style>
                     <Style TargetType="{x:Type dxb:BarButtonItem}" BasedOn="{StaticResource baseKeyGestureStyle}"/>
                 </ResourceDictionary>
-               
-
-                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </dx:ThemedWindow.Resources>
@@ -53,7 +49,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
-
 
         <dxb:ToolBarControl Grid.Row="0" VerticalAlignment="Top" AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
             <dxb:BarButtonItem 
@@ -90,8 +85,6 @@
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
-
-
 
             <dxb:BarButtonItem 
                 ToolTip="Сметы"
@@ -236,8 +229,9 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem 
+                DataContext="{StaticResource mv}"
                 ToolTip="Справка"                                     
-                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" >
+                Command="{Binding OpenHelpForm}" CommandParameter="Dental.Views.UserActions" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -253,16 +247,15 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem 
+                DataContext="{StaticResource mv}"
                 ToolTip="О программе"                                     
-                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.UserActions" >
+                Command="{Binding OpenAboutForm}"  >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage  Source="{dx:DXImage SvgImages/Dashboards/EditExtractSource.svg}"/>
                             <TextBlock 
-                                TextAlignment="Center"  Text="О программе" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                TextAlignment="Center"  Text="О программе"  
                                        />
                         </StackPanel>
                     </DataTemplate>

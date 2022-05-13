@@ -14,10 +14,11 @@ using System.Collections.Generic;
 using Dental.Infrastructures.Logs;
 using Dental.Views.EmployeeDir;
 using Dental.Views.Header;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class MainWindowViewModel : ViewModelBase
+    class MainWindowViewModel : DevExpress.Mvvm.ViewModelBase
     {
 
         private ApplicationContext db;
@@ -25,12 +26,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                OpenFormHelpCommand = new LambdaCommand(OnOpenFormHelpExecuted, CanOpenFormHelpExecute);
-                OpenFormRegCommand = new LambdaCommand(OnOpenFormRegExecuted, CanOpenFormRegExecute);
-                OpenFormAboutCommand = new LambdaCommand(OnOpenFormAboutExecuted, CanOpenFormAboutExecute);
-
-                db = new ApplicationContext();
-               
+                db = new ApplicationContext();              
             }
             catch
             {
@@ -39,16 +35,8 @@ namespace Dental.ViewModels
             }
         }
 
-
-        public ICommand OpenFormHelpCommand { get; }
-        public ICommand OpenFormRegCommand { get; }
-        public ICommand OpenFormAboutCommand { get; }
-
-        private bool CanOpenFormHelpExecute(object p) => true;
-        private bool CanOpenFormRegExecute(object p) => true;
-        private bool CanOpenFormAboutExecute(object p) => true;
-
-        private void OnOpenFormHelpExecuted(object p)
+        [Command]
+        public void OpenHelpForm(object p)
         {
             try
             {
@@ -61,7 +49,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenFormRegExecuted(object p)
+        [Command]
+        public void OpenRegForm(object p)
         {
             try
             {
@@ -74,7 +63,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenFormAboutExecuted(object p)
+        [Command]
+        public void OpenAboutForm(object p)
         {
             try
             {

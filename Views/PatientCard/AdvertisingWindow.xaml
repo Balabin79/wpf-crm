@@ -17,10 +17,17 @@
       Title="B6 Sheduler"
       Closing="Window_Closing">
     <Window.Resources>
-        <commands:PrintCommand x:Key="Print"/>
-        <vm:AdvertisingViewModel x:Key="vm"/>
-        <converter:DateToStringConverter x:Key="DateToString"/>
-        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <vm:AdvertisingViewModel x:Key="vm"/>
+                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
 
@@ -37,11 +44,7 @@
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl  
-                                        Caption="File"
-                                        ShowDragWidget="False"
-                                        AllowCustomizationMenu="False" 
-                                        AllowQuickCustomization="False">
+                    <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem Content="Создать" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
                                            DataContext="{StaticResource vm}"
@@ -72,11 +75,7 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-
-
-                <dxg:GridControl  AutoGenerateColumns="None" 
-                                  MaxHeight="2000" 
-                                  Name="gridAd"  
+                <dxg:GridControl  AutoGenerateColumns="None" MaxHeight="2000" Name="gridAd"  
                                   ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   Margin="2">
 
@@ -126,7 +125,9 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="5*">
+                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="5*"                                  
+                                    PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
+                                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -137,12 +138,12 @@
                         </dxg:GridColumn.HeaderTemplate>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <dxe:TextEdit TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

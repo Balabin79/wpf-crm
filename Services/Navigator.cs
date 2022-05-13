@@ -37,19 +37,18 @@ namespace Dental.Services
         }
 
         #region Общий ф-нал
-
         private void GoToPage(object p)
         {
             if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
             else
             {
-                SlowOpacity(CreatePage(p.ToString()));
-                IsSelected = p.ToString();
+                SlowOpacity(CreatePage(p.ToString()));                
             }
         }
 
         private Page CreatePage(string pageName, int param = -1)
         {
+            IsSelected = pageName;
             Type type = Type.GetType(pageName);
             return (param == -1 || param == 0) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
         }

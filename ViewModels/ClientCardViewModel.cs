@@ -156,16 +156,17 @@ namespace Dental.ViewModels
                     VmList?.Collection?.Add(Model);
                     BtnAfterSaveEnable = true;
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
+                    db.SaveChanges();
                 }
                 else 
                 {
                     //db.Entry(Model).State = EntityState.Modified;
+                    if (db.SaveChanges() > 0) VmList?.UpdateClientInList(Model);
                     ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
                     notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
                     // Update();
                 }
                 Model.UpdateFields();
-                db.SaveChanges();
                 if (HasUnsavedChanges())
                 {
                     notification.run();

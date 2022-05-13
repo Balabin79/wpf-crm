@@ -14,10 +14,11 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Services;
 using Dental.Models;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    public class PatientListViewModel : ViewModelBase
+    public class PatientListViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
         public PatientListViewModel()
@@ -26,37 +27,16 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 SetCollection();
-
-                #region инициализация команд, связанных с общим функционалом карты пациента
-                OpenClientCardCommand = new LambdaCommand(OnOpenClientCardCommandExecuted, CanOpenClientCardCommandExecute);
-                ShowArchiveCommand = new LambdaCommand(OnShowArchiveCommandExecuted, CanShowArchiveCommandExecute);
-                #endregion
-
-                OpenFormAdvertisingCommand = new LambdaCommand(OnOpenFormAdvertisingExecuted, CanOpenFormAdvertisingExecute);
-
-                OpenFormIdsCommand = new LambdaCommand(OnOpenFormIdsExecuted, CanOpenFormIdsExecute);
-
-                BtnIconArchive = false;
-                BtnIconList = true;
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список пациентов\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список клиентов\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICommand OpenClientCardCommand { get; }
-        public ICommand ShowArchiveCommand { get; }
-        public ICommand OpenFormAdvertisingCommand { get; }
-        public ICommand OpenFormIdsCommand { get; }
-
-        private bool CanOpenClientCardCommandExecute(object p) => true;
-        private bool CanShowArchiveCommandExecute(object p) => true;
-        private bool CanOpenFormAdvertisingExecute(object p) => true;
-        private bool CanOpenFormIdsExecute(object p) => true;
-
-        private void OnOpenFormIdsExecuted(object p)
+        [Command]
+        public void OpenFormIds(object p)
         {
             try
             {
@@ -69,7 +49,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenFormAdvertisingExecuted(object p)
+        [Command]
+        public void OpenFormAdvertising(object p)
         {
             try
             {
@@ -82,30 +63,27 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenClientCardCommandExecuted(object p)
+        [Command]
+        public void OpenClientCard(object p)
         {
             try
             {
-                ClientCardWin = (p != null) ? 
-                    new ClientCardWindow((int)p, this) 
-                    : 
-                    new ClientCardWindow(0, this);
+                ClientCardWin = (p != null) ? new ClientCardWindow((int)p, this) : new ClientCardWindow(0, this);
                 ClientCardWin.ShowDialog();
             }
             catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта клиента\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-        } 
-        
-        private void OnShowArchiveCommandExecuted(object p)
+        }
+
+        [Command]
+        public void ShowArchive(object p)
         {
             try
             {
-                BtnIconArchive = !BtnIconArchive;
-                BtnIconList = !BtnIconList;
-                if (BtnIconList) SetCollection();
-                else SetCollection(true);
+                IsArchiveList = !IsArchiveList; 
+                SetCollection(IsArchiveList);
             }
             catch (Exception e)
             {
@@ -113,40 +91,32 @@ namespace Dental.ViewModels
             }
         }
 
-        private bool _BtnIconArchive;
-        public bool BtnIconArchive
+        public bool IsArchiveList
         {
-            get => _BtnIconArchive;
-            set => Set(ref _BtnIconArchive, value);
+            get { return GetProperty(() => IsArchiveList); }
+            set { SetProperty(() => IsArchiveList, value); }
         }
 
-        private bool _BtnIconList;
-        public bool BtnIconList
+        public void UpdateClientInList(Client client)
         {
-            get => _BtnIconList;
-            set => Set(ref _BtnIconList, value);
+            if (client == null) return;
+            var model = Collection.Where(f => f.Id == client.Id).FirstOrDefault();
+            model.LastName = client.LastName;
+            model.FirstName = client.FirstName;
+            model.MiddleName = client.MiddleName;
+            model.Address = client.Address;
         }
 
-        public ObservableCollection<Client> _Collection;
-        public ObservableCollection<Client> Collection 
+        public ObservableCollection<Client> Collection
         {
-            get => _Collection;
-            set => Set(ref _Collection, value);
+            get { return GetProperty(() => Collection); }
+            set { SetProperty(() => Collection, value); }
         }
 
         public AdvertisingWindow AdvertisingWin { get; set; } 
         public IdsWindow IdsWin { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 
-        private void SetCollection(bool isArhive=false)
-        {
-            Collection =
-                 db.Clients
-                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Classificator)))
-                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Employee)))
-                // ?.Include(i => i.TreatmentPlans.Select(g => g.TreatmentPlanItems.Select(c => c.Status)))
-                .OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
-
-        }
+        private void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
     }
 }

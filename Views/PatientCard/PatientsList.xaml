@@ -15,8 +15,15 @@
        Title="Клиенты">
 
     <Page.Resources>
-        <commands:PrintCommand x:Key="Print"/>
-        <vm:PatientListViewModel x:Key="vm"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <commands:PrintCommand x:Key="Print"/>
+                    <vm:PatientListViewModel x:Key="vm"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
     
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
@@ -64,22 +71,22 @@
                                            MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
                         <dxb:BarItemLinkSeparator/>
-                        
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconList, Mode=TwoWay}" 
+
+                        <dxb:BarButtonItem IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Показать список клиентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding Path=ShowArchiveCommand}"/>
-                        
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconArchive, Mode=TwoWay}" 
+                                           Command="{Binding ShowArchiveCommand}"/>
+
+                        <dxb:BarButtonItem IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Content="Показать архивный список клиентов" 
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding Path=ShowArchiveCommand}"/>
+                                           Command="{Binding ShowArchiveCommand}"/>
                         
                         <dxb:BarButtonItem Name="bPrint" Content="Печать"  
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
@@ -95,7 +102,7 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
-                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"
+                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" 
                          AutoExpandAllGroups="False"  
                          Margin="2"
                          MaxHeight="1800"
@@ -117,28 +124,40 @@
                                 Width="2*"
                                 UnboundType="String"
                                 UnboundExpression="[LastName] + ' ' + [FirstName] + ' ' + [MiddleName]"
-                                ReadOnly="True"                                
-                                >
-       
+                                ReadOnly="True"
+                                PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
+                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
+
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-
-                                        <dx:DXImage Height="14" 
-                                                    Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}"/>
-                                        <dxe:HyperlinkEdit 
-                                    Margin="0 2 0 2"
-                                    Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    EditValue="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="Перейти в анкету клиента"                                 
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
-                                    CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"/>
+                                        <dx:DXImage Height="15" Margin="0 2 0 0"  Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}" VerticalAlignment="Top"/>
+                                        <dxe:HyperlinkEdit Margin="2 0 0 2" ToolTip="Перейти в анкету клиента"                                 
+                                            Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
+                                            CommandParameter="{Binding Path=Row.Id, Mode=OneWay}">
+                                            <dxe:HyperlinkEdit.Template>
+                                                <ControlTemplate>
+                                                    <TextBlock Height="19" Margin="0 2 0 0" VerticalAlignment="Top"
+                                                        ToolTip="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
+                                                        Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </ControlTemplate>
+                                            </dxe:HyperlinkEdit.Template>
+                                        </dxe:HyperlinkEdit>
                                     </StackPanel>
                                 </DataTemplate>
                             </dxg:GridColumn.CellDisplayTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" />
+                        <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" 
+                                PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
+                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
+                            <dxg:GridColumn.CellDisplayTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Row.Address}" Margin="0 2 0 0" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </dxg:GridColumn.CellDisplayTemplate>
+                        </dxg:GridColumn>
                     </dxg:GridControl.Columns>
 
                     <dxg:GridControl.TotalSummary>
@@ -147,6 +166,7 @@
                     </dxg:GridControl.TotalSummary>
                     <dxg:GridControl.View>
                         <dxg:TableView 
+                            ShowVerticalLines="False"
                             ShowColumnHeaders="False"
                             ShowGroupPanel="False"
                             ShowFixedTotalSummary="True"                           
@@ -158,34 +178,22 @@
                             UseLegacyFilterPanel="False"
                             HighlightItemOnHover="True">
                             <dxg:TableView.InputBindings>
-                                <KeyBinding Key="N"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenPatientCardCommand}"
-                                CommandParameter="-1"  
-                                    />
-                                <KeyBinding Key="O"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenPatientCardCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <KeyBinding Key="Return"     
-                                Command="{Binding Path=OpenPatientCardCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding Path=OpenPatientCardCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
+                                <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <KeyBinding Key="Return" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                             </dxg:TableView.InputBindings>
                             <dxg:TableView.RowCellMenuCustomizations>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту пациента"  
-                                            Command="{Binding Path=OpenPatientCardCommand}"
+                                            Command="{Binding Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту пациента"  
-                                            Command="{Binding Path=OpenPatientCardCommand}"
-                                            CommandParameter="-1"/>
+                                            Command="{Binding Path=OpenClientCardCommand}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
 

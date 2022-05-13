@@ -16,8 +16,7 @@
     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys" 
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
-    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-    >
+    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters">
 
     <converter:DateToStringConverter x:Key="DateToString"/>
     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -53,25 +52,20 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="TextEditColumnPrintingStyle" 
-               TargetType="{x:Type dxe:TextEdit}"
-               BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
-               >
+    
+    <Style x:Key="TextEditColumnPrintingStyle" TargetType="{x:Type dxe:TextEdit}" BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}">
 
         <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
         <Setter Property="DisplayTemplate">
             <Setter.Value>
                 <ControlTemplate TargetType="dxe:TextEdit">
-                    <dxe:TextEdit 
-                                   HorizontalAlignment="Center" 
-                                   IsPrintingMode="True"
-                            PrintTextWrapping="Wrap"
-                            TextWrapping="Wrap"
-                                   Text="{Binding Path=Value}" />
+                    <dxe:TextEdit HorizontalAlignment="Center" IsPrintingMode="True"
+                            PrintTextWrapping="Wrap" TextWrapping="Wrap" Text="{Binding Path=Value}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+   
     <Style x:Key="CheckEditColumnPrintingStyle" 
                TargetType="{x:Type dxe:TextEdit}"
                BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
@@ -108,6 +102,27 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="TextEditFirstColumnPrintingStyle" TargetType="{x:Type dxe:TextEdit}" BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}">
+        <Setter Property="dxp:ExportSettings.TargetType" Value="Panel" />
+        <Setter Property="DisplayTemplate">
+            <Setter.Value>
+                <ControlTemplate TargetType="dxe:TextEdit">
+                    <dxe:TextEdit IsPrintingMode="True" VerticalAlignment="Top"
+                            PrintTextWrapping="Wrap" TextWrapping="Wrap" Text="{Binding Path=Value}" Margin="2 0 0 0" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TextPrintFirstColumnHeaderStyle" TargetType="{x:Type dxe:TextEdit}" BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}">
+        <Setter Property="Background" Value="#C0C0C0"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="PrintTextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="Text" Value="{Binding Path=Value}"/>
+        <Setter Property="Foreground" Value="#000"/>
+        <Setter Property="Margin" Value="2 0 0 0"/>
     </Style>
 
 </ResourceDictionary>

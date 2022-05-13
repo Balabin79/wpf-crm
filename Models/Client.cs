@@ -34,6 +34,7 @@ namespace Dental.Models
             {
                 _FirstName = value;
                 if (_FirstName?.Length > 0) _FirstName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+                OnPropertyChanged(nameof(FirstName));
             } 
         }
         private string _FirstName;
@@ -48,6 +49,7 @@ namespace Dental.Models
             {
                 _LastName = value;
                 if (_LastName?.Length > 0) _LastName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+                OnPropertyChanged(nameof(LastName));
             }
 
         }
@@ -62,6 +64,7 @@ namespace Dental.Models
             {
                 _MiddleName = value;
                 if (_MiddleName?.Length > 0) _MiddleName = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value).Trim();
+                OnPropertyChanged(nameof(MiddleName));
             }
 
         }
@@ -111,7 +114,10 @@ namespace Dental.Models
         public string Address
         {
             get => _Address;
-            set => _Address = value?.Trim();
+            set { 
+                _Address = value?.Trim();
+                OnPropertyChanged(nameof(Address));
+            }
         }
         private string _Address;
 
