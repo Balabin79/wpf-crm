@@ -183,14 +183,18 @@
                                            Content="Директория" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            GlyphSize="Small" 
-                                           Command="{Binding ElementName=layoutGroup1, Path=DataContext.OpenDirectoryCommand}"
-                                           CommandParameter="{Binding ElementName=layoutGroup1, Path=DataContext.Model.Id, Mode=TwoWay}"/>
+                                           DataContext="{Binding ElementName=layoutGroup1}"
+                                           Command="{Binding Path=DataContext.OpenDirectoryCommand}"
+                                           CommandParameter="{Binding Path=DataContext.Model.Id, Mode=TwoWay}"
+                                           IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        />
                                     
                                     <dxb:BarButtonItem 
-                                        Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                        DataContext="{Binding ElementName=layoutGroup1}"
+                                        Command="{Binding DataContext.AttachmentFileCommand}" 
                                         Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                         Content="Прикрепить файл" 
-                                        IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
+                                        IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     />
 
                                 </dxb:ToolBarControl>
