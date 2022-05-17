@@ -8,28 +8,23 @@ using System.IO;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Services;
 using System.Collections.Generic;
 using Dental.Infrastructures.Logs;
 using Dental.Views.EmployeeDir;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    public class ListEmployeesViewModel : ViewModelBase
+    public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private ApplicationContext db;
+        private readonly ApplicationContext db;
         public ListEmployeesViewModel()
         {
             try
-            {
-                NavigateToCommand = new LambdaCommand(OnNavigateToCommandExecuted, CanNavigateToCommandExecute);
-                ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
-
-                OpenFormEmployeeCardCommand = new LambdaCommand(OnOpenFormEmployeeCardExecuted, CanOpenFormEmployeeCardExecute);               
-
+            {              
                 db = new ApplicationContext();
                 Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).ToObservableCollection();
                 foreach (var i in Collection)
@@ -57,15 +52,8 @@ namespace Dental.ViewModels
             }
         }
 
-        public ICommand NavigateToCommand { get; }
-        public ICommand ExpandAllCommand { get; }
-        public ICommand OpenFormEmployeeCardCommand { get; }
-
-        private bool CanNavigateToCommandExecute(object p) => true;
-        private bool CanExpandAllCommandExecute(object p) => true;
-        private bool CanOpenFormEmployeeCardExecute(object p) => true;
-
-        private void OnOpenFormEmployeeCardExecuted(object p)
+        [Command]
+        public void OpenFormEmployeeCard(object p)
         {
             try
             {
@@ -80,7 +68,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnExpandAllCommandExecuted(object p)
+        [Command]
+        public void ExpandAll(object p)
         {
             try
             {
@@ -96,7 +85,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnNavigateToCommandExecuted(object p)
+        [Command]
+        public void NavigateTo(object p)
         {
             try
             {
@@ -105,8 +95,8 @@ namespace Dental.ViewModels
                 if (!int.TryParse(p.ToString(), out int param)) param = 0;                
                 if(Application.Current.Resources["Router"] is Navigator nav)
                 {
-                    if (param == -1 || param == 0) nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employee");
-                    else nav.LeftMenuClick.Execute(new object[] { "Dental.Views.EmployeeDir.Employee", param });
+                    if (param == -1 || param == 0) nav.LeftMenuClick("Dental.Views.EmployeeDir.Employee");
+                    else nav.LeftMenuClick(new object[] { "Dental.Views.EmployeeDir.Employee", param });
                 }
             }
             catch (Exception e)
@@ -115,7 +105,7 @@ namespace Dental.ViewModels
             }
         }
 
-        public ObservableCollection<Models.Employee> Collection { get; set; }
+        public ObservableCollection<Employee> Collection { get; set; }
    
         public EmployeeCardWindow EmployeeWin { get; set; }     
     }

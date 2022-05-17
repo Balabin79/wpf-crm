@@ -31,14 +31,7 @@ namespace Dental
             }
             e.Cancel = false;
 
-            try {
-                ActionsLog.ClearHistoryActions();
-            }
-            catch {}
-            finally
-            {
-                Application.Current.Shutdown();
-            }                    
+           Application.Current.Shutdown();                             
         }
     }
 }

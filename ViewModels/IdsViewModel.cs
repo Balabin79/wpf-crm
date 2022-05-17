@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.IO;
@@ -13,20 +11,16 @@ using Dental.Views.WindowForms;
 using DevExpress.XtraRichEdit;
 using System.Diagnostics;
 using System.Windows;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class IdsViewModel : ViewModelBase
+    class IdsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         public IdsViewModel()
         {
             try
             {
-                OpenFormDocEditCommand = new LambdaCommand(OnOpenFormDocEditCommandExecuted, CanOpenFormDocEditCommandExecute);
-                DeleteDocCommand = new LambdaCommand(OnDeleteDocCommandExecuted, CanDeleteDocCommandExecute);
-                ImportDocCommand = new LambdaCommand(OnImportDocCommandExecuted, CanImportDocCommandExecute);
-                OpenDirDocCommand = new LambdaCommand(OnOpenDirDocCommandExecuted, CanOpenDirDocCommandExecute);
-
                 Ids = ProgramDirectory.GetIds();
             }
             catch
@@ -35,19 +29,8 @@ namespace Dental.ViewModels
             }
         }
 
-        // открыть форму и загрузить документ
-        public ICommand OpenFormDocEditCommand { get; }
-        public ICommand DeleteDocCommand { get; }
-        public ICommand ImportDocCommand { get; }
-        public ICommand OpenDirDocCommand { get; }
-
-        private bool CanOpenFormDocEditCommandExecute(object p) => true;
-        private bool CanDeleteDocCommandExecute(object p) => true;
-        private bool CanImportDocCommandExecute(object p) => true;
-        private bool CanOpenDirDocCommandExecute(object p) => true;
-       
-
-        private void OnOpenFormDocEditCommandExecuted(object p)
+       [Command]
+        public void OpenFormDocEdit(object p)
         {
             try
             {
@@ -55,8 +38,7 @@ namespace Dental.ViewModels
                 string fileName = p.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
-                    IDSWindow = new IDSWindow();
-                    IDSWindow.DataContext = this;
+                    IDSWindow = new IDSWindow() { DataContext = this };
                     var richEdit = IDSWindow.RichEdit;
                     richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
                     IDSWindow.Show();
@@ -68,7 +50,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteDocCommandExecuted(object p)
+        [Command]
+        public void OnDeleteDocCommandExecuted(object p)
         {
             try
             {
@@ -88,7 +71,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnImportDocCommandExecuted(object p)
+        [Command]
+        public void OnImportDocCommandExecuted()
         {
             try
             {
@@ -131,7 +115,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnOpenDirDocCommandExecuted(object p)
+        [Command]
+        public void OnOpenDirDocCommandExecuted()
         {
             try
             {
@@ -196,10 +181,9 @@ namespace Dental.ViewModels
 
         public ObservableCollection<FileInfo> Ids
         {
-            get => ids;
-            set => Set(ref ids, value);
+            get { return GetProperty(() => Ids); }
+            set { SetProperty(() => Ids, value); }
         }
-        private ObservableCollection<FileInfo> ids;
 
         public void OpenFormDoc(Client Model, string fileName)
         {
@@ -209,8 +193,7 @@ namespace Dental.ViewModels
                 {
                     FileInfo fileInfo = new FileInfo(fileName);
 
-                    IDSWindow = new IDSWindow();
-                    IDSWindow.DataContext = this;
+                    IDSWindow = new IDSWindow() { DataContext = this };
                     var richEdit = IDSWindow.RichEdit;
                     richEdit.ReadOnly = true;
                     richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));

@@ -27,7 +27,6 @@
                 <ResourceDictionary>
                     <conv:ImageConverter x:Key="ImageConverter" />
                     <viewModels:MainWindowViewModel x:Key="mv"/>
-                    <viewModels:DocumentsViewModel x:Key="doc"/>
                     <DataTemplate x:Key="cont">
                         <TextBlock FontWeight="Bold" Text="{Binding Source=ToolTip, Mode=TwoWay}"/>
                     </DataTemplate>
@@ -54,7 +53,7 @@
           
             <dxb:BarButtonItem 
                  ToolTip="Расписание сотрудников" 
-                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Sheduler" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Sheduler" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -72,7 +71,7 @@
 
             <dxb:BarButtonItem GlyphAlignment="Top"
                  ToolTip="Список клиентов" 
-                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -89,7 +88,7 @@
 
             <dxb:BarButtonItem                 
                 ToolTip="Сметы"
-                Command="{Binding LeftMenuClick}" 
+                Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Estimates.EstimatesPage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -109,7 +108,7 @@
 
             <dxb:BarButtonItem  
                  ToolTip="Сотрудники"
-                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -126,7 +125,7 @@
 
             <dxb:BarButtonItem   
                  ToolTip="Прайс услуг"
-                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Classificator" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Classificator" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -143,7 +142,7 @@
 
             <dxb:BarButtonItem
                  ToolTip="Материалы"
-                 Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -161,7 +160,7 @@
             <dxb:BarItemSeparator/>
 
             <dxb:BarButtonItem 
-                Command="{Binding LeftMenuClick}" 
+                Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Payrolls.Main">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -179,7 +178,7 @@
 
             <dxb:BarButtonItem                
                 ToolTip="Сводная таблица"                                                       
-                Command="{Binding LeftMenuClick}" 
+                Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.ServicesPage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -197,7 +196,7 @@
 
             <dxb:BarButtonItem 
                 ToolTip="Статистика по каналам привлечения"                                   
-                Command="{Binding LeftMenuClick}" CommandParameter="Dental.Views.Reports.ByAdvertising" >
+                Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Reports.ByAdvertising" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -216,7 +215,7 @@
             <dxb:BarButtonItem 
                 DataContext="{StaticResource mv}"
                 ToolTip="Справка"                                     
-                Command="{Binding OpenHelpForm}" CommandParameter="Dental.Views.UserActions"   >
+                Command="{Binding OpenHelpFormCommand}" CommandParameter="Dental.Views.UserActions"   >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>

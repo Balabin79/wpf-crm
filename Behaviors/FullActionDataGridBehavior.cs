@@ -22,18 +22,17 @@ namespace Dental.Behaviors
 
         void OnUpdateRowExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            var _FocucedRow = (e.Source as TableView).FocusedRow;
-            string nameClass = _FocucedRow.GetType().Name;
+           // var _FocucedRow = (e.Source as TableView).FocusedRow;
+            //string nameClass = _FocucedRow.GetType().Name;
 
-            switch (nameClass)
+            /*switch (nameClass)
             {
                 //case "Organization": ((Organization)AssociatedObject.DataContext).EditCommand.Execute(_FocucedRow); break;
-            }
+            }*/
         }
 
         void OnAddNewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            int x = 0;
            //  ((Organization)AssociatedObject.DataContext).AddCommand.Execute(sender);
         }
     }

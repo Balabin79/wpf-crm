@@ -92,7 +92,7 @@ namespace Dental.ViewModels
                 patient = newPatient;
                 CustomFields["ClientInfoId"] = newPatient.Id;
                 CustomFields["Client"] = newPatient;
-                Subject = newPatient.FullName;
+                Subject = newPatient.ToString();
             }
         }
 

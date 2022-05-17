@@ -48,7 +48,6 @@ namespace Dental.Services
         
         private static string GetPathOrgDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ORG_DIRECTORY);
         
-        public static string GetPathLogoDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
                        
         public static string GetPathMyDocuments() => Environment.GetFolderPath(Environment.SpecialFolder.Personal);       
         public static DirectoryInfo GetPatientCardDirectory(string patientCardNumber) => new DirectoryInfo(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber));
@@ -61,7 +60,6 @@ namespace Dental.Services
         
         public static IEnumerable<FileInfo> GetFilesFromOrgDirectory() => GetFilesFromDirectory(GetPathOrgDirectoty());
         
-        public static IEnumerable<FileInfo> GetFilesFromLogoDirectory() => GetFilesFromDirectory(GetPathLogoDirectoty());
         
         private static IEnumerable<FileInfo> GetFilesFromDirectory(string path) => new DirectoryInfo(path).GetFiles();
 
@@ -91,7 +89,6 @@ namespace Dental.Services
         
         public static bool HasIdsDirectoty() => Directory.Exists(GetPathIdsDirectoty());      
         public static bool HasOrgDirectoty() => Directory.Exists(GetPathOrgDirectoty());       
-        public static bool HasLogoDirectoty() => Directory.Exists(GetPathLogoDirectoty());
         
        
         /** Create directories **/
@@ -115,13 +112,6 @@ namespace Dental.Services
             return Directory.CreateDirectory(path);
         }
 
-        public static DirectoryInfo CreateLogoDirectory()
-        {
-            string path = GetPathLogoDirectoty();
-            if (HasLogoDirectoty()) return new DirectoryInfo(path);
-            return Directory.CreateDirectory(path);
-        }
-
         /** Remove directories **/
 
         public static void RemoveFileFromPatientsCard(string patientCardNumber, FileInfo file) => File.Delete(Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName)));
@@ -137,36 +127,13 @@ namespace Dental.Services
             foreach (var file in files) RemoveFileFromOrgDirectory(file);
         }
 
-        public static void RemoveLogoFile()
-        {
-            try
-            {
-                FileInfo[] files = new DirectoryInfo(GetPathLogoDirectoty()).GetFiles();
-                foreach (var file in files) file.Delete();    
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
         /** Save files in directories **/
 
         public static void SaveInPatientCardDirectory(string patientCardNumber, FileInfo file) => File.Copy(file.FullName, Path.Combine(GetPathToPatientsCardsDirectoty(), patientCardNumber, (file.FullName)), true);
         
 
         public static void SaveInOrgDirectory(FileInfo file) =>  File.Copy(file.FullName, Path.Combine(GetPathOrgDirectoty(), (file.FullName)), true);
-  /// <summary>
-  /// ///////////////////////////////////////////////////////////
-  /// </summary>
-  /// <param name="file"></param>
-        public static void SaveFileInLogoDirectory(FileInfo file)
-        {
-            RemoveLogoFile();
-            File.Copy(file.FullName, Path.Combine(GetPathLogoDirectoty(), (file.FullName)), true);   
-        }
 
-        /****/
 
         public static bool FileExistsInPatientCardDirectory(string patientCardNumber, string fileName)
         {

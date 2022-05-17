@@ -1,5 +1,4 @@
-﻿using Dental.Infrastructures.Commands.Base;
-using Dental.ViewModels;
+﻿using Dental.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,7 @@ using System.Collections.ObjectModel;
 using Dental.Views;
 using DevExpress.Xpf.Core;
 using Dental.Views.PatientCard;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.Services
 {
@@ -27,13 +27,12 @@ namespace Dental.Services
      * 
      * - добавить различные варианты анимации при переходах
      */
-    public sealed class Navigator : ViewModelBase
+    public sealed class Navigator : DevExpress.Mvvm.ViewModelBase
     {
         public Navigator()
         {
             CurrentPage = GetStartPage();
             FrameOpacity = 1.1;
-            LeftMenuClick = new LambdaCommand(OnLeftMenuClickCommandExecuted, CanLeftMenuClickCommandExecute);
         }
 
         #region Общий ф-нал
@@ -73,8 +72,8 @@ namespace Dental.Services
         }
         #endregion
 
-        #region Команды
-        private void OnLeftMenuClickCommandExecuted(object p)
+        [Command]
+        public void LeftMenuClick(object p)
         {
             try
             {
@@ -91,57 +90,33 @@ namespace Dental.Services
                 ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        #endregion
 
-
-        private Page GetStartPage()
-        {
-            using (var db = new ApplicationContext())
-            {
-                try
-                {
-                    return CreatePage(defaultPage);
-                }
-                catch
-                {
-                    return CreatePage(defaultPage);
-                }
-            }
-        }
-
-        #region Объявление команд
-        public ICommand LeftMenuClick { get; }
-        private bool CanLeftMenuClickCommandExecute(object p) => true;
-        #endregion
+        private Page GetStartPage() => CreatePage(defaultPage);
 
         #region Свойства
         public Page CurrentPage
         {
-            get => currentPage;
-            set => Set(ref currentPage, value);
+            get { return GetProperty(() => CurrentPage); }
+            set { SetProperty(() => CurrentPage, value); }
         }
-        private Page currentPage;
+
+        public Double FrameOpacity
+        {
+            get { return GetProperty(() => FrameOpacity); }
+            set { SetProperty(() => FrameOpacity, value); }
+        }
+
+        public string IsSelected
+        {
+            get { return GetProperty(() => IsSelected); }
+            set { SetProperty(() => IsSelected, value); }
+        }
 
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
         private readonly string defaultPage = "Dental.Views.ServicesPage";
 
-        public Double FrameOpacity
-        {
-            get => frameOpacity;
-            set => Set(ref frameOpacity, value);
-        }
-        private Double frameOpacity;
-
         public int? StartWithLastPage { get; set; }
 
-
-        public string IsSelected
-        {
-            get => isSelected;
-            set => Set(ref isSelected, value);
-            
-        }
-        private string isSelected;
         #endregion
 
         #region Делегаты

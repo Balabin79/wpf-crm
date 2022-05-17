@@ -50,7 +50,7 @@ namespace Dental.Views
             AppointmentItem result = new AppointmentItem();
             result.CustomFields["PatientId"] = patient.Id;
             result.CustomFields["Client"] = patient;
-            result.Subject = patient.FullName;
+            result.Subject = patient.ToString();
             result.StatusId = 2; ////////////////
             result.Start = DateTime.Today;
             result.End = result.Start.AddMinutes(20);

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.Collections.Generic;
@@ -18,12 +17,13 @@ using System.Windows.Media;
 using DevExpress.Xpf.Core;
 using System.Diagnostics;
 using Dental.Models.Base;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class EmployeeViewModel : ViewModelBase, IImageDeletable
+    class EmployeeViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
     {
-        private ListEmployeesViewModel VmList;
+        private readonly ListEmployeesViewModel VmList;
 
         public EmployeeViewModel(Employee emp, ListEmployeesViewModel vmList)
         {
@@ -37,19 +37,7 @@ namespace Dental.ViewModels
                 new CommunicationType {  Id=1, Name="Sms" },
                 new CommunicationType {  Id=2, Name="Email" },
                 new CommunicationType {  Id=3, Name="Viber" },
-            };
-
-            EditableCommand = new LambdaCommand(OnEditableCommandExecuted, CanEditableCommandExecute);
-
-            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute); 
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-
-            #region инициализация команд, связанных с прикреплением файлов сотрудника
-            DeleteFileCommand = new LambdaCommand(OnDeleteFileCommandExecuted, CanDeleteFileCommandExecute);
-            ExecuteFileCommand = new LambdaCommand(OnExecuteFileCommandExecuted, CanExecuteFileCommandExecute);
-            OpenDirectoryCommand = new LambdaCommand(OnOpenDirectoryCommandExecuted, CanOpenDirectoryCommandExecute);
-            AttachmentFileCommand = new LambdaCommand(OnAttachmentFileCommandExecuted, CanAttachmentFileCommandExecute);
-            #endregion
+            };         
          
             // подгружаем вспомогательные справочники
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
@@ -64,14 +52,14 @@ namespace Dental.ViewModels
                 if (Model.Id == 0)
                 {
                     IsReadOnly = false;
-                    _BtnIconEditableHide = false;
-                    _BtnIconEditableVisible = true;
+                    BtnIconEditableHide = false;
+                    BtnIconEditableVisible = true;
                 }
                 else
                 {
                     IsReadOnly = true;
-                    _BtnIconEditableHide = true;
-                    _BtnIconEditableVisible = false;
+                    BtnIconEditableHide = true;
+                    BtnIconEditableVisible = false;
                     Title = "Анкета сотрудника (" + Model.Fio + ")";
                      if (Directory.Exists(GetPathToEmpDir()))
                      {
@@ -90,41 +78,34 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        
-    #region Блокировка полей
-    public bool IsReadOnly
-        {
-            get => _IsReadOnly;
-            set => Set(ref _IsReadOnly, value);
-        }
-        private bool _IsReadOnly;
 
-        private bool _BtnIconEditableVisible;
+        #region Блокировка полей
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
         public bool BtnIconEditableVisible
         {
-            get => _BtnIconEditableVisible;
-            set => Set(ref _BtnIconEditableVisible, value);
+            get { return GetProperty(() => BtnIconEditableVisible); }
+            set { SetProperty(() => BtnIconEditableVisible, value); }
         }
 
-        private bool _BtnIconEditableHide;
         public bool BtnIconEditableHide
         {
-            get => _BtnIconEditableHide;
-            set => Set(ref _BtnIconEditableHide, value);
+            get { return GetProperty(() => BtnIconEditableHide); }
+            set { SetProperty(() => BtnIconEditableHide, value); }
         }
 
-        public bool _BtnAfterSaveEnable = false;
         public bool BtnAfterSaveEnable
         {
-            get => _BtnAfterSaveEnable;
-            set => Set(ref _BtnAfterSaveEnable, value);
+            get { return GetProperty(() => BtnAfterSaveEnable); }
+            set { SetProperty(() => BtnAfterSaveEnable, value); }
         }
 
-
-        public ICommand EditableCommand { get; }
-
-        private bool CanEditableCommandExecute(object p) => true;
-        private void OnEditableCommandExecuted(object p)
+        [Command]
+        public void Editable()
         {
             try
             {
@@ -141,22 +122,13 @@ namespace Dental.ViewModels
 
         #endregion
 
-        #region Прикрепление файлов
+
         #region команды, связанных с прикреплением к карте пациентов файлов 
         private const string EMPLOYEES_DIRECTORY = "Dental\\Employees";
         private string PathToEmployees { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EMPLOYEES_DIRECTORY);
 
-        public ICommand DeleteFileCommand { get; }
-        public ICommand ExecuteFileCommand { get; }
-        public ICommand AttachmentFileCommand { get; }
-        public ICommand OpenDirectoryCommand { get; }
-
-        private bool CanDeleteFileCommandExecute(object p) => true;
-        private bool CanExecuteFileCommandExecute(object p) => true;
-        private bool CanAttachmentFileCommandExecute(object p) => true;
-        private bool CanOpenDirectoryCommandExecute(object p) => true;
-
-        private void OnOpenDirectoryCommandExecuted(object p)
+        [Command]
+        public void OpenDirectory()
         {
             try
             {
@@ -171,7 +143,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnExecuteFileCommandExecuted(object p)
+        [Command]
+        public void ExecuteFile(object p)
         {
             try
             {
@@ -186,7 +159,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAttachmentFileCommandExecuted(object p)
+        [Command]
+        public void AttachmentFile()
         {
             try
             {
@@ -224,11 +198,9 @@ namespace Dental.ViewModels
 
                 File.Copy(file.FullName, Path.Combine(path, file.Name), true);
 
-                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name));
-                newFile.CreationTime = DateTime.Now;
+                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name)) { CreationTime = DateTime.Now };
 
                 var names = new string[] { Model.Fio, "добавлен файл", newFile.Name };
-                ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Employee"]);
 
                 Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
             }
@@ -238,7 +210,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteFileCommandExecuted(object p)
+        [Command]
+        public void DeleteFile(object p)
         {
             try
             {
@@ -248,7 +221,6 @@ namespace Dental.ViewModels
                     if (response.ToString() == "No") return;
                     file.Delete();
                     var names = new string[] { Model.Fio, "удален файл", file.Name };
-                    ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);
                     Files = new DirectoryInfo(GetPathToEmpDir()).GetFiles().ToObservableCollection();
                 }
             }
@@ -267,12 +239,11 @@ namespace Dental.ViewModels
 
         public ObservableCollection<FileInfo> Files
         {
-            get => files;
-            set => Set(ref files, value);
+            get { return GetProperty(() => Files); }
+            set { SetProperty(() => Files, value); }
         }
-        private ObservableCollection<FileInfo> files;
         #endregion
-        #endregion
+
 
         #region Вспомогательные справочники, заголовок
         public IEnumerable<Dictionary> Statuses { get; set; }
@@ -287,11 +258,6 @@ namespace Dental.ViewModels
 
 
         #region Управление моделью
-        public ICommand SaveCommand { get; }
-        public ICommand DeleteCommand { get; }
-
-        private bool CanSaveCommandExecute(object p) => true;
-        private bool CanDeleteCommandExecute(object p) => true;
 
         public Employee ModelBeforeChanges { get; set; }
 
@@ -304,11 +270,10 @@ namespace Dental.ViewModels
             return hasUnsavedChanges;
         }
 
-        public Employee _Model;
         public Employee Model
         {
-            get => _Model;
-            set => Set(ref _Model, value);
+            get { return GetProperty(() => Model); }
+            set { SetProperty(() => Model, value); }
         }
 
         private Employee GetModel(int id = 0) => id != 0 ? db.Employes.Where(f => f.Id == id)
@@ -329,7 +294,8 @@ namespace Dental.ViewModels
             return response.ToString() == "No";
         }
 
-        private void OnSaveCommandExecuted(object p)
+        [Command]
+        public void Save()
         {
             try
             {
@@ -339,13 +305,11 @@ namespace Dental.ViewModels
                 {
                     db.Employes.Add(Model);
                     VmList?.Collection?.Add(Model);
-                    ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["Employee"]);
                     BtnAfterSaveEnable = true;
                 }
                 else
                 {
                     db.Entry(Model).State = EntityState.Modified;
-                    ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["Employee"]);
                 }
                 SavePhoto();
 
@@ -365,7 +329,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteCommandExecuted(object p)
+        [Command]
+        public void Delete(object p)
         {
             try
             {
@@ -377,19 +342,11 @@ namespace Dental.ViewModels
                 DeleteEmployeeFiles();
                 
                 db.Entry(Model).State = EntityState.Deleted;
-                ActionsLog.RegisterAction(Model.Fio, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["Employee"]);
-                int cnt = db.SaveChanges();
 
-                if (cnt > 0) 
-                {
-                    var notification = new Notification();
-                    notification.Content = "Анкета сотрудника полностью удалена из базы данных!";
-                    notification.run();
-                }
-                if (Application.Current.Resources["Router"] is Navigator nav)
-                {
-                    nav.LeftMenuClick.Execute("Dental.Views.EmployeeDir.Employes");
-                }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run();
+                               
+                if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick("Dental.Views.EmployeeDir.Employes");
+                
                 VmList.EmployeeWin.Close();                                       
             }
             catch
@@ -414,13 +371,11 @@ namespace Dental.ViewModels
         #endregion
 
         #region Управление фото
-
         public ImageSource Image
         {
-            get => image;
-            set => Set(ref image, value);
+            get { return GetProperty(() => Image); }
+            set { SetProperty(() => Image, value); }
         }
-        public ImageSource image;
 
         private string GetPathToPhoto() => Path.Combine(GetPathToEmpDir(), "Logo");
 
@@ -467,8 +422,7 @@ namespace Dental.ViewModels
                     if (!logo.Exists) logo.Create();
                     logo.CopyTo(Path.Combine(GetPathToPhoto(), logo.Name), true);
 
-                    FileInfo newFile = new FileInfo(Path.Combine(GetPathToPhoto(), logo.Name));
-                    newFile.CreationTime = DateTime.Now;
+                    FileInfo newFile = new FileInfo(Path.Combine(GetPathToPhoto(), logo.Name)) { CreationTime = DateTime.Now };
                     Model.Photo = newFile.FullName;
 
                     // подчищаем директорию. Оставляем только файл, который используется в качестве фото, остальные удаляем.

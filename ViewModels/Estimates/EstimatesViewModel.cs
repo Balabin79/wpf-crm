@@ -55,7 +55,7 @@ namespace Dental.ViewModels.Estimates
                 }
 
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Сметы\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -241,7 +241,7 @@ namespace Dental.ViewModels.Estimates
         }
 
         [Command]
-        public void SaveRowInEstimate(object p)
+        public void SaveRowInEstimate()
         {
             if (string.IsNullOrEmpty(EstimateServiceItemVM.Service?.Name)) return;
             try
@@ -379,7 +379,7 @@ namespace Dental.ViewModels.Estimates
         }
 
         [Command]
-        public void SaveMaterialRowInEstimate(object p)
+        public void SaveMaterialRowInEstimate()
         {
             if (string.IsNullOrEmpty(EstimateMaterialItemVM.Nomenclature?.Name)) return;
             try

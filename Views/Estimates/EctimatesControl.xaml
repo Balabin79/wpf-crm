@@ -395,7 +395,7 @@
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormEstimateCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Создать смету" 
-                                IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}" 
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
@@ -494,21 +494,20 @@
                     <DataTemplate>
                         <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                             <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                                <dxb:BarButtonItem Name="bOpen"
+                                <dxb:BarButtonItem 
                                            Content="Открыть форму"                                                            
                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateCommand}"
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                           Command="{Binding ElementName=grid, Path=DataContext.OpenFormEstimateCommand}"
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
-                                <dxb:BarButtonItem Name="bDelete"                                             
-                                           Content="Удалить" 
+                                <dxb:BarButtonItem Content="Удалить" 
                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=view, Path=DataContext.DeleteEstimateCommand}" 
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>

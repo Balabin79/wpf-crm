@@ -6,7 +6,7 @@ using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
-    class AdvReportsViewModel : ViewModelBase
+    class AdvReportsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         
         public AdvReportsViewModel()
@@ -31,7 +31,7 @@ namespace Dental.ViewModels
         public IEnumerable<Advertising> Adv { get; }
         public IEnumerable<StatByAdv> Stat2D { get; }
        
-        ApplicationContext db;
+        private readonly ApplicationContext db;
     }
 
     public class StatByAdv

@@ -14,18 +14,16 @@ using System.IO;
 using System.Diagnostics;
 using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Infrastructures.Converters;
-using Dental.Views.PatientCard;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Core.Objects;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Xpf.Printing;
+using Dental.Services.Files;
 
 namespace Dental.ViewModels
 {
     class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private  ApplicationContext db;
-        private PatientListViewModel VmList;
+        private readonly ApplicationContext db;
+        private readonly PatientListViewModel VmList;
 
         public ClientCardViewModel(int clientId, PatientListViewModel vmList)
         {
@@ -33,32 +31,17 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 VmList = vmList;
-                Model = db.Clients.Where(f => f.Id == clientId)
-                    .Include(f => f.Estimates.Select(i => i.EstimateServiseItems.Select(x => x.Employee)))
-                    .Include(f => f.Estimates.Select(i => i.EstimateServiseItems.Select(x => x.Service)))
-                    .Include(f => f.Advertising).FirstOrDefault() ?? new Client();
-                Files = new ObservableCollection<FileInfo>();
+                Model = db.Clients.Where(f => f.Id == clientId).Include(f => f.Advertising).FirstOrDefault() ?? new Client();
+                ClientInfoViewModel = new ClientInfoViewModel(Model);
+
+                Files = new UserFilesManagement(Model.Guid).GetFiles()?.ToObservableCollection();
                 Ids = ProgramDirectory.GetIds();    
 
-                // Если patientCardNumber == 0, то это создается новая карта клиента, иначе загружаем данные существующего клиента
+                IsReadOnly = Model.Id != 0;
 
-                if (Model.Id == 0)
+       
+                /*else
                 {
-                    NumberPatientCard = CreateNewNumberPatientCard().ToString();
-                    Model.ClientCardCreatedAt = DateTime.Now.ToShortDateString();
-
-                    // для новой карты пациента все поля по-умолчанию доступны для редактирования
-                    IsReadOnly = false;
-                    BtnIconEditableHide = false;
-                    BtnIconEditableVisible = true;
-                }
-                else
-                {
-                    //для существующей карты пациента все поля по-умолчанию недоступны для редактирования
-                    NumberPatientCard = Model?.Id.ToString();
-                    IsReadOnly = true;
-                    BtnIconEditableHide = true;
-                    BtnIconEditableVisible = false;
 
                     if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
                     {
@@ -68,72 +51,70 @@ namespace Dental.ViewModels
                     {
                         Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
                     }
-                }
-                ModelBeforeChanges = (Client)Model.Clone();
-                AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
+                }*/
 
+
+                AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
                 Appointments = db.Appointments
-                    .Include(f => f.Service)
-                    .Include(f => f.Employee)
-                    .Include(f => f.Location)
-                    .Where(f => f.ClientInfoId == Model.Id)
-                    .OrderBy(f => f.CreatedAt)
+                    .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-     
-
-        #region команды, связанные с общим функционалом карты пациента
 
         [Command]
-        public void Editable()
+        public void Editable() => IsReadOnly = !IsReadOnly;
+
+        [Command]
+        public void Save()
         {
             try
             {
-                IsReadOnly = !IsReadOnly;
-                BtnIconEditableHide = IsReadOnly;
-                BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
+                ClientInfoViewModel.Copy(Model);
+                if (Model.Id == 0)
+                {                 
+                    db.Clients.Add(Model);
+                    VmList?.Collection?.Add(Model);
+                    db.SaveChanges();
+                    new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
+                }
+                else
+                {
+                    if (db.SaveChanges() > 0) 
+                    {
+                        VmList?.SetCollection();
+                        new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
+                    }
+                }
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
+
         }
 
         [Command]
-        public void Delete(object p)
+        public void Delete()
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены услуги, записи в расписании, в рассылках, обращениях клиента и все файлы прикрепленные к карте клиента!",
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены сметы, записи в расписании и все файлы прикрепленные к карте клиента!",
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
 
-                DeleteClientFiles();
+                new UserFilesManagement(Model.Guid).DeleteDirectory();
                 var id = Model?.Id;
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;
-                ModelBeforeChanges = null;
-                int cnt = db.SaveChanges();
-                // подчищаем остатки
-                //db.TreatmentPlanItems.Where(f => f.ClientId == null).ToArray()?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                db.SaveChanges();
-
-                if (cnt > 0)
-                {
-                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
-                    var notification = new Notification();
-                    notification.Content = "Карта клиента полностью удалена из базы данных!";
-                    notification.run();
-                }
-                if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick.Execute("Dental.Views.PatientCard.PatientsList");
+                if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
+               
+                if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList");
                 VmList.ClientCardWin.Close();
             }
             catch
@@ -142,66 +123,14 @@ namespace Dental.ViewModels
             }
         }
 
-        [Command]
-        public void Save(object p)
-        {
-            try
-            {
-                if (Model == null) return;
-                var notification = new Notification();
-                if (Model.Id == 0)
-                {
-                    notification.Content = "Новый клиент успешно записан в базу данных!";
-                    db.Clients.Add(Model);
-                    VmList?.Collection?.Add(Model);
-                    BtnAfterSaveEnable = true;
-                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
-                    db.SaveChanges();
-                }
-                else 
-                {
-                    //db.Entry(Model).State = EntityState.Modified;
-                    if (db.SaveChanges() > 0) VmList?.UpdateClientInList(Model);
-                    ActionsLog.RegisterAction(Model.FullName, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
-                    notification.Content = "Отредактированные данные клиента сохранены в базу данных!";
-                    // Update();
-                }
-                Model.UpdateFields();
-                if (HasUnsavedChanges())
-                {
-                    notification.run();
-                    ModelBeforeChanges = (Client)Model.Clone();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
-        }
-
-        // Поиск связанных с картой клиента данных перед их удалением
-        private void DeleteClientFiles()
-        {
-            try
-            {
-                string path = Path.Combine(PathToPatientsCards, Model.Guid);
-                if (Directory.Exists(path))  Directory.Delete(path, true);
-            } 
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Неудачная попытка удалить файлы, прикрепленные к карте клиента. Возможно файлы были запущены в другой программе! Попробуйте закрыть запущенные сторонние программы и повторить!",
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
-            }
-        }
-        #endregion
+ 
 
         #region команды, связанных с прикреплением к карте клиентов файлов 
-        private const string PATIENTS_CARDS_DIRECTORY = "Dental\\ClientsCards";
+        private const string PATIENTS_CARDS_DIRECTORY = "B6\\Files";
         private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
 
         [Command]
-        public void OpenDirectory(object p)
+        public void OpenDirectory()
         {
             try
             {
@@ -217,7 +146,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OExecuteFile(object p)
+        public void ExecuteFile(object p)
         {
             try
             {
@@ -233,7 +162,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void AttachmentFile(object p)
+        public void AttachmentFile()
         {
             try
             {
@@ -271,11 +200,9 @@ namespace Dental.ViewModels
                 
                 File.Copy(file.FullName, Path.Combine(path, file.Name), true);
 
-                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name));
-                newFile.CreationTime = DateTime.Now;
+                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name)) { CreationTime = DateTime.Now };
 
-                var names = new string[] { Model.FullName, "добавлен файл", newFile.Name };
-                ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ClientInfo"]);
+              //  var names = new string[] { Model.FullName, "добавлен файл", newFile.Name };
 
                 Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
             }
@@ -296,8 +223,7 @@ namespace Dental.ViewModels
                     if (response.ToString() == "No") return;
                      file.Delete();
 
-                    var names = new string[] { Model.FullName, "удален файл", file.Name };
-                    ActionsLog.RegisterAction(names, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ClientInfo"]);
+                    //var names = new string[] { Model.FullName, "удален файл", file.Name };
 
                     Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
                 }
@@ -311,7 +237,7 @@ namespace Dental.ViewModels
         private string GetPathToPatientCard() => Path.Combine(PathToPatientsCards, GetGuid());
         private string GetGuid()
         {
-            if (Model.Guid == null) Model.Guid = KeyGenerator.GetUniqueKey();
+            //if (Model.Guid == null) Model.Guid = KeyGenerator.GetUniqueKey();
             return Model.Guid;
         }
 
@@ -343,40 +269,35 @@ namespace Dental.ViewModels
         public bool HasUnsavedChanges()
         {
             bool hasUnsavedChanges = false;
-            if (Model.FieldsChanges != null) Model.FieldsChanges = Client.CreateFieldsChanges();
+            //if (Model.FieldsChanges != null) Model.FieldsChanges = Client.CreateFieldsChanges();
             if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
 
         public bool UserSelectedBtnCancel()
         {
-            string warningMessage = "";     
-            foreach (var tab in Model.FieldsChanges)
-            {
-                if (tab.Value.Count == 0) continue;
-                string fieldNames = " ";
-                foreach (var field in tab.Value)
-                {
-                    fieldNames += " \"" + field + "\",";
-                }
-                 warningMessage = "\nВо вкладке \"" + tab.Key + "\", поля:" + fieldNames.Remove(fieldNames.Length - 1) + "\n";
-            }
+            /* string warningMessage = "";     
+             foreach (var tab in Model.FieldsChanges)
+             {
+                 if (tab.Value.Count == 0) continue;
+                 string fieldNames = " ";
+                 foreach (var field in tab.Value)
+                 {
+                     fieldNames += " \"" + field + "\",";
+                 }
+                  warningMessage = "\nВо вкладке \"" + tab.Key + "\", поля:" + fieldNames.Remove(fieldNames.Length - 1) + "\n";
+             }
 
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+             var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-            return response.ToString() == "No";
+             return response.ToString() == "No";*/
+            return true;
         }
 
         public bool IsReadOnly
         {
             get { return GetProperty(() => IsReadOnly); }
             set { SetProperty(() => IsReadOnly, value); }
-        }
-
-        public string NumberPatientCard
-        {
-            get { return GetProperty(() => NumberPatientCard); }
-            set { SetProperty(() => NumberPatientCard, value); }
         }
 
         public bool BtnAfterSaveEnable
@@ -391,6 +312,12 @@ namespace Dental.ViewModels
             set { SetProperty(() => Model, value); }
         }
 
+        public ClientInfoViewModel ClientInfoViewModel
+        {
+            get { return GetProperty(() => ClientInfoViewModel); }
+            set { SetProperty(() => ClientInfoViewModel, value); }
+        }
+
         public Client ModelBeforeChanges { get; set; }
 
         public ICollection<Advertising> AdvertisingList { get; set; }
@@ -402,13 +329,6 @@ namespace Dental.ViewModels
         }
 
         private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
-
-        private int CreateNewNumberPatientCard()
-        {
-            var id = db.Clients?.Max(e => e.Id);
-            if (id == null) return 1;
-            return (int)++id;
-        }
 
         public bool BtnIconEditableVisible
         {
@@ -429,5 +349,7 @@ namespace Dental.ViewModels
         }
 
         public ObservableCollection<FileInfo> Ids { get; }
+
+        /**********************************************/
     }
 }

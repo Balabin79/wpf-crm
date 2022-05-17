@@ -16,14 +16,9 @@ namespace Dental.Views.Templates
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            RowData row = item as RowData;
-            if (row != null)
-            {
-                if (row.Row is Dental.Models.Service c) {
-                    return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
-                }                 
-            }
+            if (item is RowData row && row.Row is Models.Service c) return c.IsDir == 0 ? FileRowDetailsTemplate : DirectoryRowDetailsTemplate;
             return base.SelectTemplate(item, container);
+
         }
     }
 }

@@ -28,10 +28,6 @@ namespace Dental.Infrastructures.Converters
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var str = value?.ToString();
-            return  (str != null)  ? str : "0.00";
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value?.ToString() ?? "0.00";        
     }
 }

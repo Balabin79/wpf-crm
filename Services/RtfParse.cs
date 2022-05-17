@@ -12,7 +12,6 @@ namespace Dental.Services
     {
         public RtfParse(string txt, Client model)
         {
-            ApplicationContext db = new ApplicationContext();
             RtfText = txt;
             Model = model;
         }

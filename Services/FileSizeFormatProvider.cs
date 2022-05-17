@@ -71,11 +71,7 @@ namespace Dental.Services
 
         private static string defaultFormat(string format, object arg, IFormatProvider formatProvider)
         {
-            IFormattable formattableArg = arg as IFormattable;
-            if (formattableArg != null)
-            {
-                return formattableArg.ToString(format, formatProvider);
-            }
+            if(arg is IFormattable formattableArg) return formattableArg.ToString(format, formatProvider);            
             return arg.ToString();
         }
 

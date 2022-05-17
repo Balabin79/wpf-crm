@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.Data.Entity;
@@ -15,20 +13,15 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using Dental.Views.WindowForms;
 using Dental.Services;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class ClassificatorViewModel : ViewModelBase
+    class ClassificatorViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
         public ClassificatorViewModel()
         {
-            DeleteCommand = new LambdaCommand(OnDeleteCommandExecuted, CanDeleteCommandExecute);
-            SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-            OpenFormCommand = new LambdaCommand(OnOpenFormCommandExecuted, CanOpenFormCommandExecute);
-            CancelFormCommand = new LambdaCommand(OnCancelFormCommandExecuted, CanCancelFormCommandExecute);         
-            ExpandTreeCommand = new LambdaCommand(OnExpandTreeCommandExecuted, CanExpandTreeCommandExecute);
-
             try
             {
                 db = new ApplicationContext();
@@ -36,23 +29,13 @@ namespace Dental.ViewModels
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Перечень услуг\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICommand DeleteCommand { get; }
-        public ICommand SaveCommand { get; }
-        public ICommand OpenFormCommand { get; }
-        public ICommand CancelFormCommand { get; }
-        public ICommand ExpandTreeCommand { get; }
-        private bool CanDeleteCommandExecute(object p) => true;
-        private bool CanSaveCommandExecute(object p) => true;
-        private bool CanOpenFormCommandExecute(object p) => true;
-        private bool CanCancelFormCommandExecute(object p) => true;
-        private bool CanExpandTreeCommandExecute(object p) => true;
-
-        private void OnExpandTreeCommandExecuted(object p)
+        [Command]
+        public void ExpandTree(object p)
         {
             try
             {
@@ -75,8 +58,8 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void OnDeleteCommandExecuted(object p)
+        [Command]
+        public void Delete(object p)
         {
             try
             {
@@ -88,7 +71,6 @@ namespace Dental.ViewModels
                 else
                 {
                     Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection());
-                    ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["delete"], ActionsLog.SectionPage["ServicesItems"]);
                 }
                 db.SaveChanges();
             }
@@ -97,8 +79,8 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void OnSaveCommandExecuted(object p)
+        [Command]
+        public void Save()
         {
             try
             {
@@ -129,8 +111,8 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void OnOpenFormCommandExecuted(object p)
+        [Command]
+        public void OpenForm(object p)
         {
             try
             {
@@ -185,32 +167,33 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void OnCancelFormCommandExecuted(object p) => Window.Close();
+        [Command]
+        public void CancelForm() => Window.Close();
 
         /************* Специфика этой ViewModel ******************/
-        private ObservableCollection<Service> _Group;
+
         public ObservableCollection<Service> Group
         {
-            get => _Group;
-            set => Set(ref _Group, value);
+            get { return GetProperty(() => Group); }
+            set { SetProperty(() => Group, value); }
         }
 
         public Service WithoutCategory { get; set; } = new Service() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
 
-        private object _SelectedGroup;
         public object SelectedGroup
         {
-            get => _SelectedGroup;
-            set => Set(ref _SelectedGroup, value);
+            get { return GetProperty(() => SelectedGroup); }
+            set { SetProperty(() => SelectedGroup, value); }
         }
 
         /******************************************************/
         public ObservableCollection<Service> Collection
         {
-            get => _Collection;
-            set => Set(ref _Collection, value);
+            get { return GetProperty(() => Collection); }
+            set { SetProperty(() => Collection, value); }
         }
+
+
         public Service Model { get; set; }
         public string Title { get; set; }
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
@@ -232,7 +215,6 @@ namespace Dental.ViewModels
             Window.Height = 280;
         }
 
-        private ObservableCollection<Service> _Collection;
         private ClassificatorWindow Window;
 
         private ObservableCollection<Service> GetCollection() => db.Services.OrderBy(d => d.Name).ToObservableCollection();
@@ -245,22 +227,13 @@ namespace Dental.ViewModels
         private void Add()
         {
             db.Entry(Model).State = EntityState.Added;
-            int rows = db.SaveChanges();
-            if (rows > 0)
-            {
-                Collection.Add(Model);
-                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["add"], ActionsLog.SectionPage["ServicesItems"]);
-            }            
+            if (db.SaveChanges() > 0) Collection.Add(Model);             
         }
         private void Update()
         {
             db.Entry(Model).State = EntityState.Modified;
-            int rows = db.SaveChanges();
-            if (rows > 0)
-            {
-                Model.UpdateFields();
-                ActionsLog.RegisterAction(Model.Name, ActionsLog.ActionsRu["edit"], ActionsLog.SectionPage["ServicesItems"]);
-            }         
+            if (db.SaveChanges() > 0) Model.UpdateFields();
+         
         }
 
         private void Delete(ObservableCollection<Service> collection)

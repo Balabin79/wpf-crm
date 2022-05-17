@@ -12,7 +12,6 @@ namespace Dental.Services
     {
         public MessageParse(string txt, Client[] clients)
         {
-            ApplicationContext db = new ApplicationContext();
             Text = txt;
             Clients = clients;
             Msgs = new List<string>();

@@ -72,12 +72,6 @@ namespace Dental.Models
         public DbSet<Estimate> Estimates { get; set; }
         public DbSet<EstimateServiceItem> EstimateServiceItems  { get; set; }
         public DbSet<EstimateMaterialItem> EstimateMaterialItems { get; set; }
-
-        public DbSet<PurchaseInvoice> PurchaseInvoice { get; set; }     
-        public DbSet<MovementGoods> MovementGoods { get; set; }     
-        public DbSet<CompletionAct> CompletionAct { get; set; }   
-        
-
-
+     
     }
 }

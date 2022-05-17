@@ -38,28 +38,28 @@
                     </DataTemplate>
                 </dxlc:LayoutGroup.HeaderTemplate>
 
-                <dxlc:LayoutItem Label="*Фамилия:"  Name="LastName" LabelPosition="Top" IsRequired="True" >
-                    <dxe:TextEdit Text="{Binding Model.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                <dxlc:LayoutItem Label="*Фамилия:" LabelPosition="Top" IsRequired="True" >
+                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="*Имя:"  Name="FirstName" LabelPosition="Top" IsRequired="True" >
-                    <dxe:TextEdit Text="{Binding Model.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                <dxlc:LayoutItem Label="*Имя:" LabelPosition="Top" IsRequired="True" >
+                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Отчество:"  Name="MiddleName" LabelPosition="Top" >
-                    <dxe:TextEdit Text="{Binding Model.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                <dxlc:LayoutItem Label="Отчество:" LabelPosition="Top" >
+                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutGroup Orientation="Horizontal">
-                    <dxlc:LayoutItem Label="Дата рождения:"  Name="BirthDate" LabelPosition="Top" >
-                        <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding Model.BirthDate, Mode=TwoWay, 
+                    <dxlc:LayoutItem Label="Дата рождения:" LabelPosition="Top" >
+                        <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding ClientInfoViewModel.BirthDate, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
 
-                    <dxlc:LayoutItem Label="Пол:"  Name="Gender" LabelPosition="Top" >
+                    <dxlc:LayoutItem Label="Пол:" LabelPosition="Top" >
                         <dxe:ComboBoxEdit ItemsSource="{Binding GenderList}"                                      
-                                      SelectedItem="{Binding Model.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      SelectedItem="{Binding ClientInfoViewModel.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Пол" IsTextEditable="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <dxe:ComboBoxEdit.StyleSettings>
@@ -71,29 +71,29 @@
                 </dxlc:LayoutGroup>
 
                 <dxlc:LayoutGroup Orientation="Horizontal">
-                    <dxlc:LayoutItem Label="Серия паспорта:"  Name="PassportSeries" LabelPosition="Top" >
+                    <dxlc:LayoutItem Label="Серия паспорта:" LabelPosition="Top" >
                         <dxe:TextEdit 
                         Margin="0,0,8,0"
                         Mask="d"
                         MaskType="Numeric"
-                        Text="{Binding Model.PassportSeries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
+                        Text="{Binding ClientInfoViewModel.PassportSeries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
                         IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Номер:"  Name="PassportNo" LabelPosition="Top" >
+                    <dxlc:LayoutItem Label="Номер:" LabelPosition="Top" >
                         <dxe:TextEdit 
                         Mask="d"
                         MaskType="Numeric"
-                        Text="{Binding Model.PassportNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
+                        Text="{Binding ClientInfoViewModel.PassportNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 
                         IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
 
                 <dxlc:LayoutItem Label="Дата выдачи:"  Name="PassportIssuanceDate" LabelPosition="Top" >
-                    <dxe:DateEdit   EditValue="{Binding Model.PassportIssuanceDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
+                    <dxe:DateEdit   EditValue="{Binding ClientInfoViewModel.PassportIssuanceDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Кем выдан:"  Name="WhomIssued" LabelPosition="Top" >
-                    <dxe:MemoEdit ShowIcon="False" ShowText="True" Text="{Binding Model.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <dxlc:LayoutItem Label="Кем выдан:" LabelPosition="Top" >
+                    <dxe:MemoEdit ShowIcon="False" ShowText="True" Text="{Binding ClientInfoViewModel.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
 
@@ -115,7 +115,7 @@
                                             MaskType="Simple"
                                             Mask="+7(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Model.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            EditValue="{Binding Path=ClientInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
@@ -127,7 +127,7 @@
                                             AllowDefaultButton="False"
                                             MaskType="RegEx"
                                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                            EditValue="{Binding Path=Model.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            EditValue="{Binding Path=ClientInfoViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True" IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
@@ -137,26 +137,26 @@
                 <dxlc:LayoutItem Label="Источник привлечения клиента:" Grid.Row="0" LabelPosition="Top" >
                     <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name" ValueMember="Id" 
                                   IsTextEditable="False"                                  
-                                  SelectedItem="{Binding Model.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
+                                  SelectedItem="{Binding ClientInfoViewModel.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Адрес проживания:" Name="Address" LabelPosition="Top" >
-                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
+                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Примечание:"  Name="Note" LabelPosition="Top" Height="86">
-                    <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding Model.Note, Mode=TwoWay, 
+                <dxlc:LayoutItem Label="Примечание:" LabelPosition="Top" Height="86">
+                    <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding ClientInfoViewModel.Note, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top" >
                         <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
-                                  IsChecked="{Binding Model.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsChecked="{Binding ClientInfoViewModel.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
@@ -186,7 +186,7 @@
                                            DataContext="{Binding ElementName=layoutGroup1}"
                                            Command="{Binding Path=DataContext.OpenDirectoryCommand}"
                                            CommandParameter="{Binding Path=DataContext.Model.Id, Mode=TwoWay}"
-                                           IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{DXBinding  Expr='DataContext.ClientInfoViewModel.Id != 0 or !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                         />
                                     
                                     <dxb:BarButtonItem 

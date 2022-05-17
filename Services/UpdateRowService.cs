@@ -5,9 +5,7 @@ namespace Dental.Services
 {
     public class UpdateRowService : ServiceBase, IUpdateRowService
     {
-        public void UpdateRow()
-        {
-            (AssociatedObject as TableView).UpdateRow();
-        }
+        public void UpdateRow() => (AssociatedObject as TableView).UpdateRow();
+      
     }
 }

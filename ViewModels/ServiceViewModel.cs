@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.Data.Entity;
@@ -12,16 +11,15 @@ using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class ServiceViewModel : ViewModelBase
+    class ServiceViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
         public ServiceViewModel()
         {
-            ExpandAllCommand = new LambdaCommand(OnExpandAllCommandExecuted, CanExpandAllCommandExecute);
-
             try
             {
                 db = new ApplicationContext();
@@ -34,16 +32,15 @@ namespace Dental.ViewModels
                     .OrderBy(f => f.CreatedAt)
                     .ToArray();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Услуги\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICommand ExpandAllCommand { get; }
-        private bool CanExpandAllCommandExecute(object p) => true;
-        private void OnExpandAllCommandExecuted(object p)
+        [Command]
+        public void ExpandAll(object p)
         {
             try
             {

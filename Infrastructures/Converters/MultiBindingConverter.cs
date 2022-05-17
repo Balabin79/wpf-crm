@@ -18,15 +18,13 @@ namespace Dental.Infrastructures.Converters
         {
             try
             {
-                var findCommandParameters = new FindCommandParameters();
-
-                findCommandParameters.Tree = (TreeListView)(System.Windows.FrameworkElement)Values[0];
-
-                findCommandParameters.Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1];
-
-                return findCommandParameters;
+                return new FindCommandParameters()
+                {
+                    Tree = (TreeListView)(System.Windows.FrameworkElement)Values[0],
+                    Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1]
+                };
             } 
-            catch (Exception e)
+            catch
             {
                 return new object();
             }

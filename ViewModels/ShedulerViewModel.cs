@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.Data.Entity;
@@ -16,10 +14,11 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using Dental.Views.WindowForms;
 using System.Windows.Media;
+using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
 {
-    class ShedulerViewModel : ViewModelBase
+    class ShedulerViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
         public ShedulerViewModel()
@@ -30,32 +29,6 @@ namespace Dental.ViewModels
                 LocationAppointments = GetLocationCollection();
                 StatusAppointments = GetStatusCollection();
                 ClassificatorCategories = db.Services.ToObservableCollection();
-
-                SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
-
-                #region Команды формы Appointment
-                AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
-                AppointmentEditedCommand = new LambdaCommand(OnAppointmentEditedCommandExecuted, CanAppointmentEditedCommandExecute);
-                AppointmentRemovedCommand = new LambdaCommand(OnAppointmentRemovedCommandExecuted, CanAppointmentRemovedCommandExecute);
-                #endregion 
-
-                #region Команды локации встреч
-                OpenWindowLocationCommand = new LambdaCommand(OnOpenWindowLocationExecuted, CanOpenWindowLocationExecute);
-                CloseWindowLocationCommand = new LambdaCommand(OnCloseWindowLocationExecuted, CanCloseWindowLocationExecute);
-                AddLocationCommand = new LambdaCommand(OnAddLocationExecuted, CanAddLocationExecute);
-                DeleteLocationCommand = new LambdaCommand(OnDeleteLocationExecuted, CanDeleteLocationExecute);
-                SaveLocationCommand = new LambdaCommand(OnSaveLocationExecuted, CanSaveLocationExecute);
-                #endregion
-
-                #region Команды статусы
-                OpenWindowStatusCommand = new LambdaCommand(OnOpenWindowStatusExecuted, CanOpenWindowStatusExecute);
-                CloseWindowStatusCommand = new LambdaCommand(OnCloseWindowStatusExecuted, CanCloseWindowStatusExecute);
-                AddStatusCommand = new LambdaCommand(OnAddStatusExecuted, CanAddStatusExecute);
-                DeleteStatusCommand = new LambdaCommand(OnDeleteStatusExecuted, CanDeleteStatusExecute);
-                SaveStatusCommand = new LambdaCommand(OnSaveStatusExecuted, CanSaveStatusExecute);
-                #endregion
-
-                AppointmentAddedCommand = new LambdaCommand(OnAppointmentAddedCommandExecuted, CanAppointmentAddedCommandExecute);
 
                 Doctors = db.Employes.OrderBy(d => d.LastName).ToObservableCollection();
                 foreach (var i in Doctors)
@@ -87,26 +60,16 @@ namespace Dental.ViewModels
 
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ICommand SaveCommand { get; }
-        
-        private bool CanSaveCommandExecute(object p) => true;
-        
-        #region "Форма Appointment"
-        public ICommand AppointmentAddedCommand { get; }
-        public ICommand AppointmentEditedCommand { get; }
-        public ICommand AppointmentRemovedCommand { get; }
-        private bool CanAppointmentAddedCommandExecute(object p) => true;
-        private bool CanAppointmentEditedCommandExecute(object p) => true;
-        private bool CanAppointmentRemovedCommandExecute(object p) => true;
-
-        private void OnAppointmentAddedCommandExecuted(object p)
+     
+        [Command]
+        public void AppointmentAdded(object p)
         {
             try
             {
@@ -129,7 +92,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAppointmentEditedCommandExecuted(object p)
+        [Command]
+        public void AppointmentEdited(object p)
         {
             try
             {
@@ -151,7 +115,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnAppointmentRemovedCommandExecuted(object p)
+        [Command]
+        public void AppointmentRemoved(object p)
         {
             try
             {
@@ -168,27 +133,14 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-        #endregion
 
         #region Справочник "Места встреч"
-        public ICommand OpenWindowLocationCommand { get; }
-        public ICommand CloseWindowLocationCommand { get; }
-
-        public ICommand AddLocationCommand { get; }
-        public ICommand DeleteLocationCommand { get; }
-        public ICommand SaveLocationCommand { get; }
-        private bool CanOpenWindowLocationExecute(object p) => true;
-        private bool CanCloseWindowLocationExecute(object p) => true;
-        private bool CanAddLocationExecute(object p) => true;
-        private bool CanDeleteLocationExecute(object p) => true;
-        private bool CanSaveLocationExecute(object p) => true;
-
-        private void OnOpenWindowLocationExecuted(object p)
+        [Command]
+        public void OpenWindowLocation(object p)
         {
             try
             {
-                LocationWindow = new LocationAppointmentWindow();
-                LocationWindow.DataContext = this; 
+                LocationWindow = new LocationAppointmentWindow() { DataContext = this };
                 LocationWindow.ShowDialog();
             }
             catch (Exception e)
@@ -197,9 +149,11 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCloseWindowLocationExecuted(object p) => LocationWindow.Close();
+        [Command]
+        public void CloseWindowLocation(object p) => LocationWindow.Close();
 
-        private void OnAddLocationExecuted(object p)
+        [Command]
+        public void AddLocation(object p)
         {
             try
             {
@@ -211,7 +165,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteLocationExecuted(object p)
+        [Command]
+        public void DeleteLocation(object p)
         {
             try
             {
@@ -241,7 +196,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveLocationExecuted(object p)
+        [Command]
+        public void SaveLocation(object p)
         {
             try
             {
@@ -250,54 +206,36 @@ namespace Dental.ViewModels
                     if (string.IsNullOrEmpty(item.Name)) continue;
                     if (item.Id == 0) db.Entry(item).State = EntityState.Added;
                 }
-                int cnt = db.SaveChanges();
                 LocationAppointments = GetLocationCollection();
                 LocationAppointmentsBeforeChanges.Clear();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
-                if (cnt > 0)
-                {
-                    var notification = new Notification();
-                    notification.Content = "Изменения сохранены в базу данных!";
-                    notification.run();
-                }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                new ViewModelLog(e).run();
             }
         }
 
         public LocationAppointmentWindow LocationWindow { get; set; }
-        public ObservableCollection<LocationAppointment> LocationAppointments 
+
+        public ObservableCollection<LocationAppointment> LocationAppointments
         {
-            get => locationAppointments;
-            set => Set(ref locationAppointments, value); 
+            get { return GetProperty(() => LocationAppointments); }
+            set { SetProperty(() => LocationAppointments, value); }
         }
-        private ObservableCollection<LocationAppointment> locationAppointments;
 
         public ObservableCollection<LocationAppointment> LocationAppointmentsBeforeChanges { get; set; } = new ObservableCollection<LocationAppointment>();
         private ObservableCollection<LocationAppointment>  GetLocationCollection() => db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
         #endregion
 
-        #region Справочник "Статусы в шедулере"
-        public ICommand OpenWindowStatusCommand { get; }
-        public ICommand CloseWindowStatusCommand { get; }
-
-        public ICommand AddStatusCommand { get; }
-        public ICommand DeleteStatusCommand { get; }
-        public ICommand SaveStatusCommand { get; }
-        private bool CanOpenWindowStatusExecute(object p) => true;
-        private bool CanCloseWindowStatusExecute(object p) => true;
-        private bool CanAddStatusExecute(object p) => true;
-        private bool CanDeleteStatusExecute(object p) => true;
-        private bool CanSaveStatusExecute(object p) => true;
-
-        private void OnOpenWindowStatusExecuted(object p)
+        #region Справочник "Статусы в шедулере"       
+        [Command]
+        public void OpenWindowStatus(object p)
         {
             try
             {
-                StatusWindow = new StatusAppointmentWindow();
-                StatusWindow.DataContext = this;
+                StatusWindow = new StatusAppointmentWindow() { DataContext = this };
                 StatusWindow.ShowDialog();
             }
             catch (Exception e)
@@ -306,9 +244,11 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnCloseWindowStatusExecuted(object p) => StatusWindow.Close();
+        [Command]
+        public void CloseWindowStatus(object p) => StatusWindow.Close();
 
-        private void OnAddStatusExecuted(object p)
+        [Command]
+        public void AddStatus(object p)
         {
             try
             {
@@ -320,7 +260,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnSaveStatusExecuted(object p)
+        [Command]
+        public void SaveStatus(object p)
         {
             try
             {
@@ -336,16 +277,10 @@ namespace Dental.ViewModels
                         item.BrushColor = item.Brush?.Color.ToString();
                     }
                 }
-                int cnt = db.SaveChanges();
                 StatusAppointmentsBeforeChanges.Clear();
                 StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
                 
-                if (cnt > 0)
-                {
-                    var notification = new Notification();
-                    notification.Content = "Изменения сохранены в базу данных!";
-                    notification.run();
-                }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
@@ -353,7 +288,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void OnDeleteStatusExecuted(object p)
+        [Command]
+        public void DeleteStatus(object p)
         {
             try
             {
@@ -384,12 +320,12 @@ namespace Dental.ViewModels
         }
 
         public StatusAppointmentWindow StatusWindow { get; set; }
+
         public ObservableCollection<AppointmentStatus> StatusAppointments
         {
-            get => statusAppointments;
-            set => Set(ref statusAppointments, value);
+            get { return GetProperty(() => StatusAppointments); }
+            set { SetProperty(() => StatusAppointments, value); }
         }
-        private ObservableCollection<AppointmentStatus> statusAppointments;
 
         public ObservableCollection<AppointmentStatus> StatusAppointmentsBeforeChanges { get; set; } = new ObservableCollection<AppointmentStatus>();
         private ObservableCollection<AppointmentStatus> GetStatusCollection()
@@ -412,7 +348,8 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        private void OnSaveCommandExecuted(object p)
+        [Command]
+        public void Save(object p)
         {
             try
             {

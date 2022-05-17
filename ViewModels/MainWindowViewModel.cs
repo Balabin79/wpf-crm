@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Dental.Models;
-using System.Data.Entity;
-using System.Collections;
-using System.Windows.Media.Imaging;
-using System.IO;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using System.Windows.Input;
-using Dental.Infrastructures.Commands.Base;
-using Dental.Services;
-using System.Collections.Generic;
-using Dental.Infrastructures.Logs;
-using Dental.Views.EmployeeDir;
+
 using Dental.Views.Header;
 using DevExpress.Mvvm.DataAnnotations;
 
@@ -21,7 +12,7 @@ namespace Dental.ViewModels
     class MainWindowViewModel : DevExpress.Mvvm.ViewModelBase
     {
 
-        private ApplicationContext db;
+        private readonly ApplicationContext db;
         public MainWindowViewModel()
         {
             try
