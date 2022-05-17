@@ -161,7 +161,7 @@
 
             <dxb:BarButtonItem 
                 Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.Payrolls.Main">
+                CommandParameter="Dental.Views.SalesPage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>

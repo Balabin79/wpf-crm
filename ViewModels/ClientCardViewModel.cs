@@ -34,25 +34,10 @@ namespace Dental.ViewModels
                 Model = db.Clients.Where(f => f.Id == clientId).Include(f => f.Advertising).FirstOrDefault() ?? new Client();
                 ClientInfoViewModel = new ClientInfoViewModel(Model);
 
-                Files = new UserFilesManagement(Model.Guid).GetFiles()?.ToObservableCollection();
+                UserFiles = new UserFilesManagement(Model.Guid);
                 Ids = ProgramDirectory.GetIds();    
 
                 IsReadOnly = Model.Id != 0;
-
-       
-                /*else
-                {
-
-                    if (Model != null && ProgramDirectory.HasPatientCardDirectory(Model.Id.ToString()))
-                    {
-                        Files = ProgramDirectory.GetFilesFromPatientCardDirectory(Model.Id.ToString()).ToObservableCollection<FileInfo>();                        
-                    }
-                    if (Directory.Exists(GetPathToPatientCard()))
-                    {
-                        Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
-                    }
-                }*/
-
 
                 AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
                 Appointments = db.Appointments
@@ -76,7 +61,7 @@ namespace Dental.ViewModels
             {
                 ClientInfoViewModel.Copy(Model);
                 if (Model.Id == 0)
-                {                 
+                {
                     db.Clients.Add(Model);
                     VmList?.Collection?.Add(Model);
                     db.SaveChanges();
@@ -84,7 +69,7 @@ namespace Dental.ViewModels
                 }
                 else
                 {
-                    if (db.SaveChanges() > 0) 
+                    if (db.SaveChanges() > 0)
                     {
                         VmList?.SetCollection();
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
@@ -95,7 +80,6 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
-
         }
 
         [Command]
@@ -113,7 +97,7 @@ namespace Dental.ViewModels
                 //удалить также в расписании
                 db.Entry(Model).State = EntityState.Deleted;
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
-               
+
                 if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList");
                 VmList.ClientCardWin.Close();
             }
@@ -122,131 +106,6 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка, перейдите в раздел \"Клиенты\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
- 
-
-        #region команды, связанных с прикреплением к карте клиентов файлов 
-        private const string PATIENTS_CARDS_DIRECTORY = "B6\\Files";
-        private string PathToPatientsCards { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), PATIENTS_CARDS_DIRECTORY);
-
-        [Command]
-        public void OpenDirectory()
-        {
-            try
-            {
-                if (Directory.Exists(GetPathToPatientCard())) Process.Start(GetPathToPatientCard());
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть содержащую файл директорию!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void ExecuteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file) Process.Start(file.FullName);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файла!",
-                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void AttachmentFile()
-        {
-            try
-            {
-                var filePath = string.Empty;
-                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    dialog.InitialDirectory = "c:\\";
-                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
-                    dialog.FilterIndex = 2;
-                    dialog.RestoreDirectory = true;
-
-                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-                    filePath = dialog.FileName;
-                    if (string.IsNullOrEmpty(filePath)) return;
-                }
-
-                FileInfo file = new FileInfo(filePath);
-
-                // проверяем на наличие существующего файла
-                foreach (var i in Files)
-                {
-                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
-
-                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
-                        i.Delete();
-                    }
-                }
-
-                string path = GetPathToPatientCard();
-
-                if (!Directory.Exists(path))  Directory.CreateDirectory(path);
-                
-                File.Copy(file.FullName, Path.Combine(path, file.Name), true);
-
-                FileInfo newFile = new FileInfo(Path.Combine(path, file.Name)) { CreationTime = DateTime.Now };
-
-              //  var names = new string[] { Model.FullName, "добавлен файл", newFile.Name };
-
-                Files = new DirectoryInfo(path).GetFiles().ToObservableCollection();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void DeleteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-                     file.Delete();
-
-                    //var names = new string[] { Model.FullName, "удален файл", file.Name };
-
-                    Files = new DirectoryInfo(GetPathToPatientCard()).GetFiles().ToObservableCollection();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        private string GetPathToPatientCard() => Path.Combine(PathToPatientsCards, GetGuid());
-        private string GetGuid()
-        {
-            //if (Model.Guid == null) Model.Guid = KeyGenerator.GetUniqueKey();
-            return Model.Guid;
-        }
-
-        public ObservableCollection<FileInfo> Files
-        {
-            get { return GetProperty(() => Files); }
-            set { SetProperty(() => Files, value); }
-        }
-        #endregion
 
         [Command]
         public void OpenFormDoc(object p)
@@ -300,10 +159,10 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public bool BtnAfterSaveEnable
+        public UserFilesManagement UserFiles
         {
-            get { return GetProperty(() => BtnAfterSaveEnable); }
-            set { SetProperty(() => BtnAfterSaveEnable, value); }
+            get { return GetProperty(() => UserFiles); }
+            set { SetProperty(() => UserFiles, value); }
         }
 
         public Client Model
