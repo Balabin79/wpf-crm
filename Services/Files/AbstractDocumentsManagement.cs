@@ -1,52 +1,44 @@
 ﻿using System;
+using System.IO;
+using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Native;
+using DevExpress.Xpf.Core;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using Dental.Infrastructures.Logs;
-using Dental.Models;
-using System.IO;
-using Dental.Services;
-using DevExpress.Xpf.Core;
-using Dental.Views.WindowForms;
-using DevExpress.XtraRichEdit;
 using System.Diagnostics;
 using System.Windows;
-using DevExpress.Mvvm.DataAnnotations;
+using Dental.Views.WindowForms;
+using Dental.Models;
+using DevExpress.XtraRichEdit;
+using System.Linq;
 
-namespace Dental.ViewModels
+namespace Dental.Services.Files
 {
-    class IdsViewModel : DevExpress.Mvvm.ViewModelBase
+    public class AbstractDocumentsManagement : DevExpress.Mvvm.ViewModelBase
     {
-        public IdsViewModel()
+        public AbstractDocumentsManagement(string pathToDir, string guid = null)
         {
-            try
-            {
-                Ids = ProgramDirectory.GetIds();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может некорректно работать с документами!",  messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
+            PathToDir = pathToDir;
+            Guid = guid;
+            Files = GetFiles();
         }
 
-       [Command]
+        [Command]
         public void OpenFormDocEdit(object p)
         {
             try
             {
-                if (p == null) return;
-                string fileName = p.ToString();
+                string fileName = p?.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
-                    IDSWindow = new IDSWindow() { DataContext = this };
-                    var richEdit = IDSWindow.RichEdit;
-                    richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
-                    IDSWindow.Show();
+                    DocWindow = new IDSWindow() { DataContext = this };
+                    DocWindow.RichEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
+                    DocWindow.Show();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при открытии формы документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -55,19 +47,18 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p == null) return;
-                string fileName = p.ToString();
+                string fileName = p?.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить документ с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить документ?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     File.Delete(fileName);
-                    Ids = GetIds();
+                    Files = GetFiles().ToObservableCollection();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -89,11 +80,9 @@ namespace Dental.ViewModels
 
                     if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        string idsDirectory = GetPathIdsDirectoty();
-
-                        foreach (var ids in Ids)
+                        foreach (var file in Files)
                         {
-                            if (openFileDialog.SafeFileName == ids.Name)
+                            if (openFileDialog.SafeFileName == file.Name)
                             {
                                 var response = ThemedMessageBox.Show(title: "Внимание!", text: "Документ с таким именем уже существует. Вы хотите его заменить?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                                 if (response.ToString() == "No") return;
@@ -103,33 +92,21 @@ namespace Dental.ViewModels
                         filePath = openFileDialog.FileName;
                     }
                     openFileDialog.Dispose();
-                    //ProgramDirectory.ImportIds(new FileInfo(openFileDialog.FileName));
                 }
-                var newPath = Path.Combine(GetPathIdsDirectoty(), fileName);
+                var newPath = Path.Combine(PathToDir, fileName);
                 File.Copy(filePath, newPath, true);
-                Ids = ProgramDirectory.GetIds();
+                Files = GetFiles().ToObservableCollection();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импорта документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
         [Command]
         public void OnOpenDirDocCommandExecuted()
         {
-            try
-            {
-                var dir = GetPathIdsDirectoty();
-                if (Directory.Exists(dir)) Process.Start(dir);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть содержащую документы директорию!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
+                if (Directory.Exists(PathToDir)) Process.Start(PathToDir);
         }
 
         private DocumentFormat GetDocumentFormat(string fileName)
@@ -156,35 +133,33 @@ namespace Dental.ViewModels
                 return DocumentFormat.PlainText;
             }
         }
-       
-        private string GetPathIdsDirectoty() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), IDS_DIRECTORY);
-        
-        public const string IDS_DIRECTORY = "Dental\\Ids";
-        
-        private ObservableCollection<FileInfo> GetIds()
-        {
-            ObservableCollection<FileInfo> Ids = new ObservableCollection<FileInfo>();
-            var path = GetPathIdsDirectoty();
 
-            IEnumerable<string> filesNames = new List<string>();
-            string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
-            foreach (var format in formats)
+        public ObservableCollection<FileInfo> GetFiles()
+        {
+            try 
             {
-                var collection = Directory.EnumerateFiles(path, format).ToList();
-                if (collection.Count > 0) filesNames = filesNames.Union(collection);
+                if (!Directory.Exists(PathToDir))
+                {
+                    Directory.CreateDirectory(PathToDir);
+
+                }
+                IEnumerable<string> filesNames = new List<string>();
+                string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
+                foreach (var format in formats)
+                {
+                    var collection = Directory.EnumerateFiles(PathToDir, format).ToList();
+                    if (collection.Count > 0) filesNames = filesNames.Union(collection);
+                }
+                foreach (var filePath in filesNames) Files.Add(new FileInfo(filePath));
+                return Files;
+            } 
+            catch
+            {
+                return new ObservableCollection<FileInfo>();
             }
-            foreach (var filePath in filesNames) Ids.Add(new FileInfo(filePath));
-            return Ids;
+
         }
-
-        public IDSWindow IDSWindow { get; set; }
-
-        public ObservableCollection<FileInfo> Ids
-        {
-            get { return GetProperty(() => Ids); }
-            set { SetProperty(() => Ids, value); }
-        }
-
+      
         public void OpenFormDoc(Client Model, string fileName)
         {
             try
@@ -193,20 +168,31 @@ namespace Dental.ViewModels
                 {
                     FileInfo fileInfo = new FileInfo(fileName);
 
-                    IDSWindow = new IDSWindow() { DataContext = this };
-                    var richEdit = IDSWindow.RichEdit;
+                    DocWindow = new IDSWindow() { DataContext = this };
+                    var richEdit = DocWindow.RichEdit;
                     richEdit.ReadOnly = true;
                     richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
 
                     richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), fileInfo.Name);
                     richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
-                    IDSWindow.Show();
+                    DocWindow.Show();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+        virtual protected string PathToDir { get; }
+        virtual protected string Guid { get; }
+
+        public ObservableCollection<FileInfo> Files
+        {
+            get { return GetProperty(() => Files); }
+            set { SetProperty(() => Files, value); }
+        }
+
+        public IDSWindow DocWindow { get; set; }
     }
 }

@@ -34,7 +34,7 @@
             </dxlc:LayoutGroup.HeaderTemplate>
     
                 <dxg:GridControl  
-                    ItemsSource="{Binding Ids}"
+                    ItemsSource="{Binding Document.Files}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     MaxHeight="2000"
                     DataContext="{Binding}" 
@@ -58,12 +58,11 @@
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
                                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-
                                         <dxb:BarButtonItem 
                                            Content="Открыть документ"                                                            
                                            Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
                                            CommandParameter="{Binding Row}"/>
 
                                     </dxb:ToolBarControl>
@@ -87,12 +86,12 @@
                         <dxg:TableView.InputBindings>
                             <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
-                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
+                                CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
                         
                                 <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
-                                CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"/>
+                                Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
+                                CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
                             </dxg:TableView.InputBindings>
 
                             <dxg:TableView.RowCellMenuCustomizations >
@@ -100,9 +99,8 @@
                                     GlyphSize="Small" GlyphAlignment="Left"
                                     Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
                                     KeyGesture="Ctrl+O" Content="Открыть документ" 
-                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenFormDocCommand}"
-                                    CommandParameter="{Binding ElementName=IdsTableView, Path=FocusedRow}"
-                                    />
+                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
+                                    CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
                         </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>

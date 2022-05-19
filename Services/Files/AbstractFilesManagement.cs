@@ -143,7 +143,6 @@ namespace Dental.Services.Files
 
         virtual protected string PathTo { get; }
 
-
         public ObservableCollection<FileInfo> Files
         {
             get { return GetProperty(() => Files); }

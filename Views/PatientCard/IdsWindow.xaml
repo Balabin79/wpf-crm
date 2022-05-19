@@ -8,17 +8,17 @@
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         mc:Ignorable="d"
         dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+       xmlns:vm:DocumentsViewModel ="clr-namespace:Dental.Services.Files" 
         xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler" >
+        Title = "B6 Sheduler" >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
-        <vm:IdsViewModel x:Key="vm"/>
+        <vm:DocumentsViewModel x:Key="vm"/>
     </Window.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
 

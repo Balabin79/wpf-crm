@@ -121,7 +121,7 @@
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Документы">
-                            <Grid DataContext="{Binding}">
+                            <Grid DataContext="{Binding DataContext.DocumentsViewModel}">
                                 <tp:Ids/>
                             </Grid>
                         </dx:DXTabItem>

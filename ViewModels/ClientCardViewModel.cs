@@ -35,7 +35,7 @@ namespace Dental.ViewModels
                 ClientInfoViewModel = new ClientInfoViewModel(Model);
 
                 UserFiles = new UserFilesManagement(Model.Guid);
-                Ids = ProgramDirectory.GetIds();    
+                Document = new DocumentsViewModel();    
 
                 IsReadOnly = Model.Id != 0;
 
@@ -44,7 +44,7 @@ namespace Dental.ViewModels
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -112,16 +112,14 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p == null) return;
-                string fileName = p.ToString();
-                if (fileName != null && File.Exists(fileName))
-                {
-                    new IdsViewModel().OpenFormDoc(Model, fileName);
-                }
+                string fileName = p?.ToString();
+                if (fileName != null && File.Exists(fileName)) Document.OpenFormDoc(Model, fileName);
+
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открытия документа!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
        
@@ -129,7 +127,7 @@ namespace Dental.ViewModels
         {
             bool hasUnsavedChanges = false;
             //if (Model.FieldsChanges != null) Model.FieldsChanges = Client.CreateFieldsChanges();
-            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+           // if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
 
@@ -159,12 +157,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public UserFilesManagement UserFiles
-        {
-            get { return GetProperty(() => UserFiles); }
-            set { SetProperty(() => UserFiles, value); }
-        }
-
         public Client Model
         {
             get { return GetProperty(() => Model); }
@@ -177,37 +169,30 @@ namespace Dental.ViewModels
             set { SetProperty(() => ClientInfoViewModel, value); }
         }
 
-        public Client ModelBeforeChanges { get; set; }
+        public UserFilesManagement UserFiles
+        {
+            get { return GetProperty(() => UserFiles); }
+            set { SetProperty(() => UserFiles, value); }
+        }
+
+        public DocumentsViewModel Document
+        {
+            get { return GetProperty(() => Document); }
+            set { SetProperty(() => Document, value); }
+        }
 
         public ICollection<Advertising> AdvertisingList { get; set; }
         public ICollection<Appointments> Appointments { get; set; }
 
-        public ICollection<string> GenderList
-        {
-            get => _GenderList;
-        }
+        public ICollection<string> GenderList{ get => _GenderList; }
 
         private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
-
-        public bool BtnIconEditableVisible
-        {
-            get { return GetProperty(() => BtnIconEditableVisible); }
-            set { SetProperty(() => BtnIconEditableVisible, value); }
-        }
-
-        public bool BtnIconEditableHide
-        {
-            get { return GetProperty(() => BtnIconEditableHide); }
-            set { SetProperty(() => BtnIconEditableHide, value); }
-        }
         
         protected void Update()
         {
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
         }
-
-        public ObservableCollection<FileInfo> Ids { get; }
 
         /**********************************************/
     }
