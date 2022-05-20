@@ -17,6 +17,7 @@
        d:DesignWidth="800">
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:DocumentClientMultiBindingConverter x:Key="multi" />
     </UserControl.Resources>
     <Grid x:Name="gridIds">
         <dxlc:LayoutGroup 
@@ -33,15 +34,12 @@
                 </DataTemplate>
             </dxlc:LayoutGroup.HeaderTemplate>
     
-                <dxg:GridControl  
-                    ItemsSource="{Binding Document.Files}"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    MaxHeight="2000"
-                    DataContext="{Binding}" 
-                    Name="GridControlIds" 
+                <dxg:GridControl 
+                    ItemsSource="{Binding ElementName=gridIds, Path=DataContext.Document.Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="2000"  Name="GridControlIds" 
                     Width="auto">
                     <dxg:GridControl.Columns>
-                    <dxg:GridColumn FieldName="Name" Name="IdsName" >
+                    <dxg:GridColumn FieldName="Name" >
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -62,8 +60,14 @@
                                            Content="Открыть документ"                                                            
                                            Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
-                                           CommandParameter="{Binding Row}"/>
+                                           Command="{Binding ElementName=gridIds, Path=DataContext.Document.OpenFormDocCommand}">
+                                            <dxb:BarButtonItem.CommandParameter>
+                                                <MultiBinding Converter="{StaticResource multi}" >
+                                                    <Binding Path="CurrentItem" ElementName="GridControlIds"/>
+                                                    <Binding Path="DataContext.Model" ElementName="gridIds" />
+                                                </MultiBinding>
+                                            </dxb:BarButtonItem.CommandParameter>
+                                        </dxb:BarButtonItem>
 
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
@@ -86,21 +90,39 @@
                         <dxg:TableView.InputBindings>
                             <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
-                                CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
-                        
-                                <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
-                                CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
-                            </dxg:TableView.InputBindings>
+                                Command="{Binding ElementName=gridIds, Path=DataContext.Document.OpenFormDocCommand}">
+                                <KeyBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource multi}" >
+                                        <Binding Path="CurrentItem" ElementName="GridControlIds"/>
+                                        <Binding Path="DataContext.Model" ElementName="gridIds" />
+                                    </MultiBinding>
+                                </KeyBinding.CommandParameter>
+                            </KeyBinding>
+
+                            <MouseBinding Gesture="LeftDoubleClick"      
+                                Command="{Binding ElementName=gridIds, Path=DataContext.Document.OpenFormDocCommand}">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource multi}" >
+                                        <Binding Path="CurrentItem" ElementName="GridControlIds"/>
+                                        <Binding Path="DataContext.Model" ElementName="gridIds" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </dxg:TableView.InputBindings>
 
                             <dxg:TableView.RowCellMenuCustomizations >
                             <dxb:BarButtonItem 
                                     GlyphSize="Small" GlyphAlignment="Left"
                                     Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
                                     KeyGesture="Ctrl+O" Content="Открыть документ" 
-                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}"
-                                    CommandParameter="{Binding ElementName=GridControlIds, Path=CurrentItem}"/>
+                                    Command="{Binding ElementName=gridIds, Path=DataContext.Document.OpenFormDocCommand}">
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource multi}" >
+                                        <Binding Path="CurrentItem" ElementName="GridControlIds"/>
+                                        <Binding Path="DataContext.Model" ElementName="gridIds" />
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
                         </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>

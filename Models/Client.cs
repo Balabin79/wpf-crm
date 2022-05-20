@@ -18,6 +18,7 @@ namespace Dental.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string MiddleName { get; set; }
+        public string FullName { get => ToString(); }
         public string BirthDate { get; set; }
         public string Sex { get; set; }
         public string Phone { get; set; }

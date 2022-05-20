@@ -106,22 +106,6 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка, перейдите в раздел \"Клиенты\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
-        [Command]
-        public void OpenFormDoc(object p)
-        {
-            try
-            {
-                string fileName = p?.ToString();
-                if (fileName != null && File.Exists(fileName)) Document.OpenFormDoc(Model, fileName);
-
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открытия документа!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
        
         public bool HasUnsavedChanges()
         {

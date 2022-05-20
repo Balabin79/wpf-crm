@@ -16,7 +16,8 @@ namespace Dental.Services.Files
 {
     public class DocumentsViewModel : AbstractDocumentsManagement
     {
-        public DocumentsViewModel(string Guid = "") : base(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), FILES, Guid)){}
+        public DocumentsViewModel() : this("") { }
+        public DocumentsViewModel(string Guid) : base(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), FILES, Guid)){}
         private const string FILES = "B6\\Documents";
     }
 }

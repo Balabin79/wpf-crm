@@ -8,7 +8,7 @@
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
         mc:Ignorable="d"
         dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm:DocumentsViewModel ="clr-namespace:Dental.Services.Files" 
+       xmlns:vm ="clr-namespace:Dental.Services.Files" 
         xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
@@ -60,7 +60,7 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
                 <dxg:GridControl  
-                    ItemsSource="{Binding Ids}"
+                    ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     MaxHeight="2000"
                     DataContext="{Binding}" 

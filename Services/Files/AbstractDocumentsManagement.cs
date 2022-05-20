@@ -11,6 +11,7 @@ using Dental.Views.WindowForms;
 using Dental.Models;
 using DevExpress.XtraRichEdit;
 using System.Linq;
+using Dental.Infrastructures.Converters;
 
 namespace Dental.Services.Files
 {
@@ -43,7 +44,7 @@ namespace Dental.Services.Files
         }
 
         [Command]
-        public void OnDeleteDocCommandExecuted(object p)
+        public void DeleteDoc(object p)
         {
             try
             {
@@ -63,7 +64,7 @@ namespace Dental.Services.Files
         }
 
         [Command]
-        public void OnImportDocCommandExecuted()
+        public void ImportDoc()
         {
             try
             {
@@ -93,20 +94,43 @@ namespace Dental.Services.Files
                     }
                     openFileDialog.Dispose();
                 }
+                if (string.IsNullOrEmpty(fileName)) return;
                 var newPath = Path.Combine(PathToDir, fileName);
                 File.Copy(filePath, newPath, true);
-                Files = GetFiles().ToObservableCollection();
+                Files = GetFiles();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импорта документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
         [Command]
-        public void OnOpenDirDocCommandExecuted()
+        public void OpenDirDoc()
         {
                 if (Directory.Exists(PathToDir)) Process.Start(PathToDir);
+        }
+
+        [Command]
+        public void OpenFormDoc(object p)
+        {
+            try
+            {
+                if (p is DocumentClientCommandParameters param && param.File != null && param.Client != null)
+                {
+                    DocWindow = new IDSWindow() { DataContext = this };
+                    var richEdit = DocWindow.RichEdit;
+                    richEdit.ReadOnly = true;
+                    richEdit.LoadDocument(param.File.FullName, GetDocumentFormat(param.File.FullName));
+                    richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), param.File.Name);
+                    richEdit.RtfText = new RtfParse(richEdit.RtfText, param.Client).Run();
+                    DocWindow.Show();
+                }                                
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
         }
 
         private DocumentFormat GetDocumentFormat(string fileName)
@@ -138,11 +162,13 @@ namespace Dental.Services.Files
         {
             try 
             {
+                Files = new ObservableCollection<FileInfo>();
                 if (!Directory.Exists(PathToDir))
                 {
                     Directory.CreateDirectory(PathToDir);
 
                 }
+                Files = new ObservableCollection<FileInfo>();
                 IEnumerable<string> filesNames = new List<string>();
                 string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
                 foreach (var format in formats)
@@ -155,35 +181,11 @@ namespace Dental.Services.Files
             } 
             catch
             {
-                return new ObservableCollection<FileInfo>();
+                return Files;
             }
 
         }
       
-        public void OpenFormDoc(Client Model, string fileName)
-        {
-            try
-            {
-                if (File.Exists(fileName) && Model != null)
-                {
-                    FileInfo fileInfo = new FileInfo(fileName);
-
-                    DocWindow = new IDSWindow() { DataContext = this };
-                    var richEdit = DocWindow.RichEdit;
-                    richEdit.ReadOnly = true;
-                    richEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
-
-                    richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), fileInfo.Name);
-                    richEdit.RtfText = new RtfParse(richEdit.RtfText, Model).Run();
-                    DocWindow.Show();
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
         virtual protected string PathToDir { get; }
         virtual protected string Guid { get; }
 
