@@ -47,9 +47,7 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-
-                <dxg:GridControl 
+            <dxg:GridControl Grid.Row="1"
                     ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     MaxHeight="2000"
@@ -108,7 +106,7 @@
 
                     </dxg:GridControl.Columns>
                     <dxg:GridControl.View>
-                        <dxg:TableView 
+                        <dxg:TableView AlternateRowBackground="WhiteSmoke"
                              ShowGroupPanel="False"
                              x:Name="IdsTableView"
                              NavigationStyle="Row"
@@ -153,7 +151,7 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
                 </dxg:GridControl>
-            </ScrollViewer>
+
         </Grid>
     </Border>
 

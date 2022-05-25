@@ -66,14 +66,14 @@ namespace Dental.ViewModels
         public string Name
         {
             get { return GetProperty(() => Name); }
-            set { SetProperty(() => Name, value.Trim()); }
+            set { SetProperty(() => Name, value?.Trim()); }
         }
 
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Сокращенное наименование"" не более 255 символов")]
         public string ShortName
         {
             get { return GetProperty(() => ShortName); }
-            set { SetProperty(() => ShortName, value.Trim()); }
+            set { SetProperty(() => ShortName, value?.Trim()); }
         }     
 
         [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
@@ -81,7 +81,7 @@ namespace Dental.ViewModels
         public string Inn
         {
             get { return GetProperty(() => Inn); }
-            set { SetProperty(() => Inn, value.Trim()); }
+            set { SetProperty(() => Inn, value?.Trim()); }
         }
 
         [MaxLength(9, ErrorMessage = "Длина не более 9 цифр")]
@@ -89,21 +89,21 @@ namespace Dental.ViewModels
         public string Kpp
         {
             get { return GetProperty(() => Kpp); }
-            set { SetProperty(() => Kpp, value.Trim()); }
+            set { SetProperty(() => Kpp, value?.Trim()); }
         }
 
         [Display(Name = "Фактический адрес")]
         public string Address
         {
             get { return GetProperty(() => Address); }
-            set { SetProperty(() => Address, value.Trim()); }
+            set { SetProperty(() => Address, value?.Trim()); }
         }
 
         [Display(Name = "Юридический адрес")]
         public string LegalAddress
         {
             get { return GetProperty(() => LegalAddress); }
-            set { SetProperty(() => LegalAddress, value.Trim()); }
+            set { SetProperty(() => LegalAddress, value?.Trim()); }
         }
 
         [Phone]

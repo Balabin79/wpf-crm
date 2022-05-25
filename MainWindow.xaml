@@ -157,6 +157,23 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
+            <dxb:BarButtonItem
+                 ToolTip="Организация"
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.OrgPage" >
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Business Objects/BO_Country_v92.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Организация" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
             <dxb:BarItemSeparator/>
 
             <dxb:BarButtonItem 
@@ -219,7 +236,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/svg/question.svg" Height="30"/>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"/>
                             <TextBlock 
                                 TextAlignment="Center"  Text="Справка" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
