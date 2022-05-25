@@ -48,6 +48,10 @@
     <None Remove="Resources\Icons\svg\document.png" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
+    <None Remove="Resources\Icons\svg\file-alt.svg" />
+    <None Remove="Resources\Icons\svg\file-invoice-dollar.svg" />
+    <None Remove="Resources\Icons\svg\file-invoice.svg" />
+    <None Remove="Resources\Icons\svg\file.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\id-badge.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
@@ -215,6 +219,10 @@
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
+    <Resource Include="Resources\Icons\svg\file-alt.svg" />
+    <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
+    <Resource Include="Resources\Icons\svg\file-invoice.svg" />
+    <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
@@ -242,6 +250,9 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeDir\MainInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Estimates\EstimateServiceWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -263,7 +274,7 @@
     <Compile Update="Views\Sheduler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\Ids.xaml.cs">
+    <Compile Update="Views\Documents\DocumentsControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
@@ -304,6 +315,13 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Documents\EmployeesDocumentsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\EmployeeDir\MainInfo.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Estimates\EstimateServiceWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -337,7 +355,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\Ids.xaml">
+    <Page Update="Views\Documents\DocumentsControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

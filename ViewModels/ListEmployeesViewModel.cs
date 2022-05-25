@@ -15,6 +15,7 @@ using Dental.Views.EmployeeDir;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
+using Dental.Views.Documents;
 
 namespace Dental.ViewModels
 {
@@ -105,8 +106,23 @@ namespace Dental.ViewModels
             }
         }
 
+        [Command]
+        public void OpenFormDocuments()
+        {
+            try
+            {
+                EmployeesDocumentsWindow = new EmployeesDocumentsWindow();
+                EmployeesDocumentsWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
         public ObservableCollection<Employee> Collection { get; set; }
    
-        public EmployeeCardWindow EmployeeWin { get; set; }     
+        public EmployeeCardWindow EmployeeWin { get; set; }
+        public EmployeesDocumentsWindow EmployeesDocumentsWindow { get; set; }
     }
 }

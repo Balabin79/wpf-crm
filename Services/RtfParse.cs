@@ -10,10 +10,11 @@ namespace Dental.Services
 {
     public class RtfParse
     {
-        public RtfParse(string txt, Client model)
+        public RtfParse(string txt, object model)
         {
             RtfText = txt;
             Model = model;
+            Org = new ApplicationContext().Org.FirstOrDefault();
         }
 
         public string Run()
@@ -54,11 +55,13 @@ namespace Dental.Services
 
                 switch (modelName)
                 {
-                    case "Client": return Model?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     default: return "";
                 }
             }
-            catch
+            catch (Exception e)
             {
                 return "";
             }
@@ -66,6 +69,7 @@ namespace Dental.Services
         }           
 
         private string RtfText { get; set; }
-        private Client Model { get; set; }
+        private object Model { get; set; }
+        private object Org { get; set; }
     }
 }

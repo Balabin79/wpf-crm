@@ -99,7 +99,7 @@ namespace Dental.Services.Files
                 File.Copy(filePath, newPath, true);
                 Files = GetFiles();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импорта документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -116,14 +116,14 @@ namespace Dental.Services.Files
         {
             try
             {
-                if (p is DocumentClientCommandParameters param && param.File != null && param.Client != null)
+                if (p is DocumentCommandParameters param && param.File != null && param.Model != null)
                 {
                     DocWindow = new IDSWindow() { DataContext = this };
                     var richEdit = DocWindow.RichEdit;
                     richEdit.ReadOnly = true;
                     richEdit.LoadDocument(param.File.FullName, GetDocumentFormat(param.File.FullName));
                     richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), param.File.Name);
-                    richEdit.RtfText = new RtfParse(richEdit.RtfText, param.Client).Run();
+                    richEdit.RtfText = new RtfParse(richEdit.RtfText, param.Model).Run();
                     DocWindow.Show();
                 }                                
             }

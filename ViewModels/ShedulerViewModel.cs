@@ -69,7 +69,7 @@ namespace Dental.ViewModels
 
      
         [Command]
-        public void AppointmentAdded(object p)
+        public void AppointmentAdded()
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Dental.ViewModels
 
         #region Справочник "Места встреч"
         [Command]
-        public void OpenWindowLocation(object p)
+        public void OpenWindowLocation()
         {
             try
             {
@@ -150,7 +150,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void CloseWindowLocation(object p) => LocationWindow.Close();
+        public void CloseWindowLocation() => LocationWindow.Close();
 
         [Command]
         public void AddLocation(object p)
@@ -197,7 +197,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void SaveLocation(object p)
+        public void SaveLocation()
         {
             try
             {
@@ -231,7 +231,7 @@ namespace Dental.ViewModels
 
         #region Справочник "Статусы в шедулере"       
         [Command]
-        public void OpenWindowStatus(object p)
+        public void OpenWindowStatus()
         {
             try
             {
@@ -245,7 +245,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void CloseWindowStatus(object p) => StatusWindow.Close();
+        public void CloseWindowStatus() => StatusWindow.Close();
 
         [Command]
         public void AddStatus(object p)
@@ -261,7 +261,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void SaveStatus(object p)
+        public void SaveStatus()
         {
             try
             {

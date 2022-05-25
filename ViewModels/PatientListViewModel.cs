@@ -14,6 +14,7 @@ using System.Windows;
 using Dental.Services;
 using Dental.Models;
 using DevExpress.Mvvm.DataAnnotations;
+using Dental.Views.Documents;
 
 namespace Dental.ViewModels
 {
@@ -35,12 +36,12 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenFormIds()
+        public void OpenFormDocuments()
         {
             try
             {
-                IdsWin = new IdsWindow();
-                IdsWin.ShowDialog();
+                ClientsDocumentsWindow = new ClientsDocumentsWindow();
+                ClientsDocumentsWindow.ShowDialog();
             }
             catch 
             {
@@ -103,7 +104,7 @@ namespace Dental.ViewModels
         }
 
         public AdvertisingWindow AdvertisingWin { get; set; } 
-        public IdsWindow IdsWin { get; set; }
+        public ClientsDocumentsWindow ClientsDocumentsWindow { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 
         public void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();

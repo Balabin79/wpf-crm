@@ -18,6 +18,7 @@ using DevExpress.Xpf.Core;
 using System.Diagnostics;
 using Dental.Models.Base;
 using DevExpress.Mvvm.DataAnnotations;
+using Dental.Services.Files;
 
 namespace Dental.ViewModels
 {
@@ -31,13 +32,14 @@ namespace Dental.ViewModels
             VmList = vmList;
             Model = emp;
             Files = new ObservableCollection<FileInfo>();
+            Document = new EmployeesDocumentsViewModel();
 
             CommunicationList = new List<CommunicationType>() {
                 new CommunicationType {  Id=0, Name="Не уведомлять" },
                 new CommunicationType {  Id=1, Name="Sms" },
                 new CommunicationType {  Id=2, Name="Email" },
                 new CommunicationType {  Id=3, Name="Viber" },
-            };         
+            };              
          
             // подгружаем вспомогательные справочники
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
@@ -77,6 +79,12 @@ namespace Dental.ViewModels
                 Model = new Employee();
                 (new ViewModelLog(e)).run();
             }
+        }
+
+        public EmployeesDocumentsViewModel Document
+        {
+            get { return GetProperty(() => Document); }
+            set { SetProperty(() => Document, value); }
         }
 
         #region Блокировка полей
@@ -330,7 +338,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void Delete(object p)
+        public void Delete()
         {
             try
             {

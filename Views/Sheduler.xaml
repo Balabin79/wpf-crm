@@ -302,18 +302,9 @@
                             </dxsch:DataSource.ResourceMappings>
 
                             <dxsch:DataSource.AppointmentMappings>
-                                <dxsch:AppointmentMappings 
-                                    Type="AppointmentType"
-                                    StatusId="StatusId"        
-                                    Subject="PatientName"
-                                    ResourceId="EmployeeId"
-                                    RecurrenceInfo="RecurrenceInfo"
-                                    Reminder="ReminderInfo"
-                                    LabelId="LabelId"
-                                    Location="LocationName"
-                                    Id="Id"                                      
-                                    Description="Description"
-                                    AllDay="AllDay">
+                                <dxsch:AppointmentMappings Type="AppointmentType" StatusId="StatusId" Subject="PatientName"
+                                    ResourceId="EmployeeId" RecurrenceInfo="RecurrenceInfo" Reminder="ReminderInfo" LabelId="LabelId"
+                                    Location="LocationName" Id="Id" Description="Description" AllDay="AllDay">
                                     <dxsch:AppointmentMappings.Start>
                                         <dxsch:Mapping>
                                             <dxsch:Mapping.FieldName>

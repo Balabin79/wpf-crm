@@ -10,6 +10,7 @@
     xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
     xmlns:vm ="clr-namespace:Dental.ViewModels" 
     xmlns:tp ="clr-namespace:Dental.Views.PatientCard" 
+    xmlns:doc ="clr-namespace:Dental.Views.Documents" 
     xmlns:es ="clr-namespace:Dental.Views.Estimates" 
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
@@ -121,9 +122,7 @@
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Документы">
-                            <Grid DataContext="{Binding }">
-                                <tp:Ids/>
-                            </Grid>
+                            <doc:DocumentsControl DataContext="{Binding}"/>
                         </dx:DXTabItem>
                         
                         <dx:DXTabItem Header="Сметы" >

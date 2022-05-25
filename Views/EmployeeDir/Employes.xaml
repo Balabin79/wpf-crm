@@ -121,18 +121,21 @@
                         Caption="File" 
                         AllowCustomizationMenu="False" 
                         AllowQuickCustomization="False">
-
                         <dxb:BarButtonItem  Content="Новая анкета сотрудника" 
-
                                            Command="{Binding OpenFormEmployeeCardCommand}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"/>
                         <dxb:BarItemSeparator/>
-                       
+                        <dxb:BarButtonItem Content="Шаблоны документов" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding OpenFormDocumentsCommand}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
+                                           MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
                         <dxb:BarItemSeparator/>
-
                         <dxb:BarButtonItem Name="expandTree" 
                                            Content="Развернуть или свернуть все карточки"  
                                            DataContext="{StaticResource vm}"

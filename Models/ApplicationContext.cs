@@ -69,6 +69,8 @@ namespace Dental.Models
         public DbSet<Nomenclature> Nomenclature { get; set; }     
         public DbSet<Measure> Measure { get; set; }
 
+        public DbSet<Org> Org { get; set; }
+
         public DbSet<Estimate> Estimates { get; set; }
         public DbSet<EstimateServiceItem> EstimateServiceItems  { get; set; }
         public DbSet<EstimateMaterialItem> EstimateMaterialItems { get; set; }

@@ -35,7 +35,7 @@ namespace Dental.ViewModels
                 ClientInfoViewModel = new ClientInfoViewModel(Model);
 
                 UserFiles = new UserFilesManagement(Model.Guid);
-                Document = new DocumentsViewModel();    
+                Document = new ClientsDocumentsViewModel();    
 
                 IsReadOnly = Model.Id != 0;
 
@@ -159,7 +159,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => UserFiles, value); }
         }
 
-        public DocumentsViewModel Document
+        public ClientsDocumentsViewModel Document
         {
             get { return GetProperty(() => Document); }
             set { SetProperty(() => Document, value); }

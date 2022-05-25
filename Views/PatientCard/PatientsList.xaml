@@ -66,7 +66,7 @@
                         <dxb:BarButtonItem Content="Шаблоны документов" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormIdsCommand}" 
+                                           Command="{Binding OpenFormDocumentsCommand}" 
                                            LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
                                            MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
                                            Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
@@ -88,7 +88,7 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding ShowArchiveCommand}"/>
                         
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать"  
+                        <dxb:BarButtonItem Content="Печать"  
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            GlyphSize="Custom"
@@ -186,13 +186,13 @@
                             <dxg:TableView.RowCellMenuCustomizations>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
-                                            Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту пациента"  
+                                            Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту пациента"  
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>

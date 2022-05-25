@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Dental.Services.Files;
 
 namespace Dental.Models
 {
