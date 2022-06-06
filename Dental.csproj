@@ -53,6 +53,9 @@
     <None Remove="Resources\Icons\svg\file-invoice.svg" />
     <None Remove="Resources\Icons\svg\file.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
+    <None Remove="Resources\Icons\svg\gmail-mail.svg" />
+    <None Remove="Resources\Icons\svg\google.svg" />
+    <None Remove="Resources\Icons\svg\google_mail.svg" />
     <None Remove="Resources\Icons\svg\id-badge.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
@@ -146,6 +149,7 @@
     <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.57.0.2696" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="morelinq" Version="3.3.2" />
     <PackageReference Include="SharpVectors" Version="1.7.1" />
@@ -223,6 +227,9 @@
     <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
+    <Resource Include="Resources\Icons\svg\gmail-mail.svg" />
+    <Resource Include="Resources\Icons\svg\google.svg" />
+    <Resource Include="Resources\Icons\svg\google_mail.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
@@ -257,6 +264,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Estimates\EstimateWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Integration\Google\GoogleContactWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\NomenclatureDir\MeasureWindow.xaml.cs">
@@ -328,6 +338,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\Estimates\EstimateWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Integration\Google\GoogleContactWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -476,6 +490,11 @@
     <None Update="C:\Users\user\.nuget\packages\firebird.embedded\3.0.0.32485\build\x64\icuuc52.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Google\ViewModels\Settings\" />
+    <Folder Include="Services\Google\ViewModels\Events\" />
   </ItemGroup>
 
 </Project>

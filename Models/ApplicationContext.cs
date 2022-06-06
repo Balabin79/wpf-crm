@@ -74,6 +74,8 @@ namespace Dental.Models
         public DbSet<Estimate> Estimates { get; set; }
         public DbSet<EstimateServiceItem> EstimateServiceItems  { get; set; }
         public DbSet<EstimateMaterialItem> EstimateMaterialItems { get; set; }
-     
+
+        public DbSet<GoogleContacts> GoogleContacts { get; set; }
+        public DbSet<Settings> Settings { get; set; }   
     }
 }

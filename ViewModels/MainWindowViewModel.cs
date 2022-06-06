@@ -6,6 +6,10 @@ using System.Windows;
 
 using Dental.Views.Header;
 using DevExpress.Mvvm.DataAnnotations;
+using Dental.Services.Google;
+using Google.Apis.Calendar.v3.Data;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Dental.ViewModels
 {
@@ -27,14 +31,28 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenHelpForm(object p)
+        public async void OpenHelpForm(object p)
         {
             try
             {
-                HelpWin = new HelpWindow();
-                HelpWin.ShowDialog();
+                var service = new GoogleService().Get();
+                var list = new GoogleCalendarList(service, new Notification());
+                var task =  list.ListAsync();
+                var task2 = list.Wait();
+                
+                //               HelpWin = new HelpWindow();
+                //   HelpWin.ShowDialog();
+                new Notification().ShowMsgError("1");
+                CalendarList = await task;
+                await task2;
+                new Notification().ShowMsgError("2");
+                
+            }           
+            catch (FileNotFoundException e)
+            {
+                //Console.WriteLine(e.Message);
             }
-            catch
+            catch (Exception e)
             {
 
             }
@@ -71,6 +89,8 @@ namespace Dental.ViewModels
         public HelpWindow HelpWin { get; set; }
         public RegWindow RegWin { get; set; }
         public AboutWindow AboutWin { get; set; }
+
+        public CalendarList CalendarList { get; set; }
 
     }
 }

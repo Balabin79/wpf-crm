@@ -1,0 +1,48 @@
+﻿<Window x:Class="Dental.Views.Integration.Google.GoogleContactWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dental.Views.Integration.Google" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" Height="265" Width="800">
+    
+    <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+        <dxlc:LayoutGroup Orientation="Vertical" Header="Общая информация" Margin="0 0 0 5">
+            <TextBlock DockPanel.Dock="Left" Text="Контакт" FontSize="14" />
+ 
+            <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
+                <dxlc:LayoutItem  Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                    <dxe:TextEdit  Name="Key" 
+                        Text="{Binding GoogleAccountViewModel.Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem  Label="Email(Google):" LabelPosition="Top" HorizontalAlignment="Stretch">
+                    <dxe:TextEdit Name="Value" 
+                        Text="{Binding GoogleAccountViewModel.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem  Label="Название календаря:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                    <dxe:TextEdit 
+                        Text="{Binding GoogleAccountViewModel.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 10 0 0">
+                
+                <dx:SimpleButton  HorizontalAlignment="Right"
+                    Height="23" Content="Сохранить" 
+                    IsEnabled="{DXBinding Expr='@e(Key).ValidationError==null and @e(Value).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountSaveCommand}" />
+                <dx:SimpleButton  HorizontalAlignment="Right" Height="23" Content="Закрыть" VerticalContentAlignment="Center"
+                                 Command="{Binding CloseGoogleAccountFormCommand}" Margin="4 0 0 0"/>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+    </GroupBox>
+</Window>

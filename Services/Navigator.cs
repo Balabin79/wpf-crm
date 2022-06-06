@@ -31,17 +31,17 @@ namespace Dental.Services
     {
         public Navigator()
         {
-            CurrentPage = GetStartPage();
+            CurrentPage = CreatePage(defaultPage);
             FrameOpacity = 1.1;
         }
 
         #region Общий ф-нал
-        private void GoToPage(object p)
+        private async Task GoToPage(object p)
         {
-            if (p is object[] arr) SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
+            if (p is object[] arr) await SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
             else
             {
-                SlowOpacity(CreatePage(p.ToString()));                
+                await SlowOpacity(CreatePage(p.ToString()));                
             }
         }
 
@@ -49,10 +49,10 @@ namespace Dental.Services
         {
             IsSelected = pageName;
             Type type = Type.GetType(pageName);
-            return (param == -1 || param == 0) ? (Page)Activator.CreateInstance(type) : (Page)Activator.CreateInstance(type, param);
+            return (param > 0) ? (Page)Activator.CreateInstance(type, param) : (Page)Activator.CreateInstance(type);
         }
 
-        private async void SlowOpacity(Page page)
+        private async Task SlowOpacity(Page page)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -73,7 +73,7 @@ namespace Dental.Services
         #endregion
 
         [Command]
-        public void LeftMenuClick(object p)
+        public async void LeftMenuClick(object p)
         {
             try
             {
@@ -83,15 +83,13 @@ namespace Dental.Services
                     HasUnsavedChanges = null;
                     UserSelectedBtnCancel = null;
                 }
-                GoToPage(p);
+                await GoToPage(p);
             }
             catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
-        private Page GetStartPage() => CreatePage(defaultPage);
 
         #region Свойства
         public Page CurrentPage
