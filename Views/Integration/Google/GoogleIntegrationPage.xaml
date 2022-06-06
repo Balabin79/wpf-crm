@@ -53,13 +53,13 @@
                                            CustomGlyphSize="24,24"/>
 
                         <dxb:BarButtonItem Content="Добавить новый контакт"
-                                           Command="{Binding OpenGoogleAccountFormCommand}"
+                                           Command="{Binding Path=GoogleContactViewModel.OpenContactFormCommand}"
                                            Glyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            LargeGlyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24" 
-                                           IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                                            />
 
                         <dxb:BarButtonItem Content="Добавить"
                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateServiceCommand}"

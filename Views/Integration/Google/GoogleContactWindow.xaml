@@ -9,39 +9,50 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         mc:Ignorable="d"
-        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"      
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler" Height="265" Width="800">
+        Title="B6 Sheduler" Height="280" Width="800">
     
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" Header="Общая информация" Margin="0 0 0 5">
             <TextBlock DockPanel.Dock="Left" Text="Контакт" FontSize="14" />
  
             <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
-                <dxlc:LayoutItem  Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                    <dxe:TextEdit  Name="Key" 
-                        Text="{Binding GoogleAccountViewModel.Key, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <dxlc:LayoutItem Label="Сотрудник:"  LabelPosition="Top" >
+                    <dxe:ComboBoxEdit Name="Employees"
+                                        ItemsSource="{Binding Path=Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        NullText="Сотрудники" 
+                                        IsTextEditable="False"
+                                        DisplayMember="FullName"
+                                        IncrementalFiltering="True"
+                                        IncrementalSearch="True"
+                                        IsCaseSensitiveFilter="False"
+                                        ValidateOnTextInput="False"
+                                        SelectedItem ="{Binding Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        EditValue ="{Binding Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                        <dxe:ComboBoxEdit.StyleSettings>
+                            <dxe:RadioComboBoxStyleSettings />
+                        </dxe:ComboBoxEdit.StyleSettings>
+                    </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem  Label="Email(Google):" LabelPosition="Top" HorizontalAlignment="Stretch">
-                    <dxe:TextEdit Name="Value" 
-                        Text="{Binding GoogleAccountViewModel.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <dxe:TextEdit Name="Email" 
+                        Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem  Label="Название календаря:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                    <dxe:TextEdit 
-                        Text="{Binding GoogleAccountViewModel.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <dxe:TextEdit Name="CalendarName"
+                        Text="{Binding CalendarName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 10 0 0">
                 
                 <dx:SimpleButton  HorizontalAlignment="Right"
                     Height="23" Content="Сохранить" 
-                    IsEnabled="{DXBinding Expr='@e(Key).ValidationError==null and @e(Value).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountSaveCommand}" />
+                    IsEnabled="{DXBinding Expr='@e(Employees).ValidationError==null and @e(Email).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 VerticalContentAlignment="Center" Command="{Binding ContactSaveCommand}" />
                 <dx:SimpleButton  HorizontalAlignment="Right" Height="23" Content="Закрыть" VerticalContentAlignment="Center"
-                                 Command="{Binding CloseGoogleAccountFormCommand}" Margin="4 0 0 0"/>
+                                 Command="{Binding CloseContactFormCommand}" Margin="4 0 0 0"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
     </GroupBox>

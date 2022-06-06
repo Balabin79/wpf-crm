@@ -11,6 +11,7 @@
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        WindowStartupLocation="CenterScreen"
         Title="B6 Sheduler" Height="230" Width="800">
     
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">

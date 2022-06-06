@@ -30,6 +30,8 @@ namespace Dental.ViewModels
                 Settings = db.Settings.FirstOrDefault() ?? new Settings();
                 IsEnabled = !string.IsNullOrEmpty(Settings.Key) || !string.IsNullOrEmpty(Settings.Value);
                     SetGoogleAccountViewModel();
+
+                GoogleContactViewModel = new GoogleContactViewModel();
             }
             catch(Exception e)
             {
@@ -123,7 +125,13 @@ namespace Dental.ViewModels
 
         public GoogleAccountWindow GoogleAccountWindow { get; set; }
 
-        
+
+        public GoogleContactViewModel GoogleContactViewModel
+        {
+            get { return GetProperty(() => GoogleContactViewModel); }
+            set { SetProperty(() => GoogleContactViewModel, value); }
+        }
+
 
         public void SetGoogleAccountViewModel() => GoogleAccountViewModel = (Settings != null) ? (GoogleAccountViewModel)Settings.Copy(new GoogleAccountViewModel()) : new GoogleAccountViewModel();
 

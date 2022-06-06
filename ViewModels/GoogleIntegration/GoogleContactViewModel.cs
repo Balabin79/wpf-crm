@@ -14,6 +14,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.ViewModels.GoogleIntegration;
 using Dental.Views.Integration.Google;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dental.ViewModels.GoogleIntegration
 {
@@ -25,7 +26,8 @@ namespace Dental.ViewModels.GoogleIntegration
         {
             try
             {
-                db = new ApplicationContext();              
+                db = new ApplicationContext();
+                Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             }
             catch (Exception e)
             {
@@ -55,12 +57,12 @@ namespace Dental.ViewModels.GoogleIntegration
                 {
                     Contact.Email = Email;
                     Contact.Employee = Employee;
-                    Contact.CalendarName = CalendarName;
-                    //if (Contact?.Id == 0) db.Settings.Add(Settings);
+                    Contact.CalendarName = !string.IsNullOrEmpty(CalendarName) ? CalendarName : Employee?.FullName;
+                    if (Contact?.Id == 0) db.GoogleContacts.Add(Contact);
+                    // добавить в родительский список и там же сохранить
                 }
                 if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                //IsEnabled = true;
-               // GoogleAccountWindow?.Close();
+                GoogleContactWindow?.Close();
             }
             catch
             {
@@ -83,12 +85,17 @@ namespace Dental.ViewModels.GoogleIntegration
         }
 
         //Свойства
+        [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
+        [Required(ErrorMessage = @"Поле ""Email"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Email"" не более 255 символов")]
         public string Email
         {
             get { return GetProperty(() => Email); }
             set { SetProperty(() => Email, value); }
         }
 
+
+        [Required(ErrorMessage = @"Поле ""Сотрудник"" обязательно для заполнения")]
         public Employee Employee
         {
             get { return GetProperty(() => Employee); }
@@ -102,6 +109,7 @@ namespace Dental.ViewModels.GoogleIntegration
         }
 
         public GoogleContactWindow GoogleContactWindow { get; set; }
+        public Employee[] Employees { get; set; }
 
     }
 }
