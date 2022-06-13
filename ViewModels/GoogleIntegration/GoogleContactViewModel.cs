@@ -15,17 +15,21 @@ using DevExpress.Mvvm.DataAnnotations;
 using Dental.ViewModels.GoogleIntegration;
 using Dental.Views.Integration.Google;
 using System.ComponentModel.DataAnnotations;
+using DevExpress.Mvvm;
+using System.ComponentModel;
 
 namespace Dental.ViewModels.GoogleIntegration
 {
-    public class GoogleContactViewModel : DevExpress.Mvvm.ViewModelBase
+    public class GoogleContactViewModel : ViewModelBase, IDataErrorInfo
     {
         private readonly ApplicationContext db;
+        private readonly GoogleIntegrationViewModel owner;
 
-        public GoogleContactViewModel()
+        public GoogleContactViewModel(GoogleIntegrationViewModel vm)
         {
             try
             {
+                owner = vm;
                 db = new ApplicationContext();
                 Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             }
@@ -39,7 +43,20 @@ namespace Dental.ViewModels.GoogleIntegration
         [Command]
         public void OpenContactForm(object p)
         {
-            Contact = int.TryParse(p?.ToString(), out int param) ? db.GoogleContacts.Include(f => f.Employee).FirstOrDefault(f => f.Id == param) : new GoogleContacts();
+            if (p is GoogleContacts contact)
+            {
+                Contact = db.GoogleContacts.Include(f => f.Employee).FirstOrDefault(f => f.Id == contact.Id);
+                Email = Contact.Email;
+                Employee = Contact.Employee;
+                CalendarName = Contact.CalendarName;
+            }
+            else
+            {
+                Contact = new GoogleContacts();
+                Email = null;
+                Employee = null;
+                CalendarName = null;
+            }
             GoogleContactWindow = new GoogleContactWindow() { DataContext = this };
             GoogleContactWindow.Show();
         }
@@ -58,13 +75,17 @@ namespace Dental.ViewModels.GoogleIntegration
                     Contact.Email = Email;
                     Contact.Employee = Employee;
                     Contact.CalendarName = !string.IsNullOrEmpty(CalendarName) ? CalendarName : Employee?.FullName;
-                    if (Contact?.Id == 0) db.GoogleContacts.Add(Contact);
+                    if (Contact?.Id == 0) 
+                    { 
+                        db.GoogleContacts.Add(Contact); 
+                    }
                     // добавить в родительский список и там же сохранить
                 }
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (Contact?.Id == 0 && db.SaveChanges() > 0) owner.AddContact(Contact);
+                if (Contact?.Id > 0 && db.SaveChanges() > 0) owner.UpdateContact();
                 GoogleContactWindow?.Close();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранить данные в бд возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -72,7 +93,7 @@ namespace Dental.ViewModels.GoogleIntegration
         }
 
         [Command]
-        public void ContactDelete()
+        public void ContactDelete(object p)
         {
 
         }
@@ -106,10 +127,19 @@ namespace Dental.ViewModels.GoogleIntegration
         {
             get { return GetProperty(() => CalendarName); }
             set { SetProperty(() => CalendarName, value); }
+        }        
+        
+        public int? IsRemoteCalendarCreated
+        {
+            get { return GetProperty(() => IsRemoteCalendarCreated); }
+            set { SetProperty(() => IsRemoteCalendarCreated, value); }
         }
 
         public GoogleContactWindow GoogleContactWindow { get; set; }
         public Employee[] Employees { get; set; }
+
+        public string Error { get => string.Empty; }
+        public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
     }
 }

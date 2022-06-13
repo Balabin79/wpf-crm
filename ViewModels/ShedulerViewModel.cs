@@ -30,7 +30,7 @@ namespace Dental.ViewModels
                 StatusAppointments = GetStatusCollection();
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
-                Doctors = db.Employes.OrderBy(d => d.LastName).ToObservableCollection();
+                Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
                 foreach (var i in Doctors)
                 {
                     if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))

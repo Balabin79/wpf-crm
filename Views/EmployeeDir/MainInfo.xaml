@@ -182,7 +182,7 @@
                                 <dxlc:LayoutItem Label="В расписании:"
                                             LabelPosition="Left" >
                                     <dxe:CheckEdit         
-                                                EditValue="{Binding Model.IsNotificate, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                EditValue="{Binding Model.IsInSheduler, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>

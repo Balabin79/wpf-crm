@@ -17,7 +17,7 @@ using Dental.Views.Integration.Google;
 
 namespace Dental.ViewModels
 {
-    class GoogleIntegrationViewModel : DevExpress.Mvvm.ViewModelBase
+    public class GoogleIntegrationViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
 
@@ -26,14 +26,14 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                GoogleContacts = db.GoogleContacts.ToObservableCollection();
+                GoogleContacts = db.GoogleContacts.Include(f => f.Employee).ToObservableCollection();
                 Settings = db.Settings.FirstOrDefault() ?? new Settings();
                 IsEnabled = !string.IsNullOrEmpty(Settings.Key) || !string.IsNullOrEmpty(Settings.Value);
-                    SetGoogleAccountViewModel();
+                SetGoogleAccountViewModel();
 
-                GoogleContactViewModel = new GoogleContactViewModel();
+                GoogleContactViewModel = new GoogleContactViewModel(this);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Интеграции\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -79,9 +79,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                if(Settings?.Id > 0) db.Settings.Remove(Settings);
-                if (db.SaveChanges() > 0) 
-                { 
+                if (Settings?.Id > 0) db.Settings.Remove(Settings);
+                if (db.SaveChanges() > 0)
+                {
                     new Notification() { Content = "Данные удалены!" }.run();
                     IsEnabled = false;
                     Settings = new Settings();
@@ -134,6 +134,12 @@ namespace Dental.ViewModels
 
 
         public void SetGoogleAccountViewModel() => GoogleAccountViewModel = (Settings != null) ? (GoogleAccountViewModel)Settings.Copy(new GoogleAccountViewModel()) : new GoogleAccountViewModel();
+
+        public void AddContact(GoogleContacts contact) => GoogleContacts.Add(contact);
+        public void UpdateContact() 
+        {
+            GoogleContacts = db.GoogleContacts.Include(f => f.Employee).ToObservableCollection();
+        }
 
         #endregion
     }

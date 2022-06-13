@@ -22,6 +22,8 @@
                     <vm:GoogleIntegrationViewModel x:Key="vm"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+                    <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg" x:Key="sc"/>
+                    <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg" x:Key="ec"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -37,7 +39,7 @@
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" Source="pack://application:,,,/Resources/Icons/svg/google.svg"/>
+                    <dx:DXImage Height="22" Width="22" Margin="2 0 0 0" Source="pack://application:,,,/Resources/Icons/svg/google.svg"/>
                     <TextBlock Text="Интеграция c Google - сервисами" FontSize="15" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -54,37 +56,20 @@
 
                         <dxb:BarButtonItem Content="Добавить новый контакт"
                                            Command="{Binding Path=GoogleContactViewModel.OpenContactFormCommand}"
-                                           Glyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            LargeGlyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            MediumGlyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
+                                           Glyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="24,24" 
+                                           CustomGlyphSize="24,24"  />
+
+                        <dxb:BarButtonItem Content="Управление интеграциями"
+                                           Command="{Binding Path=GoogleContactViewModel.OpenContactFormCommand}"
+                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Diagram.svg}"
+                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Business_Diagram.svg}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Diagram.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
                                             />
-
-                        <dxb:BarButtonItem Content="Добавить"
-                                           Command="{Binding ElementName=view, Path=DataContext.OpenFormEstimateServiceCommand}"
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28" />
-
-                        <dxb:BarButtonItem Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding SaveCommand}"/>
-                        <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Content="Печать"                                
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=viewAd}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -92,77 +77,84 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
                 <dxg:GridControl  AutoGenerateColumns="None" MaxHeight="2000" Name="gridAd"  
-                                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  ItemsSource="{Binding GoogleContacts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   Margin="2">
 
                     <dxg:GridControl.View>
                         <dxg:TableView                   
-                    x:Name="viewAd"
-                    ShowTotalSummary="False" 
-                    UseLegacyFilterPanel="True"
-                    ShowSearchPanelMode="Always"
-                    SearchPanelAllowFilter="True"
-                    AutoWidth="True" 
-                    PrintAutoWidth="True"
-                    BestFitModeOnSourceChange="VisibleRows"            
-                    NavigationStyle="Cell"
-                    AllowScrollToFocusedRow="True" 
-                    VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True"
-                    ShowGroupPanel="False"
-                    >
+                            x:Name="viewAd"
+                            ShowTotalSummary="False" 
+                            UseLegacyFilterPanel="True"
+                            ShowSearchPanelMode="Always"
+                            SearchPanelAllowFilter="True"
+                            AutoWidth="True" 
+                            PrintAutoWidth="True"
+                            BestFitModeOnSourceChange="VisibleRows"            
+                            NavigationStyle="Cell"
+                            AllowScrollToFocusedRow="True" 
+                            VerticalScrollbarVisibility="Auto"
+                            AllowPrintColumnHeaderImage="True"
+                            ShowGroupPanel="False"
+                            >
                             <dxg:TableView.InputBindings>
-                                <KeyBinding Key="Delete"        
-                                Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}" />
-                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=AddCommand}"/>
-                                <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+                                <KeyBinding Key="N" Modifiers="Ctrl" 
+                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}"/>
+
+                                <KeyBinding Key="E" Modifiers="Ctrl" 
+                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+
+                                <KeyBinding Key="Delete" 
+                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
+                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+
 
                             </dxg:TableView.InputBindings>
-
 
                             <dxg:TableView.RowCellMenuCustomizations>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                                     DataContext="{Binding Source={StaticResource vm}}"
                                                     KeyGesture="Ctrl+N" Content="Создать"  
-                                                    Command="{Binding AddCommand}"/>
+                                                    Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                                   />
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
-                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Edit.svg}" 
                                                    DataContext="{Binding Source={StaticResource vm}}"
-                            Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  
-                                                   Command="{Binding SaveCommand}" />
+                                                   KeyGesture="Ctrl+E" Content="Редактировать"  
+                                                   Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}" />
 
-                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить" 
-                                                   Command="{Binding DeleteCommand}" 
-                                                   CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
+                                <dxb:BarButtonItem Content="Удалить" 
+                                                   Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
+                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}" 
+                                                   KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
+                                                   Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="5*"                                  
+                    <dxg:GridColumn FieldName="Email" Header="Email"  MinWidth="200" Width="1*"                                  
                                     PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
                                     PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
-                                    <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                                    <TextBlock Text="Email" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.HeaderTemplate>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock  TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <dxe:TextEdit TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
+                    <dxg:GridColumn FieldName="Employee" Header="Сотрудник" Width="3*" AllowEditing="False"/>
+                    <dxg:GridColumn FieldName="CalendarName" Header="Название календаря" Width="3*" AllowEditing="False"/>
 
                     <dxg:GridColumn Width="auto" AllowPrinting="False">
                         <dxg:GridColumn.CellTemplate>
@@ -170,10 +162,26 @@
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
                                     <dxb:ToolBarControl 
-                                                        Caption="File" 
-                                                        ShowDragWidget="False"
-                                                        AllowCustomizationMenu="False" 
-                                                        AllowQuickCustomization="False">
+                                        Caption="File" 
+                                        ShowDragWidget="False"
+                                        AllowCustomizationMenu="False" 
+                                        AllowQuickCustomization="False">
+                                        
+                                        <dxb:BarButtonItem 
+                                            Content="Статус интеграции" 
+                                            Glyph="{DXBinding Expr='RowData.Row.IsRemoteCalendarCreated > 0 ? `pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg` : `pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg` '}"
+                                            
+                                            ToolTip="{DXBinding Expr='RowData.Row.IsRemoteCalendarCreated > 0 ? `Удаленный календарь зарегистрирован` : `Удаленный календарь не зарегистрирован!`'}"
+                                            GlyphSize="Small"
+                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
+                                        
+                                        <dxb:BarButtonItem 
+                                            Content="Редактировать" 
+                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
+                                            GlyphSize="Small"
+                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
+                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
 
                                         <dxb:BarButtonItem  
                                            DataContext="{StaticResource vm}"        
@@ -181,7 +189,7 @@
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding DeleteCommand}" 
+                                           Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
                                            CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"/>
 
                                     </dxb:ToolBarControl>

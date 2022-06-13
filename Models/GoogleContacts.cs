@@ -16,6 +16,8 @@ namespace Dental.Models
 
         public string CalendarName { get; set; }
 
+        public int? IsRemoteCalendarCreated { get; set; }
+
         public override string ToString() => CalendarName;
     }
 }

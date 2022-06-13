@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.ViewModels.GoogleIntegration
 {
-    class GoogleAccountViewModel : BindableBase, IDataErrorInfo, ISettings
+    public class GoogleAccountViewModel : BindableBase, IDataErrorInfo, ISettings
     {
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         [Required(ErrorMessage = @"Поле ""Email"" обязательно для заполнения")]

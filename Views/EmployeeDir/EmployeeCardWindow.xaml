@@ -102,6 +102,10 @@
                             <local:MainInfo DataContext="{Binding}" />
                         </dx:DXTabItem>
 
+                        <dx:DXTabItem Header="Интеграции" >
+                            <local:IntegrationControl DataContext="{Binding}" />
+                        </dx:DXTabItem>
+
                         <dx:DXTabItem Header="Документы">
                             <doc:DocumentsControl DataContext="{Binding}"/>
                         </dx:DXTabItem>

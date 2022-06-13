@@ -133,6 +133,13 @@ namespace Dental.Models
 
         public int? IsInSheduler { get; set; }
         public int? DurationWorkTime { get; set; }
+        public int? IsIntegrated { get; set; }
+        public int? IsRemoteContactCreated { get; set; }
+
+        [EmailAddress(ErrorMessage = @"В поле ""Email (Google)"" введено некорректное значение")]
+        public string GoogleEmail { get; set; }
+
+        public string CalendarName { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

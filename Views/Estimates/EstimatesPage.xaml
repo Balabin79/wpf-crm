@@ -456,25 +456,7 @@
                         <dxg:GridColumn FieldName="Estimate" Width="5*"  Header="Смета" >
                             <dxg:GridColumn.CellDisplayTemplate>
                                 <DataTemplate>
-                                    
-                                    
-                                    
-                              
-
-
-
-
-
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-
-
-
-                                        <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="GridFileRowDetailsTemplate">
+                                    <Grid VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="GridFileRowDetailsTemplate">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition/>
                                                 <RowDefinition/>
