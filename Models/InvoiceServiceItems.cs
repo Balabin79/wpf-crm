@@ -14,7 +14,10 @@ namespace Dental.Models
        public int? ServiceId { get; set; }
        
        public Invoice Invoice { get; set; }
-       public int? InvoiceId { get; set; }
+       public int? InvoiceId { get; set; }       
+        
+       public Employee Employee { get; set; }
+       public int? EmployeeId { get; set; }
 
        public int Count { get; set; }
        public decimal Price { get; set; }

@@ -103,6 +103,23 @@
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
+            <dxb:BarButtonItem 
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Invoices.InvoicesPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Business_Dollar.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Счета" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
 
             <dxb:BarButtonItem                 
                 ToolTip="Интеграции"
@@ -191,26 +208,6 @@
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
-
-            <dxb:BarItemSeparator/>
-
-            <dxb:BarButtonItem 
-                Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.InvoicePage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Business_Dollar.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Счета" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.InvoicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.InvoicePage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />                           
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
 
 
             <dxb:BarButtonItem 

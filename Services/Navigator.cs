@@ -111,7 +111,7 @@ namespace Dental.Services
         }
 
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
-        private readonly string defaultPage = "Dental.Views.InvoicePage";
+        private readonly string defaultPage = "Dental.Views.Invoices.InvoicesPage";
 
         public int? StartWithLastPage { get; set; }
 

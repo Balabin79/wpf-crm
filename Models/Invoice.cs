@@ -1,6 +1,7 @@
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,13 +11,23 @@ namespace Dental.Models
     [Table("Invoice")]
     public class Invoice : AbstractBaseModel, IDataErrorInfo
     {
+        public Invoice()
+        {
+            InvoiceServiceItems = new ObservableCollection<InvoiceServiceItems>();
+            InvoiceMaterialItems = new ObservableCollection<InvoiceMaterialItems>();
+        }
+
         public string Date { get; set; }
         public string Number { get; set; }
         public int? Paid { get; set; }
         public decimal Total { get; set; }
 
+        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
         public Client Client { get; set; }
         public int? ClientId { get; set; }
+
+        public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
+        public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
