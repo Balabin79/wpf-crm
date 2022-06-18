@@ -77,7 +77,7 @@ namespace Dental.Models
         public DbSet<GoogleContacts> GoogleContacts { get; set; }
         public DbSet<Settings> Settings { get; set; }   
 
-        public DbSet<Invoice> Invoice { get; set; }   
+        public DbSet<Invoice> Invoices { get; set; }   
         public DbSet<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }   
         public DbSet<InvoiceServiceItems> InvoiceServiceItems { get; set; }   
     }

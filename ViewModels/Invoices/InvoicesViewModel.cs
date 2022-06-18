@@ -29,24 +29,24 @@ namespace Dental.ViewModels.Invoices
                 if (fromPatientCard)
                 {
                     Invoices = (Client.Id > 0) ?
-                        db.Invoice.Where(f => f.ClientId == Client.Id)
+                        db.Invoices.Where(f => f.ClientId == Client.Id)
                             .Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
                             .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
                             .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature))
                         .ToObservableCollection() : new ObservableCollection<Invoice>();
-                } 
+                }
                 else
                 {
-                    Invoices = db.Invoice
+                    Invoices = db.Invoices
                         .Include(f => f.Client)
                         .Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
                         .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
                         .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature))
-                        .ToObservableCollection();
+                        .ToObservableCollection() ?? new ObservableCollection<Invoice>();
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -67,16 +67,18 @@ namespace Dental.ViewModels.Invoices
                     title = "Новый счет";
                     Invoice = new Invoice()
                     {
+                        Number = NewNumberGenerate(),
                         Client = Client,
                         ClientId = Client.Id,
-                        Date = DateTime.Now.ToShortDateString()
+                        Date = DateTime.Now.ToShortDateString(),
+                        Paid = 0
                     };
                 }
 
-                InvoiceVM = new InvoiceVM(db) 
-                { 
-                    Number = Invoice.Number, 
-                    Date = Invoice.Date, 
+                InvoiceVM = new InvoiceVM(db)
+                {
+                    Number = Invoice.Number,
+                    Date = Invoice.Date,
                     Client = Invoice.Client,
                     Paid = Invoice.Paid,
                     Total = Invoice.Total,
@@ -104,11 +106,11 @@ namespace Dental.ViewModels.Invoices
                 Invoice.Paid = InvoiceVM.Paid;
                 Invoice.Total = InvoiceVM.Total;
 
-                if (Invoice.Id == 0) 
+                if (Invoice.Id == 0)
                 {
                     db.Entry(Invoice).State = EntityState.Added;
                     Invoices.Add(Invoice);
-                } 
+                }
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -214,12 +216,12 @@ namespace Dental.ViewModels.Invoices
                 {
                     Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
                     Services = db.Services.ToArray();
-                    InvoiceServiceItemVM = new InvoiceServiceItemVM() 
-                    { 
-                        Invoice = item.Invoice, 
-                        Employee = item.Employee, 
-                        Service = item.Service, 
-                        Count = item.Count, 
+                    InvoiceServiceItemVM = new InvoiceServiceItemVM()
+                    {
+                        Invoice = item.Invoice,
+                        Employee = item.Employee,
+                        Service = item.Service,
+                        Count = item.Count,
                         Price = item.Price,
                         Title = "Редактирование услуги"
                     };
@@ -437,6 +439,10 @@ namespace Dental.ViewModels.Invoices
             }
         }
         #endregion
+
+        private string NewNumberGenerate() =>
+            int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
+            ?  string.Format("{0:00000000}", ++result) : "00000001";
 
         public ICollection<Invoice> Invoices { get; set; }
         public ICollection<Employee> Employees { get; set; }

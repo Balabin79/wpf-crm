@@ -406,7 +406,7 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem Content="Создать новую смету" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
+                        <dxb:BarButtonItem Content="Создать новый счет" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
@@ -432,7 +432,7 @@
                     </dxg:GridControl.GroupSummary>
                     <dxg:GridControl.Columns>
                         
-                        <dxg:GridColumn FieldName="Client.LastName" Header="Фамилии" GroupIndex="0" GroupInterval="Alphabetical" Width="1*"/>
+                        <dxg:GridColumn FieldName="Date" Header="Дата" GroupIndex="0" GroupInterval="DateMonth" Width="1*"/>
 
                         <dxg:GridColumn FieldName="ClientId" GroupIndex="1" GroupInterval="Default" Width="2*" ReadOnly="True">
                             <dxg:GridColumn.GroupValueTemplate>
@@ -441,16 +441,14 @@
                                 </DataTemplate>
                             </dxg:GridColumn.GroupValueTemplate>
                         </dxg:GridColumn>
-                        <dxg:GridColumn FieldName="Id" Width="3*" Header="Смета" GroupIndex="2" GroupInterval="Default" >
+
+                        <dxg:GridColumn FieldName="Number" Header="Номер счета" GroupIndex="3" GroupInterval="Default" ReadOnly="True" Width="2*">
                             <dxg:GridColumn.GroupValueTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Text="{DXBinding Expr='`Счет№ ` + RowData.Row.Number + ` (от ` + RowData.Row.Date + `)`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </dxg:GridColumn.GroupValueTemplate>
                         </dxg:GridColumn>
-
-
-
 
                         <dxg:GridColumn FieldName="Invoice" Width="5*"  Header="Смета" >
                             <dxg:GridColumn.CellDisplayTemplate>
@@ -804,17 +802,6 @@
                             </dxg:GridColumn.CellDisplayTemplate>
 
                         </dxg:GridColumn>
-
-
-
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-
 
                     </dxg:GridControl.Columns>
 

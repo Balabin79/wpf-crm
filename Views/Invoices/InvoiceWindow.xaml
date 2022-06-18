@@ -9,8 +9,8 @@
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Height="230"
-        MaxHeight="230"
+        Height="250"
+        MaxHeight="250"
         Name="Window"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler" 
@@ -21,16 +21,13 @@
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:BoolIntConverter x:Key="boolToInt"/>
     </Window.Resources>
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
             <TextBlock Text="{Binding Path=InvoiceVM.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
-            <dxlc:LayoutItem Label="Название сметы*:"  LabelPosition="Top" IsRequired="True">
-                <dxe:TextEdit EditValue="{Binding InvoiceVM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-            </dxlc:LayoutItem>
-            <dxlc:LayoutGroup Orientation="Horizontal">
                 <dxlc:LayoutItem Label="Клиент*:" Name="Client" LabelPosition="Top" IsRequired="True" Visibility="{Binding InvoiceVM.ClientFieldVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
                     <dxe:ComboBoxEdit 
                                         ItemsSource="{Binding InvoiceVM.Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
@@ -48,10 +45,13 @@
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Дата начала:"  LabelPosition="Top" >
-                    <dxe:DateEdit EditValue="{Binding InvoiceVM.StartDate, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top" >
+                    <dxe:DateEdit EditValue="{Binding InvoiceVM.Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </dxlc:LayoutItem>
-            </dxlc:LayoutGroup>
+            <dxlc:LayoutItem Label="Оплачен:"  LabelPosition="Top" >
+                <dxe:CheckEdit EditValue="{Binding InvoiceVM.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </dxlc:LayoutItem>
+
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
                 <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveInvoiceCommand}" />
                 <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormInvoiceCommand}" Margin="4 0 0 0"/>
