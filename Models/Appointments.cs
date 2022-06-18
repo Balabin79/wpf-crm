@@ -41,12 +41,12 @@ namespace Dental.Models
         public Employee Employee { get; set; }
 
         public int LabelId { get; set; }
-        public int StatusId { get; set; }
+
+        public int? StatusId { get; set; }
+        public AppointmentStatus Status { get; set; }
+
+
         public int AllDay { get; set; }
-
-
-
-        public decimal? Price { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

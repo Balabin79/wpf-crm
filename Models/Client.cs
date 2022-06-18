@@ -26,8 +26,6 @@ namespace Dental.Models
         public string Email { get; set; }
         public string Address { get; set; }
         public string Note { get; set; }
-        public Advertising Advertising { get; set; }
-        public int? AdvertisingId { get; set; }
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
@@ -35,14 +33,8 @@ namespace Dental.Models
         public string WhomIssued { get; set; }
         public ObservableCollection<Estimate> Estimates { get; set; }
 
-        public object Clone() 
-        {
-            var clone = (Client)this.MemberwiseClone();
-            clone.Advertising = this.Advertising;
-            clone.AdvertisingId = this.AdvertisingId;
-            return clone;
-        }
-
+        public object Clone() => (Client)this.MemberwiseClone();
+      
         public override string ToString() => LastName + " " + FirstName + " " + MiddleName;
     }
 }

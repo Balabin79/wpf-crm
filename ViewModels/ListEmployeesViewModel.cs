@@ -27,7 +27,7 @@ namespace Dental.ViewModels
             try
             {              
                 db = new ApplicationContext();
-                Collection = db.Employes.OrderBy(d => d.LastName).Include(f => f.Status).Include(f => f.Sex).ToObservableCollection();
+                Collection = db.Employes.OrderBy(d => d.LastName).Include("Sex").ToObservableCollection();
                 foreach (var i in Collection)
                 {
                     if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
@@ -46,7 +46,7 @@ namespace Dental.ViewModels
                     else i.Image = null;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

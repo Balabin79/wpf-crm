@@ -93,18 +93,6 @@ namespace Dental.Models
         [Phone(ErrorMessage = @"В поле ""Телефон"" введено некорректное значение")]
         public string Phone { get; set; }
 
-        [Display(Name = "Дата приема")]
-        public string HireDate { get; set; } // дата приема на работу
-
-        [Display(Name = "Уволен")]
-        public int? IsDismissed { get; set; }
-
-        [Display(Name = "Дата увольнения")]
-        public string DismissalDate { get; set; } //= DateTime.Now.ToShortDateString().ToString(); // дата увольнения
-
-        [Display(Name = "ИНН")]
-        [RegularExpression(@"^\d{12}$", ErrorMessage = @"Формат ""ИНН""- 12 цифр")]
-        public string Inn { get; set; }
 
         [Display(Name = "Адрес")]
         public string Address
@@ -132,7 +120,7 @@ namespace Dental.Models
         public int? SexId { get; set; }       
 
         public int? IsInSheduler { get; set; }
-        public int? DurationWorkTime { get; set; }
+
         public int? IsIntegrated { get; set; }
         public int? IsRemoteContactCreated { get; set; }
 
@@ -164,16 +152,12 @@ namespace Dental.Models
                 StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
                 StringParamsIsEquel(this.Email, other.Email, "Email");
                 StringParamsIsEquel(this.Address, other.Address, "Адрес");
-                StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
                 StringParamsIsEquel(this.Post, other.Post, "Должность");
-                StringParamsIsEquel(this.DismissalDate, other.DismissalDate, "Дата увольнения");
                 StringParamsIsEquel(this.Status?.Guid, other.Status?.Guid, "Статус");
                 StringParamsIsEquel(this.Sex?.Guid, other.Sex?.Guid, "Пол");
                 StringParamsIsEquel(this.Note, other.Note, "Примечание");
-
-                if (this.IsDismissed != other.IsDismissed) FieldsChanges.Add("Уволен");                
+        
                 if (this.IsInSheduler != other.IsInSheduler) FieldsChanges.Add("В расписании");
-                if (this.DurationWorkTime != other.DurationWorkTime) FieldsChanges.Add("Продолжительность рабочего дня");
             }
             return FieldsChanges.Count == 0;
         }

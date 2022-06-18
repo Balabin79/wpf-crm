@@ -57,12 +57,6 @@
                                            Command="{Binding OpenClientCardCommand}" />
                         <dxb:BarItemSeparator/>
 
-                        <dxb:BarButtonItem Content="Источники привлечения клиентов" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormAdvertisingCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_New.svg}"/>
                         <dxb:BarButtonItem Content="Шаблоны документов" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"

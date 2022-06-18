@@ -132,31 +132,12 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Mvvm" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Utils.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Charts.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Diagram.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Dialogs.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Grid.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Layout.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Navigation.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.PivotGrid.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Printing.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.PropertyGrid.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Reporting.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.RichEdit.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Scheduler.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduling" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Scheduling.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
-    <PackageReference Include="DevExpress.Wpf.Themes.Office2019White" Version="20.1.4" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.57.0.2696" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="morelinq" Version="3.3.2" />
-    <PackageReference Include="SharpVectors" Version="1.7.1" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="SharpVectors" Version="1.7.7" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Text.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -278,9 +259,6 @@
     <Compile Update="Views\NomenclatureDir\Nomenclature.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ServicesPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Sheduler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -291,9 +269,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\Services.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\PatientCard\AdvertisingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -357,10 +332,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ServicesPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\PrintFields.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -378,10 +349,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PatientCard\Services.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\PatientCard\AdvertisingWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

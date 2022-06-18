@@ -53,8 +53,7 @@ namespace Dental.Models
             }       
         }
 
-        public DbSet<Employee> Employes { get; set; }
-        public DbSet<Advertising> Advertising { get; set; }     
+        public DbSet<Employee> Employes { get; set; }  
         public DbSet<Client> Clients { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Dictionary> Dictionary { get; set; }
@@ -77,5 +76,9 @@ namespace Dental.Models
 
         public DbSet<GoogleContacts> GoogleContacts { get; set; }
         public DbSet<Settings> Settings { get; set; }   
+
+        public DbSet<Invoice> Invoice { get; set; }   
+        public DbSet<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }   
+        public DbSet<InvoiceServiceItems> InvoiceServiceItems { get; set; }   
     }
 }

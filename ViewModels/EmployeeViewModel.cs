@@ -309,7 +309,7 @@ namespace Dental.ViewModels
             {
                 if (Model == null) return;
                 var notification = new Notification();
-                if (Model.Id == 0) 
+                if (Model.Id == 0)
                 {
                     db.Employes.Add(Model);
                     VmList?.Collection?.Add(Model);
@@ -329,6 +329,7 @@ namespace Dental.ViewModels
                     Model.UpdateFields();
                     notification.run();
                     ModelBeforeChanges = (Employee)Model.Clone();
+
                 }
             }
             catch (Exception e)

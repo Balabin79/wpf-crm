@@ -36,8 +36,6 @@ namespace Dental.ViewModels
             Email = client.Email;
             Address = client.Address;
             Note = client.Note;
-            Advertising = client.Advertising;
-            AdvertisingId = client.AdvertisingId;
             IsInArchive = client.IsInArchive;
             PassportSeries = client.PassportSeries;
             PassportNo = client.PassportNo;
@@ -110,9 +108,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Note, value?.Trim()); }
         }
 
-        public Advertising Advertising { get; set; }
-        public int? AdvertisingId { get; set; }
-
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
@@ -144,7 +139,6 @@ namespace Dental.ViewModels
                 StringParamsIsEquel(Phone, other.Phone, "Административная", "Телефон");
                 StringParamsIsEquel(Email, other.Email, "Административная", "Email");
                 StringParamsIsEquel(Address, other.Address, "Административная", "Адрес проживания");
-                StringParamsIsEquel(Advertising?.Guid, other.Advertising?.Guid, "Административная", "Рекламные источники");
                 StringParamsIsEquel(Note, other.Note, "Административная", "Примечание");
                 StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
                 StringParamsIsEquel(WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
@@ -187,8 +181,6 @@ namespace Dental.ViewModels
             client.Email = Email;
             client.Address = Address;
             client.Note = Note;
-            client.Advertising = Advertising;
-            client.AdvertisingId = AdvertisingId;
             client.IsInArchive = IsInArchive;
             client.PassportSeries = PassportSeries;
             client.PassportNo = PassportNo;

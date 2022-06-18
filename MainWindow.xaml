@@ -196,56 +196,22 @@
 
             <dxb:BarButtonItem 
                 Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.SalesPage">
+                CommandParameter="Dental.Views.InvoicePage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage 'SvgImages/Outlook Inspired/Opportunities.svg'}"/>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Business_Dollar.svg}"/>
                             <TextBlock 
-                                TextAlignment="Center"  Text="Продажи" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Payrolls.Main`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Payrolls.Main`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                TextAlignment="Center"  Text="Счета" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.InvoicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.InvoicePage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />                           
                         </StackPanel>
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem                
-                ToolTip="Сводная таблица"                                                       
-                Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.ServicesPage" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel >
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Spreadsheet/Subtotal.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Св. данные" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem 
-                ToolTip="Статистика по каналам привлечения"                                   
-                Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Reports.ByAdvertising" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center" 
-                                Text="Реклама"
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Reports.ByAdvertising`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Reports.ByAdvertising`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
 
             <dxb:BarButtonItem 
                 DataContext="{StaticResource mv}"

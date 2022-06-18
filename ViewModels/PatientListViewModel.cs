@@ -50,20 +50,6 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenFormAdvertising()
-        {
-            try
-            {
-                AdvertisingWin = new AdvertisingWindow();
-                AdvertisingWin.ShowDialog();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
         public void OpenClientCard(object p)
         {
             try
@@ -103,7 +89,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Collection, value); }
         }
 
-        public AdvertisingWindow AdvertisingWin { get; set; } 
         public ClientsDocumentsWindow ClientsDocumentsWindow { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 

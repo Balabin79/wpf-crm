@@ -78,9 +78,7 @@ namespace Dental.ViewModels
                     if (db.Entry(i).State == EntityState.Detached)
                     {
                         //var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
-                        //var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
-                        var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
-                        i.Price = serv?.Price;
+                        //var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();                      
                         db.Entry(i).State = EntityState.Added;
                     }
                 }
@@ -97,16 +95,6 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is DevExpress.Xpf.Scheduling.AppointmentEditedEventArgs appointment)
-                {
-                    foreach(var i in Appointments)
-                    {
-                        var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
-                        var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();
-                        var serv = db.Services.Where(f => f.Id == i.ServiceId).FirstOrDefault();
-                        i.Price = serv?.Price;
-                    }
-                }
                 db.SaveChanges();
             }
             catch (Exception e)

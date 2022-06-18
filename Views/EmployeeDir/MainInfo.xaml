@@ -127,21 +127,7 @@
 
                         <dxlc:LayoutGroup Orientation="Vertical">
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
-                                <dxlc:LayoutItem Label="Дата приема" AddColonToLabel="True" >
-                                    <dxe:DateEdit 
-                                                Mask="d"
-                                                MaskUseAsDisplayFormat ="True"
-                                                EditValue="{Binding Path=Model.HireDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Label="Дата увольнения" AddColonToLabel="True">
-                                    <dxe:DateEdit
-                                                Mask="d"
-                                                MaskUseAsDisplayFormat ="True"
-                                                EditValue="{Binding Path=Model.DismissalDate, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                </dxlc:LayoutItem>
+   
 
                                 <dxlc:LayoutItem Label="Статус:" LabelPosition="Left" >
                                     <dxe:ComboBoxEdit 
@@ -165,19 +151,6 @@
 
                                 </dxlc:LayoutItem>
 
-                                <dxlc:LayoutItem Label="Продолж. рабочего дня:"
-                                            LabelPosition="Left" 
-                                            HorizontalAlignment="Stretch"
-                                            Margin="0 3 0 3"
-                                            >
-                                    <dxe:TrackBarEdit 
-                                            Value="{Binding Model.DurationWorkTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                            ValueToolTipPlacement="TopLeft"
-                                            Maximum="12"
-                                            Minimum="0"
-                                        >
-                                    </dxe:TrackBarEdit>
-                                </dxlc:LayoutItem>
 
                                 <dxlc:LayoutItem Label="В расписании:"
                                             LabelPosition="Left" >

@@ -31,7 +31,7 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 VmList = vmList;
-                Model = db.Clients.Where(f => f.Id == clientId).Include(f => f.Advertising).FirstOrDefault() ?? new Client();
+                Model = db.Clients.Where(f => f.Id == clientId).FirstOrDefault() ?? new Client();
                 ClientInfoViewModel = new ClientInfoViewModel(Model);
 
                 UserFiles = new UserFilesManagement(Model.Guid);
@@ -39,7 +39,6 @@ namespace Dental.ViewModels
 
                 IsReadOnly = Model.Id != 0;
 
-                AdvertisingList = db.Advertising.OrderBy(f => f.Name).ToList();
                 Appointments = db.Appointments
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
@@ -165,7 +164,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Document, value); }
         }
 
-        public ICollection<Advertising> AdvertisingList { get; set; }
         public ICollection<Appointments> Appointments { get; set; }
 
         public ICollection<string> GenderList{ get => _GenderList; }
