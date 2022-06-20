@@ -8,19 +8,56 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("InvoiceServiceItems")]
-    public class InvoiceServiceItems : AbstractBaseModel, IDataErrorInfo
+    public class InvoiceServiceItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
-       public Service Service { get; set; }
-       public int? ServiceId { get; set; }
+        public Service Service 
+        { 
+            get => service; 
+            set
+            {
+                service = value;
+                OnPropertyChanged(nameof(Service));
+            } 
+        }
+        public int? ServiceId { get; set; }
+        private Service service;
        
        public Invoice Invoice { get; set; }
        public int? InvoiceId { get; set; }       
         
-       public Employee Employee { get; set; }
-       public int? EmployeeId { get; set; }
+        public Employee Employee 
+        {
+            get => employee; 
+            set
+            {
+                employee = value;
+                OnPropertyChanged(nameof(Employee));
+            } 
+        }
+        public int? EmployeeId { get; set; }
+        private Employee employee;
 
-       public int Count { get; set; }
-       public decimal Price { get; set; }
+        public int Count 
+        { 
+            get => count;
+            set
+            {
+                count = value;
+                OnPropertyChanged(nameof(Count));
+            }
+        }
+        private int count;
+
+        public decimal Price 
+        { 
+            get => price;
+            set
+            {
+                price = value;
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+        private decimal price;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

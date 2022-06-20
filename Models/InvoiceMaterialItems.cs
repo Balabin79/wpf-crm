@@ -10,14 +10,42 @@ namespace Dental.Models
     [Table("InvoiceMaterialItems")]
     public class InvoiceMaterialItems : AbstractBaseModel, IDataErrorInfo
     {
-       public Nomenclature Nomenclature { get; set; }
-       public int? NomenclatureId { get; set; }
+        public Nomenclature Nomenclature 
+        { 
+            get => nomenclature;
+            set
+            {
+                nomenclature = value;
+                OnPropertyChanged(nameof(Nomenclature));
+            } 
+        }
+        public int? NomenclatureId { get; set; }
+        private Nomenclature nomenclature;
        
-       public Invoice Invoice { get; set; }
-       public int? InvoiceId { get; set; }
+        public Invoice Invoice { get; set; }
+        public int? InvoiceId { get; set; }
 
-       public int Count { get; set; }
-       public decimal Price { get; set; }
+        public int Count
+        {
+            get => count;
+            set
+            {
+                count = value;
+                OnPropertyChanged(nameof(Count));
+            }
+        }
+        private int count;
+
+        public decimal Price
+        {
+            get => price;
+            set
+            {
+                price = value;
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+        private decimal price;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

@@ -28,7 +28,7 @@ namespace Dental.Views.Invoices
             this.DataContext = new ViewModels.Invoices.InvoicesViewModel();
         }
 
-        private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
+        private void ServiceItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
             if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
             {
@@ -74,6 +74,11 @@ namespace Dental.Views.Invoices
                 e.TotalValue = price;
             }
             e.TotalValueReady = true;
+        }
+
+        private void TreatmentPlanItems_Loaded(object sender, RoutedEventArgs e)
+        {
+            int x = 0;
         }
     }
 }

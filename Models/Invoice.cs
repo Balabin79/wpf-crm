@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Invoice")]
-    public class Invoice : AbstractBaseModel, IDataErrorInfo
+    public class Invoice : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
         public Invoice()
         {
@@ -17,14 +17,33 @@ namespace Dental.Models
             InvoiceMaterialItems = new ObservableCollection<InvoiceMaterialItems>();
         }
 
-        public string Date { get; set; }
+        public string Date 
+        { 
+            get => date;
+            set
+            {
+                date = value;
+                OnPropertyChanged(nameof(Date));
+            }
+        }
+        private string date;
+
         public string Number { get; set; }
         public int? Paid { get; set; }
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
-        public Client Client { get; set; }
+        public Client Client 
+        {
+            get => client;
+            set
+            {
+                client = value;
+                OnPropertyChanged(nameof(Client)); 
+            }
+        }
         public int? ClientId { get; set; }
+        private Client client;
 
         public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
         public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }

@@ -9,8 +9,8 @@
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Height="250"
-        MaxHeight="250"
+        Height="270"
+        MaxHeight="270"
         Name="Window"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler" 
@@ -45,9 +45,13 @@
                         </dxe:ComboBoxEdit.StyleSettings>
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top" >
-                    <dxe:DateEdit EditValue="{Binding InvoiceVM.Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top">
+                <dxe:DateEdit  Mask="G" MaskUseAsDisplayFormat="True" EditValue="{Binding InvoiceVM.Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
+            </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Оплачен:"  LabelPosition="Top" >
                 <dxe:CheckEdit EditValue="{Binding InvoiceVM.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             </dxlc:LayoutItem>

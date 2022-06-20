@@ -54,6 +54,12 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => ClientFieldVisibility, value); }
         }
 
+        public string Title
+        {
+            get { return GetProperty(() => Title); }
+            set { SetProperty(() => Title, value); }
+        }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
