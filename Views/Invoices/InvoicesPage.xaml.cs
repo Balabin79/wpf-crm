@@ -75,10 +75,5 @@ namespace Dental.Views.Invoices
             }
             e.TotalValueReady = true;
         }
-
-        private void TreatmentPlanItems_Loaded(object sender, RoutedEventArgs e)
-        {
-            int x = 0;
-        }
     }
 }

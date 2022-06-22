@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Documents;
+using Dental.Services.Files;
 
 namespace Dental.ViewModels
 {
@@ -111,8 +112,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                EmployeesDocumentsWindow = new EmployeesDocumentsWindow();
-                EmployeesDocumentsWindow.ShowDialog();
+                DocumentsWindow = new DocumentsWindow() { DataContext = new EmployeesDocumentsViewModel() };
+                DocumentsWindow.ShowDialog();
             }
             catch
             {
@@ -123,6 +124,6 @@ namespace Dental.ViewModels
         public ObservableCollection<Employee> Collection { get; set; }
    
         public EmployeeCardWindow EmployeeWin { get; set; }
-        public EmployeesDocumentsWindow EmployeesDocumentsWindow { get; set; }
+        public DocumentsWindow DocumentsWindow { get; set; }
     }
 }

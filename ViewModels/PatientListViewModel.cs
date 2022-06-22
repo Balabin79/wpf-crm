@@ -15,6 +15,7 @@ using Dental.Services;
 using Dental.Models;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Documents;
+using Dental.Services.Files;
 
 namespace Dental.ViewModels
 {
@@ -40,8 +41,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                ClientsDocumentsWindow = new ClientsDocumentsWindow();
-                ClientsDocumentsWindow.ShowDialog();
+                DocumentsWindow = new DocumentsWindow() { DataContext = new ClientsDocumentsViewModel() };
+                DocumentsWindow.ShowDialog();
             }
             catch 
             {
@@ -89,7 +90,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => Collection, value); }
         }
 
-        public ClientsDocumentsWindow ClientsDocumentsWindow { get; set; }
+        public DocumentsWindow DocumentsWindow { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 
         public void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();

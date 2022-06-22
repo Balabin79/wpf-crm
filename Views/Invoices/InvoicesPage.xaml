@@ -31,6 +31,7 @@
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+                    <converter:DocumentMultiBindingConverter x:Key="multi" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -60,11 +61,16 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
-                        <dxb:BarButtonItem Content="Создать счет" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
+                        <dxb:BarButtonItem Content="Создать счет" Margin="0 0 5 0"
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormInvoiceCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        <dxb:BarButtonItem Content="Шаблоны счетов" 
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenFormDocumentsCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -126,34 +132,41 @@
                                                 GlyphSize="Small"
                                                 Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                            <dxb:BarButtonItem Margin="0 0 5 0"
-                                                Content="Печать"                                                            
+                                            
+                                            <dxb:BarSubItem 
                                                 IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                                Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
-                                                GlyphSize="Small"
-                                                Command="{Binding Source={StaticResource Print}}"
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                            <dxb:BarButtonItem Margin="0 0 5 0"
-                                                Content="Экспорт в Excel"                                                            
+                                                x:Name="Print" Content="Печать" 
+                                                ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
+             
+                                            </dxb:BarSubItem>
+                          
+                                            <dxb:BarSubItem 
+                                                Content="Экспорт" 
                                                 IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                                Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
-                                                GlyphSize="Small"
-                                                Command="{Binding Source={StaticResource Excel}}"
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                            <dxb:BarButtonItem Margin="0 0 5 0"
-                                                Content="Экспорт в Word"                                                            
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                                Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
-                                                GlyphSize="Small"
-                                                Command="{Binding Source={StaticResource Word}}"
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                            <dxb:BarButtonItem Margin="0 0 5 0"
-                                                Content="Экспорт в PDF"                                                            
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                                Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
-                                                GlyphSize="Small"
-                                                Command="{Binding Source={StaticResource Pdf}}"
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                                Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}">
+                                                <dxb:BarButtonItem 
+                                                    Content="Экспорт в Excel"                                                            
+                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
+                                                    GlyphSize="Small"
+                                                    Command="{Binding Source={StaticResource Excel}}"
+                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                                <dxb:BarButtonItem 
+                                                    Content="Экспорт в Word"                                                            
+                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
+                                                    GlyphSize="Small"
+                                                    Command="{Binding Source={StaticResource Word}}"
+                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                                <dxb:BarButtonItem
+                                                    Content="Экспорт в PDF"                                                            
+                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
+                                                    GlyphSize="Small"
+                                                    Command="{Binding Source={StaticResource Pdf}}"
+                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                            </dxb:BarSubItem>         
                                             <dxb:BarButtonItem         
                                                 Content="Удалить" 
                                                 IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
@@ -192,7 +205,7 @@
                                                     <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Service">
                                                         <dxg:GridColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                <TextBlock Margin="5 0 0 0" TextWrapping="Wrap" Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                                             </DataTemplate>
                                                         </dxg:GridColumn.CellTemplate>
                                                     </dxg:GridColumn>
@@ -363,7 +376,7 @@
                                                     <dxg:GridColumn  Header="Материал" Width="6*" MinWidth="250" FieldName="Nomenclature">
                                                         <dxg:GridColumn.CellTemplate>
                                                             <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" Text="{Binding Row.Nomenclature, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                <TextBlock TextWrapping="Wrap" Margin="5 0 0 0" Text="{Binding Row.Nomenclature, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                                             </DataTemplate>
                                                         </dxg:GridColumn.CellTemplate>
                                                     </dxg:GridColumn>
@@ -569,7 +582,7 @@
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"/>
-                                
+
                                 <dxb:BarButtonItem
                                     Content="Печать"                                                            
                                     Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
@@ -579,36 +592,30 @@
                                     IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                     Command="{Binding Source={StaticResource Print}}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                
-                                <dxb:BarButtonItem 
-                                    Content="Экспорт в Excel"                                                            
-                                    Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
-                                    GlyphSize="Small"
-                                    KeyGesture="Ctrl+X"
-                                    GlyphAlignment="Left" 
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                    Command="{Binding Source={StaticResource Excel}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
-                                <dxb:BarButtonItem 
-                                    Content="Экспорт в Word"                                                            
-                                    Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
-                                    GlyphSize="Small"
-                                    KeyGesture="Ctrl+W"
-                                    GlyphAlignment="Left"
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                    Command="{Binding Source={StaticResource Word}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                
-                                <dxb:BarButtonItem 
-                                    Content="Экспорт в PDF"                                                            
-                                    Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
-                                    GlyphSize="Small"
-                                    KeyGesture="Ctrl+D"
-                                    GlyphAlignment="Left"
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                    Command="{Binding Source={StaticResource Pdf}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                <dxb:BarSubItem Content="Экспорт" Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}" >
+                                    <dxb:BarButtonItem 
+                                                Content="Экспорт в Excel"                                                            
+                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
+                                                GlyphSize="Small"
+                                                Command="{Binding Source={StaticResource Excel}}"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                    <dxb:BarButtonItem 
+                                                Content="Экспорт в Word"                                                            
+                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
+                                                GlyphSize="Small"
+                                                Command="{Binding Source={StaticResource Word}}"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                    <dxb:BarButtonItem
+                                                Content="Экспорт в PDF"                                                            
+                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
+                                                GlyphSize="Small"
+                                                Command="{Binding Source={StaticResource Pdf}}"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                </dxb:BarSubItem>
 
                                 <dxb:BarButtonItem         
                                     Content="Удалить" 

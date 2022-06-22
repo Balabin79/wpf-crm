@@ -12,6 +12,18 @@ using Dental.Infrastructures.Converters;
 using Dental.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Invoices;
+using System.Collections;
+using DevExpress.Xpf.Bars;
+using DevExpress.Utils.Svg;
+//using DevExpress.XtraPrinting.Drawing;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Data;
+using Dental.Infrastructures.Commands;
+using Dental.Views.Documents;
+using Dental.Services.Files;
+using System.IO;
+using DevExpress.Xpf.Grid;
 
 namespace Dental.ViewModels.Invoices
 {
@@ -27,6 +39,7 @@ namespace Dental.ViewModels.Invoices
                 db = context ?? new ApplicationContext();
                 Client = client ?? new Client();
                 SetInvoices();
+                PrintMenuLoading();
             }
             catch
             {
@@ -433,6 +446,55 @@ namespace Dental.ViewModels.Invoices
         }
         #endregion
 
+        #region Печать
+        [Command]
+        public void OpenFormDocuments()
+        {
+            try
+            {
+                Documents.PrintMenuUpdating += PrintMenuLoading;
+                DocumentsWindow = new DocumentsWindow() { DataContext = Documents };
+                DocumentsWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+        
+        private void PrintMenuLoading()
+        {
+            try
+            {
+                ItemLinksSource = new ObservableCollection<BarButtonItem>();
+            foreach (var doc in Documents.Files)
+            {
+                var item = new BarButtonItem()
+                {
+                    Content = doc.Name.Length > 120 ? doc.Name.Substring(0, 119) + "..." : doc.Name,
+                    Glyph = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/XAF/Action_Printing_Preview.png")),
+                    Command = new PrintDocCommand()
+                };
+
+                item.CommandParameter = new DocParams() { Item = item, PathToFile = doc.FullName, DocType = new Invoice().GetType() };
+                ItemLinksSource.Add(item);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке загрузить меню печати счетов!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        public DocumentsWindow DocumentsWindow { get; set; }
+        public InvoicesDocumentsViewModel Documents { get; private set; } = new InvoicesDocumentsViewModel();
+        public ObservableCollection<BarButtonItem> ItemLinksSource
+        {
+            get { return GetProperty(() => ItemLinksSource); }
+            set { SetProperty(() => ItemLinksSource, value); }
+        }
+        #endregion
+
         private string NewNumberGenerate() =>
             int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
             ?  string.Format("{0:00000000}", ++result) : "00000001";
@@ -468,6 +530,8 @@ namespace Dental.ViewModels.Invoices
         private InvoiceWindow InvoiceWindow;
         public InvoiceServiceWindow InvoiceServiceWindow;
         public InvoiceMaterialWindow InvoiceMaterialWindow;
+
+        //public Views.Reports.InvoiceWindow Report { get; set; }
        
     }
 }

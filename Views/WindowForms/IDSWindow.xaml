@@ -5,16 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
         xmlns:local="clr-namespace:Dental.Views.WindowForms" 
-        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         mc:Ignorable="d"
         Title="Документы, ИДС" Closing="RichEdit_DocumentClosing">
     <Grid>
+        <dxp:DocumentPreviewControl Name="preview" />
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
-            <dxre:RichEditControl                
-                x:Name="RichEdit" 
-                
-                CommandBarStyle="Ribbon" 
-                />
+            <dxre:RichEditControl  x:Name="RichEdit" CommandBarStyle="Ribbon" />
         </dx:LoadingDecorator>
     </Grid>
 </Window>

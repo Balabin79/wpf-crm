@@ -309,7 +309,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Documents\EmployeesDocumentsWindow.xaml">
+    <Page Update="Views\Documents\DocumentsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\EmployeeDir\MainInfo.xaml">

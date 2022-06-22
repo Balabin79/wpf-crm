@@ -17,6 +17,8 @@ namespace Dental.Services.Files
 {
     public class AbstractDocumentsManagement : DevExpress.Mvvm.ViewModelBase
     {
+        public Action PrintMenuUpdating;
+
         public AbstractDocumentsManagement(string pathToDir, string guid = null)
         {
             PathToDir = pathToDir;
@@ -55,6 +57,7 @@ namespace Dental.Services.Files
                     if (response.ToString() == "No") return;
                     File.Delete(fileName);
                     Files = GetFiles().ToObservableCollection();
+                    PrintMenuUpdating?.Invoke();
                 }
             }
             catch
@@ -98,6 +101,7 @@ namespace Dental.Services.Files
                 var newPath = Path.Combine(PathToDir, fileName);
                 File.Copy(filePath, newPath, true);
                 Files = GetFiles();
+                PrintMenuUpdating?.Invoke();
             }
             catch
             {
@@ -108,7 +112,7 @@ namespace Dental.Services.Files
         [Command]
         public void OpenDirDoc()
         {
-                if (Directory.Exists(PathToDir)) Process.Start(PathToDir);
+            if (Directory.Exists(PathToDir)) Process.Start(PathToDir);
         }
 
         [Command]

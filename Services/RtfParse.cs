@@ -55,9 +55,11 @@ namespace Dental.Services
 
                 switch (modelName)
                 {
-                    case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    //case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Client": return "GGG";
                     case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Invoice": return ((Invoice)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     default: return "";
                 }
             }
