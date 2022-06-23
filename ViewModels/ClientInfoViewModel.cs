@@ -24,7 +24,7 @@ namespace Dental.ViewModels
     {
         public ClientInfoViewModel(Client client)
         {
-            Estimates = new ObservableCollection<Estimate>();
+            //Estimates = new ObservableCollection<Estimate>();
             Id = client.Id;
             Guid = client.Guid;
             FirstName = client.FirstName;
@@ -33,7 +33,6 @@ namespace Dental.ViewModels
             BirthDate = client.BirthDate;
             Sex = client.Sex;
             Phone = client.Phone;
-            Email = client.Email;
             Address = client.Address;
             Note = client.Note;
             IsInArchive = client.IsInArchive;
@@ -88,14 +87,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Phone, value?.Trim()); }
         }
 
-        [EmailAddress]
-        [MaxLength(255)]
-        public string Email
-        {
-            get { return GetProperty(() => Email); }
-            set { SetProperty(() => Email, value?.Trim()); }
-        }
-
         public string Address
         {
             get { return GetProperty(() => Address); }
@@ -114,11 +105,11 @@ namespace Dental.ViewModels
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
 
-        public ObservableCollection<Estimate> Estimates
+       /* public ObservableCollection<Estimate> Estimates
         {
             get { return GetProperty(() => Estimates); }
             set { SetProperty(() => Estimates, value); }
-        }
+        }*/
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -137,7 +128,6 @@ namespace Dental.ViewModels
                 StringParamsIsEquel(BirthDate, other.BirthDate, "Административная", "Дата рождения");
                 StringParamsIsEquel(Sex, other.Sex, "Административная", "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Административная", "Телефон");
-                StringParamsIsEquel(Email, other.Email, "Административная", "Email");
                 StringParamsIsEquel(Address, other.Address, "Административная", "Адрес проживания");
                 StringParamsIsEquel(Note, other.Note, "Административная", "Примечание");
                 StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
@@ -171,14 +161,13 @@ namespace Dental.ViewModels
 
         public Client Copy(Client client)
         {
-            client.Estimates = Estimates;
+            //client.Estimates = ;
             client.FirstName = FirstName;
             client.LastName = LastName;
             client.MiddleName = MiddleName;
             client.BirthDate = BirthDate;
             client.Sex = Sex;
             client.Phone = Phone;
-            client.Email = Email;
             client.Address = Address;
             client.Note = Note;
             client.IsInArchive = IsInArchive;

@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental.Views.Documents"
-        xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+        xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
         Title="DocumentPrint" Height="450" Width="800">
     <Grid>
-        <dxp:DocumentPreviewControl x:Name="doc"/>
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
+            <dxp:DocumentPreviewControl x:Name="doc"/>
+        </dx:LoadingDecorator>
     </Grid>
 </Window>

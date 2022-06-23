@@ -380,7 +380,7 @@
         <dxlc:LayoutGroup.HeaderTemplate>
             <DataTemplate >
                 <DockPanel  HorizontalAlignment="Stretch">
-                    <TextBlock Text="Сметы клиента" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                    <TextBlock Text="Счета клиента" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
@@ -394,7 +394,7 @@
                             <dxb:BarButtonItem 
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormInvoiceCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                Content="Создать смету" 
+                                Content="Создать счет" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
                         </dxb:ToolBarControl>
@@ -481,8 +481,8 @@
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0 3 0 0"  Text="{Binding Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                            <TextBlock Margin="3 3 0 0"  Text="{Binding Row.StartDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Margin="0 3 0 0"  Text="{DXBinding Expr='`№` + Row.Number + ` от `', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                            <TextBlock Margin="3 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
   
                     </DataTemplate>

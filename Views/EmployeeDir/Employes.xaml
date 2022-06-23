@@ -101,51 +101,35 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="2"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
-                    <TextBlock Text="Сотрудники" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Сотрудники" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl 
-                        
-                        x:Name="fileToolBar" 
-                        ShowDragWidget="False" 
-                        Caption="File" 
-                        AllowCustomizationMenu="False" 
-                        AllowQuickCustomization="False">
-                        <dxb:BarButtonItem  Content="Новая анкета сотрудника" 
-                                           Command="{Binding OpenFormEmployeeCardCommand}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"/>
-                        <dxb:BarItemSeparator/>
-                        <dxb:BarButtonItem Content="Шаблоны документов" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormDocumentsCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
-                        <dxb:BarItemSeparator/>
-                        <dxb:BarButtonItem Name="expandTree" 
-                                           Content="Развернуть или свернуть все карточки"  
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"                      
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenFormEmployeeCardCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenFormDocumentsCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
+
+                        <dxb:BarButtonItem Content="Свернуть/Развернуть"                                        
+                                           GlyphSize="Small"
                                            Command="{Binding ExpandAllCommand}"
-                                           CommandParameter="{Binding ElementName=view}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           />
+                                           CommandParameter="{Binding ElementName=view}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>

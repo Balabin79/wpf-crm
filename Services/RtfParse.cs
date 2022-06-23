@@ -14,7 +14,7 @@ namespace Dental.Services
         {
             RtfText = txt;
             Model = model;
-            Org = new ApplicationContext().Org.FirstOrDefault();
+          //  Org = new ApplicationContext().Org.FirstOrDefault();
         }
 
         public string Run()
@@ -57,7 +57,7 @@ namespace Dental.Services
                 {
                     //case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Client": return "GGG";
-                    case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                  //  case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Invoice": return ((Invoice)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     default: return "";

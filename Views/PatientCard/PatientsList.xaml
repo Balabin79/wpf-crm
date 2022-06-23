@@ -31,62 +31,43 @@
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
+
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
-                    <TextBlock Text="Клиенты" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Клиенты" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl
-                        x:Name="fileToolBar" 
-                        Caption="File"
-                        ShowDragWidget="False"
-                        AllowCustomizationMenu="False" 
-                        AllowQuickCustomization="False">
-                        <dxb:BarButtonItem Content="Создать карту клиента" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenClientCardCommand}" />
-                        <dxb:BarItemSeparator/>
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Добавить клиента" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenClientCardCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenFormDocumentsCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
+                        <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ShowArchiveCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                        <dxb:BarButtonItem Content="Шаблоны документов" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding OpenFormDocumentsCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}" 
-                                           Glyph="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
-                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ShowArchiveCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
 
-                        <dxb:BarButtonItem IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Content="Показать список клиентов" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding ShowArchiveCommand}"/>
-
-                        <dxb:BarButtonItem IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
-                                           Content="Показать архивный список клиентов" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding ShowArchiveCommand}"/>
-                        
-                        <dxb:BarButtonItem Content="Печать"  
+                        <dxb:BarButtonItem Content="Печать"                                      
+                                           GlyphSize="Small"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
                                            Command="{StaticResource Print}"
                                            CommandParameter="{Binding ElementName=view}"/>
                         <dxb:BarItemLinkSeparator />

@@ -14,7 +14,7 @@ namespace Dental.Models
     [Table("ClientInfo")]
     public class Client : AbstractBaseModel, ICloneable
     {
-        public Client() => Estimates = new ObservableCollection<Estimate>();
+       // public Client() => Estimates = new ObservableCollection<Estimate>();
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,7 +23,6 @@ namespace Dental.Models
         public string BirthDate { get; set; }
         public string Sex { get; set; }
         public string Phone { get; set; }
-        public string Email { get; set; }
         public string Address { get; set; }
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
@@ -31,7 +30,7 @@ namespace Dental.Models
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
-        public ObservableCollection<Estimate> Estimates { get; set; }
+     //   public ObservableCollection<Estimate> Estimates { get; set; }
 
         public object Clone() => (Client)this.MemberwiseClone();
       

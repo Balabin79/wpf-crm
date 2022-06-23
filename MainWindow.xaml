@@ -183,9 +183,9 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Business Objects/BO_Country_v92.svg}"/>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/RichEdit/ListBullets.svg}"/>
                             <TextBlock 
-                                TextAlignment="Center"  Text="Организация" 
+                                TextAlignment="Center"  Text="Доп.поля" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
                                 TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />
@@ -202,7 +202,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Spreadsheet/Logical.svg}"/>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Security_Assistance.svg}"/>
                             <TextBlock 
                                 TextAlignment="Center"  Text="Справка" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                

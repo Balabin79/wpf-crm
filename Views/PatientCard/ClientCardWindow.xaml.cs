@@ -1,11 +1,11 @@
 ﻿using Dental.Models;
-using Dental.ViewModels.Estimates;
 using Dental.ViewModels;
 using DevExpress.Xpf.WindowsUI;
 using System;
 using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
+using Dental.ViewModels.Invoices;
 
 namespace Dental.Views.PatientCard
 {
@@ -17,7 +17,7 @@ namespace Dental.Views.PatientCard
             ApplicationContext db = new ApplicationContext();
             var client = db.Clients.FirstOrDefault(f => f.Id == clientId);
             this.DataContext = new ClientCardViewModel(clientId, vm);
-            this.Estimates.DataContext = new EstimatesViewModel(client, db, true);
+            this.Invoices.DataContext = new InvoicesViewModel(client, db, true);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

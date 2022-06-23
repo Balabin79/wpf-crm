@@ -67,8 +67,35 @@
                             </dxe:ComboBoxEdit.StyleSettings>
                         </dxe:ComboBoxEdit>
                     </dxlc:LayoutItem>
-
                 </dxlc:LayoutGroup>
+
+                <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True" LabelPosition="Top">
+                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="+7(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=ClientInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
+                    </dxe:ButtonEdit>
+                </dxlc:LayoutItem>
+
+                <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
+                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
+
+            </dxlc:LayoutGroup>
+
+            <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
+                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
+                <dxlc:LayoutGroup.HeaderTemplate>
+                    <DataTemplate >
+                        <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
+                    </DataTemplate>
+                </dxlc:LayoutGroup.HeaderTemplate>
 
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Серия паспорта:" LabelPosition="Top" >
@@ -95,57 +122,6 @@
                 <dxlc:LayoutItem Label="Кем выдан:" LabelPosition="Top" >
                     <dxe:MemoEdit ShowIcon="False" ShowText="True" Text="{Binding ClientInfoViewModel.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                </dxlc:LayoutItem>
-
-            </dxlc:LayoutGroup>
-
-            <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
-                <dxlc:LayoutGroup.HeaderTemplate>
-                    <DataTemplate >
-                        <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
-                    </DataTemplate>
-                </dxlc:LayoutGroup.HeaderTemplate>
-
-
-                <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True" LabelPosition="Top">
-                    <dxe:ButtonEdit IsTextEditable="True"
-                                            AllowDefaultButton="False"
-                                            MaskType="Simple"
-                                            Mask="+7(999) 000-0000"
-                                            MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=ClientInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                        <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
-                    </dxe:ButtonEdit>
-                </dxlc:LayoutItem>
-
-                <dxlc:LayoutItem Label="Email" AddColonToLabel="True" LabelPosition="Top">
-                    <dxe:ButtonEdit IsTextEditable="True"
-                                            AllowDefaultButton="False"
-                                            MaskType="RegEx"
-                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                            EditValue="{Binding Path=ClientInfoViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                            ValidateOnTextInput="True" IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                        <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
-                    </dxe:ButtonEdit>
-                </dxlc:LayoutItem>
-
-                <dxlc:LayoutItem Label="Источник привлечения клиента:" Grid.Row="0" LabelPosition="Top" >
-                    <dxe:ComboBoxEdit ItemsSource="{Binding AdvertisingList, Mode=TwoWay}" DisplayMember="Name" ValueMember="Id" 
-                                  IsTextEditable="False"                                  
-                                  SelectedItem="{Binding ClientInfoViewModel.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:RadioComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
-                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Примечание:" LabelPosition="Top" Height="86">
                     <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding ClientInfoViewModel.Note, Mode=TwoWay, 

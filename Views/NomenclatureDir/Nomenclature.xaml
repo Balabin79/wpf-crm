@@ -44,80 +44,50 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0"
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Business Objects/BO_Product_Group.svg}"/>
-                    <TextBlock Text="Материалы" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Материалы" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False">
-
-                        <dxb:BarButtonItem  Content="Создать новую позицию" 
-                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}" 
-                                           MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Добавить материал" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-1" 
-                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-                        <dxb:BarButtonItem Content="Создать новую директорию" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           CommandParameter="-1"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        <dxb:BarButtonItem Content="Добавить группу" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-2"/>
-                        <dxb:BarButtonItem Content="Развернуть или свернуть все позиции" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding ExpandTreeCommand}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"
-                                           CommandParameter="{Binding ElementName=view}"
-                                           />
-
-                        <dxb:BarItemLinkSeparator />
-                       
-                        <dxb:BarButtonItem Content="Единицы измерения" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           DataContext="{StaticResource vm}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           CommandParameter="-2"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"/>
+                        <dxb:BarButtonItem Content="Единицы измерения" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
                                            Command="{Binding OpenFormMeasureCommand}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
-                                           Glyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
-                                           MediumGlyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"
-                                           />
-                        <dxb:BarItemLinkSeparator />
-
-                        <dxb:BarButtonItem Content="Печать"                                           
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           Glyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"/>
+                        <dxb:BarButtonItem Content="Свернуть/Развернуть" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding ExpandTreeCommand}"
+                                           CommandParameter="{Binding ElementName=view}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"/>
+                        <dxb:BarButtonItem Content="Печать"                                        
+                                           GlyphSize="Small"
                                            Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=view}"/>
-                        
+                                           CommandParameter="{Binding ElementName=view}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
 
             <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
-                         >
+                 ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2">
                 <dxg:GridControl.View>
                     <dxg:TreeListView  
                     x:Name="view"
