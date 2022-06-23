@@ -74,5 +74,8 @@ namespace Dental.Models
         public DbSet<Invoice> Invoices { get; set; }   
         public DbSet<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }   
         public DbSet<InvoiceServiceItems> InvoiceServiceItems { get; set; }   
+
+
+        public DbSet<AdditionalFieldsCategory> AdditionalFieldsCategory { get; set; }   
     }
 }

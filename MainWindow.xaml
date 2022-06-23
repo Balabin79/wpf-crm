@@ -178,16 +178,16 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem
-                 ToolTip="Организация"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.OrgPage" >
+                 ToolTip="Дополнительные поля"
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.AdditionalFields.AdditionalFieldsPage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage  Source="{dx:DXImage SvgImages/RichEdit/ListBullets.svg}"/>
                             <TextBlock 
                                 TextAlignment="Center"  Text="Доп.поля" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.OrgPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.AdditionalFields.AdditionalFieldsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.AdditionalFields.AdditionalFieldsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />
                         </StackPanel>
                     </DataTemplate>
