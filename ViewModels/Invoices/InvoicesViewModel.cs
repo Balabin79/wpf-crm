@@ -506,15 +506,15 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => Invoices, value); }
         }
 
-        private void SetInvoices()
+        private void SetInvoices(int? showPaid = null)
         {
             var query = (fromPatientCard && Client.Id > 0) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices.Include(f => f.Client);
-
-            Invoices = query.Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
+            if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
+            Invoices =   query.Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
                         .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
-                        .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature))
-                    .ToObservableCollection() ?? new ObservableCollection<Invoice>();
-        }
+                        .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
+                        .ToObservableCollection() ?? new ObservableCollection<Invoice>();
+    }
 
         public ICollection<Employee> Employees { get; set; }
         public ICollection<Measure> Measuries { get; set; }
@@ -531,8 +531,30 @@ namespace Dental.ViewModels.Invoices
         public InvoiceServiceWindow InvoiceServiceWindow;
         public InvoiceMaterialWindow InvoiceMaterialWindow;
 
-        //public Views.Reports.InvoiceWindow Report { get; set; }
-       
+        // фильтр показывать оплаченные/неоплаченные счета
+        [Command]
+        public void StatusChanged(object p)
+        {
+            if (int.TryParse(p?.ToString(), out int param))
+            {
+                ShowPaid = param;
+                if (param == -1)
+                {
+                    ShowPaid = null;
+                    SetInvoices();
+                }                   
+                SetInvoices(ShowPaid);
+                return;
+            }
+            ShowPaid = null;
+            SetInvoices();
+        }  
+        
+        public int? ShowPaid
+        {
+            get { return GetProperty(() => ShowPaid); }
+            set { SetProperty(() => ShowPaid, value); }
+        }
     }
 }
 

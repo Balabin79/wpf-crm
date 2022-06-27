@@ -14,35 +14,30 @@
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" >
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="2 0 0 0" 
-                                Source="{dx:DXImage SvgImages/Export/ExportToDOC.svg}"/>
-                    <TextBlock Text="Документы" FontSize="15" Padding="2 5 5 0" />
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                                Source="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
+                    <TextBlock Text="Документы" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
+
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl ShowDragWidget="False" AllowCustomizationMenu="False"  AllowQuickCustomization="False" Margin="0 0 10 0">
-                        <dxb:BarButtonItem 
-                                    Command="{Binding ImportDocCommand}" 
-                                    Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"                     
-                                    MediumGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"                     
-                                    LargeGlyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"
-                                    GlyphSize="Custom"
-                                    CustomGlyphSize="24,24"
-                                    Content="Импорт" />
-                        <dxb:BarButtonItem 
-                                    Content="Директория"          
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"                     
-                                    MediumGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"                     
-                                    LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                    GlyphSize="Custom"
-                                    CustomGlyphSize="24,24"
-                                    Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"/>
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Импорт" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding ImportDocCommand}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"/>
+                        <dxb:BarButtonItem Content="Директория" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"/>
+             
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>

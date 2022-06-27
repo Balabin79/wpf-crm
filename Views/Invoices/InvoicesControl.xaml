@@ -232,10 +232,10 @@
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
 
-                            <dxg:GridColumn FieldName="Measure" Header="Ед.Изм." Width="4*" MinWidth="130"  HorizontalHeaderContentAlignment="Center">
+                            <dxg:GridColumn FieldName="Nomenclature.Measure" Header="Ед.Изм." Width="4*" MinWidth="130"  HorizontalHeaderContentAlignment="Center">
                                 <dxg:GridColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                        <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Nomenclature.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                     </DataTemplate>
                                 </dxg:GridColumn.CellTemplate>
                             </dxg:GridColumn>
@@ -395,8 +395,29 @@
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormInvoiceCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Создать счет" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                            />
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            
+                            <dxb:BarButtonItem Content="Все счета" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                           CommandParameter="1"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
+
+                            <dxb:BarButtonItem Content="Оплаченные" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                           CommandParameter="0"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
+
+                             <dxb:BarButtonItem Content="Не оплаченные"
+                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                           CommandParameter="-1"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
+                                
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
                 </DockPanel>

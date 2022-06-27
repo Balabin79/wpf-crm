@@ -8,7 +8,7 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler"
@@ -30,65 +30,43 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
-                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock  Grid.Row="0" Grid.Column="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="0" Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,8,8" />
-
-                                <TextBlock  Grid.Row="0" Grid.Column="1" Text="Артикул:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1" Grid.Column="1" Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
-
-                                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Цена:"  Margin="0,0,8,3" />
+                    <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
+                        <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
+                            <dxe:TextEdit  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutGroup Orientation="Horizontal">
+                            <dxlc:LayoutItem Label="Артикул:" LabelPosition="Top"  >
+                                <dxe:TextEdit  Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Стоимость:" LabelPosition="Top" >
                                 <dxe:TextEdit                                   
-                                    MaskType="Numeric" Mask="c"  Grid.Row="3" Grid.Column="0" 
+                                    MaskType="Numeric" Mask="c"
                                     Text="{Binding Model.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                     ValidatesOnDataErrors=True, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture} 
-                                    }" Margin="0,0,8,8" />
+                                    }"  />
+                            </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
 
-                                <TextBlock  Grid.Row="2" Grid.Column="1" Text="Единица измерения:"  Margin="0,0,8,3" />
-                                <dxe:ComboBoxEdit  Grid.Row="3" Grid.Column="1" 
+                        <dxlc:LayoutItem Label="Единица измерения:" LabelPosition="Top" >
+                            <dxe:ComboBoxEdit  
                                     DisplayMember="Name" NullText="Выберите единицу измерения" IsTextEditable="False"
                                     ItemsSource="{Binding Measures}"
                                     EditValue="{Binding Model.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
                                     SelectedItem="{Binding SelectedMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Margin="0,0,0,8" />
+                                 />
+                        </dxlc:LayoutItem>
 
-
-                                <TextBlock  Grid.Row="4"  Text="Описание:"  Margin="0,0,0,3" />
-                                <dxe:MemoEdit Grid.Row="5" Grid.ColumnSpan="2"  
-                                              EditValue="{Binding Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                              IsTextEditable="False" Margin="0,0,0,8"
-                                               />
-
-                                <TextBlock  Grid.Row="6"  Text="Родительская группа:"  Margin="0,0,0,3" />
-                                <dxe:ComboBoxEdit Grid.Row="7" Grid.ColumnSpan="2"  ItemsSource="{Binding Group}"
+                        <dxlc:LayoutItem Label="Родительская группа:" LabelPosition="Top" >
+                            <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
                                                           DisplayMember="Name" NullText="Выберите родительскую директорию"
                                                           SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Margin="0,0,0,8"
+                                              IsTextEditable="False"
                                                />
- 
+                        </dxlc:LayoutItem>
 
-                            </Grid>
-                        </StackPanel>
-                    </GroupBox>
-                    
+                    </dxlc:LayoutGroup>
+
+            
                     <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
                         <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
@@ -106,30 +84,21 @@
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
-                    <GroupBox  Padding="7" BorderBrush="LightGray" BorderThickness="1" 
-                          Header="Характеристики" VerticalAlignment="Top" Grid.Row="1">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                    <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
 
-                                <TextBlock  Grid.Row="0" Text="Наименование:"  Margin="0,0,8,3" />
-                                <dxe:TextEdit  Grid.Row="1"  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0,0,0,8" />
-
-                                <TextBlock  Grid.Row="2"  Text="Родительская группа:"  Margin="0,0,0,3" />
-                                <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
-                                                          DisplayMember="Name"
-                                                          NullText="Выберите родительскую директорию"
-                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False" Grid.Row="3"   Margin="0,0,0,8"
-                                               />
-                            </Grid>
-                        </StackPanel>
-                    </GroupBox>
+                        <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
+                            <dxe:TextEdit  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Родительская группа:" LabelPosition="Top">
+                            <dxe:ComboBoxEdit 
+                                ItemsSource="{Binding Group}"
+                                DisplayMember="Name"
+                                NullText="Выберите родительскую директорию"
+                                SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                IsTextEditable="False" 
+                             />
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
                     <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
                         <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>

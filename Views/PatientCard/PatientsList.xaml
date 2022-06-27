@@ -22,6 +22,15 @@
                     <vm:PatientListViewModel x:Key="vm"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary>
+                    <Style TargetType="TextBlock" x:Key="HoverUnderlineStyle">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -77,12 +86,10 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
-                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" 
-                         AutoExpandAllGroups="False"  
+                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                    
                          Margin="2"
                          MaxHeight="1800"
-                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         AllowColumnMRUFilterList="False"
+                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                         
                          dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                          ShowBorder="True">
                     <dxg:GridControl.GroupSummary>
@@ -107,17 +114,25 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <dx:DXImage Height="15" Margin="0 2 0 0"  Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}" VerticalAlignment="Top"/>
-                                        <dxe:HyperlinkEdit Margin="2 0 0 2" ToolTip="Перейти в анкету клиента"                                 
+
+                                        <dxe:HyperlinkEdit Margin="2 0 0 2" ToolTip="Перейти в анкету клиента"                               
                                             Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding Path=Row.Id, Mode=OneWay}">
                                             <dxe:HyperlinkEdit.Template>
                                                 <ControlTemplate>
-                                                    <TextBlock Height="19" Margin="0 2 0 0" VerticalAlignment="Top"
+                                                    <TextBlock Height="19" Margin="0 2 0 0" VerticalAlignment="Top" Style="{StaticResource HoverUnderlineStyle}" 
                                                         ToolTip="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
                                                         Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </ControlTemplate>
                                             </dxe:HyperlinkEdit.Template>
+                                            <dxe:HyperlinkEdit.InputBindings>
+                                                <MouseBinding
+                                                    MouseAction="LeftClick"
+                                                    Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
+                                                    CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"
+                                                    />
+                                            </dxe:HyperlinkEdit.InputBindings>
                                         </dxe:HyperlinkEdit>
                                     </StackPanel>
                                 </DataTemplate>
@@ -140,17 +155,19 @@
                         <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
                     </dxg:GridControl.TotalSummary>
                     <dxg:GridControl.View>
-                        <dxg:TableView 
+                        <dxg:TableView                           
                             ShowVerticalLines="False"
                             ShowColumnHeaders="False"
                             ShowGroupPanel="False"
                             ShowFixedTotalSummary="True"                           
                             AllowScrollAnimation="True"
                             Name="view"
+                            ShowSearchPanelMode="Always"
+                            SearchPanelAllowFilter="False"
+                            UseLegacyFilterPanel="True"
                             AllowFixedGroups="True"
                             NavigationStyle="Row"
                             AllowPrintColumnHeaderImage="True"
-                            UseLegacyFilterPanel="False"
                             HighlightItemOnHover="True">
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
@@ -164,14 +181,12 @@
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
-
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </ScrollViewer>

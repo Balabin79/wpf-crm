@@ -44,8 +44,6 @@ namespace Dental.Models
         }
         private decimal? _Price;
 
-
-
         public int? ParentId { get; set; }
         public int? IsDir { get; set; }
 

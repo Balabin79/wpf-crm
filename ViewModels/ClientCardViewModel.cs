@@ -31,7 +31,7 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 VmList = vmList;
-                Model = db.Clients.Where(f => f.Id == clientId).FirstOrDefault() ?? new Client();
+                Model = db.Clients.FirstOrDefault(f => f.Id == clientId) ?? new Client();
                 ClientInfoViewModel = new ClientInfoViewModel(Model);
 
                 UserFiles = new UserFilesManagement(Model.Guid);
@@ -45,7 +45,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой пациента!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой клиента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -75,9 +75,10 @@ namespace Dental.ViewModels
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой клиента!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 

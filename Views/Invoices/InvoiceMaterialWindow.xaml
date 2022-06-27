@@ -93,12 +93,20 @@
 
                                     </dxg:TreeListView>
                                 </dxg:TreeListControl.View>
-
+                                
                                 <dxg:TreeListColumn Width="auto" MinWidth="150"  FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
                                     <dxg:TreeListColumn.CellDisplayTemplate>
                                         <DataTemplate>
                                             <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
                                                 Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </DataTemplate>
+                                    </dxg:TreeListColumn.CellDisplayTemplate>
+                                </dxg:TreeListColumn>
+                                <dxg:TreeListColumn Width="*"  FieldName="Measure" HorizontalHeaderContentAlignment="Right">
+                                    <dxg:TreeListColumn.CellDisplayTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
+                                                Text="{Binding Path=RowData.Row.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         </DataTemplate>
                                     </dxg:TreeListColumn.CellDisplayTemplate>
                                 </dxg:TreeListColumn>
@@ -108,34 +116,16 @@
                     </dxe:PopupBaseEdit.PopupContentTemplate>
                 </dxe:PopupBaseEdit>
             </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Ед.измерения:"  LabelPosition="Top">
-                    <dxe:ComboBoxEdit 
-                                        ItemsSource="{Binding Measuries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Единица измерения" 
-                                        IsTextEditable="False"
-                                        DisplayMember="Name"
-                                        IncrementalFiltering="True"
-                                        IncrementalSearch="True"
-                                        IsCaseSensitiveFilter="False"
-                                        ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding InvoiceMaterialItemVM.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                        EditValue ="{Binding InvoiceMaterialItemVM.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:RadioComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-    
-            <dxlc:LayoutGroup Orientation="Horizontal">
+
                 <dxlc:LayoutItem Label="Количество:"  LabelPosition="Top" >
                     <dxe:TextEdit Mask="d" MaskType="Numeric" 
                          EditValue="{Binding InvoiceMaterialItemVM.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Цена(*из услуг):"  LabelPosition="Top" >
+            <dxlc:LayoutItem Label="Цена(*из справочника &quot;Материалы&quot;):"  LabelPosition="Top" >
                     <dxe:TextEdit Mask="d" MaskType="Numeric" IsReadOnly="True"
                          EditValue="{Binding ElementName=popup, Path=EditValue.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" />
                 </dxlc:LayoutItem>
-            </dxlc:LayoutGroup>
+    
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
                 <dx:SimpleButton 
                     Height="23" Content="Сохранить" 

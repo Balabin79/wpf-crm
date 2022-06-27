@@ -151,13 +151,13 @@ namespace Dental.ViewModels
                     case -1:
                         Model = CreateNewModel();
                         Model.IsDir = 0;
-                        Title = "Новая позиция";
+                        Title = "Добавить материал";
                         Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
                         VisibleItemForm();
                         break;
                     case -2:
                         Model = CreateNewModel();
-                        Title = "Создать группу";
+                        Title = "Добавить группу";
                         Model.IsDir = 1;
                         Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
                         if (Group.Count != 0) Group.Add(WithoutCategory);
@@ -173,7 +173,7 @@ namespace Dental.ViewModels
 
                         if (Model.IsDir == 0)
                         {
-                            Title = "Редактировать позицию";
+                            Title = "Редактировать материал";
                             VisibleItemForm();
                         }
                         else
@@ -231,14 +231,14 @@ namespace Dental.ViewModels
             IsVisibleItemForm = Visibility.Visible;
             IsVisibleGroupForm = Visibility.Hidden;
             Window.Width = 800;
-            Window.Height = 375;
+            Window.Height = 325;
         }
         private void VisibleItemGroup()
         {
             IsVisibleItemForm = Visibility.Hidden;
             IsVisibleGroupForm = Visibility.Visible;
             Window.Width = 800;
-            Window.Height = 280;
+            Window.Height = 234;
         }
 
         private Views.NomenclatureDir.NomenclatureWindow Window;

@@ -107,6 +107,7 @@
                             ExpandNodesOnFiltering="True"
                             FilterMode="Extended"    
                             ImmediateUpdateRowPosition="True"
+                            ShowVerticalLines="False"
                             >
                             <dxg:TreeListView.InputBindings>
                                 <KeyBinding Key="Delete"         
