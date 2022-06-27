@@ -108,7 +108,8 @@
                     ShowNodeImages="True"
                     NodeImageSize="15,15"
                     ExpandNodesOnFiltering="True"
-                    FilterMode="Extended"    
+                    FilterMode="Extended" 
+                    ShowVerticalLines="False"
                     ImmediateUpdateRowPosition="True">
                         <dxg:TreeListView.InputBindings>
                             <KeyBinding Key="Delete"         
