@@ -100,6 +100,7 @@
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Серия паспорта:" LabelPosition="Top" >
                         <dxe:TextEdit 
+                        EditValueChanged="TextEdit_EditValueChanged"    
                         Margin="0,0,8,0"
                         Mask="d"
                         MaskType="Numeric"
@@ -108,6 +109,7 @@
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Номер:" LabelPosition="Top" >
                         <dxe:TextEdit 
+                        EditValueChanged="TextEdit_EditValueChanged" 
                         Mask="d"
                         MaskType="Numeric"
                         Text="{Binding ClientInfoViewModel.PassportNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }" 

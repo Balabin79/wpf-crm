@@ -105,27 +105,20 @@
                          MaxHeight="1800"
                          ItemsSource="{Binding Path=Invoices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          AllowColumnMRUFilterList="False"
-                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"                                  
                          ShowBorder="True">
+
                     <dxg:GridControl.Columns>
 
                         <dxg:GridColumn  FieldName="Date" Header="Дата" GroupIndex="0" GroupInterval="DateMonth" Width="1*" 
                                          AllowedSortOrders="All" DefaultSortOrder="Descending" SortOrder="Descending" AllowSorting="True" AllowColumnFiltering="True"
                                          />
 
-                        <dxg:GridColumn FieldName="ClientId" GroupIndex="1" GroupInterval="Default" Width="2*" ReadOnly="True">
-                            <dxg:GridColumn.GroupValueTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=RowData.Row.Client, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </dxg:GridColumn.GroupValueTemplate>
-                        </dxg:GridColumn>
-
-                        <dxg:GridColumn FieldName="Number" Header="Номер счета" GroupIndex="3" AllowedSortOrders="All" ReadOnly="True" Width="2*" >
+                        <dxg:GridColumn FieldName="Number" Header="Номер счета" GroupIndex="2" AllowedSortOrders="All" ReadOnly="True" Width="2*" >
                             <dxg:GridColumn.GroupValueTemplate>
                                 <DataTemplate>
                                     <TextBlock FontWeight="DemiBold"
-                                        Text="{DXBinding Expr='`Счет № ` + RowData.Row.Number + ` (от ` + RowData.Row.Date + `)` ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        Text="{DXBinding Expr='`Счет № ` + RowData.Row.Number + ` от ` + RowData.Row.Date + ` (` + RowData.Row.Client + `)` ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </dxg:GridColumn.GroupValueTemplate>
                         </dxg:GridColumn>
@@ -542,18 +535,16 @@
                     </dxg:GridControl.Columns>
                     
                     <dxg:GridControl.View>
-                        <dxg:TableView MaxHeight="2000" 
+                        <dxg:TableView MaxHeight="2000"
                             ShowColumnHeaders="False"
                             ShowGroupPanel="False"                                            
                             AllowScrollAnimation="True"
                             Name="view"
                             AllowFixedGroups="True"
                             NavigationStyle="Row"
-                            AllowPrintColumnHeaderImage="True"
-                            UseLegacyFilterPanel="False"
+                            AllowPrintColumnHeaderImage="True"    
                             HighlightItemOnHover="True">
                             <dxg:TableView.InputBindings>
-                            
                                 <KeyBinding Key="N"     
                                     Modifiers="Ctrl"
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}" 

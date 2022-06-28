@@ -6,6 +6,7 @@
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+       xmlns:com="clr-namespace:Dental.Infrastructures.Commands" 
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
@@ -18,6 +19,7 @@
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
         <converter:DocumentMultiBindingConverter x:Key="multi" />
+        <com:PrintDocCommand x:Key="PrintDoc"/>
     </UserControl.Resources>
     <Grid x:Name="gridIds">
         <dxlc:LayoutGroup  
@@ -65,9 +67,9 @@
                                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                         <dxb:BarButtonItem 
                                            Content="Открыть документ"                                                            
-                                           Glyph="{dx:DXImage SvgImages/Print/Preview.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=GridControlIds, Path=DataContext.Document.OpenFormDocCommand}">
+                                           Command="{StaticResource PrintDoc}">
                                             <dxb:BarButtonItem.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource multi}" >
                                                     <Binding Path="CurrentItem" ElementName="GridControlIds"/>

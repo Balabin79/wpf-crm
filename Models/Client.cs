@@ -16,14 +16,84 @@ namespace Dental.Models
     {
        // public Client() => Estimates = new ObservableCollection<Estimate>();
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string MiddleName { get; set; }
+        public string FirstName
+        { 
+            get => firstName;
+            set
+            {
+                firstName = value;
+                OnPropertyChanged(nameof(FirstName));
+            } 
+        }
+        private string firstName;
+
+        public string LastName
+        {
+            get => lastName;
+            set
+            {
+                lastName = value;
+                OnPropertyChanged(nameof(LastName));
+            }
+        }
+        private string lastName;
+
+        public string MiddleName
+        {
+            get => middleName;
+            set
+            {
+                middleName = value;
+                OnPropertyChanged(nameof(MiddleName));
+            }
+        }
+        private string middleName;
+
         public string FullName { get => ToString(); }
-        public string BirthDate { get; set; }
-        public string Sex { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
+        public string BirthDate
+        {
+            get => birthDate;
+            set
+            {
+                birthDate = value;
+                OnPropertyChanged(nameof(BirthDate));
+            }
+        }
+        private string birthDate;
+
+        public string Sex
+        {
+            get => sex;
+            set
+            {
+                sex = value;
+                OnPropertyChanged(nameof(Sex));
+            }
+        }
+        private string sex;
+
+        public string Phone
+        {
+            get => phone;
+            set
+            {
+                phone = value;
+                OnPropertyChanged(nameof(Phone));
+            }
+        }
+        private string phone;
+
+        public string Address
+        {
+            get => address;
+            set
+            {
+                address = value;
+                OnPropertyChanged(nameof(Address));
+            }
+        }
+        private string address;
+
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }
@@ -34,6 +104,6 @@ namespace Dental.Models
 
         public object Clone() => (Client)this.MemberwiseClone();
       
-        public override string ToString() => LastName + " " + FirstName + " " + MiddleName;
+        public override string ToString() => (LastName + " " + FirstName + " " + MiddleName).Trim(' ');
     }
 }

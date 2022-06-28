@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
-using System.Data.Entity;
-using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
-using DevExpress.Xpf.Core;
-using System.Windows;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services;
-using DevExpress.Mvvm.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using DevExpress.Mvvm;
@@ -122,40 +110,35 @@ namespace Dental.ViewModels
 
             if (other is Client clone && !object.ReferenceEquals(this, clone))
             {
-                StringParamsIsEquel(FirstName, other.FirstName, "Административная", "Имя");
-                StringParamsIsEquel(LastName, other.LastName, "Административная", "Фамилия");
-                StringParamsIsEquel(MiddleName, other.MiddleName, "Административная", "Отчество");
-                StringParamsIsEquel(BirthDate, other.BirthDate, "Административная", "Дата рождения");
-                StringParamsIsEquel(Sex, other.Sex, "Административная", "Пол");
-                StringParamsIsEquel(Phone, other.Phone, "Административная", "Телефон");
-                StringParamsIsEquel(Address, other.Address, "Административная", "Адрес проживания");
-                StringParamsIsEquel(Note, other.Note, "Административная", "Примечание");
-                StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate, "Административная", "Дата выдачи паспорта");
-                StringParamsIsEquel(WhomIssued, other.WhomIssued, "Административная", "Кем выдан");
-                StringParamsIsEquel(PassportSeries, other.PassportSeries, "Административная", "Серия паспорта");
-                StringParamsIsEquel(PassportNo, other.PassportNo, "Административная", "Номер паспорта");
+                StringParamsIsEquel(FirstName, other.FirstName, "Имя");
+                StringParamsIsEquel(LastName, other.LastName, "Фамилия");
+                StringParamsIsEquel(MiddleName, other.MiddleName, "Отчество");
+                StringParamsIsEquel(BirthDate, other.BirthDate, "Дата рождения");
+                StringParamsIsEquel(Sex, other.Sex, "Пол");
+                StringParamsIsEquel(Phone, other.Phone, "Телефон");
+                StringParamsIsEquel(Address, other.Address, "Адрес проживания");
+                StringParamsIsEquel(Note, other.Note,  "Примечание");
+                StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate,  "Дата выдачи паспорта");
+                StringParamsIsEquel(WhomIssued, other.WhomIssued, "Кем выдан");
+                StringParamsIsEquel(PassportSeries, other.PassportSeries, "Серия паспорта");
+                StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
 
-                if (this.IsInArchive != other.IsInArchive) FieldsChanges["Административная"].Add("Перемещена в архив");
+                if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
-            return FieldsChanges["Административная"].Count == 0 && FieldsChanges["Планы услуг"].Count == 0;
+            return FieldsChanges.Count == 0 ;
         }
 
-        private void StringParamsIsEquel(string param1, string param2, string section, string fieldName)
+        private void StringParamsIsEquel(string param1, string param2, string fieldName)
         {
             if (string.IsNullOrEmpty(param1) && string.IsNullOrEmpty(param2)) return;
             if (string.Compare(param1, param2, StringComparison.CurrentCulture) == 0) return;
-            FieldsChanges[section].Add(fieldName);
+            FieldsChanges.Add(fieldName);
         }
 
-        public Dictionary<string, List<string>> FieldsChanges { get; set; } = CreateFieldsChanges();
+        public List<string> FieldsChanges { get; set; } = CreateFieldsChanges();
 
-        public static Dictionary<string, List<string>> CreateFieldsChanges()
-        {
-            return new Dictionary<string, List<string>>() {
-                { "Административная", new List<string>() },
-                { "Планы услуг", new List<string>() },
-            };
-        }
+        public static List<string> CreateFieldsChanges() => new List<string>();
+
 
         public override string ToString() => LastName + ' ' + FirstName + " " + MiddleName ?? "";
 

@@ -135,7 +135,10 @@ namespace Dental.Services.Files
         }
 
 
-        virtual public void DeleteDirectory() => Directory.Delete(PathTo, true);
+        virtual public void DeleteDirectory() 
+        { 
+            if (Directory.Exists(PathTo)) Directory.Delete(PathTo, true); 
+        }
 
         virtual public void RemoveFile(FileInfo file) => file.Delete();
 

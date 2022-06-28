@@ -70,7 +70,8 @@ namespace Dental.ViewModels
                 {
                     if (db.SaveChanges() > 0)
                     {
-                        VmList?.SetCollection();
+                        VmList.Collection.Remove(VmList.Collection.FirstOrDefault(f => f.Id == Model.Id));
+                        VmList.Collection.Add(Model);
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                     }
                 }
@@ -87,18 +88,25 @@ namespace Dental.ViewModels
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены сметы, записи в расписании и все файлы прикрепленные к карте клиента!",
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены счета, записи в расписании и все файлы прикрепленные к карте клиента!",
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
 
                 new UserFilesManagement(Model.Guid).DeleteDirectory();
                 var id = Model?.Id;
-                //удалить также в расписании
+                //удалить также в расписании и в счетах
+                db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+                db.Invoices.Include(f => f.InvoiceServiceItems).Include(f => f.InvoiceMaterialItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
                 db.Entry(Model).State = EntityState.Deleted;
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
-                if (Application.Current.Resources["Router"] is Navigator nav) nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList");
+                VmList.Collection.Remove(VmList.Collection.FirstOrDefault(f => f.Id == Model.Id));
+                db.InvoiceMaterialItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.SaveChanges();
                 VmList.ClientCardWin.Close();
             }
             catch
@@ -110,29 +118,22 @@ namespace Dental.ViewModels
         public bool HasUnsavedChanges()
         {
             bool hasUnsavedChanges = false;
-            //if (Model.FieldsChanges != null) Model.FieldsChanges = Client.CreateFieldsChanges();
-           // if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
+            if (ClientInfoViewModel.FieldsChanges != null) ClientInfoViewModel.FieldsChanges = ClientInfoViewModel.CreateFieldsChanges();
+            if (!ClientInfoViewModel.Equals(Model)) hasUnsavedChanges = true;
             return hasUnsavedChanges;
         }
 
         public bool UserSelectedBtnCancel()
         {
-            /* string warningMessage = "";     
-             foreach (var tab in Model.FieldsChanges)
+            string fieldNames = "";
+            var warningMessage = "\n";
+            foreach (var prop in ClientInfoViewModel.FieldsChanges)
              {
-                 if (tab.Value.Count == 0) continue;
-                 string fieldNames = " ";
-                 foreach (var field in tab.Value)
-                 {
-                     fieldNames += " \"" + field + "\",";
-                 }
-                  warningMessage = "\nВо вкладке \"" + tab.Key + "\", поля:" + fieldNames.Remove(fieldNames.Length - 1) + "\n";
+                 fieldNames += " \"" + prop + "\", ";                               
              }
-
-             var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-             return response.ToString() == "No";*/
-            return true;
+            if (fieldNames.Length > 3) warningMessage += "Поля:" + fieldNames.Remove(fieldNames.Length - 2) + "\n";
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения!" + warningMessage + "\nПродолжить без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+             return response.ToString() == "No";
         }
 
         public bool IsReadOnly
@@ -176,7 +177,5 @@ namespace Dental.ViewModels
             db.Entry(Model).State = EntityState.Modified;
             db.SaveChanges();
         }
-
-        /**********************************************/
     }
 }

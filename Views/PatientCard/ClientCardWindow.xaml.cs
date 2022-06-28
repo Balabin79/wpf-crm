@@ -21,7 +21,7 @@ namespace Dental.Views.PatientCard
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {/*
+        {
             if (this.DataContext is ClientCardViewModel vm)
             {
                 if (vm.HasUnsavedChanges() && vm.UserSelectedBtnCancel())
@@ -30,7 +30,7 @@ namespace Dental.Views.PatientCard
                     return;                   
                 }
                 e.Cancel = false;
-            }*/
+            }
             e.Cancel = false;
         }
     }

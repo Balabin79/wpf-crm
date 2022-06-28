@@ -21,6 +21,9 @@ namespace Dental.Infrastructures.Commands
 {
     class PrintDocCommand : CommandBase
     {
+        public string PathToFile { get; set; }
+        public object Model { get; set; }
+
         public override bool CanExecute(object p) =>true;
         public override void Execute(object p)
         {
@@ -29,80 +32,42 @@ namespace Dental.Infrastructures.Commands
                 if (p is null) return;
 
 
+                if (p is DocumentCommandParameters param1)
+                {
+                    PathToFile = param1.File.FullName;
+                    Model = param1.Model;
+                }
+
                 if (p is DocParams param)
                 {
-                    var invoice = ((GridCellData)(param.Item).DataContext).Row;
-
-                    string pathToFile = p.ToString();
-                    if (File.Exists(param.PathToFile))
-                    {
-                       /* RichEditDocumentServer documentServer = new RichEditDocumentServer();
-                        documentServer.LoadDocument(param.PathToFile, GetDocumentFormat(param.PathToFile));
-                        documentServer.RtfText = new RtfParse(documentServer.RtfText, invoice).Run();*/
-
-
-
-
-
-                        //Initialize a new server and printer 
-                        PrintDialog printDialog = new PrintDialog();
-                        RichEditDocumentServer docServer = new RichEditDocumentServer();
-
-                        //Pass the document content to the server  
-                        docServer.LoadDocument(param.PathToFile, GetDocumentFormat(param.PathToFile));
-                        docServer.RtfText = new RtfParse(docServer.RtfText, invoice).Run();
-
-                        //Change the document layout
-                        // docServer.Document.Sections[0].Page.Landscape = true;
-                        //docServer.Document.Sections[0].Page.PaperKind = PaperKind.A4;
-
-                        //Create a new component link 
-                        LegacyPrintableComponentLink printableComponent = new LegacyPrintableComponentLink(docServer);
-
-                        //Create a document to print 
-                        printableComponent.CreateDocument(true);
-                        printableComponent.ShowPrintPreview(new DocumentPrint());
-
-
-                    }
-
-
-
-                    /*
-
-                    using (DevExpress.XtraPrinting.PrintingSystem print = new DevExpress.XtraPrinting.PrintingSystem())
-                    {
-                        print.ExecCommand
-                        print.PrintDlg();
-
-                        using (PrintableComponentLink link = new PrintableComponentLink(print))
-                        {
-
-
-
-                            link.Component = documentServer;
-                            link.CreateDocument();
-                            print.Document.Name = "PdfDocument";
-                            //printingSystem.ExportOptions.PrintPreview.ShowOptionsBeforeExport = false;
-                            //printingSystem.ExportOptions.Pdf.PageRange = "1-3";
-                            //printingSystem.ExportOptions.Pdf.DocumentOptions  
-                            link.ShowPreviewDialog();
-                        }
-                    }
-
-
-
-                        /*var richEdit = new RichEditControl();
-                        richEdit.LoadDocument(param.PathToFile, GetDocumentFormat(param.PathToFile));
-                        richEdit.RtfText = new RtfParse(richEdit.RtfText, invoice).Run();
-                        if (richEdit.IsPrintingAvailable)
-                        {
-                            richEdit.ShowPrintPreview();*/
+                    PathToFile = param.PathToFile;
+                    Model = ((GridCellData)(param.Item).DataContext).Row;
                 }
+                if (PathToFile == null || Model == null) return;
+                PrintPreview();
             }                         
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void PrintPreview()
+        {
+            if (File.Exists(PathToFile))
+            {
+                RichEditDocumentServer docServer = new RichEditDocumentServer();
+
+                //Pass the document content to the server  
+                docServer.LoadDocument(PathToFile, GetDocumentFormat(PathToFile));
+                docServer.RtfText = new RtfParse(docServer.RtfText, Model).Run();
+
+                //Create a new component link 
+                LegacyPrintableComponentLink printableComponent = new LegacyPrintableComponentLink(docServer);
+
+                //Create a document to print 
+                printableComponent.CreateDocument(true);
+                printableComponent.ShowPrintPreview(new DocumentPrint());
             }
         }
 
@@ -130,5 +95,7 @@ namespace Dental.Infrastructures.Commands
                 return DocumentFormat.PlainText;
             }
         }
+
+
     }
 }
