@@ -9,8 +9,6 @@
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Height="270"
-        MaxHeight="270"
         Name="Window"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler" 

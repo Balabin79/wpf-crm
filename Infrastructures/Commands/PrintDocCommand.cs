@@ -16,6 +16,7 @@ using DevExpress.XtraPrinting;
 using System.Windows.Controls;
 using System.Drawing.Printing;
 using Dental.Views.Documents;
+using Dental.Services.Files;
 
 namespace Dental.Infrastructures.Commands
 {
@@ -37,11 +38,23 @@ namespace Dental.Infrastructures.Commands
                     PathToFile = param1.File.FullName;
                     Model = param1.Model;
                 }
-
+                if (p is InvoiceCommandParameters invoice)
+                {
+                    PathToFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), InvoicesDocumentsViewModel.FILES, invoice.FilePath);
+                    Model = invoice.Model;
+                }
+                //Model = ((GridCellData)(param.Item).DataContext).Row;
                 if (p is DocParams param)
                 {
                     PathToFile = param.PathToFile;
-                    Model = ((GridCellData)(param.Item).DataContext).Row;
+                    if (param.Item?.DataContext is GridCellData cell)
+                    {
+                        Model = cell.RowData.Row;
+                    }
+                    if (param.Item?.DataContext is GridCellMenuInfo row)
+                    {
+                        Model = row.Row.Row;
+                    }
                 }
                 if (PathToFile == null || Model == null) return;
                 PrintPreview();

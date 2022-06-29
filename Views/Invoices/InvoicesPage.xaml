@@ -61,13 +61,11 @@
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
-                        <dxb:BarButtonItem Content="Создать счет" Margin="0 0 5 0"
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
+                        <dxb:BarButtonItem Content="Создать счет" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormInvoiceCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-                        <dxb:BarButtonItem Content="Шаблоны счетов" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                          
+                        <dxb:BarButtonItem Content="Шаблоны счетов"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
@@ -142,49 +140,41 @@
 
                                             <dxb:BarButtonItem Margin="0 0 5 0"
                                                 Content="Редактировать"                                                             
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                            
+
                                             <dxb:BarSubItem 
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 x:Name="Print" Content="Печать" 
                                                 ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
-             
                                             </dxb:BarSubItem>
                           
                                             <dxb:BarSubItem 
                                                 Content="Экспорт" 
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}">
                                                 <dxb:BarButtonItem 
                                                     Content="Экспорт в Excel"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Excel}}"
                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                                 <dxb:BarButtonItem 
                                                     Content="Экспорт в Word"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Word}}"
                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                                 <dxb:BarButtonItem
                                                     Content="Экспорт в PDF"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Pdf}}"
                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                             </dxb:BarSubItem>         
                                             <dxb:BarButtonItem         
-                                                Content="Удалить" 
-                                                IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                                Content="Удалить"  
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"
                                                 Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}" 
@@ -203,7 +193,6 @@
                                                                     Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.Client.BtnIconEditableVisible, Mode=TwoWay}"
                                                                     Content="Добавить услугу" >
                                                                 </dxb:BarButtonItem>
                                                             </dxb:ToolBarControl>
@@ -212,7 +201,7 @@
                                                 </DataTemplate>
                                             </dxlc:LayoutGroup.HeaderTemplate>
 
-                                            <dxg:GridControl 
+                                            <dxg:GridControl x:Name="serviceGrid"
                                                     CustomSummary="ServiceItems_CustomSummary"                
                                                     ItemsSource="{Binding RowData.Row.InvoiceServiceItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -256,13 +245,11 @@
                                                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                                                                     <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                                         <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                                         <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}" 
@@ -293,24 +280,24 @@
                                                             <KeyBinding 
                                         Key="Delete"
                                         Command="{Binding ElementName=attachFileTableView, Path=DataContext.DeleteInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
                                                             <KeyBinding 
                                         Key="N"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName= view, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName= serviceGrid, Path=CurrentItem}"/>
 
                                                             <KeyBinding 
-                                        Key="R"     
+                                        Key="E"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=attachFileTableView, Path=DataContext.EditInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
                                                             <MouseBinding 
                                         Gesture="LeftDoubleClick"      
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
                                                         </dxg:TableView.InputBindings>
                                                         <dxg:TableView.RowCellMenuCustomizations >
@@ -318,29 +305,26 @@
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+N"
-                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormvServiceCommand}"
-                                        CommandParameter="{Binding ElementName= view, Path=FocusedRow}"
+                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem.Invoice}"
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         Content="Добавить запись" />
 
                                                             <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
-                                        KeyGesture="Ctrl+R"
+                                        KeyGesture="Ctrl+E"
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName= attachFileTableView, Path=FocusedRow}"
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         Content="Редактировать запись" />
 
                                                             <dxb:BarButtonItem 
                                         Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                        IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}"
-                                        CommandParameter="{Binding ElementName= attachFileTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
                                                         </dxg:TableView.RowCellMenuCustomizations>
 
                                                         <dxg:TableView.TotalSummaryContentStyle>
@@ -371,9 +355,8 @@
                                                                 <dxb:BarButtonItem 
                                             Margin="5 0 0 0"
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow}"
+                                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                             Content="Добавить материал" >
                                                                 </dxb:BarButtonItem>
 
@@ -383,7 +366,7 @@
                                                 </DataTemplate>
                                             </dxlc:LayoutGroup.HeaderTemplate>
 
-                                            <dxg:GridControl 
+                    <dxg:GridControl 
                         x:Name="MaterialItems" CustomSummary="MaterialItems_CustomSummary"            
                         ItemsSource="{Binding Path=RowData.Row.InvoiceMaterialItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          VerticalAlignment="Stretch" MaxHeight="2500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -426,14 +409,12 @@
                                                             <DataTemplate>
                                                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                                                                     <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                                                                        <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                                        <dxb:BarButtonItem Content="Редактировать"  
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                                        <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                                        <dxb:BarButtonItem Content="Удалить"  
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}" 
@@ -447,7 +428,7 @@
                                                 </dxg:GridControl.Columns>
 
                                                 <dxg:GridControl.View>
-                                                    <dxg:TableView                                                                        
+                            <dxg:TableView                                                                        
                                 x:Name="materialTableView"
                                 NavigationStyle="Row"
                                 AutoWidth="True"
@@ -464,52 +445,50 @@
                                                             <KeyBinding 
                                         Key="Delete"
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=materialTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
                                                             <KeyBinding 
                                         Key="N"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName= materialTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName= MaterialItems, Path=CurrentItem.Invoice}"/>
 
                                                             <KeyBinding 
-                                        Key="R"     
+                                        Key="E"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=materialTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
                                                             <MouseBinding 
                                         Gesture="LeftDoubleClick"      
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=materialTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
-                                                        </dxg:TableView.InputBindings>
-                                                        <dxg:TableView.RowCellMenuCustomizations >
-                                                            <dxb:BarButtonItem 
+                                    </dxg:TableView.InputBindings>
+                                <dxg:TableView.RowCellMenuCustomizations >
+                                    <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+N"
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem.Invoice}"
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         Content="Добавить запись" />
 
                                                             <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
-                                        KeyGesture="Ctrl+R"
+                                        KeyGesture="Ctrl+E"
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=materialTableView, Path=FocusedRow}"
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         Content="Редактировать запись" />
 
                                                             <dxb:BarButtonItem Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                        IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=materialTableView, Path=FocusedRow}"/>
+                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
                                                         </dxg:TableView.RowCellMenuCustomizations>
 
@@ -582,7 +561,6 @@
                                     GlyphSize="Small"
                                     KeyGesture="Ctrl+N"
                                     GlyphAlignment="Left" 
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}"
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
 
@@ -591,39 +569,32 @@
                                     GlyphSize="Small"
                                     KeyGesture="Ctrl+E"
                                     GlyphAlignment="Left" 
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"/>
 
-                                <dxb:BarButtonItem
-                                    Content="Печать"                                                            
-                                    Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
-                                    GlyphSize="Small"
-                                    KeyGesture="Ctrl+P"
-                                    GlyphAlignment="Left"
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
-                                    Command="{Binding Source={StaticResource Print}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                <dxb:BarSubItem 
+                                                Content="Печать" 
+                                                ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
+
+                                </dxb:BarSubItem>
 
                                 <dxb:BarSubItem Content="Экспорт" Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}" >
                                     <dxb:BarButtonItem 
                                                 Content="Экспорт в Excel"                                                            
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Excel}}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                     <dxb:BarButtonItem 
                                                 Content="Экспорт в Word"                                                            
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Word}}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                     <dxb:BarButtonItem
                                                 Content="Экспорт в PDF"                                                            
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Pdf}}"
@@ -636,7 +607,6 @@
                                     GlyphSize="Small"
                                     KeyGesture="Delete"
                                     GlyphAlignment="Left" 
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                     Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}" 
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                             </dxg:TableView.RowCellMenuCustomizations>

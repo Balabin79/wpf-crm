@@ -59,7 +59,7 @@ namespace Dental.ViewModels.Invoices
                 if (p != null) Invoice = Invoices.FirstOrDefault(f => f.Id == (int)p);                
                 else
                 {
-                    title = "Новый счет";
+                    title = "Добавить счет";
                     Invoice = new Invoice()
                     {
                         Number = NewNumberGenerate(),
@@ -80,8 +80,8 @@ namespace Dental.ViewModels.Invoices
                     Total = Invoice.Total,
                     ClientFieldVisibility = visibility
                 };
-
-                InvoiceWindow = new InvoiceWindow() { DataContext = this };
+                var height = fromPatientCard ? 230 : 270;
+                InvoiceWindow = new InvoiceWindow() { DataContext = this, Height = height, MaxHeight = height };
                 InvoiceWindow.ShowDialog();
             }
             catch
@@ -341,7 +341,7 @@ namespace Dental.ViewModels.Invoices
                 if (p is Invoice invoice)
                 {
                     InvoiceMaterialItem = new InvoiceMaterialItems();
-                    InvoiceMaterialItemVM = new InvoiceMaterialItemVM() { Invoice = invoice, Title = "Добавление нового материала" };
+                    InvoiceMaterialItemVM = new InvoiceMaterialItemVM() { Invoice = invoice, Title = "Добавление материала" };
                     InvoiceMaterialWindow = new InvoiceMaterialWindow() { DataContext = this };
                     InvoiceMaterialWindow.ShowDialog();
                 }
@@ -467,20 +467,29 @@ namespace Dental.ViewModels.Invoices
             try
             {
                 ItemLinksSource = new ObservableCollection<BarButtonItem>();
-            foreach (var doc in Documents.Files)
-            {
-                var item = new BarButtonItem()
+                foreach (var doc in Documents.Files)
                 {
-                    Content = doc.Name.Length > 120 ? doc.Name.Substring(0, 119) + "..." : doc.Name,
-                    Glyph = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/XAF/Action_Printing_Preview.png")),
-                    Command = new PrintDocCommand()
-                };
+                    var item = new BarButtonItem()
+                    {
+                        Content = doc.Name.Length > 120 ? doc.Name.Substring(0, 119) + "..." : doc.Name,
+                        Glyph = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/XAF/Action_Printing_Preview.png")),
+                        Command = new PrintDocCommand()
+                    };
 
-                item.CommandParameter = new DocParams() { Item = item, PathToFile = doc.FullName, DocType = new Invoice().GetType() };
-                ItemLinksSource.Add(item);
+                    //var binding = new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay };
+                    var binding = new MultiBinding()
+                    {
+                        Converter = new InvoiceMultiBindingConverter()
+                    };
+
+                    binding.Bindings.Add(new Binding() { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource() { Mode = RelativeSourceMode.Self } });
+                    binding.Bindings.Add(new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay });
+
+                    item.SetBinding(BarButtonItem.CommandParameterProperty, binding);
+                    ItemLinksSource.Add(item);               
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке загрузить меню печати счетов!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }

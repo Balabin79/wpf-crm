@@ -12,5 +12,6 @@ namespace Dental.Infrastructures.Converters
         public BarButtonItem Item { get; set; }
         public string PathToFile { get; set; } 
         public Type DocType { get; set; } 
+        public object Element { get; set; }
     }
 }
