@@ -28,8 +28,8 @@
                BasedOn="{StaticResource {dxgt:TableViewThemeKey ResourceKey=DefaultPrintCellStyle}}"
                >
         <Setter Property="Background" Value="#C0C0C0"/>
-        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-        <Setter Property="PrintTextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="PrintTextWrapping" Value="Wrap"/>
         <Setter Property="Text" Value="{Binding Path=Value}"/>
         <Setter Property="Foreground" Value="#000"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>

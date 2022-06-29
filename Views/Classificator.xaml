@@ -101,7 +101,13 @@
                             AllowScrollToFocusedRow="True" 
                             VerticalScrollbarVisibility="Auto"
                             AllowPrintColumnHeaderImage="True" 
-                            PrintNodeImages="True"
+                            PrintNodeImages="False"
+                            PrintExpandButtons="False"
+                            PrintFixedTotalSummary="False"
+                            PrintNodeFooters="False"
+                            PrintRootIndent="False"
+                            PrintTotalSummary="False"
+                            PrintAllNodes="False"
                             ShowNodeImages="True"
                             NodeImageSize="15,15"
                             ExpandNodesOnFiltering="True"
@@ -187,6 +193,8 @@
 
                 <dxg:GridColumn FieldName="FullName" 
                                 Header="Наименование" x:Name="Name" MinWidth="200" Width="8*"
+                                PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
+                                PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}"
                                 >
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
@@ -204,8 +212,8 @@
                                  PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
                                  PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                  Header="Стоимость"                               
-                                 HorizontalHeaderContentAlignment="Center" 
-                                 Width="1*">
+                                 HorizontalHeaderContentAlignment="Center"                                 
+                                 Width="2*">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  

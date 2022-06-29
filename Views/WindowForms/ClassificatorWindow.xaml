@@ -19,7 +19,7 @@
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
     <Grid>
-        <Grid Visibility="{Binding IsVisibleItemForm}">
+        <Grid Visibility="{DXBinding Expr='IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -61,7 +61,7 @@
             </GroupBox>
         </Grid>
 
-        <Grid Visibility="{Binding IsVisibleGroupForm}">
+        <Grid Visibility="{DXBinding Expr='!IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>

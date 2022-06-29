@@ -104,7 +104,13 @@
                     AllowScrollToFocusedRow="True" 
                     VerticalScrollbarVisibility="Auto"
                     AllowPrintColumnHeaderImage="True" 
-                    PrintNodeImages="True"
+                    PrintNodeImages="False"
+                    PrintExpandButtons="False"
+                    PrintFixedTotalSummary="False"
+                    PrintNodeFooters="False"
+                    PrintRootIndent="False"
+                    PrintTotalSummary="False"
+                    PrintAllNodes="False"
                     ShowNodeImages="True"
                     NodeImageSize="15,15"
                     ExpandNodesOnFiltering="True"
@@ -205,7 +211,7 @@
                     PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                     Header="Стоимость"                               
                     HorizontalHeaderContentAlignment="Center" 
-                    Width="1*">
+                    Width="2*">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
@@ -217,8 +223,8 @@
                 </dxg:GridColumn>
 
                 <dxg:GridColumn
-                    Width="1*" FieldName="Measure"  
-                    Header="Единица измерения" 
+                    Width="2*" FieldName="Measure"  
+                    Header="Ед-ца измерения" 
                     HorizontalHeaderContentAlignment="Center" >
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>

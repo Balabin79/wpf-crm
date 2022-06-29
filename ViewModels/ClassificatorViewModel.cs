@@ -25,7 +25,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Collection = GetCollection();
+                Collection = db.Services.OrderBy(d => d.Name).ToObservableCollection();
             }
             catch
             {
@@ -53,9 +53,9 @@ namespace Dental.ViewModels
                     return;
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                
             }
         }
         [Command]
@@ -64,19 +64,26 @@ namespace Dental.ViewModels
             try
             {
                 if (p == null) return;
-                Model = GetModelById((int)p);
+                Model = Collection.Where(f => f.Id == (int)p).FirstOrDefault();
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Service>() { Model });
+                if (Model.IsDir == 0) 
+                { 
+                    db.Entry(Model).State = EntityState.Deleted;
+                    Collection.Remove(Model);
+                }
                 else
                 {
-                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection());
+                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection();
+                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                    collection.ForEach(f => Collection.Remove(f));
                 }
+
                 db.SaveChanges();
             }
-            catch (Exception e)
+            catch 
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
         [Command]
@@ -100,15 +107,24 @@ namespace Dental.ViewModels
                     return;
                 }
 
-                if (Model.Id == 0) Add(); else Update();
+                if (Model.Id == 0) 
+                {
+                    db.Entry(Model).State = EntityState.Added;
+                    if (db.SaveChanges() > 0) Collection.Add(Model);
+                }  
+                else 
+                {
+                    db.Entry(Model).State = EntityState.Modified;
+                    if (db.SaveChanges() > 0) Model.UpdateFields();
+                } 
                 db.SaveChanges();
 
                 SelectedGroup = null;
                 Window.Close();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
         [Command]
@@ -116,130 +132,84 @@ namespace Dental.ViewModels
         {
             try
             {
-                CreateNewWindow();
-                if (p == null) return;
-                int.TryParse(p.ToString(), out int param);
-                if (param == -3) return;
+                if (!int.TryParse(p.ToString(), out int param)) return;
+                Window = new ClassificatorWindow();
+                Model = (param > 0) ?  Collection.Where(f => f.Id == param).FirstOrDefault() : new Service();
+                Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                        .GetDirectories().OfType<Service>().ToObservableCollection();
+                
+                if (param > 0) // открываем на редактирование
+                {                                                         
+                    if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);                  
+                    SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
 
-                switch (param)
+                    if (Model.IsDir == 0) 
+                    {
+                        Window.Height = 280;
+                        Title = "Редактировать услугу";
+                        IsVisibleItemForm = true;
+                    } 
+                    else 
+                    {
+                        Window.Height = 240;
+                        Title = "Редактировать группу";
+                        IsVisibleItemForm = false;
+                    } 
+
+                }
+                else // открываем на создание
                 {
-                    case -1:
-                        Model = CreateNewModel();
-                        Model.IsDir = 0;
-                        Title = "Добавить услугу";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Добавить группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        if (Group.Count != 0) Group.Add(WithoutCategory);
-                        VisibleItemGroup();
-                        break;
-                    default:
-                        Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Service>().ToObservableCollection();
-                        if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
+                    if (Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).Count() > 0) Group.Add(WithoutCategory);
 
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать услугу";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
-                        break;
+                    if (param == -1)
+                    {
+                        Model.IsDir = 0;
+                        Window.Height = 280;
+                        Title = "Добавить услугу";
+                        IsVisibleItemForm = true;
+                    }
+                    if (param == -2)
+                    {
+                        Model.IsDir = 1;
+                        Window.Height = 240;
+                        Title = "Добавить группу";
+                        IsVisibleItemForm = false;
+                    }
                 }
 
                 Window.DataContext = this;
                 Window.ShowDialog();
                 SelectedGroup = null;
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
         [Command]
         public void CancelForm() => Window.Close();
 
-        /************* Специфика этой ViewModel ******************/
+
 
         public ObservableCollection<Service> Group
         {
             get { return GetProperty(() => Group); }
             set { SetProperty(() => Group, value); }
         }
-
         public Service WithoutCategory { get; set; } = new Service() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории" };
-
         public object SelectedGroup
         {
             get { return GetProperty(() => SelectedGroup); }
             set { SetProperty(() => SelectedGroup, value); }
         }
-
-        /******************************************************/
         public ObservableCollection<Service> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
         }
-
-
         public Service Model { get; set; }
         public string Title { get; set; }
-        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
-
-
-        private void VisibleItemForm()
-        {
-            IsVisibleItemForm = Visibility.Visible;
-            IsVisibleGroupForm = Visibility.Hidden;
-            Window.Width = 800;
-            Window.Height = 280;
-        }
-        private void VisibleItemGroup()
-        {
-            IsVisibleItemForm = Visibility.Hidden;
-            IsVisibleGroupForm = Visibility.Visible;
-            Window.Width = 800;
-            Window.Height = 240;
-        }
-
+        public bool IsVisibleItemForm { get; set; }
         private ClassificatorWindow Window;
-
-        private ObservableCollection<Service> GetCollection() => db.Services.OrderBy(d => d.Name).ToObservableCollection();
-
-        private void CreateNewWindow() => Window = new ClassificatorWindow();
-        private Service CreateNewModel() => new Service();
-
-        private Service GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();     
-
-        private void Add()
-        {
-            db.Entry(Model).State = EntityState.Added;
-            if (db.SaveChanges() > 0) Collection.Add(Model);             
-        }
-        private void Update()
-        {
-            db.Entry(Model).State = EntityState.Modified;
-            if (db.SaveChanges() > 0) Model.UpdateFields();
-         
-        }
-
-        private void Delete(ObservableCollection<Service> collection)
-        {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
-        }
     }
 }
