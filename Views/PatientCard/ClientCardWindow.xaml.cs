@@ -16,8 +16,13 @@ namespace Dental.Views.PatientCard
             InitializeComponent();
             ApplicationContext db = new ApplicationContext();
             var client = db.Clients.FirstOrDefault(f => f.Id == clientId);
-            this.DataContext = new ClientCardViewModel(clientId, vm);
-            this.Invoices.DataContext = new InvoicesViewModel(client, db, true);
+            ClientCardViewModel clientCardViewModel = new ClientCardViewModel(clientId, vm);
+            InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
+            clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;
+            invoicesViewModel.StatusReadOnly(true);
+
+            this.DataContext = clientCardViewModel;
+            this.Invoices.DataContext = invoicesViewModel;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -31,7 +31,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public async void OpenHelpForm(object p)
+        public async void OpenHelpForm()
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenRegForm(object p)
+        public void OpenRegForm()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenAboutForm(object p)
+        public void OpenAboutForm()
         {
             try
             {

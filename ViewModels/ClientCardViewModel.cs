@@ -25,6 +25,10 @@ namespace Dental.ViewModels
         private readonly ApplicationContext db;
         private readonly PatientListViewModel VmList;
 
+        public delegate void ChangeReadOnly(bool status);
+        public event ChangeReadOnly EventChangeReadOnly;
+
+
         public ClientCardViewModel(int clientId, PatientListViewModel vmList)
         {
             try
@@ -38,7 +42,6 @@ namespace Dental.ViewModels
                 Document = new ClientsDocumentsViewModel();    
 
                 IsReadOnly = Model.Id != 0;
-
                 Appointments = db.Appointments
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
@@ -51,7 +54,11 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void Editable() => IsReadOnly = !IsReadOnly;
+        public void Editable() 
+        {
+            IsReadOnly = !IsReadOnly;
+            EventChangeReadOnly?.Invoke((IsReadOnly || Model?.Id == 0));
+        }
 
         [Command]
         public void Save()
@@ -64,6 +71,7 @@ namespace Dental.ViewModels
                     db.Clients.Add(Model);
                     VmList?.Collection?.Add(Model);
                     db.SaveChanges();
+                    EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                 }
                 else

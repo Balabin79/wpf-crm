@@ -93,7 +93,7 @@ namespace Dental.ViewModels.GoogleIntegration
         }
 
         [Command]
-        public void ContactDelete(object p)
+        public void ContactDelete()
         {
 
         }

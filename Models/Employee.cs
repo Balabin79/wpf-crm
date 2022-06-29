@@ -13,7 +13,16 @@ namespace Dental.Models
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
         [NotMapped]
-        public ImageSource Image { get; set; }
+        public ImageSource Image 
+        {
+            get => image;
+            set
+            {
+                image = value;
+                OnPropertyChanged(nameof(Image));
+            }
+        }
+        private ImageSource image;
 
         [NotMapped]
         public bool IsVisible
@@ -34,7 +43,16 @@ namespace Dental.Models
 
         // Общая информация
         [Display(Name = "Фото")]
-        public string Photo { get; set; }
+        public string Photo 
+        {
+            get => photo;
+            set
+            {
+                photo = value;
+                OnPropertyChanged(nameof(Photo));
+            }
+        }
+        private string photo;
 
         [Display(Name = "Имя")]
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]

@@ -47,15 +47,15 @@
                                         ShowDragWidget="False"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Content="Редактировать данные" 
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Content="Закрыть для редактирования" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}"
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
@@ -64,7 +64,7 @@
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem  Content="Сохранить" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
@@ -72,7 +72,7 @@
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem  Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Custom"

@@ -28,7 +28,16 @@ namespace Dental.Models.Base
 
         [Key]
         [Column("Id")]
-        public int Id { get; set; }
+        public int Id 
+        { 
+            get => id;
+            set
+            {
+                id = value;
+                OnPropertyChanged(nameof(Id));
+            } 
+        }
+        private int id;
         public string Guid { get; set; }
         public int? CreatedAt { get; set; }
         public int? UpdatedAt 

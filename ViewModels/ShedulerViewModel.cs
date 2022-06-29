@@ -141,7 +141,7 @@ namespace Dental.ViewModels
         public void CloseWindowLocation() => LocationWindow.Close();
 
         [Command]
-        public void AddLocation(object p)
+        public void AddLocation()
         {
             try
             {

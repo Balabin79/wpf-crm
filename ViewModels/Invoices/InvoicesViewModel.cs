@@ -48,6 +48,16 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
+        public void StatusReadOnly(bool status)
+        {
+            IsReadOnly = status;
+        }
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
         #region Счета
         [Command]
         public void OpenFormInvoice(object p)

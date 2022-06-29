@@ -162,7 +162,7 @@
                                            GlyphSize="Small" 
                                            DataContext="{Binding ElementName=layoutGroup1}"
                                            Command="{Binding Path=DataContext.UserFiles.OpenDirectoryCommand}"
-                                           IsEnabled="{DXBinding  Expr='DataContext.ClientInfoViewModel.Id != 0 or !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                         />
 
                                     <dxb:BarButtonItem 

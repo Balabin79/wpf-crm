@@ -33,45 +33,18 @@ namespace Dental.ViewModels
             Model = emp;
             Files = new ObservableCollection<FileInfo>();
             Document = new EmployeesDocumentsViewModel();
-
-            CommunicationList = new List<CommunicationType>() {
-                new CommunicationType {  Id=0, Name="Не уведомлять" },
-                new CommunicationType {  Id=1, Name="Sms" },
-                new CommunicationType {  Id=2, Name="Email" },
-                new CommunicationType {  Id=3, Name="Viber" },
-            };              
+              
          
             // подгружаем вспомогательные справочники
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
-            RateType = db.Dictionary.Where(f => f.CategoryId == 7).OrderBy(f => f.Id).ToList();
 
-            RateCheckedStateContent = RateType.Count() > 0 ? RateType[0].Name : "Сдельная оплата";
-            RateUncheckedStateContent = RateType.Count() > 0 ? RateType[1].Name : "Фиксированный оклад";
 
             try
             {
-                if (Model.Id == 0)
-                {
-                    IsReadOnly = false;
-                    BtnIconEditableHide = false;
-                    BtnIconEditableVisible = true;
-                }
-                else
-                {
-                    IsReadOnly = true;
-                    BtnIconEditableHide = true;
-                    BtnIconEditableVisible = false;
-                    Title = "Анкета сотрудника (" + Model.Fio + ")";
-                     if (Directory.Exists(GetPathToEmpDir()))
-                     {
-                         Files = new DirectoryInfo(GetPathToEmpDir()).GetFiles().ToObservableCollection();
-                     }
-                    
-
-                }
-                PhotoLoading();
-                
+                IsReadOnly = Model.Id != 0;
+                if (Directory.Exists(GetPathToEmpDir())) Files = new DirectoryInfo(GetPathToEmpDir()).GetFiles().ToObservableCollection();  
+                PhotoLoading();               
                 ModelBeforeChanges = (Employee)Model.Clone();
             }
             catch (Exception e)
@@ -94,42 +67,10 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public bool BtnIconEditableVisible
-        {
-            get { return GetProperty(() => BtnIconEditableVisible); }
-            set { SetProperty(() => BtnIconEditableVisible, value); }
-        }
-
-        public bool BtnIconEditableHide
-        {
-            get { return GetProperty(() => BtnIconEditableHide); }
-            set { SetProperty(() => BtnIconEditableHide, value); }
-        }
-
-        public bool BtnAfterSaveEnable
-        {
-            get { return GetProperty(() => BtnAfterSaveEnable); }
-            set { SetProperty(() => BtnAfterSaveEnable, value); }
-        }
-
         [Command]
-        public void Editable()
-        {
-            try
-            {
-                IsReadOnly = !IsReadOnly;
-                BtnIconEditableHide = IsReadOnly;
-                BtnIconEditableVisible = !IsReadOnly;
-                if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
+        public void Editable() => IsReadOnly = !IsReadOnly;
 
         #endregion
-
 
         #region команды, связанных с прикреплением к карте пациентов файлов 
         private const string EMPLOYEES_DIRECTORY = "Dental\\Employees";
@@ -252,7 +193,6 @@ namespace Dental.ViewModels
         }
         #endregion
 
-
         #region Вспомогательные справочники, заголовок
         public IEnumerable<Dictionary> Statuses { get; set; }
         public IEnumerable<Dictionary> GenderList { get; set; }
@@ -263,7 +203,6 @@ namespace Dental.ViewModels
 
         public string Title { get; set; } = "Анкета сотрудника";
         #endregion
-
 
         #region Управление моделью
 
@@ -313,7 +252,6 @@ namespace Dental.ViewModels
                 {
                     db.Employes.Add(Model);
                     VmList?.Collection?.Add(Model);
-                    BtnAfterSaveEnable = true;
                 }
                 else
                 {
@@ -469,11 +407,6 @@ namespace Dental.ViewModels
         #endregion
 
     private readonly ApplicationContext db;
-    public List<CommunicationType> CommunicationList { get; }
 }
-    public class CommunicationType
-    {
-        public int? Id { get; set; }
-        public string Name { get; set; }
-    }
+
 }

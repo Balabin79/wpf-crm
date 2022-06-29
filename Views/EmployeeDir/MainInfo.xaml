@@ -171,12 +171,9 @@
                 </dxlc:LayoutControl>
             </GroupBox>
 
-
-
-
             <GroupBox BorderBrush="LightGray" Margin="5" Header="Дополнительно" Grid.Row="1">
 
-                <dxlc:LayoutControl  Orientation="Vertical" Padding="0">
+                <dxlc:LayoutControl  Orientation="Vertical" Padding="0" x:Name="layoutGroup1">
 
                     <dxlc:LayoutGroup  
                 Grid.Row="2" 
@@ -194,23 +191,22 @@
 
                                         <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                             <dxb:BarButtonItem
-                                           Content="Директория" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                           GlyphSize="Small" 
-                                           Command="{Binding ElementName=layoutGroup1, Path=DataContext.OpenDirectoryCommand}"
-                                           CommandParameter="{Binding ElementName=layoutGroup1, Path=DataContext.Model.Id, Mode=TwoWay}"/>
+                                                 Content="Директория" 
+                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                                 GlyphSize="Small" 
+                                                 Command="{Binding ElementName=layoutGroup1, Path=DataContext.OpenDirectoryCommand}"
+                                                 CommandParameter="{Binding ElementName=layoutGroup1, Path=DataContext.Model.Id, Mode=TwoWay}"
+                                                 IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <dxb:BarButtonItem 
-                                        Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
-                                        Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
-                                        Content="Прикрепить файл" 
-                                        IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                                Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
+                                        Content="Прикрепить файл"                                     
                                                     />
 
                                         </dxb:ToolBarControl>
                                     </dxb:BarContainerControl>
-
-
 
                                 </DockPanel>
 
@@ -220,7 +216,7 @@
                         <dxg:GridControl  
                     ItemsSource="{Binding Files, Mode=TwoWay}" 
                     DataContext="{Binding}" 
-                    Name="GridControlAttachFile"
+                    x:Name="GridControlAttachFile"
                     Width="auto">
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn FieldName="Name" Header="Название" Width="4*"/>
@@ -252,15 +248,15 @@
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                             GlyphSize="Small"
                                             Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                            CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                                     <dxb:BarButtonItem  
                                             Content="Удалить файл" 
-                                            IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}"  
+                                             IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                             GlyphSize="Small"
                                             Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}" 
-                                            CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                            CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                                     <dxb:BarItemLinkSeparator />
                                                 </dxb:ToolBarControl>
                                             </dxb:BarContainerControl>
@@ -282,16 +278,16 @@
 
                                         <KeyBinding Key="Delete" 
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                         <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                         <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                     </dxg:TableView.InputBindings>
 
                                     <dxg:TableView.RowCellMenuCustomizations >
@@ -302,12 +298,12 @@
                                     KeyGesture="Ctrl+O" 
                                     Content="Открыть файл" 
                                     Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
-                                    CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
+                                    CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                         <dxb:BarButtonItem 
                                     Content="Удалить файл"
-                                    IsEnabled="{Binding ElementName=layoutGroup1, Path=DataContext.BtnAfterSaveEnable, Mode=TwoWay}"
+                                     IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Command="{Binding ElementName=attachFileTableView,Path=DataContext.DeleteFileCommand}" 
-                                    CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
+                                    CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"
                                     KeyGesture="Delete" 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 

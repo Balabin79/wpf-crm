@@ -52,7 +52,7 @@
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.Client.BtnIconEditableVisible, Mode=TwoWay}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить услугу" >
                                                     </dxb:BarButtonItem>
                                                 </dxb:ToolBarControl>
@@ -105,13 +105,13 @@
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                                                         <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                             <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                    IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                             <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}" 
@@ -170,7 +170,7 @@
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem.Invoice}"
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Content="Добавить запись" />
 
                                                 <dxb:BarButtonItem 
@@ -180,13 +180,13 @@
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                        IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Content="Редактировать запись" />
 
                                                 <dxb:BarButtonItem 
                                         Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                        IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"/>
@@ -222,7 +222,7 @@
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
                                             CommandParameter="{Binding ElementName=grid, Path=CurentItem}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить материал" >
                                                     </dxb:BarButtonItem>
 
@@ -276,13 +276,13 @@
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                                                         <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                             <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                             <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}" 
@@ -341,7 +341,7 @@
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem.Invoice}"
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        IsEnabled="{Binding ElementName=MaterialItems, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Content="Добавить запись" />
 
                                                 <dxb:BarButtonItem 
@@ -351,12 +351,12 @@
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                        IsEnabled="{Binding ElementName=MaterialItems, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         Content="Редактировать запись" />
 
                                                 <dxb:BarButtonItem Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                        IsEnabled="{Binding ElementName=view, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
@@ -413,23 +413,30 @@
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormInvoiceCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Создать счет" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 />
                             
-                            <dxb:BarButtonItem Content="Все счета" Margin="0 0 5 0"
-                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                            <dxb:BarButtonItem 
+                                Content="Все счета" Margin="0 0 5 0"
+                                IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
                                            CommandParameter="1"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
 
-                            <dxb:BarButtonItem Content="Оплаченные" Margin="0 0 5 0"
+                            <dxb:BarButtonItem 
+                                Content="Оплаченные" Margin="0 0 5 0"
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
                                            CommandParameter="0"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                             <dxb:BarButtonItem Content="Не оплаченные"
+                             <dxb:BarButtonItem 
+                                 Content="Не оплаченные"
+                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
@@ -460,7 +467,8 @@
                     AllowPrintColumnHeaderImage="True"  >
 
                     <dxg:TableView.InputBindings>
-                        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"/>
+                        <KeyBinding Key="N" Modifiers="Ctrl"                                    
+                                    Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"/>
 
                         <KeyBinding Key="E" Modifiers="Ctrl"
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
@@ -481,7 +489,7 @@
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                             Content="Создать счет" 
                             KeyGesture="Ctrl+N"
-                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
 
                         <dxb:BarButtonItem 
@@ -492,7 +500,7 @@
                             Content="Редактировать счет" 
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
-                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     />
 
                         <dxb:BarButtonItem  
@@ -501,7 +509,7 @@
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                            IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"/>
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
@@ -534,14 +542,14 @@
                             <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                 <dxb:BarButtonItem 
                                            Content="Открыть форму"                                                            
-                                           IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                 
                                 <dxb:BarSubItem 
-                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"                                               
+                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                              
                                     Content="Печать" 
                                     ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
@@ -550,25 +558,25 @@
 
                                 <dxb:BarSubItem 
                                                 Content="Экспорт" 
-                                                IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}">
                                     <dxb:BarButtonItem 
                                                     Content="Экспорт в Excel"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Excel}}"
                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                     <dxb:BarButtonItem 
                                                     Content="Экспорт в Word"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Word}}"
                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                     <dxb:BarButtonItem
                                                     Content="Экспорт в PDF"                                                            
-                                                    IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
                                                     GlyphSize="Small"
                                                     Command="{Binding Source={StaticResource Pdf}}"
@@ -576,7 +584,7 @@
                                 </dxb:BarSubItem>
 
                                 <dxb:BarButtonItem Content="Удалить" 
-                                           IsEnabled="{Binding ElementName=UTreatmentPlan, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
+                                          IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceCommand}" 
