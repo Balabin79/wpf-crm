@@ -289,8 +289,8 @@ namespace Dental.ViewModels.Invoices
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-
-                    db.Entry(item).State = EntityState.Deleted;
+                    item.Invoice = null;
+                    db.InvoiceServiceItems.Remove(item);
                     db.SaveChanges();
                 }
             }
@@ -427,7 +427,8 @@ namespace Dental.ViewModels.Invoices
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить материал в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
 
-                    db.Entry(item).State = EntityState.Deleted;
+                    item.Invoice = null;
+                    db.InvoiceMaterialItems.Remove(item);
                     db.SaveChanges();
                 }
             }

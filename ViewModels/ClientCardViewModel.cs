@@ -57,7 +57,7 @@ namespace Dental.ViewModels
         public void Editable() 
         {
             IsReadOnly = !IsReadOnly;
-            EventChangeReadOnly?.Invoke((IsReadOnly || Model?.Id == 0));
+            EventChangeReadOnly?.Invoke(IsReadOnly || Model?.Id == 0);
         }
 
         [Command]
@@ -66,20 +66,37 @@ namespace Dental.ViewModels
             try
             {
                 ClientInfoViewModel.Copy(Model);
-                if (Model.Id == 0)
+                if (Model.Id == 0) // новый элемент
                 {
                     db.Clients.Add(Model);
-                    VmList?.Collection?.Add(Model);
+                    // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
+                    if (VmList?.IsArchiveList == Model.IsInArchive) VmList?.Collection?.Add(Model);
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                 }
                 else
-                {
+                { // редактирование су-щего эл-та
                     if (db.SaveChanges() > 0)
                     {
-                        VmList.Collection.Remove(VmList.Collection.FirstOrDefault(f => f.Id == Model.Id));
-                        VmList.Collection.Add(Model);
+                        // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то поменять элемент(отображение изменений), иначе просто добавить
+                        if (VmList?.IsArchiveList == Model.IsInArchive)
+                        {
+                            var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                            if (item == null) VmList?.Collection?.Add(Model); // добавляем
+                            else // меняем
+                            { 
+                                VmList?.Collection?.Remove(item);
+                                VmList?.Collection?.Add(Model); 
+                            }
+                        } else // иначе если статусы отличаются (допустим убрали анкету в архив), то только удалить из отображаемого списка
+                        {
+                            var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                            if (item != null)
+                            {
+                                VmList?.Collection?.Remove(item);
+                            }
+                        }                           
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                     }
                 }
@@ -111,7 +128,10 @@ namespace Dental.ViewModels
                 db.Entry(Model).State = EntityState.Deleted;
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
-                VmList.Collection.Remove(VmList.Collection.FirstOrDefault(f => f.Id == Model.Id));
+                // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
+                var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                if (item != null )VmList.Collection.Remove(item);
+
                 db.InvoiceMaterialItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();

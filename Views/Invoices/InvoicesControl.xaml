@@ -35,7 +35,7 @@
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
                     <DataTemplate x:Key="ContentDetail" >
-                        <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="GridFileRowDetailsTemplate">
+                        <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="templ" >
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
@@ -50,7 +50,7 @@
                                                 <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                                     <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
-                                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                                            CommandParameter="{Binding ElementName=templ, Path=DataContext}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить услугу" >
@@ -99,7 +99,7 @@
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
 
-                                        <dxg:GridColumn Width="auto">
+                                        <dxg:GridColumn Width="auto" AllowPrinting="False">
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
@@ -176,7 +176,7 @@
                                                 <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
-                                        KeyGesture="Ctrl+R"
+                                        KeyGesture="Ctrl+E"
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
@@ -210,7 +210,7 @@
                                 </dxg:GridControl>
                             </dxlc:LayoutGroup>
 
-                            <dxlc:LayoutGroup Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                            <dxlc:LayoutGroup x:Name="Layot" Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                                 <dxlc:LayoutGroup.HeaderTemplate>
                                     <DataTemplate>
                                         <DockPanel HorizontalAlignment="Stretch">
@@ -220,7 +220,7 @@
                                                     <dxb:BarButtonItem 
                                             Margin="5 0 0 0"
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                            CommandParameter="{Binding ElementName=grid, Path=CurentItem}"
+                                            CommandParameter="{Binding ElementName=templ, Path=DataContext}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить материал" >

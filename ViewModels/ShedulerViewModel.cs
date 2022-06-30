@@ -16,6 +16,8 @@ using Dental.Views.WindowForms;
 using System.Windows.Media;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm;
+using Dental.Services.Google;
+using DevExpress.Xpf.Scheduling;
 
 namespace Dental.ViewModels
 {
@@ -76,11 +78,16 @@ namespace Dental.ViewModels
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
                 db.Entry(item).State = EntityState.Added;
-                db.SaveChanges();                
+                db.SaveChanges();
+
+                var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Added, SendingStatusId = (int)SendingStatus.New };
+                db.AppointmentsQueue.Add(queue);
+                db.SaveChanges();
+                new AppointmentsSender().Run();
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+
             }
         }
 
@@ -89,6 +96,20 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (p is AppointmentEditedEventArgs arg)
+                {
+                    foreach (var i in arg.Appointments)
+                    {
+                        var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
+                        if (item != null) 
+                        {
+                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Edited, SendingStatusId = (int)SendingStatus.New };
+                            db.AppointmentsQueue.Add(queue);
+                            new AppointmentsSender().Run();
+                        }
+                    }
+                }
+
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -102,13 +123,19 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is DevExpress.Xpf.Scheduling.AppointmentRemovedEventArgs arg)
+                if (p is AppointmentRemovedEventArgs arg)
                 foreach (var i in arg.Appointments)
                 {
                     var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
-                    if (item != null) db.Entry(item).State = EntityState.Deleted;                   
+                        if (item != null) 
+                        { 
+                            db.Entry(item).State = EntityState.Deleted;
+                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Removed, SendingStatusId = (int)SendingStatus.New };
+                            db.AppointmentsQueue.Add(queue);
+                            new AppointmentsSender().Run();
+                        }                
                 }
-                int cnt = db.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -191,7 +218,7 @@ namespace Dental.ViewModels
                 LocationAppointments = GetLocationCollection();
                 LocationAppointmentsBeforeChanges.Clear();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
@@ -262,7 +289,7 @@ namespace Dental.ViewModels
                 StatusAppointmentsBeforeChanges.Clear();
                 StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
                 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {

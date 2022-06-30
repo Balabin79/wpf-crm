@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Invoice")]
-    public class Invoice : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
+    public class Invoice : AbstractBaseModel, IDataErrorInfo
     {
         public Invoice()
         {

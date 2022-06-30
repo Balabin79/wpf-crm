@@ -16,50 +16,67 @@ namespace Dental.Views.Invoices
 
         private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
-            if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
+            try
             {
-                if (e.Row == null) return;
-                var items = ((InvoiceServiceItems)e.Row)?.Invoice?.InvoiceServiceItems;
-                decimal price = 0;
-                foreach (var item in items)
+                if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
                 {
-                    if (decimal.TryParse(item.Service?.Price?.ToString(), out decimal result))
+                    if (e.Row == null) return;
+                    var items = ((InvoiceServiceItems)e.Row)?.Invoice?.InvoiceServiceItems;
+                    decimal price = 0;
+                    if (items == null) return;
+                    foreach (var item in items)
                     {
-                        if (item.Count > 0) price += (result * item.Count);
+                        if (decimal.TryParse(item.Service?.Price?.ToString(), out decimal result))
+                        {
+                            if (item.Count > 0) price += (result * item.Count);
+                        }
                     }
+                    e.TotalValue = price;
                 }
-                e.TotalValue = price;
+                e.TotalValueReady = true;
             }
-            e.TotalValueReady = true;
+            catch { }
+
         }
 
         private void attachFileTableView_CustomRowAppearance(object sender, CustomRowAppearanceEventArgs e)
         {
-            if (e.Source.DataControl is GridControl dataControl)
+            try
             {
-                e.Handled = true;
-                dataControl.UpdateTotalSummary();
-                return;
-            }
-        }
+                if (e.Source.DataControl is GridControl dataControl)
+                {
+                    e.Handled = true;
+                    dataControl.UpdateTotalSummary();
+                    return;
+                }
+            } 
+            catch { }
+
+        } 
 
         private void MaterialItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
-            if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
+            try
             {
-                if (e.Row == null) return;
-                var items = ((InvoiceMaterialItems)e.Row)?.Invoice?.InvoiceMaterialItems;
-                decimal price = 0;
-                foreach (var item in items)
+                if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
                 {
-                    if (decimal.TryParse(item.Nomenclature?.Price?.ToString(), out decimal result))
+                    if (e.Row == null) return;
+                    var items = ((InvoiceMaterialItems)e.Row)?.Invoice?.InvoiceMaterialItems;
+                    decimal price = 0;
+                    if (items == null) return;
+                    foreach (var item in items)
                     {
-                        if (item.Count > 0) price += (result * item.Count);
+                        if (decimal.TryParse(item.Nomenclature?.Price?.ToString(), out decimal result))
+                        {
+                            if (item.Count > 0) price += (result * item.Count);
+                        }
                     }
+                    e.TotalValue = price;
                 }
-                e.TotalValue = price;
+                e.TotalValueReady = true;
             }
-            e.TotalValueReady = true;
+            catch { }
+
         }
     }
 }

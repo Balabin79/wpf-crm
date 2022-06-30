@@ -78,5 +78,7 @@ namespace Dental.Models
 
         public DbSet<AdditionalFieldsCategory> AdditionalFieldsCategory { get; set; }   
         public DbSet<AdditionalField> AdditionalField { get; set; }   
+
+        public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }   
     }
 }
