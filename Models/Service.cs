@@ -17,6 +17,7 @@ namespace Dental.Models
             set 
             {
                 _Name = value?.Trim();
+                OnPropertyChanged(nameof(Name));
             } 
         }
         private string _Name;

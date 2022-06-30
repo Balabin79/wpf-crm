@@ -28,48 +28,32 @@
 
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="24"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Icon Builder/Travel_MapPointer.svg}"/>
-                    <TextBlock Text="Локация встречи" FontSize="15" Padding="2 5 5 0" />
+                    <TextBlock Text="Локации" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" 
-                                        Caption="File"
-                                        ShowDragWidget="False"
-                                        AllowCustomizationMenu="False" 
-                                        AllowQuickCustomization="False">
-
-                        <dxb:BarButtonItem Name="bCreate" 
-                                           Content="Создать" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
                                            Command="{Binding AddLocationCommand}"
-                                           CommandParameter="-1"/>
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" 
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding SaveLocationCommand}"/>
-                        <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem Name="bPrint" Content="Печать"                                
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding SaveLocationCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
+                        <dxb:BarButtonItem Content="Печать"                                         
+                                           GlyphSize="Small"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

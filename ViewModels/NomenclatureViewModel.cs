@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
@@ -12,7 +10,6 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
-using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.ViewModels
@@ -25,7 +22,7 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Collection = GetCollection();
+                Collection = db.Nomenclature.OrderBy(d => d.Name).Include(f => f.Measure).ToObservableCollection();
                 Measures = db.Measure.ToList();
             }
             catch
@@ -43,9 +40,9 @@ namespace Dental.ViewModels
                 MeasureWin = new Views.NomenclatureDir.MeasureWindow();
                 MeasureWin.ShowDialog();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы \"Единицы измерения\" произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -68,10 +65,7 @@ namespace Dental.ViewModels
                     return;
                 }
             }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
+            catch{}
         }
 
         [Command]
@@ -80,19 +74,25 @@ namespace Dental.ViewModels
             try
             {
                 if (p == null) return;
-                Model = GetModelById((int)p);
+                Model = Collection.Where(f => f.Id == (int)p).FirstOrDefault();
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Nomenclature>() { Model });
+                if (Model.IsDir == 0)
+                {
+                    db.Entry(Model).State = EntityState.Deleted;
+                    Collection.Remove(Model);
+                }
                 else
                 {
-                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Nomenclature>().ToObservableCollection());
+                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Nomenclature>().ToObservableCollection();
+                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                    collection.ForEach(f => Collection.Remove(f));
                 }
                 db.SaveChanges();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -111,20 +111,22 @@ namespace Dental.ViewModels
                     else Model.ParentId = id;
                 }
 
-                if (SelectedMeasure != null)
-                {
-                    int id = ((Measure)SelectedMeasure).Id;
-                    if (id == 0) Model.MeasureId = null;
-                    else Model.MeasureId = id;
-                }
-
                 if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
                 {
                     new TryingCreatingDuplicate().run(Model.IsDir);
                     return;
                 }
 
-                if (Model.Id == 0) Add(); else Update();
+                if (Model.Id == 0)
+                {
+                    db.Entry(Model).State = EntityState.Added;
+                    if (db.SaveChanges() > 0) Collection.Add(Model);
+                }
+                else
+                {
+                    db.Entry(Model).State = EntityState.Modified;
+                    if (db.SaveChanges() > 0) Model.UpdateFields();
+                }
                 db.SaveChanges();
 
                 SelectedGroup = null;
@@ -132,7 +134,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -141,64 +143,66 @@ namespace Dental.ViewModels
         {
             try
             {
-                CreateNewWindow();
-                if (p == null) return;
-                int.TryParse(p.ToString(), out int param);
-                if (param == -3) return;
+                if (!int.TryParse(p.ToString(), out int param)) return;
+                Window = new Views.NomenclatureDir.NomenclatureWindow();
+                Model = (param > 0) ? Collection.Where(f => f.Id == param).FirstOrDefault() : new Nomenclature();
+                Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
+                        .GetDirectories().OfType<Nomenclature>().ToObservableCollection();
 
-                switch (param)
+                if (param > 0) // открываем на редактирование
                 {
-                    case -1:
-                        Model = CreateNewModel();
-                        Model.IsDir = 0;
-                        Title = "Добавить материал";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Добавить группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        if (Group.Count != 0) Group.Add(WithoutCategory);
-                        VisibleItemGroup();
-                        break;
-                    default:
-                        Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Nomenclature>().ToObservableCollection();
-                        if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-                        SelectedMeasure = Measures.Where(f => f.Id == Model.MeasureId).FirstOrDefault();
+                    if (Group.Count > 0 && Model.ParentId != null) Group.Add(WithoutCategory);
+                    SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
 
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать материал";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
-                        break;
+                    if (Model.IsDir == 0)
+                    {
+                        Window.Height = 325;
+                        Title = "Редактировать материал";
+                        IsVisibleItemForm = true;
+                    }
+                    else
+                    {
+                        Window.Height = 234;
+                        Title = "Редактировать группу";
+                        IsVisibleItemForm = false;
+                    }
+
+                }
+                else // открываем на создание
+                {
+                    if (Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).Count() > 0) Group.Add(WithoutCategory);
+
+                    if (param == -1)
+                    {
+                        Model.IsDir = 0;
+                        Window.Height = 325;
+                        Title = "Добавить материал";
+                        IsVisibleItemForm = true;
+                    }
+                    if (param == -2)
+                    {
+                        Model.IsDir = 1;
+                        Window.Height = 234;
+                        Title = "Добавить группу";
+                        IsVisibleItemForm = false;
+                    }
                 }
 
                 Window.DataContext = this;
                 Window.ShowDialog();
                 SelectedGroup = null;
-                SelectedMeasure = null;
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
         [Command]
         public void CancelForm() => Window.Close();
+       
+        public bool IsVisibleItemForm { get; set; }
 
-        /************* Специфика этой ViewModel ******************/
         public ObservableCollection<Nomenclature> Group
         {
             get { return GetProperty(() => Group); }
@@ -212,7 +216,6 @@ namespace Dental.ViewModels
             get { return GetProperty(() => SelectedGroup); }
             set { SetProperty(() => SelectedGroup, value); }
         }
-        /******************************************************/
 
         public ObservableCollection<Nomenclature> Collection
         {
@@ -222,55 +225,10 @@ namespace Dental.ViewModels
 
         public Nomenclature Model { get; set; }
         public string Title { get; set; }
-        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
-
-
-        private void VisibleItemForm()
-        {
-            IsVisibleItemForm = Visibility.Visible;
-            IsVisibleGroupForm = Visibility.Hidden;
-            Window.Width = 800;
-            Window.Height = 325;
-        }
-        private void VisibleItemGroup()
-        {
-            IsVisibleItemForm = Visibility.Hidden;
-            IsVisibleGroupForm = Visibility.Visible;
-            Window.Width = 800;
-            Window.Height = 234;
-        }
 
         private Views.NomenclatureDir.NomenclatureWindow Window;
         private Views.NomenclatureDir.MeasureWindow MeasureWin;
 
-        private ObservableCollection<Nomenclature> GetCollection() => db.Nomenclature.OrderBy(d => d.Name).Include(f => f.Measure).ToObservableCollection();
-
-        private void CreateNewWindow() => Window = new Views.NomenclatureDir.NomenclatureWindow();
-        private Nomenclature CreateNewModel() => new Nomenclature();
-
-        private Nomenclature GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
-
-        private void Add()
-        {
-            db.Entry(Model).State = EntityState.Added;
-
-            if (db.SaveChanges() > 0) Collection.Add(Model);
-
-        }
-        private void Update()
-        {
-            db.Entry(Model).State = EntityState.Modified;
-            if (db.SaveChanges() > 0) Model.UpdateFields();
-        }
-
-        private void Delete(ObservableCollection<Nomenclature> collection)
-        {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
-        }
-
-        /**/
         public ICollection<Measure> Measures { get; }
         public object SelectedMeasure { get; set; }
     }

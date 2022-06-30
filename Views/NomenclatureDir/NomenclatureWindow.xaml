@@ -8,7 +8,8 @@
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:vm ="clr-namespace:Dental.ViewModels"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler"
@@ -21,7 +22,7 @@
         <converter:FloatToStringConverter x:Key="FloatToString"/>
     </Window.Resources>
     <Grid>
-        <Grid Visibility="{Binding IsVisibleItemForm}">
+        <Grid Visibility="{DXBinding Expr='IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -68,14 +69,16 @@
 
             
                     <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                        <dx:SimpleButton 
+                            Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" 
+                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                     </StackPanel>
                 </Grid>
             </GroupBox>
         </Grid>
 
-        <Grid Visibility="{Binding IsVisibleGroupForm}">
+        <Grid Visibility="{DXBinding Expr='!IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -100,7 +103,10 @@
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
                     <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                        <dx:SimpleButton 
+                            Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}"
+                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                     </StackPanel>
                 </Grid>

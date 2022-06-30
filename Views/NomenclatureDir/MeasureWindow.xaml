@@ -46,7 +46,7 @@
                                            Command="{Binding AddCommand}"
                                            CommandParameter="-1"
                                            DataContext="{StaticResource vm}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
                         <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"

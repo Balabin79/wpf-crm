@@ -120,7 +120,7 @@
                         <dxg:TreeListView.InputBindings>
                             <KeyBinding Key="Delete"         
                                 Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                             <KeyBinding Key="N"     
                                 Modifiers="Ctrl"
                                 Command="{Binding Path=OpenFormCommand}"
@@ -134,10 +134,10 @@
                             <KeyBinding Key="E"     
                                 Modifiers="Ctrl"
                                 Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                             <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                         </dxg:TreeListView.InputBindings>
 
                         <dxg:TreeListView.RowCellMenuCustomizations>
@@ -172,13 +172,13 @@
                                     KeyGesture="Ctrl+E" 
                                     Content="Редактировать"  
                                     Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
                             <dxb:BarButtonItem 
                                     Name="deleteRow" 
                                     Content="Удалить" 
                                     Command="{Binding DeleteCommand}" 
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
                                     KeyGesture="Delete" 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
@@ -249,7 +249,7 @@
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
                                     <dxb:BarButtonItem 
                                            DataContext="{StaticResource vm}"        
@@ -258,7 +258,7 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
                                     <dxb:BarItemLinkSeparator />
                                 </dxb:ToolBarControl>
                             </dxb:BarContainerControl>

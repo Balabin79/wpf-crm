@@ -53,10 +53,7 @@ namespace Dental.ViewModels
                     return;
                 }
             }
-            catch
-            {
-                
-            }
+            catch {}
         }
         [Command]
         public void Delete(object p)
