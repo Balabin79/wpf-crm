@@ -67,6 +67,6 @@ namespace Dental.Views
         }
 
         void OnDropRecord(object sender, DropRecordEventArgs e) => e.Handled = true;
-        
+
     }
 }

@@ -17,6 +17,7 @@
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        xmlns:dxdialogs="http://schemas.devexpress.com/winfx/2008/xaml/dialogs"
         Title="B6 Sheduler"
                  >
     <dx:ThemedWindow.Resources>
@@ -39,6 +40,7 @@
         </Style>
     </dx:ThemedWindow.Resources>
     <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:OpenFileDialogService FileOkCommand=""/>
         <dxmvvm:CurrentWindowService ClosingCommand="{Binding WindowClosingCommand}" />
         <dxmvvm:KeyToCommand KeyGesture="Esc" EventName="KeyDown" MarkRoutedEventsAsHandled="True" Command="{DXCommand Execute='@ElementName(window).Close()'}" />
     </dxmvvm:Interaction.Behaviors>
@@ -49,6 +51,12 @@
             <dxb:BarButtonItem x:Name="barItemDelete" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Actions_Delete}}" />
             <dxb:BarCheckItem x:Name="barItemRecurrence" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Recurrence}}" />
             <dxb:BarEditItem x:Name="barItemReminder" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Reminder}}" />
+            <dxb:BarButtonItem Content="Upload"
+                                           ToolTip="Прикрепить файл к расписанию"
+                                           GlyphSize="Large"
+                                           LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_FileAttachment.svg}"
+                                           MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_FileAttachment.svg}"
+                                           Command="{Binding UploadFileCommand}" />
         </dxb:ToolBarControl>
         <dxlc:LayoutControl x:Name="validationContainer" Orientation="Vertical" dxe:ValidationService.IsValidationContainer="True">
             <dxlc:LayoutGroup Orientation="Horizontal">
@@ -106,7 +114,6 @@
                         <dxe:ComboBoxEdit 
                             EditValue="{Binding LocationAppointment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             ItemsSource="{Binding Locations}" 
-      
                             DisplayMember="Name"/>
                     </dxlc:LayoutItem>
 
@@ -235,11 +242,26 @@
 
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-            <dxlc:LayoutGroup Margin="0,10,0,0" Orientation="Vertical" HorizontalAlignment="Stretch">
+            <dxlc:LayoutItem Label="Прикрепленный файл:" LabelPosition="Left" Margin="0,5,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding AttachmentFile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+                    <dxb:ToolBarControl ShowDragWidget="False" Caption="File" VerticalAlignment="Top"  Margin="10 0 0 0"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                        <dxb:BarButtonItem Content="Очистить" 
+                                           IsEnabled="{DXBinding Expr='AttachmentFile!=null', UpdateSourceTrigger=PropertyChanged}"
+                                           GlyphSize="Small"
+                                           Command="{Binding ClearFileCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"/>
+
+                    </dxb:ToolBarControl>
+                </StackPanel>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutGroup Margin="0,5,0,0" Orientation="Vertical" HorizontalAlignment="Stretch">
                 <dxlc:LayoutItem Label="Дополнительная информация:" />
                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:AppointmentWindowThemeKey ResourceKey=LayoutItem_Description}}">
                     <dxe:TextEdit x:Name="editorDescription" Style="{DynamicResource {dxscht:AppointmentWindowThemeKey ResourceKey=Editor_Description}}" />
                 </dxlc:LayoutItem>
+
             </dxlc:LayoutGroup>
         </dxlc:LayoutControl>
     </DockPanel>

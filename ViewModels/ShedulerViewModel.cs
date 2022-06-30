@@ -15,10 +15,11 @@ using System.Windows.Media.Imaging;
 using Dental.Views.WindowForms;
 using System.Windows.Media;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm;
 
 namespace Dental.ViewModels
 {
-    class ShedulerViewModel : DevExpress.Mvvm.ViewModelBase
+    class ShedulerViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
         public ShedulerViewModel()
@@ -67,22 +68,15 @@ namespace Dental.ViewModels
             }
         }
 
-     
         [Command]
-        public void AppointmentAdded()
+        public void AppointmentAdded(object p)
         {
             try
             {
-                foreach (var i in Appointments)
-                {
-                    if (db.Entry(i).State == EntityState.Detached)
-                    {
-                        //var emp = db.Employes.Where(f => f.Id == i.EmployeeId).FirstOrDefault();
-                        //var client = db.Clients.Where(f => f.Id == i.ClientInfoId).FirstOrDefault();                      
-                        db.Entry(i).State = EntityState.Added;
-                    }
-                }
-                db.SaveChanges();
+                var item = Appointments.FirstOrDefault(f => f.Id == 0);
+                if (item == null) return;
+                db.Entry(item).State = EntityState.Added;
+                db.SaveChanges();                
             }
             catch (Exception e)
             {
@@ -336,18 +330,6 @@ namespace Dental.ViewModels
         }
         #endregion
 
-        [Command]
-        public void Save(object p)
-        {
-            try
-            {
-                
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
 
         public ObservableCollection<Service> ClassificatorCategories { get; set; }
         public virtual ObservableCollection<Employee> Doctors { get; set; }

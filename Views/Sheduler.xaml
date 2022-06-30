@@ -113,6 +113,35 @@
                         <Setter Property="ContentOrientation" Value="Horizontal" />
                     </Style>
 
+
+                    <DataTemplate x:Key="FlyoutTemplate">
+                        <dxlc:LayoutControl Width="250" MinHeight="150" IsHitTestVisible="False" Orientation="Vertical" Padding="11">
+                            <StackPanel Orientation="Vertical">
+                                <Border Height="5" Margin="1,0,1,-1" Panel.ZIndex="1" VerticalAlignment="Top" Background="{Binding StatusBrush}"/>
+                                <dxschv:DayAppointmentControl
+                                    MinHeight="35"
+                                    Panel.ZIndex="0"
+                                    VerticalAlignment="Top"
+                                    Content="{Binding}"
+                                    ShowRecurrenceImage="True"
+                                    ShowReminderImage="True"
+                                    ShowStatus="True"
+                                    ShowLocation="True" 
+                                    ShowDescription="True"                       
+                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment}}" />
+                            </StackPanel>
+                            <dxlc:LayoutControl Margin="0,5,0,0" VerticalAlignment="Top" Orientation="Vertical" Padding="0">
+                                <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_Start}}" />
+                                <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_End}}" />
+                                <dxlc:LayoutItem Label="Файл:" FontWeight="DemiBold" LabelPosition="Left" >
+                                    <TextBlock Text="{DXBinding Expr='CustomFields[`AttachmentFile`] eq null ? `Не прикреплен` : CustomFields[`AttachmentFile`]', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutControl>
+      
+                        </dxlc:LayoutControl>
+                    </DataTemplate>
+
+
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/Ribbon1.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -121,7 +150,6 @@
     </Page.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
     <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-
 
             <DockPanel LastChildFill="True">
                 <dxa:AccordionControl DockPanel.Dock="Right"                         
@@ -204,7 +232,8 @@
                     GroupType="Resource" 
                     FirstDayOfWeek="Monday" 
                     MaxHeight="2000"                   
-                    Margin="5 0 5 5"           
+                    Margin="5 0 5 5"      
+                    FlyoutContentTemplate="{StaticResource  FlyoutTemplate}"
                     AllowAppointmentConflicts="False"
                     AppointmentWindowShowing="OnAppointmentWindowShowing"
                     StartAppointmentDragFromOutside="OnStartAppointmentDragFromOutside"
@@ -291,7 +320,8 @@
                         </dxsch:TimelineView.TimeScales>
                     </dxsch:TimelineView>
                     <dxsch:SchedulerControl.DataSource>
-                        <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}" AppointmentStatusesSource="{Binding StatusAppointments}">
+                        <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}" 
+                                          AppointmentStatusesSource="{Binding StatusAppointments}">
 
                             <dxsch:DataSource.ResourceMappings>
                                 <dxsch:ResourceMappings Caption="Fio" Id="Id" Visible="IsVisible" >
@@ -302,9 +332,19 @@
                             </dxsch:DataSource.ResourceMappings>
 
                             <dxsch:DataSource.AppointmentMappings>
-                                <dxsch:AppointmentMappings Type="AppointmentType" StatusId="StatusId" Subject="PatientName"
-                                    ResourceId="EmployeeId" RecurrenceInfo="RecurrenceInfo" Reminder="ReminderInfo" LabelId="LabelId"
-                                    Location="LocationName" Id="Id" Description="Description" AllDay="AllDay">
+                                <dxsch:AppointmentMappings 
+                                    Type="AppointmentType" 
+                                    StatusId="StatusId" 
+                                    Subject="PatientName"
+                                    ResourceId="EmployeeId"
+                                    RecurrenceInfo="RecurrenceInfo"
+                                    Reminder="ReminderInfo" 
+                                    LabelId="LabelId"
+                                    Location="LocationName" 
+                                    Id="Id" 
+                                    Description="Description" 
+                                    AllDay="AllDay"
+                                    >
                                     <dxsch:AppointmentMappings.Start>
                                         <dxsch:Mapping>
                                             <dxsch:Mapping.FieldName>
@@ -332,6 +372,7 @@
                                     <dxsch:CustomFieldMapping Mapping="ClientInfoId" Name="ClientInfoId"/>
                                     <dxsch:CustomFieldMapping Mapping="LocationId" Name="LocationId"/>
                                     <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
+                                    <dxsch:CustomFieldMapping Mapping="AttachmentFile" Name="AttachmentFile"/>
                                 </dxsch:AppointmentMappings>
                             </dxsch:DataSource.AppointmentMappings>
 

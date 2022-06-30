@@ -13,29 +13,19 @@ namespace Dental.ViewModels
 {
     public class ClientAppointmentWindowViewModel : AppointmentWindowViewModel
     {
-        public static ClientAppointmentWindowViewModel Create(
-            AppointmentItem appointmentItem, 
-            SchedulerControl scheduler, 
-            ObservableCollection<Client> clients, 
-            ObservableCollection<Service> services,
-            ObservableCollection<LocationAppointment> locations
+        public static ClientAppointmentWindowViewModel Create(AppointmentItem appointmentItem, SchedulerControl scheduler, ObservableCollection<Client> clients, ObservableCollection<Service> services, ObservableCollection<LocationAppointment> locations
             )
         {
             return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(appointmentItem, scheduler, clients, services, locations));
         }
         
-        protected ClientAppointmentWindowViewModel(
-            AppointmentItem appointmentItem, 
-            SchedulerControl scheduler, 
-            ObservableCollection<Client> clients, 
-            ObservableCollection<Service> services,
-            ObservableCollection<LocationAppointment> locations
-            ) : base(appointmentItem, scheduler)
+        protected ClientAppointmentWindowViewModel(AppointmentItem appointmentItem, SchedulerControl scheduler,  ObservableCollection<Client> clients, 
+            ObservableCollection<Service> services,ObservableCollection<LocationAppointment> locations) : base(appointmentItem, scheduler)
         {
             Patients = clients;
             Services = services;
             Locations = locations;
-
+            AttachmentFile = appointmentItem.CustomFields["AttachmentFile"]?.ToString();
             Patient = clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
             if (CustomFields["Client"] is Client client)
             {
@@ -141,5 +131,31 @@ namespace Dental.ViewModels
             }
         }
 
+
+
+        /**** File *****/
+        protected IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }
+
+        public string AttachmentFile
+        {
+            get { return GetProperty(() => AttachmentFile); }
+            set { 
+                SetProperty(() => AttachmentFile, value);
+                CustomFields["AttachmentFile"] = value;
+            }
+        }
+
+        [Command]
+        public void UploadFile()
+        {
+            if (OpenFileDialogService.ShowDialog())
+            {
+                AttachmentFile = OpenFileDialogService.File.GetFullName();
+            }
+        }
+
+        [Command]
+        public void ClearFile() => AttachmentFile = null;
+        
     }
 }

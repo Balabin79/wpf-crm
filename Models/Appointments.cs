@@ -48,6 +48,8 @@ namespace Dental.Models
 
         public int AllDay { get; set; }
 
+        public string AttachmentFile { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
