@@ -89,7 +89,8 @@ namespace Dental.ViewModels
                                 VmList?.Collection?.Remove(item);
                                 VmList?.Collection?.Add(Model); 
                             }
-                        } else // иначе если статусы отличаются (допустим убрали анкету в архив), то только удалить из отображаемого списка
+                        } 
+                        else // иначе если статусы отличаются (допустим убрали анкету в архив), то только удалить из отображаемого списка
                         {
                             var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
                             if (item != null)

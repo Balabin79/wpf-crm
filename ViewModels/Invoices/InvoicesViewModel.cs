@@ -106,7 +106,7 @@ namespace Dental.ViewModels.Invoices
             try
             {               
                 if (InvoiceVM.Client == null) return;
-                bool edited = Invoice.Id != 0 && (Invoice.Client != InvoiceVM.Client || Invoice.Date != InvoiceVM.Date);
+                bool edited = Invoice.Id != 0 && (Invoice.Client != InvoiceVM.Client || Invoice.Date != InvoiceVM.Date || Invoice.Paid != InvoiceVM.Paid);
 
                 Invoice.Number = InvoiceVM.Number;
                 Invoice.Date = InvoiceVM.Date;
@@ -117,13 +117,31 @@ namespace Dental.ViewModels.Invoices
                 if (Invoice.Id == 0)
                 {
                     db.Entry(Invoice).State = EntityState.Added;
-                    Invoices.Add(Invoice);
+                    // если статус счета(оплачен или нет)  не отличается от статуса фильтра или статус фильтра "Показывать все",  то тогда добавить
+                    if (ShowPaid == Invoice?.Paid || ShowPaid == null)  Invoices?.Add(Invoice);
                 }
                 db.SaveChanges();
                 if (edited)
                 {
-                     Invoices.Remove(Invoices.FirstOrDefault(f => f.Id == Invoice.Id));
-                     Invoices.Add(Invoice);
+                    if (ShowPaid == Invoice.Paid || ShowPaid == null)
+                    {
+                        var invoice = Invoices.FirstOrDefault(f => f.Id == Invoice.Id);
+                        if (invoice == null) Invoices?.Add(Invoice);
+                        else
+                        {
+                            Invoices?.Remove(invoice);
+                            Invoices?.Add(Invoice);
+                        }
+
+                    }
+                    else // иначе если статусы отличаются, то только удалить из отображаемого списка
+                    {
+                        var invoice = Invoices.FirstOrDefault(f => f.Id == Invoice.Id);
+                        if (invoice != null) 
+                        {
+                            Invoices?.Remove(invoice);
+                        }
+                    }
                 }
             }
             catch 
@@ -148,7 +166,10 @@ namespace Dental.ViewModels.Invoices
                     db.InvoiceServiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                     db.InvoiceMaterialItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                     db.Entry(invoice).State = EntityState.Deleted;
-                    Invoices.Remove(invoice);
+
+                    // может не оказаться этого эл-та в списке, например, он в другом статусе
+                    if (Invoices.Count(f => f.Id == invoice.Id) > 0 ) Invoices.Remove(invoice);
+
                     db.SaveChanges();
                 }
             }
