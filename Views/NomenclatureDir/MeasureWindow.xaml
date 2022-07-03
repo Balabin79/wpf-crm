@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      xmlns:vm ="clr-namespace:Dental.ViewModels" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
@@ -18,11 +17,10 @@
       Closing="Window_Closing">
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
-        <vm:MeasureViewModel x:Key="vm"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
     </Window.Resources>
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" >
 
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
@@ -45,12 +43,10 @@
                                            GlyphSize="Small"
                                            Command="{Binding AddCommand}"
                                            CommandParameter="-1"
-                                           DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
                         <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"
-                                           DataContext="{StaticResource vm}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
                         <dxb:BarButtonItem Content="Печать"                                         
                                            GlyphSize="Small"
@@ -68,7 +64,7 @@
                 <dxg:GridControl  AutoGenerateColumns="None" 
                                   MaxHeight="2000" 
                                   Name="gridAd"  
-                                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  ItemsSource="{Binding MaterialViewModel.Measures, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   Margin="2">
 
                     <dxg:GridControl.View>
@@ -90,29 +86,29 @@
                             <dxg:TableView.InputBindings>
                                 <KeyBinding Key="Delete"        
                                 Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}" />
-                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=AddCommand}"/>
-                                <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+                                CommandParameter="{Binding ElementName=gridAd, Path=DataContext.CurrentItem}" />
+
+                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
+
+                                <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}"/>
                                 
                             </dxg:TableView.InputBindings>
 
 
                             <dxg:TableView.RowCellMenuCustomizations>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                                    DataContext="{Binding Source={StaticResource vm}}"
                                                     KeyGesture="Ctrl+N" Content="Создать"  
-                                                    Command="{Binding AddCommand}"/>
+                                                    Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
-                                                   DataContext="{Binding Source={StaticResource vm}}"
-                            Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  
-                                                   Command="{Binding SaveCommand}" />
+                                  KeyGesture="Ctrl+S" Content="Сохранить"  
+                                                   Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}" />
                                 
-                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить" 
-                                                   Command="{Binding DeleteCommand}" 
-                                                   CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
+                                <dxb:BarButtonItem  Content="Удалить" 
+                                                   Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
+                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"
+                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
@@ -149,14 +145,13 @@
                                                         AllowCustomizationMenu="False" 
                                                         AllowQuickCustomization="False">
 
-                                        <dxb:BarButtonItem  
-                                           DataContext="{StaticResource vm}"        
+                                        <dxb:BarButtonItem         
                                            Content="Удалить" 
                                            IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"/>
+                                           Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
+                                           CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
                                    
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>

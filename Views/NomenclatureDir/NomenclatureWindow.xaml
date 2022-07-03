@@ -13,16 +13,26 @@
         mc:Ignorable="d"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler"
+        ResizeMode="CanMinimize"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
-        >
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" >
+
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceItemCommand}" PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
     <Window.Resources>
+        <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:FloatToStringConverter x:Key="FloatToString"/>
+        <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
     <Grid>
-        <Grid Visibility="{DXBinding Expr='IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid Visibility="{DXBinding Expr='MaterialVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -30,19 +40,19 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
+                    <TextBlock Text="Материал" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                     <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
                         <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
-                            <dxe:TextEdit  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                            <dxe:TextEdit  Text="{Binding MaterialVM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutGroup Orientation="Horizontal">
                             <dxlc:LayoutItem Label="Артикул:" LabelPosition="Top"  >
-                                <dxe:TextEdit  Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                                <dxe:TextEdit  Text="{Binding MaterialVM.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
                             </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Стоимость:" LabelPosition="Top" >
                                 <dxe:TextEdit                                   
                                     MaskType="Numeric" Mask="c"
-                                    Text="{Binding Model.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                    Text="{Binding MaterialVM.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                     ValidatesOnDataErrors=True, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture} 
                                     }"  />
                             </dxlc:LayoutItem>
@@ -52,17 +62,88 @@
                             <dxe:ComboBoxEdit  
                                     DisplayMember="Name" NullText="Выберите единицу измерения" IsTextEditable="False"
                                     ItemsSource="{Binding Measures}"
-                                    EditValue="{Binding Model.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
-                                    SelectedItem="{Binding SelectedMeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{Binding MaterialVM.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                    SelectedItem="{Binding MaterialVM.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  />
                         </dxlc:LayoutItem>
 
-                        <dxlc:LayoutItem Label="Родительская группа:" LabelPosition="Top" >
-                            <dxe:ComboBoxEdit ItemsSource="{Binding Group}"
-                                                          DisplayMember="Name" NullText="Выберите родительскую директорию"
-                                                          SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                              IsTextEditable="False"
-                                               />
+                        <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
+                            <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
+                     EditValue="{Binding Path=MaterialVM.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                                                
+                     NullText="Выберите родительскую категорию" IsTextEditable="False">
+                                <dxe:PopupBaseEdit.PopupContentTemplate>
+                                    <ControlTemplate>
+                                        <dxg:TreeListControl AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding MaterialVM.Materials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 >
+                                            <dxg:TreeListControl.View>
+                                                <dxg:TreeListView                                                          
+                                                        x:Name="tree_view"
+                                                        KeyFieldName="Id"
+                                                        ParentFieldName="ParentId"
+                                                        TreeDerivationMode="Selfreference" 
+                                                        ShowTotalSummary="False" 
+                                                        PrintNodeImages="True"
+                                                        ShowNodeImages="True"
+                                                        NodeImageSize="15,15"
+                                                        ShowSearchPanelMode="Never"
+                                                        SearchPanelAllowFilter="True"
+                                                        AllowResizing="True"
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        AllowPrintColumnHeaderImage="True"                                                 
+                                                        ExpandNodesOnFiltering="True"
+                                                        FilterMode="Extended"    
+                                                        ImmediateUpdateRowPosition="True"
+                                                        VerticalAlignment="Stretch"                                                                                                                 
+                                                        AllowPerPixelScrolling="True"
+                                                        UseLegacyFilterPanel="True"
+                                                        ShowColumnHeaders="False"
+                                                        AllowScrollToFocusedRow="True"
+                                                        ShowVerticalLines="False"                                                      
+                                                        NavigationStyle="Row">
+                                                    <dxmvvm:Interaction.Behaviors>
+                                                        <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="tree_view"/>
+                                                                    <Binding ElementName="popup" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
+
+                                                        <dxmvvm2:EventToCommand EventName="MouseDown" 
+                                                 Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="tree_view"/>
+                                                                    <Binding ElementName="popup" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
+                                                    </dxmvvm:Interaction.Behaviors>
+
+                                                    <dxg:TreeListView.NodeImageSelector>
+                                                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                                                    </dxg:TreeListView.NodeImageSelector>
+
+                                                </dxg:TreeListView>
+                                            </dxg:TreeListControl.View>
+
+                                            <dxg:TreeListColumn Width="auto" MinWidth="150" FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
+                                                <dxg:TreeListColumn.CellDisplayTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
+                                                Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </dxg:TreeListColumn.CellDisplayTemplate>
+                                            </dxg:TreeListColumn>
+
+                                        </dxg:TreeListControl>
+                                    </ControlTemplate>
+                                </dxe:PopupBaseEdit.PopupContentTemplate>
+                            </dxe:PopupBaseEdit>
                         </dxlc:LayoutItem>
 
                     </dxlc:LayoutGroup>
@@ -71,14 +152,14 @@
                     <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
                         <dx:SimpleButton 
                             Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" 
-                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(MaterialVM.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                     </StackPanel>
                 </Grid>
             </GroupBox>
         </Grid>
 
-        <Grid Visibility="{DXBinding Expr='!IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid Visibility="{DXBinding Expr='!MaterialVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
                 <Grid >
                     <Grid.RowDefinitions>
@@ -86,26 +167,95 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding Path=Title}" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
+                    <TextBlock Text="Группа материалов" Grid.Row="0" FontSize="16" FontWeight="DemiBold"/>
                     <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
 
                         <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
-                            <dxe:TextEdit  Text="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                            <dxe:TextEdit  Text="{Binding MaterialVM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
                         </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Родительская группа:" LabelPosition="Top">
-                            <dxe:ComboBoxEdit 
-                                ItemsSource="{Binding Group}"
-                                DisplayMember="Name"
-                                NullText="Выберите родительскую директорию"
-                                SelectedItem="{Binding SelectedGroup, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                IsTextEditable="False" 
-                             />
+                        <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
+                            <dxe:PopupBaseEdit x:Name="popup1" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
+                     EditValue="{Binding Path=MaterialVM.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                                                
+                     NullText="Выберите родительскую категорию" IsTextEditable="False">
+                                <dxe:PopupBaseEdit.PopupContentTemplate>
+                                    <ControlTemplate>
+                                        <dxg:TreeListControl AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding MaterialVM.Materials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 >
+                                            <dxg:TreeListControl.View>
+                                                <dxg:TreeListView                                                          
+                                                        x:Name="tree_view1"
+                                                        KeyFieldName="Id"
+                                                        ParentFieldName="ParentId"
+                                                        TreeDerivationMode="Selfreference" 
+                                                        ShowTotalSummary="False" 
+                                                        PrintNodeImages="True"
+                                                        ShowNodeImages="True"
+                                                        NodeImageSize="15,15"
+                                                        ShowSearchPanelMode="Never"
+                                                        SearchPanelAllowFilter="True"
+                                                        AllowResizing="True"
+                                                        VerticalScrollbarVisibility="Auto"
+                                                        AllowPrintColumnHeaderImage="True"                                                 
+                                                        ExpandNodesOnFiltering="True"
+                                                        FilterMode="Extended"    
+                                                        ImmediateUpdateRowPosition="True"
+                                                        VerticalAlignment="Stretch"                                                                                                                 
+                                                        AllowPerPixelScrolling="True"
+                                                        UseLegacyFilterPanel="True"
+                                                        ShowColumnHeaders="False"
+                                                        AllowScrollToFocusedRow="True"
+                                                        ShowVerticalLines="False"                                                      
+                                                        NavigationStyle="Row">
+                                                    <dxmvvm:Interaction.Behaviors>
+                                                        <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
+                                                 Command="{Binding ElementName=tree_view1, Path=ServiceVM.SelectItemInServiceFieldCommand }">
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="tree_view1"/>
+                                                                    <Binding ElementName="popup1" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
+
+                                                        <dxmvvm2:EventToCommand EventName="MouseDown" 
+                                                 Command="{Binding ElementName=tree_view1, Path=DataContext.SelectItemInServiceFieldCommand }">
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="tree_view1"/>
+                                                                    <Binding ElementName="popup1" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
+                                                    </dxmvvm:Interaction.Behaviors>
+
+                                                    <dxg:TreeListView.NodeImageSelector>
+                                                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                                                    </dxg:TreeListView.NodeImageSelector>
+
+                                                </dxg:TreeListView>
+                                            </dxg:TreeListControl.View>
+
+                                            <dxg:TreeListColumn Width="auto" MinWidth="150" FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
+                                                <dxg:TreeListColumn.CellDisplayTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
+                                                Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </dxg:TreeListColumn.CellDisplayTemplate>
+                                            </dxg:TreeListColumn>
+
+                                        </dxg:TreeListControl>
+                                    </ControlTemplate>
+                                </dxe:PopupBaseEdit.PopupContentTemplate>
+                            </dxe:PopupBaseEdit>
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
                     <StackPanel Height="25" Grid.Row="5" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
                         <dx:SimpleButton 
                             Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}"
-                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(MaterialVM.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
                         <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding CancelFormCommand}" Margin="4 0 0 0"/>
                     </StackPanel>

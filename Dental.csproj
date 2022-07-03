@@ -283,7 +283,7 @@
     <Compile Update="Views\WindowForms\LocationAppointmentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\WindowForms\ClassificatorWindow.xaml.cs">
+    <Compile Update="Views\ServicePrice\ServiceWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -379,7 +379,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\WindowForms\ClassificatorWindow.xaml">
+    <Page Update="Views\ServicePrice\ServiceWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

@@ -27,7 +27,11 @@ namespace Dental.Models
         public string Code
         {
             get => _Code;
-            set => _Code = value?.Trim();
+            set
+            { 
+                _Code = value?.Trim();
+                OnPropertyChanged(nameof(Code));
+            }
         }
         private string _Code;
 
@@ -35,7 +39,16 @@ namespace Dental.Models
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 
         [Display(Name = "Единица измерения")]
-        public Measure Measure { get; set; }
+        public Measure Measure 
+        {
+            get => measure;
+            set
+            {
+                measure = value;
+                OnPropertyChanged(nameof(Measure));
+            }
+        }
+        private Measure measure;
         public int? MeasureId { get; set; }
 
         public decimal? Price
@@ -45,21 +58,22 @@ namespace Dental.Models
         }
         private decimal? _Price;
 
+        public Nomenclature Parent
+        {
+            get => parent;
+            set
+            {
+                parent = value;
+                OnPropertyChanged(nameof(Parent));
+            }
+        }
+        private Nomenclature parent;
         public int? ParentId { get; set; }
+
         public int? IsDir { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
-
-        public void UpdateFields()
-        {
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(Code));
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(Measure));
-            OnPropertyChanged(nameof(ParentId));
-            OnPropertyChanged(nameof(IsDir));
-        }
 
         public override string ToString()
         {

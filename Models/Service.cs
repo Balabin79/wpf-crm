@@ -26,39 +26,36 @@ namespace Dental.Models
         public string Code
         {
             get => _Code;
-            set => _Code = value?.Trim();
+            set
+            {
+                _Code = value?.Trim();
+                OnPropertyChanged(nameof(Code));
+            }
         }
         private string _Code;
 
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
     
-        public decimal? Price
-        {
-            get => _Price;
-            set => _Price = value;
-        }
-        private decimal? _Price;
+        public decimal? Price { get; set; }
 
+        public Service Parent 
+        {
+            get => parent;
+            set
+            {
+                parent = value;
+                OnPropertyChanged(nameof(Parent));
+            } 
+        }
+        private Service parent;
         public int? ParentId { get; set; }
+
         public int? IsDir { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public void UpdateFields()
-        {
-            OnPropertyChanged(nameof(Name));
-            OnPropertyChanged(nameof(Code));
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(ParentId));
-            OnPropertyChanged(nameof(IsDir));
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
+        public override string ToString() => Name;
     }
 }

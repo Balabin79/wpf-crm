@@ -145,15 +145,15 @@
 
             <dxb:BarButtonItem   
                  ToolTip="Прайс услуг"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Classificator" >
+                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage  Source="pack://application:,,,/Resources/Icons/svg/search-dollar.svg" Height="30"/>
                             <TextBlock 
                                 TextAlignment="Center"  Text="Прайс услуг" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Classificator`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Classificator`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />                            
                         </StackPanel>
                     </DataTemplate>

@@ -11,20 +11,20 @@ using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
+using System.Collections.Generic;
+using Dental.ViewModels.Materials;
 
 namespace Dental.ViewModels
 {
     class MeasureViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public MeasureViewModel()
+        public MeasureViewModel(MaterialViewModel vm, ApplicationContext db)
         {
             try
             {
-                db = new ApplicationContext();
-                Collection = GetCollection();
-                
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
+                this.db = db;
+                MaterialViewModel = vm;
             }
             catch
             {
@@ -41,15 +41,16 @@ namespace Dental.ViewModels
                 if (p is Measure model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
-                    if (model.Id != 0) 
+                    if (model.Id != 0)
                     {
-                        db.Entry(model).State = EntityState.Deleted;
+                        db.Measure.Remove(model);
                         if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
-                    } 
-                    else db.Entry(model).State = EntityState.Detached;
-                    Collection.Remove(model);
-                    CollectionBeforeChanges.Clear();
-                    Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
+                    }
+                    else 
+                    { 
+                        db.Entry(model).State = EntityState.Detached;
+                    }
+                    MaterialViewModel?.Measures?.Remove(model);
                 }
             }
             catch (Exception e)
@@ -63,15 +64,16 @@ namespace Dental.ViewModels
         {
             try
             {
-                foreach (var item in Collection)
+                foreach (var item in MaterialViewModel.Measures)
                 {
                     if (string.IsNullOrEmpty(item.Name)) continue;
                     if (item.Id == 0) db.Entry(item).State = EntityState.Added;                    
                 }
-                Collection = GetCollection();
-                CollectionBeforeChanges.Clear();
-                Collection.ForEach(f => CollectionBeforeChanges.Add((Measure)f.Clone()));
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();            
+                if (db.SaveChanges() > 0) 
+                {
+                    MaterialViewModel.SetMeasures();
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
+                }            
             }
             catch (Exception e)
             {
@@ -80,25 +82,17 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void Add() => Collection.Add(new Measure());
+        public void Add() => MaterialViewModel?.Measures?.Add(new Measure());
 
-        public ObservableCollection<Measure> Collection
-        {
-            get { return GetProperty(() => Collection); }
-            set { SetProperty(() => Collection, value); }
-        }
-
-        private ObservableCollection<Measure> GetCollection() => db.Measure?.OrderBy(d => d.Name).ToObservableCollection();
-        public ObservableCollection<Measure> CollectionBeforeChanges { get; set; } = new ObservableCollection<Measure>();
 
         public bool HasUnsavedChanges()
         {
-            if (CollectionBeforeChanges?.Count != Collection.Count) return true;
-            foreach (var item in Collection)
+          //  if (CollectionBeforeChanges?.Count != MaterialViewModel?.Measures?.Count) return true;
+            foreach (var item in MaterialViewModel?.Measures)
             {
                 if (string.IsNullOrEmpty(item.Name)) continue;
                 if (item.Id == 0) return true;
-                if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
+                //if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
             }
             return false;
         }
@@ -109,5 +103,7 @@ namespace Dental.ViewModels
                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning) ;
             return response.ToString() == "No";
         }
+
+        public MaterialViewModel MaterialViewModel { get; set; }
     }
 }

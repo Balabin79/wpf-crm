@@ -11,19 +11,21 @@ namespace Dental.Infrastructures.Collection
         {
             try
             {
+                var answer = "Yes";
                 if (category == null || category == (int)TypeItem.Directory)
                 {
                     var response = ThemedMessageBox.Show(title: "Ошибка",
-                        text: "Директория с таким названием и на данном уровне уже существует. Необходимо изменить название!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                        text: "Директория с таким названием и на данном уровне уже существует. Продолжить?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    answer = response.ToString();
                 }
                 else
                 {
-                    var response = ThemedMessageBox.Show(title: "Ошибка", text: "Элемент с таким название в текущей директории уже существует. Необходимо изменить название!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    var response = ThemedMessageBox.Show(title: "Ошибка", text: "Элемент с таким название в текущей директории уже существует. Продолжить?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    answer = response.ToString();
                 }
-                return false;
-
+                return answer == "Yes";
             }
             catch 
             {

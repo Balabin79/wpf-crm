@@ -18,6 +18,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.AdditionalFields;
 using Dental.ViewModels.Invoices;
+using Dental.Views.ServicePrice;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -191,11 +192,11 @@ namespace Dental.ViewModels.AdditionalFields
         public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
         public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
 
-        private ClassificatorWindow Window;
+        private ServiceWindow Window;
 
         private ObservableCollection<Service> GetCollection() => db.Services.OrderBy(d => d.Name).ToObservableCollection();
 
-        private void CreateNewWindow() => Window = new ClassificatorWindow();
+        private void CreateNewWindow() => Window = new ServiceWindow();
         private Service CreateNewModel() => new Service();
 
         private Service GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
@@ -208,7 +209,7 @@ namespace Dental.ViewModels.AdditionalFields
         private void Update()
         {
             db.Entry(Model).State = EntityState.Modified;
-            if (db.SaveChanges() > 0) Model.UpdateFields();
+            db.SaveChanges();
 
         }
 
