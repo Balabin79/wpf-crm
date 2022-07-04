@@ -3,10 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Dental.Views.AdditionalFields"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:vm ="clr-namespace:Dental.ViewModels"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Title="FieldWindow" Height="450" Width="800">
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler"
+        ResizeMode="CanMinimize"
+        Height="275"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterScreen"
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" >
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceItemCommand}" PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
+    <Window.Resources>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:FloatToStringConverter x:Key="FloatToString"/>
+        <converter:MultiBindingConverter x:Key="multiConv" />
+    </Window.Resources>
     <Grid>
-        
+
+        <Grid Visibility="{DXBinding Expr='!FieldVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+                <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
+                    <TextBlock Text="Категория" FontSize="15" FontWeight="DemiBold"/>
+
+                    <dxlc:LayoutItem Label="Название категории (например, Организация):"  LabelPosition="Top" IsRequired="True">
+                        <dxe:TextEdit 
+                         EditValue="{Binding Path=FieldVM.Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Системное название категории (латиницей, например, Org):"  LabelPosition="Top" IsRequired="True" >
+                        <dxe:TextEdit MaskType="RegEx" Mask="[[a-zA-Z]+"
+                         EditValue="{Binding Path=FieldVM.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
+                        <dx:SimpleButton 
+                    Height="23" Content="Сохранить" 
+                    IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(FieldVM.Caption) and !string.IsNullOrEmpty(FieldVM.SysName)' }"
+                                 VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormCommand}" Margin="4 0 0 0"/>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+            </GroupBox>
+        </Grid>
     </Grid>
 </Window>

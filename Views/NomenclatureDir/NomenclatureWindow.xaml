@@ -210,7 +210,7 @@
                                                         NavigationStyle="Row">
                                                     <dxmvvm:Interaction.Behaviors>
                                                         <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
-                                                 Command="{Binding ElementName=tree_view1, Path=ServiceVM.SelectItemInServiceFieldCommand }">
+                                                 Command="{Binding ElementName=tree_view1, Path=DataContext.SelectItemInServiceFieldCommand }">
                                                             <dxmvvm2:EventToCommand.CommandParameter>
                                                                 <MultiBinding Converter="{StaticResource multiConv}">
                                                                     <Binding ElementName="tree_view1"/>

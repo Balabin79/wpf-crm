@@ -13,12 +13,9 @@ using DevExpress.Xpf.Core;
 using System.Windows;
 using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
-using Dental.Views.WindowForms;
-using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.AdditionalFields;
-using Dental.ViewModels.Invoices;
-using Dental.Views.ServicePrice;
+using Dental.Infrastructures.Converters;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -30,7 +27,7 @@ namespace Dental.ViewModels.AdditionalFields
             try
             {
                 db = new ApplicationContext();
-                Collection = GetCollection();
+                Collection = db.AdditionalField.OrderByDescending(f => f.IsSys == 1).ThenBy(f => f.IsDir == 1).ThenBy(f => f.Caption).Include(f => f.Parent).ToObservableCollection();
             }
             catch
             {
@@ -39,184 +36,169 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-
-        public CategoryWindow CategoryWindow { get; private set; }
-        public FieldWindow FieldWindow { get; private set; }
-        public CategoryVM CategoryVM { get; private set; }
-
         [Command]
-        public void OpenCategoryForm(object p)
+        public void OpenForm(object p)
         {
             try
             {
-
-                if (p == null)
+                if (!int.TryParse(p.ToString(), out int param)) return;
+                Model = (param > 0) ? db.AdditionalField.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault() : new AdditionalField();
+                Model.IsDir = (param < 0) ? param == -1 ? 0 : 1 : Model.IsDir;
+                FieldVM = new FieldVM(db, Model.Id)
                 {
-                    CategoryVM = new CategoryVM() { Title = "Новая категория"};
-                    CategoryWindow = new CategoryWindow() { DataContext = CategoryVM};
-                    CategoryWindow.Show();
-                }
+                    Caption = Model.Caption,
+                    SysName = Model.SysName,
+                    ParentId = Model.ParentId,
+                    Parent = Model.Parent,
+                    IsDir = Model.IsDir ?? 0,
+                    TypeValue = Model.TypeValue,
+                    IsVisibleItemForm = Model.IsDir == 0,
+                    Guid = Model.Guid
+                };
 
+                if ((Model.Id > 0 && FieldVM.ParentId != null && FieldVM.Fields.Count > 0) || (Model.Id == 0)) FieldVM.Fields?.Add(WithoutCategory);
 
-                /*
-
-                CreateNewWindow();
-                if (p == null) return;
-                int.TryParse(p.ToString(), out int param);
-                if (param == -3) return;
-
-                switch (param)
-                {
-                    case -1:
-                        Model = CreateNewModel();
-                        Model.IsDir = 0;
-                        Title = "Новая позиция";
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        VisibleItemForm();
-                        break;
-                    case -2:
-                        Model = CreateNewModel();
-                        Title = "Создать группу";
-                        Model.IsDir = 1;
-                        Group = Collection.Where(f => f.IsDir == 1 && f.Guid != Model?.Guid).OrderBy(f => f.Name).ToObservableCollection();
-                        if (Group.Count != 0) Group.Add(WithoutCategory);
-                        VisibleItemGroup();
-                        break;
-                    default:
-                        Model = GetModelById(param);
-                        Group = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model)
-                            .GetDirectories().OfType<Service>().ToObservableCollection();
-                        if (Group.Count > 0 && Model.ParentId != null && Model.IsDir == 1) Group.Add(WithoutCategory);
-                        SelectedGroup = Collection.Where(f => f.Id == Model?.ParentId && f.Id != Model.Id).FirstOrDefault();
-
-                        if (Model.IsDir == 0)
-                        {
-                            Title = "Редактировать позицию";
-                            VisibleItemForm();
-                        }
-                        else
-                        {
-                            Title = "Редактировать группу";
-                            VisibleItemGroup();
-                        }
-                        break;
-                }
-
-                Window.DataContext = this;
-                Window.ShowDialog();*/
+                Window = new FieldWindow() { DataContext = this, Height = FieldVM.IsDir == 0 ? 325 : 230 };
+                Window.ShowDialog();
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
         [Command]
-        public void OpenFieldForm(object p)
-        { }
-
-
-            /// <summary>
-            /// /////////////////////////
-            /// </summary>
-            /// <param name="p"></param>
-
-            [Command]
         public void Delete(object p)
         {
             try
             {
                 if (p == null) return;
-                Model = GetModelById((int)p);
+                Model = Collection.Where(f => f.Id == (int)p).FirstOrDefault();
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
-                if (Model.IsDir == 0) Delete(new ObservableCollection<Service>() { Model });
+                if (Model.IsDir == 0)
+                {
+                    db.Entry(Model).State = EntityState.Deleted;
+                    Collection.Remove(Model);
+                }
                 else
                 {
-                    Delete(new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection());
+                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<AdditionalField>().ToObservableCollection();
+                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                    collection.ForEach(f => Collection.Remove(f));
                 }
+
                 db.SaveChanges();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
         [Command]
         public void Save()
         {
             try
             {
                 //ищем совпадающий элемент
-                var matchingItem = Collection.Where(f => f.IsDir == Model.IsDir && f.Name == Model.Name && Model.Guid != f.Guid).ToList();
-                /*
-                if (SelectedGroup != null)
-                {
-                    int id = ((Service)SelectedGroup).Id;
-                    if (id == 0) Model.ParentId = null;
-                    else Model.ParentId = id;
-                }
+                var matchingItem = Collection.Where(f => f.IsDir == FieldVM.IsDir && f.Caption == FieldVM.Caption && FieldVM.SysName == f.SysName && FieldVM.TypeValue == f.TypeValue && FieldVM.Guid != f.Guid).ToList();
 
                 if (matchingItem.Count() > 0 && matchingItem.Any(f => f.ParentId == Model.ParentId))
                 {
-                    new TryingCreatingDuplicate().run(Model.IsDir);
-                    return;
+                    if (!new TryingCreatingDuplicate().run(Model.IsDir)) return;
+
                 }
 
-                if (Model.Id == 0) Add(); else Update();
-                db.SaveChanges();
+                Model.IsDir = FieldVM.IsDir;
+                Model.Caption = FieldVM.Caption;
+                Model.SysName = FieldVM.SysName;
+                Model.TypeValue = FieldVM.TypeValue;
+                Model.Parent = FieldVM.Parent?.Guid == "000" ? null : FieldVM.Parent;
+                Model.ParentId = FieldVM.Parent?.Guid == "000" ? null : FieldVM.ParentId;
 
-                SelectedGroup = null;
-                Window.Close();*/
+                if (Model.Id == 0)
+                {
+                    db.Entry(Model).State = EntityState.Added;
+                    if (db.SaveChanges() > 0) Collection.Add(Model);
+                }
+                else
+                {
+                    db.Entry(Model).State = EntityState.Modified;
+                    if (db.SaveChanges() > 0)
+                    {
+                        Collection.Remove(Collection.FirstOrDefault(f => f.Id == Model.Id));
+                        Collection.Add(Model);
+                    }
+                }
+                Window.Close();
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-      
+
+        [Command]
+        public void SelectItemInServiceField(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.FocusedRow is AdditionalField item)
+                    {
+                        //if (service.IsDir == 1) return;
+                        parameters.Popup.EditValue = item;
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
         [Command]
         public void CancelForm() => Window.Close();
 
+        [Command]
+        public void ExpandTree(object p)
+        {
+            try
+            {
+                if (p is TreeListView tree)
+                {
+                    foreach (var node in tree.Nodes)
+                    {
+                        if (node.IsExpanded)
+                        {
+                            tree.CollapseAllNodes();
+                            return;
+                        }
+                    }
+                    tree.ExpandAllNodes();
+                    return;
+                }
+            }
+            catch { }
+        }
 
-        /******************************************************/
-        public ObservableCollection<Service> Collection
+
+        public FieldWindow Window { get; private set; }
+        public FieldVM FieldVM { get; private set; }
+        public AdditionalField Model { get; private set; }
+        public AdditionalField WithoutCategory { get; set; } = new AdditionalField() { Id = 0, IsDir = null, ParentId = null, Caption = "Без категории", Guid = "000" };
+        public ObservableCollection<AdditionalField> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
         }
 
 
-        public Service Model { get; set; }
-        public string Title { get; set; }
-        public Visibility IsVisibleItemForm { get; set; } = Visibility.Hidden;
-        public Visibility IsVisibleGroupForm { get; set; } = Visibility.Hidden;
 
-        private ServiceWindow Window;
 
-        private ObservableCollection<Service> GetCollection() => db.Services.OrderBy(d => d.Name).ToObservableCollection();
 
-        private void CreateNewWindow() => Window = new ServiceWindow();
-        private Service CreateNewModel() => new Service();
-
-        private Service GetModelById(int id) => Collection.Where(f => f.Id == id).FirstOrDefault();
-
-        private void Add()
-        {
-            db.Entry(Model).State = EntityState.Added;
-            if (db.SaveChanges() > 0) Collection.Add(Model);
-        }
-        private void Update()
-        {
-            db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-
-        }
-
-        private void Delete(ObservableCollection<Service> collection)
-        {
-            collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-            collection.ForEach(f => Collection.Remove(f));
-        }
     }
 }
