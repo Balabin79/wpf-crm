@@ -27,9 +27,10 @@ namespace Dental.ViewModels.AdditionalFields
             try
             {
                 db = new ApplicationContext();
-                Collection = db.AdditionalField.OrderByDescending(f => f.IsSys == 1).ThenBy(f => f.IsDir == 1).ThenBy(f => f.Caption).Include(f => f.Parent).ToObservableCollection();
+                Collection = db.AdditionalField.OrderByDescending(f => f.IsSys == 1).ThenBy(f => f.IsDir == 1).ThenBy(f => f.Caption).Include(f => f.Parent).Include(f => f.TypeValue).ToObservableCollection();
+                CommonValueViewModel = new CommonValueViewModel(db);
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные поля\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -58,7 +59,7 @@ namespace Dental.ViewModels.AdditionalFields
 
                 if ((Model.Id > 0 && FieldVM.ParentId != null && FieldVM.Fields.Count > 0) || (Model.Id == 0)) FieldVM.Fields?.Add(WithoutCategory);
 
-                Window = new FieldWindow() { DataContext = this, Height = FieldVM.IsDir == 0 ? 325 : 230 };
+                Window = new FieldWindow() { DataContext = this, Height = FieldVM.IsDir == 0 ? 300 : 230 };
                 Window.ShowDialog();
             }
             catch (Exception e)
@@ -185,11 +186,12 @@ namespace Dental.ViewModels.AdditionalFields
             catch { }
         }
 
-
+        public CommonValueViewModel CommonValueViewModel { get; set; }
         public FieldWindow Window { get; private set; }
         public FieldVM FieldVM { get; private set; }
         public AdditionalField Model { get; private set; }
         public AdditionalField WithoutCategory { get; set; } = new AdditionalField() { Id = 0, IsDir = null, ParentId = null, Caption = "Без категории", Guid = "000" };
+
         public ObservableCollection<AdditionalField> Collection
         {
             get { return GetProperty(() => Collection); }

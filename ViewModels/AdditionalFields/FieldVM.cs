@@ -13,8 +13,14 @@ namespace Dental.ViewModels.AdditionalFields
 {
     public class FieldVM : BindableBase, IDataErrorInfo
     {
-        public FieldVM(ApplicationContext db, int id = 0) => Fields = db?.AdditionalField.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent)
-            .OrderBy(f => f.Caption).ToObservableCollection();
+        public FieldVM(ApplicationContext db, int id = 0)
+        {
+            Fields = db?.AdditionalField.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).Include(f => f.TypeValue)
+                .OrderBy(f => f.Caption).ToObservableCollection();
+            Templates = db.TemplateType.ToArray();
+        }
+
+        [Required(ErrorMessage = @"Поле ""Категория"" обязательно для заполнения")]
         public AdditionalField Parent
         {
             get { return GetProperty(() => Parent); }
@@ -38,10 +44,17 @@ namespace Dental.ViewModels.AdditionalFields
             set { SetProperty(() => SysName, value); }
         }
 
-        public string TypeValue
+        public TemplateType TypeValue
         {
             get { return GetProperty(() => TypeValue); }
             set { SetProperty(() => TypeValue, value); }
+        }
+        public int? TypeValueId { get; set; }
+
+        public string Value
+        {
+            get { return GetProperty(() => Value); }
+            set { SetProperty(() => Value, value); }
         }
 
         public string Guid { get; set; }
@@ -64,9 +77,11 @@ namespace Dental.ViewModels.AdditionalFields
             set { SetProperty(() => Fields, value); }
         }
 
-        public string[] TypeValues { get; } = new string[] { "Строка", "Дата", "Целое число", "Дробное число", "Денежное значение", "Галочка"};
+        public ICollection<TemplateType> Templates { get; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
+
+    
 }

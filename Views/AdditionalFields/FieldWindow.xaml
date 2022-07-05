@@ -14,7 +14,6 @@
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler"
         ResizeMode="CanMinimize"
-        Height="275"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
@@ -32,6 +31,43 @@
         <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
     <Grid>
+        <Grid Visibility="{DXBinding Expr='FieldVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+                <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
+                    <TextBlock Text="Категория" FontSize="15" FontWeight="DemiBold"/>
+
+                    <dxlc:LayoutItem Label="Название поля (например, ИНН):"  LabelPosition="Top" IsRequired="True">
+                        <dxe:TextEdit 
+                         EditValue="{Binding Path=FieldVM.Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Системное название поля (латиницей, например, INN):"  LabelPosition="Top" IsRequired="True" >
+                        <dxe:TextEdit MaskType="RegEx" Mask="[[a-zA-Z]+"
+                         EditValue="{Binding Path=FieldVM.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Тип поля:"  LabelPosition="Top">
+                        <dxe:ComboBoxEdit ItemsSource="{Binding FieldVM.Templates}" 
+                                      DisplayMember="CaptionRu"
+                                      SelectedItem="{Binding FieldVM.TypeValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      NullText="Выберите тип поля" IsTextEditable="False">
+                                <dxe:ComboBoxEdit.StyleSettings>
+                                    <dxe:RadioComboBoxStyleSettings />
+                                </dxe:ComboBoxEdit.StyleSettings>
+                            </dxe:ComboBoxEdit>
+                        </dxlc:LayoutItem>
+
+                        <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
+                        <dx:SimpleButton 
+                    Height="23" Content="Сохранить" 
+                    IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(FieldVM.Caption) and !string.IsNullOrEmpty(FieldVM.SysName)' }"
+                                 VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
+                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormCommand}" Margin="4 0 0 0"/>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+            </GroupBox>
+        </Grid>
+
 
         <Grid Visibility="{DXBinding Expr='!FieldVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">

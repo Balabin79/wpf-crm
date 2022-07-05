@@ -238,6 +238,9 @@
     <Compile Update="Employes1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AdditionalFields\CommonValuesWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\EmployeeDir\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -300,6 +303,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdditionalFields\CommonValuesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
