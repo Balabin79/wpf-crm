@@ -78,6 +78,8 @@ namespace Dental.Models
         public DbSet<AdditionalField> AdditionalField { get; set; }   
         public DbSet<TemplateType> TemplateType { get; set; }   
         public DbSet<CommonValue> CommonValues { get; set; }   
+        public DbSet<AdditionalEmployeeValue> AdditionalEmployeeValue { get; set; }   
+        public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }   
 
         public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }   
     }
