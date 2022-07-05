@@ -58,16 +58,6 @@ namespace Dental.Models
         private AdditionalField parent;
         public int? ParentId { get; set; }
 
-        public string Value
-        {
-            get => val;
-            set
-            {
-                val = value;
-                OnPropertyChanged(nameof(Value));
-            }
-        }
-        private string val;
 
         public int? IsDir { get; set; }
         public int? IsSys { get; set; } = 0;

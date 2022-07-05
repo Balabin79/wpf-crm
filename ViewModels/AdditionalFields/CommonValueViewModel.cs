@@ -35,6 +35,23 @@ namespace Dental.ViewModels.AdditionalFields
         }
 
         [Command]
+        public void OpenForm()
+        {
+            try
+            {
+                CommonValuesWindow = new CommonValuesWindow() { DataContext = this };
+                CommonValuesWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void Add() => CommonValues?.Add(new CommonValue());
+
+        [Command]
         public void Delete(object p)
         {
             try
@@ -79,23 +96,6 @@ namespace Dental.ViewModels.AdditionalFields
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void Add() => CommonValues?.Add(new CommonValue());
-
-        [Command]
-        public void OpenForm()
-        {
-            try
-            {
-                CommonValuesWindow = new CommonValuesWindow();
-                CommonValuesWindow.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 

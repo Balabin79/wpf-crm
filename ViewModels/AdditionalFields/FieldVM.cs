@@ -29,6 +29,7 @@ namespace Dental.ViewModels.AdditionalFields
         public int? ParentId { get; set; }
 
         public int? IsDir { get; set; }
+        public int? IsSys { get; set; }
 
         [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         public string Caption
@@ -51,25 +52,7 @@ namespace Dental.ViewModels.AdditionalFields
         }
         public int? TypeValueId { get; set; }
 
-        public string Value
-        {
-            get { return GetProperty(() => Value); }
-            set { SetProperty(() => Value, value); }
-        }
-
         public string Guid { get; set; }
-
-        public bool IsVisibleItemForm
-        {
-            get { return GetProperty(() => IsVisibleItemForm); }
-            set { SetProperty(() => IsVisibleItemForm, value); }
-        }
-
-        public string Title
-        {
-            get { return GetProperty(() => Title); }
-            set { SetProperty(() => Title, value); }
-        }
 
         public ObservableCollection<AdditionalField> Fields
         {

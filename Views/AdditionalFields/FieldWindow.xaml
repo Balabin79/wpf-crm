@@ -18,7 +18,7 @@
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
-        xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" >
 
     <dxmvvm:Interaction.Behaviors>
@@ -31,10 +31,10 @@
         <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
     <Grid>
-        <Grid Visibility="{DXBinding Expr='FieldVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid >
             <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
                 <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-                    <TextBlock Text="Категория" FontSize="15" FontWeight="DemiBold"/>
+                    <TextBlock Text="Поле" FontSize="15" FontWeight="DemiBold"/>
 
                     <dxlc:LayoutItem Label="Название поля (например, ИНН):"  LabelPosition="Top" IsRequired="True">
                         <dxe:TextEdit 
@@ -51,37 +51,10 @@
                                       DisplayMember="CaptionRu"
                                       SelectedItem="{Binding FieldVM.TypeValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Выберите тип поля" IsTextEditable="False">
-                                <dxe:ComboBoxEdit.StyleSettings>
-                                    <dxe:RadioComboBoxStyleSettings />
-                                </dxe:ComboBoxEdit.StyleSettings>
-                            </dxe:ComboBoxEdit>
-                        </dxlc:LayoutItem>
-
-                        <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-                        <dx:SimpleButton 
-                    Height="23" Content="Сохранить" 
-                    IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(FieldVM.Caption) and !string.IsNullOrEmpty(FieldVM.SysName)' }"
-                                 VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormCommand}" Margin="4 0 0 0"/>
-                    </dxlc:LayoutGroup>
-                </dxlc:LayoutGroup>
-            </GroupBox>
-        </Grid>
-
-
-        <Grid Visibility="{DXBinding Expr='!FieldVM.IsVisibleItemForm ? `Visible` : `Hidden`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
-                <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-                    <TextBlock Text="Категория" FontSize="15" FontWeight="DemiBold"/>
-
-                    <dxlc:LayoutItem Label="Название категории (например, Организация):"  LabelPosition="Top" IsRequired="True">
-                        <dxe:TextEdit 
-                         EditValue="{Binding Path=FieldVM.Caption, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                    </dxlc:LayoutItem>
-
-                    <dxlc:LayoutItem Label="Системное название категории (латиницей, например, Org):"  LabelPosition="Top" IsRequired="True" >
-                        <dxe:TextEdit MaskType="RegEx" Mask="[[a-zA-Z]+"
-                         EditValue="{Binding Path=FieldVM.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                            <dxe:ComboBoxEdit.StyleSettings>
+                                <dxe:RadioComboBoxStyleSettings />
+                            </dxe:ComboBoxEdit.StyleSettings>
+                        </dxe:ComboBoxEdit>
                     </dxlc:LayoutItem>
 
                     <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">

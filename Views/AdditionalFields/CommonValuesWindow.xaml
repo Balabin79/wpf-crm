@@ -23,7 +23,7 @@
     </Window.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" >
 
-        <Grid x:Name="gridMainClientGroups" DataContext="{StaticResource vm}"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="24"/>
                 <RowDefinition Height="*" />
@@ -61,7 +61,7 @@
                 <dxg:GridControl  AutoGenerateColumns="None" 
                                   MaxHeight="2000" 
                                   Name="gridAd"  
-                                  ItemsSource="{Binding CommonValueViewModel.Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  ItemsSource="{Binding CommonValues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   Margin="2">
 
                     <dxg:GridControl.View>
@@ -110,12 +110,12 @@
                         </dxg:TableView>
                     </dxg:GridControl.View>
 
-                    <dxg:GridColumn FieldName="Name" Header="Наименование"  MinWidth="200" Width="3*">
+                    <dxg:GridColumn FieldName="Name" Header="Название поля"  MinWidth="200" Width="3*">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
-                                    <TextBlock Text="Наименование" Margin="3 0 0 0"/>
+                                    <TextBlock Text="Название поля" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.HeaderTemplate>

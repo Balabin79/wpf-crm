@@ -10,8 +10,7 @@ namespace Dental.Models
     [Table("CommonValues")]
     public class CommonValue : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
+        [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         [Display(Name = "Название")]
         public string Name
         {
@@ -24,6 +23,7 @@ namespace Dental.Models
         }
         private string name;
 
+        [Required(ErrorMessage = @"Поле ""Системное имя"" обязательно для заполнения")]
         public string SysName
         {
             get => sysName;
@@ -35,6 +35,7 @@ namespace Dental.Models
         }
         private string sysName;
 
+        [Required(ErrorMessage = @"Поле ""Значение"" обязательно для заполнения")]
         public string Value
         {
             get => val;
