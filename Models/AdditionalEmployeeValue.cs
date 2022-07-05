@@ -1,4 +1,5 @@
 using Dental.Models.Base;
+using Dental.Services.AdditionalFieldsConverters;
 using DevExpress.Mvvm;
 using System;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("AdditionalEmployeeValues")]
-    public class AdditionalEmployeeValue : AbstractBaseModel, IDataErrorInfo
+    public class AdditionalEmployeeValue : AbstractBaseModel, IDataErrorInfo, IAdditionalValue
     {
 
         public string Value 
