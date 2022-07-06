@@ -6,6 +6,7 @@ using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
 using Dental.ViewModels.Invoices;
+using Dental.ViewModels.AdditionalFields;
 
 namespace Dental.Views.PatientCard
 {
@@ -16,13 +17,18 @@ namespace Dental.Views.PatientCard
             InitializeComponent();
             ApplicationContext db = new ApplicationContext();
             var client = db.Clients.FirstOrDefault(f => f.Id == clientId);
+
             ClientCardViewModel clientCardViewModel = new ClientCardViewModel(clientId, vm);
+
             InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
             clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;
             invoicesViewModel.StatusReadOnly(true);
 
+            FieldsViewModel fieldsViewModel = new FieldsViewModel(client, db);
+
             this.DataContext = clientCardViewModel;
             this.Invoices.DataContext = invoicesViewModel;
+            this.Fields.DataContext = fieldsViewModel;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

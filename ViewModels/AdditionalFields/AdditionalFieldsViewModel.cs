@@ -15,7 +15,6 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Grid;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.AdditionalFields;
-using Dental.Infrastructures.Converters;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -44,9 +43,10 @@ namespace Dental.ViewModels.AdditionalFields
             {
                 if (p is AdditionalField field)
                 {
+                    Model = new AdditionalField();
                     if (field.IsSys == 1) // новая
                     {
-                        FieldVM = new FieldVM(db, field.Id) { Parent = field, ParentId = field.Id, IsSys = 0, IsDir = 0 };
+                        FieldVM = new FieldVM(db, field.Id) { Parent = field, ParentId = field.Id, IsSys = 0, IsDir = 0, Id = 0 };
                     }
                     else // редактирование
                     {
@@ -57,9 +57,10 @@ namespace Dental.ViewModels.AdditionalFields
                             ParentId = field.ParentId,
                             Parent = field.Parent,
                             IsDir = field.IsDir,
-                            IsSys = field.IsSys,
+                            IsSys = 0,
                             TypeValue = field.TypeValue,
-                            Guid = field.Guid
+                            Guid = field.Guid,
+                            Id = field.Id
                         };
                         Model = field;
                     }
@@ -105,10 +106,8 @@ namespace Dental.ViewModels.AdditionalFields
                 Model.IsSys = FieldVM.IsSys;
                 Model.Caption = FieldVM.Caption;
                 Model.SysName = FieldVM.SysName;
-                Model.TypeValue = FieldVM.TypeValue;
-                Model.TypeValueId = FieldVM.TypeValueId;
-                Model.Parent =  FieldVM.Parent;
-                Model.ParentId = FieldVM.ParentId;
+                Model.TypeValueId = FieldVM.TypeValue?.Id;
+                Model.ParentId = FieldVM.Parent?.Id;
 
                 if (Model.Id == 0)
                 {
@@ -129,7 +128,7 @@ namespace Dental.ViewModels.AdditionalFields
                 }
                 Window.Close();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -163,7 +162,7 @@ namespace Dental.ViewModels.AdditionalFields
         public CommonValueViewModel CommonValueViewModel { get; set; }
         public FieldWindow Window { get; private set; }
         public FieldVM FieldVM { get; private set; }
-        public AdditionalField Model { get; private set; } = new AdditionalField();
+        public AdditionalField Model { get; private set; }
 
 
         public ObservableCollection<AdditionalField> Collection

@@ -1,5 +1,4 @@
 using Dental.Models.Base;
-using Dental.Services.AdditionalFieldsConverters;
 using DevExpress.Mvvm;
 using System;
 using System.Collections.ObjectModel;
@@ -10,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("AdditionalClientValues")]
-    public class AdditionalClientValue : AbstractBaseModel, IDataErrorInfo, IAdditionalValue
+    public class AdditionalClientValue : AbstractBaseModel, IDataErrorInfo
     {
 
         public string Value 

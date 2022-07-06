@@ -181,7 +181,7 @@
                
                 
                 <dxg:GridColumn
-                    Width="4*" FieldName="TypeValue" MinWidth="70"
+                    Width="4*" FieldName="TypeValue" MinWidth="120"
                     Header="Тип поля" 
                     HorizontalHeaderContentAlignment="Center" >
                     <dxg:GridColumn.CellTemplate>

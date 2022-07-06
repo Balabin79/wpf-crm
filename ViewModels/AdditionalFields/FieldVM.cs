@@ -26,6 +26,7 @@ namespace Dental.ViewModels.AdditionalFields
             get { return GetProperty(() => Parent); }
             set { SetProperty(() => Parent, value); }
         }
+        public int? Id { get; set; }
         public int? ParentId { get; set; }
 
         public int? IsDir { get; set; }

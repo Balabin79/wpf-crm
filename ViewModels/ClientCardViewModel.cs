@@ -44,9 +44,7 @@ namespace Dental.ViewModels
                 IsReadOnly = Model.Id != 0;
                 Appointments = db.Appointments
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
-                    .ToArray();
-
-                
+                    .ToArray();               
             }
             catch (Exception e)
             {
@@ -199,9 +197,6 @@ namespace Dental.ViewModels
 
         public ICollection<Appointments> Appointments { get; set; }
 
-        public ICollection<AdditionalField> AdditionalFields { get; set; }
-        public ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
-
         public ICollection<string> GenderList{ get => _GenderList; }
 
         private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
@@ -212,18 +207,6 @@ namespace Dental.ViewModels
             db.SaveChanges();
         }
 
-        private void AdditionalFieldsLoading()
-        {
-            var parent = db.AdditionalField.FirstOrDefault(f => f.IsSys == 1 && f.SysName == "Client");
-            if (parent == null) return;
-            // получаем все поля 
-            AdditionalFields = db.AdditionalField.Where(f => f.ParentId == parent.Id).ToArray();
-            
-            // если поля для данного раздела вообще есть, то далее ищем поля, в которых значения есть для данного клиента
-            if (AdditionalFields.Count() == 0) return;
-            AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == Model.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>();
 
-            //
-        }
     }
 }

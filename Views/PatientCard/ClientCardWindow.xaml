@@ -8,6 +8,7 @@
     xmlns:tp ="clr-namespace:Dental.Views.PatientCard" 
     xmlns:doc ="clr-namespace:Dental.Views.Documents" 
     xmlns:invoices ="clr-namespace:Dental.Views.Invoices" 
+    xmlns:add ="clr-namespace:Dental.Views.AdditionalFields" 
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
     mc:Ignorable="d"
@@ -121,6 +122,9 @@
 
                         <dx:DXTabItem Header="Посещения" >
                             <tp:Services DataContext="{Binding}"/>
+                        </dx:DXTabItem>
+                        <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <add:ClientControl x:Name="Fields"/>
                         </dx:DXTabItem>
 
                     </dx:DXTabControl>
