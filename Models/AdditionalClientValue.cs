@@ -26,7 +26,7 @@ namespace Dental.Models
         public Client Client { get; set; }
         public int? ClientId { get; set; }
 
-        public AdditionalField AdditionalField { get; set; }
+        public AdditionalClientField AdditionalField { get; set; }
         public int? AdditionalFieldId { get; set; }
 
         public string Error { get => string.Empty; }

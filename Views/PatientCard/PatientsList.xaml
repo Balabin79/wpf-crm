@@ -58,10 +58,17 @@
                                            GlyphSize="Small"
                                            Command="{Binding OpenClientCardCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                        
                         <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
+                        
+                        <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenFormFieldsCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
+                        
                         <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
                                            IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"

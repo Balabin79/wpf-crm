@@ -26,7 +26,7 @@ namespace Dental.Models
         public Employee Employee { get; set; }
         public int? EmployeeId { get; set; }
 
-        public AdditionalField AdditionalField { get; set; }
+        public AdditionalEmployeeField AdditionalField { get; set; }
         public int? AdditionalFieldId { get; set; }
 
         public string Error { get => string.Empty; }

@@ -24,11 +24,8 @@ namespace Dental.ViewModels.AdditionalFields
                 this.db = db;
                 AdditionalFieldsVisible = Visibility.Collapsed;
 
-                var parent = db.AdditionalField.FirstOrDefault(f => f.IsSys == 1 && f.SysName == "Client");
-                if (parent == null) return;
-
                 // получаем все поля для раздела
-                AdditionalFields = db.AdditionalField.Where(f => f.ParentId == parent.Id).ToArray();
+                AdditionalFields = db.AdditionalClientFields.ToArray();
                 if (AdditionalFields.Count() == 0) return;
 
                 Fields = new ObservableCollection<LayoutItem>();
@@ -58,7 +55,7 @@ namespace Dental.ViewModels.AdditionalFields
 
                 var label = new LayoutItem()
                 {
-                    Label = field.Caption,
+                    Label = field.Label,
                     LabelPosition = LayoutItemLabelPosition.Top,
                     Content = new TextEdit(), 
                     Margin = new Thickness(0, 0, 0, 5)
@@ -82,7 +79,7 @@ namespace Dental.ViewModels.AdditionalFields
 
         public ICollection<LayoutItem> Fields { get; set; }
         
-        public ICollection<AdditionalField> AdditionalFields { get; set; }
+        public ICollection<AdditionalClientField> AdditionalFields { get; set; }
 
         public ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
         public ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }

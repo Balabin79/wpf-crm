@@ -21,7 +21,7 @@ namespace Dental.ViewModels.AdditionalFields
     public class AdditionalFieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public AdditionalFieldsViewModel()
+     /*   public AdditionalFieldsViewModel()
         {
             try
             {
@@ -169,7 +169,7 @@ namespace Dental.ViewModels.AdditionalFields
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
-        }
+        }*/
 
 
 

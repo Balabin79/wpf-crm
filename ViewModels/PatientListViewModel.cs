@@ -16,6 +16,8 @@ using Dental.Models;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Documents;
 using Dental.Services.Files;
+using Dental.Views.AdditionalFields;
+using Dental.ViewModels.AdditionalFields;
 
 namespace Dental.ViewModels
 {
@@ -47,6 +49,20 @@ namespace Dental.ViewModels
             catch 
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void OpenFormFields()
+        {
+            try
+            {
+                FieldsWindow = new ClientFieldsWindow() { DataContext = new AdditionalClientFieldsViewModel() };
+                FieldsWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Дополнительные поля\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -91,6 +107,7 @@ namespace Dental.ViewModels
         }
 
         public DocumentsWindow DocumentsWindow { get; set; }
+        public ClientFieldsWindow FieldsWindow { get; set; }
         public ClientCardWindow ClientCardWin { get; set; }
 
         public void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();

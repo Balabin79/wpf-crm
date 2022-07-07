@@ -13,30 +13,13 @@ namespace Dental.ViewModels.AdditionalFields
 {
     public class FieldVM : BindableBase, IDataErrorInfo
     {
-        public FieldVM(ApplicationContext db, int id = 0)
-        {
-            Fields = db?.AdditionalField.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).Include(f => f.TypeValue)
-                .OrderBy(f => f.Caption).ToObservableCollection();
-            Templates = db.TemplateType.ToArray();
-        }
-
-        [Required(ErrorMessage = @"Поле ""Категория"" обязательно для заполнения")]
-        public AdditionalField Parent
-        {
-            get { return GetProperty(() => Parent); }
-            set { SetProperty(() => Parent, value); }
-        }
         public int? Id { get; set; }
-        public int? ParentId { get; set; }
-
-        public int? IsDir { get; set; }
-        public int? IsSys { get; set; }
 
         [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
-        public string Caption
+        public string Label
         {
-            get { return GetProperty(() => Caption); }
-            set { SetProperty(() => Caption, value); }
+            get { return GetProperty(() => Label); }
+            set { SetProperty(() => Label, value); }
         }
 
         [Required(ErrorMessage = @"Поле ""Системное название поля"" обязательно для заполнения")]
@@ -54,14 +37,6 @@ namespace Dental.ViewModels.AdditionalFields
         public int? TypeValueId { get; set; }
 
         public string Guid { get; set; }
-
-        public ObservableCollection<AdditionalField> Fields
-        {
-            get { return GetProperty(() => Fields); }
-            set { SetProperty(() => Fields, value); }
-        }
-
-        public ICollection<TemplateType> Templates { get; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
