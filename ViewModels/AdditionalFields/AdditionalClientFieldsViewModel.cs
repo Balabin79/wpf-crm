@@ -19,10 +19,10 @@ using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels.AdditionalFields
 {
-    public class AdditionalEmployeeFieldsViewModel : DevExpress.Mvvm.ViewModelBase
+    public class AdditionalClientFieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public AdditionalEmployeeFieldsViewModel()
+        public AdditionalClientFieldsViewModel()
         {
             try
             {
@@ -41,12 +41,12 @@ namespace Dental.ViewModels.AdditionalFields
         {
             try
             {
-                if (p is AdditionalEmployeeField model)
+                if (p is AdditionalClientField model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
                     if (model.Id != 0)
                     {
-                        db.AdditionalEmployeeFields.Remove(model);
+                        db.AdditionalClientFields.Remove(model);
                         if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
                     }
                     else
@@ -85,9 +85,9 @@ namespace Dental.ViewModels.AdditionalFields
         }
 
         [Command]
-        public void Add() => Collection.Add(new AdditionalEmployeeField());
+        public void Add() => Collection.Add(new AdditionalClientField());
 
-        private void SetCollection() => Collection = db.AdditionalEmployeeFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection();
+        private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
 
         public bool HasUnsavedChanges()
         {
@@ -113,7 +113,7 @@ namespace Dental.ViewModels.AdditionalFields
         public AdditionalClientField Model { get; private set; }
         public ICollection<TemplateType> Templates { get; private set; }
 
-        public ObservableCollection<AdditionalEmployeeField> Collection
+        public ObservableCollection<AdditionalClientField> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }

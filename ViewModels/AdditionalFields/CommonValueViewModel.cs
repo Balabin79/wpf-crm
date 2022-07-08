@@ -20,31 +20,18 @@ namespace Dental.ViewModels.AdditionalFields
     public class CommonValueViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public CommonValueViewModel(ApplicationContext db)
+
+        public CommonValueViewModel()
         {
             try
             {
-                this.db = db;
+                db = new ApplicationContext();
                 SetCommonValues();
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Общие значения\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void OpenForm()
-        {
-            try
-            {
-                CommonValuesWindow = new CommonValuesWindow() { DataContext = this };
-                CommonValuesWindow.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -98,8 +85,6 @@ namespace Dental.ViewModels.AdditionalFields
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private CommonValuesWindow CommonValuesWindow;
 
         public bool HasUnsavedChanges()
         {
