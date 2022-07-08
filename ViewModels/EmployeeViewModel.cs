@@ -38,7 +38,7 @@ namespace Dental.ViewModels
             // подгружаем вспомогательные справочники
             Statuses = db.Dictionary.Where(f => f.CategoryId == 6).ToList();
             GenderList = db.Dictionary.Where(f => f.CategoryId == 1).ToList();
-
+            AdditionalFieldsVisible = Visibility.Hidden;
 
             try
             {
@@ -406,7 +406,17 @@ namespace Dental.ViewModels
         }
         #endregion
 
-    private readonly ApplicationContext db;
-}
+        private readonly ApplicationContext db;
+
+        public Visibility AdditionalFieldsVisible
+        {
+            get { return GetProperty(() => AdditionalFieldsVisible); }
+            set { SetProperty(() => AdditionalFieldsVisible, value); }
+        }
+        public void SetTabVisibility(Visibility visibility)
+        {
+            AdditionalFieldsVisible = visibility;
+        }
+    }
 
 }

@@ -23,7 +23,7 @@ namespace Dental.ViewModels
 {
     public class PatientListViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
+        public readonly ApplicationContext db;
         public PatientListViewModel()
         {
             try
@@ -111,5 +111,6 @@ namespace Dental.ViewModels
         public ClientCardWindow ClientCardWin { get; set; }
 
         public void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
+
     }
 }

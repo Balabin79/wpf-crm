@@ -11,7 +11,7 @@ namespace Dental.Models
     [Table("AdditionalEmployeeFields")]
     public class AdditionalEmployeeField : AbstractBaseModel, IDataErrorInfo
     {
-
+        [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         public string Label
         {
             get => label;
@@ -23,6 +23,7 @@ namespace Dental.Models
         }
         private string label;
 
+        [Required(ErrorMessage = @"Поле ""Системное имя поля"" обязательно для заполнения")]
         public string SysName
         {
             get => sysName;

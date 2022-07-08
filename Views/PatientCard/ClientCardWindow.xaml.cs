@@ -19,12 +19,14 @@ namespace Dental.Views.PatientCard
             var client = db.Clients.FirstOrDefault(f => f.Id == clientId);
 
             ClientCardViewModel clientCardViewModel = new ClientCardViewModel(clientId, vm);
-
+            FieldsViewModel fieldsViewModel = new FieldsViewModel(client, vm);
             InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
+
             clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;
             invoicesViewModel.StatusReadOnly(true);
 
-            FieldsViewModel fieldsViewModel = new FieldsViewModel(client, db);
+            //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
+            clientCardViewModel.SetTabVisibility(fieldsViewModel.AdditionalFieldsVisible);
 
             this.DataContext = clientCardViewModel;
             this.Invoices.DataContext = invoicesViewModel;

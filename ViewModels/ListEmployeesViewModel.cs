@@ -17,12 +17,14 @@ using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Documents;
 using Dental.Services.Files;
+using Dental.Views.AdditionalFields;
+using Dental.ViewModels.AdditionalFields;
 
 namespace Dental.ViewModels
 {
     public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
+        public readonly ApplicationContext db;
         public ListEmployeesViewModel()
         {
             try
@@ -67,6 +69,20 @@ namespace Dental.ViewModels
             catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void OpenFormFields()
+        {
+            try
+            {
+                FieldsWindow = new EmployeeFieldsWindow() { DataContext = new AdditionalEmployeeFieldsViewModel() };
+                FieldsWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Дополнительные поля\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -125,5 +141,7 @@ namespace Dental.ViewModels
    
         public EmployeeCardWindow EmployeeWin { get; set; }
         public DocumentsWindow DocumentsWindow { get; set; }
+
+        public EmployeeFieldsWindow FieldsWindow { get; set; }
     }
 }

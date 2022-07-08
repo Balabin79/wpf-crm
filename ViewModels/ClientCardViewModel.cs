@@ -28,7 +28,6 @@ namespace Dental.ViewModels
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
 
-
         public ClientCardViewModel(int clientId, PatientListViewModel vmList)
         {
             try
@@ -44,7 +43,8 @@ namespace Dental.ViewModels
                 IsReadOnly = Model.Id != 0;
                 Appointments = db.Appointments
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
-                    .ToArray();               
+                    .ToArray();
+                AdditionalFieldsVisible = Visibility.Hidden;
             }
             catch (Exception e)
             {
@@ -207,6 +207,14 @@ namespace Dental.ViewModels
             db.SaveChanges();
         }
 
-
+        public Visibility AdditionalFieldsVisible
+        {
+            get { return GetProperty(() => AdditionalFieldsVisible); }
+            set { SetProperty(() => AdditionalFieldsVisible, value); }
+        }
+        public void SetTabVisibility(Visibility visibility)
+        {
+            AdditionalFieldsVisible = visibility;
+        }
     }
 }

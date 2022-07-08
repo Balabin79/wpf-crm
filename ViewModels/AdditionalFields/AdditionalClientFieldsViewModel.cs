@@ -19,10 +19,10 @@ using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels.AdditionalFields
 {
-    public class AdditionalClientFieldsViewModel : DevExpress.Mvvm.ViewModelBase
+    public class AdditionalEmployeeFieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public AdditionalClientFieldsViewModel()
+        public AdditionalEmployeeFieldsViewModel()
         {
             try
             {
@@ -41,12 +41,12 @@ namespace Dental.ViewModels.AdditionalFields
         {
             try
             {
-                if (p is AdditionalClientField model)
+                if (p is AdditionalEmployeeField model)
                 {
                     if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
                     if (model.Id != 0)
                     {
-                        db.AdditionalClientFields.Remove(model);
+                        db.AdditionalEmployeeFields.Remove(model);
                         if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
                     }
                     else
@@ -56,7 +56,7 @@ namespace Dental.ViewModels.AdditionalFields
                     Collection?.Remove(model);
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -78,25 +78,25 @@ namespace Dental.ViewModels.AdditionalFields
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
-            catch (Exception e)
+            catch 
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения изменений в базу данных, произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
         [Command]
-        public void Add() => Collection.Add(new AdditionalClientField());
+        public void Add() => Collection.Add(new AdditionalEmployeeField());
 
-        private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection();
+        private void SetCollection() => Collection = db.AdditionalEmployeeFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection();
 
         public bool HasUnsavedChanges()
         {
-            //  if (CollectionBeforeChanges?.Count != MaterialViewModel?.Measures?.Count) return true;
+      
             foreach (var item in Collection)
             {
                 if (string.IsNullOrEmpty(item.Label) || string.IsNullOrEmpty(item.SysName)) continue;
                 if (item.Id == 0) return true;
-                //if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
+
             }
             return false;
         }
@@ -113,15 +113,11 @@ namespace Dental.ViewModels.AdditionalFields
         public AdditionalClientField Model { get; private set; }
         public ICollection<TemplateType> Templates { get; private set; }
 
-        public ObservableCollection<AdditionalClientField> Collection
+        public ObservableCollection<AdditionalEmployeeField> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
         }
-
-
-
-
 
     }
 }

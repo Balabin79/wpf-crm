@@ -10,7 +10,8 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:ext ="clr-namespace:Dental.Infrastructures.Extensions"   
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
+    xmlns:add ="clr-namespace:Dental.Views.AdditionalFields"
     xmlns:local="clr-namespace:Dental.Views.EmployeeDir"
     xmlns:doc ="clr-namespace:Dental.Views.Documents"
     mc:Ignorable="d"
@@ -108,6 +109,10 @@
 
                         <dx:DXTabItem Header="Документы">
                             <doc:DocumentsControl DataContext="{Binding}"/>
+                        </dx:DXTabItem>
+
+                        <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <add:ClientControl x:Name="Fields"/>
                         </dx:DXTabItem>
                     </dx:DXTabControl>
                 </dxlc:LayoutGroup>

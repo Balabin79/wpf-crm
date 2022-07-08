@@ -13,20 +13,21 @@ using DevExpress.Mvvm.Native;
 
 namespace Dental.ViewModels.AdditionalFields
 {
-    public class FieldsViewModel
+    public class FieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-
-        public FieldsViewModel(Client client, ApplicationContext db)
+        //public delegate void ChangeVisibleTab(Visibility visibility);
+        //public event ChangeVisibleTab EventChangeVisibleTab;
+        public FieldsViewModel(Client client, PatientListViewModel vm)
         {
             try
             {
-                this.db = db;
-                AdditionalFieldsVisible = Visibility.Collapsed;
-
+                this.db = vm.db;
+               // AdditionalFieldsVisible = Visibility.Hidden;
+            
                 // получаем все поля для раздела
-                AdditionalFields = db.AdditionalClientFields.ToArray();
-                if (AdditionalFields.Count() == 0) return;
+                AdditionalClientFields = db.AdditionalClientFields.ToArray();
+                if (AdditionalClientFields.Count() == 0) return;
 
                 Fields = new ObservableCollection<LayoutItem>();
 
@@ -34,6 +35,8 @@ namespace Dental.ViewModels.AdditionalFields
                 AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>();
 
                 ClientFieldsLoading();
+
+                if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
             }
             catch (Exception e)
             {
@@ -41,16 +44,59 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-        public FieldsViewModel(Employee employee, ApplicationContext db)
+        public FieldsViewModel(Employee employee, ListEmployeesViewModel vm)
         {
-            this.db = db;
+            this.db = vm.db;
+           // AdditionalFieldsVisible = Visibility.Hidden;
+        
+        // получаем все поля для раздела
+        AdditionalEmployeeFields = db.AdditionalEmployeeFields.ToArray();
+            if (AdditionalEmployeeFields.Count() == 0) return;
+
+            Fields = new ObservableCollection<LayoutItem>();
+
+            // загружаем значения полей
+            AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalEmployeeValue>();
+
+            EmployeeFieldsLoading();
+
+            if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
         }
 
+        private void EmployeeFieldsLoading()
+        {
+
+            foreach (var field in AdditionalEmployeeFields)
+            {
+
+                var label = new LayoutItem()
+                {
+                    Label = field.Label,
+                    LabelPosition = LayoutItemLabelPosition.Top,
+                    Content = new TextEdit(),
+                    Margin = new Thickness(0, 0, 0, 5)
+                };
+                //var f = new TextEdit() { }
+                Fields.Add(label);
+            }
+
+            /*
+
+            foreach (var val in values)
+            {
+
+                var field = fields.FirstOrDefault(f => f.Id == val.AdditionalFieldId);
+                if (field == null) continue;
+
+                // получаем ссылку на шаблон этого поля и записываем его в TemplateField
+            }*/
+
+        }
 
         private void ClientFieldsLoading()
         {
 
-            foreach (var field in AdditionalFields)
+            foreach (var field in AdditionalClientFields)
             {
 
                 var label = new LayoutItem()
@@ -77,13 +123,15 @@ namespace Dental.ViewModels.AdditionalFields
 
         }
 
+
         public ICollection<LayoutItem> Fields { get; set; }
         
-        public ICollection<AdditionalClientField> AdditionalFields { get; set; }
+        public ICollection<AdditionalClientField> AdditionalClientFields { get; set; }
+        public ICollection<AdditionalEmployeeField> AdditionalEmployeeFields { get; set; }
 
         public ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
         public ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
 
-        public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Hidden;     
+        public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Hidden;
     }
 }
