@@ -13,5 +13,6 @@ namespace Dental.Models
     {
         public string CaptionRu { get; set; }
         public string CaptionEn { get; set; }
+        public string SysName { get; set; }
     }
 }

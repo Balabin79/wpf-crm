@@ -10,23 +10,25 @@ using DevExpress.Xpf.Editors;
 using System.Windows;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
+using System.Data.Entity;
+using System.Globalization;
+using Dental.Infrastructures.Converters;
+using System.Windows.Data;
 
 namespace Dental.ViewModels.AdditionalFields
 {
     public class FieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
-        //public delegate void ChangeVisibleTab(Visibility visibility);
-        //public event ChangeVisibleTab EventChangeVisibleTab;
+        private readonly ApplicationContext db;      
+
         public FieldsViewModel(Client client, PatientListViewModel vm)
         {
             try
             {
                 this.db = vm.db;
-               // AdditionalFieldsVisible = Visibility.Hidden;
             
                 // получаем все поля для раздела
-                AdditionalClientFields = db.AdditionalClientFields.ToArray();
+                AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
                 if (AdditionalClientFields.Count() == 0) return;
 
                 Fields = new ObservableCollection<LayoutItem>();
@@ -34,9 +36,10 @@ namespace Dental.ViewModels.AdditionalFields
                 // загружаем значения полей
                 AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>();
 
-                ClientFieldsLoading();
+                ClientFieldsLoading(client);
 
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
+                
             }
             catch (Exception e)
             {
@@ -66,63 +69,101 @@ namespace Dental.ViewModels.AdditionalFields
         private void EmployeeFieldsLoading()
         {
 
-            foreach (var field in AdditionalEmployeeFields)
+            foreach (var i in AdditionalEmployeeFields)
             {
+                var value = AdditionalEmployeeValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id);
 
                 var label = new LayoutItem()
                 {
-                    Label = field.Label,
+                    Label = i.Label,
                     LabelPosition = LayoutItemLabelPosition.Top,
-                    Content = new TextEdit(),
+                    Content = GetField(i?.TypeValue?.SysName, value?.Value),
                     Margin = new Thickness(0, 0, 0, 5)
                 };
-                //var f = new TextEdit() { }
                 Fields.Add(label);
             }
 
-            /*
-
-            foreach (var val in values)
-            {
-
-                var field = fields.FirstOrDefault(f => f.Id == val.AdditionalFieldId);
-                if (field == null) continue;
-
-                // получаем ссылку на шаблон этого поля и записываем его в TemplateField
-            }*/
-
         }
 
-        private void ClientFieldsLoading()
+        private void ClientFieldsLoading(Client client)
+        {            
+            foreach (var i in AdditionalClientFields)
+            {
+                var value = AdditionalClientValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id && f.ClientId == client.Id);
+                var binding = new Binding() 
+                { 
+                    Source = this, 
+                    Path = new PropertyPath("IsReadOnly"), 
+                    Mode = BindingMode.TwoWay, 
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged 
+                };
+
+                var el = GetField(i?.TypeValue?.SysName, value?.Value);
+                el.SetBinding(BaseEdit.IsReadOnlyProperty, binding);
+
+                var label = new LayoutItem()
+                {
+                    Label = i.Label,
+                    LabelPosition = LayoutItemLabelPosition.Top,
+                    Content = el,
+                    Margin = new Thickness(0, 0, 0, 5)
+                };
+                Fields.Add(label);
+            }
+        }
+
+        private BaseEdit GetField(string sysName, string value)
         {
-
-            foreach (var field in AdditionalClientFields)
-            {
-
-                var label = new LayoutItem()
+            try
+            {             
+                switch (sysName)
                 {
-                    Label = field.Label,
-                    LabelPosition = LayoutItemLabelPosition.Top,
-                    Content = new TextEdit(), 
-                    Margin = new Thickness(0, 0, 0, 5)
-                };
-                //var f = new TextEdit() { }
-                Fields.Add(label);
+                    case "string":
+                        return new TextEdit() { EditValue = value };
+                    case "money": return new TextEdit() { Mask = "c", MaskType = MaskType.Numeric, MaskCulture = CultureInfo.CurrentCulture, DisplayFormatString = "{}{0:c2}", EditValue = value };
+                    case "int": return new TextEdit() { Mask = "d", MaskType = MaskType.Numeric, EditValue = value };
+
+                    case "float": return new TextEdit() { Mask = "f", MaskType = MaskType.Numeric, EditValue = value };
+                    case "date": return new DateEdit() { EditValue = value, Text = value,
+                        Mask = "d",
+                        MaskCulture = CultureInfo.CurrentCulture,
+                        DisplayTextConverter = new DateToStringConverter()
+                    };
+                    case "datetime": return new DateEdit() { DisplayTextConverter = new DateToStringConverter(), EditValue = value, Mask = "G", StyleSettings = new DateEditNavigatorWithTimePickerStyleSettings(), MaskCulture = CultureInfo.CurrentCulture, Text = value };
+                    case "percent": return new TextEdit() { Mask = "p", MaskType = MaskType.Numeric, EditValue = value };
+                    default: return new TextEdit();
+                }
             }
-
-            /*
-
-            foreach (var val in values)
+            catch(Exception e)
             {
-
-                var field = fields.FirstOrDefault(f => f.Id == val.AdditionalFieldId);
-                if (field == null) continue;
-
-                // получаем ссылку на шаблон этого поля и записываем его в TemplateField
-            }*/
+                return new TextEdit();
+            }
 
         }
 
+        public bool Save(Client client)
+        {
+            try
+            {       
+                foreach (var i in Fields)
+                {
+                    var value = db.AdditionalClientValue.FirstOrDefault(f => f.AdditionalField.Label == i.Label && f.ClientId == client.Id);
+                    var val = ((BaseEdit)i.Content).EditValue?.ToString();
+                    if (value == null && val != null) 
+                    {  
+                        var item = new AdditionalClientValue() { ClientId = client.Id, Value = val, AdditionalFieldId = AdditionalClientFields.FirstOrDefault(f => f.Label == i.Label).Id };
+                        db.AdditionalClientValue.Add(item);
+                    }
+                    if (value != null) value.Value = val;                  
+                }
+                return db.SaveChanges() > 0;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
+        }
 
         public ICollection<LayoutItem> Fields { get; set; }
         
@@ -133,5 +174,16 @@ namespace Dental.ViewModels.AdditionalFields
         public ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
 
         public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Hidden;
+
+        public void ChangedReadOnly(bool status)
+        {
+            IsReadOnly = status;
+        }
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
     }
 }

@@ -23,7 +23,12 @@ namespace Dental.Views.PatientCard
             InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
 
             clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;
+            clientCardViewModel.EventChangeReadOnly += fieldsViewModel.ChangedReadOnly;
             invoicesViewModel.StatusReadOnly(true);
+            fieldsViewModel.IsReadOnly = true;
+
+            clientCardViewModel.EventSaveCard += fieldsViewModel.Save;
+
 
             //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
             clientCardViewModel.SetTabVisibility(fieldsViewModel.AdditionalFieldsVisible);

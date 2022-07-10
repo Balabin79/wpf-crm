@@ -28,6 +28,10 @@ namespace Dental.ViewModels
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
 
+        // bool чтобы знать есть ли изменения в другой вкладке (для показа уведомления)
+        public delegate bool SaveCard(Client client);
+        public event SaveCard EventSaveCard;
+
         public ClientCardViewModel(int clientId, PatientListViewModel vmList)
         {
             try
@@ -65,6 +69,7 @@ namespace Dental.ViewModels
         {
             try
             {
+                bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
                 if (Model.Id == 0) // новый элемент
                 {
@@ -74,6 +79,7 @@ namespace Dental.ViewModels
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
+                    notificationShowed = true;
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -99,7 +105,12 @@ namespace Dental.ViewModels
                             }
                         }                           
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
+                        notificationShowed = true;
                     }
+                }
+                if (Model != null) 
+                { 
+                    if (EventSaveCard?.Invoke(Model) == true) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run(); 
                 }
             }
             catch
