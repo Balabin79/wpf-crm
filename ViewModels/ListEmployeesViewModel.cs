@@ -30,7 +30,7 @@ namespace Dental.ViewModels
             try
             {              
                 db = new ApplicationContext();
-                Collection = db.Employes.OrderBy(d => d.LastName).Include("Sex").ToObservableCollection();
+                SetCollection();
                 foreach (var i in Collection)
                 {
                     if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
@@ -137,11 +137,33 @@ namespace Dental.ViewModels
             }
         }
 
+        [Command]
+        public void ShowArchive()
+        {
+            try
+            {
+                IsArchiveList = !IsArchiveList;
+                SetCollection(IsArchiveList);
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
         public ObservableCollection<Employee> Collection { get; set; }
    
         public EmployeeCardWindow EmployeeWin { get; set; }
         public DocumentsWindow DocumentsWindow { get; set; }
 
         public EmployeeFieldsWindow FieldsWindow { get; set; }
+
+        public bool IsArchiveList
+        {
+            get { return GetProperty(() => IsArchiveList); }
+            set { SetProperty(() => IsArchiveList, value); }
+        }
+
+        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive ).ToObservableCollection();
     }
 }

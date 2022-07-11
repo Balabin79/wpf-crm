@@ -54,12 +54,6 @@
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
-                        <dxb:BarButtonItem Content="Печать"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding Source={StaticResource Print}}"
-                                           CommandParameter="{Binding ElementName=viewAd}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
-
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -152,7 +146,7 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="TypeValue" Header="Системное имя (латиницей)" Width="3*">
+                    <dxg:GridColumn FieldName="TypeValue" Header="Тип поля" Width="3*">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Path=RowData.Row.TypeValue.CaptionRu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />

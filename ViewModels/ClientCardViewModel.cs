@@ -137,6 +137,8 @@ namespace Dental.ViewModels
 
                 db.Invoices.Include(f => f.InvoiceServiceItems).Include(f => f.InvoiceMaterialItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
+                db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
                 db.Entry(Model).State = EntityState.Deleted;
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
@@ -210,22 +212,13 @@ namespace Dental.ViewModels
 
         public ICollection<string> GenderList{ get => _GenderList; }
 
-        private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };
-        
-        protected void Update()
-        {
-            db.Entry(Model).State = EntityState.Modified;
-            db.SaveChanges();
-        }
+        private readonly ICollection<string> _GenderList = new List<string> { "Мужчина", "Женщина" };     
 
         public Visibility AdditionalFieldsVisible
         {
             get { return GetProperty(() => AdditionalFieldsVisible); }
             set { SetProperty(() => AdditionalFieldsVisible, value); }
         }
-        public void SetTabVisibility(Visibility visibility)
-        {
-            AdditionalFieldsVisible = visibility;
-        }
+        public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
     }
 }

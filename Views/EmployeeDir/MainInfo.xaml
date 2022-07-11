@@ -33,24 +33,24 @@
                                 <dxlc:LayoutGroup Orientation="Vertical">
                                     <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
                                         <dxe:TextEdit  
-                                                EditValue="{Binding Path=Model.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                                EditValue="{Binding Path=EmployeeInfoViewModel.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
                                         <dxe:TextEdit 
-                                                    EditValue="{Binding Path=Model.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                    EditValue="{Binding Path=EmployeeInfoViewModel.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem Label="Отчество" AddColonToLabel="True">
                                         <dxe:TextEdit 
-                                                    EditValue="{Binding Path=Model.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                    EditValue="{Binding Path=EmployeeInfoViewModel.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem Label="Дата рождения" AddColonToLabel="True">
                                         <dxe:DateEdit
                                                     Mask="d"
                                                     MaskUseAsDisplayFormat ="True"
-                                                    EditValue="{Binding Path=Model.BirthDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                    EditValue="{Binding Path=EmployeeInfoViewModel.BirthDate,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
                                     </dxlc:LayoutItem>
@@ -58,10 +58,9 @@
                                     <dxlc:LayoutItem Label="Пол:" LabelPosition="Left" >
                                         <dxe:ComboBoxEdit 
                                                     ItemsSource="{Binding GenderList}"                                      
-                                                    SelectedItem="{Binding Model.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    SelectedItem="{Binding EmployeeInfoViewModel.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                     NullText="Пол" 
-                                                    IsTextEditable="False"
-                                                    DisplayMember="Name"
+                                                    IsTextEditable="False"                                               
                                                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <dxe:ComboBoxEdit.StyleSettings>
                                                 <dxe:RadioComboBoxStyleSettings />
@@ -75,8 +74,8 @@
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <ext:ImageEditEx                       
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
-                                      ImagePath = "{Binding Model.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      EditValue = "{Binding Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                                      ImagePath = "{Binding EmployeeInfoViewModel.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding EmployeeInfoViewModel.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       Height="128"  >
                                         <dxe:ImageEdit.EmptyContentTemplate>
@@ -90,7 +89,7 @@
 
                             <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
                                 <dxe:MemoEdit 
-                                                EditValue="{Binding Path=Model.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                EditValue="{Binding Path=EmployeeInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             </dxlc:LayoutItem>
 
@@ -102,7 +101,7 @@
                                             MaskType="Simple"
                                             Mask="(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
-                                            EditValue="{Binding Path=Model.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            EditValue="{Binding Path=EmployeeInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
@@ -114,7 +113,7 @@
                                             AllowDefaultButton="False"
                                             MaskType="RegEx"
                                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                            EditValue="{Binding Path=Model.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            EditValue="{Binding Path=EmployeeInfoViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                         <dxe:ImageButtonInfo
@@ -129,23 +128,11 @@
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
    
 
-                                <dxlc:LayoutItem Label="Статус:" LabelPosition="Left" >
-                                    <dxe:ComboBoxEdit 
-                                                ItemsSource="{Binding Statuses}"                                      
-                                                SelectedItem="{Binding Model.Status, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                DisplayMember="Name"
-                                                NullText="Статус сотрудника" 
-                                                IsTextEditable="False"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                        <dxe:ComboBoxEdit.StyleSettings>
-                                            <dxe:RadioComboBoxStyleSettings />
-                                        </dxe:ComboBoxEdit.StyleSettings>
-                                    </dxe:ComboBoxEdit>
-                                </dxlc:LayoutItem>
+
                                 <dxlc:LayoutItem Label="Должность:"  LabelPosition="Left" >
                                     <dxe:TextEdit                                                 
                                                 NullText="Должность"
-                                                EditValue="{Binding Model.Post, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                EditValue="{Binding EmployeeInfoViewModel.Post, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                />
 
@@ -155,13 +142,13 @@
                                 <dxlc:LayoutItem Label="В расписании:"
                                             LabelPosition="Left" >
                                     <dxe:CheckEdit         
-                                                EditValue="{Binding Model.IsInSheduler, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                EditValue="{Binding EmployeeInfoViewModel.IsInSheduler, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Примечание"  LabelPosition="Top" Height="58">
                                     <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
-                                            Text="{Binding Model.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            Text="{Binding EmployeeInfoViewModel.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
@@ -194,13 +181,12 @@
                                                  Content="Директория" 
                                                  Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                                  GlyphSize="Small" 
-                                                 Command="{Binding ElementName=layoutGroup1, Path=DataContext.OpenDirectoryCommand}"
-                                                 CommandParameter="{Binding ElementName=layoutGroup1, Path=DataContext.Model.Id, Mode=TwoWay}"
-                                                 IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                 Command="{Binding ElementName=layoutGroup1, Path=DataContext.UserFiles.OpenDirectoryCommand}"
+                                                 IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <dxb:BarButtonItem 
-                                                IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Command="{Binding ElementName=layoutGroup1, Path=DataContext.AttachmentFileCommand}" 
+                                                IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Command="{Binding ElementName=layoutGroup1, Path=DataContext.UserFiles.AttachmentFileCommand}" 
                                                 Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                         Content="Прикрепить файл"                                     
                                                     />
@@ -214,7 +200,7 @@
                         </dxlc:LayoutGroup.HeaderTemplate>
 
                         <dxg:GridControl  
-                    ItemsSource="{Binding Files, Mode=TwoWay}" 
+                    ItemsSource="{Binding UserFiles.Files, Mode=TwoWay}" 
                     DataContext="{Binding}" 
                     x:Name="GridControlAttachFile"
                     Width="auto">
@@ -247,7 +233,7 @@
                                             IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                             GlyphSize="Small"
-                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.UserFiles.ExecuteFileCommand}"
                                             CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                                     <dxb:BarButtonItem  
@@ -255,7 +241,7 @@
                                              IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                             GlyphSize="Small"
-                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}" 
+                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.UserFiles.DeleteFileCommand}" 
                                             CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                                     <dxb:BarItemLinkSeparator />
                                                 </dxb:ToolBarControl>
@@ -277,16 +263,16 @@
                                     <dxg:TableView.InputBindings>
 
                                         <KeyBinding Key="Delete" 
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}"
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.UserFiles.DeleteFileCommand}"
                                 CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                         <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.UserFiles.ExecuteFileCommand}"
                                 CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
 
                                         <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
+                                Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.UserFiles.ExecuteFileCommand}"
                                 CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                     </dxg:TableView.InputBindings>
 
@@ -297,12 +283,12 @@
                                     Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
                                     KeyGesture="Ctrl+O" 
                                     Content="Открыть файл" 
-                                    Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
+                                    Command="{Binding ElementName=attachFileTableView,Path=DataContext.UserFiles.ExecuteFileCommand}"
                                     CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"/>
                                         <dxb:BarButtonItem 
                                     Content="Удалить файл"
                                      IsEnabled="{DXBinding  Expr='@e(layoutGroup1).DataContext.Model.Id != 0 and !@e(layoutGroup1).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    Command="{Binding ElementName=attachFileTableView,Path=DataContext.DeleteFileCommand}" 
+                                    Command="{Binding ElementName=attachFileTableView,Path=DataContext.UserFiles.DeleteFileCommand}" 
                                     CommandParameter="{Binding ElementName=GridControlAttachFile, Path=CurrentItem}"
                                     KeyGesture="Delete" 
                                     GlyphSize="Small" 

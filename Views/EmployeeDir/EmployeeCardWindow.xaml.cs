@@ -17,10 +17,15 @@ namespace Dental.Views.EmployeeDir
             EmployeeViewModel empCard = new EmployeeViewModel(emp, vm);
             FieldsViewModel fieldsViewModel = new FieldsViewModel(emp, vm);
 
-            this.DataContext = empCard;
-            this.Fields.DataContext = fieldsViewModel;
+            empCard.EventChangeReadOnly += fieldsViewModel.ChangedReadOnly;
+            fieldsViewModel.IsReadOnly = true;
+
+            empCard.EventSaveCard += fieldsViewModel.Save;
 
             empCard.SetTabVisibility(fieldsViewModel.AdditionalFieldsVisible);
+
+            this.DataContext = empCard;
+            this.Fields.DataContext = fieldsViewModel;        
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

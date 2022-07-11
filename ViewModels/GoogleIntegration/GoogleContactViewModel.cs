@@ -74,7 +74,7 @@ namespace Dental.ViewModels.GoogleIntegration
                 {
                     Contact.Email = Email;
                     Contact.Employee = Employee;
-                    Contact.CalendarName = !string.IsNullOrEmpty(CalendarName) ? CalendarName : Employee?.FullName;
+                    Contact.CalendarName = !string.IsNullOrEmpty(CalendarName) ? CalendarName : Employee.ToString();
                     if (Contact?.Id == 0) 
                     { 
                         db.GoogleContacts.Add(Contact); 

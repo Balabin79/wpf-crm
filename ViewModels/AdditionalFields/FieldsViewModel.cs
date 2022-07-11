@@ -34,7 +34,7 @@ namespace Dental.ViewModels.AdditionalFields
                 Fields = new ObservableCollection<LayoutItem>();
 
                 // загружаем значения полей
-                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>();
+                AdditionalClientValues = (client != null) ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
 
                 ClientFieldsLoading(client);
 
@@ -50,34 +50,43 @@ namespace Dental.ViewModels.AdditionalFields
         public FieldsViewModel(Employee employee, ListEmployeesViewModel vm)
         {
             this.db = vm.db;
-           // AdditionalFieldsVisible = Visibility.Hidden;
-        
-        // получаем все поля для раздела
-        AdditionalEmployeeFields = db.AdditionalEmployeeFields.ToArray();
+
+            // получаем все поля для раздела
+            AdditionalEmployeeFields = db.AdditionalEmployeeFields.Include(f => f.TypeValue).ToArray();
             if (AdditionalEmployeeFields.Count() == 0) return;
 
             Fields = new ObservableCollection<LayoutItem>();
 
             // загружаем значения полей
-            AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).ToObservableCollection() ?? new ObservableCollection<AdditionalEmployeeValue>();
+            AdditionalEmployeeValues = (employee != null) ? db.AdditionalEmployeeValue?.Where(f => f.EmployeeId == employee.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalEmployeeValue>() : new ObservableCollection<AdditionalEmployeeValue>();
 
-            EmployeeFieldsLoading();
+            EmployeeFieldsLoading(employee);
 
             if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
         }
 
-        private void EmployeeFieldsLoading()
+        private void EmployeeFieldsLoading(Employee employee)
         {
 
             foreach (var i in AdditionalEmployeeFields)
             {
-                var value = AdditionalEmployeeValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id);
+                var value = AdditionalEmployeeValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id && f.EmployeeId == employee.Id);
+                var binding = new Binding()
+                {
+                    Source = this,
+                    Path = new PropertyPath("IsReadOnly"),
+                    Mode = BindingMode.TwoWay,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                };
+
+                var el = GetField(i?.TypeValue?.SysName, value?.Value);
+                el.SetBinding(BaseEdit.IsReadOnlyProperty, binding);
 
                 var label = new LayoutItem()
                 {
                     Label = i.Label,
                     LabelPosition = LayoutItemLabelPosition.Top,
-                    Content = GetField(i?.TypeValue?.SysName, value?.Value),
+                    Content = el,
                     Margin = new Thickness(0, 0, 0, 5)
                 };
                 Fields.Add(label);
@@ -131,12 +140,12 @@ namespace Dental.ViewModels.AdditionalFields
                     };
                     case "datetime": return new DateEdit() { DisplayTextConverter = new DateToStringConverter(), EditValue = value, Mask = "G", StyleSettings = new DateEditNavigatorWithTimePickerStyleSettings(), MaskCulture = CultureInfo.CurrentCulture, Text = value };
                     case "percent": return new TextEdit() { Mask = "p", MaskType = MaskType.Numeric, EditValue = value };
-                    default: return new TextEdit();
+                    default: return new TextEdit() { EditValue = value };
                 }
             }
             catch(Exception e)
             {
-                return new TextEdit();
+                return new TextEdit() { EditValue = value };
             }
 
         }
@@ -159,6 +168,31 @@ namespace Dental.ViewModels.AdditionalFields
                 return db.SaveChanges() > 0;
             }
             catch(Exception e)
+            {
+                return false;
+            }
+
+        }
+
+
+        public bool Save(Employee employee)
+        {
+            try
+            {
+                foreach (var i in Fields)
+                {
+                    var value = db.AdditionalEmployeeValue.FirstOrDefault(f => f.AdditionalField.Label == i.Label && f.EmployeeId == employee.Id);
+                    var val = ((BaseEdit)i.Content).EditValue?.ToString();
+                    if (value == null && val != null)
+                    {
+                        var item = new AdditionalEmployeeValue() { EmployeeId = employee.Id, Value = val, AdditionalFieldId = AdditionalEmployeeFields.FirstOrDefault(f => f.Label == i.Label).Id };
+                        db.AdditionalEmployeeValue.Add(item);
+                    }
+                    if (value != null) value.Value = val;
+                }
+                return db.SaveChanges() > 0;
+            }
+            catch (Exception e)
             {
                 return false;
             }

@@ -64,8 +64,8 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem  Content="Сохранить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
+                        <dxb:BarButtonItem  Content="Сохранить"                                   
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(EmployeeInfoViewModel.LastName) and !string.IsNullOrEmpty(EmployeeInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"

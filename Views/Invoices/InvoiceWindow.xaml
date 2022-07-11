@@ -55,7 +55,8 @@
             </dxlc:LayoutItem>
 
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-                <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveInvoiceCommand}" />
+                <dx:SimpleButton IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(InvoiceVM.Client)' }"
+                    Height="23" Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveInvoiceCommand}" />
                 <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormInvoiceCommand}" Margin="4 0 0 0"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>

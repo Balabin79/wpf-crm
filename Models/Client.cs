@@ -14,7 +14,6 @@ namespace Dental.Models
     [Table("ClientInfo")]
     public class Client : AbstractBaseModel, ICloneable
     {
-       // public Client() => Estimates = new ObservableCollection<Estimate>();
 
         public string FirstName
         { 
@@ -100,7 +99,6 @@ namespace Dental.Models
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
-     //   public ObservableCollection<Estimate> Estimates { get; set; }
 
         public object Clone() => (Client)this.MemberwiseClone();
       

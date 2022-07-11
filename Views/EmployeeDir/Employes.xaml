@@ -74,7 +74,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                             <TextBlock FontWeight="Medium" Text="Статус: " />
-                            <TextBlock Text="{Binding Path=Row.Status}" />
+                            <TextBlock Text="{DXBinding Expr='Row.IsInArchive == true ? `В архиве` : `Работает`'}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="Medium" Text="Подробнее: " />
