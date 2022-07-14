@@ -28,6 +28,9 @@ namespace Dental.ViewModels
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
 
+        public delegate void NewClientSaved(Client client);
+        public event NewClientSaved EventNewClientSaved;
+
         // bool чтобы знать есть ли изменения в другой вкладке (для показа уведомления)
         public delegate bool SaveCard(Client client);
         public event SaveCard EventSaveCard;
@@ -78,6 +81,7 @@ namespace Dental.ViewModels
                     if (VmList?.IsArchiveList == Model.IsInArchive) VmList?.Collection?.Add(Model);
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
+                    EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
                 }
@@ -110,10 +114,10 @@ namespace Dental.ViewModels
                 }
                 if (Model != null) 
                 { 
-                    if (EventSaveCard?.Invoke(Model) == true) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run(); 
+                    if (EventSaveCard?.Invoke(Model) == true && !notificationShowed) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run(); 
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой клиента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

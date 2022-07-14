@@ -111,7 +111,7 @@ namespace Dental.ViewModels
                 }
                 if (Model != null)
                 {
-                    if (EventSaveCard?.Invoke(Model) == true) new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
+                    if (EventSaveCard?.Invoke(Model) == true && !notificationShowed) new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
                 }
             }
             catch(Exception e)
@@ -217,10 +217,6 @@ namespace Dental.ViewModels
         
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
         
-
-        /// <summary>
-        /// //////////////////////////////////////////
-        /// </summary>
         #region Управление фото
   
         private string GetPathToPhoto() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6\\Files", Model?.Guid, "Photo");
@@ -239,10 +235,12 @@ namespace Dental.ViewModels
                         img.StreamSource = stream;
                         img.EndInit();
                         img.Freeze();
-                        EmployeeInfoViewModel.Image = img;
+                        EmployeeInfoViewModel.Image = img;                       
                     }
                 }
                 else EmployeeInfoViewModel.Image = null;
+                EmployeeInfoViewModel.Photo = Model.Photo;
+
             }
             catch (Exception e)
             {
@@ -296,7 +294,14 @@ namespace Dental.ViewModels
                 }
 
                 if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
-                PhotoLoading();
+                var model = VmList.Collection?.FirstOrDefault(f => f.Id == Model.Id);
+                if (model != null) 
+                { 
+                    model.Image = null;
+                    model.Photo = null;
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Фото сотрудника удалено!" }.run();
+                }
+
             }
             catch (Exception e)
             {

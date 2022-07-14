@@ -37,7 +37,7 @@ namespace Dental.ViewModels.Invoices
             {
                 this.fromPatientCard = fromPatientCard;
                 db = context ?? new ApplicationContext();
-                Client = client ?? new Client();
+                Client = client;
                 SetInvoices();
                 PrintMenuLoading();
             }
@@ -74,22 +74,23 @@ namespace Dental.ViewModels.Invoices
                     {
                         Number = NewNumberGenerate(),
                         Client = Client,
-                        ClientId = Client.Id,
+                        ClientId = Client?.Id,
                         Date = DateTime.Now.ToString(),
                         Paid = 0
                     };
                 }
 
-                InvoiceVM = new InvoiceVM(db)
+                InvoiceVM = new InvoiceVM()
                 {
                     Title = title,
                     Number = Invoice.Number,
                     Date = Invoice.Date,
-                    Client = Invoice.Client,
+                    Client = Invoice?.Client ?? Client,
                     Paid = Invoice.Paid,
                     Total = Invoice.Total,
-                    ClientFieldVisibility = visibility
-                };
+                    ClientFieldVisibility = visibility,
+                    Clients = db.Clients.OrderBy(f => f.LastName).ToArray()
+            };
                 var height = fromPatientCard ? 230 : 270;
                 InvoiceWindow = new InvoiceWindow() { DataContext = this, Height = height, MaxHeight = height };
                 InvoiceWindow.ShowDialog();
@@ -104,13 +105,14 @@ namespace Dental.ViewModels.Invoices
         public void SaveInvoice()
         {
             try
-            {               
-                if (InvoiceVM.Client == null) return;
-                bool edited = Invoice.Id != 0 && (Invoice.Client != InvoiceVM.Client || Invoice.Date != InvoiceVM.Date || Invoice.Paid != InvoiceVM.Paid);
+            {
+                var client = InvoiceVM.Client ?? Client;
+                if (client == null) return;
+                bool edited = Invoice.Id != 0 && (Invoice.Client != client || Invoice.Date != InvoiceVM.Date || Invoice.Paid != InvoiceVM.Paid);
 
                 Invoice.Number = InvoiceVM.Number;
                 Invoice.Date = InvoiceVM.Date;
-                Invoice.Client = InvoiceVM.Client;
+                Invoice.Client = client;
                 Invoice.Paid = InvoiceVM.Paid;
                 Invoice.Total = InvoiceVM.Total;
 
@@ -549,25 +551,41 @@ namespace Dental.ViewModels.Invoices
 
         private void SetInvoices(int? showPaid = null)
         {
-            var query = (fromPatientCard && Client.Id > 0) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices.Include(f => f.Client);
+            var query = (fromPatientCard && Client?.Id > 0) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
+
             if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-            Invoices =   query.Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
-                        .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
-                        .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
-                        .ToObservableCollection() ?? new ObservableCollection<Invoice>();
+
+            Invoices = fromPatientCard && Client == null 
+                ? new ObservableCollection<Invoice>()
+                : query.Include(f => f.Client)
+                .Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
+                .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
+                .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
+                .ToObservableCollection() ?? new ObservableCollection<Invoice>();
     }
 
         public ICollection<Employee> Employees { get; set; }
         public ICollection<Measure> Measuries { get; set; }
         public ICollection<Service> Services { get; set; }
         public ICollection<Nomenclature> Materials { get; set; }
-        public InvoiceVM InvoiceVM { get; set; }
+        public InvoiceVM InvoiceVM
+        {
+            get { return GetProperty(() => InvoiceVM); }
+            set { SetProperty(() => InvoiceVM, value); }
+        }
+
+
         public InvoiceServiceItemVM InvoiceServiceItemVM { get; set; }
         public InvoiceMaterialItemVM InvoiceMaterialItemVM { get; set; }
         public Invoice Invoice { get; set; }
         public InvoiceServiceItems InvoiceServiceItem { get; set; }
         public InvoiceMaterialItems InvoiceMaterialItem { get; set; }
-        public Client Client { get; set; }
+        public Client Client
+        {
+            get { return GetProperty(() => Client); }
+            set { SetProperty(() => Client, value); }
+        }
+
         private InvoiceWindow InvoiceWindow;
         public InvoiceServiceWindow InvoiceServiceWindow;
         public InvoiceMaterialWindow InvoiceMaterialWindow;
@@ -595,6 +613,12 @@ namespace Dental.ViewModels.Invoices
         {
             get { return GetProperty(() => ShowPaid); }
             set { SetProperty(() => ShowPaid, value); }
+        }
+
+        public void NewClientSaved(Client client) 
+        {           
+            Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
+            if (InvoiceVM != null) InvoiceVM.Client = Client;
         }
     }
 }

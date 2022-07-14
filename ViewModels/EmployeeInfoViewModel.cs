@@ -22,7 +22,7 @@ namespace Dental.ViewModels
             MiddleName = employee.MiddleName;
             Post = employee.Post;
             IsInSheduler = employee.IsInSheduler;
-            IsIntegrated = employee.IsIntegrated;
+            IsIntegrate = employee.IsIntegrate;
             IsRemoteContactCreated = employee.IsRemoteContactCreated;
             GoogleEmail = employee.GoogleEmail;
             CalendarName = employee.CalendarName;
@@ -94,10 +94,10 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsInSheduler, value); }
         }
 
-        public int? IsIntegrated
+        public int? IsIntegrate
         {
-            get { return GetProperty(() => IsIntegrated); }
-            set { SetProperty(() => IsIntegrated, value); }
+            get { return GetProperty(() => IsIntegrate); }
+            set { SetProperty(() => IsIntegrate, value); }
         }
 
         public int? IsRemoteContactCreated
@@ -110,14 +110,14 @@ namespace Dental.ViewModels
         public string GoogleEmail
         {
             get { return GetProperty(() => GoogleEmail); }
-            set { SetProperty(() => GoogleEmail, (value ?? "").Trim()); }
+            set { SetProperty(() => GoogleEmail, value); }
         }
 
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email
         {
             get { return GetProperty(() => Email); }
-            set { SetProperty(() => Email, (value ?? "").Trim()); }
+            set { SetProperty(() => Email, value); }
         }
 
         public string CalendarName
@@ -177,7 +177,7 @@ namespace Dental.ViewModels
                 StringParamsIsEquel(BirthDate, other.BirthDate, "Дата рождения");
                 StringParamsIsEquel(Sex, other.Sex, "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Телефон");
-                StringParamsIsEquel(Email, other.Email, "Телефон");
+                StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
                 StringParamsIsEquel(Post, other.Post,  "Должность");
@@ -186,7 +186,7 @@ namespace Dental.ViewModels
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
                 if (this.IsInSheduler != other.IsInSheduler) FieldsChanges.Add("В расписании");
-                if (this.IsIntegrated != other.IsIntegrated) FieldsChanges.Add("Интегрирован");
+                if (this.IsIntegrate != other.IsIntegrate) FieldsChanges.Add("Интегрировать");
                 if (this.IsRemoteContactCreated != other.IsRemoteContactCreated) FieldsChanges.Add("Удаленный контакт");
             }
             return FieldsChanges.Count == 0 ;
@@ -217,7 +217,7 @@ namespace Dental.ViewModels
             employee.MiddleName = MiddleName;
             employee.Post = Post;
             employee.IsInSheduler = IsInSheduler;
-            employee.IsIntegrated = IsIntegrated;
+            employee.IsIntegrate = IsIntegrate;
             employee.IsRemoteContactCreated = IsRemoteContactCreated;
             employee.GoogleEmail = GoogleEmail;
             employee.CalendarName = CalendarName;

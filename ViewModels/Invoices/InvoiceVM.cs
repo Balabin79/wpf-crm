@@ -10,13 +10,6 @@ namespace Dental.ViewModels.Invoices
 {
     public class InvoiceVM : BindableBase, IDataErrorInfo
     {
-        private readonly ApplicationContext db;
-        public InvoiceVM(ApplicationContext db)
-        {
-            this.db = db;
-            Clients = db.Clients.OrderBy(f => f.LastName).ToArray();
-        }
-
         public string Number
         {
             get { return GetProperty(() => Number); }

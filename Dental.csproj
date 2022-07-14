@@ -55,6 +55,7 @@
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\gmail-mail.svg" />
     <None Remove="Resources\Icons\svg\google.svg" />
+    <None Remove="Resources\Icons\svg\google_icon.svg" />
     <None Remove="Resources\Icons\svg\google_mail.svg" />
     <None Remove="Resources\Icons\svg\id-badge.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
@@ -210,6 +211,7 @@
     <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\gmail-mail.svg" />
     <Resource Include="Resources\Icons\svg\google.svg" />
+    <Resource Include="Resources\Icons\svg\google_icon.svg" />
     <Resource Include="Resources\Icons\svg\google_mail.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />

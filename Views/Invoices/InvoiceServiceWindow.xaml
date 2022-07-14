@@ -114,7 +114,7 @@
                                         ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Сотрудники" 
                                         IsTextEditable="False"
-                                        DisplayMember="FullName"
+                                        DisplayMember="Fio"
                                         IncrementalFiltering="True"
                                         IncrementalSearch="True"
                                         IsCaseSensitiveFilter="False"

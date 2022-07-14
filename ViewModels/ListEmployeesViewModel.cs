@@ -151,8 +151,12 @@ namespace Dental.ViewModels
             }
         }
 
-        public ObservableCollection<Employee> Collection { get; set; }
-   
+        public ObservableCollection<Employee> Collection
+        {
+            get { return GetProperty(() => Collection); }
+            set { SetProperty(() => Collection, value); }
+        }
+
         public EmployeeCardWindow EmployeeWin { get; set; }
         public DocumentsWindow DocumentsWindow { get; set; }
 

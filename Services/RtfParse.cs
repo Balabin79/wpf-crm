@@ -1,6 +1,7 @@
 ﻿using Dental.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,11 +11,27 @@ namespace Dental.Services
 {
     public class RtfParse
     {
-        public RtfParse(string txt, object model)
+        private readonly ApplicationContext db; 
+
+        public RtfParse(string txt)
         {
+            db = new ApplicationContext();
             RtfText = txt;
-            Model = model;
-          //  Org = new ApplicationContext().Org.FirstOrDefault();
+            CommonValues = db.CommonValues.ToArray();
+        }
+
+        public RtfParse(string txt, object model) : this(txt) 
+        { 
+            if (model is Client client)
+            {
+                Client = client;
+                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
+            }
+            if (model is Employee employee) 
+            {
+                Employee = employee;
+                AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
+            }
         }
 
         public string Run()
@@ -56,22 +73,27 @@ namespace Dental.Services
                 switch (modelName)
                 {
                     //case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
-                    case "Client": return "GGG";
-                  //  case "Org": return Org?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
-                    case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
-                    case "Invoice": return ((Invoice)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+                    case "Client": return Client.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
+                    case "Employee": return Employee.GetType().GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";        
+                    case "ClientAdditionalValues": return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "EmployeeAdditionalValues": return AdditionalEmployeeValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "CommonValues": return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+
                     default: return "";
                 }
             }
             catch (Exception e)
             {
                 return "";
-            }
-        
-        }           
+            }        
+        }
 
+        // case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
         private string RtfText { get; set; }
-        private object Model { get; set; }
-        private object Org { get; set; }
+        private Employee Employee { get; set; }
+        private Client Client{ get; set; }
+        private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
+        private ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
+        private ICollection<CommonValue> CommonValues { get; set; }
     }
 }

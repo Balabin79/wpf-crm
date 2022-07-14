@@ -99,7 +99,7 @@ namespace Dental.Models
         public string Sex { get; set; }      
         public int? IsInSheduler { get; set; }
         public bool? IsInArchive { get; set; } = false;
-        public int? IsIntegrated { get; set; }
+        public int? IsIntegrate { get; set; }
         public int? IsRemoteContactCreated { get; set; }
         public string GoogleEmail { get; set; }
         public string CalendarName { get; set; }

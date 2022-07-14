@@ -93,7 +93,7 @@
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             </dxlc:LayoutItem>
 
-                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0 10 0 0">
+                            <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" >
 
                                 <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True">
                                     <dxe:ButtonEdit IsTextEditable="True"
@@ -126,7 +126,7 @@
 
                         <dxlc:LayoutGroup Orientation="Vertical">
                             <dxlc:LayoutGroup Orientation="Vertical" Margin="5 0 0 0">
-   
+
 
 
                                 <dxlc:LayoutItem Label="Должность:"  LabelPosition="Left" >
@@ -137,8 +137,6 @@
                                                />
 
                                 </dxlc:LayoutItem>
-
-
                                 <dxlc:LayoutItem Label="В расписании:"
                                             LabelPosition="Left" >
                                     <dxe:CheckEdit         
@@ -146,7 +144,43 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
-                                <dxlc:LayoutItem Label="Примечание"  LabelPosition="Top" Height="58">
+
+                                <dxlc:LayoutItem Label="Email* (аккаунт в Google)" AddColonToLabel="True" LabelPosition="Left">
+                                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=EmployeeInfoViewModel.GoogleEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                        <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/google_icon.svg"  Margin="0 2 3 2"/>
+                                    </dxe:ButtonEdit>
+                                </dxlc:LayoutItem>
+
+                                <dxlc:LayoutItem Label="Название календаря" LabelPosition="Left" AddColonToLabel="True">
+                                    <dxe:TextEdit  
+                                                EditValue="{Binding Path=EmployeeInfoViewModel.CalendarName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Добавить в контакты:" LabelPosition="Left" HorizontalAlignment="Stretch">
+                                    <dxe:CheckEdit EditValue="{Binding Path=EmployeeInfoViewModel.IsRemoteContactCreated, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Интегрировать:" LabelPosition="Left" HorizontalAlignment="Stretch">
+                                    <dxe:CheckEdit EditValue="{Binding Path=EmployeeInfoViewModel.IsIntegrate, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                
+                                <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Left" >
+                                    <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
+                                  IsChecked="{Binding EmployeeInfoViewModel.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                
+                                <dxlc:LayoutItem Label="Примечание"  LabelPosition="Left" >
                                     <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
                                             Text="{Binding EmployeeInfoViewModel.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>

@@ -28,7 +28,7 @@ namespace Dental.Views.PatientCard
             fieldsViewModel.IsReadOnly = true;
 
             clientCardViewModel.EventSaveCard += fieldsViewModel.Save;
-
+            clientCardViewModel.EventNewClientSaved += invoicesViewModel.NewClientSaved;
 
             //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
             clientCardViewModel.SetTabVisibility(fieldsViewModel.AdditionalFieldsVisible);
