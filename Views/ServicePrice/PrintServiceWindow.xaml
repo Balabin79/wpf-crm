@@ -5,7 +5,8 @@
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
-        Title="MainWindow" Height="350" Width="525" >
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Loaded" Command="{Binding LoadDocForPrintCommand}" PassEventArgsToCommand="True"/>
     </dxmvvm:Interaction.Behaviors>
@@ -27,8 +28,8 @@
                           dxp:ExportSettings.Bookmark="{Binding Content.Name}" />
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="520" MinWidth="523"/>
-                        <ColumnDefinition  Width="100" MinWidth="100"/>
+                        <ColumnDefinition  Width="533" MinWidth="533"/>
+                        <ColumnDefinition  Width="90" MinWidth="90"/>
                     </Grid.ColumnDefinitions>
                     <dxe:TextEdit Foreground="White" Background="SteelBlue" BorderBrush="White" 
                               BorderThickness="1,1,0,1" Grid.Column="0" Text="Название"/>
@@ -48,8 +49,8 @@
 
                 <Grid HorizontalAlignment="Stretch" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="520" MinWidth="523"/>
-                        <ColumnDefinition MinWidth="100" Width="100"/>
+                        <ColumnDefinition  Width="533" MinWidth="533"/>
+                        <ColumnDefinition MinWidth="90" Width="90"/>
                     </Grid.ColumnDefinitions>
                     <dxe:TextEdit BorderBrush="LightGray" BorderThickness="1,0,0,1" 
                               Grid.Column="0" Text="{Binding Path=Content.ServiceName}" TextWrapping="Wrap" PrintTextWrapping="Wrap"

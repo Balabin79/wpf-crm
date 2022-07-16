@@ -73,15 +73,17 @@
                                            Command="{Binding ExpandTreeCommand}"
                                            CommandParameter="{Binding ElementName=view}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"/>
-                        <dxb:BarButtonItem Content="Печать"                                        
+                        <dxb:BarSubItem Content="Печать" Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
+                            <dxb:BarButtonItem Content="Печать прайса" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding PrintPriceCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Invoice.svg}"/>
+                            <dxb:BarButtonItem Content="Печать справочника"                                        
                                            GlyphSize="Small"
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
-                        <dxb:BarButtonItem Content="Печать прайса" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding PrintPriceCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/CustomerContactDirectory.svg}"/>
+                        </dxb:BarSubItem>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
