@@ -216,9 +216,9 @@
                     FieldName="Price" 
                     PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
                     PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
-                    Header="Стоимость"                               
+                    Header="Цена"                               
                     HorizontalHeaderContentAlignment="Center" 
-                    Width="2*">
+                    Width="90">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
@@ -226,12 +226,14 @@
                                 HorizontalAlignment="Center"
                                 />
                         </DataTemplate>
+                        
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
 
                 <dxg:GridColumn
-                    Width="2*" FieldName="Measure"  
+                    Width="3*" FieldName="Measure"  
                     Header="Ед-ца измерения" 
+                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                     HorizontalHeaderContentAlignment="Center" >
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>

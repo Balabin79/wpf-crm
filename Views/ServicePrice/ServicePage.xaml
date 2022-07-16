@@ -144,7 +144,6 @@
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
                         </dxg:TreeListView.InputBindings>
 
-
                         <dxg:TreeListView.RowCellMenuCustomizations>
                             <dxb:BarButtonItem  
                                     GlyphSize="Small" 
@@ -217,9 +216,9 @@
                 <dxg:GridColumn FieldName="Price" 
                                  PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
                                  PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
-                                 Header="Стоимость"                               
+                                 Header="Цена"                               
                                  HorizontalHeaderContentAlignment="Center"                                 
-                                 Width="2*">
+                                 Width="90">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate >
                             <TextBlock  
