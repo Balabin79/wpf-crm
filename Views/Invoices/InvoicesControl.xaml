@@ -556,33 +556,6 @@
                                     
                                 </dxb:BarSubItem>
 
-                                <dxb:BarSubItem 
-                                                Content="Экспорт" 
-                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}">
-                                    <dxb:BarButtonItem 
-                                                    Content="Экспорт в Excel"                                                            
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
-                                                    GlyphSize="Small"
-                                                    Command="{Binding Source={StaticResource Excel}}"
-                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                    <dxb:BarButtonItem 
-                                                    Content="Экспорт в Word"                                                            
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
-                                                    GlyphSize="Small"
-                                                    Command="{Binding Source={StaticResource Word}}"
-                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                    <dxb:BarButtonItem
-                                                    Content="Экспорт в PDF"                                                            
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
-                                                    GlyphSize="Small"
-                                                    Command="{Binding Source={StaticResource Pdf}}"
-                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                </dxb:BarSubItem>
-
                                 <dxb:BarButtonItem Content="Удалить" 
                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
