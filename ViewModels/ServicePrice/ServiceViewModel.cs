@@ -17,6 +17,19 @@ using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.ServicePrice;
 using Dental.ViewModels.Invoices;
 using Dental.Infrastructures.Converters;
+using DevExpress.Xpf.Printing;
+using System.Windows.Data;
+using System.ComponentModel;
+
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 
 namespace Dental.ViewModels.ServicePrice
 {
@@ -195,5 +208,59 @@ namespace Dental.ViewModels.ServicePrice
             get { return GetProperty(() => ServiceVM); }
             set { SetProperty(() => ServiceVM, value); }
         }
+        /**/
+        public PrintServiceWindow PrintServiceWindow { get; set; }
+
+        #region Печать
+        [Command]
+        public void PrintPrice()
+        {
+            PrintServiceWindow = new PrintServiceWindow() { DataContext = this };
+            PrintServiceWindow.Show();
+        }
+
+        [Command]
+        public void LoadDocForPrint()
+        {
+            // Create a link and assign a data source to it.
+            // Assign your data templates to different report areas.
+            CollectionViewLink link = new CollectionViewLink();
+
+            var db = new ApplicationContext();
+            CollectionViewSource Source = new CollectionViewSource();
+  
+            SetSourceCollectttion();
+            Source.Source = SourceCollection;
+      
+            Source.GroupDescriptions.Add(new PropertyGroupDescription("ParentName"));
+
+            link.CollectionView = Source.View;
+            link.GroupInfos.Add(new GroupInfo((DataTemplate)PrintServiceWindow.Resources["CategoryTemplate"]));
+            link.DetailTemplate = (DataTemplate)PrintServiceWindow.Resources["ProductTemplate"];
+
+            // Associate the link with the Document Preview control.
+            PrintServiceWindow.preview.DocumentSource = link;
+
+            // Generate the report document 
+            // and show pages as soon as they are created.
+            link.CreateDocument(true);
+        }      
+
+        public ICollection<PrintService> SourceCollection { get; set; } = new List<PrintService>();
+
+        private void SetSourceCollectttion()
+        {
+            db.Services?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).ForEach(f => f.ForEach(
+                i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
+        }
+        #endregion
     }
+
+    public class PrintService
+    {
+        public string ParentName { get; set; }
+        public string ServiceName { get; set; }
+        public decimal? Price { get; set; }
+    }
+
 }

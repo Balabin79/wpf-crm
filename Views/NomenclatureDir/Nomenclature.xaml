@@ -82,6 +82,10 @@
                                            Command="{Binding Source={StaticResource Print}}"
                                            CommandParameter="{Binding ElementName=view}"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
+                        <dxb:BarButtonItem Content="Печать прайса" Margin="0 0 5 0"                                         
+                                           GlyphSize="Small"
+                                           Command="{Binding PrintPriceCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>

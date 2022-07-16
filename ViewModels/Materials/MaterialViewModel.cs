@@ -16,6 +16,11 @@ using Dental.ViewModels.Invoices;
 using Dental.Infrastructures.Converters;
 using Dental.Views.NomenclatureDir;
 using Nomenclature = Dental.Models.Nomenclature;
+using Dental.ViewModels.ServicePrice;
+using Dental.Views.ServicePrice;
+using DevExpress.Xpf.Printing;
+using System.Windows.Data;
+using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 
 namespace Dental.ViewModels.Materials
 {
@@ -228,5 +233,52 @@ namespace Dental.ViewModels.Materials
         private MeasureWindow MeasureWin;
 
         public void SetMeasures() => Measures = db.Measure.ToObservableCollection();
+
+        #region Печать
+        public PrintServiceWindow PrintServiceWindow { get; set; }
+
+        [Command]
+        public void PrintPrice()
+        {
+            PrintServiceWindow = new PrintServiceWindow() { DataContext = this };
+            PrintServiceWindow.Show();
+        }
+
+        [Command]
+        public void LoadDocForPrint()
+        {
+            // Create a link and assign a data source to it.
+            // Assign your data templates to different report areas.
+            CollectionViewLink link = new CollectionViewLink();
+
+            var db = new ApplicationContext();
+            CollectionViewSource Source = new CollectionViewSource();
+
+            SetSourceCollectttion();
+            Source.Source = SourceCollection;
+
+            Source.GroupDescriptions.Add(new PropertyGroupDescription("ParentName"));
+
+            link.CollectionView = Source.View;
+            link.GroupInfos.Add(new GroupInfo((DataTemplate)PrintServiceWindow.Resources["CategoryTemplate"]));
+            link.DetailTemplate = (DataTemplate)PrintServiceWindow.Resources["ProductTemplate"];
+
+            // Associate the link with the Document Preview control.
+            PrintServiceWindow.preview.DocumentSource = link;
+
+            // Generate the report document 
+            // and show pages as soon as they are created.
+            link.CreateDocument(true);
+        }
+
+        public ICollection<PrintService> SourceCollection { get; set; } = new List<PrintService>();
+
+        private void SetSourceCollectttion()
+        {
+            db.Nomenclature?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).ForEach(f => f.ForEach(
+                i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
+        }
+        #endregion
     }
+
 }
