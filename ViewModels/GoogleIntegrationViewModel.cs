@@ -28,6 +28,8 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Settings = db.Settings.FirstOrDefault() ?? new Settings();
+                IsReadOnly = Settings.Id != 0;
+                FieldsValues = Settings.GetFieldsValues();
             }
             catch (Exception e)
             {
@@ -42,18 +44,54 @@ namespace Dental.ViewModels
             set { SetProperty(() => Settings, value); }
         }
 
-
-
-        /// <summary>
-        /// /////////////////////////
-        /// </summary>
-
-
-        public bool IsEnabled
+        public bool IsReadOnly
         {
-            get { return GetProperty(() => IsEnabled); }
-            set { SetProperty(() => IsEnabled, value); }
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
         }
+
+        public string FieldsValues
+        {
+            get { return GetProperty(() => FieldsValues); }
+            set { SetProperty(() => FieldsValues, value); }
+        }
+
+        [Command]
+        public void Editable() => IsReadOnly = !IsReadOnly;
+
+        [Command]
+        public void Save()
+        {
+            try
+            {
+                if (Settings?.Id == 0) db.Settings.Add(Settings);
+                if (db.SaveChanges() > 0) new Notification() { Content = "Настройки интеграции сохранены!" }.run();
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        [Command]
+        public void Delete()
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить настройки интеграции Google!",messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                if (response.ToString() == "No") return;
+                var model = db.Settings.FirstOrDefault();
+                if (model == null) return;
+                db.Settings.Remove(model);
+                if (db.SaveChanges() > 0) new Notification() { Content = "Настройки интеграции удалены!" }.run();
+                Settings = new Settings();
+
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При удалении аккаунта Google произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
 
     }
 }

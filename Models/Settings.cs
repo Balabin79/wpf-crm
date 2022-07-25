@@ -20,5 +20,11 @@ namespace Dental.Models
         public string ContactGroupForClients { get; set; } = "Контакты клиентов";
         public string DirectoryNameForEmployeeFiles { get; set; } = "Файлы сотрудников";
         public string DirectoryNameForClientFiles { get; set; } = "Файлы клиентов";
+
+        public string GetFieldsValues()
+        {
+            return "";
+            //GetHashCode GoogleAccount
+        }
     }
 }

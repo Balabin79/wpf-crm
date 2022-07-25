@@ -51,18 +51,33 @@
 
                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Аккаунт Google" Margin="0 0 5 0"                                         
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Content="Закрыть для редактирования" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding EditableCommand}"/>
+
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Content="Редактировать данные" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="24,24"
+                                           Command="{Binding EditableCommand}"/>
+                        <dxb:BarButtonItem Content="Сохранить"                                         
                                            GlyphSize="Small"
-                                           Command="{Binding OpenGoogleAccountFormCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Settings.svg}" />
-                        <dxb:BarButtonItem Content="Добавить контакт" Margin="0 0 5 0"                                         
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Settings.GoogleAccount)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Command="{Binding SaveCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" />
+                        <dxb:BarItemSeparator/>
+                        <dxb:BarButtonItem Content="Удалить аккаунт" Margin="0 0 5 0" 
+                                           IsEnabled="{DXBinding Expr='Settings.Id != 0 and !IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding Path=GoogleContactViewModel.OpenContactFormCommand}"
-                                           Glyph="pack://application:,,,/Resources/Icons/svg/gmail-mail.svg" />
-                        <dxb:BarButtonItem Content="Управление интеграциями"                                          
-                                           GlyphSize="Small"
-                                           Command="{Binding Path=GoogleContactViewModel.OpenContactFormCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Business_Diagram.svg}" />
+                                           Command="{Binding DeleteAccountCommand}" />
+
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
@@ -82,10 +97,13 @@
                             MaskType="RegEx"
                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
                             ValidateOnTextInput="True"
+                                                  IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                             Text="{Binding Settings.GoogleAccount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem  Label="Включить Google - интеграцию:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:CheckEdit EditValue="{Binding Path=SettingsViewModel.IsUseGoogleIntegration, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                    <dxe:CheckEdit 
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
+                                        EditValue="{Binding Settings.IsUseGoogleIntegration, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                          UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
@@ -98,6 +116,7 @@
                                 <dxlc:LayoutItem  Label="Загрузка расписаний через указанный временной интервал (мин.):" LabelPosition="Top" HorizontalAlignment="Stretch">
                                     <dxe:TextEdit 
                             Mask="d" MaskType="Numeric"
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                             Text="{Binding Settings.UpdateInterval, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
@@ -108,11 +127,13 @@
                             </GroupBox.Header>
                             <dxlc:LayoutGroup Orientation="Vertical" >
                                 <dxlc:LayoutItem  Label="Название группы контактов для сотрудников:" LabelPosition="Top" HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit 
+                                    <dxe:TextEdit
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                           Text="{Binding Settings.ContactGroupForEmployees, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem  Label="Название группы контактов для клиентов:" LabelPosition="Top" HorizontalAlignment="Stretch">
                                     <dxe:TextEdit 
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                          Text="{Binding Settings.ContactGroupForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
@@ -125,27 +146,16 @@
                             <dxlc:LayoutGroup Orientation="Vertical" >
                                 <dxlc:LayoutItem  Label="Название корневой директории для файлов сотрудников:" LabelPosition="Top" HorizontalAlignment="Stretch">
                                     <dxe:TextEdit 
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                           Text="{Binding Settings.DirectoryNameForEmployeeFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem  Label="Название корневой директории для файлов клиентов:" LabelPosition="Top" HorizontalAlignment="Stretch">
                                     <dxe:TextEdit 
+                                        IsEnabled="{DXBinding Expr='!IsReadOnly'}"
                          Text="{Binding Settings.DirectoryNameForClientFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
                         </GroupBox>
-
-                        <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 10 0 0">
-                            <dx:SimpleButton  HorizontalAlignment="Left"
-                    Height="23" Content="Удалить аккаунт" 
-                    IsEnabled="{DXBinding Expr='@e(GoogleAccount).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountDeleteCommand}" />
-
-                            <dx:SimpleButton  HorizontalAlignment="Right"
-                    Height="23" Content="Сохранить" 
-                    IsEnabled="{DXBinding Expr='@e(GoogleAccount).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountSaveCommand}" />
-            
-                        </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
                 </GroupBox>
             </ScrollViewer>
