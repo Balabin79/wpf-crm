@@ -19,16 +19,6 @@ using Dental.ViewModels.Invoices;
 using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;
-using System.ComponentModel;
-
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 
 namespace Dental.ViewModels.ServicePrice
@@ -209,7 +199,7 @@ namespace Dental.ViewModels.ServicePrice
             set { SetProperty(() => ServiceVM, value); }
         }
         /**/
-        public PrintServiceWindow PrintServiceWindow { get; set; }
+
 
         #region Печать
         [Command]
@@ -225,8 +215,6 @@ namespace Dental.ViewModels.ServicePrice
             // Create a link and assign a data source to it.
             // Assign your data templates to different report areas.
             CollectionViewLink link = new CollectionViewLink();
-
-            var db = new ApplicationContext();
             CollectionViewSource Source = new CollectionViewSource();
   
             SetSourceCollectttion();
@@ -253,6 +241,8 @@ namespace Dental.ViewModels.ServicePrice
             db.Services?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).ForEach(f => f.ForEach(
                 i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
         }
+
+        public PrintServiceWindow PrintServiceWindow { get; set; }
         #endregion
     }
 

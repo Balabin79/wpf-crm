@@ -11,6 +11,9 @@
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+        xmlns:local="clr-namespace:Dental.Views.Integration.Google" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="B6 Sheduler">
@@ -20,6 +23,7 @@
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:GoogleIntegrationViewModel x:Key="vm"/>
+                    <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg" x:Key="sc"/>
@@ -65,128 +69,85 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dxg:GridControl  AutoGenerateColumns="None" MaxHeight="2000" Name="gridAd"  
-                                  ItemsSource="{Binding GoogleContacts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Margin="2">
+                <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+                    <dxlc:LayoutGroup Orientation="Vertical"  Margin="0 0 0 5" VerticalAlignment="Top">
 
-                    <dxg:GridControl.View>
-                        <dxg:TableView                   
-                            x:Name="viewAd"
-                            ShowTotalSummary="False" 
-                            UseLegacyFilterPanel="True"
-                            ShowSearchPanelMode="Always"
-                            SearchPanelAllowFilter="True"
-                            AutoWidth="True" 
-                            PrintAutoWidth="True"
-                            BestFitModeOnSourceChange="VisibleRows"            
-                            NavigationStyle="Cell"
-                            AllowScrollToFocusedRow="True" 
-                            VerticalScrollbarVisibility="Auto"
-                            AllowPrintColumnHeaderImage="True"
-                            ShowGroupPanel="False"
-                            >
-                            <dxg:TableView.InputBindings>
-                                <KeyBinding Key="N" Modifiers="Ctrl" 
-                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}"/>
+                        <GroupBox VerticalAlignment="Top" Margin="0 0 0 10">
+                            <GroupBox.Header>
+                                <TextBlock Text="Настройки Google-аккаунта" FontWeight="DemiBold"/>
+                            </GroupBox.Header>
+                            <dxlc:LayoutGroup Orientation="Vertical"  Margin="0 0 2 0">
+                                <dxlc:LayoutItem  Label="Google-аккаунт* (Email):" LabelPosition="Top" HorizontalAlignment="Stretch" IsRequired="True">
+                                    <dxe:TextEdit Name="GoogleAccount"
+                            MaskType="RegEx"
+                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                            ValidateOnTextInput="True"
+                            Text="{Binding Settings.GoogleAccount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Включить Google - интеграцию:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:CheckEdit EditValue="{Binding Path=SettingsViewModel.IsUseGoogleIntegration, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                         UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </GroupBox>
+                        <GroupBox  Margin="0 0 0 10">
+                            <GroupBox.Header>
+                                <TextBlock Text="Настройка расписания" FontWeight="DemiBold"/>
+                            </GroupBox.Header>
+                            <dxlc:LayoutGroup Orientation="Vertical" >
+                                <dxlc:LayoutItem  Label="Загрузка расписаний через указанный временной интервал (мин.):" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:TextEdit 
+                            Mask="d" MaskType="Numeric"
+                            Text="{Binding Settings.UpdateInterval, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </GroupBox>
+                        <GroupBox Margin="0 0 0 10">
+                            <GroupBox.Header>
+                                <TextBlock Text="Контакты" FontWeight="DemiBold"/>
+                            </GroupBox.Header>
+                            <dxlc:LayoutGroup Orientation="Vertical" >
+                                <dxlc:LayoutItem  Label="Название группы контактов для сотрудников:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:TextEdit 
+                          Text="{Binding Settings.ContactGroupForEmployees, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Название группы контактов для клиентов:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:TextEdit 
+                         Text="{Binding Settings.ContactGroupForClients, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </GroupBox>
 
-                                <KeyBinding Key="E" Modifiers="Ctrl" 
-                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+                        <GroupBox>
+                            <GroupBox.Header>
+                                <TextBlock Text="Google - диск" FontWeight="DemiBold"/>
+                            </GroupBox.Header>
+                            <dxlc:LayoutGroup Orientation="Vertical" >
+                                <dxlc:LayoutItem  Label="Название корневой директории для файлов сотрудников:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:TextEdit 
+                          Text="{Binding Settings.DirectoryNameForEmployeeFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem  Label="Название корневой директории для файлов клиентов:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                                    <dxe:TextEdit 
+                         Text="{Binding Settings.DirectoryNameForClientFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </GroupBox>
 
-                                <KeyBinding Key="Delete" 
-                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
-                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
-                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                            CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+                        <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 10 0 0">
+                            <dx:SimpleButton  HorizontalAlignment="Left"
+                    Height="23" Content="Удалить аккаунт" 
+                    IsEnabled="{DXBinding Expr='@e(GoogleAccount).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountDeleteCommand}" />
 
-
-                            </dxg:TableView.InputBindings>
-
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                                    DataContext="{Binding Source={StaticResource vm}}"
-                                                    KeyGesture="Ctrl+N" Content="Создать"  
-                                                    Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                                   />
-
-                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
-                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Edit.svg}" 
-                                                   DataContext="{Binding Source={StaticResource vm}}"
-                                                   KeyGesture="Ctrl+E" Content="Редактировать"  
-                                                   Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}" />
-
-                                <dxb:BarButtonItem Content="Удалить" 
-                                                   Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
-                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}" 
-                                                   KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
-                                                   Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" DataContext="{Binding Source={StaticResource vm}}"/>
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-
-                    <dxg:GridColumn FieldName="Email" Header="Email"  MinWidth="200" Width="1*"                                  
-                                    PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
-                                    PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
-                        <dxg:GridColumn.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
-                                    <TextBlock Text="Email" Margin="3 0 0 0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </dxg:GridColumn.HeaderTemplate>
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock  TextWrapping="Wrap" Text="{Binding Path=RowData.Row.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                    </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="Employee" Header="Сотрудник" Width="3*" AllowEditing="False"/>
-                    <dxg:GridColumn FieldName="CalendarName" Header="Название календаря" Width="3*" AllowEditing="False"/>
-
-                    <dxg:GridColumn Width="auto" AllowPrinting="False">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-
-                                    <dxb:ToolBarControl 
-                                        Caption="File" 
-                                        ShowDragWidget="False"
-                                        AllowCustomizationMenu="False" 
-                                        AllowQuickCustomization="False">
-                                        
-                                        <dxb:BarButtonItem 
-                                            Content="Статус интеграции" 
-                                            Glyph="{DXBinding Expr='RowData.Row.IsRemoteCalendarCreated > 0 ? `pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg` : `pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg` '}"
-                                            
-                                            ToolTip="{DXBinding Expr='RowData.Row.IsRemoteCalendarCreated > 0 ? `Удаленный календарь зарегистрирован` : `Удаленный календарь не зарегистрирован!`'}"
-                                            GlyphSize="Small"
-                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                        
-                                        <dxb:BarButtonItem 
-                                            Content="Редактировать" 
-                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                            GlyphSize="Small"
-                                            Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.OpenContactFormCommand}" 
-                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-
-                                        <dxb:BarButtonItem  
-                                           DataContext="{StaticResource vm}"        
-                                           Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Small"
-                                           Command="{Binding ElementName=Border, Path=DataContext.GoogleContactViewModel.ContactDeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=viewAd, Path=FocusedRow}"/>
-
-                                    </dxb:ToolBarControl>
-                                </dxb:BarContainerControl>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                    </dxg:GridColumn>
-                </dxg:GridControl>
+                            <dx:SimpleButton  HorizontalAlignment="Right"
+                    Height="23" Content="Сохранить" 
+                    IsEnabled="{DXBinding Expr='@e(GoogleAccount).ValidationError==null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 VerticalContentAlignment="Center" Command="{Binding GoogleAccountSaveCommand}" />
+            
+                        </dxlc:LayoutGroup>
+                    </dxlc:LayoutGroup>
+                </GroupBox>
             </ScrollViewer>
         </Grid>
     </Border>

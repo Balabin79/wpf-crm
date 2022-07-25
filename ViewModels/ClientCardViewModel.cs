@@ -17,6 +17,9 @@ using Dental.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Printing;
 using Dental.Services.Files;
+using Dental.Views.PatientCard;
+using System.Windows.Data;
+using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 
 namespace Dental.ViewModels
 {
@@ -224,5 +227,46 @@ namespace Dental.ViewModels
             set { SetProperty(() => AdditionalFieldsVisible, value); }
         }
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
+
+        #region Печать
+        [Command]
+        public void Print()
+        {
+            PrintClientWindow = new PrintClientWindow() { DataContext = this };
+            PrintClientWindow.Show();
+        }
+
+        [Command]
+        public void LoadDocForPrint()
+        {
+            // Create a link and assign a data source to it.
+            // Assign your data templates to different report areas.
+            CollectionViewLink link = new CollectionViewLink();
+            CollectionViewSource Source = new CollectionViewSource();
+
+            SetSourceCollectttion();
+            Source.Source = SourceCollection;
+
+
+            link.CollectionView = Source.View;
+            link.ReportHeaderTemplate = (DataTemplate)PrintClientWindow.Resources["HeaderTemplate"];
+            link.DetailTemplate = (DataTemplate)PrintClientWindow.Resources["DetailTemplate"];
+
+            // Associate the link with the Document Preview control.
+            PrintClientWindow.preview.DocumentSource = link;
+
+            // Generate the report document 
+            // and show pages as soon as they are created.
+            link.CreateDocument(true);
+        }
+
+        public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
+
+        private void SetSourceCollectttion()
+        {
+            SourceCollection.Add(Model);
+        }
+        public PrintClientWindow PrintClientWindow { get; set; }
+        #endregion
     }
 }

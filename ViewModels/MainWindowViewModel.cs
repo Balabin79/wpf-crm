@@ -10,6 +10,9 @@ using Dental.Services.Google;
 using Google.Apis.Calendar.v3.Data;
 using System.IO;
 using System.Threading.Tasks;
+using Dental.Services.GoogleIntagration;
+using Service = Dental.Services.GoogleIntagration.Contacts.GoogleContacts;
+using Dental.Services.GoogleIntagration.Calendar;
 
 namespace Dental.ViewModels
 {
@@ -31,22 +34,30 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public async void OpenHelpForm()
+        public void OpenHelpForm()
         {
             try
             {
-                var service = new GoogleService().Get();
+                var service = new Service();
+                //service.List();
+                service.CreateGroup("Тест3");
+            //    var t = await r;
+                var d = 10;
+                //var service = new GoogleCalendar();
+               // service.GetList();
+
+                /*var service = new GoogleService().Get();
                 var list = new GoogleCalendarList(service, new Notification());
                 var task =  list.ListAsync();
-                var task2 = list.Wait();
-                
-                //               HelpWin = new HelpWindow();
+                var task2 = list.Wait();*/
+
+                //   HelpWin = new HelpWindow();
                 //   HelpWin.ShowDialog();
-                new Notification().ShowMsgError("1");
+                /*new Notification().ShowMsgError("1");
                 CalendarList = await task;
                 await task2;
-                new Notification().ShowMsgError("2");
-                
+                new Notification().ShowMsgError("2");*/
+
             }           
             catch (FileNotFoundException e)
             {

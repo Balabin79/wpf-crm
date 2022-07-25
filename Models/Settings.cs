@@ -8,15 +8,17 @@ namespace Dental.Models
     [Table("Settings")]
     public class Settings : AbstractBaseModel
     {
-        public string KeyName { get; set; } = "google_account";
-        public string Key { get; set; }
-        public string Value { get; set; }
+        [Required(ErrorMessage = @"Поле ""Аккаунт Google"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Аккаунт Google"" не более 255 символов")]
+        [EmailAddress(ErrorMessage = @"В поле ""Аккаунт Google"" введено некорректное значение")]
+        public string GoogleAccount { get; set; }
+        public int? IsUseGoogleIntegration { get; set; } = 0;
 
-        public ISettings Copy(ISettings settings)
-        {
-            settings.Key = Key;
-            settings.Value = Value;
-            return settings;
-        }
+        public int? UpdateInterval { get; set; } = 5;
+
+        public string ContactGroupForEmployees { get; set; } = "Контакты сотрудников";
+        public string ContactGroupForClients { get; set; } = "Контакты клиентов";
+        public string DirectoryNameForEmployeeFiles { get; set; } = "Файлы сотрудников";
+        public string DirectoryNameForClientFiles { get; set; } = "Файлы клиентов";
     }
 }
