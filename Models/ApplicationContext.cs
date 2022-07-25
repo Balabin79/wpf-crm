@@ -82,6 +82,10 @@ namespace Dental.Models
         public DbSet<AdditionalEmployeeValue> AdditionalEmployeeValue { get; set; }   
         public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }   
 
+        public DbSet<ClientContactsQueue> ClientContactsQueue { get; set; }   
+        public DbSet<EmployeeContactsQueue> EmployeeContactsQueue { get; set; }   
+        public DbSet<ClientFilesQueue> ClientFilesQueue { get; set; }   
+        public DbSet<EmployeeFilesQueue> EmployeeFilesQueue { get; set; }   
         public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }   
     }
 }

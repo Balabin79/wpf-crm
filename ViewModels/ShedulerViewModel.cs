@@ -18,6 +18,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm;
 using Dental.Services.Google;
 using DevExpress.Xpf.Scheduling;
+using static Dental.Models.Base.AbstractBaseQueue;
 
 namespace Dental.ViewModels
 {

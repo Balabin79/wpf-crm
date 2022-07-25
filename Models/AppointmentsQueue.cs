@@ -9,14 +9,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("AppointmentsQueue")]
-    public class AppointmentsQueue : AbstractBaseModel
+    public class AppointmentsQueue : AbstractBaseQueue
     {
-        public int? AppointmentId { get; set; }
-        public int? EventTypeId { get; set; } = 0;
-        public int? SendingStatusId { get; set; } = 0;
+        public int? AppointmentId { get; set; }        
         public string DateTime { get; set; }
     }
 
-    public enum EventType { Added = 0, Edited = 1, Removed = 2};
-    public enum SendingStatus { New = 0, Sended = 1, Error = 2};
 }
