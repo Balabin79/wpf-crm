@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Dental.Services
 {
-    class PingService
+    public class PingService
     {
         private readonly string host = "google.com";
         public bool IsNetworkAvailable()
