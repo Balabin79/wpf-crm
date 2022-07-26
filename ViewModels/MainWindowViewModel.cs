@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Dental.Services.GoogleIntagration;
 using Service = Dental.Services.GoogleIntagration.Contacts.GoogleContacts;
 using Dental.Services.GoogleIntagration.Calendar;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -38,9 +39,11 @@ namespace Dental.ViewModels
         {
             try
             {
-                var service = new Service();
+                var ping = new PingService();
+                var res = ping.IsNetworkAvailable();
+                //var service = new Service();
                 //service.List();
-                service.CreateGroup("Тест3");
+                //service.CreateGroup("Тест5");
             //    var t = await r;
                 var d = 10;
                 //var service = new GoogleCalendar();

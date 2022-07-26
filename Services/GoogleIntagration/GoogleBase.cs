@@ -20,9 +20,7 @@ namespace Dental.Services.GoogleIntagration
     {
         public const string APPLICATION_NAME = "B6 Sheduler";
         protected readonly ApplicationContext db;
-        protected readonly string GoogleAccount;
-        protected readonly string OrgName;
-        protected int? IsUseGoogleIntegration { get; set; }
+        protected readonly Settings GoogleAccount;
         protected UserCredential Credential { get; set; }
         protected readonly string[] scopes = new string[] 
         {
@@ -36,10 +34,8 @@ namespace Dental.Services.GoogleIntagration
             try
             {
                 db = new ApplicationContext();
-                var settings = db.Settings.FirstOrDefault();
-                if (settings == null || settings.IsUseGoogleIntegration == null || settings.GoogleAccount == null || scopes.Count() == 0) return;
-                GoogleAccount = settings.GoogleAccount;
-                IsUseGoogleIntegration = settings.IsUseGoogleIntegration;
+                GoogleAccount = db.Settings.FirstOrDefault();
+                if (GoogleAccount == null || GoogleAccount?.IsUseGoogleIntegration == null || GoogleAccount?.GoogleAccount == null || scopes.Count() == 0) return;
                 Init();
             }
             catch(Exception e)
@@ -52,11 +48,7 @@ namespace Dental.Services.GoogleIntagration
         {
             try
             {
-                //string PathTo = @"pack://application:,,,/Resources/Auth/credentials.json";
-                // string PathTo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6\\Settings\\", "credentials.json");
                 string PathTo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Resources\Auth", "credentials.json");
-                // Application.StartupPath + PathTo
-                // Load client secrets.
                 using (var stream = new FileStream(PathTo, FileMode.Open, FileAccess.Read))
                 {
                     string credPath = "token.json";
@@ -64,7 +56,7 @@ namespace Dental.Services.GoogleIntagration
                     Credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                         GoogleClientSecrets.FromStream(stream).Secrets,
                         scopes,
-                        GoogleAccount,
+                        GoogleAccount.GoogleAccount,
                         CancellationToken.None,
                         new FileDataStore(credPath, true));
                 }
@@ -74,27 +66,5 @@ namespace Dental.Services.GoogleIntagration
 
             }
         }
-    
-        /*
-        public CalendarService Get()
-        {
-            string PathTo = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6\\Settings\\Google", "credentials.json");
-            UserCredential credential;
-
-            // Load client secrets.
-            using (var stream = new FileStream(PathTo, FileMode.Open, FileAccess.Read))
-            {
-
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.FromStream(stream).Secrets,
-                    CalendarScopes, "alexbalabin79@gmail.com",
-                    CancellationToken.None, new FileDataStore(credPath, true)).Result;
-            }
-
-            // Create Google Calendar API service.
-            return new CalendarService(new BaseClientService.Initializer { HttpClientInitializer = credential, ApplicationName = ApplicationName });
-        */
-        //}
     }
 }
