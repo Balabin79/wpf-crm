@@ -20,6 +20,7 @@ using Dental.Services.Files;
 using Dental.Views.PatientCard;
 using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -76,6 +77,7 @@ namespace Dental.ViewModels
             try
             {
                 bool notificationShowed = false;
+                bool contactNeedUpdate = ContactNeedUpdate();
                 ClientInfoViewModel.Copy(Model);
                 if (Model.Id == 0) // новый элемент
                 {
@@ -87,6 +89,9 @@ namespace Dental.ViewModels
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
+                    
+                    // ставим в очередь
+                    AddContactInQueue((int)QueueStatuses.EventType.Added);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -114,6 +119,7 @@ namespace Dental.ViewModels
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
+                    if (contactNeedUpdate) AddContactInQueue((int)QueueStatuses.EventType.Edited);
                 }
                 if (Model != null) 
                 { 
@@ -156,6 +162,7 @@ namespace Dental.ViewModels
                 db.InvoiceMaterialItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
+                AddContactInQueue((int)QueueStatuses.EventType.Removed);
                 VmList.ClientCardWin.Close();
             }
             catch
@@ -227,6 +234,31 @@ namespace Dental.ViewModels
             set { SetProperty(() => AdditionalFieldsVisible, value); }
         }
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
+
+        private void AddContactInQueue(int eventType)
+        {
+            if (Model.IsRemoteContactCreated != true && eventType != (int)QueueStatuses.EventType.Removed) return;
+            db.ClientContactsQueue.Add(new ClientContactsQueue()
+            {
+                ClientId = Model.Id,
+                SendingStatusId = (int)QueueStatuses.SendingStatus.New,
+                EventTypeId = eventType
+            });
+            db.SaveChanges();
+        }
+
+        private bool ContactNeedUpdate()
+        {
+            try
+            {
+                if (Model.Id == 0) return false;
+                return ClientInfoViewModel.FirstName != Model.FirstName || ClientInfoViewModel.LastName != Model.LastName || ClientInfoViewModel.MiddleName != Model.MiddleName || ClientInfoViewModel.BirthDate != Model.BirthDate || ClientInfoViewModel.Phone != Model.Phone || ClientInfoViewModel.Sex != Model.Sex || ClientInfoViewModel.Email != Model.Email;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
 
         #region Печать
         [Command]

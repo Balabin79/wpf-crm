@@ -53,8 +53,5 @@ namespace Dental.Models.Base
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
-
-        public enum EventType { Added = 0, Edited = 1, Removed = 2 };
-        public enum SendingStatus { New = 0, Sended = 1, Error = 2 };
     }
 }

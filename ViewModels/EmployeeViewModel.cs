@@ -70,6 +70,7 @@ namespace Dental.ViewModels
             try
             {
                 bool notificationShowed = false;
+                bool contactNeedUpdate = ContactNeedUpdate();
                 EmployeeInfoViewModel.Copy(Model);
                 SavePhoto();
                 if (Model.Id == 0) // новый элемент
@@ -81,6 +82,9 @@ namespace Dental.ViewModels
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     new Notification() { Content = "Новый сотрудник успешно записан в базу данных!" }.run();
                     notificationShowed = true;
+
+                    // ставим в очередь
+                    AddContactInQueue((int)QueueStatuses.EventType.Added);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -108,6 +112,7 @@ namespace Dental.ViewModels
                         new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
+                    if (contactNeedUpdate) AddContactInQueue((int)QueueStatuses.EventType.Edited);
                 }
                 if (Model != null)
                 {
@@ -146,6 +151,7 @@ namespace Dental.ViewModels
                 if (item != null) VmList.Collection.Remove(item);
 
                 db.SaveChanges();
+                AddContactInQueue((int)QueueStatuses.EventType.Removed);
                 VmList.EmployeeWin.Close();
             }
             catch
@@ -216,9 +222,34 @@ namespace Dental.ViewModels
         }
         
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
-        
+
+        private void AddContactInQueue(int eventType)
+        {
+            if (Model.IsRemoteContactCreated != 1 && eventType != (int)QueueStatuses.EventType.Removed) return;
+            db.EmployeeContactsQueue.Add(new EmployeeContactsQueue()
+            {
+                EmployeeId = Model.Id,
+                SendingStatusId = (int)QueueStatuses.SendingStatus.New,
+                EventTypeId = eventType
+            });
+            db.SaveChanges();
+        }
+
+        private bool ContactNeedUpdate()
+        {
+            try
+            {
+                if (Model.Id == 0) return false;
+                return EmployeeInfoViewModel.FirstName != Model.FirstName || EmployeeInfoViewModel.LastName != Model.LastName || EmployeeInfoViewModel.MiddleName != Model.MiddleName || EmployeeInfoViewModel.BirthDate != Model.BirthDate || EmployeeInfoViewModel.Phone != Model.Phone || EmployeeInfoViewModel.Sex != Model.Sex || EmployeeInfoViewModel.Email != Model.Email;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         #region Управление фото
-  
+
         private string GetPathToPhoto() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6\\Files", Model?.Guid, "Photo");
         
         private void PhotoLoading()

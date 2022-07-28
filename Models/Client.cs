@@ -82,6 +82,13 @@ namespace Dental.Models
         }
         private string phone;
 
+        public string Email
+        {
+            get => _Email;
+            set => _Email = value?.Trim();
+        }
+        private string _Email;
+
         public string Address
         {
             get => address;
@@ -95,6 +102,7 @@ namespace Dental.Models
 
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
+        public bool? IsRemoteContactCreated { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }

@@ -86,6 +86,10 @@ namespace Dental.Models
         public DbSet<EmployeeContactsQueue> EmployeeContactsQueue { get; set; }   
         public DbSet<ClientFilesQueue> ClientFilesQueue { get; set; }   
         public DbSet<EmployeeFilesQueue> EmployeeFilesQueue { get; set; }   
-        public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }   
+        public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }  
+        
+
+        public DbSet<GoogleClientsContacts> GoogleClientsContacts { get; set; }   
+        public DbSet<GoogleEmployeesContacts> GoogleEmployeesContacts { get; set; }   
     }
 }

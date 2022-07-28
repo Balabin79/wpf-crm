@@ -208,7 +208,6 @@ namespace Dental.ViewModels
 
         public Employee Copy(Employee employee)
         {
-            employee.Id = Id;
             employee.Image = Image;
             employee.Photo = Photo;
             employee.Guid = Guid;

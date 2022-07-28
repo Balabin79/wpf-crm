@@ -24,6 +24,8 @@ namespace Dental.ViewModels
             Address = client.Address;
             Note = client.Note;
             IsInArchive = client.IsInArchive;
+            IsRemoteContactCreated = client.IsRemoteContactCreated;
+            Email = client.Email;
             PassportSeries = client.PassportSeries;
             PassportNo = client.PassportNo;
             PassportIssuanceDate = client.PassportIssuanceDate;
@@ -68,6 +70,13 @@ namespace Dental.ViewModels
         public string BirthDate { get; set; }
         public string Sex { get; set; }
 
+        [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
+        public string Email
+        {
+            get { return GetProperty(() => Email); }
+            set { SetProperty(() => Email, value); }
+        }
+
         [Phone]
         public string Phone
         {
@@ -88,6 +97,7 @@ namespace Dental.ViewModels
         }
 
         public bool? IsInArchive { get; set; } = false;
+        public bool? IsRemoteContactCreated { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
@@ -120,10 +130,12 @@ namespace Dental.ViewModels
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
                 StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate,  "Дата выдачи паспорта");
                 StringParamsIsEquel(WhomIssued, other.WhomIssued, "Кем выдан");
+                StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(PassportSeries, other.PassportSeries, "Серия паспорта");
                 StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
+                if (this.IsRemoteContactCreated != other.IsRemoteContactCreated) FieldsChanges.Add("Добавить в Google-контакты");
             }
             return FieldsChanges.Count == 0 ;
         }
@@ -151,9 +163,11 @@ namespace Dental.ViewModels
             client.BirthDate = BirthDate;
             client.Sex = Sex;
             client.Phone = Phone;
+            client.Email = Email;
             client.Address = Address;
             client.Note = Note;
             client.IsInArchive = IsInArchive;
+            client.IsRemoteContactCreated = IsRemoteContactCreated;
             client.PassportSeries = PassportSeries;
             client.PassportNo = PassportNo;
             client.PassportIssuanceDate = PassportIssuanceDate;

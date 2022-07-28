@@ -19,6 +19,7 @@ using DevExpress.Mvvm;
 using Dental.Services.Google;
 using DevExpress.Xpf.Scheduling;
 using static Dental.Models.Base.AbstractBaseQueue;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -81,7 +82,7 @@ namespace Dental.ViewModels
                 db.Entry(item).State = EntityState.Added;
                 db.SaveChanges();
 
-                var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Added, SendingStatusId = (int)SendingStatus.New };
+                var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)QueueStatuses.EventType.Added, SendingStatusId = (int)QueueStatuses.SendingStatus.New };
                 db.AppointmentsQueue.Add(queue);
                 db.SaveChanges();
                 new AppointmentsSender().Run();
@@ -104,7 +105,7 @@ namespace Dental.ViewModels
                         var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
                         if (item != null) 
                         {
-                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Edited, SendingStatusId = (int)SendingStatus.New };
+                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)QueueStatuses.EventType.Edited, SendingStatusId = (int)QueueStatuses.SendingStatus.New };
                             db.AppointmentsQueue.Add(queue);
                             new AppointmentsSender().Run();
                         }
@@ -131,7 +132,7 @@ namespace Dental.ViewModels
                         if (item != null) 
                         { 
                             db.Entry(item).State = EntityState.Deleted;
-                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)EventType.Removed, SendingStatusId = (int)SendingStatus.New };
+                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)QueueStatuses.EventType.Removed, SendingStatusId = (int)QueueStatuses.SendingStatus.New };
                             db.AppointmentsQueue.Add(queue);
                             new AppointmentsSender().Run();
                         }                

@@ -18,6 +18,7 @@
               >
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:BoolIntConverter x:Key="boolConverter" />
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto"  >
         <Grid x:Name="gridMainInfo">
@@ -82,6 +83,19 @@
                     </dxe:ButtonEdit>
                 </dxlc:LayoutItem>
 
+                <dxlc:LayoutItem Label="Email" AddColonToLabel="True" LabelPosition="Top">
+                    <dxe:ButtonEdit IsTextEditable="True"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=ClientInfoViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True"
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
+                    </dxe:ButtonEdit>
+                </dxlc:LayoutItem>
+
                 <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
                     <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -130,6 +144,11 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
+                <dxlc:LayoutItem  Label="Добавить в контакты (Google):" LabelPosition="Top" HorizontalAlignment="Stretch">
+                    <dxe:CheckEdit EditValue="{Binding Path=ClientInfoViewModel.IsRemoteContactCreated, Mode=TwoWay,                                              
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </dxlc:LayoutItem>
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top" >
                         <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
@@ -137,6 +156,7 @@
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
+                
 
             </dxlc:LayoutGroup>
 
