@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static Google.Apis.PeopleService.v1.PeopleResource;
 
 namespace Dental.Services.GoogleIntagration.Contacts
 {
@@ -84,10 +85,8 @@ namespace Dental.Services.GoogleIntagration.Contacts
 
         }
 
-        public async void CreateContact()
-        {
-
-        }
+        public async Task<Person> CreateContact(Person contact) => await Service.People.CreateContact(contact).ExecuteAsync();
+        
 
         public async void DeleteContact()
         {

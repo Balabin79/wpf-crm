@@ -14,6 +14,7 @@ using Dental.Services.GoogleIntagration;
 using Service = Dental.Services.GoogleIntagration.Contacts.GoogleContacts;
 using Dental.Services.GoogleIntagration.Calendar;
 using Dental.Services;
+using Dental.Services.GoogleIntagration.Contacts;
 
 namespace Dental.ViewModels
 {
@@ -39,12 +40,16 @@ namespace Dental.ViewModels
         {
             try
             {
-                var ping = new PingService();
-                var res = ping.IsNetworkAvailable();
+                //var ping = new PingService();
+                //var res = ping.IsNetworkAvailable();
+
+
+                var integration = new ContactsIntegration();
+                integration.Run();
                 //var service = new Service();
                 //service.List();
                 //service.CreateGroup("Тест5");
-            //    var t = await r;
+                //    var t = await r;
                 var d = 10;
                 //var service = new GoogleCalendar();
                // service.GetList();

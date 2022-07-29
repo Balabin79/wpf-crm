@@ -1,4 +1,6 @@
-﻿using DevExpress.Xpf.Core;
+﻿using Dental.Models;
+using Dental.Services.GoogleIntagration.Contacts;
+using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +17,18 @@ namespace Dental.Services.GoogleIntagration
         public GoogleIntegrator()
         {
             PingService = new PingService();
+            ContactsIntegration = new ContactsIntegration();
         }
 
         public PingService PingService { get; private set; }
+        public ContactsIntegration ContactsIntegration { get; private set; }
 
         static Timer timer;
         long interval = 30000; //30 секунд
         static object synclock = new object();
         static bool sent = false;
+
+
 
         public void Init()
         {

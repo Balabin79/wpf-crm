@@ -91,7 +91,7 @@ namespace Dental.ViewModels
                     notificationShowed = true;
                     
                     // ставим в очередь
-                    AddContactInQueue((int)QueueStatuses.EventType.Added);
+                    AddContactInQueue((int)ParamEnums.EventType.Added);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -119,7 +119,7 @@ namespace Dental.ViewModels
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
-                    if (contactNeedUpdate) AddContactInQueue((int)QueueStatuses.EventType.Edited);
+                    if (contactNeedUpdate) AddContactInQueue((int)ParamEnums.EventType.Edited);
                 }
                 if (Model != null) 
                 { 
@@ -162,7 +162,7 @@ namespace Dental.ViewModels
                 db.InvoiceMaterialItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
-                AddContactInQueue((int)QueueStatuses.EventType.Removed);
+                AddContactInQueue((int)ParamEnums.EventType.Removed);
                 VmList.ClientCardWin.Close();
             }
             catch
@@ -237,11 +237,11 @@ namespace Dental.ViewModels
 
         private void AddContactInQueue(int eventType)
         {
-            if (Model.IsRemoteContactCreated != true && eventType != (int)QueueStatuses.EventType.Removed) return;
+            if (Model.IsRemoteContactCreated != true && eventType != (int)ParamEnums.EventType.Removed) return;
             db.ClientContactsQueue.Add(new ClientContactsQueue()
             {
                 ClientId = Model.Id,
-                SendingStatusId = (int)QueueStatuses.SendingStatus.New,
+                SendingStatusId = (int)ParamEnums.SendingStatus.New,
                 EventTypeId = eventType
             });
             db.SaveChanges();

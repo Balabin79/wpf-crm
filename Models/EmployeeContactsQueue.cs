@@ -12,6 +12,7 @@ namespace Dental.Models
     public class EmployeeContactsQueue : AbstractBaseQueue
     {
         public int? EmployeeId { get; set; }        
+        public Employee Employee { get; set; }        
     }
 
 }

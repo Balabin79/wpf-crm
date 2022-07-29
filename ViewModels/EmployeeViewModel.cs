@@ -84,7 +84,7 @@ namespace Dental.ViewModels
                     notificationShowed = true;
 
                     // ставим в очередь
-                    AddContactInQueue((int)QueueStatuses.EventType.Added);
+                    AddContactInQueue((int)ParamEnums.EventType.Added);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -112,7 +112,7 @@ namespace Dental.ViewModels
                         new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
-                    if (contactNeedUpdate) AddContactInQueue((int)QueueStatuses.EventType.Edited);
+                    if (contactNeedUpdate) AddContactInQueue((int)ParamEnums.EventType.Edited);
                 }
                 if (Model != null)
                 {
@@ -151,7 +151,7 @@ namespace Dental.ViewModels
                 if (item != null) VmList.Collection.Remove(item);
 
                 db.SaveChanges();
-                AddContactInQueue((int)QueueStatuses.EventType.Removed);
+                AddContactInQueue((int)ParamEnums.EventType.Removed);
                 VmList.EmployeeWin.Close();
             }
             catch
@@ -225,11 +225,11 @@ namespace Dental.ViewModels
 
         private void AddContactInQueue(int eventType)
         {
-            if (Model.IsRemoteContactCreated != 1 && eventType != (int)QueueStatuses.EventType.Removed) return;
+            if (Model.IsRemoteContactCreated != 1 && eventType != (int)ParamEnums.EventType.Removed) return;
             db.EmployeeContactsQueue.Add(new EmployeeContactsQueue()
             {
                 EmployeeId = Model.Id,
-                SendingStatusId = (int)QueueStatuses.SendingStatus.New,
+                SendingStatusId = (int)ParamEnums.SendingStatus.New,
                 EventTypeId = eventType
             });
             db.SaveChanges();

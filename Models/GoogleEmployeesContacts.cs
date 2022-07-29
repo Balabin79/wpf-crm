@@ -17,5 +17,6 @@ namespace Dental.Models
 
         public string EmployeeGuid { get; set; }
         public string ResourceId { get; set; }
+        public string ContactGroupId { get; set; }
     }
 }
