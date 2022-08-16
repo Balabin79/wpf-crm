@@ -36,79 +36,91 @@
     </Page.Resources>
     
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
-        <Grid DataContext="{StaticResource vm}"
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка клиентов"  BorderEffect="None">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+            <Grid DataContext="{StaticResource vm}"
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                <DockPanel LastChildFill="True" Grid.Row="0">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
-                    <TextBlock Text="Клиенты" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                        <TextBlock Text="Клиенты" FontSize="14" Padding="2 5 5 0" />
+                    </StackPanel>
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Добавить клиента" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Добавить клиента" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenClientCardCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
+
+                            <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
+
+                            <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormFieldsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+
+                            <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
                                            IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                        <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
                                            IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
 
-                        <dxb:BarButtonItem Content="Печать"                                      
+                            <dxb:BarButtonItem Content="Печать"                                      
                                            GlyphSize="Small"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
                                            Command="{StaticResource Print}"
                                            CommandParameter="{Binding ElementName=view}"/>
-                        <dxb:BarItemLinkSeparator />
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
+                            <dxb:BarItemLinkSeparator />
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
-                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                    
+                    <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                    
                          Margin="2"
                          MaxHeight="1800"
                          ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                         
                          dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                          ShowBorder="True">
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.GroupSummary>
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="LastName" 
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="LastName" 
                                 Header="Фамилии" 
                                 GroupIndex="0" 
                                 GroupInterval="Alphabetical" 
                                 Width="1*"/>
-                        <dxg:GridColumn FieldName="FullName"
+                            <dxg:GridColumn FieldName="FullName"
                                 Header="ФИО"                              
                                 Width="2*"
                                 UnboundType="String"
@@ -117,52 +129,52 @@
                                 PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
 
-                            <dxg:GridColumn.CellDisplayTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <dx:DXImage Height="15" Margin="0 2 0 0"  Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}" VerticalAlignment="Top"/>
+                                <dxg:GridColumn.CellDisplayTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <dx:DXImage Height="15" Margin="0 2 0 0"  Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_User.svg'}" VerticalAlignment="Top"/>
 
-                                        <dxe:HyperlinkEdit Margin="2 0 0 2" ToolTip="Перейти в анкету клиента"                               
+                                            <dxe:HyperlinkEdit Margin="2 0 0 2" ToolTip="Перейти в анкету клиента"                               
                                             Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding Path=Row.Id, Mode=OneWay}">
-                                            <dxe:HyperlinkEdit.Template>
-                                                <ControlTemplate>
-                                                    <TextBlock Height="19" Margin="0 2 0 0" VerticalAlignment="Top" Style="{StaticResource HoverUnderlineStyle}" 
+                                                <dxe:HyperlinkEdit.Template>
+                                                    <ControlTemplate>
+                                                        <TextBlock Height="19" Margin="0 2 0 0" VerticalAlignment="Top" Style="{StaticResource HoverUnderlineStyle}" 
                                                         ToolTip="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         TextTrimming="CharacterEllipsis" TextWrapping="Wrap"
                                                         Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                </ControlTemplate>
-                                            </dxe:HyperlinkEdit.Template>
-                                            <dxe:HyperlinkEdit.InputBindings>
-                                                <MouseBinding
+                                                    </ControlTemplate>
+                                                </dxe:HyperlinkEdit.Template>
+                                                <dxe:HyperlinkEdit.InputBindings>
+                                                    <MouseBinding
                                                     MouseAction="LeftClick"
                                                     Command="{Binding Source={StaticResource vm}, Path=OpenClientCardCommand}"
                                                     CommandParameter="{Binding Path=Row.Id, Mode=OneWay}"
                                                     />
-                                            </dxe:HyperlinkEdit.InputBindings>
-                                        </dxe:HyperlinkEdit>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellDisplayTemplate>
-                        </dxg:GridColumn>
+                                                </dxe:HyperlinkEdit.InputBindings>
+                                            </dxe:HyperlinkEdit>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellDisplayTemplate>
+                            </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" 
+                            <dxg:GridColumn FieldName="Address"  Width="3*" Header="Адрес" 
                                 PrintCellStyle="{StaticResource ResourceKey=TextEditColumnPrintingStyle}"
                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}">
-                            <dxg:GridColumn.CellDisplayTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Path=Row.Address}" Margin="0 2 0 0" TextWrapping="Wrap"/>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellDisplayTemplate>
-                        </dxg:GridColumn>
-                    </dxg:GridControl.Columns>
+                                <dxg:GridColumn.CellDisplayTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Row.Address}" Margin="0 2 0 0" TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellDisplayTemplate>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
 
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
-                        <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.View>
-                        <dxg:TableView                           
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
+                            <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView                           
                             ShowVerticalLines="False"
                             ShowColumnHeaders="False"
                             ShowGroupPanel="False"
@@ -176,27 +188,28 @@
                             NavigationStyle="Row"
                             AllowPrintColumnHeaderImage="True"
                             HighlightItemOnHover="True">
-                            <dxg:TableView.InputBindings>
-                                <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
-                                <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <KeyBinding Key="Return" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                            </dxg:TableView.InputBindings>
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                <dxg:TableView.InputBindings>
+                                    <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
+                                    <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                    <KeyBinding Key="Return" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                </dxg:TableView.InputBindings>
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"
                                             CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                    <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту клиента"  
                                             Command="{Binding Path=OpenClientCardCommand}"/>
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </ScrollViewer>
-        </Grid>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </ScrollViewer>
+            </Grid>
+        </dx:LoadingDecorator>
     </Border>
 </Page>

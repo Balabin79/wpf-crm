@@ -104,6 +104,9 @@ namespace Dental.Models
         public string GoogleEmail { get; set; }
         public string CalendarName { get; set; }
 
+        public string GoogleContactGroup { get; set; }
+        public string ContactResourceName { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 

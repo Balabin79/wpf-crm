@@ -248,6 +248,9 @@
     <Compile Update="Views\AdditionalFields\CommonValuesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\EmployeeDir\GoogleSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\EmployeeDir\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -323,6 +326,10 @@
     </Page>
     <Page Update="Views\Documents\DocumentsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\EmployeeDir\GoogleSettings.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EmployeeDir\MainInfo.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

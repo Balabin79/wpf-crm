@@ -30,7 +30,7 @@
         View="GroupBox" 
         Orientation="Vertical" 
         ItemLabelsAlignment="Local"
-        Header="Услуги">
+        Header="Записи в расписании">
        
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                  ItemsSource="{Binding Path=Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 

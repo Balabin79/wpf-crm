@@ -27,28 +27,40 @@
     <Border BorderBrush="LightGray" 
             BorderThickness="1" 
             Margin="5" >
-        <Grid x:Name="gridMainorganization"  
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка карты сотрудника"  BorderEffect="None">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+            <Grid x:Name="gridMainorganization"  
               ScrollViewer.CanContentScroll="True" 
               ScrollViewer.VerticalScrollBarVisibility="Auto" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel LastChildFill="True" Grid.Row="0">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"/>
-                    <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="2 5 5 0" />
-                </StackPanel>
+                        <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="2 5 5 0" />
+                    </StackPanel>
 
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" 
                                         Caption="File" 
                                         ShowDragWidget="False"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
-                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
@@ -56,7 +68,7 @@
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
@@ -64,55 +76,60 @@
                                            CustomGlyphSize="24,24"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem  Content="Сохранить"                                   
+                            <dxb:BarButtonItem  Content="Сохранить"                                   
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(EmployeeInfoViewModel.LastName) and !string.IsNullOrEmpty(EmployeeInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{Binding SaveCommand}"/>
-                        <dxb:BarItemLinkSeparator/>
-                        <dxb:BarButtonItem  Content="Удалить" 
+                            <dxb:BarItemLinkSeparator/>
+                            <dxb:BarButtonItem  Content="Удалить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{Binding DeleteCommand}"/>
-                        <dxb:BarItemLinkSeparator />
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
-            <dxlc:LayoutControl  
+                            <dxb:BarItemLinkSeparator />
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
+                <dxlc:LayoutControl  
                     Orientation="Vertical"  
                     Background="Transparent" 
                     Padding="5" VerticalAlignment="Stretch" Grid.Row="1">
-                <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
-                    <dxlc:LayoutGroup.GroupBoxStyle>
-                        <Style TargetType="dxlc:GroupBox">
-                            <Setter Property="Background" Value="Transparent" />
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="TitleVisibility" Value="Collapsed" />
-                        </Style>
-                    </dxlc:LayoutGroup.GroupBoxStyle>
+                    <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
+                        <dxlc:LayoutGroup.GroupBoxStyle>
+                            <Style TargetType="dxlc:GroupBox">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="TitleVisibility" Value="Collapsed" />
+                            </Style>
+                        </dxlc:LayoutGroup.GroupBoxStyle>
 
-                    <dx:DXTabControl >
-                        <dx:DXTabItem Header="Административная" >
-                            <local:MainInfo DataContext="{Binding}" />
-                        </dx:DXTabItem>
+                        <dx:DXTabControl >
+                            <dx:DXTabItem Header="Административная" >
+                                <local:MainInfo DataContext="{Binding}" />
+                            </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Документы">
-                            <doc:DocumentsControl DataContext="{Binding}"/>
-                        </dx:DXTabItem>
+                            <dx:DXTabItem Header="Документы">
+                                <doc:DocumentsControl DataContext="{Binding}"/>
+                            </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                            <add:ClientControl x:Name="Fields"/>
-                        </dx:DXTabItem>
-                    </dx:DXTabControl>
-                </dxlc:LayoutGroup>
-            </dxlc:LayoutControl>
-        </Grid>
+                            <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                <add:ClientControl x:Name="Fields"/>
+                            </dx:DXTabItem>
+
+                            <dx:DXTabItem Header="Настройки в Google" >
+                                <local:GoogleSettings />
+                            </dx:DXTabItem>
+                        </dx:DXTabControl>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutControl>
+            </Grid>
+        </dx:LoadingDecorator>
     </Border>
 </Window>

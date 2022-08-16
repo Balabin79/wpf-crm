@@ -70,24 +70,12 @@ namespace Dental.Services.GoogleIntagration.Contacts
         #endregion
 
         #region Контакты
-        public async void BatchCreateContacts()
-        {
-
-        }
-
-        public async void BatchDeleteContacts()
-        {
-
-        }
-
-        public async void BatchUpdateContacts()
-        {
-
-        }
 
         public async Task<Person> CreateContact(Person contact) => await Service.People.CreateContact(contact).ExecuteAsync();
-        
 
+        public async Task<Person> GetContact(string resourceName) => await Service.People.Get(resourceName).ExecuteAsync();
+
+        
         public async void DeleteContact()
         {
 

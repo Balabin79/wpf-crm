@@ -38,11 +38,8 @@ namespace Dental.Services
         #region Общий ф-нал
         private async Task GoToPage(object p)
         {
-            if (p is object[] arr) await SlowOpacity(CreatePage(arr[0].ToString(), (int)arr[1]));
-            else
-            {
-                await SlowOpacity(CreatePage(p.ToString()));                
-            }
+            if (p is object[] arr) CurrentPage = CreatePage(arr[0].ToString(), (int)arr[1]);
+            else CurrentPage = CreatePage(p.ToString());                           
         }
 
         private Page CreatePage(string pageName, int param = -1)
@@ -73,7 +70,7 @@ namespace Dental.Services
         #endregion
 
         [Command]
-        public async void LeftMenuClick(object p)
+        public async Task LeftMenuClick(object p)
         {
             try
             {

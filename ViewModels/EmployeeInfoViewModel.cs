@@ -33,6 +33,8 @@ namespace Dental.ViewModels
             Address = employee.Address;
             Note = employee.Note;
             IsInArchive = employee.IsInArchive;
+            GoogleContactGroup = employee.GoogleContactGroup;
+            ContactResourceName = employee.ContactResourceName;
         }
 
         public int Id
@@ -159,6 +161,9 @@ namespace Dental.ViewModels
 
         public bool? IsInArchive { get; set; } = false;
 
+        public string GoogleContactGroup { get; set; }
+        public string ContactResourceName { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -227,6 +232,8 @@ namespace Dental.ViewModels
             employee.Email = Email;
             employee.Note = Note;
             employee.IsInArchive = IsInArchive;
+            employee.GoogleContactGroup = GoogleContactGroup;
+            employee.ContactResourceName = ContactResourceName;
             return employee;
         }
 

@@ -107,6 +107,9 @@ namespace Dental.Models
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
+        
+        public string GoogleContactGroup { get; set; }
+        public string ContactResourceName { get; set; }
 
         public object Clone() => (Client)this.MemberwiseClone();
       

@@ -43,61 +43,72 @@
         BorderThickness="1" 
         Margin="5" 
         dx:ThemeManager.ThemeName="Office2019White">
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка счетов"  BorderEffect="None">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+            <Grid x:Name="gridMain" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <Grid x:Name="gridMain" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/XAF/Action_Grand_Totals_Row.svg}"/>
-                    <TextBlock Text="Счета" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                        <TextBlock Text="Счета" FontSize="14" Padding="2 5 5 0" />
+                    </StackPanel>
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
-                        <dxb:BarButtonItem Content="Создать счет" Margin="0 0 5 0"                                        
+                            <dxb:BarButtonItem Content="Создать счет" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormInvoiceCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-                        <dxb:BarButtonItem Content="Шаблоны счетов"                                        
+                            <dxb:BarButtonItem Content="Шаблоны счетов"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
 
 
-                        <dxb:BarButtonItem Content="Все счета" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="Все счета" Margin="0 0 5 0"
                                            IsVisible="{DXBinding 'ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding StatusChangedCommand}"
                                            CommandParameter="1"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
 
-                        <dxb:BarButtonItem Content="Оплаченные" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="Оплаченные" Margin="0 0 5 0"
                                            IsVisible="{DXBinding 'ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding StatusChangedCommand}"
                                            CommandParameter="0"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                        <dxb:BarButtonItem Content="Не оплаченные"
+                            <dxb:BarButtonItem Content="Не оплаченные"
                                            IsVisible="{DXBinding 'ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding StatusChangedCommand}"
                                            CommandParameter="-1"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800">
 
-                <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" x:Name="grid" AllowLiveDataShaping="True"                           
+                    <dxg:GridControl  AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White" x:Name="grid" AllowLiveDataShaping="True"                           
                          AutoExpandAllGroups="False" 
                          Margin="2"
                          MaxHeight="1800"
@@ -106,141 +117,141 @@
                          dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"                                  
                          ShowBorder="True">
 
-                    <dxg:GridControl.Columns>
+                        <dxg:GridControl.Columns>
 
-                        <dxg:GridColumn  FieldName="Date" Header="Дата" GroupIndex="0" GroupInterval="DateMonth" Width="1*" 
+                            <dxg:GridColumn  FieldName="Date" Header="Дата" GroupIndex="0" GroupInterval="DateMonth" Width="1*" 
                                          AllowedSortOrders="All" DefaultSortOrder="Descending" SortOrder="Descending" AllowSorting="True" AllowColumnFiltering="True"
                                          />
 
-                        <dxg:GridColumn FieldName="Number" Header="Номер счета" GroupIndex="2" AllowedSortOrders="All" ReadOnly="True" Width="2*" >
-                            <dxg:GridColumn.GroupValueTemplate>
-                                <DataTemplate>
-                                    <TextBlock FontWeight="DemiBold"
+                            <dxg:GridColumn FieldName="Number" Header="Номер счета" GroupIndex="2" AllowedSortOrders="All" ReadOnly="True" Width="2*" >
+                                <dxg:GridColumn.GroupValueTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="DemiBold"
                                         Text="{DXBinding Expr='`Счет № ` + RowData.Row.Number + ` от ` + RowData.Row.Date + ` (` + RowData.Row.Client + `)` ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </dxg:GridColumn.GroupValueTemplate>
-                        </dxg:GridColumn>
+                                    </DataTemplate>
+                                </dxg:GridColumn.GroupValueTemplate>
+                            </dxg:GridColumn>
 
-                        <dxg:GridColumn FieldName="Invoice" Width="5*"  Header="Счета" x:Name="Invoice">
-                            <dxg:GridColumn.CellDisplayTemplate>
-                                <DataTemplate>
-                                    <Grid VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="InvoiceDetalis">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
+                            <dxg:GridColumn FieldName="Invoice" Width="5*"  Header="Счета" x:Name="Invoice">
+                                <dxg:GridColumn.CellDisplayTemplate>
+                                    <DataTemplate>
+                                        <Grid VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="InvoiceDetalis">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
 
-                                        <dxb:ToolBarControl 
+                                            <dxb:ToolBarControl 
                                             HorizontalAlignment="Right" Padding="0" Margin="0" Height="20" Grid.Row="0"
                                             ShowDragWidget="False" 
                                             AllowCustomizationMenu="False" 
                                             AllowQuickCustomization="False"
                                             BarItemDisplayMode="ContentAndGlyph">
 
-                                            <dxb:BarButtonItem Margin="0 0 5 0"
+                                                <dxb:BarButtonItem Margin="0 0 5 0"
                                                 Content="Редактировать"                                                             
                                                 Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
-                                            <dxb:BarSubItem 
+                                                <dxb:BarSubItem 
                                                 x:Name="Print" Content="Печать" 
                                                 ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
-                                            </dxb:BarSubItem>
-                                            <dxb:BarButtonItem         
+                                                </dxb:BarSubItem>
+                                                <dxb:BarButtonItem         
                                                 Content="Удалить"  
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"
                                                 Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}" 
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                        </dxb:ToolBarControl>
+                                            </dxb:ToolBarControl>
 
-                                        <dxlc:LayoutGroup Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" 
+                                            <dxlc:LayoutGroup Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" 
                                                           ItemLabelsAlignment="Local" >
-                                            <dxlc:LayoutGroup.HeaderTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel HorizontalAlignment="Stretch">
-                                                        <TextBlock Text="Список услуг" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                        <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
-                                                                <dxb:BarButtonItem 
+                                                <dxlc:LayoutGroup.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel HorizontalAlignment="Stretch">
+                                                            <TextBlock Text="Список услуг" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                            <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                                                    <dxb:BarButtonItem 
                                                                     Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                                                     Content="Добавить услугу" >
-                                                                </dxb:BarButtonItem>
-                                                            </dxb:ToolBarControl>
-                                                        </dxb:BarContainerControl>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </dxlc:LayoutGroup.HeaderTemplate>
+                                                                    </dxb:BarButtonItem>
+                                                                </dxb:ToolBarControl>
+                                                            </dxb:BarContainerControl>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </dxlc:LayoutGroup.HeaderTemplate>
 
-                                            <dxg:GridControl x:Name="serviceGrid"
+                                                <dxg:GridControl x:Name="serviceGrid"
                                                     CustomSummary="ServiceItems_CustomSummary"                
                                                     ItemsSource="{Binding RowData.Row.InvoiceServiceItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                                <dxg:GridControl.Columns>
-                                                    <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Service">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Margin="5 0 0 0" TextWrapping="Wrap" Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                    <dxg:GridControl.Columns>
+                                                        <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Service">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Margin="5 0 0 0" TextWrapping="Wrap" Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Employee" Header="Сотрудник" Width="4*" MinWidth="130" HorizontalHeaderContentAlignment="Center">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="Employee" Header="Сотрудник" Width="4*" MinWidth="130" HorizontalHeaderContentAlignment="Center">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
+                                                        <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
                                                                          Text="{Binding Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn Width="auto">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                                    <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                                                                        <dxb:BarButtonItem Content="Редактировать" 
+                                                        <dxg:GridColumn Width="auto">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+                                                                        <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                                                            <dxb:BarButtonItem Content="Редактировать" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                                        <dxb:BarButtonItem Content="Удалить" 
+                                                                            <dxb:BarButtonItem Content="Удалить" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                                    </dxb:ToolBarControl>
-                                                                </dxb:BarContainerControl>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                                        </dxb:ToolBarControl>
+                                                                    </dxb:BarContainerControl>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                </dxg:GridControl.Columns>
+                                                    </dxg:GridControl.Columns>
 
-                                                <dxg:GridControl.View>
-                                                    <dxg:TableView                                                                        
+                                                    <dxg:GridControl.View>
+                                                        <dxg:TableView                                                                        
                                 x:Name="attachFileTableView"
                                 NavigationStyle="Row"
                                 AutoWidth="True"
@@ -253,32 +264,32 @@
                                 ShowTotalSummary="True" 
                                 CustomRowAppearance="attachFileTableView_CustomRowAppearance" >
 
-                                                        <dxg:TableView.InputBindings>
-                                                            <KeyBinding 
+                                                            <dxg:TableView.InputBindings>
+                                                                <KeyBinding 
                                         Key="Delete"
                                         Command="{Binding ElementName=attachFileTableView, Path=DataContext.DeleteInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
-                                                            <KeyBinding 
+                                                                <KeyBinding 
                                         Key="N"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName= serviceGrid, Path=CurrentItem}"/>
 
-                                                            <KeyBinding 
+                                                                <KeyBinding 
                                         Key="E"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=attachFileTableView, Path=DataContext.EditInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
-                                                            <MouseBinding 
+                                                                <MouseBinding 
                                         Gesture="LeftDoubleClick"      
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
 
-                                                        </dxg:TableView.InputBindings>
-                                                        <dxg:TableView.RowCellMenuCustomizations >
-                                                            <dxb:BarButtonItem 
+                                                            </dxg:TableView.InputBindings>
+                                                            <dxg:TableView.RowCellMenuCustomizations >
+                                                                <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+N"
@@ -287,7 +298,7 @@
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                         Content="Добавить запись" />
 
-                                                            <dxb:BarButtonItem 
+                                                                <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+E"
@@ -296,116 +307,116 @@
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                         Content="Редактировать запись" />
 
-                                                            <dxb:BarButtonItem 
+                                                                <dxb:BarButtonItem 
                                         Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}"
                                         CommandParameter="{Binding ElementName=serviceGrid, Path=CurrentItem}"/>
-                                                        </dxg:TableView.RowCellMenuCustomizations>
+                                                            </dxg:TableView.RowCellMenuCustomizations>
 
-                                                        <dxg:TableView.TotalSummaryContentStyle>
-                                                            <Style TargetType="dx:DataContentPresenter">
-                                                                <Setter Property="TextBlock.FontStyle" Value="Italic"/>
-                                                                <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
-                                                                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-                                                            </Style>
-                                                        </dxg:TableView.TotalSummaryContentStyle>
+                                                            <dxg:TableView.TotalSummaryContentStyle>
+                                                                <Style TargetType="dx:DataContentPresenter">
+                                                                    <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                                                                    <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+                                                                    <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                                                                </Style>
+                                                            </dxg:TableView.TotalSummaryContentStyle>
 
-                                                    </dxg:TableView>
-                                                </dxg:GridControl.View>
-                                                <dxg:GridControl.TotalSummary>
-                                                    <dxg:GridSummaryItem DisplayFormat=" {0:c2}"
+                                                        </dxg:TableView>
+                                                    </dxg:GridControl.View>
+                                                    <dxg:GridControl.TotalSummary>
+                                                        <dxg:GridSummaryItem DisplayFormat=" {0:c2}"
                              FieldName="Price"
                              SummaryType="Custom" />
-                                                </dxg:GridControl.TotalSummary>
-                                            </dxg:GridControl>
-                                        </dxlc:LayoutGroup>
+                                                    </dxg:GridControl.TotalSummary>
+                                                </dxg:GridControl>
+                                            </dxlc:LayoutGroup>
 
-                                        <dxlc:LayoutGroup Grid.Row="2" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
-                                            <dxlc:LayoutGroup.HeaderTemplate>
-                                                <DataTemplate>
-                                                    <DockPanel HorizontalAlignment="Stretch">
-                                                        <TextBlock Text="Список материалов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                        <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                                            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
-                                                                <dxb:BarButtonItem 
+                                            <dxlc:LayoutGroup Grid.Row="2" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
+                                                <dxlc:LayoutGroup.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <DockPanel HorizontalAlignment="Stretch">
+                                                            <TextBlock Text="Список материалов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                            <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                                                    <dxb:BarButtonItem 
                                             Margin="5 0 0 0"
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
                                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             Content="Добавить материал" >
-                                                                </dxb:BarButtonItem>
+                                                                    </dxb:BarButtonItem>
 
-                                                            </dxb:ToolBarControl>
-                                                        </dxb:BarContainerControl>
-                                                    </DockPanel>
-                                                </DataTemplate>
-                                            </dxlc:LayoutGroup.HeaderTemplate>
+                                                                </dxb:ToolBarControl>
+                                                            </dxb:BarContainerControl>
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </dxlc:LayoutGroup.HeaderTemplate>
 
-                    <dxg:GridControl 
+                                                <dxg:GridControl 
                         x:Name="MaterialItems" CustomSummary="MaterialItems_CustomSummary"            
                         ItemsSource="{Binding Path=RowData.Row.InvoiceMaterialItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                          VerticalAlignment="Stretch" MaxHeight="2500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                                <dxg:GridControl.Columns>
-                                                    <dxg:GridColumn  Header="Материал" Width="6*" MinWidth="250" FieldName="Nomenclature">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" Margin="5 0 0 0" Text="{Binding Row.Nomenclature, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                    <dxg:GridControl.Columns>
+                                                        <dxg:GridColumn  Header="Материал" Width="6*" MinWidth="250" FieldName="Nomenclature">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock TextWrapping="Wrap" Margin="5 0 0 0" Text="{Binding Row.Nomenclature, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Nomenclature.Measure" Header="Ед.Изм." Width="4*" MinWidth="130"  HorizontalHeaderContentAlignment="Center">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Nomenclature.Measure.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="Nomenclature.Measure" Header="Ед.Изм." Width="4*" MinWidth="130"  HorizontalHeaderContentAlignment="Center">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Nomenclature.Measure.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                        <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
+                                                        <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
                                             Text="{Binding Row.Nomenclature.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                    <dxg:GridColumn Width="auto">
-                                                        <dxg:GridColumn.CellTemplate>
-                                                            <DataTemplate>
-                                                                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                                    <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                                                                        <dxb:BarButtonItem Content="Редактировать"  
+                                                        <dxg:GridColumn Width="auto">
+                                                            <dxg:GridColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+                                                                        <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                                                            <dxb:BarButtonItem Content="Редактировать"  
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                                        <dxb:BarButtonItem Content="Удалить"  
+                                                                            <dxb:BarButtonItem Content="Удалить"  
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     GlyphSize="Small"
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}" 
                                                     CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                                    </dxb:ToolBarControl>
-                                                                </dxb:BarContainerControl>
-                                                            </DataTemplate>
-                                                        </dxg:GridColumn.CellTemplate>
-                                                    </dxg:GridColumn>
+                                                                        </dxb:ToolBarControl>
+                                                                    </dxb:BarContainerControl>
+                                                                </DataTemplate>
+                                                            </dxg:GridColumn.CellTemplate>
+                                                        </dxg:GridColumn>
 
-                                                </dxg:GridControl.Columns>
+                                                    </dxg:GridControl.Columns>
 
-                                                <dxg:GridControl.View>
-                            <dxg:TableView                                                                        
+                                                    <dxg:GridControl.View>
+                                                        <dxg:TableView                                                                        
                                 x:Name="materialTableView"
                                 NavigationStyle="Row"
                                 AutoWidth="True"
@@ -418,32 +429,32 @@
                                 ShowTotalSummary="True" 
                                 CustomRowAppearance="attachFileTableView_CustomRowAppearance" >
 
-                                                        <dxg:TableView.InputBindings>
-                                                            <KeyBinding 
+                                                            <dxg:TableView.InputBindings>
+                                                                <KeyBinding 
                                         Key="Delete"
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
-                                                            <KeyBinding 
+                                                                <KeyBinding 
                                         Key="N"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName= MaterialItems, Path=CurrentItem.Invoice}"/>
 
-                                                            <KeyBinding 
+                                                                <KeyBinding 
                                         Key="E"     
                                         Modifiers="Ctrl"
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
-                                                            <MouseBinding 
+                                                                <MouseBinding 
                                         Gesture="LeftDoubleClick"      
                                         Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
-                                    </dxg:TableView.InputBindings>
-                                <dxg:TableView.RowCellMenuCustomizations >
-                                    <dxb:BarButtonItem 
+                                                            </dxg:TableView.InputBindings>
+                                                            <dxg:TableView.RowCellMenuCustomizations >
+                                                                <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+N"
@@ -452,7 +463,7 @@
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                         Content="Добавить запись" />
 
-                                                            <dxb:BarButtonItem 
+                                                                <dxb:BarButtonItem 
                                         GlyphSize="Small" 
                                         GlyphAlignment="Left"
                                         KeyGesture="Ctrl+E"
@@ -461,37 +472,37 @@
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
                                         Content="Редактировать запись" />
 
-                                                            <dxb:BarButtonItem Content="Удалить" 
+                                                                <dxb:BarButtonItem Content="Удалить" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                         KeyGesture="Delete"     
                                         Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
                                         CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
 
-                                                        </dxg:TableView.RowCellMenuCustomizations>
+                                                            </dxg:TableView.RowCellMenuCustomizations>
 
-                                                        <dxg:TableView.TotalSummaryContentStyle>
-                                                            <Style TargetType="dx:DataContentPresenter">
-                                                                <Setter Property="TextBlock.FontStyle" Value="Italic"/>
-                                                                <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
-                                                                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-                                                            </Style>
-                                                        </dxg:TableView.TotalSummaryContentStyle>
+                                                            <dxg:TableView.TotalSummaryContentStyle>
+                                                                <Style TargetType="dx:DataContentPresenter">
+                                                                    <Setter Property="TextBlock.FontStyle" Value="Italic"/>
+                                                                    <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
+                                                                    <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                                                                </Style>
+                                                            </dxg:TableView.TotalSummaryContentStyle>
 
-                                                    </dxg:TableView>
-                                                </dxg:GridControl.View>
-                                                <dxg:GridControl.TotalSummary>
-                                                    <dxg:GridSummaryItem DisplayFormat=" {0:c2}" FieldName="Price" SummaryType="Custom" />
-                                                </dxg:GridControl.TotalSummary>
-                                            </dxg:GridControl>
-                                        </dxlc:LayoutGroup>
-                                    </Grid>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellDisplayTemplate>
-                        </dxg:GridColumn>
-                    </dxg:GridControl.Columns>
-                    
-                    <dxg:GridControl.View>
-                        <dxg:TableView MaxHeight="2000"
+                                                        </dxg:TableView>
+                                                    </dxg:GridControl.View>
+                                                    <dxg:GridControl.TotalSummary>
+                                                        <dxg:GridSummaryItem DisplayFormat=" {0:c2}" FieldName="Price" SummaryType="Custom" />
+                                                    </dxg:GridControl.TotalSummary>
+                                                </dxg:GridControl>
+                                            </dxlc:LayoutGroup>
+                                        </Grid>
+                                    </DataTemplate>
+                                </dxg:GridColumn.CellDisplayTemplate>
+                            </dxg:GridColumn>
+                        </dxg:GridControl.Columns>
+
+                        <dxg:GridControl.View>
+                            <dxg:TableView MaxHeight="2000"
                             ShowColumnHeaders="False"
                             ShowGroupPanel="False"                                            
                             AllowScrollAnimation="True"
@@ -500,40 +511,40 @@
                             NavigationStyle="Row"
                             AllowPrintColumnHeaderImage="True"    
                             HighlightItemOnHover="True">
-                            <dxg:TableView.InputBindings>
-                                <KeyBinding Key="N"     
+                                <dxg:TableView.InputBindings>
+                                    <KeyBinding Key="N"     
                                     Modifiers="Ctrl"
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}" 
                                         />
-                                <KeyBinding Key="E"     
+                                    <KeyBinding Key="E"     
                                     Modifiers="Ctrl"
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />                               
-                                
-                                <KeyBinding Key="P"     
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+
+                                    <KeyBinding Key="P"     
                                     Modifiers="Ctrl"
                                     Command="{Binding Source={StaticResource Print}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />                               
-                                
-                                <KeyBinding Key="X"     
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+
+                                    <KeyBinding Key="X"     
                                     Modifiers="Ctrl"
                                     Command="{Binding Source={StaticResource Excel}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />                         
-                                
-                                <KeyBinding Key="W"     
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+
+                                    <KeyBinding Key="W"     
                                     Modifiers="Ctrl"
                                     Command="{Binding Source={StaticResource Word}}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />                               
-                                
-                                <KeyBinding Key="D"     
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+
+                                    <KeyBinding Key="D"     
                                     Modifiers="Ctrl"
                                     Command="{Binding Source={StaticResource Pdf}}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
-                                
-                
-                            </dxg:TableView.InputBindings>
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem 
+
+
+                                </dxg:TableView.InputBindings>
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem 
                                     Content="Создать новый счет"                                          
                                     GlyphSize="Small"
                                     KeyGesture="Ctrl+N"
@@ -541,7 +552,7 @@
                                     Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenFormInvoiceCommand}"
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
 
-                                <dxb:BarButtonItem 
+                                    <dxb:BarButtonItem 
                                     Content="Редактировать счет"                                          
                                     GlyphSize="Small"
                                     KeyGesture="Ctrl+E"
@@ -550,35 +561,35 @@
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"/>
 
-                                <dxb:BarSubItem 
+                                    <dxb:BarSubItem 
                                                 Content="Печать" 
                                                 ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
 
-                                </dxb:BarSubItem>
+                                    </dxb:BarSubItem>
 
-                                <dxb:BarSubItem Content="Экспорт" Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}" >
-                                    <dxb:BarButtonItem 
+                                    <dxb:BarSubItem Content="Экспорт" Glyph="{dx:DXImage SvgImages/XAF/Action_LocalizationExport.svg}" >
+                                        <dxb:BarButtonItem 
                                                 Content="Экспорт в Excel"                                                            
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToXLS.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Excel}}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                    <dxb:BarButtonItem 
+                                        <dxb:BarButtonItem 
                                                 Content="Экспорт в Word"                                                            
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToDOCX.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Word}}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                    <dxb:BarButtonItem
+                                        <dxb:BarButtonItem
                                                 Content="Экспорт в PDF"                                                            
                                                 Glyph="{dx:DXImage SvgImages/Export/ExportToPDF.svg}" 
                                                 GlyphSize="Small"
                                                 Command="{Binding Source={StaticResource Pdf}}"
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                </dxb:BarSubItem>
+                                    </dxb:BarSubItem>
 
-                                <dxb:BarButtonItem         
+                                    <dxb:BarButtonItem         
                                     Content="Удалить" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                     GlyphSize="Small"
@@ -586,13 +597,14 @@
                                     GlyphAlignment="Left" 
                                     Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}" 
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
 
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </ScrollViewer>
-        </Grid>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </ScrollViewer>
+            </Grid>
+        </dx:LoadingDecorator>
     </Border>
 </Page>
 

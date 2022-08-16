@@ -30,6 +30,8 @@ namespace Dental.ViewModels
             PassportNo = client.PassportNo;
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
+            GoogleContactGroup = client.GoogleContactGroup;
+            ContactResourceName = client.ContactResourceName;
         }
 
         public int Id
@@ -103,11 +105,14 @@ namespace Dental.ViewModels
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
 
-       /* public ObservableCollection<Estimate> Estimates
-        {
-            get { return GetProperty(() => Estimates); }
-            set { SetProperty(() => Estimates, value); }
-        }*/
+        public string GoogleContactGroup { get; set; }
+        public string ContactResourceName { get; set; }
+
+        /* public ObservableCollection<Estimate> Estimates
+         {
+             get { return GetProperty(() => Estimates); }
+             set { SetProperty(() => Estimates, value); }
+         }*/
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -172,6 +177,8 @@ namespace Dental.ViewModels
             client.PassportNo = PassportNo;
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
+            client.GoogleContactGroup = GoogleContactGroup;
+            client.ContactResourceName = ContactResourceName;
             return client;
         }
     }

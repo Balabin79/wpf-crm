@@ -98,62 +98,73 @@
         Margin="5" 
         dx:ThemeManager.ThemeName="Office2019White" 
         DataContext="{StaticResource vm}">
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка сотрудников"  BorderEffect="None">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+            <Grid x:Name="gridMain" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="2"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <Grid x:Name="gridMain" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
-                <RowDefinition Height="2"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                <DockPanel LastChildFill="True" Grid.Row="0">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
-                    <TextBlock Text="Сотрудники" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                        <TextBlock Text="Сотрудники" FontSize="14" Padding="2 5 5 0" />
+                    </StackPanel>
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormEmployeeCardCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
+
+                            <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
+
+                            <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormFieldsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
 
-                        <dxb:BarButtonItem Content="Свернуть/Развернуть"                                        
+                            <dxb:BarButtonItem Content="Свернуть/Развернуть"                                        
                                            GlyphSize="Small"
                                            Command="{Binding ExpandAllCommand}"
                                            CommandParameter="{Binding ElementName=view}"
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"/>
-                        
-                        <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+
+                            <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
                                            IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                        <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
                                            IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
-    
-           
-            <dxg:GridControl
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
+
+
+                <dxg:GridControl
                 ShowBorder="True"
                 Grid.Row="2" 
                 Name="grid"                             
@@ -162,9 +173,9 @@
                 Margin="2 0 2 2"
                 DefaultSorting="LastName"
                 >
-                
-                <dxg:GridControl.View>
-                    <dxg:CardView 
+
+                    <dxg:GridControl.View>
+                        <dxg:CardView 
                         ShowColumnHeaders="False"
                         AllowSorting="True"
                         Name="view"
@@ -179,31 +190,32 @@
                         UseLegacyFilterPanel="False" AllowEditing="False" CardLayout="Columns">
 
 
-                        <dxg:CardView.InputBindings>
-                            <KeyBinding 
+                            <dxg:CardView.InputBindings>
+                                <KeyBinding 
                                 Key="E" 
                                 Modifiers="Ctrl" 
                                 Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
                                 CommandParameter="-1"/>
 
-                            <KeyBinding 
+                                <KeyBinding 
                                 Key="O"     
                                 Modifiers="Ctrl"
                                 Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"  />
 
-                            <MouseBinding 
+                                <MouseBinding 
                                 Gesture="LeftDoubleClick"      
                                 Command="{Binding Source={StaticResource vm}, Path=NavigateToCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                        </dxg:CardView.InputBindings>
+                            </dxg:CardView.InputBindings>
 
-                    </dxg:CardView>
-                </dxg:GridControl.View>
+                        </dxg:CardView>
+                    </dxg:GridControl.View>
 
-            </dxg:GridControl>
-        </Grid>
+                </dxg:GridControl>
+            </Grid>
+        </dx:LoadingDecorator>
     </Border>
 
 </Page>

@@ -12,37 +12,49 @@
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
     d:DesignHeight="450" d:DesignWidth="800">
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" >
-        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <dx:LoadingDecorator SplashScreenDataContext="Загрузка документов"  BorderEffect="None">
+            <dx:LoadingDecorator.SplashScreenTemplate>
+                <DataTemplate>
+                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
+                        <dx:WaitIndicator.ContentTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </dx:WaitIndicator.ContentTemplate>
+                    </dx:WaitIndicator>
+                </DataTemplate>
+            </dx:LoadingDecorator.SplashScreenTemplate>
+            <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="24"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                <DockPanel LastChildFill="True">
+                    <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
-                    <TextBlock Text="Документы" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
+                        <TextBlock Text="Документы" FontSize="14" Padding="2 5 5 0" />
+                    </StackPanel>
 
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Импорт" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Импорт" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding ImportDocCommand}"
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_IndexDown.svg}"/>
-                        <dxb:BarButtonItem Content="Директория" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Директория" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlIds, Path=DataContext.OpenDirDocCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"/>
-             
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
 
-            <dxg:GridControl Grid.Row="1"
+                        </dxb:ToolBarControl>
+                    </dxb:BarContainerControl>
+                </DockPanel>
+
+                <dxg:GridControl Grid.Row="1"
                     ItemsSource="{Binding Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     MaxHeight="2000"
@@ -147,7 +159,8 @@
                     </dxg:GridControl.View>
                 </dxg:GridControl>
 
-        </Grid>
+            </Grid>
+        </dx:LoadingDecorator>
     </Border>
 
 </UserControl>

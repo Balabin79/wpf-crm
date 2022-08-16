@@ -43,7 +43,8 @@ namespace Dental.Services.GoogleIntagration.Contacts
                         try 
                         {
                             if (i.EventTypeId == (int)ParamEnums.EventType.Added)
-                            {                             
+                            {
+                                if (ClientExists(i.Client)) return;
 
                                 var person = new Person() 
                                 { 
@@ -67,6 +68,19 @@ namespace Dental.Services.GoogleIntagration.Contacts
                                 db.ClientContactsQueue.FirstOrDefault(f => f.Id == i.Id).SendingStatusId = (int)ParamEnums.SendingStatus.Sended;
                                 db.SaveChanges();
                             }
+
+                            if (i.EventTypeId == (int)ParamEnums.EventType.Edited)
+                            {
+                                var contact = db.GoogleClientsContact.FirstOrDefault(f => f.ClientId == i.Client.Id);
+                                var resource = await Google.GetContact(contact.ResourceId);
+                               // теперь обновляем данные
+                                // resource.
+                            }
+
+                            if (i.EventTypeId == (int)ParamEnums.EventType.Removed)
+                            {
+                                
+                            }
                         } 
                         catch (Exception e) 
                         {
@@ -81,8 +95,16 @@ namespace Dental.Services.GoogleIntagration.Contacts
                 }
                 catch(Exception e)
                 {
-
+                    
                 }
+            }
+        }
+
+        private bool ClientExists(Client client)
+        {
+            using (var db = new ApplicationContext())
+            {
+                return db.GoogleClientsContact.FirstOrDefault(f => f.ClientId == client.Id) != null;
             }
         }
 
