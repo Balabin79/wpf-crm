@@ -41,7 +41,7 @@ namespace Dental.ViewModels.Invoices
                 SetInvoices();
                 PrintMenuLoading();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

@@ -123,9 +123,6 @@
                                 <add:ClientControl x:Name="Fields"/>
                             </dx:DXTabItem>
 
-                            <dx:DXTabItem Header="Настройки в Google" >
-                                <local:GoogleSettings />
-                            </dx:DXTabItem>
                         </dx:DXTabControl>
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutControl>

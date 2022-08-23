@@ -24,14 +24,11 @@ namespace Dental.ViewModels
             Address = client.Address;
             Note = client.Note;
             IsInArchive = client.IsInArchive;
-            IsRemoteContactCreated = client.IsRemoteContactCreated;
             Email = client.Email;
             PassportSeries = client.PassportSeries;
             PassportNo = client.PassportNo;
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
-            GoogleContactGroup = client.GoogleContactGroup;
-            ContactResourceName = client.ContactResourceName;
         }
 
         public int Id
@@ -140,7 +137,6 @@ namespace Dental.ViewModels
                 StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
-                if (this.IsRemoteContactCreated != other.IsRemoteContactCreated) FieldsChanges.Add("Добавить в Google-контакты");
             }
             return FieldsChanges.Count == 0 ;
         }
@@ -172,13 +168,10 @@ namespace Dental.ViewModels
             client.Address = Address;
             client.Note = Note;
             client.IsInArchive = IsInArchive;
-            client.IsRemoteContactCreated = IsRemoteContactCreated;
             client.PassportSeries = PassportSeries;
             client.PassportNo = PassportNo;
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
-            client.GoogleContactGroup = GoogleContactGroup;
-            client.ContactResourceName = ContactResourceName;
             return client;
         }
     }

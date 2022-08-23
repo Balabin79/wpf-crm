@@ -14,6 +14,7 @@ using System.Data.Entity;
 using System.Globalization;
 using Dental.Infrastructures.Converters;
 using System.Windows.Data;
+using Dental.ViewModels.EmployeeDir;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -25,7 +26,7 @@ namespace Dental.ViewModels.AdditionalFields
         {
             try
             {
-                this.db = vm.db;
+                this.db = vm?.db ?? new ApplicationContext(); ;
             
                 // получаем все поля для раздела
                 AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
@@ -49,7 +50,7 @@ namespace Dental.ViewModels.AdditionalFields
 
         public FieldsViewModel(Employee employee, ListEmployeesViewModel vm)
         {
-            this.db = vm.db;
+            this.db = vm?.db ?? new ApplicationContext();
 
             // получаем все поля для раздела
             AdditionalEmployeeFields = db.AdditionalEmployeeFields.Include(f => f.TypeValue).ToArray();

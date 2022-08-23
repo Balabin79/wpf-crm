@@ -12,6 +12,7 @@ namespace Dental.Views.PatientCard
 {
     public partial class ClientCardWindow : Window
     {
+        public ClientCardWindow(int clientId) : this(clientId, null) { }
         public ClientCardWindow(int clientId, PatientListViewModel vm)
         {
             InitializeComponent();

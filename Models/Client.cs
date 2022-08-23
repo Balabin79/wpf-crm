@@ -102,14 +102,10 @@ namespace Dental.Models
 
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
-        public bool? IsRemoteContactCreated { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
-        public string WhomIssued { get; set; }
-        
-        public string GoogleContactGroup { get; set; }
-        public string ContactResourceName { get; set; }
+        public string WhomIssued { get; set; }     
 
         public object Clone() => (Client)this.MemberwiseClone();
       

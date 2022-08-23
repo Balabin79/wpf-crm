@@ -228,7 +228,7 @@
                                  PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                  Header="Цена"                               
                                  HorizontalHeaderContentAlignment="Center"                                 
-                                 Width="90">
+                                 Width="120">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate >
                                 <TextBlock  

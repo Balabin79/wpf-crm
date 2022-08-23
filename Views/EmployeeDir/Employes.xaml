@@ -16,7 +16,7 @@
        mc:Ignorable="d"
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm ="clr-namespace:Dental.ViewModels" 
+       xmlns:vm ="clr-namespace:Dental.ViewModels.EmployeeDir" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
        d:DesignWidth="800"
        Title="Сотрудники"      

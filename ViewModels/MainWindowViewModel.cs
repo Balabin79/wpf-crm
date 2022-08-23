@@ -6,15 +6,7 @@ using System.Windows;
 
 using Dental.Views.Header;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.Services.Google;
-using Google.Apis.Calendar.v3.Data;
 using System.IO;
-using System.Threading.Tasks;
-using Dental.Services.GoogleIntagration;
-using Service = Dental.Services.GoogleIntagration.Contacts.GoogleContacts;
-using Dental.Services.GoogleIntagration.Calendar;
-using Dental.Services;
-using Dental.Services.GoogleIntagration.Contacts;
 
 namespace Dental.ViewModels
 {
@@ -40,31 +32,9 @@ namespace Dental.ViewModels
         {
             try
             {
-                //var ping = new PingService();
-                //var res = ping.IsNetworkAvailable();
-
-
-                var integration = new ContactsIntegration();
-                integration.Run();
-                //var service = new Service();
-                //service.List();
-                //service.CreateGroup("Тест5");
-                //    var t = await r;
-                var d = 10;
-                //var service = new GoogleCalendar();
-               // service.GetList();
-
-                /*var service = new GoogleService().Get();
-                var list = new GoogleCalendarList(service, new Notification());
-                var task =  list.ListAsync();
-                var task2 = list.Wait();*/
-
-                //   HelpWin = new HelpWindow();
-                //   HelpWin.ShowDialog();
-                /*new Notification().ShowMsgError("1");
-                CalendarList = await task;
-                await task2;
-                new Notification().ShowMsgError("2");*/
+                //var integration = new ContactsIntegration();
+                //integration.Run();
+                
 
             }           
             catch (FileNotFoundException e)
@@ -108,8 +78,5 @@ namespace Dental.ViewModels
         public HelpWindow HelpWin { get; set; }
         public RegWindow RegWin { get; set; }
         public AboutWindow AboutWin { get; set; }
-
-        public CalendarList CalendarList { get; set; }
-
     }
 }

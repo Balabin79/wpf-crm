@@ -1,5 +1,4 @@
 using Dental.Services;
-using Dental.Services.GoogleIntagration;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using System.Collections.Generic;
@@ -19,21 +18,5 @@ namespace Dental
         {
             //new GoogleIntegrator().Init();
         }
-
-
-        /*public static string ApplicationID
-        {
-            get { return "FunWithNotifications_19_1"; }
-        }*/
-        
     }
-
-  /*  [Guid("E343F8F2-CA68-4BF4-BB54-EEA4B3AC4A31"), ComVisible(true)]
-    public class MyNotificationActivator : ToastNotificationActivator
-    {
-        public override void OnActivate(string arguments, Dictionary<string, string> data)
-        {
-            MessageBox.Show("Activate it!");
-        }
-    }*/
 }

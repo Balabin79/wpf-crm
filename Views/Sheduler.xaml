@@ -25,10 +25,7 @@
       dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-    xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
-    xmlns:col="clr-namespace:System.Collections;assembly=mscorlib" 
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion" 
-    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar"
     Title="Расписание"
     >
     <Page.Resources>
@@ -49,7 +46,6 @@
                                     <RectangleGeometry Rect="0 0 40 40" />
                                 </Image.Clip>
                             </Image>
-
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5, 0, 0, 0">
                                 <TextBlock Text="{Binding Path=Fio}" ToolTip="{Binding Path=Fio}" FontWeight="DemiBold"/>
                                 <TextBlock Text="{Binding Path=Post}" TextWrapping="Wrap" FontStyle="Italic" ToolTip="{Binding Path=Post}"/>
@@ -91,11 +87,16 @@
                         Source="{Binding Resource.CustomFields.ImageName}"
                         Stretch="Uniform" />
                             <StackPanel Grid.Row="1">
-                                <TextBlock
-                            HorizontalAlignment="Center"
-                            FontWeight="Bold"
-                            ToolTip="{Binding Resource.Caption}"
-                            Text="{Binding Resource.Caption}" />
+                                <dxe:HyperlinkEdit 
+                                Text="{Binding Resource.Caption, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="Перейти в анкету сотрудника"
+                                EditValue="Перейти в анкету сотрудника"
+                                Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
+                                CommandParameter="{Binding Path=Resource.Id}"
+                                FontWeight="Bold"
+                                Foreground="Black"
+                                HorizontalAlignment="Center"
+                                 />
                                 <TextBlock
                             Opacity="0.6" FontWeight="DemiBold" TextAlignment="Center"
                             HorizontalAlignment="Center"
@@ -112,8 +113,6 @@
                         <Setter Property="ContentTemplate" Value="{StaticResource resourceHeaderContentTemplate}" />
                         <Setter Property="ContentOrientation" Value="Horizontal" />
                     </Style>
-
-
                     <DataTemplate x:Key="FlyoutTemplate">
                         <dxlc:LayoutControl Width="250" MinHeight="150" IsHitTestVisible="False" Orientation="Vertical" Padding="11">
                             <StackPanel Orientation="Vertical">
@@ -137,11 +136,9 @@
                                     <TextBlock Text="{DXBinding Expr='CustomFields[`AttachmentFile`] eq null ? `Не прикреплен` : CustomFields[`AttachmentFile`]', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutControl>
-      
+
                         </dxlc:LayoutControl>
                     </DataTemplate>
-
-
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/Ribbon1.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -180,16 +177,16 @@
                                 </dxe:DateNavigator.StyleSettings>
                             </dxe:DateNavigator>
                             <dx:DXTabControl DataContext="{StaticResource vm}" dxlc:LayoutControl.AllowVerticalSizing="True" Padding="0" Margin="-1,0,-1,-1">
+                                
                                 <dx:DXTabItem Header="Сотрудники">
                                     <DockPanel>
                                         <TextBlock DockPanel.Dock="Top" Text="Фильтр по сотрудникам" Opacity="0.6" Margin="6,3,6,3" />
-                                        <dxe:ListBoxEdit 
-                            
-                                    Style="{StaticResource DoctorsList.Style}"
-                                    Margin="-1,0,-1,-1"
-                                    EditValue="{Binding SelectedDoctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    ItemsSource="{Binding Doctors}" 
-                                    DisplayMember="Fio">
+                                        <dxe:ListBoxEdit                          
+                                            Style="{StaticResource DoctorsList.Style}"
+                                            Margin="-1,0,-1,-1"
+                                            EditValue="{Binding SelectedDoctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            DisplayMember="Fio">
                                             <dxe:ListBoxEdit.ItemContainerStyle>
                                                 <Style TargetType="dxe:ListBoxEditItem">
                                                     <Setter Property="IsSelected" Value="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -200,22 +197,37 @@
                                 </dx:DXTabItem>
                                 <dx:DXTabItem Header="Клиенты">
                                     <DockPanel>
-                                        <TextBlock  
-                                    DockPanel.Dock="Top" 
-                                    Text="Переместите клиента в расписание"
-                                    ToolTip="Захватите кнопкой мыши клиента и переместите в ячейку расписания" 
-                                    Opacity="0.6" Margin="6,3,6,3" />
+                                        <TextBlock  DockPanel.Dock="Top" 
+                                            Text="Переместите клиента в расписание"
+                                            ToolTip="Захватите кнопкой мыши клиента и переместите в ячейку расписания" 
+                                            Opacity="0.6" Margin="6,3,6,3" />
                                         <dxg:GridControl MaxHeight="2000"
-                        Style="{StaticResource PatientsGridControl.Style}"
-                            Margin="-1,0,-1,-1"
-                            ItemsSource="{Binding Clients}">
+                                            Style="{StaticResource PatientsGridControl.Style}" Margin="-1,0,-1,-1"
+                                            ItemsSource="{Binding Clients}">
                                             <dxg:GridControl.Columns>
-                                                <dxg:GridColumn FieldName="FullName"  >
+                                                <dxg:GridColumn  >
                                                     <dxg:GridColumn.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock Text="ФИО клиента" FontWeight="DemiBold"/>
                                                         </DataTemplate>
                                                     </dxg:GridColumn.HeaderTemplate>
+                                                    <dxg:GridColumn.CellDisplayTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                <dxe:HyperlinkEdit Margin="5 -3 0 0"
+                                                                Text="->"
+                                                                ToolTip="Перейти в карту клиента"
+                                                                EditValue="Перейти в карту клиента"
+                                                                FontWeight="DemiBold"
+                                                                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}"
+                                                                CommandParameter="{Binding Path=Row.Id}"
+                                                                 />
+                                                            </StackPanel>
+                                                            
+                              
+                                                        </DataTemplate>
+                                                    </dxg:GridColumn.CellDisplayTemplate>
                                                 </dxg:GridColumn>
                                             </dxg:GridControl.Columns>
                                             <dxg:GridControl.View>
@@ -331,11 +343,12 @@
                             </dxsch:TimelineView.TimeScales>
                         </dxsch:TimelineView>
                         <dxsch:SchedulerControl.DataSource>
-                            <dxsch:DataSource ResourcesSource="{Binding Doctors}" AppointmentsSource="{Binding Appointments}" 
+                            <dxsch:DataSource ResourcesSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              AppointmentsSource="{Binding Appointments}" 
                                           AppointmentStatusesSource="{Binding StatusAppointments}">
 
                                 <dxsch:DataSource.ResourceMappings>
-                                    <dxsch:ResourceMappings Caption="Fio" Id="Id" Visible="IsVisible" >
+                                    <dxsch:ResourceMappings Caption="Fio" Id="Id" Visible="IsVisible"  >
                                         <dxsch:CustomFieldMapping Mapping="Image" Name="ImageName" />
                                         <dxsch:CustomFieldMapping Mapping="Post" Name="Post" />
                                         <dxsch:CustomFieldMapping Mapping="Phone" Name="Phone" />

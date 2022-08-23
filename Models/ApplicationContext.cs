@@ -67,8 +67,6 @@ namespace Dental.Models
         public DbSet<UserActions> UserActions { get; set; }       
         public DbSet<Nomenclature> Nomenclature { get; set; }     
         public DbSet<Measure> Measure { get; set; }
-
-        public DbSet<GoogleContacts> GoogleContacts { get; set; }
         public DbSet<Settings> Settings { get; set; }   
 
         public DbSet<Invoice> Invoices { get; set; }   
@@ -80,17 +78,8 @@ namespace Dental.Models
         public DbSet<TemplateType> TemplateType { get; set; }   
         public DbSet<CommonValue> CommonValues { get; set; }   
         public DbSet<AdditionalEmployeeValue> AdditionalEmployeeValue { get; set; }   
-        public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }   
-
-        public DbSet<ClientContactsQueue> ClientContactsQueue { get; set; }   
-        public DbSet<EmployeeContactsQueue> EmployeeContactsQueue { get; set; }   
-        public DbSet<ClientFilesQueue> ClientFilesQueue { get; set; }   
-        public DbSet<EmployeeFilesQueue> EmployeeFilesQueue { get; set; }   
-        public DbSet<AppointmentsQueue> AppointmentsQueue { get; set; }  
+        public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }         
         
-
-        public DbSet<GoogleClientsContacts> GoogleClientsContact { get; set; }   
-        public DbSet<GoogleEmployeesContacts> GoogleEmployeesContacts { get; set; }  
-        public DbSet<GoogleRootDir> GoogleRootDir { get; set; }   
+        public DbSet<IndividualPrice> IndividualPrice { get; set; }   
     }
 }

@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
-using Dental.Views.WindowForms;
 using System.Data.Entity;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using System.IO;
-using System.Diagnostics;
-using Dental.Services;
 using Dental.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Printing;
 using Dental.Services.Files;
 using Dental.Views.PatientCard;
 using System.Windows.Data;
-using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
-using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -77,7 +68,6 @@ namespace Dental.ViewModels
             try
             {
                 bool notificationShowed = false;
-                bool contactNeedUpdate = ContactNeedUpdate();
                 ClientInfoViewModel.Copy(Model);
                 if (Model.Id == 0) // новый элемент
                 {
@@ -89,9 +79,6 @@ namespace Dental.ViewModels
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
-                    
-                    // ставим в очередь
-                    AddContactInQueue((int)ParamEnums.EventType.Added);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -100,7 +87,7 @@ namespace Dental.ViewModels
                         // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то поменять элемент(отображение изменений), иначе просто добавить
                         if (VmList?.IsArchiveList == Model.IsInArchive)
                         {
-                            var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                            var item = VmList?.Collection.FirstOrDefault(f => f.Id == Model.Id);
                             if (item == null) VmList?.Collection?.Add(Model); // добавляем
                             else // меняем
                             { 
@@ -110,7 +97,7 @@ namespace Dental.ViewModels
                         } 
                         else // иначе если статусы отличаются (допустим убрали анкету в архив), то только удалить из отображаемого списка
                         {
-                            var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                            var item = VmList?.Collection.FirstOrDefault(f => f.Id == Model.Id);
                             if (item != null)
                             {
                                 VmList?.Collection?.Remove(item);
@@ -119,7 +106,6 @@ namespace Dental.ViewModels
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
-                    if (contactNeedUpdate) AddContactInQueue((int)ParamEnums.EventType.Edited);
                 }
                 if (Model != null) 
                 { 
@@ -156,14 +142,13 @@ namespace Dental.ViewModels
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
                 // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                var item = VmList.Collection.FirstOrDefault(f => f.Id == Model.Id);
-                if (item != null )VmList.Collection.Remove(item);
+                var item = VmList?.Collection.FirstOrDefault(f => f.Id == Model.Id);
+                if (item != null )VmList?.Collection.Remove(item);
 
                 db.InvoiceMaterialItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
-                AddContactInQueue((int)ParamEnums.EventType.Removed);
-                VmList.ClientCardWin.Close();
+                VmList?.ClientCardWin.Close();
             }
             catch
             {
@@ -234,31 +219,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => AdditionalFieldsVisible, value); }
         }
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
-
-        private void AddContactInQueue(int eventType)
-        {
-            if (Model.IsRemoteContactCreated != true && eventType != (int)ParamEnums.EventType.Removed) return;
-            db.ClientContactsQueue.Add(new ClientContactsQueue()
-            {
-                ClientId = Model.Id,
-                SendingStatusId = (int)ParamEnums.SendingStatus.New,
-                EventTypeId = eventType
-            });
-            db.SaveChanges();
-        }
-
-        private bool ContactNeedUpdate()
-        {
-            try
-            {
-                if (Model.Id == 0) return false;
-                return ClientInfoViewModel.FirstName != Model.FirstName || ClientInfoViewModel.LastName != Model.LastName || ClientInfoViewModel.MiddleName != Model.MiddleName || ClientInfoViewModel.BirthDate != Model.BirthDate || ClientInfoViewModel.Phone != Model.Phone || ClientInfoViewModel.Sex != Model.Sex || ClientInfoViewModel.Email != Model.Email;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
 
         #region Печать
         [Command]

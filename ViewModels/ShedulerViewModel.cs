@@ -9,17 +9,17 @@ using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Infrastructures.Extensions.Notifications;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Dental.Views.WindowForms;
 using System.Windows.Media;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm;
-using Dental.Services.Google;
 using DevExpress.Xpf.Scheduling;
-using static Dental.Models.Base.AbstractBaseQueue;
-using Dental.Models.Base;
+using Dental.Views.EmployeeDir;
+using Dental.ViewModels.EmployeeDir;
+using Dental.Services;
+using Dental.Views.PatientCard;
 
 namespace Dental.ViewModels
 {
@@ -35,30 +35,10 @@ namespace Dental.ViewModels
                 StatusAppointments = GetStatusCollection();
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
-                Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
-                foreach (var i in Doctors)
-                {
-                    if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
-                    {
-                        using (var stream = new FileStream(i.Photo, FileMode.Open))
-                        {
-                            var img = new BitmapImage();
-                            img.BeginInit();
-                            img.CacheOption = BitmapCacheOption.OnLoad;
-                            img.StreamSource = stream;
-                            img.EndInit();
-                            img.Freeze();
-                            i.Image = img;
-                            stream.Close(); stream.Dispose();
-                        }
-                    }
-                    else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
-                }
-
-                Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
-                SelectedDoctors = new List<object>();
-                Doctors.ForEach(f => SelectedDoctors.Add(f));
-                CreateCalendars();
+                LoadEmployees(db);
+                LoadClients(db);              
+                SetSelectedEmployees();
+                //CreateCalendars();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
@@ -81,11 +61,6 @@ namespace Dental.ViewModels
                 if (item == null) return;
                 db.Entry(item).State = EntityState.Added;
                 db.SaveChanges();
-
-                var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)ParamEnums.EventType.Added, SendingStatusId = (int)ParamEnums.SendingStatus.New };
-                db.AppointmentsQueue.Add(queue);
-                db.SaveChanges();
-                new AppointmentsSender().Run();
             }
             catch (Exception e)
             {
@@ -102,13 +77,8 @@ namespace Dental.ViewModels
                 {
                     foreach (var i in arg.Appointments)
                     {
-                        var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
-                        if (item != null) 
-                        {
-                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)ParamEnums.EventType.Edited, SendingStatusId = (int)ParamEnums.SendingStatus.New };
-                            db.AppointmentsQueue.Add(queue);
-                            new AppointmentsSender().Run();
-                        }
+                       // var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
+
                     }
                 }
 
@@ -128,14 +98,7 @@ namespace Dental.ViewModels
                 if (p is AppointmentRemovedEventArgs arg)
                 foreach (var i in arg.Appointments)
                 {
-                    var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
-                        if (item != null) 
-                        { 
-                            db.Entry(item).State = EntityState.Deleted;
-                            var queue = new AppointmentsQueue() { AppointmentId = item.Id, DateTime = DateTime.Now.ToString(), EventTypeId = (int)ParamEnums.EventType.Removed, SendingStatusId = (int)ParamEnums.SendingStatus.New };
-                            db.AppointmentsQueue.Add(queue);
-                            new AppointmentsSender().Run();
-                        }                
+                   // var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();              
                 }
                 db.SaveChanges();
             }
@@ -361,14 +324,110 @@ namespace Dental.ViewModels
 
 
         public ObservableCollection<Service> ClassificatorCategories { get; set; }
-        public virtual ObservableCollection<Employee> Doctors { get; set; }
+        public virtual ObservableCollection<Employee> Doctors
+        {
+            get { return GetProperty(() => Doctors); }
+            set { SetProperty(() => Doctors, value); }
+        }
 
         public virtual ObservableCollection<Client> Clients { get; set; }
         public virtual ObservableCollection<Appointments> Appointments { get; set; }
         public ObservableCollection<ResourceEntity> Calendars { get; set; }
 
-        public virtual List<object> SelectedDoctors { get; set; }
-        
-        private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
+        public virtual List<object> SelectedDoctors
+        {
+            get { return GetProperty(() => SelectedDoctors); }
+            set { SetProperty(() => SelectedDoctors, value); }
+        }
+
+       // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
+
+        /*****************************************************************************************/
+        [Command]
+        public void OpenFormEmployeeCard(object p)
+        {
+            try
+            {
+                if (p == null) return;
+                var employee = db.Employes.FirstOrDefault(f => f.Id == (int)p);
+                var win = new EmployeeCardWindow(employee);
+                win.ShowDialog();
+
+                if (win.DataContext is EmployeeViewModel vm)
+                {
+                    if(employee.FirstName != vm.Model.FirstName || 
+                        employee.LastName != vm.Model.LastName || 
+                        employee.MiddleName != vm.Model.MiddleName || 
+                        employee.Post != vm.Model.Post)
+                    {
+                        if (Application.Current.Resources["Router"] is Navigator nav) { nav.LeftMenuClick("Dental.Views.Sheduler"); }                       
+                    }
+                }      
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void OpenFormClientCard(object p)
+        {
+            try
+            {
+                if (p == null) return;
+                var client = db.Clients.FirstOrDefault(f => f.Id == (int)p);
+                var win = new ClientCardWindow(client.Id);
+                win.ShowDialog();
+
+                if (win.DataContext is ClientCardViewModel vm)
+                {
+                    if (client.FirstName != vm.Model.FirstName ||
+                        client.LastName != vm.Model.LastName ||
+                        client.MiddleName != vm.Model.MiddleName)
+                    {
+                        if (Application.Current.Resources["Router"] is Navigator nav) { nav.LeftMenuClick("Dental.Views.Sheduler"); }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        private void LoadEmployees(ApplicationContext db)
+        {
+            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
+            foreach (var i in Doctors)
+            {
+                if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
+                {
+                    using (var stream = new FileStream(i.Photo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        i.Image = img;
+                        stream.Close(); stream.Dispose();
+                    }
+                }
+                else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
+            }
+        }
+
+        private void LoadClients(ApplicationContext db)
+        {
+            Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
+        }
+
+        private void SetSelectedEmployees()
+        {
+            SelectedDoctors = new List<object>();
+            Doctors.ForEach(f => SelectedDoctors.Add(f));
+        }    
     }
 }
