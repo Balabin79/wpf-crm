@@ -54,9 +54,4 @@ namespace Dental.Models
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 
-    [Table("ResourceEntity")]
-    public class ResourceEntity : AbstractBaseModel
-    {
-        public string Description { get; set; }
-    }
 }

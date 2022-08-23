@@ -332,7 +332,6 @@ namespace Dental.ViewModels
 
         public virtual ObservableCollection<Client> Clients { get; set; }
         public virtual ObservableCollection<Appointments> Appointments { get; set; }
-        public ObservableCollection<ResourceEntity> Calendars { get; set; }
 
         public virtual List<object> SelectedDoctors
         {
