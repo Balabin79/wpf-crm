@@ -7,6 +7,7 @@ using System.Windows;
 using Dental.Views.Header;
 using DevExpress.Mvvm.DataAnnotations;
 using System.IO;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -34,6 +35,9 @@ namespace Dental.ViewModels
             {
                 //var integration = new ContactsIntegration();
                 //integration.Run();
+                /*var t = db.Services.ToList();
+                t.ForEach(f => f.Guid = KeyGenerator.GetUniqueKey());
+                var i = db.SaveChanges();*/
                 
 
             }           

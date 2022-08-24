@@ -80,5 +80,10 @@ namespace Dental.Models
         public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }         
         
         public DbSet<IndividualPrice> IndividualPrice { get; set; }   
+
+        public DbSet<Diagnos> Diagnoses { get; set; }   
+        public DbSet<Diary> Diaries { get; set; }   
+        public DbSet<InitialInspection> InitialInspections { get; set; }   
+        public DbSet<TreatmentPlan> TreatmentPlans { get; set; }   
     }
 }
