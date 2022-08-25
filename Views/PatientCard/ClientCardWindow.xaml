@@ -144,8 +144,8 @@
                             <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                                 <add:ClientControl x:Name="Fields"/>
                             </dx:DXTabItem>
-                            <dx:DXTabItem Header="Настройки в Google" >
-                                <tp:GoogleSettings />
+                            <dx:DXTabItem Header="Врачебная" >
+                                <tp:MedicalTab DataContext="{Binding}"/>
                             </dx:DXTabItem>
 
                         </dx:DXTabControl>

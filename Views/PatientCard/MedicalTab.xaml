@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Dental.Views.PatientCard.MedicalTab"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Dental.Views.PatientCard" 
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+      xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+      xmlns:medical="clr-namespace:Dental.Views.PatientCard.Medical"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <dx:DXTabControl >
+            <dx:DXTabItem Header="Первичный осмотр" >
+                <medical:InitialInspections/>
+            </dx:DXTabItem>
+
+            <dx:DXTabItem Header="Дневники">
+                <medical:Diaries/>
+            </dx:DXTabItem>
+
+            <dx:DXTabItem Header="Диагнозы" >
+                <medical:Diagnoses/>
+            </dx:DXTabItem>
+
+            <dx:DXTabItem Header="План лечения" >
+                <medical:TreatmentPlans/>
+            </dx:DXTabItem>
+
+            <dx:DXTabItem Header="Карта зубов" >
+                <medical:TeethMap/>
+            </dx:DXTabItem>
+        </dx:DXTabControl>
+    </Grid>
+</UserControl>

@@ -24,6 +24,7 @@ namespace Dental.ViewModels.EmployeeDir
             IsInSheduler = employee.IsInSheduler;
             BirthDate = employee.BirthDate;
             Sex = employee.Sex;
+            Status = employee.Status;
             Phone = employee.Phone;
             Email = employee.Email;
             Address = employee.Address;
@@ -118,6 +119,12 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => Phone, value); }
         }
 
+        public string Status
+        {
+            get { return GetProperty(() => Status); }
+            set { SetProperty(() => Status, value); }
+        }
+
         public string Address
         {
             get { return GetProperty(() => Address); }
@@ -150,6 +157,7 @@ namespace Dental.ViewModels.EmployeeDir
                 StringParamsIsEquel(BirthDate, other.BirthDate, "Дата рождения");
                 StringParamsIsEquel(Sex, other.Sex, "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Телефон");
+                StringParamsIsEquel(Status, other.Status, "Статус");
                 StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
@@ -172,6 +180,11 @@ namespace Dental.ViewModels.EmployeeDir
 
         public static List<string> CreateFieldsChanges() => new List<string>();
 
+        public static string[] Statuses
+        { 
+            get => new string[]{ "Работает", "Уволен", "В отпуске"};  
+        }
+
 
         public override string ToString() => LastName + ' ' + FirstName + " " + MiddleName ?? "";
 
@@ -188,6 +201,7 @@ namespace Dental.ViewModels.EmployeeDir
             employee.BirthDate = BirthDate;
             employee.Sex = Sex;
             employee.Phone = Phone;
+            employee.Status = Status;
             employee.Address = Address;
             employee.Email = Email;
             employee.Note = Note;

@@ -87,6 +87,7 @@ namespace Dental.Models
         public string Note { get; set; }
 
         public string Phone { get; set; }
+        public string Status { get; set; }
 
         public string Address
         {

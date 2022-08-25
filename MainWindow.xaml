@@ -178,23 +178,6 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem
-                 ToolTip="Шаблоны"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.TemplateForms.MainPage" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Шаблоны" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.TemplateForms.MainPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.TemplateForms.MainPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem
                  ToolTip="Дополнительные поля"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.AdditionalFields.AdditionalFieldsPage" >
                 <dxb:BarButtonItem.ContentTemplate>

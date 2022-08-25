@@ -136,7 +136,20 @@
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
-                                                            
+                                <dxlc:LayoutItem Label="Статус:"
+                                            LabelPosition="Left" >
+                                    <dxe:ComboBoxEdit 
+                                                    ItemsSource="{Binding EmployeeInfoViewModel.Statuses}"                                      
+                                                    SelectedItem="{Binding EmployeeInfoViewModel.Status, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                    NullText="Статус сотрудника" 
+                                                    IsTextEditable="False"                                               
+                                                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                        <dxe:ComboBoxEdit.StyleSettings>
+                                            <dxe:RadioComboBoxStyleSettings />
+                                        </dxe:ComboBoxEdit.StyleSettings>
+                                    </dxe:ComboBoxEdit>
+                                </dxlc:LayoutItem>
+
                                 <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Left" >
                                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding EmployeeInfoViewModel.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 

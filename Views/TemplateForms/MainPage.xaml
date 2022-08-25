@@ -12,57 +12,11 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
       xmlns:vm ="clr-namespace:Dental.ViewModels.Templates" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="MainPage">
+      d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>
         <vm:MainViewModel x:Key="vm"/>
     </Page.Resources>
-    <Grid>
-        <Grid>
-            <dxwui:NavigationFrame AnimationType="SlideHorizontal" NavigationCacheMode="Required">
-                <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" />
-                    <dxwuin:FrameNavigationService />
-                </dxmvvm:Interaction.Behaviors>
-
-                <StackPanel >
-                    <dxe:HyperlinkEdit 
-                Text="Шаблоны &quot;Диагнозы&quot;"
-                ToolTip="Шаблоны &quot;Диагнозы&quot;"
-                EditValue="Шаблоны &quot;Диагнозы&quot;"
-                FontWeight="DemiBold"
-                Foreground="Black"
-                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}"
-                CommandParameter="{Binding Path=Row.Id}" />
-
-                    <dxe:HyperlinkEdit 
-                Text="Шаблоны &quot;Дневники&quot;"
-                ToolTip="Шаблоны &quot;Дневники&quot;"
-                EditValue="Шаблоны &quot;Дневники&quot;"
-                FontWeight="DemiBold"
-                Foreground="Black"
-                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}" />
-
-                    <dxe:HyperlinkEdit 
-                Text="Шаблоны &quot;Первичный осмотр&quot;"
-                ToolTip="Шаблоны &quot;Первичный осмотр&quot;"
-                EditValue="Шаблоны &quot;Первичный осмотр&quot;"
-                FontWeight="DemiBold"
-                Foreground="Black"
-                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}"/>
-
-                    <dxe:HyperlinkEdit 
-                Text="Шаблоны &quot;Планы лечения&quot;"
-                ToolTip="Шаблоны &quot;Планы лечения&quot;"
-                EditValue="Шаблоны &quot;Планы лечения&quot;"
-                FontWeight="DemiBold"
-                Foreground="Black"
-                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}" />
-                </StackPanel>
-            </dxwui:NavigationFrame>
-
-            
-        </Grid>
-
+    <Grid >
+         <dxwui:NavigationFrame Source="Menu"/>
     </Grid>
 </Page>
