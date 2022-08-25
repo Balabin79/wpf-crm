@@ -12,7 +12,6 @@
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-      xmlns:templates="clr-namespace:Dental.Views.Templates"
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"

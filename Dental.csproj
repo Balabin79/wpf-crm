@@ -285,15 +285,6 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\TemplateForms\PrintDiagnosWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TemplateForms\DiagnosPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\TemplateForms\DiagnosWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\WindowForms\StatusAppointmentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -396,18 +387,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\PatientCard\PatientsList.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TemplateForms\PrintDiagnosWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TemplateForms\DiagnosPage.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\TemplateForms\DiagnosWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
