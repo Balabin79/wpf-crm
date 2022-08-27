@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard.Templates
+namespace Dental.Views.Templates
 {
     /// <summary>
-    /// Логика взаимодействия для DiagnosesWin.xaml
+    /// Логика взаимодействия для InitialInspectionsWin.xaml
     /// </summary>
-    public partial class DiagnosesWin : Window
+    public partial class InitialInspectionsWin : Window
     {
-        public DiagnosesWin()
+        public InitialInspectionsWin()
         {
             InitializeComponent();
         }

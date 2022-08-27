@@ -145,7 +145,7 @@
                                 <add:ClientControl x:Name="Fields"/>
                             </dx:DXTabItem>
                             <dx:DXTabItem Header="Врачебная" >
-                                <tp:MedicalTab DataContext="{Binding}"/>
+                                <tp:MedicalTab x:Name="Medical"/>
                             </dx:DXTabItem>
 
                         </dx:DXTabControl>

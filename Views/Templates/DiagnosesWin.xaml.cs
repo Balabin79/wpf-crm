@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard.Medical
+namespace Dental.Views.Templates
 {
     /// <summary>
-    /// Логика взаимодействия для Diagnoses.xaml
+    /// Логика взаимодействия для DiagnosesWin.xaml
     /// </summary>
-    public partial class Diagnoses : UserControl
+    public partial class DiagnosesWin : Window
     {
-        public Diagnoses()
+        public DiagnosesWin()
         {
             InitializeComponent();
         }

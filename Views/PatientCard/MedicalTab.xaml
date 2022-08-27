@@ -21,10 +21,6 @@
                 <medical:Diaries/>
             </dx:DXTabItem>
 
-            <dx:DXTabItem Header="Диагнозы" >
-                <medical:Diagnoses/>
-            </dx:DXTabItem>
-
             <dx:DXTabItem Header="План лечения" >
                 <medical:TreatmentPlans/>
             </dx:DXTabItem>

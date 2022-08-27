@@ -15,7 +15,7 @@
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
     xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
-    xmlns:vm="clr-namespace:Dental.ViewModels"
+    xmlns:vm="clr-namespace:Dental.ViewModels.Templates"
      xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -24,7 +24,8 @@
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary>
-                        <commands:PrintCommand x:Key="Print"/>
+                    <vm:TemplatesViewModel x:Key="templatesVM"/>
+                    <commands:PrintCommand x:Key="Print"/>
                         <commands:ExportWordCommand x:Key="Word"/>
                         <commands:ExportPdfCommand x:Key="Pdf"/>
                         <commands:ExportExcelCommand x:Key="Excel"/>
@@ -421,8 +422,7 @@
                                  IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
-                                           Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                           CommandParameter="-1"
+                                           Command="{Binding Source={StaticResource templatesVM}, Path=OpenDiagnosesFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
 
                             </dxb:ToolBarControl>

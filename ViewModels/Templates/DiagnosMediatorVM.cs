@@ -9,31 +9,19 @@ using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using Dental.Services;
 using System.Data.Entity;
+using Dental.Models.Base;
 
-namespace Dental.ViewModels.Invoices
+namespace Dental.ViewModels.Templates
 {
-    public class ServiceVM : BindableBase, IDataErrorInfo
+    public class DiagnosMediatorVM : BindableBase, IDataErrorInfo
     {
-        public ServiceVM(ApplicationContext db, int id = 0) => Services = db?.Services.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent)
-            .OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Service>();
+        public DiagnosMediatorVM(ApplicationContext db, int id = 0) => Collection = db?.Diagnoses.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Diagnos>();
 
-        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
+        [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         public string Name
         {
             get { return GetProperty(() => Name); }
             set { SetProperty(() => Name, value); }
-        }
-
-        public string Code
-        {
-            get { return GetProperty(() => Code); }
-            set { SetProperty(() => Code, value); }
-        }
-
-        public decimal? Price
-        {
-            get { return GetProperty(() => Price); }
-            set { SetProperty(() => Price, value); }
         }
 
         public int? IsDir
@@ -50,13 +38,13 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => IsVisibleItemForm, value); }
         }
 
-        public ObservableCollection<Service> Services
+        public ObservableCollection<Diagnos> Collection
         {
-            get { return GetProperty(() => Services); }
-            set { SetProperty(() => Services, value); }
+            get { return GetProperty(() => Collection); }
+            set { SetProperty(() => Collection, value); }
         }
 
-        public Service Parent { get; set; }
+        public Diagnos Parent { get; set; }
         public int? ParentId { get; set; }
 
         public string Error { get => string.Empty; }
