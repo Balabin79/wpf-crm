@@ -90,5 +90,7 @@ namespace Dental.Models
         public DbSet<Complaint> Complaints { get; set; }   
         public DbSet<DescriptionXRay> DescriptionXRay { get; set; }   
         public DbSet<Objectively> Objectively { get; set; }   
+
+        public DbSet<MedicalTab> MedicalTab { get; set; }   
     }
 }
