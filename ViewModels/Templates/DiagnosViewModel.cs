@@ -16,6 +16,7 @@ using Dental.Views.Templates;
 using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
+using Dental.Models.Templates;
 
 namespace Dental.ViewModels.Templates
 {
@@ -27,7 +28,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 db = new ApplicationContext();
-                Collection = Collection = db?.Diagnoses.Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Diagnos>();
+                Collection = db?.Diagnoses.Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Diagnos>();
             }
             catch
             {
@@ -62,7 +63,7 @@ namespace Dental.ViewModels.Templates
 
                 if ((Model.Id > 0 && VM.ParentId != null && VM.Collection?.Count > 0) || (Model.Id == 0)) VM.Collection?.Add(WithoutCategory);
 
-                Window = new DiagnosWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
+                Window = new TemplateWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
                 Window.Show();
             }
             catch
@@ -190,6 +191,6 @@ namespace Dental.ViewModels.Templates
         public DiagnosMediatorVM VM { get; set; }
         public Diagnos WithoutCategory { get; set; } = new Diagnos() { Id = 0, IsDir = 1, ParentId = 0, Name = "Без категории", Guid = "000" };
         public Diagnos Model { get; set; }
-        private DiagnosWin Window;
+        private TemplateWin Window;
     }
 }

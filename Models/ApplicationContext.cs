@@ -5,6 +5,7 @@ using System.Linq;
 using Dental.Models.Base;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Dental.Models.Templates;
 
 namespace Dental.Models
 {
@@ -84,6 +85,10 @@ namespace Dental.Models
         public DbSet<Diagnos> Diagnoses { get; set; }   
         public DbSet<Diary> Diaries { get; set; }   
         public DbSet<InitialInspection> InitialInspections { get; set; }   
-        public DbSet<TreatmentPlan> TreatmentPlans { get; set; }   
+        public DbSet<TreatmentPlan> TreatmentPlans { get; set; }          
+        public DbSet<Anamnes> Anamneses { get; set; }   
+        public DbSet<Complaint> Complaints { get; set; }   
+        public DbSet<DescriptionXRay> DescriptionXRay { get; set; }   
+        public DbSet<Objectively> Objectively { get; set; }   
     }
 }

@@ -22,7 +22,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:TemplatesViewModel x:Key="templatesVM"/>
                     <commands:PrintCommand x:Key="Print"/>
                     <commands:ExportWordCommand x:Key="Word"/>
                     <commands:ExportPdfCommand x:Key="Pdf"/>
@@ -414,14 +413,6 @@
                                 Content="Создать первичный осмотр" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                  />
-
-                                <dxb:BarButtonItem 
-                                 Content="Шаблоны &quot;Первичный осмотр&quot;"
-                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
-                                           Command="{Binding Source={StaticResource templatesVM}, Path=OpenDiagnosesFormCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
 
                                 <dxb:BarButtonItem 
                                  Content="Шаблоны &quot;Диагнозы&quot;"

@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Dental.Views.Templates
 {
-    /// <summary>
-    /// Логика взаимодействия для InitialInspectionsWin.xaml
-    /// </summary>
     public partial class InitialInspectionsWin : Window
     {
         public InitialInspectionsWin()

@@ -23,8 +23,7 @@
         <UserControl.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary>
-                    <vm:TemplatesViewModel x:Key="templatesVM"/>
+                <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
                         <commands:ExportWordCommand x:Key="Word"/>
                         <commands:ExportPdfCommand x:Key="Pdf"/>
@@ -416,14 +415,7 @@
                                 Content="Создать план лечения" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                  />
-                              
-                                <dxb:BarButtonItem 
-                                 Content="Шаблоны &quot;Планы лечения&quot;"
-                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
-                                           Command="{Binding Source={StaticResource templatesVM}, Path=OpenDiagnosesFormCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
+                             
 
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>

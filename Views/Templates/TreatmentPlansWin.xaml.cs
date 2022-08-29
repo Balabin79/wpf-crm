@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Dental.Views.Templates
 {
-    /// <summary>
-    /// Логика взаимодействия для TreatmentPlansWin.xaml
-    /// </summary>
     public partial class TreatmentPlansWin : Window
     {
         public TreatmentPlansWin()

@@ -10,6 +10,7 @@ using DevExpress.Mvvm.Native;
 using Dental.Services;
 using System.Data.Entity;
 using Dental.Models.Base;
+using Dental.Models.Templates;
 
 namespace Dental.ViewModels.Templates
 {
