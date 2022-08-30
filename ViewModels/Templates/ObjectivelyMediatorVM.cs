@@ -11,12 +11,24 @@ using Dental.Services;
 using System.Data.Entity;
 using Dental.Models.Base;
 using Dental.Models.Templates;
+using System;
 
 namespace Dental.ViewModels.Templates
 {
     public class ObjectivelyMediatorVM : BindableBase, IDataErrorInfo
     {
-        public ObjectivelyMediatorVM(ApplicationContext db, int id = 0) => Collection = db?.Objectively.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Objectively>();
+        public ObjectivelyMediatorVM(ApplicationContext db, int id = 0) 
+        { 
+            try
+            {
+                Collection = db?.Objectively.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Objectively>();
+            }
+            catch(Exception e)
+            {
+
+            }
+         
+        }
 
         [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         public string Name
