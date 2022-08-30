@@ -28,7 +28,7 @@ namespace Dental.Models.Base
 
         [Key]
         [Column("Id")]
-        public int Id 
+        public virtual int Id 
         { 
             get => id;
             set

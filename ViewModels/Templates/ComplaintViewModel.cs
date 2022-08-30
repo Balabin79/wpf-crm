@@ -17,6 +17,7 @@ using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
 using Dental.Models.Templates;
+using System;
 
 namespace Dental.ViewModels.Templates
 {
@@ -30,7 +31,7 @@ namespace Dental.ViewModels.Templates
                 db = new ApplicationContext();
                 Collection = db?.Complaints.Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Complaint>();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Шаблоны жалоб пациента\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

@@ -84,7 +84,7 @@ namespace Dental.Models
 
         public DbSet<Diagnos> Diagnoses { get; set; }   
         public DbSet<Diary> Diaries { get; set; }   
-        public DbSet<InitialInspection> InitialInspections { get; set; }   
+        public DbSet<Allergy> Allergies { get; set; }   
         public DbSet<TreatmentPlan> TreatmentPlans { get; set; }          
         public DbSet<Anamnes> Anamneses { get; set; }   
         public DbSet<Complaint> Complaints { get; set; }   

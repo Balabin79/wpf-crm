@@ -1,4 +1,4 @@
-﻿<Window x:Class="Dental.Views.Templates.InitialInspectionsWin"
+﻿<Window x:Class="Dental.Views.Templates.AllergiesWin"
               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,7 +21,7 @@
         BorderThickness="1" 
         Margin="5" 
         dx:ThemeManager.ThemeName="Office2019White" >
-            <dx:LoadingDecorator SplashScreenDataContext="Загрузка шаблонов первичного осмотра"  BorderEffect="None">
+            <dx:LoadingDecorator SplashScreenDataContext="Загрузка шаблонов аллергий"  BorderEffect="None">
                 <dx:LoadingDecorator.SplashScreenTemplate>
                     <DataTemplate>
                         <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
@@ -43,7 +43,7 @@
                         <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                             <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
-                            <TextBlock Text="Шаблоны первичного осмотра" FontSize="14" Padding="2 5 5 0" />
+                            <TextBlock Text="Шаблоны аллергий" FontSize="14" Padding="2 5 5 0" />
                         </StackPanel>
                         <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 

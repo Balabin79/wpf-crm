@@ -14,9 +14,9 @@ using Dental.Models.Templates;
 
 namespace Dental.ViewModels.Templates
 {
-    public class InitialInspectionMediatorVM : BindableBase, IDataErrorInfo
+    public class AllergyMediatorVM : BindableBase, IDataErrorInfo
     {
-        public InitialInspectionMediatorVM(ApplicationContext db, int id = 0) => Collection = db?.InitialInspections.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<InitialInspection>();
+        public AllergyMediatorVM(ApplicationContext db, int id = 0) => Collection = db?.Allergies.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Allergy>();
 
         [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         public string Name
@@ -39,13 +39,13 @@ namespace Dental.ViewModels.Templates
             set { SetProperty(() => IsVisibleItemForm, value); }
         }
 
-        public ObservableCollection<InitialInspection> Collection
+        public ObservableCollection<Allergy> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
         }
 
-        public InitialInspection Parent { get; set; }
+        public Allergy Parent { get; set; }
         public int? ParentId { get; set; }
 
         public string Error { get => string.Empty; }

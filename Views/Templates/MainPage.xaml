@@ -39,9 +39,18 @@
                             <TextBlock Text="Шаблоны" FontSize="14" Padding="2 5 5 0" />
                         </StackPanel>
                     </DockPanel>
-                    <StackPanel Grid.Row="1" Margin="10 0 0 0">
-                    <dxe:HyperlinkEdit Margin="0 5 0 0"
-                                Text="1. Анамнезы"
+                    <StackPanel Grid.Row="1" Margin="10 5 0 0">
+                        <dxe:HyperlinkEdit 
+                                Text="1. Аллергии"
+                                ToolTip="Аллергии"
+                                EditValue="Аллергии"
+                                Command="{Binding OpenAllergiesCommand}"
+                                FontWeight="DemiBold"
+                                Foreground="#333"
+                                 />
+                        
+                        <dxe:HyperlinkEdit 
+                                Text="2. Анамнезы"
                                 ToolTip="Анамнезы"
                                 EditValue="Анамнезы"
                                 Command="{Binding OpenAnamnesesCommand}"
@@ -49,7 +58,7 @@
                                 Foreground="#333"
                                  />
                         <dxe:HyperlinkEdit 
-                                Text="2. Диагнозы"
+                                Text="3. Диагнозы"
                                 ToolTip="Диагнозы"
                                 EditValue="Диагнозы"
                                 Command="{Binding OpenDiagnosesCommand}"
@@ -58,7 +67,7 @@
                                  />
 
                         <dxe:HyperlinkEdit 
-                                Text="3. Дневники"
+                                Text="4. Дневники"
                                 ToolTip="Дневники"
                                 EditValue="Дневники"
                                 Command="{Binding OpenDiariesCommand}"
@@ -67,7 +76,7 @@
                                  />
 
                         <dxe:HyperlinkEdit 
-                                Text="4. Жалобы пациента"
+                                Text="5. Жалобы пациента"
                                 ToolTip="Жалобы пациента"
                                 EditValue="Жалобы пациента"
                                 Command="{Binding OpenComplaintsCommand}"
@@ -75,14 +84,6 @@
                                 Foreground="#333"
                                  />
                         
-                        <dxe:HyperlinkEdit 
-                                Text="5. Первичный осмотр"
-                                ToolTip="Первичный осмотр"
-                                EditValue="Первичный осмотр"
-                                Command="{Binding OpenInitialInspectionsCommand}"
-                                FontWeight="DemiBold"
-                                Foreground="#333"
-                                 />
                         <dxe:HyperlinkEdit 
                                 Text="6. Планы лечения"
                                 ToolTip="Планы лечения"

@@ -45,12 +45,12 @@ namespace Dental.ViewModels.Templates
         }
 
         [Command]
-        public void OpenInitialInspections(object p)
+        public void OpenAllergies(object p)
         {
             try
             {
-                InitialInspectionsWin = new InitialInspectionsWin() { DataContext = new InitialInspectionViewModel() };
-                InitialInspectionsWin?.Show();
+                AllergiesWin = new AllergiesWin() { DataContext = new AllergyViewModel() };
+                AllergiesWin?.Show();
             }
             catch
             {
@@ -139,7 +139,7 @@ namespace Dental.ViewModels.Templates
         public DiariesWin DiariesWin { get; set; }
         public AnamnesesWin AnamnesesWin { get; set; }
         public ObjectivelyWin ObjectivelyWin { get; set; }
-        public InitialInspectionsWin InitialInspectionsWin { get; set; }
+        public AllergiesWin AllergiesWin { get; set; }
         public DescriptionXRaysWin DescriptionXRaysWin { get; set; }
         public ComplaintsWin ComplaintsWin { get; set; }
         public TreatmentPlansWin TreatmentPlansWin { get; set; }

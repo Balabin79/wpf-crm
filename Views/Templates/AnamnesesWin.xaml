@@ -73,7 +73,7 @@
                  ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
                         <dxg:GridControl.View>
-                            <dxg:TreeListView  
+                            <dxg:TreeListView                                
                             x:Name="view"
                             KeyFieldName="Id"
                             ParentFieldName="ParentId"

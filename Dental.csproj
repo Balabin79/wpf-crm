@@ -405,7 +405,7 @@
     <Page Update="Views\Templates\TreatmentPlansWin.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Templates\InitialInspectionsWin.xaml">
+    <Page Update="Views\Templates\AllergiesWin.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\WindowForms\StatusAppointmentWindow.xaml">

@@ -28,7 +28,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 db = new ApplicationContext();
-                Collection = db?.Anamneses.Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Anamnes>();
+                Collection = db?.Anamneses.Include(f => f.Parent).OrderByDescending(f => f.IsDir).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Anamnes>();
             }
             catch
             {

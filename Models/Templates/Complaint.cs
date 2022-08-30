@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Table("Complaintes")]
+    [Table("Complaint")]
     public class Complaint : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]

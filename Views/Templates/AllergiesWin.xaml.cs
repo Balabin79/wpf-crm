@@ -14,9 +14,9 @@ using System.Windows.Shapes;
 
 namespace Dental.Views.Templates
 {
-    public partial class InitialInspectionsWin : Window
+    public partial class AllergiesWin : Window
     {
-        public InitialInspectionsWin()
+        public AllergiesWin()
         {
             InitializeComponent();
         }

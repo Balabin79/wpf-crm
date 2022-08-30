@@ -13,10 +13,10 @@ namespace Dental.Infrastructures.Collection
 {
     class RecursionByCollection
     {
-        public RecursionByCollection(ObservableCollection<ITreeModel> _Collection, ITreeModel _Model)
+        public RecursionByCollection(ObservableCollection<ITreeModel> collection, ITreeModel model)
         {
-            Collection = (ObservableCollection<ITreeModel>)_Collection;
-            Model = _Model;
+            Collection = collection;
+            Model = model;
         }
 
         public ObservableCollection<ITreeModel> GetItemChilds()

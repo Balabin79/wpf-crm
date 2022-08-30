@@ -17,27 +17,28 @@ using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
 using Dental.Models.Templates;
+using System;
 
 namespace Dental.ViewModels.Templates
 {
-    public class InitialInspectionViewModel : ViewModelBase
+    public class AllergyViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
-        public InitialInspectionViewModel()
+        public AllergyViewModel()
         {
             try
             {
                 db = new ApplicationContext();
-                Collection = db?.InitialInspections.Include(f => f.Parent).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<InitialInspection>();
+                Collection = db?.Allergies.Include(f => f.Parent).OrderByDescending(f => f.IsDir).OrderBy(f => f.Name).ToObservableCollection() ?? new ObservableCollection<Allergy>();
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Шаблоны первичного приема\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Аллергии\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
-        public ObservableCollection<InitialInspection> Collection
+        public ObservableCollection<Allergy> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
@@ -49,9 +50,9 @@ namespace Dental.ViewModels.Templates
             try
             {
                 if (!int.TryParse(p.ToString(), out int param)) return;
-                Model = (param > 0) ? db.InitialInspections.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault() : new InitialInspection();
+                Model = (param > 0) ? db.Allergies.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault() : new Allergy();
                 Model.IsDir = (param < 0) ? param == -1 ? 0 : 1 : Model.IsDir;
-                VM = new InitialInspectionMediatorVM(db, Model.Id)
+                VM = new AllergyMediatorVM(db, Model.Id)
                 {
                     Name = Model.Name,
                     ParentId = Model.ParentId,
@@ -82,7 +83,7 @@ namespace Dental.ViewModels.Templates
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is InitialInspection item)
+                    if (parameters.Tree.FocusedRow is Allergy item)
                     {
                         //if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = item;
@@ -175,22 +176,22 @@ namespace Dental.ViewModels.Templates
                 }
                 else
                 {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<InitialInspection>().ToObservableCollection();
-                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
+                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Allergy>().ToObservableCollection();
+                     collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                     collection.ForEach(f => Collection.Remove(f));
                 }
 
                 db.SaveChanges();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
         
-        public InitialInspectionMediatorVM VM { get; set; }
-        public InitialInspection WithoutCategory { get; set; } = new InitialInspection() { Id = 0, IsDir = 1, ParentId = 0, Name = "Без категории", Guid = "000" };
-        public InitialInspection Model { get; set; }
+        public AllergyMediatorVM VM { get; set; }
+        public Allergy WithoutCategory { get; set; } = new Allergy() { Id = 0, IsDir = 1, ParentId = 0, Name = "Без категории", Guid = "000" };
+        public Allergy Model { get; set; }
         private TemplateWin Window;
     }
 }

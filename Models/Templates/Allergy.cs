@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models.Templates
 {
     [Table("InitialInspections")]
-    public class InitialInspection : AbstractBaseModel, IDataErrorInfo, ITreeModel
+    public class Allergy : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [Display(Name = "Название")]
@@ -24,7 +24,7 @@ namespace Dental.Models.Templates
 
         public int? IsDir { get; set; }
         public int? ParentId { get; set; }
-        public InitialInspection Parent { get; set; }
+        public Allergy Parent { get; set; }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -45,7 +45,7 @@ namespace Dental.Models.Templates
 
         public override bool Equals(object other)
         {
-            if (other is InitialInspection clone)
+            if (other is Allergy clone)
             {
                 if (object.ReferenceEquals(this, clone)) return true;
                 if (StringParamsIsEquel(this.Name, clone.Name) && StringParamsIsEquel(this.Guid, clone.Guid)) return true;

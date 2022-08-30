@@ -21,7 +21,6 @@ namespace Dental.Models.Templates
             } 
         }
         private string _Name;
-
         public int? IsDir { get; set; }
         public int? ParentId { get; set; }
         public Objectively Parent { get; set; }

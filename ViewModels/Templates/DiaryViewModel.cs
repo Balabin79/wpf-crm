@@ -17,6 +17,7 @@ using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
 using Dental.Models.Templates;
+using System;
 
 namespace Dental.ViewModels.Templates
 {
@@ -178,11 +179,29 @@ namespace Dental.ViewModels.Templates
                     var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Diary>().ToObservableCollection();
                     collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
                     collection.ForEach(f => Collection.Remove(f));
-                }
+                    
+                  /*  foreach(var f in collection)
+                    {
+                        var i = new Anamnes()
+                        {
+                            t = f.Id.ToString(),
+                            Guid = f.Guid,
+                            CreatedAt = f.CreatedAt,
+                            UpdatedAt = f.UpdatedAt,
+                            Name = f.Name,
+                            IsDir = f.IsDir,
+                            ParentId = f.ParentId
+                        };
 
+                        db.Complaints.Add(i);
+                        db.SaveChanges();
+                    }*/
+
+                }
+         
                 db.SaveChanges();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
