@@ -161,6 +161,85 @@ namespace Dental.ViewModels.Templates
         }
 
         [Command]
+        public void OpenByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Complaints.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 0)
+                {
+
+                    VM = new ComplaintMediatorVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                else
+                {
+                    VM = new ComplaintMediatorVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                Model = new Complaint();
+                Window = new TemplateWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        [Command]
+        public void OpenDirByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Complaints.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 1)
+                {
+                    VM = new ComplaintMediatorVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                else
+                {
+                    VM = new ComplaintMediatorVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                Model = new Complaint();
+                Window = new TemplateWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        [Command]
         public void Delete(object p)
         {
             try

@@ -118,6 +118,84 @@ namespace Dental.ViewModels.Templates
             catch { }
         }
 
+        [Command]
+        public void OpenByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Diagnoses.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 0)
+                {
+                    VM = new DiagnosMediatorVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                else
+                {
+                    VM = new DiagnosMediatorVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                Model = new Diagnos();
+                Window = new TemplateWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        [Command]
+        public void OpenDirByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Diagnoses.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 1)
+                {
+
+                    VM = new DiagnosMediatorVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                else
+                {
+                    VM = new DiagnosMediatorVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                Model = new Diagnos();
+                Window = new TemplateWin() { DataContext = this, Height = VM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
 
         [Command]
         public void Save(object p)
