@@ -1,0 +1,410 @@
+﻿<ResourceDictionary   
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Dental.Views.PatientCard.Medical"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
+    xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+    xmlns:vm="clr-namespace:Dental.ViewModels.Templates"
+    xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
+    x:Name="res" >
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary>
+            <converter:TreatmentFormMultiBindingConverter x:Key="TreatmentFormMultiConv" />
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+    <DataTemplate x:Key="ContentDetail"  >
+        <Grid  VerticalAlignment="Stretch" Margin="5"  x:Name="templ" >
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <dxlc:LayoutGroup x:Name="layot" Grid.Row="0" Margin="0 10 0 10" 
+                               View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" 
+                              ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              
+                              >
+                <dxlc:LayoutGroup.HeaderTemplate>
+                    <DataTemplate>
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="Состав" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                    <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
+                                            CommandParameter="{Binding ElementName=templ, Path=DataContext}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Удалить" >
+                                    </dxb:BarButtonItem>
+                                </dxb:ToolBarControl>
+                            </dxb:BarContainerControl>
+                        </DockPanel>
+                    </DataTemplate>
+                </dxlc:LayoutGroup.HeaderTemplate>
+
+                <StackPanel >
+                    <Grid HorizontalAlignment="Stretch" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Жалобы:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Complaint" >
+                        <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Complaint" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Complaint" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                    </StackPanel>
+                </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Анамнез:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Anamnes" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Anamnes" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Anamnes" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Объективное обследование:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Objectivly" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Objectivly" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Objectivly" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Описание рентгеновских снимков:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="DescriptionXRay" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="DescriptionXRay" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="DescriptionXRay" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Диагноз:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Diagnos" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Diagnos" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Diagnos" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="План лечения:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Plan" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Plan" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Plan" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Лечение:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Treatment" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Treatment" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Treatment" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Аллергии:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Allergy" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Allergy" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Allergy" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid HorizontalAlignment="Stretch" Margin="0 5 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="18"/>
+                        </Grid.ColumnDefinitions>
+                        <dxlc:LayoutItem Label="Рекомендации:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
+                            <dxe:MemoEdit Height="50" />
+                        </dxlc:LayoutItem>
+                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Recommendations" >
+                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Добавить из шаблонов" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Recommendations" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
+                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Content="Очистить поле" >
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
+                                            <Binding ElementName="view"/>
+                                            <Binding ElementName="Recommendations" Path="Name" />
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:ToolBarControl>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </dxlc:LayoutGroup>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

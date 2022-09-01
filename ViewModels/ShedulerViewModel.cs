@@ -20,6 +20,7 @@ using Dental.Views.EmployeeDir;
 using Dental.ViewModels.EmployeeDir;
 using Dental.Services;
 using Dental.Views.PatientCard;
+using Dental.ViewModels.ClientDir;
 
 namespace Dental.ViewModels
 {

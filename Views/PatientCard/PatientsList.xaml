@@ -9,7 +9,7 @@
        xmlns:services="clr-namespace:Dental.Services" 
        d:DesignHeight="400" d:DesignWidth="800" mc:Ignorable="d"
        dx:ThemeManager.ThemeName="Office2019White"
-       xmlns:vm ="clr-namespace:Dental.ViewModels"
+       xmlns:vm ="clr-namespace:Dental.ViewModels.ClientDir"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
        Title="Клиенты">

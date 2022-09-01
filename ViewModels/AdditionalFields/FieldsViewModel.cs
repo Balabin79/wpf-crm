@@ -15,6 +15,7 @@ using System.Globalization;
 using Dental.Infrastructures.Converters;
 using System.Windows.Data;
 using Dental.ViewModels.EmployeeDir;
+using Dental.ViewModels.ClientDir;
 
 namespace Dental.ViewModels.AdditionalFields
 {

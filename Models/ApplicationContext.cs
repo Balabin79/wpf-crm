@@ -91,6 +91,6 @@ namespace Dental.Models
         public DbSet<DescriptionXRay> DescriptionXRay { get; set; }   
         public DbSet<Objectively> Objectively { get; set; }   
 
-        public DbSet<MedicalTab> MedicalTab { get; set; }   
+        public DbSet<TreatmentStage> TreatmentStage { get; set; }   
     }
 }

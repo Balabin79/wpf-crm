@@ -1,4 +1,5 @@
 ﻿using Dental.Models;
+using Dental.ViewModels.ClientDir;
 using Dental.ViewModels;
 using DevExpress.Xpf.WindowsUI;
 using System;
@@ -22,6 +23,7 @@ namespace Dental.Views.PatientCard
             ClientCardViewModel clientCardViewModel = new ClientCardViewModel(clientId, vm);
             FieldsViewModel fieldsViewModel = new FieldsViewModel(client, vm);
             InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
+            TreatmentStageViewModel treatmentStageViewModel  = new TreatmentStageViewModel(client, db);
 
             clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;
             clientCardViewModel.EventChangeReadOnly += fieldsViewModel.ChangedReadOnly;
@@ -37,6 +39,7 @@ namespace Dental.Views.PatientCard
             this.DataContext = clientCardViewModel;
             this.Invoices.DataContext = invoicesViewModel;
             this.Fields.DataContext = fieldsViewModel;
+            this.Medical.DataContext = treatmentStageViewModel;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
