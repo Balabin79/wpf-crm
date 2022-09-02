@@ -19,6 +19,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary>
             <converter:TreatmentFormMultiBindingConverter x:Key="TreatmentFormMultiConv" />
+            <converter:TreatmentMultiBindingConverter x:Key="TreatmentMultiConv" />
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
     <DataTemplate x:Key="ContentDetail"  >
@@ -59,7 +60,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Жалобы:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" Name="ComplaintTxt" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Complaints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Complaints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Complaint" >
                         <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -77,13 +85,13 @@
                                 </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
+                                    Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Очистить поле" >
                                     <dxb:BarButtonItem.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
-                                            <Binding ElementName="view"/>
+                                        <MultiBinding Converter="{StaticResource TreatmentMultiConv}">
+                                            <Binding ElementName="templ" Path="DataContext"/>
                                             <Binding ElementName="Complaint" Path="Name" />
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
@@ -98,7 +106,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Анамнез:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Anamneses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Anamneses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Anamnes" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -137,7 +152,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Объективное обследование:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Objectively, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Objectively, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Objectivly" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -176,7 +198,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Описание рентгеновских снимков:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"
+                                VerticalContentAlignment="Top"
+                                Text="{Binding DescriptionXRay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding DescriptionXRay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="DescriptionXRay" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -215,7 +244,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Диагноз:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Diagnoses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Diagnoses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Diagnos" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -254,7 +290,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="План лечения:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Plans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Plans, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Plan" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -293,7 +336,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Лечение:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Treatments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Treatments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Treatment" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -332,7 +382,14 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Аллергии:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Allergies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Allergies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Allergy" >
                             <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
@@ -371,37 +428,15 @@
                             <ColumnDefinition Width="18"/>
                         </Grid.ColumnDefinitions>
                         <dxlc:LayoutItem Label="Рекомендации:" LabelPosition="Top"  Grid.Column="0" Width="auto" HorizontalAlignment="Stretch">
-                            <dxe:MemoEdit Height="50" />
+                            <dxe:MemoEdit Height="50" 
+                                ShowText="True"
+                                TextWrapping="Wrap"          
+                                VerticalContentAlignment="Top"
+                                Text="{Binding Recommendations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                ShowIcon="False" 
+                                EditValue="{Binding Recommendations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            />
                         </dxlc:LayoutItem>
-                        <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Recommendations" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
-                                <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
-                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Content="Добавить из шаблонов" >
-                                    <dxb:BarButtonItem.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
-                                            <Binding ElementName="view"/>
-                                            <Binding ElementName="Recommendations" Path="Name" />
-                                        </MultiBinding>
-                                    </dxb:BarButtonItem.CommandParameter>
-                                </dxb:BarButtonItem>
-
-                                <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"
-                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"
-                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Content="Очистить поле" >
-                                    <dxb:BarButtonItem.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource TreatmentFormMultiConv}">
-                                            <Binding ElementName="view"/>
-                                            <Binding ElementName="Recommendations" Path="Name" />
-                                        </MultiBinding>
-                                    </dxb:BarButtonItem.CommandParameter>
-                                </dxb:BarButtonItem>
-                            </dxb:ToolBarControl>
-                        </StackPanel>
                     </Grid>
                 </StackPanel>
             </dxlc:LayoutGroup>

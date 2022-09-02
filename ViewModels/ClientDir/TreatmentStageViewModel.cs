@@ -2,9 +2,11 @@
 using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Models.Base;
+using Dental.Views.PatientCard;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,12 +43,128 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (parameters.Table.FocusedRow is TreatmentStage model)
                 {
-                    switch(parameters.Name)
+                    Templates = new List<TreeTemplate>();
+                    TemplateName = parameters.Name;
+                    switch (parameters.Name)
                     {
-                        //case "Comlaint" : 
+                        case "Complaint":
+                            Templates = db.Complaints.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Anamnes" :
+                            Templates = db.Anamneses.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Objectivly" :
+                            Templates = db.Objectively.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "DescriptionXRay" :
+                            Templates = db.DescriptionXRay.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Diagnos" :
+                            Templates = db.Diagnoses.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Plan" :
+                            Templates = db.TreatmentPlans.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Treatment" :
+                            Templates = db.Diaries.Select(f => new TreeTemplate() // override on Treatment
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Allergy" :
+                            Templates = db.Allergies.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
                     }
+                    Model = model;
+                    TemplateWin = new SelectValueInTemplateWin() { DataContext = this };
+                    TemplateWin.Show();
                 }
                 //parameters.Popup.ClosePopup();
+            }
+        }
+
+        [Command]
+        public void Add(object p)
+        {
+            try
+            {
+                var item = new TreatmentStage() { Client = Client, ClientId = Client?.Id, Date = DateTime.Now.ToLongTimeString() };
+                Collection?.Add(item);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void AddChecked(object p)
+        {
+            try
+            {
+                if (p is TreeListView tree)
+                {                  
+                    var values = ((TreatmentStageViewModel)tree.DataContext).Templates.Where(f => f.IsChecked == true).ToArray();
+                    var str = new StringBuilder();
+                    values.ForEach(f => str.Append(f.Name + "\n"));
+
+                    int idx = Collection.IndexOf(f => f.Guid == Model?.Guid);
+                    if (idx < 0) return;
+
+                    switch(TemplateName)
+                    {
+                        case "Complaint" : Collection[idx].Complaints = str.ToString(); break;
+                        case "Anamnes" : Collection[idx].Anamneses = str.ToString(); break;
+                        case "Objectivly" : Collection[idx].Objectively = str.ToString(); break;
+                        case "DescriptionXRay" : Collection[idx].DescriptionXRay = str.ToString(); break;
+                        case "Diagnos" : Collection[idx].Diagnoses = str.ToString(); break;
+                        case "Plan" : Collection[idx].Plans = str.ToString(); break;
+                        case "Treatment" : Collection[idx].Treatments = str.ToString(); break;
+                        case "Allergy" : Collection[idx].Allergies = str.ToString(); break;
+                    }
+                    TemplateWin?.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -55,24 +173,23 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if (p is TreatmentFormParameters parameters)
+
+                if (p is TreatmentParameters parameters)
                 {
-                    if (parameters.Table.FocusedRow is TreatmentStage model)
+                    if (parameters.Model is TreatmentStage model)
                     {
                         switch (parameters.Name)
                         {
-                            //case "Comlaint" : 
-                            //case "Anamnes" : 
-                            //case "Objectivly" : 
-                            //case "DescriptionXRay" : 
-                            //case "Diagnos" : 
-                            //case "Plan" : 
-                            //case "Treatment" : 
-                            //case "Allergy" : 
-                            //case "Recommendations" : 
+                            case "Complaint": model.Complaints = null; break;
+                            case "Anamnes": model.Anamneses = null; break;
+                            case "Objectivly": model.Objectively = null; break;
+                            case "DescriptionXRay": model.DescriptionXRay = null; break;
+                            case "Diagnos": model.Diagnoses = null; break;
+                            case "Plan": model.Plans = null; break;
+                            case "Treatment": model.Treatments = null; break;
+                            case "Allergy": model.Allergies = null; break;
                         }
                     }
-                    //parameters.Popup.ClosePopup();
                 }
             }
             catch (Exception e)
@@ -81,7 +198,7 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        /*******/
+        /**********************************************************/
         public void StatusReadOnly(bool status)
         {
             IsReadOnly = status;
@@ -114,19 +231,6 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        [Command]
-        public void Add(object p)
-        {
-            try
-            {
-                var item = new TreatmentStage() { Client = Client, ClientId = Client?.Id, Date = DateTime.Now.ToShortDateString().ToString() };
-                Collection?.Add(item);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
 
         [Command]
         public void Save(object p)
@@ -147,10 +251,25 @@ namespace Dental.ViewModels.ClientDir
 
         public TreatmentStage Model { get; set; } //этап лечения
         public ObservableCollection<TreatmentStage> Collection { get; set; }
+        public ICollection<TreeTemplate> Templates { get; set; }
+        public SelectValueInTemplateWin TemplateWin { get; set; }
         public Client Client
         {
             get { return GetProperty(() => Client); }
             set { SetProperty(() => Client, value); }
         }
+
+        public string TemplateName { get; set; }
+    }
+
+
+    public class TreeTemplate : ITreeModel
+    {
+        public int Id { get; set; }
+        public bool IsChecked { get; set; } = false;
+        public int? IsDir { get; set; }
+        public int? ParentId { get; set; }
+        public string Name { get; set; }
+
     }
 }
