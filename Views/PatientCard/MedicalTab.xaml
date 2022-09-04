@@ -63,7 +63,7 @@
                                 Command="{Binding ElementName=mainGrid, Path=DataContext.AddCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                 Content="Добавить новое лечение" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                  />
 
                             </dxb:ToolBarControl>
@@ -143,7 +143,7 @@
 
 
 
-                <dxg:GridColumn FieldName="FullName"  Header="Наименование"  MinWidth="200" Width="5*" >
+                <dxg:GridColumn FieldName="FullName"  Header="Наименование"  MinWidth="200" Width="5*" Name="row">
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -154,7 +154,7 @@
                     </dxg:GridColumn.HeaderTemplate>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Name="row" Margin="3 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Margin="3 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>

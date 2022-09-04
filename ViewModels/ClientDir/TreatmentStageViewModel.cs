@@ -39,9 +39,9 @@ namespace Dental.ViewModels.ClientDir
         [Command]
         public void OpenForm(object p)
         {
-            if (p is TreatmentFormParameters parameters)
+            if (p is TreatmentParameters parameters)
             {
-                if (parameters.Table.FocusedRow is TreatmentStage model)
+                if (parameters.Model is TreatmentStage model)
                 {
                     Templates = new List<TreeTemplate>();
                     TemplateName = parameters.Name;
@@ -127,6 +127,7 @@ namespace Dental.ViewModels.ClientDir
             {
                 var item = new TreatmentStage() { Client = Client, ClientId = Client?.Id, Date = DateTime.Now.ToLongTimeString() };
                 Collection?.Add(item);
+                db?.TreatmentStage.Add(item);
             }
             catch (Exception e)
             {
@@ -173,7 +174,6 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-
                 if (p is TreatmentParameters parameters)
                 {
                     if (parameters.Model is TreatmentStage model)
@@ -188,6 +188,7 @@ namespace Dental.ViewModels.ClientDir
                             case "Plan": model.Plans = null; break;
                             case "Treatment": model.Treatments = null; break;
                             case "Allergy": model.Allergies = null; break;
+                            case "Recomendation": model.Recommendations = null; break;
                         }
                     }
                 }
@@ -198,7 +199,19 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        /**********************************************************/
+        public bool Save(Client client)
+        {
+            try
+            {
+                return db.SaveChanges() > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+
         public void StatusReadOnly(bool status)
         {
             IsReadOnly = status;
@@ -210,43 +223,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        [Command]
-        public void SelectItemInServiceField(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.FocusedRow is ITreeModel model)
-                    {
-                        if (model.IsDir == 1) return;
-                        parameters.Popup.EditValue = model;
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-
-        [Command]
-        public void Save(object p)
-        {
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-
-        private void SetCollection() => Collection = db.TreatmentStage.Where(f => f.ClientId == Client.Id).Include(f => f.Client).ToObservableCollection() ?? new ObservableCollection<TreatmentStage>();
+        private void SetCollection() => Collection = Client == null ? new ObservableCollection<TreatmentStage>() : db.TreatmentStage.Where(f => f.ClientId == Client.Id).Include(f => f.Client).ToObservableCollection();
 
 
         public TreatmentStage Model { get; set; } //этап лечения
@@ -260,6 +237,12 @@ namespace Dental.ViewModels.ClientDir
         }
 
         public string TemplateName { get; set; }
+
+        public void NewClientSaved(Client client)
+        {
+            Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
+        }
+
     }
 
 
@@ -270,6 +253,5 @@ namespace Dental.ViewModels.ClientDir
         public int? IsDir { get; set; }
         public int? ParentId { get; set; }
         public string Name { get; set; }
-
     }
 }
