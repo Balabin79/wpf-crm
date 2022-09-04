@@ -120,9 +120,15 @@
                                 Modifiers="Ctrl"
                                 Command="{Binding ElementName=firstGrid, Path=DataContext.OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                    <MouseBinding Gesture="LeftDoubleClick"      
+                                <MouseBinding Gesture="LeftDoubleClick"      
                                 Command="{Binding ElementName=firstGrid, Path=DataContext.OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <KeyBinding Key="V"   Modifiers="Ctrl"
+                                    Command="{Binding ElementName=firstGrid, Path=DataContext.OpenByParentFormCommand}"
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                <KeyBinding Key="W"  Modifiers="Ctrl"
+                                    Command="{Binding ElementName=firstGrid, Path=DataContext.OpenDirByParentFormCommand}"
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}" />
                                 </dxg:TreeListView.InputBindings>
 
                                 <dxg:TreeListView.RowCellMenuCustomizations>
@@ -154,6 +160,24 @@
                                     KeyGesture="Ctrl+E" 
                                     Content="Редактировать"  
                                     Command="{Binding ElementName=firstGrid, Path=DataContext.OpenFormCommand}" 
+                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+
+                                    <dxb:BarButtonItem 
+                                    GlyphSize="Small" 
+                                    GlyphAlignment="Left" 
+                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
+                                    KeyGesture="Ctrl+V" 
+                                    Content="Добавить шаблон в выдел. директорию"  
+                                    Command="{Binding ElementName=firstGrid, Path=DataContext.OpenByParentFormCommand}"
+                                     CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+
+                                    <dxb:BarButtonItem 
+                                    GlyphSize="Small" 
+                                    GlyphAlignment="Left" 
+                                    Glyph="{dx:DXImage SvgImages/Dashboards/AutoExpand.svg}"
+                                    KeyGesture="Ctrl+W" 
+                                    Content="Добавить директорию в выдел. директорию"  
+                                    Command="{Binding ElementName=firstGrid, Path=DataContext.OpenDirByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
                                     <dxb:BarButtonItem 

@@ -169,7 +169,7 @@
                                     <dxb:BarButtonItem 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}" 
+                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
                                     KeyGesture="Ctrl+V" 
                                     Content="Добавить шаблон в выдел. директорию"  
                                     Command="{Binding ElementName=firstGrid, Path=DataContext.OpenByParentFormCommand}"
@@ -178,7 +178,7 @@
                                     <dxb:BarButtonItem 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
+                                    Glyph="{dx:DXImage SvgImages/Dashboards/AutoExpand.svg}"
                                     KeyGesture="Ctrl+W" 
                                     Content="Добавить директорию в выдел. директорию"  
                                     Command="{Binding ElementName=firstGrid, Path=DataContext.OpenDirByParentFormCommand}"

@@ -209,6 +209,85 @@ namespace Dental.ViewModels.Materials
             }
         }
 
+        [Command]
+        public void OpenByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Nomenclature.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 0)
+                {
+
+                    MaterialVM = new MaterialVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                else
+                {
+                    MaterialVM = new MaterialVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                Model = new Nomenclature();
+                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        [Command]
+        public void OpenDirByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Nomenclature.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 1)
+                {
+
+                    MaterialVM = new MaterialVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                else
+                {
+                    MaterialVM = new MaterialVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                Model = new Nomenclature();
+                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
 
         public Nomenclature WithoutCategory { get; set; } = new Nomenclature() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории", Guid = "000" };
 
@@ -233,6 +312,7 @@ namespace Dental.ViewModels.Materials
         private MeasureWindow MeasureWin;
 
         public void SetMeasures() => Measures = db.Measure.ToObservableCollection();
+
 
         #region Печать
         public PrintServiceWindow PrintServiceWindow { get; set; }

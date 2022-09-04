@@ -183,7 +183,87 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
         [Command]
-        public void CancelForm() => Window.Close();
+        public void CancelForm() => Window?.Close();
+
+        [Command]
+        public void OpenByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Services.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 0)
+                {
+
+                    ServiceVM = new ServiceVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                else
+                {
+                    ServiceVM = new ServiceVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 0,
+                        IsVisibleItemForm = true,
+                    };
+                }
+                Model = new Service();
+                Window = new ServiceWindow() { DataContext = this, Height = ServiceVM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        [Command]
+        public void OpenDirByParentForm(object p)
+        {
+            try
+            {
+                if (!int.TryParse(p.ToString(), out int param)) return;
+
+                var model = db.Services.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault();
+                if (model?.IsDir == 1)
+                {
+
+                    ServiceVM = new ServiceVM(db)
+                    {
+                        ParentId = model.Id,
+                        Parent = model,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                else
+                {
+                    ServiceVM = new ServiceVM(db)
+                    {
+                        ParentId = model.ParentId,
+                        Parent = model.Parent,
+                        IsDir = 1,
+                        IsVisibleItemForm = false,
+                    };
+                }
+                Model = new Service();
+                Window = new ServiceWindow() { DataContext = this, Height = ServiceVM.IsDir == 0 ? 280 : 235 };
+                Window.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
 
         public Service WithoutCategory { get; set; } = new Service() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории", Guid = "000" };
         public ObservableCollection<Service> Collection
