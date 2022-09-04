@@ -204,7 +204,8 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
                                     KeyGesture="Ctrl+V" 
-                                    Content="Добавить шаблон в выдел. директорию"  
+                                    Content="Добавить шаблон в выдел. директорию" 
+                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Command="{Binding OpenByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
@@ -213,7 +214,8 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Dashboards/AutoExpand.svg}"
                                     KeyGesture="Ctrl+W" 
-                                    Content="Добавить директорию в выдел. директорию"  
+                                    Content="Добавить директорию в выдел. директорию"
+                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Command="{Binding OpenDirByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 

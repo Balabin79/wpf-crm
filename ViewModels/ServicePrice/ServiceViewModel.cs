@@ -20,10 +20,11 @@ using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
+using DevExpress.Mvvm;
 
 namespace Dental.ViewModels.ServicePrice
 {
-    class ServiceViewModel : DevExpress.Mvvm.ViewModelBase
+    class ServiceViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
         public ServiceViewModel()
@@ -182,6 +183,7 @@ namespace Dental.ViewModels.ServicePrice
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
         [Command]
         public void CancelForm() => Window?.Close();
 

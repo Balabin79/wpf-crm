@@ -178,6 +178,11 @@ namespace Dental.ViewModels.ClientDir
                 {
                     if (parameters.Model is TreatmentStage model)
                     {
+                        var response = ThemedMessageBox.Show(title: "Внимание", text: "Очистить поле?",
+                            messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                        if (response.ToString() == "No") return;
+
                         switch (parameters.Name)
                         {
                             case "Complaint": model.Complaints = null; break;

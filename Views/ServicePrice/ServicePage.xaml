@@ -151,7 +151,7 @@
                                 Command="{Binding OpenFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
-                                <KeyBinding Key="V"   
+                                <KeyBinding Key="V"  
                                 Modifiers="Ctrl"
                                 Command="{Binding OpenByParentFormCommand}"
                                 CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
@@ -209,6 +209,7 @@
                                     KeyGesture="Ctrl+V" 
                                     Content="Добавить шаблон в выдел. директорию"  
                                     Command="{Binding OpenByParentFormCommand}"
+                                    DataContext="{Binding Source={StaticResource vm}}"
                                      CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
 
                                 <dxb:BarButtonItem 
@@ -216,6 +217,7 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Dashboards/AutoExpand.svg}"
                                     KeyGesture="Ctrl+W" 
+                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Content="Добавить директорию в выдел. директорию"  
                                     Command="{Binding OpenDirByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>

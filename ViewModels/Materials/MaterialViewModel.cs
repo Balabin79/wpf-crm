@@ -239,7 +239,7 @@ namespace Dental.ViewModels.Materials
                     };
                 }
                 Model = new Nomenclature();
-                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 280 : 235 };
+                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 325 : 234 };
                 Window.Show();
             }
             catch
@@ -279,7 +279,7 @@ namespace Dental.ViewModels.Materials
                     };
                 }
                 Model = new Nomenclature();
-                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 280 : 235 };
+                Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 325 : 234 };
                 Window.Show();
             }
             catch
