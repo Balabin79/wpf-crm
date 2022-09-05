@@ -49,7 +49,7 @@
             <dxlc:LayoutGroup.HeaderTemplate>
                 <DataTemplate >
                     <DockPanel  HorizontalAlignment="Stretch">
-                        <TextBlock Text="Планы лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="Области лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                         <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
                             <dxb:ToolBarControl 
@@ -145,7 +145,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
-                                <TextBlock Text="Этап лечения" Margin="3 0 0 0"/>
+                                <TextBlock Text="Название" Margin="3 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>
                     </dxg:GridColumn.HeaderTemplate>
@@ -165,7 +165,7 @@
 
                                     <dxb:BarButtonItem 
                                            Content="Открыть форму"                                                            
-                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                           IsEnabled="{DXBinding Expr='!@e(grid).DataContext.IsReadOnly', Mode=OneWay}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
@@ -173,7 +173,7 @@
 
                                     <dxb:BarButtonItem         
                                            Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           IsEnabled="{DXBinding Expr='!@e(grid).DataContext.IsReadOnly', Mode=OneWay}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}" 
