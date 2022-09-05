@@ -28,6 +28,7 @@ namespace Dental.ViewModels.ClientDir
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetCollection();
+                Teeth = new PatientTeeth();
             }
             catch (Exception e)
             {
@@ -279,6 +280,33 @@ namespace Dental.ViewModels.ClientDir
 
         }
 
+        [Command]
+        public void ToothMarked(object p)
+        {
+            try
+            {
+                if (p is ToothCommandParameters param)
+                {
+                    switch (param.Diagnos)
+                    {
+                        case "Healthy": param.Tooth.ToothImagePath = PatientTeeth.ImgPathGreen; param.Tooth.Abbr = ""; break;
+                        case "Plomba": param.Tooth.ToothImagePath = PatientTeeth.ImgPathYellow; param.Tooth.Abbr = PatientTeeth.Plomba; break;
+                        case "Coronka": param.Tooth.ToothImagePath = PatientTeeth.ImgPathYellow; param.Tooth.Abbr = PatientTeeth.Coronka; break;
+                        case "Imp": param.Tooth.ToothImagePath = PatientTeeth.ImgPathImp; param.Tooth.Abbr = ""; break;
+                        case "Radiks": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Radiks; break;
+                        case "Periodontit": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Periodontit; break;
+                        case "Pulpit": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Pulpit; break;
+                        case "Caries": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Caries; break;
+                        case "Missing": param.Tooth.ToothImagePath = PatientTeeth.ImgPathGray; param.Tooth.Abbr = ""; break;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+
         public void StatusReadOnly(bool status)
         {
             IsReadOnly = status;
@@ -306,6 +334,12 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Client, value); }
         }
 
+        public PatientTeeth Teeth
+        {
+            get { return GetProperty(() => Teeth); }
+            set { SetProperty(() => Teeth, value); }
+        }
+
         public string TemplateName { get; set; }
 
         public void NewClientSaved(Client client)
@@ -314,7 +348,6 @@ namespace Dental.ViewModels.ClientDir
         }
 
     }
-
 
     public class TreeTemplate : ITreeModel
     {
