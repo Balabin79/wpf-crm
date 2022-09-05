@@ -124,6 +124,17 @@ namespace Dental.Models
         }
         private string date;
 
+        public string Name
+        {
+            get => name;
+            set
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        private string name;
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 

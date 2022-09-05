@@ -72,7 +72,7 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 ClientCardWin = (p != null) ? new ClientCardWindow((int)p, this) : new ClientCardWindow(0, this);
-                ClientCardWin.ShowDialog();
+                ClientCardWin?.ShowDialog();
             }
             catch
             {

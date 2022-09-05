@@ -60,9 +60,9 @@
                             AllowQuickCustomization="False">
                                 
                             <dxb:BarButtonItem 
-                                Command="{Binding ElementName=mainGrid, Path=DataContext.AddCommand}" 
+                                Command="{Binding ElementName=mainGrid, Path=DataContext.OpenTreatmentFormCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                Content="Добавить новое лечение" 
+                                Content="Добавить новую область" 
                                 IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                  />
 
@@ -140,9 +140,6 @@
                 </dxg:GridControl.View>
 
 
-
-
-
                 <dxg:GridColumn FieldName="FullName"  Header="Наименование"  MinWidth="200" Width="5*" Name="row">
                     <dxg:GridColumn.HeaderTemplate>
                         <DataTemplate>
@@ -154,10 +151,44 @@
                     </dxg:GridColumn.HeaderTemplate>
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Margin="3 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Margin="3 3 0 0"  Text="{DXBinding Expr='Row.Name + ` (` + Row.Date + `)`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
                 </dxg:GridColumn>
+
+                <dxg:GridColumn Width="auto" AllowPrinting="False">
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+
+                                <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                                    <dxb:BarButtonItem 
+                                           Content="Открыть форму"                                                            
+                                           IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
+                                           CommandParameter="{Binding Path=Row}"/>
+
+                                    <dxb:BarButtonItem         
+                                           Content="Удалить" 
+                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}" 
+                                           CommandParameter="{Binding Path=Row}"/>
+                                    <dxb:BarItemLinkSeparator />
+                                </dxb:ToolBarControl>
+                            </dxb:BarContainerControl>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+                </dxg:GridColumn>
+
+
+
+
+
                 <dxg:GridControl.DetailDescriptor>
                     <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor"/>
                 </dxg:GridControl.DetailDescriptor>

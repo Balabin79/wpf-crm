@@ -1,0 +1,47 @@
+﻿<Window x:Class="Dental.Views.PatientCard.TreatmentStageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterScreen"
+        Name="Window"
+        Height="220"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="B6 Sheduler" 
+        >
+    <Window.Resources>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:BoolIntConverter x:Key="boolToInt"/>
+    </Window.Resources>
+
+    <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+        <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
+            <TextBlock Text="Новая область" FontSize="15" FontWeight="DemiBold"/>
+            
+            <dxlc:LayoutItem Label="Название:"  LabelPosition="Top">
+                <dxe:TextEdit Text="{Binding VM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top">
+                <dxe:DateEdit  Mask="G" MaskUseAsDisplayFormat="True" EditValue="{Binding VM.Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
+                <dx:SimpleButton IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(VM.Name)',UpdateSourceTrigger=PropertyChanged}"
+                    Height="23" Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveTreatmentCommand}" />
+                
+                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormCommand}" Margin="4 0 0 0"/>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+    </GroupBox>
+</Window>

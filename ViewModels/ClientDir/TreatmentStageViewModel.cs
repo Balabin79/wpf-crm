@@ -37,6 +37,80 @@ namespace Dental.ViewModels.ClientDir
         }
 
         [Command]
+        public void OpenTreatmentForm(object p)
+        {
+            try
+            {
+                if (p is TreatmentStage model)
+                {
+                    VM = new TreatmentStageVM() { Date = model?.Date, Name = model?.Name, Model = model };
+                }
+                else VM = new TreatmentStageVM();
+                TreatmentStageWindow = new TreatmentStageWindow() { DataContext = this, Height = 220 };
+                TreatmentStageWindow?.Show();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void Delete(object p)
+        {
+            try
+            {
+                if (p is TreatmentStage model)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить область?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                    if (response.ToString() == "No") return;
+
+                    db.TreatmentStage.Remove(model);
+                    Collection.Remove(model);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления области!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+
+        }
+
+        [Command]
+        public void SaveTreatment(object p)
+        {
+            try
+            {
+                if(VM.Model != null)
+                {
+                    var model = db.TreatmentStage.FirstOrDefault(f => f.Guid == VM.Model.Guid);
+                    model.Name = VM?.Name;
+                    model.Date = VM?.Date;
+                }
+                else
+                {
+                    var item = new TreatmentStage()
+                    {
+                        Client = Client,
+                        ClientId = Client?.Id,
+                        Date = VM?.Date ?? DateTime.Now.ToShortDateString(),
+                        Name = VM.Name ?? "Без названия"
+                    };
+                    Collection?.Add(item);
+                    db?.TreatmentStage.Add(item);
+                }
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
         public void OpenForm(object p)
         {
             if (p is TreatmentParameters parameters)
@@ -121,19 +195,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         [Command]
-        public void Add(object p)
-        {
-            try
-            {
-                var item = new TreatmentStage() { Client = Client, ClientId = Client?.Id, Date = DateTime.Now.ToLongTimeString() };
-                Collection?.Add(item);
-                db?.TreatmentStage.Add(item);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
+        public void CancelForm() => TreatmentStageWindow?.Close();
 
         [Command]
         public void AddChecked(object p)
@@ -235,6 +297,9 @@ namespace Dental.ViewModels.ClientDir
         public ObservableCollection<TreatmentStage> Collection { get; set; }
         public ICollection<TreeTemplate> Templates { get; set; }
         public SelectValueInTemplateWin TemplateWin { get; set; }
+        public TreatmentStageWindow TreatmentStageWindow { get; set; }
+        public TreatmentStageVM VM { get; set; }
+
         public Client Client
         {
             get { return GetProperty(() => Client); }
