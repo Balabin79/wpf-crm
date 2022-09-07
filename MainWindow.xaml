@@ -86,44 +86,6 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-    
-
-            <dxb:BarButtonItem                 
-                ToolTip="Интеграции"
-                Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/svg/google.svg" Height="28" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Интеграции" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-            <dxb:BarButtonItem 
-                Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.Invoices.InvoicesPage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/XAF/Action_Grand_Totals_Row.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Счета" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-
-
             <dxb:BarItemSeparator/>
 
             <dxb:BarButtonItem  
@@ -211,6 +173,59 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
+
+            <dxb:BarButtonItem 
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Invoices.InvoicesPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/XAF/Action_Grand_Totals_Row.svg}"/>
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Счета" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem                 
+                ToolTip="Настройки"
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Настройки" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem                 
+                ToolTip="Синхронизация"
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage Source="{dx:DXImage SvgImages/XAF/Action_Refresh.svg}" />
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Синхрон." 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
 
             <dxb:BarButtonItem 
                 DataContext="{StaticResource mv}"
