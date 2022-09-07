@@ -100,6 +100,8 @@ namespace Dental.Models
         }
         private string address;
 
+        public string Teeth { get; set; }
+
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }

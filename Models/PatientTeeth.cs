@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Models
 {
+    [Serializable]
     public class PatientTeeth : IDataErrorInfo
     {
         public Tooth Tooth18 { get; set; } = new Tooth() { Abbr = "", ToothNumber = 18, ToothImagePath = ImgPathGreen };

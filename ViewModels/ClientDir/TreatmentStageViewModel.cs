@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Text.Json;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -28,7 +29,11 @@ namespace Dental.ViewModels.ClientDir
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetCollection();
-                Teeth = new PatientTeeth();
+                if (Client != null && Client.Teeth?.Length > 100)
+                {
+                    Teeth = JsonSerializer.Deserialize<PatientTeeth>(Client.Teeth);
+                }
+                else Teeth = new PatientTeeth();
             }
             catch (Exception e)
             {
@@ -271,6 +276,8 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                Client.Teeth = JsonSerializer.Serialize(Teeth);
+
                 return db.SaveChanges() > 0;
             }
             catch (Exception e)
