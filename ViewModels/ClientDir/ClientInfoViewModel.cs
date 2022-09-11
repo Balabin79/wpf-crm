@@ -29,6 +29,7 @@ namespace Dental.ViewModels.ClientDir
             PassportNo = client.PassportNo;
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
+            IsChild = client.IsChild;
         }
 
         public int Id
@@ -95,15 +96,14 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Note, value?.Trim()); }
         }
 
+        public bool? IsChild { get; set; } = false;
+
         public bool? IsInArchive { get; set; } = false;
-        public bool? IsRemoteContactCreated { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
 
-        public string GoogleContactGroup { get; set; }
-        public string ContactResourceName { get; set; }
 
         /* public ObservableCollection<Estimate> Estimates
          {
@@ -172,6 +172,7 @@ namespace Dental.ViewModels.ClientDir
             client.PassportNo = PassportNo;
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
+            client.IsChild = IsChild;
             return client;
         }
     }

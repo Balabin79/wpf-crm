@@ -281,6 +281,9 @@
     <Compile Update="Views\NomenclatureDir\Nomenclature.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\ChildTeethPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PatientCard\TreatmentStageWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -374,6 +377,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NomenclatureDir\Nomenclature.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PatientCard\ChildTeethPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

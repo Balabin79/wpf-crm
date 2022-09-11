@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
+using Dental.Infrastructures.Collection;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -29,11 +30,7 @@ namespace Dental.ViewModels.ClientDir
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetCollection();
-                if (Client != null && Client.Teeth?.Length > 100)
-                {
-                    Teeth = JsonSerializer.Deserialize<PatientTeeth>(Client.Teeth);
-                }
-                else Teeth = new PatientTeeth();
+                SetTeeth();
             }
             catch (Exception e)
             {
@@ -277,11 +274,14 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 Client.Teeth = JsonSerializer.Serialize(Teeth);
+                Client.ChildTeeth = JsonSerializer.Serialize(ChildTeeth);
 
                 return db.SaveChanges() > 0;
             }
             catch (Exception e)
             {
+                Client.Teeth = null;
+                Client.ChildTeeth = null;
                 return false;
             }
 
@@ -296,15 +296,20 @@ namespace Dental.ViewModels.ClientDir
                 {
                     switch (param.Diagnos)
                     {
-                        case "Healthy": param.Tooth.ToothImagePath = PatientTeeth.ImgPathGreen; param.Tooth.Abbr = ""; break;
-                        case "Plomba": param.Tooth.ToothImagePath = PatientTeeth.ImgPathYellow; param.Tooth.Abbr = PatientTeeth.Plomba; break;
-                        case "Coronka": param.Tooth.ToothImagePath = PatientTeeth.ImgPathYellow; param.Tooth.Abbr = PatientTeeth.Coronka; break;
-                        case "Imp": param.Tooth.ToothImagePath = PatientTeeth.ImgPathImp; param.Tooth.Abbr = ""; break;
-                        case "Radiks": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Radiks; break;
-                        case "Periodontit": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Periodontit; break;
-                        case "Pulpit": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Pulpit; break;
-                        case "Caries": param.Tooth.ToothImagePath = PatientTeeth.ImgPathRed; param.Tooth.Abbr = PatientTeeth.Caries; break;
-                        case "Missing": param.Tooth.ToothImagePath = PatientTeeth.ImgPathGray; param.Tooth.Abbr = ""; break;
+                        case "Healthy": param.Tooth.ToothImagePath = TeethImages.ImgPathGreen; param.Tooth.Abbr = "З"; break;
+                        case "Missing": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "О"; break;
+                        case "Impacted": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "НП"; break;
+                        case "Radiks": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "КН"; break;
+                        case "Caries": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "К"; break;
+                        case "Pulpit": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "П"; break;
+                        case "Gangrene": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Г"; break;
+                        case "Granuloma": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Гр"; break;
+                        case "Deletable": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Э"; break;
+                        case "MetalCrown": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "КМ"; break;
+                        case "Bridge": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "М"; break;
+                        case "Rp": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПР"; break;
+                        case "Seal": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПЛ"; break;
+                        case "Imp": param.Tooth.ToothImagePath = TeethImages.ImgPathImp; param.Tooth.Abbr = "Имп"; break;
                     }
                 }
             }
@@ -345,7 +350,13 @@ namespace Dental.ViewModels.ClientDir
         {
             get { return GetProperty(() => Teeth); }
             set { SetProperty(() => Teeth, value); }
-        }
+        }       
+        
+        public ChildTeeth ChildTeeth
+        {
+            get { return GetProperty(() => ChildTeeth); }
+            set { SetProperty(() => ChildTeeth, value); }
+        }            
 
         public string TemplateName { get; set; }
 
@@ -354,6 +365,22 @@ namespace Dental.ViewModels.ClientDir
             Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
         }
 
+        public void SetTeeth()
+        {
+            try
+            {
+                if (Client != null && Client.Teeth?.Length > 100) Teeth = JsonSerializer.Deserialize<PatientTeeth>(Client.Teeth);
+                else Teeth = new PatientTeeth();
+
+                if (Client != null && Client.ChildTeeth?.Length > 100) ChildTeeth = JsonSerializer.Deserialize<ChildTeeth>(Client.ChildTeeth);
+                else ChildTeeth = new ChildTeeth();
+            }
+            catch
+            {
+                Teeth = new PatientTeeth();
+                ChildTeeth = new ChildTeeth();
+            }
+        }
     }
 
     public class TreeTemplate : ITreeModel

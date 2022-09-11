@@ -202,7 +202,21 @@
         </dx:DXTabItem>
         <dx:DXTabItem Header="Карта зубов" >
             <Grid>
-                <local:TeethPage DataContext="{Binding}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <dxe:ToggleSwitch Grid.Row="0"
+                    ContentPlacement="Inside" HorizontalAlignment="Left" CheckedStateContent="Детская" UncheckedStateContent="Взрослая"
+                                  Unchecked="ToggleSwitch_Unchecked"
+                                  ToggleSwitchWidth="80"
+                                  IsChecked="{Binding Client.IsChild, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  Checked="ToggleSwitch_Checked"
+                                  />
+
+                <local:TeethPage DataContext="{Binding}"  Grid.Row="1" x:Name="teethPage" Loaded="teethPage_Loaded"/>
+                <local:ChildTeethPage DataContext="{Binding}"  Grid.Row="1" x:Name="childTeethPage" Loaded="childTeethPage_Loaded"/>
             </Grid>
         </dx:DXTabItem>
     </dx:DXTabControl>

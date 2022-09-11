@@ -31,9 +31,8 @@
                     <dxb:PopupMenu.Items>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
                                             Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-green.png" 
-                                            Content="Интактный"  
-                                            Command="{Binding ToothMarkedCommand}"
-                                            >
+                                            Content="Здоровый (З)"  
+                                            Command="{Binding ToothMarkedCommand}">
                                     <dxb:BarButtonItem.CommandParameter>
                                         <MultiBinding Converter="{StaticResource toothConv}">
                                             <Binding ElementName="uc" Path="Tooth" />
@@ -41,46 +40,34 @@
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
                                 </dxb:BarButtonItem>
-
+                        
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
-                                            Content="Вылеченный (Пломба) - Пл"  
-                                            Command="{Binding ToothMarkedCommand}" >
-                                <dxb:BarButtonItem.CommandParameter>
-                                    <MultiBinding Converter="{StaticResource toothConv}">
-                                        <Binding ElementName="uc" Path="Tooth" />
-                                        <Binding Source="Plomba"/>
-                                    </MultiBinding>
-                                </dxb:BarButtonItem.CommandParameter>
-                        </dxb:BarButtonItem>
-
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
-                                            Content="Вылеченный (Коронка) - Кор"  
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Content="Отсутствует (О)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource toothConv}">
                                     <Binding ElementName="uc" Path="Tooth" />
-                                    <Binding Source="Coronka"/>
+                                    <Binding Source="Missing"/>
                                 </MultiBinding>
                             </dxb:BarButtonItem.CommandParameter>
                         </dxb:BarButtonItem>
-
+                        
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/implant.png" 
-                                            Content="Искуственный зуб"  
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Content="Непрорезавшийся (НП)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource toothConv}">
                                     <Binding ElementName="uc" Path="Tooth" />
-                                    <Binding Source="Imp"/>
+                                    <Binding Source="Impacted"/>
                                 </MultiBinding>
                             </dxb:BarButtonItem.CommandParameter>
                         </dxb:BarButtonItem>
-
+                        
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
-                                            Content="Радикс - Р" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Content="Корень (КН)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource toothConv}">
@@ -91,33 +78,9 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png" 
-                                            Content="Периодонтит - П"  
-                                            Command="{Binding ToothMarkedCommand}">
-                            <dxb:BarButtonItem.CommandParameter>
-                                <MultiBinding Converter="{StaticResource toothConv}">
-                                    <Binding ElementName="uc" Path="Tooth" />
-                                    <Binding Source="Periodontit"/>
-                                </MultiBinding>
-                            </dxb:BarButtonItem.CommandParameter>
-                        </dxb:BarButtonItem>
-                        
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png" 
-                                            Content="Пульпит - Пл" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Content="Кариес (К)" 
                                             Command="{Binding ToothMarkedCommand}" >
-                            <dxb:BarButtonItem.CommandParameter>
-                                <MultiBinding Converter="{StaticResource toothConv}">
-                                    <Binding ElementName="uc" Path="Tooth" />
-                                    <Binding Source="Pulpit"/>
-                                </MultiBinding>
-                            </dxb:BarButtonItem.CommandParameter>
-                        </dxb:BarButtonItem>
-                        
-                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png" 
-                                            Content="Кариес - К"  
-                                            Command="{Binding ToothMarkedCommand}">
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource toothConv}">
                                     <Binding ElementName="uc" Path="Tooth" />
@@ -127,16 +90,113 @@
                         </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
-                                            Content="Отсутствует" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Content="Пульпит (П)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource toothConv}">
                                     <Binding ElementName="uc" Path="Tooth" />
-                                    <Binding Source="Missing"/>
+                                    <Binding Source="Pulpit"/>
                                 </MultiBinding>
                             </dxb:BarButtonItem.CommandParameter>
                         </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Content="Гангрена (Г)" 
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Gangrene"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+                        
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Content="Гранулема (ГР)" 
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Granuloma"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Content="Подлежащий удалению (Э)" 
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Deletable"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Content="Коронка металлическая (КМ)"  
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="MetalCrown"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Content="Мостовидный протез (М)"  
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Bridge"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Content="Съемный протез (ПР)"  
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Rp"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Content="Пломбв (ПЛ)"  
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Seal"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
+                                            Glyph="pack://application:,,,/Resources/Icons/teeth/implant.png" 
+                                            Content="Имплант"  
+                                            Command="{Binding ToothMarkedCommand}" >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource toothConv}">
+                                    <Binding ElementName="uc" Path="Tooth" />
+                                    <Binding Source="Imp"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
+
                     </dxb:PopupMenu.Items>
                 </dxb:PopupMenu>
             </dxb:BarManager.DXContextMenu>
