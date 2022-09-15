@@ -66,8 +66,7 @@ namespace Dental.Models
 
         public DbSet<UserActions> UserActions { get; set; }       
         public DbSet<Nomenclature> Nomenclature { get; set; }     
-        public DbSet<Measure> Measure { get; set; }
-        public DbSet<Settings> Settings { get; set; }   
+        public DbSet<Measure> Measure { get; set; }  
 
         public DbSet<Invoice> Invoices { get; set; }   
         public DbSet<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }   
@@ -91,9 +90,10 @@ namespace Dental.Models
         public DbSet<DescriptionXRay> DescriptionXRay { get; set; }   
         public DbSet<Objectively> Objectively { get; set; }   
 
-        public DbSet<TreatmentStage> TreatmentStage { get; set; } 
-        
-        public DbSet<Role> Roles { get; set; }   
-        public DbSet<ClientRole> ClientRoles { get; set; }   
+        public DbSet<TreatmentStage> TreatmentStage { get; set; }         
+        public DbSet<Setting> Settings { get; set; }   
+
+        public DbSet<RoleManagment> RolesManagment { get; set; }    
+        public DbSet<Access> Accesses { get; set; }    
     }
 }

@@ -36,7 +36,7 @@
                         <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                             <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
-                            <TextBlock Text="Шаблоны" FontSize="14" Padding="2 5 5 0" />
+                            <TextBlock Text="Шаблоны" FontSize="14" Padding="2 2 5 0" />
                         </StackPanel>
                     </DockPanel>
                     <StackPanel Grid.Row="1" Margin="10 5 0 0">

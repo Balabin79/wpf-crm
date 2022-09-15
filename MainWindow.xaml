@@ -194,15 +194,15 @@
             <dxb:BarButtonItem                 
                 ToolTip="Настройки"
                 Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
+                CommandParameter="Dental.Views.Settings.SettingsPage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Настройки" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Integration.Google.GoogleContactsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Settings.SettingsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Settings.SettingsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />
                         </StackPanel>
                     </DataTemplate>

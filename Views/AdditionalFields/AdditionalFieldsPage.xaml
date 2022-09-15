@@ -32,7 +32,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
-                    <TextBlock Text="Общие значения" FontSize="14" Padding="2 5 5 0" />
+                    <TextBlock Text="Общие значения" FontSize="14" Padding="2 2 5 0" />
                 </StackPanel>
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">

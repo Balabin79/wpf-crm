@@ -55,6 +55,12 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
+        public bool CanSave() => true;
+        public bool CanEditable() => true;
+        public bool CanDelete() => true;
+        public bool CanLoadDocForPrint() => true;
+        public bool CanPrint() => true;
+
         [Command]
         public void Editable() 
         {

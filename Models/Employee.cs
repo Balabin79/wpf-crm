@@ -102,6 +102,11 @@ namespace Dental.Models
         public bool? IsInArchive { get; set; } = false;
         public int? UseIndividualPrice { get; set; }
 
+        public int? IsAdmin { get; set; }
+        public int? IsDoctor { get; set; }
+        public int? IsReception { get; set; }
+        public string Password { get; set; }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
