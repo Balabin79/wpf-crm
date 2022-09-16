@@ -208,8 +208,5 @@ namespace Dental.ViewModels.EmployeeDir
             employee.IsInArchive = IsInArchive;
             return employee;
         }
-
-
-
     }
 }

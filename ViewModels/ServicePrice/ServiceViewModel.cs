@@ -41,6 +41,17 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
+        public bool CanSelectItemInServiceField(object p) => true;
+        public bool CanExpandTree(object p) => true;
+        public bool CanDelete(object p) => true;
+        public bool CanSave() => true;
+        public bool CanOpenForm(object p) => true;
+        public bool CanCancelForm() => true;
+        public bool CanOpenByParentForm(object p) => true;
+        public bool CanOpenDirByParentForm(object p) => true;
+        public bool CanPrintPrice() => true;
+        public bool CanLoadDocForPrint() => true;
+
         [Command]
         public void SelectItemInServiceField(object p)
         {
@@ -153,6 +164,7 @@ namespace Dental.ViewModels.ServicePrice
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+        
         [Command]
         public void OpenForm(object p)
         {
@@ -225,7 +237,6 @@ namespace Dental.ViewModels.ServicePrice
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
 
         [Command]
         public void OpenDirByParentForm(object p)

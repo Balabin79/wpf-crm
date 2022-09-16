@@ -38,6 +38,11 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
+        public bool CanOpenFormDocuments() => true;
+        public bool CanOpenFormFields() => true;
+        public bool CanOpenClientCard(object p) => true;
+        public bool CanShowArchive() => true;
+
         [Command]
         public void OpenFormDocuments()
         {

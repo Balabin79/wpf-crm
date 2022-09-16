@@ -36,6 +36,10 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
+        public bool CanDelete(object p) => true;
+        public bool CanSave() => true;
+        public bool CanAdd() => true;
+
         [Command]
         public void Delete(object p)
         {

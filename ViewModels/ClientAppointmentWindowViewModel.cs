@@ -64,6 +64,9 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanUploadFile() => true;
+        public bool CanClearFile() => true;
+       
         public ObservableCollection<Client> Patients {
             get => patients;
             set => patients = value;
@@ -130,8 +133,6 @@ namespace Dental.ViewModels
                 CustomFields["LocationId"] = newLocation.Id;
             }
         }
-
-
 
         /**** File *****/
         protected IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }

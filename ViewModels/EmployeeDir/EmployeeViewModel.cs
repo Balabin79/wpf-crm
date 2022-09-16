@@ -57,6 +57,10 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        public bool CanEditable() => true;
+        public bool CanSave() => true;
+        public bool CanDelete() => true;
+
         [Command]
         public void Editable()
         {

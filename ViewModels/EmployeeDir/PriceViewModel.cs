@@ -42,6 +42,15 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        public bool CanSelectItemInServiceField(object p) => true;
+        public bool CanExpandTree(object p) => true;
+        public bool CanDelete(object p) => true;
+        public bool CanSave() => true;
+        public bool CanOpenForm(object p) => true;
+        public bool CanCancelForm() => true;
+        public bool CanPrintPrice() => true;
+        public bool CanLoadDocForPrint() => true;
+
         public Visibility IndividualPriceVisible { get; set; } = Visibility.Hidden;
 
         [Command]
@@ -86,6 +95,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch {}
         }
+        
         [Command]
         public void Delete(object p)
         {
@@ -156,6 +166,7 @@ namespace Dental.ViewModels.EmployeeDir
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения в бд произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+        
         [Command]
         public void OpenForm(object p)
         {
@@ -186,6 +197,7 @@ namespace Dental.ViewModels.EmployeeDir
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+       
         [Command]
         public void CancelForm() => Window.Close();
 

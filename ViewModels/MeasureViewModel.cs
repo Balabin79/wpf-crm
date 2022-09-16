@@ -33,6 +33,10 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanDelete(object p) => true;
+        public bool CanSave() => true;
+        public bool CanAdd() => true;       
+
         [Command]
         public void Delete(object p)
         {
@@ -83,7 +87,6 @@ namespace Dental.ViewModels
 
         [Command]
         public void Add() => MaterialViewModel?.Measures?.Add(new Measure());
-
 
         public bool HasUnsavedChanges()
         {

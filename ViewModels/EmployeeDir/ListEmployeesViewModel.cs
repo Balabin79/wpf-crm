@@ -56,6 +56,13 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        public bool CanOpenFormEmployeeCard(object p) => true;
+        public bool CanOpenFormFields() => true;
+        public bool CanExpandAll(object p) => true;
+        public bool CanNavigateTo(object p) => true;
+        public bool CanOpenFormDocuments() => true;
+        public bool CanShowArchive() => true;
+
         [Command]
         public void OpenFormEmployeeCard(object p)
         {

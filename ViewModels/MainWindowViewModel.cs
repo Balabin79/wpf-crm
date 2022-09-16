@@ -28,6 +28,10 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanOpenHelpForm() => true;
+        public bool CanOpenRegForm() => true;
+        public bool CanOpenAboutForm() => true;
+
         [Command]
         public void OpenHelpForm()
         {

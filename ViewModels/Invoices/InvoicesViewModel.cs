@@ -48,6 +48,26 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
+        public bool CanSaveInvoice() => true;
+        public bool CanOpenFormInvoice(object p) => true;
+        public bool CanDeleteInvoice(object p) => true;
+        public bool CanCancelFormInvoice(object p) => true;
+        public bool CanSelectItemInServiceField(object p) => true;
+        public bool CanOpenFormInvoiceService(object p) => true;
+        public bool CanEditInvoiceService(object p) => true;
+        public bool CanSaveRowInInvoice() => true;
+        public bool CanDeleteInvoiceService(object p) => true;
+        public bool CanCancelFormInvoiceItem(object p) => true;
+        public bool CanSelectItemInMaterialField(object p) => true;
+        public bool CanOpenFormInvoiceMaterial(object p) => true;
+        public bool CanEditInvoiceMaterial(object p) => true;
+        public bool CanSaveMaterialRowInInvoice() => true;
+        public bool CanDeleteInvoiceMaterial(object p) => true;
+        public bool CanCancelFormInvoiceMaterialItem(object p) => true;
+        public bool CanOpenFormDocuments() => true;
+        public bool CanStatusChanged(object p) => true;
+
+
         public void StatusReadOnly(bool status)
         {
             IsReadOnly = status;

@@ -35,6 +35,10 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
+        public bool CanAdd() => true;
+        public bool CanDelete(object p) => true;
+        public bool CanSave() => true;
+
         [Command]
         public void Add() => CommonValues?.Add(new CommonValue());
 

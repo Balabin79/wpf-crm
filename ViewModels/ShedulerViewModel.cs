@@ -53,6 +53,22 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanAppointmentAdded(object p) => true;
+        public bool CanAppointmentEdited(object p) => true;
+        public bool CanAppointmentRemoved(object p) => true;
+        public bool CanOpenWindowLocation() => true;
+        public bool CanCloseWindowLocation() => true;
+        public bool CanAddLocation() => true;
+        public bool CanDeleteLocation(object p) => true;
+        public bool CanSaveLocation() => true;
+        public bool CanOpenWindowStatus() => true;
+        public bool CanCloseWindowStatus() => true;
+        public bool CanAddStatus(object p) => true;
+        public bool CanSaveStatus() => true;
+        public bool CanDeleteStatus(object p) => true;
+        public bool CanOpenFormEmployeeCard(object p) => true;
+        public bool CanOpenFormClientCard(object p) => true;
+
         [Command]
         public void AppointmentAdded(object p)
         {

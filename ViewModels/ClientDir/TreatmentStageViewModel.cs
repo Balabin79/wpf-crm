@@ -39,6 +39,15 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
+        public bool CanOpenTreatmentForm(object p) => true;
+        public bool CanDelete(object p) => true;
+        public bool CanSaveTreatment(object p) => true;
+        public bool CanOpenForm(object p) => true;
+        public bool CanCancelForm() => true;
+        public bool CanAddChecked(object p) => true;
+        public bool CanClear(object p) => true;
+        public bool CanToothMarked(object p) => true;
+
         [Command]
         public void OpenTreatmentForm(object p)
         {

@@ -43,6 +43,15 @@ namespace Dental.ViewModels.Templates
             set { SetProperty(() => Collection, value); }
         }
 
+        public bool CanSelectItemInField(object p) => true;
+        public bool CanExpandTree(object p) => true;
+        public bool CanDelete(object p) => true;
+        public bool CanSave(object p) => true;
+        public bool CanOpenForm(object p) => true;
+        public bool CanCloseForm(object p) => true;
+        public bool CanOpenByParentForm(object p) => true;
+        public bool CanOpenDirByParentForm(object p) => true;
+
         [Command]
         public void OpenForm(object p)
         {
@@ -156,7 +165,6 @@ namespace Dental.ViewModels.Templates
             }
         }
 
-
         [Command]
         public void OpenDirByParentForm(object p)
         {
@@ -195,7 +203,6 @@ namespace Dental.ViewModels.Templates
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
 
         [Command]
         public void Save(object p)

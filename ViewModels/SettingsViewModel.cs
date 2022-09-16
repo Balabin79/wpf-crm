@@ -13,7 +13,6 @@ using System.Windows;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.ViewModels.GoogleIntegration;
 using System.Collections.Generic;
 using Dental.Models.Settings;
 
@@ -40,6 +39,9 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+        public bool CanEditable() => true;
+        public bool CanSave() => true;
 
         public ICollection<Access> Accesses{ get; set; }
 

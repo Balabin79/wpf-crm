@@ -13,7 +13,15 @@ namespace Dental.ViewModels.Templates
 {
     class MainViewModel : ViewModelBase
     {
-        
+        public bool CanOpenDiagnoses(object p) => true;
+        public bool CanOpenDiaries(object p) => true;
+        public bool CanOpenAllergies(object p) => true;
+        public bool CanOpenComplaints(object p) => true;
+        public bool CanOpenPlans(object p) => true;
+        public bool CanOpenObjectively(object p) => true;
+        public bool CanOpenDescriptionXRay(object p) => true;
+        public bool CanOpenAnamneses(object p) => true;
+
         [Command]
         public void OpenDiagnoses(object p)
         {
