@@ -29,9 +29,8 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Settings = db.Settings.FirstOrDefault() ?? new Setting();
                 IsReadOnly = true;
-                Accesses = db.Accesses.ToArray();
                 Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
-                Roles = db.RolesManagment.Include(f => f.AdminAccess).Include(f => f.DoctorAccess).Include(f => f.ReceptionAccess).ToArray();
+                Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
             }
             catch (Exception e)
             {
@@ -40,10 +39,8 @@ namespace Dental.ViewModels
             }
         }
 
-        public bool CanEditable() => true;
-        public bool CanSave() => true;
-
-        public ICollection<Access> Accesses{ get; set; }
+        public bool CanEditable() => ((UserSession)Application.Current.Resources["UserSession"]).SettingsRead;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).SettingsRead;
 
         public Setting Settings
         {

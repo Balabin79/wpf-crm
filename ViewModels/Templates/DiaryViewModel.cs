@@ -44,14 +44,14 @@ namespace Dental.ViewModels.Templates
             set { SetProperty(() => Collection, value); }
         }
 
-        public bool CanSelectItemInField(object p) => true;
+        public bool CanSelectItemInField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
         public bool CanExpandTree(object p) => true;
-        public bool CanDelete(object p) => true;
-        public bool CanSave(object p) => true;
-        public bool CanOpenForm(object p) => true;
-        public bool CanCloseForm(object p) => true;
-        public bool CanOpenByParentForm(object p) => true;
-        public bool CanOpenDirByParentForm(object p) => true;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateDeletable;
+        public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
+        public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
+        public bool CanCloseForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
+        public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
+        public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplateEditable;
 
         [Command]
         public void OpenForm(object p)

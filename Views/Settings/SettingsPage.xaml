@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
+      xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
       xmlns:vm ="clr-namespace:Dental.ViewModels" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
@@ -26,6 +27,7 @@
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg" x:Key="sc"/>
                     <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg" x:Key="ec"/>
+
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -232,6 +234,8 @@
                         </ScrollViewer>
                     </dx:DXTabItem>
 
+                    
+                    
                     <dx:DXTabItem Header="Настройка ролей" >
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
                             <dxg:GridControl  AutoGenerateColumns="None" 
@@ -241,21 +245,39 @@
                                   Margin="2">
 
                                 <dxg:GridControl.View>
-                                    <dxg:TableView                   
-                                        x:Name="viewRoles"
-                                        ShowTotalSummary="False" 
-                                        UseLegacyFilterPanel="True"
-                                        ShowSearchPanelMode="Always"
-                                        SearchPanelAllowFilter="True"
-                                        AutoWidth="True" 
-                                        PrintAutoWidth="True"
-                                        BestFitModeOnSourceChange="VisibleRows"            
-                                        NavigationStyle="Cell"
-                                        AllowScrollToFocusedRow="True" 
-                                        VerticalScrollbarVisibility="Auto"
-                                        AllowPrintColumnHeaderImage="True"
-                                        ShowGroupPanel="False">
-                                    </dxg:TableView>
+                                    <dxg:TreeListView                                
+                            x:Name="view"
+                            KeyFieldName="Id"
+                            ParentFieldName="ParentId"
+                            TreeDerivationMode="Selfreference" 
+                            ShowTotalSummary="False" 
+                            UseLegacyFilterPanel="True"
+                            ShowSearchPanelMode="Always"
+                            SearchPanelAllowFilter="True"
+                            AllowResizing="True"
+                            BestFitModeOnSourceChange="VisibleRows"            
+                            NavigationStyle="Cell"
+                            AllowScrollToFocusedRow="True" 
+                            VerticalScrollbarVisibility="Auto"
+                            AllowPrintColumnHeaderImage="True" 
+                            PrintNodeImages="False"
+                            PrintExpandButtons="False"
+                            PrintFixedTotalSummary="False"
+                            PrintNodeFooters="False"
+                            PrintRootIndent="False"
+                            PrintTotalSummary="False"
+                            PrintAllNodes="False"
+                            ShowNodeImages="True"
+                            NodeImageSize="15,15"
+                            ExpandNodesOnFiltering="True"
+                            FilterMode="Extended"    
+                            ImmediateUpdateRowPosition="True"
+                            ShowVerticalLines="False"
+                            >
+                                        <dxg:TreeListView.NodeImageSelector>
+                                            <tree:NodeImageSelectorForSettings  />
+                                        </dxg:TreeListView.NodeImageSelector>
+                                    </dxg:TreeListView>
                                 </dxg:GridControl.View>
 
                                 <dxg:GridColumn FieldName="PageTitle" Header="Раздел"  MinWidth="200" Width="5*">
@@ -274,55 +296,64 @@
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
 
-                                <dxg:GridColumn FieldName="DoctorAccess" Header="&quot;Врач&quot;"  Width="1*">
+
+                                <dxg:GridColumn FieldName="DoctorAccess" Header="&quot;Врач&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
+                                    
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Margin="5 3 0 0" Text="{Binding RowData.Row.DoctorAccess, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-/>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
-                                            <dxe:ComboBoxEdit ItemsSource="{Binding ElementName=viewRoles, Path=DataContext.Accesses}"                                      
-                                                SelectedItem="{Binding RowData.Row.DoctorAccess, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                 
-                                                 NullText="Права" IsTextEditable="False"
-                                                 IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings />
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
+                                            <dxe:CheckEdit HorizontalAlignment="Center"       
+                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
+                                           
 
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
 
-                                <dxg:GridColumn FieldName="ReceptionAccess" Header="&quot;Ресепшен&quot;"  Width="1*">
+                                <dxg:GridColumn FieldName="ReceptionAccess" Header="&quot;Ресепшен&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
+
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Margin="5 3 0 0" Text="{Binding RowData.Row.ReceptionAccess, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
-                                            <dxe:ComboBoxEdit ItemsSource="{Binding ElementName=viewRoles, Path=DataContext.Accesses}"                                      
-                                                SelectedItem="{Binding RowData.Row.ReceptionAccess, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                 
-                                                 NullText="Права" IsTextEditable="False"
-                                                 IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                <dxe:ComboBoxEdit.StyleSettings>
-                                                    <dxe:RadioComboBoxStyleSettings />
-                                                </dxe:ComboBoxEdit.StyleSettings>
-                                            </dxe:ComboBoxEdit>
+                                            <dxe:CheckEdit HorizontalAlignment="Center"       
+                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
+
 
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
 
-                                <dxg:GridColumn FieldName="AdminAccess" Header="&quot;Администратор&quot;"  Width="1*">
+
+                                <dxg:GridColumn FieldName="AdminAccess" Header="&quot;Админ&quot;"  Width="1*"  HorizontalHeaderContentAlignment="Center">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Margin="5 3 0 0" Text="{Binding RowData.Row.AdminAccess, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                                EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>

@@ -12,6 +12,7 @@ using DevExpress.Xpf.Printing;
 using Dental.Services.Files;
 using Dental.Views.PatientCard;
 using System.Windows.Data;
+using Dental.Services;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -55,9 +56,9 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        public bool CanSave() => true;
-        public bool CanEditable() => true;
-        public bool CanDelete() => true;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanEditable() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientDeletable;
         public bool CanLoadDocForPrint() => true;
         public bool CanPrint() => true;
 

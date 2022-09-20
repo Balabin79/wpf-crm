@@ -21,6 +21,7 @@ using Dental.Views.ServicePrice;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
+using Dental.Services;
 
 namespace Dental.ViewModels.Materials
 {
@@ -42,15 +43,16 @@ namespace Dental.ViewModels.Materials
             }
         }
 
-        public bool CanSelectItemInServiceField(object p) => true;
+        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
         public bool CanExpandTree(object p) => true;
-        public bool CanDelete(object p) => true;
-        public bool CanSave() => true;
-        public bool CanOpenForm(object p) => true;
-        public bool CanCancelForm() => true;
-        public bool CanOpenFormMeasure() => true;
-        public bool CanOpenByParentForm(object p) => true;
-        public bool CanOpenDirByParentForm(object p) => true;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureDeletable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanCancelForm() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanOpenFormMeasure() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+
         public bool CanPrintPrice() => true;
         public bool CanLoadDocForPrint() => true;
 

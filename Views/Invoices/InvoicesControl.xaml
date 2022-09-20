@@ -34,6 +34,8 @@
                     <converter:MultiBindingConverter x:Key="multiConv" />
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
+                    
+                    
                     <DataTemplate x:Key="ContentDetail" >
                         <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="templ" >
                             <Grid.RowDefinitions>

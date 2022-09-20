@@ -52,6 +52,7 @@
         <dxb:ToolBarControl Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
           
             <dxb:BarButtonItem 
+                IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead'}"
                  ToolTip="Расписание сотрудников" 
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Sheduler" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -69,7 +70,9 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem GlyphAlignment="Top"
+            <dxb:BarButtonItem 
+                GlyphAlignment="Top"
+                IsVisible="{DXBinding Expr='@r(UserSession).ClientsListRead'}"              
                  ToolTip="Список клиентов" 
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -89,6 +92,7 @@
             <dxb:BarItemSeparator/>
 
             <dxb:BarButtonItem  
+                IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead'}"
                  ToolTip="Сотрудники"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -105,7 +109,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem   
+            <dxb:BarButtonItem  
+                IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead'}"
                  ToolTip="Прайс услуг"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -123,6 +128,7 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem
+                IsVisible="{DXBinding Expr='@r(UserSession).NomenclaturesRead'}"
                  ToolTip="Материалы"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -140,6 +146,7 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem
+                IsVisible="{DXBinding Expr='@r(UserSession).TemplatesRead'}"
                  ToolTip="Шаблоны"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Templates.MainPage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -157,6 +164,7 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem
+                IsVisible="{DXBinding Expr='@r(UserSession).AddFieldsRead'}"
                  ToolTip="Дополнительные поля"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.AdditionalFields.AdditionalFieldsPage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -175,6 +183,7 @@
 
 
             <dxb:BarButtonItem 
+                IsVisible="{DXBinding Expr='@r(UserSession).InvoicesRead'}"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Invoices.InvoicesPage">
                 <dxb:BarButtonItem.ContentTemplate>
@@ -191,7 +200,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem                 
+            <dxb:BarButtonItem  
+                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead'}"
                 ToolTip="Настройки"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Settings.SettingsPage">
@@ -211,6 +221,7 @@
 
             <dxb:BarButtonItem                 
                 ToolTip="Синхронизация"
+                IsVisible="{DXBinding Expr='@r(UserSession).SyncRun'}"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
                 <dxb:BarButtonItem.ContentTemplate>

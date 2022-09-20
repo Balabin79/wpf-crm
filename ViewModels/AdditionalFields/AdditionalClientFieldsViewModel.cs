@@ -16,6 +16,7 @@ using DevExpress.Xpf.Grid;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.AdditionalFields;
 using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Services;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -36,9 +37,9 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-        public bool CanDelete(object p) => true;
-        public bool CanSave() => true;
-        public bool CanAdd() => true;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
 
         [Command]
         public void Delete(object p)

@@ -24,6 +24,7 @@ using Dental.Views.Documents;
 using Dental.Services.Files;
 using System.IO;
 using DevExpress.Xpf.Grid;
+using Dental.Services;
 
 namespace Dental.ViewModels.Invoices
 {
@@ -48,22 +49,22 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
-        public bool CanSaveInvoice() => true;
-        public bool CanOpenFormInvoice(object p) => true;
-        public bool CanDeleteInvoice(object p) => true;
-        public bool CanCancelFormInvoice(object p) => true;
-        public bool CanSelectItemInServiceField(object p) => true;
-        public bool CanOpenFormInvoiceService(object p) => true;
-        public bool CanEditInvoiceService(object p) => true;
-        public bool CanSaveRowInInvoice() => true;
-        public bool CanDeleteInvoiceService(object p) => true;
-        public bool CanCancelFormInvoiceItem(object p) => true;
-        public bool CanSelectItemInMaterialField(object p) => true;
-        public bool CanOpenFormInvoiceMaterial(object p) => true;
-        public bool CanEditInvoiceMaterial(object p) => true;
-        public bool CanSaveMaterialRowInInvoice() => true;
-        public bool CanDeleteInvoiceMaterial(object p) => true;
-        public bool CanCancelFormInvoiceMaterialItem(object p) => true;
+        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanOpenFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDeletable;
+        public bool CanCancelFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanOpenFormInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanCancelFormInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSelectItemInMaterialField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanOpenFormInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanEditInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSaveMaterialRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanDeleteInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanCancelFormInvoiceMaterialItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanOpenFormDocuments() => true;
         public bool CanStatusChanged(object p) => true;
 

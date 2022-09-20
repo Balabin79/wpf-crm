@@ -1,4 +1,5 @@
-﻿using Dental.Views.Templates;
+﻿using Dental.Services;
+using Dental.Views.Templates;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -13,14 +14,14 @@ namespace Dental.ViewModels.Templates
 {
     class MainViewModel : ViewModelBase
     {
-        public bool CanOpenDiagnoses(object p) => true;
-        public bool CanOpenDiaries(object p) => true;
-        public bool CanOpenAllergies(object p) => true;
-        public bool CanOpenComplaints(object p) => true;
-        public bool CanOpenPlans(object p) => true;
-        public bool CanOpenObjectively(object p) => true;
-        public bool CanOpenDescriptionXRay(object p) => true;
-        public bool CanOpenAnamneses(object p) => true;
+        public bool CanOpenDiagnoses(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenDiaries(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenAllergies(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenComplaints(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenPlans(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenObjectively(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenDescriptionXRay(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        public bool CanOpenAnamneses(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
 
         [Command]
         public void OpenDiagnoses(object p)

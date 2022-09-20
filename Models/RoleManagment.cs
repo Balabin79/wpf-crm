@@ -10,19 +10,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("RolesManagment")]
-    public class RoleManagment : AbstractBaseModel
+    public class RoleManagment : AbstractBaseModel, ICategoryTree
     {
 
         public string PageName { get; set; }
         public string PageTitle { get; set; }
 
-        public int? DoctorAccessId { get; set; }
-        public Access DoctorAccess { get; set; }
+        public int? DoctorAccess { get; set; } = 0;
 
-        public int? AdminAccessId { get; set; }
-        public Access AdminAccess { get; set; }
+        public int? AdminAccess { get; set; } = 0;
 
-        public int? ReceptionAccessId { get; set; }
-        public Access ReceptionAccess { get; set; }
+        public int? ReceptionAccess { get; set; } = 0;
+
+        public int? ParentId { get; set; }
+        public int? IsCategory { get; set; }
+
+        public int? Num { get; set; }
     }
 }

@@ -33,9 +33,9 @@ namespace Dental.ViewModels
             }
         }
 
-        public bool CanDelete(object p) => true;
-        public bool CanSave() => true;
-        public bool CanAdd() => true;       
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
 
         [Command]
         public void Delete(object p)

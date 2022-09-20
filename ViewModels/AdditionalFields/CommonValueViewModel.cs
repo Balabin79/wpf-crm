@@ -35,9 +35,9 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-        public bool CanAdd() => true;
-        public bool CanDelete(object p) => true;
-        public bool CanSave() => true;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).AddFieldsEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).AddFieldsDeletable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).AddFieldsEditable;
 
         [Command]
         public void Add() => CommonValues?.Add(new CommonValue());

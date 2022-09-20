@@ -41,14 +41,14 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
-        public bool CanSelectItemInServiceField(object p) => true;
+        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
         public bool CanExpandTree(object p) => true;
-        public bool CanDelete(object p) => true;
-        public bool CanSave() => true;
-        public bool CanOpenForm(object p) => true;
-        public bool CanCancelForm() => true;
-        public bool CanOpenByParentForm(object p) => true;
-        public bool CanOpenDirByParentForm(object p) => true;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ServiceDeletable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
+        public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
+        public bool CanCancelForm() => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
+        public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
+        public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ServiceEditable;
         public bool CanPrintPrice() => true;
         public bool CanLoadDocForPrint() => true;
 

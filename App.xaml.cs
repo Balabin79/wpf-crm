@@ -17,6 +17,10 @@ namespace Dental
         public App()
         {
             //new GoogleIntegrator().Init();
+            //UserSession = new Login().GetUserSession();
         }
+
     }
+
+
 }

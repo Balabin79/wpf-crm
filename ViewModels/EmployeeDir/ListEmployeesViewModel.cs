@@ -56,11 +56,11 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
-        public bool CanOpenFormEmployeeCard(object p) => true;
-        public bool CanOpenFormFields() => true;
+        public bool CanOpenFormEmployeeCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
+        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeAddFieldsEditable;
         public bool CanExpandAll(object p) => true;
-        public bool CanNavigateTo(object p) => true;
-        public bool CanOpenFormDocuments() => true;
+        public bool CanNavigateTo(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
+        public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeTemplatesEditable;
         public bool CanShowArchive() => true;
 
         [Command]

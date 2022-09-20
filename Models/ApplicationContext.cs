@@ -94,6 +94,5 @@ namespace Dental.Models
         public DbSet<Setting> Settings { get; set; }   
 
         public DbSet<RoleManagment> RolesManagment { get; set; }    
-        public DbSet<Access> Accesses { get; set; }    
     }
 }
