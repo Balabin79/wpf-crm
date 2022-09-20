@@ -44,6 +44,11 @@ namespace Dental.Services
                 LoginWin = new LoginWin() { DataContext = this };
                 LoginWin.ShowDialog();
             }
+            else 
+            {
+                SetUserSessionForAdmin();
+                SetUserSession();
+            }
         }
 
         public void SetUserSession()
@@ -93,52 +98,7 @@ namespace Dental.Services
                 {
                     var roles = db.RolesManagment.ToArray();
 
-                    if (Employee.IsAdmin == 1)
-                    {
-                        UserSession.OpenClientCard = true;
-                        UserSession.ClientsListRead = true;
-                        UserSession.ClientEditable = true;
-                        UserSession.ClientDeletable = true;
-                        UserSession.ClientTemplatesEditable = true;
-                        UserSession.ClientAddFieldsEditable = true;
-
-                        UserSession.OpenEmployeeCard = true;
-                        UserSession.EmployeesListRead = true;
-                        UserSession.EmployeeEditable = true;
-                        UserSession.EmployeeDeletable = true;
-                        UserSession.EmployeeTemplatesEditable = true;
-                        UserSession.EmployeeAddFieldsEditable = true;
-
-                        UserSession.AddFieldsRead = true;
-                        UserSession.AddFieldsEditable = true;
-                        UserSession.AddFieldsDeletable = true;
-
-                        UserSession.SheduleRead = true;
-                        UserSession.SheduleStatusEditable = true;
-                        UserSession.SheduleStatusDeletable = true;
-                        UserSession.SheduleLocationEditable = true;
-                        UserSession.SheduleLocationDeletable = true;
-
-                        UserSession.InvoicesRead = true;
-                        UserSession.InvoiceEditable = true;
-                        UserSession.InvoiceDeletable = true;
-
-                        UserSession.NomenclaturesRead = true;
-                        UserSession.NomenclatureEditable = true;
-                        UserSession.NomenclatureDeletable = true;
-
-                        UserSession.ServicesRead = true;
-                        UserSession.ServiceEditable = true;
-                        UserSession.ServiceDeletable = true;
-
-                        UserSession.TemplatesRead = true;
-                        UserSession.TemplateEditable = true;
-                        UserSession.TemplateDeletable = true;
-
-                        UserSession.SettingsRead = true;
-
-                        UserSession.SyncRun = true;
-                    }
+                    if (Employee.IsAdmin == 1) SetUserSessionForAdmin();
                     else
                     {
                         foreach (var role in roles)
@@ -191,7 +151,6 @@ namespace Dental.Services
                             }
                         }
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -201,6 +160,53 @@ namespace Dental.Services
             SetUserSession();
             CanLoginWinClosing = true;
             LoginWin?.Close();
+        }
+
+        private void SetUserSessionForAdmin()
+        {
+            UserSession.OpenClientCard = true;
+            UserSession.ClientsListRead = true;
+            UserSession.ClientEditable = true;
+            UserSession.ClientDeletable = true;
+            UserSession.ClientTemplatesEditable = true;
+            UserSession.ClientAddFieldsEditable = true;
+
+            UserSession.OpenEmployeeCard = true;
+            UserSession.EmployeesListRead = true;
+            UserSession.EmployeeEditable = true;
+            UserSession.EmployeeDeletable = true;
+            UserSession.EmployeeTemplatesEditable = true;
+            UserSession.EmployeeAddFieldsEditable = true;
+
+            UserSession.AddFieldsRead = true;
+            UserSession.AddFieldsEditable = true;
+            UserSession.AddFieldsDeletable = true;
+
+            UserSession.SheduleRead = true;
+            UserSession.SheduleStatusEditable = true;
+            UserSession.SheduleStatusDeletable = true;
+            UserSession.SheduleLocationEditable = true;
+            UserSession.SheduleLocationDeletable = true;
+
+            UserSession.InvoicesRead = true;
+            UserSession.InvoiceEditable = true;
+            UserSession.InvoiceDeletable = true;
+
+            UserSession.NomenclaturesRead = true;
+            UserSession.NomenclatureEditable = true;
+            UserSession.NomenclatureDeletable = true;
+
+            UserSession.ServicesRead = true;
+            UserSession.ServiceEditable = true;
+            UserSession.ServiceDeletable = true;
+
+            UserSession.TemplatesRead = true;
+            UserSession.TemplateEditable = true;
+            UserSession.TemplateDeletable = true;
+
+            UserSession.SettingsRead = true;
+
+            UserSession.SyncRun = true;
         }
 
         public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);
