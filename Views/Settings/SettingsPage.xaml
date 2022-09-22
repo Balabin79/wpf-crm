@@ -86,8 +86,21 @@
                                 </dxlc:LayoutGroup.HeaderTemplate>
 
                                 <dxlc:LayoutItem Label="Включить ролевой доступ:" LabelPosition="Top" >
-                                    <dxe:CheckEdit         
+                                    <dxe:CheckEdit Name="roleEnabled"
+                                        Checked="CheckEdit_Checked"
+                                        Unchecked="CheckEdit_Unchecked"
                                                 EditValue="{Binding Settings.RolesEnabled, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem                                   
+                                    Label="Использовать вход с паролем:" LabelPosition="Top" >
+                                    <dxe:CheckEdit 
+                                        Name="passEnabled"
+                                        Checked="CheckEditPass_Checked"
+                                        Unchecked="CheckEditPass_Unchecked"
+                                               IsEnabled="{DXBinding Expr='@e(roleEnabled).EditValue == true' }"
+                                                EditValue="{Binding Settings.IsPasswordRequired, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>

@@ -26,7 +26,7 @@ namespace Dental.Services
                     IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
                     IsPasswordRequired = Setting?.IsPasswordRequired == 1;
                     Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
-                    UserSession = (UserSession)Application.Current.Resources["UserSession"] ?? new UserSession();
+                    UserSession = (UserSession)Application.Current?.Resources["UserSession"] ?? new UserSession();
                     ShowLogin();
                 }
                 catch(Exception e)

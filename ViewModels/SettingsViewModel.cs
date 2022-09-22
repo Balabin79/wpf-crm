@@ -60,18 +60,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public Account Account
-        {
-            get { return GetProperty(() => Account); }
-            set { SetProperty(() => Account, value); }
-        }
-
-        public RolesEnabled RolesEnabled
-        {
-            get { return GetProperty(() => RolesEnabled); }
-            set { SetProperty(() => RolesEnabled, value); }
-        }
-
         public ICollection<RoleManagment> Roles { get; set; }
 
         [Command]
