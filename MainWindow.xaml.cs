@@ -14,6 +14,44 @@ namespace Dental
     {
         public MainWindow()
         {
+            Login();
+            InitializeComponent();
+        }
+
+        private void Restart()
+        {
+            string mes = "Завершить сеанс работы?";
+            var response = ThemedMessageBox.Show(title: "Внимание", text: mes, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+            if (response.ToString() == "No") return;
+            Login();
+            var userSession = (UserSession)Application.Current.Resources["UserSession"];
+
+                var nav = (Navigator)Application.Current.Resources["Router"];
+
+                sheduleBtn.IsVisible = userSession.SheduleRead;
+                clientsBtn.IsVisible = userSession.ClientsListRead;
+                employeesBtn.IsVisible = userSession.EmployeesListRead;
+                servicesBtn.IsVisible = userSession.ServicesRead;
+                nomenclaturesBtn.IsVisible = userSession.NomenclaturesRead;
+                templatesBtnItem.IsVisible = userSession.TemplatesRead;
+                addFieldsBtnItem.IsVisible = userSession.AddFieldsRead;
+                invoicesBtnItem.IsVisible = userSession.InvoicesRead;
+                settingsBtnItem.IsVisible = userSession.SettingsRead;
+                syncBtnItem.IsVisible = userSession.SyncRun;
+
+                if (userSession.ClientsListRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
+                if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
+                if (userSession.EmployeesListRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
+                if (userSession.ServicesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
+                if (userSession.NomenclaturesRead) { nav.LeftMenuClick("Dental.Views.NomenclatureDir.Nomenclature"); return; }
+                if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
+                if (userSession.AddFieldsRead) { nav.LeftMenuClick("Dental.Views.AdditionalFields.AdditionalFieldsPage"); return; }
+                if (userSession.InvoicesRead) { nav.LeftMenuClick("Dental.Views.Invoices.InvoicesPage"); return; }
+                if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
+        }
+
+        private void Login()
+        {
             try
             {
                 var login = new Login();
@@ -24,7 +62,6 @@ namespace Dental
             {
 
             }
-            InitializeComponent();
         }
 
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -41,7 +78,13 @@ namespace Dental
             }
             e.Cancel = false;
 
-           Application.Current.Shutdown();                             
+           Application.Current.Shutdown();  
+          
+        }
+
+        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Restart();
         }
     }
 }

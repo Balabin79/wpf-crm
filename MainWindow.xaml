@@ -51,8 +51,8 @@
 
         <dxb:ToolBarControl Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
           
-            <dxb:BarButtonItem 
-                IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead'}"
+            <dxb:BarButtonItem Name="sheduleBtn"
+                IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Расписание сотрудников" 
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Sheduler" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -70,9 +70,9 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem 
+            <dxb:BarButtonItem Name="clientsBtn"
                 GlyphAlignment="Top"
-                IsVisible="{DXBinding Expr='@r(UserSession).ClientsListRead'}"              
+                IsVisible="{DXBinding Expr='@r(UserSession).ClientsListRead', UpdateSourceTrigger=PropertyChanged}"              
                  ToolTip="Список клиентов" 
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -91,8 +91,8 @@
 
             <dxb:BarItemSeparator/>
 
-            <dxb:BarButtonItem  
-                IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead'}"
+            <dxb:BarButtonItem  Name="employeesBtn"
+                IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead',  UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Сотрудники"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -109,8 +109,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem  
-                IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead'}"
+            <dxb:BarButtonItem  Name="servicesBtn"
+                IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead', UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Прайс услуг"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -127,8 +127,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem
-                IsVisible="{DXBinding Expr='@r(UserSession).NomenclaturesRead'}"
+            <dxb:BarButtonItem Name="nomenclaturesBtn"
+                IsVisible="{DXBinding Expr='@r(UserSession).NomenclaturesRead', UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Материалы"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -145,8 +145,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem
-                IsVisible="{DXBinding Expr='@r(UserSession).TemplatesRead'}"
+            <dxb:BarButtonItem Name="templatesBtnItem"
+                IsVisible="{DXBinding Expr='@r(UserSession).TemplatesRead',  UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Шаблоны"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Templates.MainPage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -163,8 +163,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem
-                IsVisible="{DXBinding Expr='@r(UserSession).AddFieldsRead'}"
+            <dxb:BarButtonItem Name="addFieldsBtnItem"
+                IsVisible="{DXBinding Expr='@r(UserSession).AddFieldsRead', UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Дополнительные поля"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.AdditionalFields.AdditionalFieldsPage" >
                 <dxb:BarButtonItem.ContentTemplate>
@@ -181,9 +181,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-
-            <dxb:BarButtonItem 
-                IsVisible="{DXBinding Expr='@r(UserSession).InvoicesRead'}"
+            <dxb:BarButtonItem Name ="invoicesBtnItem"
+                IsVisible="{DXBinding Expr='@r(UserSession).InvoicesRead', UpdateSourceTrigger=PropertyChanged}"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Invoices.InvoicesPage">
                 <dxb:BarButtonItem.ContentTemplate>
@@ -200,8 +199,8 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem  
-                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead'}"
+            <dxb:BarButtonItem Name="settingsBtnItem" 
+                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Настройки"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Settings.SettingsPage">
@@ -219,9 +218,9 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem                 
+            <dxb:BarButtonItem Name="syncBtnItem"             
                 ToolTip="Синхронизация"
-                IsVisible="{DXBinding Expr='@r(UserSession).SyncRun'}"
+                IsVisible="{DXBinding Expr='@r(UserSession).SyncRun', UpdateSourceTrigger=PropertyChanged}"
                 Command="{Binding LeftMenuClickCommand}" 
                 CommandParameter="Dental.Views.Integration.Google.GoogleIntegrationPage">
                 <dxb:BarButtonItem.ContentTemplate>
@@ -239,6 +238,19 @@
             </dxb:BarButtonItem>
 
             <dxb:BarButtonItem 
+                ToolTip="Переключить сеанс"                                     
+                ItemClick="BarButtonItem_ItemClick">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/AssignTask.svg}"/>
+                            <TextBlock TextAlignment="Center"  Text="Авторизация" />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+            
+            <dxb:BarButtonItem 
                 DataContext="{StaticResource mv}"
                 ToolTip="Справка"                                     
                 Command="{Binding OpenHelpFormCommand}" CommandParameter="Dental.Views.UserActions"   >
@@ -255,6 +267,7 @@
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
+
         </dxb:ToolBarControl>
 
         <Frame  
