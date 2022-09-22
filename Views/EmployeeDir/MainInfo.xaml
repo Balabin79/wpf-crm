@@ -150,6 +150,14 @@
                                     </dxe:ComboBoxEdit>
                                 </dxlc:LayoutItem>
 
+                                <dxlc:LayoutItem Label="Пароль:"  LabelPosition="Left" >
+                                    <dxe:TextEdit                                                 
+                                                NullText="Пароль"
+                                                EditValue="{Binding EmployeeInfoViewModel.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                               />
+                                </dxlc:LayoutItem>
+
                                 <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Left" >
                                     <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding EmployeeInfoViewModel.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 

@@ -14,6 +14,16 @@ namespace Dental
     {
         public MainWindow()
         {
+            try
+            {
+                var login = new Login();
+                login.ShowLogin();
+                Application.Current.Resources["UserSession"] = login.UserSession;
+            }
+            catch (Exception e)
+            {
+
+            }
             InitializeComponent();
         }
 

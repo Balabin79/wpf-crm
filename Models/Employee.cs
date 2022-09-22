@@ -105,6 +105,7 @@ namespace Dental.Models
         public int? IsAdmin { get; set; }
         public int? IsDoctor { get; set; }
         public int? IsReception { get; set; }
+
         public string Password { get; set; }
 
         public string Error { get => string.Empty; }

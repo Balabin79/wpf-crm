@@ -33,7 +33,7 @@ namespace Dental.Services
         {
             CurrentPage = CreatePage(defaultPage);
             FrameOpacity = 1.1;
-            new Login().SetUserSession();           
+                     
         }
 
         #region Общий ф-нал

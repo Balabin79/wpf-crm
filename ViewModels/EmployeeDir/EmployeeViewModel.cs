@@ -19,6 +19,9 @@ using System.Diagnostics;
 using Dental.Models.Base;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Services.Files;
+using System.Security.Cryptography;
+using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -48,7 +51,7 @@ namespace Dental.ViewModels.EmployeeDir
                 IsReadOnly = Model.Id != 0;
                 AdditionalFieldsVisible = Visibility.Hidden;
                 IsReadOnly = Model.Id != 0;
-                PhotoLoading();               
+                PhotoLoading();
             }
             catch (Exception e)
             {
@@ -73,12 +76,12 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
-                bool notificationShowed = false;
+                bool notificationShowed = false;                                                           
                 EmployeeInfoViewModel.Copy(Model);
                 SavePhoto();
                 if (Model.Id == 0) // новый элемент
                 {
-                    db.Employes.Add(Model);
+                    db.Employes.Add(Model);                
                     // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
                     if (VmList?.IsArchiveList == Model.IsInArchive) VmList?.Collection?.Add(Model);
                     db.SaveChanges();

@@ -1,6 +1,7 @@
 using Dental.Services;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -16,10 +17,7 @@ namespace Dental
     {
         public App()
         {
-            //new GoogleIntegrator().Init();
-            //UserSession = new Login().GetUserSession();
         }
-
     }
 
 

@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Security.Cryptography;
 
 namespace Dental.Services
 {
@@ -25,9 +26,7 @@ namespace Dental.Services
                     Setting = db.Settings.FirstOrDefault();
                     IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
                     IsPasswordRequired = Setting?.IsPasswordRequired == 1;
-                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
-                    UserSession = (UserSession)Application.Current?.Resources["UserSession"] ?? new UserSession();
-                    ShowLogin();
+                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();                    
                 }
                 catch(Exception e)
                 {
@@ -37,7 +36,7 @@ namespace Dental.Services
             }
         }
 
-        private void ShowLogin()
+        public void ShowLogin()
         {
             if (IsRoleAccessEnabled)
             {
@@ -46,15 +45,23 @@ namespace Dental.Services
             }
             else 
             {
+                UserSession = new UserSession();
                 SetUserSessionForAdmin();
-                SetUserSession();
+                //SetUserSession();
             }
         }
 
-        public void SetUserSession()
+       /* public void SetUserSession()
         {
-            Application.Current.Resources["UserSession"] = UserSession;
-        }
+           try
+           {
+               Application.Current.Resources["UserSession"] = UserSession;
+           }
+            catch(Exception e)
+           {
+
+           }                      
+        }*/
 
         [Command]
         public void CloseForm(object p)
@@ -86,11 +93,27 @@ namespace Dental.Services
             if (Employee == null) return;
             UserSession.Employee = Employee;
 
-            if (IsPasswordRequired == true && PasswordValidate() == false)
+            if (IsPasswordRequired == true)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Не совпадает пароль, повторите попытку!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Exclamation);
-                return;
+                if (string.IsNullOrEmpty(Employee?.Password))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Для данного пользователя не задан пароль в карте сотрудника!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Exclamation);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(Password))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Поле пароля пустое!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Exclamation);
+                    return;
+                }
+                if (!PasswordValidate())
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Не совпадает пароль, повторите попытку!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Exclamation);
+                    return;
+                }
             }
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -157,7 +180,7 @@ namespace Dental.Services
 
                 }
             }
-            SetUserSession();
+           // SetUserSession();
             CanLoginWinClosing = true;
             LoginWin?.Close();
         }
@@ -209,25 +232,41 @@ namespace Dental.Services
             UserSession.SyncRun = true;
         }
 
-        public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);
+        public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);   
         
 
+        /*  Password */
 
-        public bool PasswordValidate()
+        private bool PasswordValidate()
         {
-
-            return false;
+            try
+            {
+                return Password == Encoding.UTF8.GetString(Convert.FromBase64String(Employee?.Password));
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        
+        /*******************************************/
+
+
         public Setting Setting { get; set; }
-        private UserSession UserSession { get; set; } 
+        public UserSession UserSession { get; set; } 
 
         public Employee Employee
         {
             get { return GetProperty(() => Employee); }
             set { SetProperty(() => Employee, value); }
         }
+
+        public string Password
+        {
+            get { return GetProperty(() => Password); }
+            set { SetProperty(() => Password, value); }
+        }
+
 
         public ICollection<Employee> Employees { get; set; }
         public bool IsPasswordRequired { get; set; }

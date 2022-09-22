@@ -10,6 +10,7 @@ namespace Dental.Services
 {
     public class UserSession
     {
+
         public Employee Employee { get; set; }
 
         public bool OpenClientCard { get; set; } = false;

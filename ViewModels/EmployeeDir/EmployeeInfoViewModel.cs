@@ -6,6 +6,7 @@ using DevExpress.Mvvm;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Text;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -30,6 +31,14 @@ namespace Dental.ViewModels.EmployeeDir
             Address = employee.Address;
             Note = employee.Note;
             IsInArchive = employee.IsInArchive;
+            try 
+            {
+                if (!string.IsNullOrEmpty(employee?.Password))
+                    Password = Encoding.UTF8.GetString(Convert.FromBase64String(employee?.Password));
+            } catch
+            {
+                Password = null;
+            }
         }
 
         public int Id
@@ -137,6 +146,12 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => Note, (value ?? "").Trim()); }
         }
 
+        public string Password
+        {
+            get { return GetProperty(() => Password); }
+            set { SetProperty(() => Password, (value ?? "").Trim()); }
+        }
+
         public bool? IsInArchive { get; set; } = false;
 
         public string Error { get => string.Empty; }
@@ -206,6 +221,19 @@ namespace Dental.ViewModels.EmployeeDir
             employee.Email = Email;
             employee.Note = Note;
             employee.IsInArchive = IsInArchive;
+            try
+            {
+                string pass = null;
+
+                if (!string.IsNullOrEmpty(employee.Password)) pass = Encoding.UTF8.GetString(Convert.FromBase64String(employee.Password));
+
+                if (pass != Password)
+                    employee.Password = Convert.ToBase64String(Encoding.UTF8.GetBytes(Password));
+            }
+            catch
+            {
+                employee.Password = null;
+            }
             return employee;
         }
     }
