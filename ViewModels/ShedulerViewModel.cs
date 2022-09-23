@@ -445,8 +445,19 @@ namespace Dental.ViewModels
 
         private void SetSelectedEmployees()
         {
+            var userSession = (UserSession)Application.Current.Resources["UserSession"];
             SelectedDoctors = new List<object>();
-            Doctors.ForEach(f => SelectedDoctors.Add(f));
+            try 
+            {
+                if (userSession.Employee != null && userSession.Employee?.IsDoctor == 1)
+                {
+                    SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
+                }
+                else Doctors.ForEach(f => SelectedDoctors.Add(f));
+            } catch 
+            {
+                Doctors.ForEach(f => SelectedDoctors.Add(f));
+            }
         }    
     }
 }
