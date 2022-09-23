@@ -48,7 +48,7 @@ namespace Dental.ViewModels.AdditionalFields
             {
                 if (p is AdditionalClientField model)
                 {
-                    if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
+                    if (model.Id != 0 && !DeleteMsgShow(model)) return;
                     if (model.Id != 0)
                     {
                         db.AdditionalClientFields.Remove(model);
@@ -65,6 +65,16 @@ namespace Dental.ViewModels.AdditionalFields
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
+        }
+
+        private bool DeleteMsgShow(AdditionalClientField model)
+        {
+            var val = db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id).Count();
+            string msg = val < 1 ? "Вы уверены?" : "Внимание! В поле " + model.Label + " записано значение, которое заполнено в картах клиентов (Всего: " + val + "). Вы уверены что хотите удалить это поле?";
+            var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+
+            return response.ToString() == "Yes";
         }
 
         [Command]

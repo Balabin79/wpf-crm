@@ -49,7 +49,7 @@ namespace Dental.ViewModels.AdditionalFields
             {
                 if (p is CommonValue model)
                 {
-                    if (model.Id != 0 && !new ConfirDeleteInCollection().run(0)) return;
+                    if (model.Id != 0 && !DeleteMsgShow(model)) return;
                     if (model.Id != 0)
                     {
                         db.CommonValues.Remove(model);
@@ -66,6 +66,16 @@ namespace Dental.ViewModels.AdditionalFields
             {
                 (new ViewModelLog(e)).run();
             }
+        }
+
+        private bool DeleteMsgShow(CommonValue model)
+        {
+            var val = db.CommonValues.FirstOrDefault(f => f.Id == model.Id);
+            string msg = val == null ? "Вы уверены?" : "Внимание! В поле " + model.Name + " записано значение. Вы уверены что хотите удалить это поле?";
+            var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
+                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+
+            return (response.ToString() == "Yes"); 
         }
 
         [Command]
