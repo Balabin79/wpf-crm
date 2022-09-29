@@ -43,7 +43,13 @@
                     <TextBlock Text="Шаблон" Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                     <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
                         <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
-                            <dxe:TextEdit  Text="{Binding VM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
+                            <dxe:MemoEdit
+                                VerticalContentAlignment="Top"
+                                ShowIcon="False"
+                                ShowText="True"
+                                MinHeight="50"
+                                EditValue="{Binding VM.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"
+                               />
                         </dxlc:LayoutItem>
                        
                         <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">

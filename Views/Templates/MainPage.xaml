@@ -67,9 +67,9 @@
                                  />
 
                         <dxe:HyperlinkEdit 
-                                Text="4. Дневники"
-                                ToolTip="Дневники"
-                                EditValue="Дневники"
+                                Text="4. Лечение"
+                                ToolTip="Лечение"
+                                EditValue="Лечение"
                                 Command="{Binding OpenDiariesCommand}"
                                 FontWeight="DemiBold"
                                 Foreground="#333"

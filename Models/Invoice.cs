@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Table("Invoice")]
+    [Table("Invoices")]
     public class Invoice : AbstractBaseModel, IDataErrorInfo
     {
         public Invoice()

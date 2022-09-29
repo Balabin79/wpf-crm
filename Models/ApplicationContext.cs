@@ -57,7 +57,6 @@ namespace Dental.Models
         public DbSet<Employee> Employes { get; set; }  
         public DbSet<Client> Clients { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<Dictionary> Dictionary { get; set; }
 
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<LocationAppointment> LocationAppointment { get; set; }

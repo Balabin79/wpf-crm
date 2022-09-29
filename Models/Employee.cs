@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace Dental.Models
 {
-    [Table("Employes")]
+    [Table("Employees")]
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
         [NotMapped]
