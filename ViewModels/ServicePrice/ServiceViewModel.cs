@@ -103,17 +103,12 @@ namespace Dental.ViewModels.ServicePrice
                 Model = Collection.Where(f => f.Id == (int)p).FirstOrDefault();
                 if (Model == null || !new ConfirDeleteInCollection().run(Model.IsDir)) return;
 
-                if (Model.IsDir == 0) 
-                { 
+                if (Model.IsDir == 0)
+                {
                     db.Entry(Model).State = EntityState.Deleted;
                     Collection.Remove(Model);
                 }
-                else
-                {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection();
-                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
-                }
+                else Delete(Model);
 
                 db.SaveChanges();
             }
@@ -277,6 +272,21 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
+        private void Delete(Service model)
+        {
+            if (model?.IsDir == 1)
+            {
+                var nodes = db.Services.Where(f => f.ParentId == model.Id).ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node.IsDir == 1) Delete(node);
+                    db.Entry(node).State = EntityState.Deleted;
+                    Collection.Remove(node);
+                }
+            }
+            db.Entry(model).State = EntityState.Deleted;
+            Collection.Remove(model);
+        }
 
         public Service WithoutCategory { get; set; } = new Service() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории", Guid = "000" };
         public ObservableCollection<Service> Collection

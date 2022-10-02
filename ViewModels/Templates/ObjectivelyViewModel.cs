@@ -18,6 +18,7 @@ using DevExpress.Xpf.Grid;
 using Dental.Infrastructures.Collection;
 using Dental.Models.Templates;
 using System;
+using System.Threading.Tasks;
 
 namespace Dental.ViewModels.Templates
 {
@@ -246,8 +247,8 @@ namespace Dental.ViewModels.Templates
             }
         }
 
-        [Command]
-        public void Delete(object p)
+        [AsyncCommand]
+        public async Task Delete(object p)
         {
             try
             {
@@ -262,19 +263,38 @@ namespace Dental.ViewModels.Templates
                 }
                 else
                 {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Objectively>().ToObservableCollection();
-                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
+                    DelItems = new List<Objectively>();
+                    await Task.Run( () => { 
+                        Delete(Model);
+                        db.SaveChanges();                       
+                    });
+                    DelItems.ForEach(f => { Collection.Remove(f);});
                 }
-
-                db.SaveChanges();
+                
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        
+
+        private List<Objectively> DelItems { get; set; }
+        private void Delete(Objectively model)
+        {
+            if (model?.IsDir == 1)
+            {
+                var nodes = db.Objectively.Where(f => f.ParentId == model.Id).ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node.IsDir == 1) Delete(node);
+                    db.Entry(node).State = EntityState.Deleted;
+                    DelItems.Add(node);
+                }
+            }
+            db.Entry(model).State = EntityState.Deleted;
+            DelItems.Add(model);
+        }
+
         public ObjectivelyMediatorVM VM { get; set; }
         public Objectively WithoutCategory { get; set; } = new Objectively() { Id = 0, IsDir = 1, ParentId = 0, Name = "Без категории", Guid = "000" };
         public Objectively Model { get; set; }

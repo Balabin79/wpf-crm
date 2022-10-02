@@ -28,6 +28,12 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DiagnosesWin?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
                 DiagnosesWin = new DiagnosesWin() { DataContext = new DiagnosViewModel() };
                 DiagnosesWin?.Show();
             } 
@@ -44,7 +50,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 DiariesWin = new DiariesWin() { DataContext = new DiaryViewModel() };
-                DiariesWin?.Show();
+                DiariesWin?.ShowDialog();
             }
             catch
             {
@@ -59,7 +65,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 AllergiesWin = new AllergiesWin() { DataContext = new AllergyViewModel() };
-                AllergiesWin?.Show();
+                AllergiesWin?.ShowDialog();
             }
             catch
             {
@@ -74,7 +80,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 ComplaintsWin = new ComplaintsWin() { DataContext = new ComplaintViewModel() };
-                ComplaintsWin?.Show();
+                ComplaintsWin?.ShowDialog();
             }
             catch
             {
@@ -90,7 +96,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 TreatmentPlansWin = new TreatmentPlansWin() { DataContext = new TreatmentPlanViewModel() };
-                TreatmentPlansWin?.Show();
+                TreatmentPlansWin?.ShowDialog();
             }
             catch
             {
@@ -105,7 +111,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 ObjectivelyWin = new ObjectivelyWin() { DataContext = new ObjectivelyViewModel() };
-                ObjectivelyWin?.Show();
+                ObjectivelyWin?.ShowDialog();
             }
             catch
             {
@@ -120,7 +126,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 DescriptionXRaysWin = new DescriptionXRaysWin() { DataContext = new DescriptionXRayViewModel() };
-                DescriptionXRaysWin?.Show();
+                DescriptionXRaysWin?.ShowDialog();
             }
             catch
             {
@@ -135,7 +141,7 @@ namespace Dental.ViewModels.Templates
             try
             {
                 AnamnesesWin = new AnamnesesWin() { DataContext = new AnamnesViewModel() };
-                AnamnesesWin?.Show();
+                AnamnesesWin?.ShowDialog();
             }
             catch
             {

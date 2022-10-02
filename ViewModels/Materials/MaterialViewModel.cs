@@ -113,12 +113,7 @@ namespace Dental.ViewModels.Materials
                     db.Entry(Model).State = EntityState.Deleted;
                     Collection.Remove(Model);
                 }
-                else
-                {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Nomenclature>().ToObservableCollection();
-                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
-                }
+                else Delete(Model);
 
                 db.SaveChanges();
             }
@@ -304,6 +299,21 @@ namespace Dental.ViewModels.Materials
             }
         }
 
+        private void Delete(Nomenclature model)
+        {
+            if (model?.IsDir == 1)
+            {
+                var nodes = db.Nomenclature.Where(f => f.ParentId == model.Id).ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node.IsDir == 1) Delete(node);
+                    db.Entry(node).State = EntityState.Deleted;
+                    Collection.Remove(node);
+                }
+            }
+            db.Entry(model).State = EntityState.Deleted;
+            Collection.Remove(model);
+        }
 
         public Nomenclature WithoutCategory { get; set; } = new Nomenclature() { Id = 0, IsDir = null, ParentId = null, Name = "Без категории", Guid = "000" };
 

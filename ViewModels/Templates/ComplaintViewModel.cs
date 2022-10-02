@@ -259,13 +259,7 @@ namespace Dental.ViewModels.Templates
                     db.Entry(Model).State = EntityState.Deleted;
                     Collection.Remove(Model);
                 }
-                else
-                {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Complaint>().ToObservableCollection();
-                    collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
-                }
-
+                else Delete(Model);
                 db.SaveChanges();
             }
             catch
@@ -273,7 +267,23 @@ namespace Dental.ViewModels.Templates
                 ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        
+
+        private void Delete(Complaint model)
+        {
+            if (model?.IsDir == 1)
+            {
+                var nodes = db.Complaints.Where(f => f.ParentId == model.Id).ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node.IsDir == 1) Delete(node);
+                    db.Entry(node).State = EntityState.Deleted;
+                    Collection.Remove(node);
+                }
+            }
+            db.Entry(model).State = EntityState.Deleted;
+            Collection.Remove(model);
+        }
+
         public ComplaintMediatorVM VM { get; set; }
         public Complaint WithoutCategory { get; set; } = new Complaint() { Id = 0, IsDir = 1, ParentId = 0, Name = "Без категории", Guid = "000" };
         public Complaint Model { get; set; }
