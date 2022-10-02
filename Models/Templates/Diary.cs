@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Table("Diaries")]
+    [Table("Treatments")]
     public class Diary : AbstractBaseModel, IDataErrorInfo, ITreeModel
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
