@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Dental.Models.Base
 {
-    interface ITree
+    public interface ITree
     {
         int? IsDir { get; set; }
-        int? ParentId { get; set; }
+        int? ParentId { get; set; }             
+        string Name { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Dental.Infrastructures.TreeList
             File = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/RichEdit/PenColor_32x32.png"));
 
 
-            var template = rowData.Row as ITreeModel;
+            var template = rowData.Row as ITree;
 
             if (rowData == null || rowData.Node == null || template?.IsDir == 0) return File;
 

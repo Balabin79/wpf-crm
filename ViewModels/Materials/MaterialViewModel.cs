@@ -64,7 +64,7 @@ namespace Dental.ViewModels.Materials
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Nomenclature item)
+                    if (parameters.Tree.CurrentItem is Nomenclature item)
                     {
                         //if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = item;
@@ -176,9 +176,13 @@ namespace Dental.ViewModels.Materials
         {
             try
             {
-                if (!int.TryParse(p.ToString(), out int param)) return;                
+                if (!int.TryParse(p.ToString(), out int param)) return; 
+                
                 Model = (param > 0) ?  db.Nomenclature.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault() : new Nomenclature();
                 Model.IsDir = (param < 0) ? param == -1 ? 0 : 1 : Model.IsDir;
+                
+                
+                
                 MaterialVM = new MaterialVM(db, Model.Id)
                 {
                     Name = Model.Name,
@@ -212,8 +216,15 @@ namespace Dental.ViewModels.Materials
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == MeasureWin?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 MeasureWin = new MeasureWindow() { DataContext = new MeasureViewModel( this, db) };
-                MeasureWin.ShowDialog();
+                MeasureWin.Show();
             }
             catch
             {
@@ -252,7 +263,7 @@ namespace Dental.ViewModels.Materials
                 }
                 Model = new Nomenclature();
                 Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 325 : 234 };
-                Window.Show();
+                Window.ShowDialog();
             }
             catch
             {
@@ -291,7 +302,7 @@ namespace Dental.ViewModels.Materials
                 }
                 Model = new Nomenclature();
                 Window = new NomenclatureWindow() { DataContext = this, Height = MaterialVM.IsDir == 0 ? 325 : 234 };
-                Window.Show();
+                Window.ShowDialog();
             }
             catch
             {

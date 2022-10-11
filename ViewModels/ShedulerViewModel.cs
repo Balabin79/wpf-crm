@@ -134,8 +134,14 @@ namespace Dental.ViewModels
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == LocationWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
                 LocationWindow = new LocationAppointmentWindow() { DataContext = this };
-                LocationWindow.ShowDialog();
+                LocationWindow.Show();
             }
             catch (Exception e)
             {
@@ -229,8 +235,15 @@ namespace Dental.ViewModels
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == StatusWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 StatusWindow = new StatusAppointmentWindow() { DataContext = this };
-                StatusWindow.ShowDialog();
+                StatusWindow.Show();
             }
             catch (Exception e)
             {

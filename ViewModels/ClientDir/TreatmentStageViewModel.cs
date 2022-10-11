@@ -53,11 +53,16 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if (p is TreatmentStage model)
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == TreatmentStageWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
                 {
-                    VM = new TreatmentStageVM() { Date = model?.Date, Name = model?.Name, Model = model };
+                    wnd.Activate();
+                    return;
                 }
+
+                if (p is TreatmentStage model) VM = new TreatmentStageVM() { Date = model?.Date, Name = model?.Name, Model = model };
                 else VM = new TreatmentStageVM();
+
                 TreatmentStageWindow = new TreatmentStageWindow() { DataContext = this, Height = 220 };
                 TreatmentStageWindow?.Show();
             }
@@ -199,10 +204,10 @@ namespace Dental.ViewModels.ClientDir
                             }).ToArray(); break;
                     }
                     Model = model;
+
                     TemplateWin = new SelectValueInTemplateWin() { DataContext = this };
-                    TemplateWin.Show();
+                    TemplateWin.ShowDialog();
                 }
-                //parameters.Popup.ClosePopup();
             }
         }
 
@@ -392,12 +397,16 @@ namespace Dental.ViewModels.ClientDir
         }
     }
 
-    public class TreeTemplate : ITreeModel
+    public class TreeTemplate : ITree, IModel
     {
         public int Id { get; set; }
         public bool IsChecked { get; set; } = false;
         public int? IsDir { get; set; }
         public int? ParentId { get; set; }
         public string Name { get; set; }
+
+        public int? CreatedAt { get; set; }
+        public int? UpdatedAt { get; set; }
+        public string Guid { get; set; }
     }
 }

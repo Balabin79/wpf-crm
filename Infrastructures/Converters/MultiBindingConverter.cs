@@ -20,7 +20,7 @@ namespace Dental.Infrastructures.Converters
             {
                 return new FindCommandParameters()
                 {
-                    Tree = (TreeListView)(System.Windows.FrameworkElement)Values[0],
+                    Tree = (TreeListControl)(System.Windows.FrameworkElement)Values[0],
                     Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1]
                 };
             } 
@@ -39,7 +39,7 @@ namespace Dental.Infrastructures.Converters
 
     public class FindCommandParameters
     {
-        public TreeListView Tree { get; set; }
+        public TreeListControl Tree { get; set; }
         public PopupBaseEdit Popup { get; set; }
     }
 }

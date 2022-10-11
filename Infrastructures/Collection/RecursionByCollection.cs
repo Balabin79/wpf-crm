@@ -13,6 +13,7 @@ namespace Dental.Infrastructures.Collection
 {
     class RecursionByCollection
     {
+        /*
         public RecursionByCollection(ObservableCollection<ITreeModel> collection, ITreeModel model)
         {
             Collection = collection;
@@ -26,14 +27,14 @@ namespace Dental.Infrastructures.Collection
         }
 
 
-        public ObservableCollection<ITreeModel> GetDirectories()
+        public ObservableCollection<ITreeModelBase> GetDirectories()
         {
             IsOnlyFindDir = true;
             FindItemChilds(Collection, Model);
             return Collection.Where(f => f.IsDir == 1 && !Child.Contains(f.Id)).ToObservableCollection();
         }
 
-        private void FindItemChilds(ObservableCollection<ITreeModel> collection, ITreeModel model)
+        private void FindItemChilds(ObservableCollection<ITreeModelBase> collection, ITreeModelBase model)
         {
             var childs = collection.Where(f => f.ParentId == model.Id).ToList();
 
@@ -50,9 +51,9 @@ namespace Dental.Infrastructures.Collection
         }
 
         private List<int> Child { get; set; } = new List<int>();
-        private ObservableCollection<ITreeModel> Collection { get; set; }
-        private ITreeModel Model { get; set; }
+        private ObservableCollection<ITreeModelBase> Collection { get; set; }
+        private ITreeModelBase Model { get; set; }
         private bool IsOnlyFindDir {get; set;} = false;
- 
+ */
     }
 }

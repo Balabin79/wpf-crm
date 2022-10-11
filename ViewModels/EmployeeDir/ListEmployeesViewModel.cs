@@ -84,8 +84,15 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == FieldsWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 FieldsWindow = new EmployeeFieldsWindow() { DataContext = new AdditionalEmployeeFieldsViewModel() };
-                FieldsWindow.ShowDialog();
+                FieldsWindow.Show();
             }
             catch
             {
@@ -135,8 +142,15 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DocumentsWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 DocumentsWindow = new DocumentsWindow() { DataContext = new EmployeesDocumentsViewModel() };
-                DocumentsWindow.ShowDialog();
+                DocumentsWindow.Show();
             }
             catch
             {

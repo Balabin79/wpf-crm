@@ -17,5 +17,7 @@ namespace Dental.Views.ServicePrice
             }
             e.Handled = true;
         }
+
+        private void Close_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

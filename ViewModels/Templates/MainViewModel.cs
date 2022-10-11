@@ -1,4 +1,7 @@
-﻿using Dental.Services;
+﻿using Dental.Models;
+using Dental.Models.Templates;
+using Dental.Services;
+using Dental.ViewModels.Base;
 using Dental.Views.Templates;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -9,11 +12,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using DevExpress.Mvvm.Native;
+using System.Data.Entity;
+using System.Collections.ObjectModel;
 
 namespace Dental.ViewModels.Templates
 {
     class MainViewModel : ViewModelBase
     {
+        private readonly ApplicationContext db;
+        public MainViewModel() => db = new ApplicationContext();
+
         public bool CanOpenDiagnoses(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenDiaries(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenAllergies(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
@@ -28,14 +37,18 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
+                /*
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DiagnosesWin?.ToString()).FirstOrDefault();
                 if (wnd != null)
                 {
                     wnd.Activate();
                     return;
-                }
-                DiagnosesWin = new DiagnosesWin() { DataContext = new DiagnosViewModel() };
-                DiagnosesWin?.Show();
+                }*/
+                new TemplatesWin() 
+                { 
+                    DataContext = new BaseViewModel<Diagnos>(db, db?.Diagnoses),
+                    TitleWin = "Шаблоны \"Диагнозы\"",
+                }?.ShowDialog();
             } 
             catch
             {
@@ -49,12 +62,15 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                DiariesWin = new DiariesWin() { DataContext = new DiaryViewModel() };
-                DiariesWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Лечение\"",
+                    DataContext = new BaseViewModel<Diary>(db, db?.Diaries)
+                }?.ShowDialog();
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Дневники\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Лечение\"!",
                 messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -64,12 +80,16 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                AllergiesWin = new AllergiesWin() { DataContext = new AllergyViewModel() };
-                AllergiesWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Аллергии\"",
+                    DataContext = new BaseViewModel<Allergy>(db, db?.Allergies)
+                }?.ShowDialog();
+
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Первичный осмотр\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Аллергии\"!",
                 messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -79,12 +99,15 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                ComplaintsWin = new ComplaintsWin() { DataContext = new ComplaintViewModel() };
-                ComplaintsWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Жалобы пациента\"",
+                    DataContext = new BaseViewModel<Complaint>(db, db?.Complaints)
+                }?.ShowDialog();
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Жалобы\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Жалобы пациента\"!",
                 messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
 
@@ -95,8 +118,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                TreatmentPlansWin = new TreatmentPlansWin() { DataContext = new TreatmentPlanViewModel() };
-                TreatmentPlansWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Планы лечения\"",
+                    DataContext = new BaseViewModel<TreatmentPlan>(db, db?.TreatmentPlans)
+                }?.ShowDialog();
             }
             catch
             {
@@ -110,8 +136,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                ObjectivelyWin = new ObjectivelyWin() { DataContext = new ObjectivelyViewModel() };
-                ObjectivelyWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Объективное обследование\"",
+                    DataContext = new BaseViewModel<Objectively>(db, db?.Objectively)
+                }?.ShowDialog();
             }
             catch
             {
@@ -125,8 +154,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                DescriptionXRaysWin = new DescriptionXRaysWin() { DataContext = new DescriptionXRayViewModel() };
-                DescriptionXRaysWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    TitleWin = "Шаблоны \"Описание рентгеновских снимков\"",
+                    DataContext = new BaseViewModel<DescriptionXRay>(db, db?.DescriptionXRay)
+                }?.ShowDialog();
             }
             catch
             {
@@ -140,8 +172,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                AnamnesesWin = new AnamnesesWin() { DataContext = new AnamnesViewModel() };
-                AnamnesesWin?.ShowDialog();
+                new TemplatesWin()
+                {
+                    DataContext = new BaseViewModel<Anamnes>(db, db?.Anamneses),
+                    TitleWin = "Шаблоны \"Анамнезы\""
+                }?.ShowDialog();
             }
             catch
             {
@@ -150,13 +185,5 @@ namespace Dental.ViewModels.Templates
             }
         }
 
-        public DiagnosesWin DiagnosesWin { get; set; }
-        public DiariesWin DiariesWin { get; set; }
-        public AnamnesesWin AnamnesesWin { get; set; }
-        public ObjectivelyWin ObjectivelyWin { get; set; }
-        public AllergiesWin AllergiesWin { get; set; }
-        public DescriptionXRaysWin DescriptionXRaysWin { get; set; }
-        public ComplaintsWin ComplaintsWin { get; set; }
-        public TreatmentPlansWin TreatmentPlansWin { get; set; }
     }
 }

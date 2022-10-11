@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Dental.Models.Base
 {
-    interface IModel
+    public interface IModel
     {
         int Id { get; set; }
+        int? CreatedAt { get; set; }
+        int? UpdatedAt { get; set; }
+        string Guid { get; set; }
     }
 }

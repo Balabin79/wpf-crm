@@ -60,7 +60,7 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Service service)
+                    if (parameters.Tree.CurrentItem is Service service)
                     {
                         //if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = service;
@@ -111,10 +111,10 @@ namespace Dental.ViewModels.EmployeeDir
                     Collection.Remove(Model);
                 }
                 else
-                {
-                    var collection = new RecursionByCollection(Collection.OfType<ITreeModel>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection();
+                {/*
+                    var collection = new RecursionByCollection(Collection.OfType<ITreeModelBase>().ToObservableCollection(), Model).GetItemChilds().OfType<Service>().ToObservableCollection();
                     collection.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    collection.ForEach(f => Collection.Remove(f));
+                    collection.ForEach(f => Collection.Remove(f));*/
                 }
 
                 db.SaveChanges();
@@ -172,6 +172,13 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == Window?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 if (!int.TryParse(p.ToString(), out int param)) return;                
                 Model = (param > 0) ?  db.Services.Where(f => f.Id == param).Include(f => f.Parent).FirstOrDefault() : new Service();
                 Model.IsDir = (param < 0) ? param == -1 ? 0 : 1 : Model.IsDir;
@@ -188,9 +195,9 @@ namespace Dental.ViewModels.EmployeeDir
                 };
 
                 if ((Model.Id > 0 && ServiceVM.ParentId != null && ServiceVM.Services.Count > 0) || (Model.Id == 0)) ServiceVM.Services?.Add(WithoutCategory);
-  
+
                 Window = new ServiceWindow() { DataContext = this, Height = ServiceVM.IsDir == 0 ? 280 : 235};
-                Window.ShowDialog();
+                Window.Show();
             }
             catch
             {

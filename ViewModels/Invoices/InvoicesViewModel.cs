@@ -229,7 +229,7 @@ namespace Dental.ViewModels.Invoices
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Service service)
+                    if (parameters.Tree.CurrentItem is Service service)
                     {
                         if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = service;
@@ -371,7 +371,7 @@ namespace Dental.ViewModels.Invoices
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Nomenclature material)
+                    if (parameters.Tree.CurrentItem is Nomenclature material)
                     {
                         if (material.IsDir == 1) return;
                         parameters.Popup.EditValue = material;

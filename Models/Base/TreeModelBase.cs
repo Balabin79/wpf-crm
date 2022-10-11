@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Dental.Models.Base
 {
-    abstract class TreeModelBase : AbstractBaseModel, ITreeModel, IDataErrorInfo
+    abstract class TreeModelBase : AbstractBaseModel, ITree, IModel, IDataErrorInfo
     {
         [Column("ParentId")]
         public int? ParentId { get; set; }

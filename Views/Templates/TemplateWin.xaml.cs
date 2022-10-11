@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dental.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +21,6 @@ namespace Dental.Views.Templates
         {
             InitializeComponent();
         }
+        private void Close_Click(object sender, RoutedEventArgs e) => Close();
     }
 }

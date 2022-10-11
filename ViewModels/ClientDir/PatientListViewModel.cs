@@ -51,8 +51,15 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DocumentsWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 DocumentsWindow = new DocumentsWindow() { DataContext = new ClientsDocumentsViewModel() };
-                DocumentsWindow.ShowDialog();
+                DocumentsWindow.Show();
             }
             catch 
             {
@@ -65,8 +72,15 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == FieldsWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+
                 FieldsWindow = new ClientFieldsWindow() { DataContext = new AdditionalClientFieldsViewModel() };
-                FieldsWindow.ShowDialog();
+                FieldsWindow.Show();
             }
             catch
             {
@@ -80,7 +94,7 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 ClientCardWin = (p != null) ? new ClientCardWindow((int)p, this) : new ClientCardWindow(0, this);
-                ClientCardWin?.ShowDialog();
+                ClientCardWin?.Show();
             }
             catch
             {

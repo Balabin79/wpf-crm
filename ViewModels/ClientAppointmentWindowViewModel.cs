@@ -48,7 +48,7 @@ namespace Dental.ViewModels
             {
                 if (p is FindCommandParameters parameters)
                 {
-                    if (parameters.Tree.FocusedRow is Service classificator)
+                    if (parameters.Tree.CurrentItem is Service classificator)
                     {
                         if (classificator.IsDir == 1) return;
                         parameters.Popup.EditValue = classificator;

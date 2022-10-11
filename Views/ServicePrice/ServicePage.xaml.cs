@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Dental.Models;
+using Dental.ViewModels.Base;
+using Dental.ViewModels.ServicePrice;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,8 @@ namespace Dental.Views.ServicePrice
         public ServicePage()
         {
             InitializeComponent();
+            var db = new ApplicationContext();
+            DataContext = new ServiceViewModel(db, db?.Services);
         }
     }
 }

@@ -5,10 +5,12 @@ using Dental.Services;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dental.Infrastructures.Logs;
+using DevExpress.Mvvm;
+using Dental.Infrastructures.Attributes;
 
 namespace Dental.Models.Base
 {
-    abstract public class AbstractBaseModel :  IModel, INotifyPropertyChanged
+    abstract public class AbstractBaseModel : BindableBase, IModel
     {
         public AbstractBaseModel()
         {
@@ -28,28 +30,22 @@ namespace Dental.Models.Base
 
         [Key]
         [Column("Id")]
-        public virtual int Id 
-        { 
-            get => id;
-            set
-            {
-                id = value;
-                OnPropertyChanged(nameof(Id));
-            } 
+        public virtual int Id
+        {
+            get { return GetProperty(() => Id); }
+            set { SetProperty(() => Id, value); }
         }
-        private int id;
+
+
         public string Guid { get; set; }
         public int? CreatedAt { get; set; }
+
+        [Clonable]
         public int? UpdatedAt 
-        { 
-            get => updatedAt;
-            set
-            {
-                updatedAt = value;
-                OnPropertyChanged(nameof(UpdatedAt));
-            } 
+        {
+            get { return GetProperty(() => UpdatedAt); }
+            set { SetProperty(() => UpdatedAt, value); }
         }
-        private int? updatedAt;
 
         private void SetCreatedAt() => CreatedAt = GetUTCTimestamp();
         private void SetUpdatedAt() => UpdatedAt = GetUTCTimestamp();
