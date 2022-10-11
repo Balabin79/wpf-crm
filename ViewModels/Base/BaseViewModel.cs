@@ -204,6 +204,7 @@ namespace Dental.ViewModels.Base
                     if (model.IsDir == 0)
                     {
                         db.Entry(model).State = EntityState.Deleted;
+                        db.SaveChanges();
                         Collection.Remove(model);
                     }
                     else
