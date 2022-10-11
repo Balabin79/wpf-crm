@@ -66,7 +66,7 @@
 
                         <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                            <dxb:BarButtonItem Content="Добавить элемент" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Добавить услугу" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -161,6 +161,9 @@
                                 <KeyBinding Key="W"  Modifiers="Ctrl"
                                         Command="{Binding ElementName=win, Path=DataContext.OpenDirByParentFormCommand}"
                                         CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+                                <MouseBinding Gesture="LeftDoubleClick"      
+                                        Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
                             </dxg:TreeListView.InputBindings>
 
@@ -200,7 +203,7 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
                                     KeyGesture="Ctrl+V" 
-                                    Content="Добавить шаблон в выдел. директорию"  
+                                    Content="Добавить услугу в выдел. директорию"  
                                     Command="{Binding ElementName=win, Path=DataContext.OpenByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 

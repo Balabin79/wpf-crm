@@ -40,7 +40,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{DXBinding Expr='Model.IsDir == 0 ? `Услуга` : `Группа`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBlock Text="{DXBinding Expr='Copy.IsDir == 0 ? `Услуга` : `Группа`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                     <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
 
@@ -49,7 +49,7 @@
                         </dxlc:LayoutItem>
 
                         <dxlc:LayoutGroup Orientation="Horizontal" 
-                                          Visibility="{DXBinding Expr='Model.IsDir == 0 ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                          Visibility="{DXBinding Expr='Copy.IsDir == 0 ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxlc:LayoutItem Label="Код:" LabelPosition="Top" >
                             <dxe:TextEdit Text="{Binding Copy.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"/>
                             </dxlc:LayoutItem>

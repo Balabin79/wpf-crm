@@ -1,6 +1,7 @@
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,10 +32,8 @@ namespace Dental.Models
             OnPropertyChanged(nameof(Name));
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
+        
 
         public object Clone() => this.MemberwiseClone();
 

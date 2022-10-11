@@ -96,12 +96,10 @@ namespace Dental.ViewModels.Base
                         Collection = GetDirs(model)
                     };
                     vm.EventSave += Save;
-                    var win = new TemplateWin()
-                    {
-                        DataContext = vm,
-                        Height = model.IsDir == 0 ? 260 : 240
-                    };
-                    win.Show();
+
+                    var win = GetWindow();
+                    win.DataContext = vm;
+                    win?.Show();
                 }
 
             }
@@ -144,12 +142,10 @@ namespace Dental.ViewModels.Base
                         Collection = GetDirs(model)
                     };
                     vm.EventSave += Save;
-                    var win = new TemplateWin()
-                    {
-                        DataContext = vm,
-                        Height = model.IsDir == 0 ? 260 : 240
-                    };
-                    win.Show();
+
+                    var win = GetWindow();
+                    win.DataContext = vm;
+                    win?.Show();
                 }
             }
             catch

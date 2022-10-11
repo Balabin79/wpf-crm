@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dental.Models;
+using Dental.ViewModels.Materials;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,8 @@ namespace Dental.Views.NomenclatureDir
         public Nomenclature()
         {
             InitializeComponent();
+            var db = new ApplicationContext();
+            DataContext = new MaterialViewModel(db, db?.Nomenclature);
         }
     }
 }

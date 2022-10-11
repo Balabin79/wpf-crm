@@ -26,14 +26,9 @@ namespace Dental.Models
         [Clonable]
         public Measure Measure 
         {
-            get => measure;
-            set
-            {
-                measure = value;
-                OnPropertyChanged(nameof(Measure));
-            }
+            get { return GetProperty(() => Measure); }
+            set { SetProperty(() => Measure, value); }
         }
-        private Measure measure;
 
         [Clonable]
         public int? MeasureId { get; set; }
@@ -60,5 +55,7 @@ namespace Dental.Models
                 MeasureId = MeasureId
             };
         }
+
+        public override string ToString() => Name;
     }
 }

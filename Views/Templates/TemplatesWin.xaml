@@ -143,6 +143,9 @@
                                     <KeyBinding Key="W"  Modifiers="Ctrl"
                                         Command="{Binding ElementName=firstGrid, Path=DataContext.OpenDirByParentFormCommand}"
                                         CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+                                    <MouseBinding Gesture="LeftDoubleClick"      
+                                        Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                 </dxg:TreeListView.InputBindings>
 
                                 <dxg:TreeListView.RowCellMenuCustomizations>

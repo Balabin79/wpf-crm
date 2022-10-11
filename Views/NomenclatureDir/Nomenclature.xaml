@@ -4,7 +4,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      xmlns:vm ="clr-namespace:Dental.ViewModels.Materials" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
@@ -17,12 +16,12 @@
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
       Title="Материалы"
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="450" d:DesignWidth="800"
+      x:Name="win">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:MaterialViewModel x:Key="vm"/>
                     <commands:PrintCommand x:Key="Print"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -38,8 +37,7 @@
         BorderBrush="LightGray" 
         BorderThickness="1" 
         Margin="5" 
-        dx:ThemeManager.ThemeName="Office2019White" 
-        DataContext="{StaticResource vm}">
+        dx:ThemeManager.ThemeName="Office2019White" >
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка материалов"  BorderEffect="None">
             <dx:LoadingDecorator.SplashScreenTemplate>
                 <DataTemplate>
@@ -71,17 +69,20 @@
                             <dxb:BarButtonItem Content="Добавить материал" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-1"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                           CommandParameter="0" />
+
                             <dxb:BarButtonItem Content="Добавить группу" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="-2"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
+                                           CommandParameter="1" />
+                            
                             <dxb:BarButtonItem Content="Единицы измерения" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormMeasureCommand}"
                                            Glyph="{dx:DXImage SvgImages/Reports/PivotGridDesigner.svg}"/>
+                            
                             <dxb:BarButtonItem Content="Свернуть/Развернуть" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding ExpandTreeCommand}"
@@ -93,6 +94,7 @@
                                            GlyphSize="Small"
                                            Command="{Binding PrintPriceCommand}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Invoice.svg}"/>
+                                
                                 <dxb:BarButtonItem Content="Печать справочника"                                        
                                            GlyphSize="Small"
                                            Command="{Binding Source={StaticResource Print}}"
@@ -135,33 +137,37 @@
                     ShowVerticalLines="False"
                     ImmediateUpdateRowPosition="True">
                             <dxg:TreeListView.InputBindings>
-                                <KeyBinding Key="Delete"         
-                                Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                <KeyBinding Key="N"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"
-                                CommandParameter="-1"  
-                                    />
-                                <KeyBinding Key="G"     
-                                Modifiers="Ctrl"
-                                Command="{Binding Path=OpenFormCommand}"
-                                CommandParameter="-2"  
-                                    />
-                                <KeyBinding Key="E"     
-                                Modifiers="Ctrl"
-                                Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                <KeyBinding Key="Delete" 
+                                                Command="{Binding ElementName=win, Path=DataContext.DeleteCommand}"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+
+                                <KeyBinding Key="N" Modifiers="Ctrl" 
+                                                Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                                CommandParameter="0" />
+
+                                <KeyBinding Key="G" Modifiers="Ctrl" 
+                                                Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                                CommandParameter="1" />
+
+                                <KeyBinding Key="E" Modifiers="Ctrl" 
+                                                Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+
+                                <MouseBinding Gesture="LeftDoubleClick" 
+                                                  Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                                  CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+
                                 <KeyBinding Key="V"   Modifiers="Ctrl"
-                                Command="{Binding OpenByParentFormCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                        Command="{Binding ElementName=win, Path=DataContext.OpenByParentFormCommand}"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+
                                 <KeyBinding Key="W"  Modifiers="Ctrl"
-                                Command="{Binding OpenDirByParentFormCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+                                        Command="{Binding ElementName=win, Path=DataContext.OpenDirByParentFormCommand}"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
                                 <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding OpenFormCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                 
                             </dxg:TreeListView.InputBindings>
 
@@ -170,65 +176,59 @@
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Name="addRow" 
                                     KeyGesture="Ctrl+N" 
                                     Content="Добавить"  
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-1"/>
+                                    Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                    CommandParameter="0" />
 
                                 <dxb:BarButtonItem  
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Name="addGroup" 
                                     KeyGesture="Ctrl+G" 
                                     Content="Добавить группу"  
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="-2"/>
+                                    Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                    CommandParameter="1" />
 
                                 <dxb:BarButtonItem 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Edit.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"
                                     Name="editRow" 
                                     KeyGesture="Ctrl+E" 
                                     Content="Редактировать"  
-                                    Command="{Binding OpenFormCommand}" 
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                    Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
                                 <dxb:BarButtonItem 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
                                     KeyGesture="Ctrl+V" 
-                                    Content="Добавить шаблон в выдел. директорию" 
-                                    DataContext="{Binding Source={StaticResource vm}}"
-                                    Command="{Binding OpenByParentFormCommand}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                    Content="Добавить материал в выдел. директорию"  
+                                    Command="{Binding ElementName=win, Path=DataContext.OpenByParentFormCommand}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
                                 <dxb:BarButtonItem 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Dashboards/AutoExpand.svg}"
                                     KeyGesture="Ctrl+W" 
-                                    Content="Добавить директорию в выдел. директорию"
-                                    DataContext="{Binding Source={StaticResource vm}}"
-                                    Command="{Binding OpenDirByParentFormCommand}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                    Content="Добавить директорию в выдел. директорию"  
+                                    Command="{Binding ElementName=win, Path=DataContext.OpenDirByParentFormCommand}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
                                 <dxb:BarButtonItem 
                                     Name="deleteRow" 
                                     Content="Удалить" 
-                                    Command="{Binding DeleteCommand}" 
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
+                                    Command="{Binding ElementName=win, Path=DataContext.DeleteCommand}" 
                                     KeyGesture="Delete" 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
-                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                    DataContext="{Binding Source={StaticResource vm}}"/>
+                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
                             </dxg:TreeListView.RowCellMenuCustomizations>
 
                             <dxg:TreeListView.NodeImageSelector>
@@ -289,23 +289,24 @@
 
                                     <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                                        <dxb:BarButtonItem
-                                           DataContext="{StaticResource vm}"
+                                        <dxb:BarButtonItem 
+                                           DataContext="{Binding ElementName=grid, Path=DataContext}"
                                            Content="Открыть форму"                                                            
                                            IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"
                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
-                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
-                                        <dxb:BarButtonItem 
-                                           DataContext="{StaticResource vm}"        
-                                           Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Small"
-                                           Command="{Binding DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
+
+                                        <dxb:BarButtonItem  
+                                               DataContext="{Binding ElementName=grid, Path=DataContext}"
+                                               Content="Удалить" 
+                                               IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                               Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                               GlyphSize="Small"
+                                               Command="{Binding DeleteCommand}" 
+                                               CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
                                         <dxb:BarItemLinkSeparator />
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>
