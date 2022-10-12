@@ -1,4 +1,5 @@
 using Dental.Services;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using System;
@@ -15,7 +16,22 @@ namespace Dental
     /// </summary>
     public partial class App : Application
     {
-
+         App()
+         {
+            ApplicationThemeHelper.ApplicationThemeName = Theme.Office2019WhiteName;
+            SplashScreenManager.CreateFluent(
+                new DXSplashScreenViewModel
+                    {
+                        Copyright = "Все права защищены",
+                        IsIndeterminate = true,
+                        //Logo = new System.Uri("pack://application:,,,/Resources/Icons/Form.png",
+                                   //UriKind.RelativeOrAbsolute),
+                        Status = "Запуск...",
+                        Title = "B6 Dental",                       
+                        Subtitle = "Автоматизация стоматологической клиники"
+                    }
+                ).ShowOnStartup();
+         }
     }
 
 

@@ -17,6 +17,7 @@
     dx:ThemeManager.ThemeName="Office2019White"
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
     Closing="ThemedWindow_Closing"
+    WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
