@@ -13,6 +13,7 @@
     <Application.Resources>
         <serv:Navigator x:Key="Router"/>
         <serv:UserSession x:Key="UserSession"/>
+        <serv:UserApp x:Key="UserApp"/>
         <dxmvvm:OpenFileDialogService x:Key="OpenFileDialogService" />
 
         <dxmvvm:DispatcherService x:Key="BackgroundDispatcherService" DispatcherPriority="Background" />
