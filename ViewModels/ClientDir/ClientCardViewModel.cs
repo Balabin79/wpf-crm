@@ -13,6 +13,7 @@ using Dental.Services.Files;
 using Dental.Views.PatientCard;
 using System.Windows.Data;
 using Dental.Services;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -86,6 +87,7 @@ namespace Dental.ViewModels.ClientDir
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
+                    Services.Reestr.Update((int)Tables.ClientInfo);
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -112,6 +114,7 @@ namespace Dental.ViewModels.ClientDir
                         }                           
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                         notificationShowed = true;
+                        Services.Reestr.Update((int)Tables.ClientInfo);
                     }
                 }
                 if (Model != null) 

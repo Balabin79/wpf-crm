@@ -17,123 +17,69 @@ namespace Dental.Models
 
         public string Diagnoses
         {
-            get => diagnoses;
-            set
-            {
-                diagnoses = value;
-                OnPropertyChanged(nameof(Diagnoses));
-            }
+            get { return GetProperty(() => Diagnoses); }
+            set { SetProperty(() => Diagnoses, value); }
         }
-        private string diagnoses;
 
         public string Complaints
         {
-            get => complaints;
-            set
-            {
-                complaints = value;
-                OnPropertyChanged(nameof(Complaints));
-            }
+            get { return GetProperty(() => Complaints); }
+            set { SetProperty(() => Complaints, value); }
         }
-        private string complaints;
 
         public string Objectively
         {
-            get => objectively;
-            set
-            {
-                objectively = value;
-                OnPropertyChanged(nameof(Objectively));
-            }
-        }
-        private string objectively;
-
-        public string DescriptionXRay {
-            get => descriptionXRay; 
-            set
-            {
-                descriptionXRay = value;
-                OnPropertyChanged(nameof(DescriptionXRay));
-            } 
-        }
-        private string descriptionXRay;
-
-        public string Anamneses 
-        { 
-            get => anamneses;
-            set
-            {
-                anamneses = value;
-                OnPropertyChanged(nameof(Anamneses));
-            } 
-        }
-        private string anamneses;
-
+            get { return GetProperty(() => Objectively); }
+            set { SetProperty(() => Objectively, value); }
+        }        
+        
+        public string DescriptionXRay
+        {
+            get { return GetProperty(() => DescriptionXRay); }
+            set { SetProperty(() => DescriptionXRay, value); }
+        }        
+        
+        public string Anamneses
+        {
+            get { return GetProperty(() => Anamneses); }
+            set { SetProperty(() => Anamneses, value); }
+        }        
+        
         public string Plans
         {
-            get => plans;
-            set
-            {
-                plans = value;
-                OnPropertyChanged(nameof(Plans));
-            }
-        }
-        private string plans;
-
+            get { return GetProperty(() => Plans); }
+            set { SetProperty(() => Plans, value); }
+        }        
+        
         public string Allergies
         {
-            get => allergies;
-            set
-            {
-                allergies = value;
-                OnPropertyChanged(nameof(Allergies));
-            }
-        }
-        private string allergies;
-
+            get { return GetProperty(() => Allergies); }
+            set { SetProperty(() => Allergies, value); }
+        }        
+        
         public string Treatments
         {
-            get => treatments;
-            set
-            {
-                treatments = value;
-                OnPropertyChanged(nameof(Treatments));
-            }
+            get { return GetProperty(() => Treatments); }
+            set { SetProperty(() => Treatments, value); }
         }
-        private string treatments;
-
+          
         public string Recommendations
         {
-            get => recommendations;
-            set
-            {
-                recommendations = value;
-                OnPropertyChanged(nameof(Recommendations));
-            }
+            get { return GetProperty(() => Recommendations); }
+            set { SetProperty(() => Recommendations, value); }
         }
-        private string recommendations;
 
         public string Date
         {
-            get => date;
-            set
-            {
-                date = value;
-                OnPropertyChanged(nameof(Date));
-            }
+            get { return GetProperty(() => Date); }
+            set { SetProperty(() => Date, value); }
         }
-        private string date;
 
         public string Name
         {
-            get => name;
-            set
-            {
-                name = value;
-                OnPropertyChanged(nameof(Name));
-            }
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value); }
         }
-        private string name;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

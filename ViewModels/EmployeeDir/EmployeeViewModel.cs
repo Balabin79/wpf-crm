@@ -112,6 +112,7 @@ namespace Dental.ViewModels.EmployeeDir
                                 VmList?.Collection?.Remove(item);
                             }
                         }
+                        Services.Reestr.Update((int)Tables.Employees);
                         new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }

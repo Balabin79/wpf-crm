@@ -17,23 +17,25 @@ using DevExpress.Mvvm.DataAnnotations;
 
 namespace Dental.Services
 {
-    /*
-     * * Alexander Balabin
-     * Навигация по программе
-     * - поддержка истории просмотренных страниц
-     * - поддержка отслеживание изменений на странице
-     * - сохранение последней посещенной страницы
-     * 
-     * 
-     * - добавить различные варианты анимации при переходах
-     */
+
     public sealed class Navigator : DevExpress.Mvvm.ViewModelBase
     {
         public Navigator()
         {
             CurrentPage = CreatePage(defaultPage);
             FrameOpacity = 1.1;
-                     
+
+            try
+            {
+                using(var db = new ApplicationContext())
+                {
+                    RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
+                }
+            }
+            catch
+            {
+                RoleEnabled = false;
+            }         
         }
 
         #region Общий ф-нал
@@ -90,6 +92,12 @@ namespace Dental.Services
         }
 
         #region Свойства
+        public bool? RoleEnabled
+        {
+            get { return GetProperty(() => RoleEnabled); }
+            set { SetProperty(() => RoleEnabled, value); }
+        }
+
         public Page CurrentPage
         {
             get { return GetProperty(() => CurrentPage); }

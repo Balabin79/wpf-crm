@@ -38,7 +38,9 @@
                      NullText="Выберите услугу" IsTextEditable="False">
                     <dxe:PopupBaseEdit.PopupContentTemplate>
                         <ControlTemplate>
-                            <dxg:TreeListControl AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <dxg:TreeListControl 
+                                x:Name="grid"
+                                AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                  ItemsSource="{Binding ElementName=tree_view, Path=DataContext.Services, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  >
                                 <dxg:TreeListControl.View>
@@ -71,7 +73,7 @@
                                                  Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
-                                                        <Binding ElementName="tree_view"/>
+                                                        <Binding ElementName="grid"/>
                                                         <Binding ElementName="popup" />
                                                     </MultiBinding>
                                                 </dxmvvm2:EventToCommand.CommandParameter>
@@ -81,7 +83,7 @@
                                                  Command="{Binding ElementName=tree_view, Path=DataContext.SelectItemInServiceFieldCommand }">
                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource multiConv}">
-                                                        <Binding ElementName="tree_view"/>
+                                                        <Binding ElementName="grid"/>
                                                         <Binding ElementName="popup" />
                                                     </MultiBinding>
                                                 </dxmvvm2:EventToCommand.CommandParameter>

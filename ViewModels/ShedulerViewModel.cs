@@ -21,6 +21,7 @@ using Dental.ViewModels.EmployeeDir;
 using Dental.Services;
 using Dental.Views.PatientCard;
 using Dental.ViewModels.ClientDir;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -120,6 +121,7 @@ namespace Dental.ViewModels
                 {
                    // var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();              
                 }
+                Services.Reestr.Update((int)Tables.Appointments);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -178,6 +180,7 @@ namespace Dental.ViewModels
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
                         cnt = db.SaveChanges();
+                        Services.Reestr.Update((int)Tables.LocationAppointment);
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
@@ -188,6 +191,7 @@ namespace Dental.ViewModels
                         LocationAppointmentsBeforeChanges.Clear();
                         LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
                     }
+                    
                 }
             }
             catch (Exception e)
@@ -209,7 +213,12 @@ namespace Dental.ViewModels
                 LocationAppointments = GetLocationCollection();
                 LocationAppointmentsBeforeChanges.Clear();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
-                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) 
+                { 
+                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    Services.Reestr.Update((int)Tables.LocationAppointment);
+                }
+                
             }
             catch (Exception e)
             {
@@ -286,8 +295,12 @@ namespace Dental.ViewModels
                 }
                 StatusAppointmentsBeforeChanges.Clear();
                 StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
-                
-                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+
+                if (db.SaveChanges() > 0) 
+                { 
+                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    Services.Reestr.Update((int)Tables.AppointmentsStatuses);
+                }
             }
             catch (Exception e)
             {
@@ -308,6 +321,7 @@ namespace Dental.ViewModels
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
                         cnt = db.SaveChanges();
+                        Services.Reestr.Update((int)Tables.AppointmentsStatuses);
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
@@ -451,10 +465,8 @@ namespace Dental.ViewModels
             }
         }
 
-        private void LoadClients(ApplicationContext db)
-        {
-            Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
-        }
+        private void LoadClients(ApplicationContext db) => Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
+        
 
         private void SetSelectedEmployees()
         {

@@ -25,6 +25,7 @@ using Dental.Services.Files;
 using System.IO;
 using DevExpress.Xpf.Grid;
 using Dental.Services;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels.Invoices
 {
@@ -143,7 +144,7 @@ namespace Dental.ViewModels.Invoices
                     // если статус счета(оплачен или нет)  не отличается от статуса фильтра или статус фильтра "Показывать все",  то тогда добавить
                     if (ShowPaid == Invoice?.Paid || ShowPaid == null)  Invoices?.Add(Invoice);
                 }
-                db.SaveChanges();
+                
                 if (edited)
                 {
                     if (ShowPaid == Invoice.Paid || ShowPaid == null)
@@ -165,7 +166,9 @@ namespace Dental.ViewModels.Invoices
                             Invoices?.Remove(invoice);
                         }
                     }
-                }
+                }               
+                db.SaveChanges();
+                Dental.Services.Reestr.Update((int)Tables.Invoices);
             }
             catch 
             {
@@ -191,9 +194,9 @@ namespace Dental.ViewModels.Invoices
                     db.Entry(invoice).State = EntityState.Deleted;
 
                     // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    if (Invoices.Count(f => f.Id == invoice.Id) > 0 ) Invoices.Remove(invoice);
-
+                    if (Invoices.Count(f => f.Id == invoice.Id) > 0 ) Invoices.Remove(invoice);                    
                     db.SaveChanges();
+                    Dental.Services.Reestr.Update((int)Tables.Invoices);
                 }
             }
             catch
@@ -313,6 +316,7 @@ namespace Dental.ViewModels.Invoices
 
                 }
                 db.SaveChanges();
+                Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
             }
             catch (Exception e)
             {
@@ -334,8 +338,9 @@ namespace Dental.ViewModels.Invoices
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     item.Invoice = null;
-                    db.InvoiceServiceItems.Remove(item);
+                    db.InvoiceServiceItems.Remove(item);                   
                     db.SaveChanges();
+                    Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
                 }
             }
             catch (Exception e)
@@ -450,6 +455,7 @@ namespace Dental.ViewModels.Invoices
                     db.Entry(InvoiceMaterialItem).State = EntityState.Added;
                 }
                 db.SaveChanges();
+                Dental.Services.Reestr.Update((int)Tables.InvoiceMaterialItems);
             }
             catch (Exception e)
             {
@@ -474,6 +480,7 @@ namespace Dental.ViewModels.Invoices
                     item.Invoice = null;
                     db.InvoiceMaterialItems.Remove(item);
                     db.SaveChanges();
+                    Dental.Services.Reestr.Update((int)Tables.InvoiceMaterialItems);
                 }
             }
             catch (Exception e)

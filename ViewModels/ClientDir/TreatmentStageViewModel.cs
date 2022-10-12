@@ -86,6 +86,7 @@ namespace Dental.ViewModels.ClientDir
 
                     db.TreatmentStage.Remove(model);
                     Collection.Remove(model);
+                    Services.Reestr.Update((int)Tables.TreatmentStage);
                     db.SaveChanges();
                 }
             }
@@ -119,6 +120,7 @@ namespace Dental.ViewModels.ClientDir
                     Collection?.Add(item);
                     db?.TreatmentStage.Add(item);
                 }
+                Services.Reestr.Update((int)Tables.TreatmentStage);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -289,7 +291,7 @@ namespace Dental.ViewModels.ClientDir
             {
                 Client.Teeth = JsonSerializer.Serialize(Teeth);
                 Client.ChildTeeth = JsonSerializer.Serialize(ChildTeeth);
-
+                Services.Reestr.Update((int)Tables.TreatmentStage);
                 return db.SaveChanges() > 0;
             }
             catch (Exception e)

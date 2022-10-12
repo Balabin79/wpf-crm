@@ -128,12 +128,13 @@
 
                             <dxe:PopupBaseEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <dxg:TreeListControl                                             
-                                                AutoGenerateColumns="None"                         
-                                                MaxHeight="2000" 
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Stretch"
-                                                ItemsSource="{Binding Services, Mode=OneWay}" 
+                                    <dxg:TreeListControl 
+                                        Name="grid"
+                                        AutoGenerateColumns="None"                         
+                                        MaxHeight="2000" 
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        ItemsSource="{Binding Services, Mode=OneWay}" 
                                  >
                                         <dxg:TreeListControl.View>
                                             <dxg:TreeListView                                                          
@@ -166,7 +167,7 @@
                                                                          Command="{Binding SelectPosInClassificatorCommand}">
                                                         <dxmvvm:EventToCommand.CommandParameter>
                                                             <MultiBinding Converter="{StaticResource multiConv}">
-                                                                <Binding ElementName="tree_view"/>
+                                                                <Binding ElementName="grid"/>
                                                                 <Binding ElementName="popup" />
                                                             </MultiBinding>
                                                         </dxmvvm:EventToCommand.CommandParameter>
@@ -177,7 +178,7 @@
                                                                          Command="{Binding ElementName=view, Path=DataContext.SelectPosInClassificatorCommand }">
                                                         <dxmvvm:EventToCommand.CommandParameter>
                                                             <MultiBinding Converter="{StaticResource multiConv}">
-                                                                <Binding ElementName="tree_view"/>
+                                                                <Binding ElementName="grid"/>
                                                                 <Binding ElementName="popup" />
                                                             </MultiBinding>
                                                         </dxmvvm:EventToCommand.CommandParameter>

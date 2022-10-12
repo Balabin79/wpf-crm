@@ -13,6 +13,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
 using Dental.ViewModels.Materials;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -48,6 +49,7 @@ namespace Dental.ViewModels
                     if (model.Id != 0)
                     {
                         db.Measure.Remove(model);
+                        Services.Reestr.Update((int)Tables.Measure);
                         if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
                     }
                     else 
@@ -76,6 +78,7 @@ namespace Dental.ViewModels
                 if (db.SaveChanges() > 0) 
                 {
                     MaterialViewModel.SetMeasures();
+                    Services.Reestr.Update((int)Tables.Measure);
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
                 }            
             }

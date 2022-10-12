@@ -167,7 +167,8 @@ namespace Dental.ViewModels.AdditionalFields
                     }
                     if (value != null) value.Value = val;                  
                 }
-                return db.SaveChanges() > 0;
+                Services.Reestr.Update((int)Tables.AdditionalClientValues);
+                return db.SaveChanges() > 0;                
             }
             catch(Exception e)
             {
@@ -191,7 +192,8 @@ namespace Dental.ViewModels.AdditionalFields
                     }
                     if (value != null) value.Value = val;
                 }
-                return db.SaveChanges() > 0;
+                Services.Reestr.Update((int)Tables.AdditionalEmployeeValues);
+                return db.SaveChanges() > 0;               
             }
             catch (Exception e)
             {

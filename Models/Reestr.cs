@@ -8,9 +8,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("Reestr")]
-    public class Reestr : AbstractBaseModel
+    public class Reestr
     {
-        public string Table { get; set; }
+        public int Id { get; set; }
+        public int Table { get; set; } = 0;
         public int IsSynchronized { get; set; } = 0;
+        public int UpdatedAt { get; set; } = 0;
     }
 }

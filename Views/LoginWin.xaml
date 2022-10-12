@@ -46,6 +46,7 @@
 
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
                 <dx:SimpleButton IsEnabled="{DXBinding Expr='Employee != null', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                 IsDefault="True"
                     Height="23" Content="Войти" VerticalContentAlignment="Center" Command="{Binding AuthCommand}" />
             </dxlc:LayoutGroup>
         </dxlc:LayoutControl>

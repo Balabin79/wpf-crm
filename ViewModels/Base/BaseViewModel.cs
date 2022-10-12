@@ -126,7 +126,7 @@ namespace Dental.ViewModels.Base
                     if (copy?.IsDir == 1 && model.ParentId != copy.Id)
                     {
                         model.ParentId = copy.Id;
-                        model.Parent = (T)copy;
+                        model.Parent = copy;
                     }
 
                     if (copy?.IsDir == 0)
@@ -177,7 +177,7 @@ namespace Dental.ViewModels.Base
                         Collection.Add(model);
                     }
                 }
-                             
+                Services.Reestr.Update(model);
             }
             catch (Exception e)
             {
@@ -210,6 +210,7 @@ namespace Dental.ViewModels.Base
                         db.SaveChanges();                       
                         DelItems?.ForEach(f => Collection.Remove(f));
                     }
+                    Services.Reestr.Update(model);
                 }
             }
             catch (Exception e)

@@ -90,13 +90,6 @@
                                            GlyphSize="Custom"
                                            CustomGlyphSize="24,24"
                                            Command="{Binding SaveCommand}"/>
-                            <dxb:BarButtonItem Content="Печать"           
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
-                                           Command="{Binding PrintCommand}"/>
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem  Content="Удалить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and Model.Id !=0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

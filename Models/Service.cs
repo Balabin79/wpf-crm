@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
+    [Table("Services")]
     public class Service : BaseTemplate<Service>
     {
        [Display(Name = "Код")]

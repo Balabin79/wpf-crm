@@ -14,6 +14,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
 using Dental.ViewModels.Materials;
 using Dental.Views.AdditionalFields;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -91,7 +92,8 @@ namespace Dental.ViewModels.AdditionalFields
                 if (db.SaveChanges() > 0) 
                 {
                     SetCommonValues();
-                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    Services.Reestr.Update((int)Tables.CommonValues);
                 }            
             }
             catch (Exception e)
