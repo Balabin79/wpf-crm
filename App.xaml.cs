@@ -21,11 +21,10 @@ namespace Dental
             ApplicationThemeHelper.ApplicationThemeName = Theme.Office2019WhiteName;
             SplashScreenManager.CreateFluent(
                 new DXSplashScreenViewModel
-                    {
+                    {                    
                         Copyright = "Все права защищены",
                         IsIndeterminate = true,
-                        //Logo = new System.Uri("pack://application:,,,/Resources/Icons/Form.png",
-                                   //UriKind.RelativeOrAbsolute),
+                        Logo = null,//new System.Uri("pack://application:,,,/Resources/Icons/zzz.png", UriKind.RelativeOrAbsolute),
                         Status = "Запуск...",
                         Title = "B6 Dental",                       
                         Subtitle = "Автоматизация стоматологической клиники"
