@@ -117,7 +117,8 @@
                         <dxlc:LayoutControl Width="250" MinHeight="150" IsHitTestVisible="False" Orientation="Vertical" Padding="11">
                             <StackPanel Orientation="Vertical">
                                 <Border Height="5" Margin="1,0,1,-1" Panel.ZIndex="1" VerticalAlignment="Top" Background="{Binding StatusBrush}"/>
-                                <dxschv:DayAppointmentControl MinHeight="35"
+                                <dxschv:DayAppointmentControl
+                                    MinHeight="35"
                                     Panel.ZIndex="0"
                                     VerticalAlignment="Top"
                                     Content="{Binding}"
@@ -126,9 +127,7 @@
                                     ShowStatus="True"
                                     ShowLocation="True" 
                                     ShowDescription="True"                       
-                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment}}" >
-                                    
-                                </dxschv:DayAppointmentControl>
+                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment}}" />
                             </StackPanel>
                             <dxlc:LayoutControl Margin="0,5,0,0" VerticalAlignment="Top" Orientation="Vertical" Padding="0">
                                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_Start}}" />
@@ -345,7 +344,7 @@
                         </dxsch:TimelineView>
                         <dxsch:SchedulerControl.DataSource>
                             <dxsch:DataSource ResourcesSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                              AppointmentsSource="{Binding Appointments}" 
+                                              AppointmentsSource="{Binding Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                           AppointmentStatusesSource="{Binding StatusAppointments}">
 
                                 <dxsch:DataSource.ResourceMappings>

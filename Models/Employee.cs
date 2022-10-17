@@ -97,14 +97,14 @@ namespace Dental.Models
         private string _Address;
 
         public string Post { get; set; }
-        public string Sex { get; set; }      
-        public int? IsInSheduler { get; set; }
+        public string Sex { get; set; }
+        public int? IsInSheduler { get; set; } = 1;
         public bool? IsInArchive { get; set; } = false;
         public int? UseIndividualPrice { get; set; }
 
-        public int? IsAdmin { get; set; }
-        public int? IsDoctor { get; set; }
-        public int? IsReception { get; set; }
+        public int? IsAdmin { get; set; } = 0;
+        public int? IsDoctor { get; set; } = 1;
+        public int? IsReception { get; set; } = 0;
 
         public string Password { get; set; }
 

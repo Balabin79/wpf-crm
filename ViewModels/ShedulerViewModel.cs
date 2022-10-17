@@ -40,7 +40,7 @@ namespace Dental.ViewModels
                 LoadEmployees(db);
                 LoadClients(db);              
                 SetSelectedEmployees();
-                CreateCalendars();
+                //CreateCalendars();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
@@ -370,23 +370,37 @@ namespace Dental.ViewModels
         #endregion
 
 
-        public ObservableCollection<Service> ClassificatorCategories { get; set; }
-        public virtual ObservableCollection<Employee> Doctors
+        public  ObservableCollection<Service> ClassificatorCategories
+        {
+            get { return GetProperty(() => ClassificatorCategories); }
+            set { SetProperty(() => ClassificatorCategories, value); }
+        }
+
+        public List<Employee> Doctors
         {
             get { return GetProperty(() => Doctors); }
             set { SetProperty(() => Doctors, value); }
         }
 
-        public virtual ObservableCollection<Client> Clients { get; set; }
-        public virtual ObservableCollection<Appointments> Appointments { get; set; }
+        public virtual ObservableCollection<Client> Clients
+        {
+            get { return GetProperty(() => Clients); }
+            set { SetProperty(() => Clients, value); }
+        }
 
-        public virtual List<object> SelectedDoctors
+        public ObservableCollection<Appointments> Appointments
+        {
+            get { return GetProperty(() => Appointments); }
+            set { SetProperty(() => Appointments, value); }
+        }
+
+        public List<object> SelectedDoctors
         {
             get { return GetProperty(() => SelectedDoctors); }
             set { SetProperty(() => SelectedDoctors, value); }
         }
 
-        private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
+       // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
 
         /*****************************************************************************************/
         [Command]
@@ -444,7 +458,7 @@ namespace Dental.ViewModels
 
         private void LoadEmployees(ApplicationContext db)
         {
-            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
+            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToList();
             foreach (var i in Doctors)
             {
                 if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
@@ -474,7 +488,7 @@ namespace Dental.ViewModels
             SelectedDoctors = new List<object>();
             try 
             {
-                if (userSession.Employee != null && userSession.Employee?.IsDoctor == 1)
+                if (userSession?.Employee != null && userSession?.Employee?.IsDoctor == 1)
                 {
                     SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
                 }

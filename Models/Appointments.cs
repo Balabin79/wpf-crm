@@ -54,10 +54,4 @@ namespace Dental.Models
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
 
-    public class Resource
-    {
-        public int Id { get; set; }
-        public string Description { get; set; }
-    }
-
 }
