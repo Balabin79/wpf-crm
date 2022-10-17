@@ -40,7 +40,7 @@ namespace Dental.ViewModels
                 LoadEmployees(db);
                 LoadClients(db);              
                 SetSelectedEmployees();
-                //CreateCalendars();
+                CreateCalendars();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
@@ -58,20 +58,20 @@ namespace Dental.ViewModels
         public bool CanAppointmentEdited(object p) => true;
         public bool CanAppointmentRemoved(object p) => true;
 
-        public bool CanOpenWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanCloseWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanAddLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanDeleteLocation(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationDeletable;
-        public bool CanSaveLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
+        public bool CanOpenWindowLocation() => true;
+        public bool CanCloseWindowLocation() => true;
+        public bool CanAddLocation() => true;
+        public bool CanDeleteLocation(object p) => true;
+        public bool CanSaveLocation() => true;
 
-        public bool CanOpenWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanCloseWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanAddStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
+        public bool CanOpenWindowStatus() => true;
+        public bool CanCloseWindowStatus() => true;
+        public bool CanAddStatus(object p) => true;
+        public bool CanSaveStatus() => true;
+        public bool CanDeleteStatus(object p) => true;
 
-        public bool CanOpenFormEmployeeCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
-        public bool CanOpenFormClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
+        public bool CanOpenFormEmployeeCard(object p) => true;
+        public bool CanOpenFormClientCard(object p) => true;
 
         [Command]
         public void AppointmentAdded(object p)
@@ -386,7 +386,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => SelectedDoctors, value); }
         }
 
-       // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
+        private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
 
         /*****************************************************************************************/
         [Command]

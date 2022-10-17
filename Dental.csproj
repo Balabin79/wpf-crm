@@ -50,6 +50,8 @@
     <None Remove="Resources\Icons\logo.png" />
     <None Remove="Resources\Icons\Page.png" />
     <None Remove="Resources\Icons\path878.ico" />
+    <None Remove="Resources\Icons\signature.png" />
+    <None Remove="Resources\Icons\stamp.png" />
     <None Remove="Resources\Icons\svg\boxes.svg" />
     <None Remove="Resources\Icons\svg\chart-line.svg" />
     <None Remove="Resources\Icons\svg\coins.svg" />
@@ -113,6 +115,7 @@
     <None Remove="Resources\Icons\Template\document-lined-pen.png" />
     <None Remove="Resources\Icons\Template\Document-Mark-As-Final.ico" />
     <None Remove="Resources\Icons\Template\document.png" />
+    <None Remove="Resources\Icons\Template\Draw-Clone.png" />
     <None Remove="Resources\Icons\Template\Edit-128.png" />
     <None Remove="Resources\Icons\Template\error-item.png" />
     <None Remove="Resources\Icons\Template\Error-Symbol.png" />
@@ -133,6 +136,7 @@
     <None Remove="Resources\Icons\Template\lime.png" />
     <None Remove="Resources\Icons\Template\moleskine_red.png" />
     <None Remove="Resources\Icons\Template\Money-Dollar.png" />
+    <None Remove="Resources\Icons\Template\org.png" />
     <None Remove="Resources\Icons\Template\Pen.png" />
     <None Remove="Resources\Icons\Template\Pill.png" />
     <None Remove="Resources\Icons\Template\red.png" />
@@ -218,7 +222,10 @@
     <Resource Include="Resources\Icons\Form.png" />
     <Resource Include="Resources\Icons\Formheading.png" />
     <Resource Include="Resources\Icons\Lightning.png" />
+    <Resource Include="Resources\Icons\logo.png" />
     <Resource Include="Resources\Icons\Page.png" />
+    <Resource Include="Resources\Icons\signature.png" />
+    <Resource Include="Resources\Icons\stamp.png" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
@@ -252,6 +259,7 @@
     <Resource Include="Resources\Icons\teeth\tooth-red.png" />
     <Resource Include="Resources\Icons\teeth\tooth-yel.png" />
     <Resource Include="Resources\Icons\Template\avatar.png" />
+    <Resource Include="Resources\Icons\Template\org.png" />
     <Resource Include="Resources\Icons\Template\save.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
     <Resource Include="Resources\Icons\zzz.png" />

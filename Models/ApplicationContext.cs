@@ -94,5 +94,7 @@ namespace Dental.Models
 
         public DbSet<RoleManagment> RolesManagment { get; set; }
         public DbSet<Reestr> Reestr { get; set; }
+
+        public DbSet<Organization> Organizations { get; set; }
     }
 }

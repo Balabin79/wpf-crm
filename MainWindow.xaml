@@ -21,7 +21,7 @@
     DataContext="{StaticResource Router}"
     Name="win"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-    Title="B6 Sheduler">
+    Title="B6 Dental">
     <dx:ThemedWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -194,6 +194,25 @@
                                 TextAlignment="Center"  Text="Счета" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
                                 TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
+            <dxb:BarButtonItem Name="orgBtnItem" 
+                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="Организация"
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Organization">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/Template/org.png" Height="30" />
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Реквизиты" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />
                         </StackPanel>
                     </DataTemplate>

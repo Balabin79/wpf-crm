@@ -70,6 +70,12 @@ namespace Dental.Services
             set { SetProperty(() => SettingsRead, value); }
         }
 
+        public bool OrgRead
+        {
+            get { return GetProperty(() => OrgRead); }
+            set { SetProperty(() => OrgRead, value); }
+        }
+
         public bool SyncRun
         {
             get { return GetProperty(() => SyncRun); }
@@ -108,5 +114,9 @@ namespace Dental.Services
 
         public bool TemplateEditable { get; set; } = false;
         public bool TemplateDeletable { get; set; } = false;
+
+
+        public bool OrgEditable { get; set; } = false;
+        public bool OrgDeletable { get; set; } = false;
     }
 }

@@ -35,6 +35,7 @@ namespace Dental.Models.Base
         Diagnoses = 25,
         Treatments = 26,
         Objectively = 27,
-        TreatmentPlans = 28
+        TreatmentPlans = 28,
+        Organizations = 29
     }
 }
