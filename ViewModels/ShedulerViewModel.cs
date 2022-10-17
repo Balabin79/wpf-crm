@@ -376,11 +376,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => ClassificatorCategories, value); }
         }
 
-        public List<Employee> Doctors
-        {
-            get { return GetProperty(() => Doctors); }
-            set { SetProperty(() => Doctors, value); }
-        }
+        public ObservableCollection<Employee> Doctors { get; set; }
 
         public virtual ObservableCollection<Client> Clients
         {
@@ -388,19 +384,11 @@ namespace Dental.ViewModels
             set { SetProperty(() => Clients, value); }
         }
 
-        public ObservableCollection<Appointments> Appointments
-        {
-            get { return GetProperty(() => Appointments); }
-            set { SetProperty(() => Appointments, value); }
-        }
+        public ObservableCollection<Appointments> Appointments { get; set; }
 
-        public List<object> SelectedDoctors
-        {
-            get { return GetProperty(() => SelectedDoctors); }
-            set { SetProperty(() => SelectedDoctors, value); }
-        }
+        public virtual List<object> SelectedDoctors { get; set; }
 
-       // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
+        // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
 
         /*****************************************************************************************/
         [Command]
@@ -458,7 +446,7 @@ namespace Dental.ViewModels
 
         private void LoadEmployees(ApplicationContext db)
         {
-            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToList();
+            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
                 if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))

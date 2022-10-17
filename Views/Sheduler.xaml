@@ -185,7 +185,7 @@
                                             Style="{StaticResource DoctorsList.Style}"
                                             Margin="-1,0,-1,-1"
                                             EditValue="{Binding SelectedDoctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            ItemsSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            ItemsSource="{Binding Doctors}" 
                                             DisplayMember="Fio">
                                             <dxe:ListBoxEdit.ItemContainerStyle>
                                                 <Style TargetType="dxe:ListBoxEditItem">
@@ -343,7 +343,7 @@
                             </dxsch:TimelineView.TimeScales>
                         </dxsch:TimelineView>
                         <dxsch:SchedulerControl.DataSource>
-                            <dxsch:DataSource ResourcesSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <dxsch:DataSource ResourcesSource="{Binding Doctors}" 
                                               AppointmentsSource="{Binding Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                           AppointmentStatusesSource="{Binding StatusAppointments}">
 
