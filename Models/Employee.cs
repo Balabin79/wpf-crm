@@ -15,26 +15,16 @@ namespace Dental.Models
         [NotMapped]
         public ImageSource Image 
         {
-            get => image;
-            set
-            {
-                image = value;
-                OnPropertyChanged(nameof(Image));
-            }
+            get { return GetProperty(() => Image); }
+            set { SetProperty(() => Image, value); }
         }
-        private ImageSource image;
 
         [NotMapped]
         public bool IsVisible
         {
-            get => isVisible;
-            set
-            {
-                isVisible = value;
-                OnPropertyChanged(nameof(IsVisible));
-            }
+            get { return GetProperty(() => IsVisible); }
+            set { SetProperty(() => IsVisible, value); }
         }
-        private bool isVisible;
 
         [NotMapped]
         public string Fio
@@ -46,55 +36,54 @@ namespace Dental.Models
         [Display(Name = "Фото")]
         public string Photo 
         {
-            get => photo;
-            set
-            {
-                photo = value;
-                OnPropertyChanged(nameof(Photo));
-            }
+            get { return GetProperty(() => Photo); }
+            set { SetProperty(() => Photo, value); }
         }
-        private string photo;
 
         public string FirstName {
-            get => _FirstName;
-            set => _FirstName = value?.Trim();
+            get { return GetProperty(() => FirstName); }
+            set { SetProperty(() => FirstName, value?.Trim()); }
         }
-        private string _FirstName;
 
         public string LastName
         {
-            get => _LastName;
-            set => _LastName = value?.Trim();
+            get { return GetProperty(() => LastName); }
+            set { SetProperty(() => LastName, value?.Trim()); }
         }
-        private string _LastName;
 
         public string MiddleName
         {
-            get => _MiddleName;
-            set => _MiddleName = value?.Trim();
+            get { return GetProperty(() => MiddleName); }
+            set { SetProperty(() => MiddleName, value?.Trim()); }
         }
-        private string _MiddleName; 
 
         public string BirthDate { get; set; }
 
         public string Email
         {
-            get => _Email;
-            set => _Email = value?.Trim();
+            get { return GetProperty(() => Email); }
+            set { SetProperty(() => Email, value?.Trim()); }
         }
-        private string _Email;
 
         public string Note { get; set; }
 
-        public string Phone { get; set; }
-        public string Status { get; set; }
+        public string Phone
+        {
+            get { return GetProperty(() => Phone); }
+            set { SetProperty(() => Phone, value); }
+        }
+
+        public string Status
+        {
+            get { return GetProperty(() => Status); }
+            set { SetProperty(() => Status, value); }
+        }
 
         public string Address
         {
-            get => _Address;
-            set => _Address = value?.Trim();
+            get { return GetProperty(() => Address); }
+            set { SetProperty(() => Address, value?.Trim()); }
         }
-        private string _Address;
 
         public string Post { get; set; }
         public string Sex { get; set; }

@@ -16,7 +16,8 @@ namespace Dental.Models
         {
             get 
             {
-                if (DateTime.TryParse(StartTime, out DateTime result)) return result;
+                if (DateTime.TryParse(StartTime, out DateTime result)) 
+                    return result;
                 return new DateTime();
             }
         }

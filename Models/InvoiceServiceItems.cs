@@ -11,53 +11,33 @@ namespace Dental.Models
     public class InvoiceServiceItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
     {
         public Service Service 
-        { 
-            get => service; 
-            set
-            {
-                service = value;
-                OnPropertyChanged(nameof(Service));
-            } 
+        {
+            get { return GetProperty(() => Service); }
+            set { SetProperty(() => Service, value); }
         }
         public int? ServiceId { get; set; }
-        private Service service;
        
        public Invoice Invoice { get; set; }
        public int? InvoiceId { get; set; }       
         
-        public Employee Employee 
+        public Employee Employee
         {
-            get => employee; 
-            set
-            {
-                employee = value;
-                OnPropertyChanged(nameof(Employee));
-            } 
+            get { return GetProperty(() => Employee); }
+            set { SetProperty(() => Employee, value); }
         }
         public int? EmployeeId { get; set; }
-        private Employee employee;
 
         public int Count 
-        { 
-            get => count;
-            set
-            {
-                count = value;
-                OnPropertyChanged(nameof(Count));
-            }
+        {
+            get { return GetProperty(() => Count); }
+            set { SetProperty(() => Count, value); }
         }
-        private int count;
 
-        public decimal Price 
-        { 
-            get => price;
-            set
-            {
-                price = value;
-                OnPropertyChanged(nameof(Price));
-            }
+        public decimal Price
+        {
+            get { return GetProperty(() => Price); }
+            set { SetProperty(() => Price, value); }
         }
-        private decimal price;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

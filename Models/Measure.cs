@@ -16,13 +16,9 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Name
         {
-            get => _Name;
-            set 
-            {
-                _Name = value?.Trim();
-            } 
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value?.Trim()); }
         }
-        private string _Name;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

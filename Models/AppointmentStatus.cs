@@ -16,28 +16,18 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Caption 
         {
-            get => caption;
-            set 
-            { 
-                caption = value?.Trim();
-                OnPropertyChanged(nameof(Caption));
-            } 
+            get { return GetProperty(() => Caption); }
+            set { SetProperty(() => Caption, value?.Trim()); }
         }
-        private string caption;
 
         public string BrushColor { get; set; }
 
         [NotMapped]
         public SolidColorBrush Brush 
-        { 
-            get => brush;
-            set
-            {
-                brush = value;
-                OnPropertyChanged(nameof(Brush));
-            } 
+        {
+            get { return GetProperty(() => Brush); }
+            set { SetProperty(() => Brush, value); }
         }
-        public SolidColorBrush brush;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

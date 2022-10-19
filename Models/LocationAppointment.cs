@@ -13,19 +13,17 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
-        public string Name 
+        public string Name
         {
-            get => name;
-            set => name = value?.Trim(); 
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value?.Trim()); }
         }
-        private string name;
 
         public string Address
         {
-            get => address;
-            set => address = value?.Trim();
+            get { return GetProperty(() => Address); }
+            set { SetProperty(() => Address, value?.Trim()); }
         }
-        private string address;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

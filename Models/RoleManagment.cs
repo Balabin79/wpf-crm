@@ -12,7 +12,6 @@ namespace Dental.Models
     [Table("RolesManagment")]
     public class RoleManagment : AbstractBaseModel, ICategoryTree
     {
-
         public string PageName { get; set; }
         public string PageTitle { get; set; }
 

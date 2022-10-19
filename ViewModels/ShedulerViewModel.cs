@@ -37,15 +37,14 @@ namespace Dental.ViewModels
                 StatusAppointments = GetStatusCollection();
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
-                LoadEmployees(db);
-                LoadClients(db);              
-                SetSelectedEmployees();
-                //CreateCalendars();
-
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
 
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
+
+                LoadEmployees(db);
+                LoadClients(db);
+                SetSelectedEmployees();
             }
             catch
             {
@@ -54,24 +53,24 @@ namespace Dental.ViewModels
             }
         }
 
-        public bool CanAppointmentAdded(object p) => true;
-        public bool CanAppointmentEdited(object p) => true;
-        public bool CanAppointmentRemoved(object p) => true;
+        public bool CanAppointmentAdded(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
+        public bool CanAppointmentEdited(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
+        public bool CanAppointmentRemoved(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
 
-        public bool CanOpenWindowLocation() => true;
-        public bool CanCloseWindowLocation() => true;
-        public bool CanAddLocation() => true;
-        public bool CanDeleteLocation(object p) => true;
-        public bool CanSaveLocation() => true;
+        public bool CanOpenWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
+        public bool CanCloseWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
+        public bool CanAddLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
+        public bool CanDeleteLocation(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationDeletable;
+        public bool CanSaveLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
 
-        public bool CanOpenWindowStatus() => true;
-        public bool CanCloseWindowStatus() => true;
-        public bool CanAddStatus(object p) => true;
-        public bool CanSaveStatus() => true;
-        public bool CanDeleteStatus(object p) => true;
+        public bool CanOpenWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
+        public bool CanCloseWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
+        public bool CanAddStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
+        public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
+        public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
 
-        public bool CanOpenFormEmployeeCard(object p) => true;
-        public bool CanOpenFormClientCard(object p) => true;
+        public bool CanOpenFormEmployeeCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
+        public bool CanOpenFormClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
 
         [Command]
         public void AppointmentAdded(object p)
@@ -386,9 +385,12 @@ namespace Dental.ViewModels
 
         public ObservableCollection<Appointments> Appointments { get; set; }
 
-        public virtual List<object> SelectedDoctors { get; set; }
+        public virtual List<object> SelectedDoctors
+        {
+            get { return GetProperty(() => SelectedDoctors); }
+            set { SetProperty(() => SelectedDoctors, value); }
+        }
 
-        // private void CreateCalendars() => Calendars = db.Resources.ToObservableCollection();
 
         /*****************************************************************************************/
         [Command]

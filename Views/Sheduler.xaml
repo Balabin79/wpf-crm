@@ -127,7 +127,8 @@
                                     ShowStatus="True"
                                     ShowLocation="True" 
                                     ShowDescription="True"                       
-                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment}}" />
+                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment} }"
+                                    />
                             </StackPanel>
                             <dxlc:LayoutControl Margin="0,5,0,0" VerticalAlignment="Top" Orientation="Vertical" Padding="0">
                                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_Start}}" />
@@ -146,7 +147,7 @@
         </ResourceDictionary>
     </Page.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
-    <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <dx:LoadingDecorator SplashScreenDataContext="Загрузка расписания" BorderEffect="None" >
                 <dx:LoadingDecorator.SplashScreenTemplate>
                     <DataTemplate>
@@ -171,13 +172,26 @@
                                       SummaryItemPosition="Top">
 
                         <dxlc:LayoutControl  MaxHeight="2000" Width="250"  Orientation="Vertical" Padding="0" DockPanel.Dock="Right" dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap">
-                            <dxe:DateNavigator ShowTodayButton="False" ShowWeekNumbers="False" IsMultiSelect="True" VerticalAlignment="Top" dxlc:LayoutControl.AllowVerticalSizing="True">
+
+                            <dxe:DateNavigator 
+                                ShowTodayButton="False" 
+                                ShowWeekNumbers="False" 
+                                IsMultiSelect="True" 
+                                VerticalAlignment="Top" 
+                                dxlc:LayoutControl.AllowVerticalSizing="True"
+                                >
                                 <dxe:DateNavigator.StyleSettings>
-                                    <dxsch:SchedulerDateNavigatorStyleSettings Scheduler="{Binding ElementName=scheduler}" />
+                                    <dxsch:SchedulerDateNavigatorStyleSettings 
+                                        Scheduler="{Binding ElementName=scheduler}" />
                                 </dxe:DateNavigator.StyleSettings>
                             </dxe:DateNavigator>
-                            <dx:DXTabControl DataContext="{StaticResource vm}" dxlc:LayoutControl.AllowVerticalSizing="True" Padding="0" Margin="-1,0,-1,-1">
-                                
+
+                            <dx:DXTabControl 
+                                DataContext="{StaticResource vm}"
+                                dxlc:LayoutControl.AllowVerticalSizing="True" 
+                                Padding="0" 
+                                Margin="-1,0,-1,-1">
+
                                 <dx:DXTabItem Header="Сотрудники">
                                     <DockPanel>
                                         <TextBlock DockPanel.Dock="Top" Text="Фильтр по сотрудникам" Opacity="0.6" Margin="6,3,6,3" />
@@ -185,7 +199,7 @@
                                             Style="{StaticResource DoctorsList.Style}"
                                             Margin="-1,0,-1,-1"
                                             EditValue="{Binding SelectedDoctors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            ItemsSource="{Binding Doctors}" 
+                                            ItemsSource="{Binding Doctors, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                             DisplayMember="Fio">
                                             <dxe:ListBoxEdit.ItemContainerStyle>
                                                 <Style TargetType="dxe:ListBoxEditItem">
@@ -224,8 +238,8 @@
                                                                 CommandParameter="{Binding Path=Row.Id}"
                                                                  />
                                                             </StackPanel>
-                                                            
-                              
+
+
                                                         </DataTemplate>
                                                     </dxg:GridColumn.CellDisplayTemplate>
                                                 </dxg:GridColumn>
@@ -344,7 +358,7 @@
                         </dxsch:TimelineView>
                         <dxsch:SchedulerControl.DataSource>
                             <dxsch:DataSource ResourcesSource="{Binding Doctors}" 
-                                              AppointmentsSource="{Binding Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              AppointmentsSource="{Binding Appointments }" 
                                           AppointmentStatusesSource="{Binding StatusAppointments}">
 
                                 <dxsch:DataSource.ResourceMappings>

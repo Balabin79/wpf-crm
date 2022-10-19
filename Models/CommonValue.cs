@@ -14,38 +14,23 @@ namespace Dental.Models
         [Display(Name = "Название")]
         public string Name
         {
-            get => name;
-            set 
-            {
-                name = value?.Trim();
-                OnPropertyChanged(nameof(Name));
-            } 
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value?.Trim()); }
         }
-        private string name;
 
         [Required(ErrorMessage = @"Поле ""Системное имя"" обязательно для заполнения")]
         public string SysName
         {
-            get => sysName;
-            set
-            {
-                sysName = value?.Trim();
-                OnPropertyChanged(nameof(SysName));
-            }
+            get { return GetProperty(() => SysName); }
+            set { SetProperty(() => SysName, value?.Trim()); }
         }
-        private string sysName;
 
         [Required(ErrorMessage = @"Поле ""Значение"" обязательно для заполнения")]
         public string Value
         {
-            get => val;
-            set
-            {
-                val = value?.Trim();
-                OnPropertyChanged(nameof(Value));
-            }
+            get { return GetProperty(() => Value); }
+            set { SetProperty(() => Value, value?.Trim()); }
         }
-        private string val;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

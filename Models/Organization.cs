@@ -35,7 +35,7 @@ namespace Dental.Models
         public string Inn
         {
             get { return GetProperty(() => Inn); }
-            set { SetProperty(() => Inn, value); }
+            set { SetProperty(() => Inn, value?.Trim()); }
         }
 
 
@@ -45,28 +45,28 @@ namespace Dental.Models
         public string Kpp
         {
             get { return GetProperty(() => Kpp); }
-            set { SetProperty(() => Kpp, value); }
+            set { SetProperty(() => Kpp, value?.Trim()); }
         }
 
         [Display(Name = "Логотип")]
         public string Logo
         {
             get { return GetProperty(() => Logo); }
-            set { SetProperty(() => Logo, value); }
+            set { SetProperty(() => Logo, value?.Trim()); }
         }
 
         [Display(Name = "Фото печати")]
         public string Stamp
         {
             get { return GetProperty(() => Stamp); }
-            set { SetProperty(() => Stamp, value); }
+            set { SetProperty(() => Stamp, value?.Trim()); }
         }
 
         [Display(Name = "Фото подписи")]
         public string Signature
         {
             get { return GetProperty(() => Signature); }
-            set { SetProperty(() => Signature, value); }
+            set { SetProperty(() => Signature, value?.Trim()); }
         }
 
         // Контактная инф-ция
@@ -239,13 +239,6 @@ namespace Dental.Models
                 Okved = this.Okved,
             };
 
-            /*Company company = new Company { Name = this.Work.Name };
-            return new Person
-            {
-                Name = this.Name,
-                Age = this.Age,
-                Work = company
-            };*/
         }
 
         public Organization Copy(Organization model)

@@ -16,89 +16,54 @@ namespace Dental.Models
     {
 
         public string FirstName
-        { 
-            get => firstName;
-            set
-            {
-                firstName = value;
-                OnPropertyChanged(nameof(FirstName));
-            } 
+        {
+            get { return GetProperty(() => FirstName); }
+            set { SetProperty(() => FirstName, value?.Trim()); }
         }
-        private string firstName;
 
         public string LastName
         {
-            get => lastName;
-            set
-            {
-                lastName = value;
-                OnPropertyChanged(nameof(LastName));
-            }
+            get { return GetProperty(() => LastName); }
+            set { SetProperty(() => LastName, value?.Trim()); }
         }
-        private string lastName;
 
         public string MiddleName
         {
-            get => middleName;
-            set
-            {
-                middleName = value;
-                OnPropertyChanged(nameof(MiddleName));
-            }
+            get { return GetProperty(() => MiddleName); }
+            set { SetProperty(() => MiddleName, value?.Trim()); }
         }
-        private string middleName;
 
         public string FullName { get => ToString(); }
+
         public string BirthDate
         {
-            get => birthDate;
-            set
-            {
-                birthDate = value;
-                OnPropertyChanged(nameof(BirthDate));
-            }
+            get { return GetProperty(() => MiddleName); }
+            set { SetProperty(() => MiddleName, value); }
         }
-        private string birthDate;
 
         public string Sex
         {
-            get => sex;
-            set
-            {
-                sex = value;
-                OnPropertyChanged(nameof(Sex));
-            }
+            get { return GetProperty(() => Sex); }
+            set { SetProperty(() => Sex, value); }
         }
-        private string sex;
 
         public string Phone
         {
-            get => phone;
-            set
-            {
-                phone = value;
-                OnPropertyChanged(nameof(Phone));
-            }
+            get { return GetProperty(() => Phone); }
+            set { SetProperty(() => Phone, value); }
         }
-        private string phone;
 
         public string Email
         {
-            get => _Email;
-            set => _Email = value?.Trim();
+            get { return GetProperty(() => Phone); }
+            set { SetProperty(() => Phone, value?.Trim()); }
         }
-        private string _Email;
 
         public string Address
         {
-            get => address;
-            set
-            {
-                address = value;
-                OnPropertyChanged(nameof(Address));
-            }
+            get { return GetProperty(() => Address); }
+            set { SetProperty(() => Address, value?.Trim()); }
         }
-        private string address;
 
         public string Teeth { get; set; }
         public string ChildTeeth { get; set; }

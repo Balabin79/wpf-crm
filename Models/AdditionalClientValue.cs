@@ -11,17 +11,11 @@ namespace Dental.Models
     [Table("AdditionalClientValues")]
     public class AdditionalClientValue : AbstractBaseModel, IDataErrorInfo
     {
-
         public string Value 
-        { 
-            get => val;
-            set
-            {
-                val = value;
-                OnPropertyChanged(nameof(val));
-            }
+        {
+            get { return GetProperty(() => Value); }
+            set { SetProperty(() => Value, value?.Trim()); }
         }
-        private string val;
 
         public Client Client { get; set; }
         public int? ClientId { get; set; }

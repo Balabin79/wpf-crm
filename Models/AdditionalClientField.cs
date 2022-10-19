@@ -13,39 +13,24 @@ namespace Dental.Models
     {
         [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         public string Label 
-        { 
-            get => label;
-            set
-            {
-                label = value;
-                OnPropertyChanged(nameof(Label));
-            }
+        {
+            get { return GetProperty(() => Label); }
+            set { SetProperty(() => Label, value?.Trim()); }
         }
-        private string label;
 
         [Required(ErrorMessage = @"Поле ""Системное имя поля"" обязательно для заполнения")]
         public string SysName
         {
-            get => sysName;
-            set
-            {
-                sysName = value;
-                OnPropertyChanged(nameof(SysName));
-            }
+            get { return GetProperty(() => SysName); }
+            set { SetProperty(() => SysName, value?.Trim()); }
         }
-        private string sysName;
 
         public TemplateType TypeValue
         {
-            get => typeValue;
-            set
-            {
-                typeValue = value;
-                OnPropertyChanged(nameof(typeValue));
-            }
+            get { return GetProperty(() => TypeValue); }
+            set { SetProperty(() => TypeValue, value); }
         }
         public int? TypeValueId { get; set; }
-        private TemplateType typeValue;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

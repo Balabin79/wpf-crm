@@ -11,17 +11,11 @@ namespace Dental.Models
     [Table("AdditionalEmployeeValues")]
     public class AdditionalEmployeeValue : AbstractBaseModel, IDataErrorInfo
     {
-
-        public string Value 
-        { 
-            get => val;
-            set
-            {
-                val = value;
-                OnPropertyChanged(nameof(val));
-            }
+        public string Value
+        {
+            get { return GetProperty(() => Value); }
+            set { SetProperty(() => Value, value); }
         }
-        private string val;
 
         public Employee Employee { get; set; }
         public int? EmployeeId { get; set; }
