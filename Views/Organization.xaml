@@ -52,29 +52,32 @@
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableVisible, Mode=TwoWay}" Content="Редактировать данные" 
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem IsVisible="{Binding BtnIconEditableHide, Mode=TwoWay}" Content="Редактировать данные" 
+                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem Name="bSave" Content="Сохранить" IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}" 
+                        <dxb:BarButtonItem Content="Сохранить" 
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="28,28"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
-                        <dxb:BarButtonItem Name="bDelete" Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnAfterSaveEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <dxb:BarButtonItem Content="Удалить" 
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
                                            GlyphSize="Custom"
@@ -391,16 +394,18 @@
                                                                 ShowDragWidget="False" 
                                                                 AllowCustomizationMenu="False" 
                                                                 AllowQuickCustomization="False">
-                                            <dxb:BarButtonItem 
+                                            <dxb:BarButtonItem DataContext="{Binding ElementName=fileToolBar}"
                                                    Content="Директория"  
                                                    Glyph="{dx:DXImage SvgImages/Actions/Open.svg}"
+                                                   IsEnabled="{DXBinding Expr='DataContext.IsReadOnly != true and DataContext.Model.Id != 0'}"
                                                    GlyphSize="Small" 
                                                    Command="{Binding ElementName=fileToolBar, Path=DataContext.OpenDirectoryCommand}"/>
 
-                                            <dxb:BarButtonItem Command="{Binding ElementName=fileToolBar, Path=DataContext.AttachmentFileCommand}" 
+                                            <dxb:BarButtonItem DataContext="{Binding ElementName=fileToolBar}"
+                                                   Command="{Binding Path=DataContext.AttachmentFileCommand}"
+                                                   IsEnabled="{DXBinding Expr='DataContext.IsReadOnly != true and DataContext.Model.Id != 0'}"
                                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                                    Content="Прикрепить файл" 
-                                                   IsEnabled="{Binding ElementName=fileToolBar, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}" 
                                                     />
                                         </dxb:ToolBarControl>
                                     </dxb:BarContainerControl>
@@ -426,14 +431,15 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                <dxb:ToolBarControl x:Name="fileToolBar2" Caption="File" 
-                                                                        AllowCustomizationMenu="False" 
-                                                                        AllowQuickCustomization="False"
-                                                                        ShowDragWidget="False"
-                                                                        IsEnabled="{Binding ElementName=GridControlAttachFile, Path=DataContext.BtnIconEditableVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                    <dxb:BarButtonItem Name="bOpen"
+                                                <dxb:ToolBarControl 
+                                                    x:Name="fileToolBar2" Caption="File" 
+                                                    AllowCustomizationMenu="False" 
+                                                    AllowQuickCustomization="False"
+                                                   ShowDragWidget="False"
+                                                   IsEnabled="{Binding ElementName=GridControlAttachFile, Path=DataContext.BtnIconEditableVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                        <dxb:BarButtonItem Name="bOpen"
                                            Content="Открыть файл"                                                            
-                                           IsEnabled="{Binding ElementName=GridControlAttachFile, Path=DataContext.BtnIconEditableVisible, Mode=TwoWay}"
+                                           IsEnabled="{DXBinding Expr='@e(fileToolBar).DataContext.IsReadOnly != true and @e(fileToolBar).DataContext.Model.Id != 0'}"
                                            Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.ExecuteFileCommand}"
@@ -441,7 +447,7 @@
 
                                                     <dxb:BarButtonItem Name="bDeleteFile" 
                                            Content="Удалить файл" 
-                                           IsEnabled="{Binding Path=BtnIconEditableVisible, Mode=TwoWay}" 
+                                           IsEnabled="{DXBinding Expr='@e(fileToolBar).DataContext.IsReadOnly != true and @e(fileToolBar).DataContext.Model.Id != 0'}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=GridControlAttachFile, Path=DataContext.DeleteFileCommand}" 
@@ -470,6 +476,7 @@
                                     <dxg:TableView.InputBindings>
                                         <KeyBinding Key="Delete"       
                                 Command="{Binding ElementName=attachFileTableView, Path=DataContext.DeleteFileCommand}"
+                                                   
                                 CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
                                         <KeyBinding Key="O"     
                                 Modifiers="Ctrl"
@@ -482,12 +489,14 @@
 
                                     <dxg:TableView.RowCellMenuCustomizations >
                                         <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left"
+                                               IsEnabled="{DXBinding Expr='@e(fileToolBar).DataContext.IsReadOnly != true and @e(fileToolBar).DataContext.Model.Id != 0'}"
                                                Glyph="{dx:DXImage SvgImages/PDF Viewer/Preview.svg}" 
                                                Name="openRow" KeyGesture="Ctrl+O" Content="Открыть файл" 
                                                Command="{Binding ElementName=attachFileTableView,Path=DataContext.ExecuteFileCommand}"
                                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"/>
 
                                         <dxb:BarButtonItem Name="deleteRow" Content="Удалить файл"
+                                               IsEnabled="{DXBinding Expr='@e(fileToolBar).DataContext.IsReadOnly != true and @e(fileToolBar).DataContext.Model.Id != 0'}"            
                                                Command="{Binding ElementName=attachFileTableView, Path=DataContext.DeleteFileCommand}" 
                                                CommandParameter="{Binding ElementName=attachFileTableView, Path=FocusedRow}"
                                            KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"/>

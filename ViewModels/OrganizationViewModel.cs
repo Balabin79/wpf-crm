@@ -393,8 +393,7 @@ namespace Dental.ViewModels
                 }
 
 
-                var response = ThemedMessageBox.Show(title: "Внимание", text: msg,
-messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                var response = ThemedMessageBox.Show(title: "Внимание", text: msg, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
                 if (Directory.Exists(path))

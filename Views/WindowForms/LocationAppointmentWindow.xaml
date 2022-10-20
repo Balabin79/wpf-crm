@@ -155,7 +155,7 @@
 
                                         <dxb:BarButtonItem Name="bDelete"                                              
                                            Content="Удалить" 
-                                           IsEnabled="{Binding Path=BtnDeleteEnable, Mode=TwoWay}" 
+                                           IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=gridMainClientGroups, Path=DataContext.DeleteLocationCommand}" 

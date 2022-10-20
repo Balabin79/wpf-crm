@@ -146,20 +146,11 @@
 
         </ResourceDictionary>
     </Page.Resources>
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
-        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
-            <dx:LoadingDecorator SplashScreenDataContext="Загрузка расписания" BorderEffect="None" >
-                <dx:LoadingDecorator.SplashScreenTemplate>
-                    <DataTemplate>
-                        <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
-                            <dx:WaitIndicator.ContentTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" />
-                                </DataTemplate>
-                            </dx:WaitIndicator.ContentTemplate>
-                        </dx:WaitIndicator>
-                    </DataTemplate>
-                </dx:LoadingDecorator.SplashScreenTemplate>
+
+        <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
+
+            <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+
                 <DockPanel LastChildFill="True">
                     <dxa:AccordionControl DockPanel.Dock="Right"                         
                                       AllowAnimation="True" 
@@ -422,7 +413,9 @@
                         </dxsch:SchedulerControl.DataSource>
                     </dxsch:SchedulerControl>
                 </DockPanel>
-            </dx:LoadingDecorator>
-        </Grid>
+
+            </Grid>
+  
     </Border>
+
 </Page>

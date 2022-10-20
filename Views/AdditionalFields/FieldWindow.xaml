@@ -62,7 +62,10 @@
                     Height="23" Content="Сохранить" 
                     IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(FieldVM.Caption) and !string.IsNullOrEmpty(FieldVM.SysName)' }"
                                  VerticalContentAlignment="Center" Command="{Binding SaveCommand}" />
-                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormCommand}" Margin="4 0 0 0"/>
+                        <dx:SimpleButton 
+                            Height="23" Content="Закрыть" VerticalContentAlignment="Center" 
+                            Command="{Binding  CancelFormCommand}" 
+                            Margin="4 0 0 0"/>
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
             </GroupBox>

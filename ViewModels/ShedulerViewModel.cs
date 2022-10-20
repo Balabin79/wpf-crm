@@ -209,15 +209,13 @@ namespace Dental.ViewModels
                     if (string.IsNullOrEmpty(item.Name)) continue;
                     if (item.Id == 0) db.Entry(item).State = EntityState.Added;
                 }
-                LocationAppointments = GetLocationCollection();
                 LocationAppointmentsBeforeChanges.Clear();
                 LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
                 if (db.SaveChanges() > 0) 
                 { 
                     new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     Services.Reestr.Update((int)Tables.LocationAppointment);
-                }
-                
+                }              
             }
             catch (Exception e)
             {
