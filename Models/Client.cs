@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using Dental.Services.Files;
+using System.Windows.Media;
 
 namespace Dental.Models
 {
@@ -63,6 +64,20 @@ namespace Dental.Models
         {
             get { return GetProperty(() => Address); }
             set { SetProperty(() => Address, value?.Trim()); }
+        }
+
+        [NotMapped]
+        public ImageSource Image
+        {
+            get { return GetProperty(() => Image); }
+            set { SetProperty(() => Image, value); }
+        }
+
+        [NotMapped]
+        public string Photo
+        {
+            get { return GetProperty(() => Photo); }
+            set { SetProperty(() => Photo, value); }
         }
 
         public string Teeth { get; set; }

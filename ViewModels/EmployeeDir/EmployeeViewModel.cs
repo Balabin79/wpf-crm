@@ -252,39 +252,6 @@ namespace Dental.ViewModels.EmployeeDir
         }
 
         #region Управление фото
-
-        private void ImgLoading(Employee model)
-        {
-            try
-            {
-                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, model.Guid, "Photo");
-                if (Directory.Exists(pathToEmpPhoto))
-                {
-                    var files = Directory.GetFiles(pathToEmpPhoto);
-                    if (files.Length > 0) model.Photo = files[0];
-                }
-
-                if (!string.IsNullOrEmpty(model.Photo) && File.Exists(model.Photo))
-                {
-                    using (var stream = new FileStream(model.Photo, FileMode.Open))
-                    {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
-                    }
-                }
-                else model.Photo = null;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
         private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
         
         private void PhotoLoading()

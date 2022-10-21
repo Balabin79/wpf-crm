@@ -14,10 +14,13 @@ using Dental.Views.PatientCard;
 using System.Windows.Data;
 using Dental.Services;
 using Dental.Models.Base;
+using Dental.Infrastructures.Logs;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Dental.ViewModels.ClientDir
 {
-    class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase
+    class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
     {
         private readonly ApplicationContext db;
         private readonly PatientListViewModel VmList;
@@ -49,6 +52,7 @@ namespace Dental.ViewModels.ClientDir
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
                 AdditionalFieldsVisible = Visibility.Hidden;
+                PhotoLoading();
             }
             catch (Exception e)
             {
@@ -77,6 +81,7 @@ namespace Dental.ViewModels.ClientDir
             {
                 bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
+                SavePhoto();
                 if (Model.Id == 0) // новый элемент
                 {
                     db.Clients.Add(Model);
@@ -159,6 +164,9 @@ namespace Dental.ViewModels.ClientDir
                 db.InvoiceServiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
                 VmList?.ClientCardWin.Close();
+                // удаляем фото 
+                var pathToPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid);
+                if (Directory.Exists(pathToPhoto)) Directory.Delete(pathToPhoto, true);
             }
             catch
             {
@@ -269,6 +277,110 @@ namespace Dental.ViewModels.ClientDir
             SourceCollection.Add(Model);
         }
         public PrintClientWindow PrintClientWindow { get; set; }
+        #endregion
+
+        #region Управление фото
+
+        private string PathToClientsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients");
+
+        private void PhotoLoading()
+        {
+            try
+            {
+                string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
+                if (Directory.Exists(pathToClientPhoto))
+                {
+                    var files = Directory.GetFiles(pathToClientPhoto);
+                    if (files.Length > 0) Model.Photo = files[0];
+                }
+
+                if (!string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo))
+                {
+                    using (var stream = new FileStream(Model.Photo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        ClientInfoViewModel.Image = img;
+                    }
+                }
+                else ClientInfoViewModel.Image = null;
+                ClientInfoViewModel.Photo = Model.Photo;
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+
+        }
+
+        private void SavePhoto()
+        {
+            try
+            {
+                if (ClientInfoViewModel?.Image == null) return;
+                if (ClientInfoViewModel?.Image is BitmapImage img)
+                {
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.Photo) return;
+                }
+
+                if (!string.IsNullOrEmpty(Model?.Photo))
+                {
+                    string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
+                    if (!Directory.Exists(pathToClientPhoto)) Directory.CreateDirectory(pathToClientPhoto);
+                    FileInfo logo = new FileInfo(Model?.Photo);
+                    if (!logo.Exists) logo.Create();
+                    logo.CopyTo(Path.Combine(pathToClientPhoto, logo.Name), true);
+
+                    FileInfo newFile = new FileInfo(Path.Combine(pathToClientPhoto, logo.Name)) { CreationTime = DateTime.Now };
+                    Model.Photo = newFile.FullName;
+
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
+                    var files = new DirectoryInfo(pathToClientPhoto).GetFiles();
+                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
+                    PhotoLoading();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public void ImageDelete(object p)
+        {
+            try
+            {
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото клиента?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                if (response.ToString() == "No") return;
+
+                string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
+
+                if (Directory.Exists(pathToClientPhoto))
+                {
+                    new DirectoryInfo(pathToClientPhoto).GetFiles()?.ForEach(f => f.Delete());
+                }
+
+                if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
+                var model = VmList?.Collection?.FirstOrDefault(f => f.Id == Model.Id);
+                if (model != null)
+                {
+                    model.Image = null;
+                    model.Photo = null;
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Фото  клиента удалено!" }.run();
+                }
+
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
         #endregion
     }
 }

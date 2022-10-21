@@ -418,6 +418,8 @@ namespace Dental.ViewModels
             }
         }
 
+        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
+
         [Command]
         public void OpenFormClientCard(object p)
         {
@@ -449,6 +451,13 @@ namespace Dental.ViewModels
             Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
+                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, i?.Guid, "Photo");
+                if (Directory.Exists(pathToEmpPhoto))
+                {
+                    var files = Directory.GetFiles(pathToEmpPhoto);
+                    if (files.Length > 0) i.Photo = files[0];
+                }
+
                 if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
                 {
                     using (var stream = new FileStream(i.Photo, FileMode.Open))
@@ -460,7 +469,8 @@ namespace Dental.ViewModels
                         img.EndInit();
                         img.Freeze();
                         i.Image = img;
-                        stream.Close(); stream.Dispose();
+                        stream.Close(); 
+                        stream.Dispose();
                     }
                 }
                 else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));

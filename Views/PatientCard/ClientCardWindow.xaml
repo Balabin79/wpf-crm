@@ -17,8 +17,8 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     dx:ThemeManager.ThemeName="Office2019White"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-    Title="B6 Sheduler"
-    Closing="Window_Closing"
+    Title="B6 Dental"
+    Closing="Window_Closing" Topmost="True"
     x:Name="win">
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>

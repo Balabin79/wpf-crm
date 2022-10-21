@@ -5,6 +5,8 @@ using System.Globalization;
 using DevExpress.Mvvm;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Media;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -30,6 +32,8 @@ namespace Dental.ViewModels.ClientDir
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
             IsChild = client.IsChild;
+            Photo = client.Photo;
+            Image = client.Image;
         }
 
         public int Id
@@ -104,6 +108,20 @@ namespace Dental.ViewModels.ClientDir
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
 
+        [NotMapped]
+        public ImageSource Image
+        {
+            get { return GetProperty(() => Image); }
+            set { SetProperty(() => Image, value); }
+        }
+
+        [NotMapped]
+        public string Photo
+        {
+            get { return GetProperty(() => Photo); }
+            set { SetProperty(() => Photo, value); }
+        }
+
 
         /* public ObservableCollection<Estimate> Estimates
          {
@@ -135,6 +153,7 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(PassportSeries, other.PassportSeries, "Серия паспорта");
                 StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
+                StringParamsIsEquel(Photo, other.Photo, "Фото");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
@@ -173,6 +192,8 @@ namespace Dental.ViewModels.ClientDir
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
             client.IsChild = IsChild;
+            client.Photo = Photo;
+            client.Image = Image;
             return client;
         }
     }

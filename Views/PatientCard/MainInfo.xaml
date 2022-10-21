@@ -13,7 +13,7 @@
               xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
               xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
               xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions"
               d:DesignWidth="800"
               >
     <UserControl.Resources>
@@ -38,19 +38,44 @@
                         <TextBlock Text="Общая информация" VerticalAlignment="Center" Height="22"/>
                     </DataTemplate>
                 </dxlc:LayoutGroup.HeaderTemplate>
+                <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
+                    
+                    <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" Margin="0">
+                        
+                        <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
 
-                <dxlc:LayoutItem Label="*Фамилия:" LabelPosition="Top" IsRequired="True" >
-                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                            <dxlc:LayoutItem Label="*Фамилия:" LabelPosition="Top" IsRequired="True" >
+                                <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="*Имя:" LabelPosition="Top" IsRequired="True" >
-                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="*Имя:" LabelPosition="Top" IsRequired="True" >
+                                <dxe:TextEdit Text="{Binding ClientInfoViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Отчество:" LabelPosition="Top" >
-                    <dxe:TextEdit Text="{Binding ClientInfoViewModel.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Отчество:" LabelPosition="Top" >
+                                <dxe:TextEdit Text="{Binding ClientInfoViewModel.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                </dxlc:LayoutItem>
+                            </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
+
+                        <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <ext:ImageEditEx                       
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
+                                      ImagePath = "{Binding ClientInfoViewModel.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding ClientInfoViewModel.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                                      IsReadOnly="{DXBinding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                      Height="128"  >
+                                <dxe:ImageEdit.EmptyContentTemplate>
+                                    <ControlTemplate >
+                                        <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                                    </ControlTemplate>
+                                </dxe:ImageEdit.EmptyContentTemplate>
+                            </ext:ImageEditEx>
+                        </dxlc:LayoutItem>
+
+                    </dxlc:LayoutGroup>
+
+                </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Дата рождения:" LabelPosition="Top" >
                         <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding ClientInfoViewModel.BirthDate, Mode=TwoWay, 

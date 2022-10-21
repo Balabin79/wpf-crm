@@ -31,7 +31,6 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 db = new ApplicationContext();
                 SetCollection();
-
                 foreach (var i in Collection) ImgLoading(i);
             }
             catch (Exception e)

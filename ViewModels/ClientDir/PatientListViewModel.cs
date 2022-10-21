@@ -18,6 +18,8 @@ using Dental.Views.Documents;
 using Dental.Services.Files;
 using Dental.Views.AdditionalFields;
 using Dental.ViewModels.AdditionalFields;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -30,6 +32,7 @@ namespace Dental.ViewModels.ClientDir
             {
                 db = new ApplicationContext();
                 SetCollection();
+                foreach (var i in Collection) ImgLoading(i);
             }
             catch
             {
@@ -94,7 +97,7 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 ClientCardWin = (p != null) ? new ClientCardWindow((int)p, this) : new ClientCardWindow(0, this);
-                ClientCardWin?.Show();
+                ClientCardWin?.ShowDialog();
             }
             catch
             {
@@ -133,6 +136,40 @@ namespace Dental.ViewModels.ClientDir
         public ClientCardWindow ClientCardWin { get; set; }
 
         public void SetCollection(bool isArhive=false) => Collection = db.Clients.OrderBy(f => f.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
+
+        private string PathToClientsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients");
+
+        private void ImgLoading(Client model)
+        {
+            try
+            {
+                string pathToClientPhoto = Path.Combine(PathToClientsDirectory, model.Guid, "Photo");
+                if (Directory.Exists(pathToClientPhoto))
+                {
+                    var files = Directory.GetFiles(pathToClientPhoto);
+                    if (files.Length > 0) model.Photo = files[0];
+                }
+
+                if (!string.IsNullOrEmpty(model.Photo) && File.Exists(model.Photo))
+                {
+                    using (var stream = new FileStream(model.Photo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
+                else model.Photo = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
 
     }
 }
