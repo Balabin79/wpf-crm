@@ -48,48 +48,41 @@
                 </Grid.RowDefinitions>
                 <DockPanel LastChildFill="True" Grid.Row="0">
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                        <dx:DXImage Height="24" Width="24" Margin="5 0 0 0" 
+                        <dx:DXImage Height="20" Width="20" Margin="5 0 0 0" 
                                 Source="{dx:DXImage SvgImages/Outlook Inspired/NewEmployee.svg}"/>
-                        <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="15" Padding="2 5 5 0" />
+                        <TextBlock Text="{DXBinding Expr='Model.LastName + ` ` + Model.FirstName + ` ` + Model.MiddleName'}" FontSize="14" Padding="2 5 5 0" />
                     </StackPanel>
 
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                         <dxb:ToolBarControl x:Name="fileToolBar" 
+                                        BarItemDisplayMode="ContentAndGlyph"
                                         Caption="File" 
                                         ShowDragWidget="False"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
                             <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           GlyphSize="Small"
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            Command="{Binding EditableCommand}"/>
 
                             <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
                             <dxb:BarButtonItem  Content="Сохранить"                                   
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(EmployeeInfoViewModel.LastName) and !string.IsNullOrEmpty(EmployeeInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           GlyphSize="Small"
                                            Command="{Binding SaveCommand}"/>
                             <dxb:BarItemLinkSeparator/>
                             <dxb:BarButtonItem  Content="Удалить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="24,24"
+                                           GlyphSize="Small"
                                            Command="{Binding DeleteCommand}"/>
                             <dxb:BarItemLinkSeparator />
                         </dxb:ToolBarControl>

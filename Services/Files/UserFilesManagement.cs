@@ -14,6 +14,7 @@ namespace Dental.Services.Files
     {
         public UserFilesManagement(string Guid) : base(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), FILES, Guid)){}
 
-        private const string FILES = "B6\\Files";
+        private const string FILES = "B6Dental\\Files";
+
     }
 }

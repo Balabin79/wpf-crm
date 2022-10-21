@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -47,12 +48,14 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => Id, value); }
         }
 
+        [NotMapped]
         public ImageSource Image
         {
             get { return GetProperty(() => Image); }
             set { SetProperty(() => Image, value); }
         }
 
+        [NotMapped]
         public string Photo
         {
             get { return GetProperty(() => Photo); }

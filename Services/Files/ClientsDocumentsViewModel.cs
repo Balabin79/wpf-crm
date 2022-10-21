@@ -18,6 +18,6 @@ namespace Dental.Services.Files
     {
         public ClientsDocumentsViewModel() : this("") { }
         public ClientsDocumentsViewModel(string Guid) : base(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), FILES, Guid)){}
-        private const string FILES = "B6\\Documents\\Clients";
+        private const string FILES = "B6Dental\\Documents\\Clients";
     }
 }

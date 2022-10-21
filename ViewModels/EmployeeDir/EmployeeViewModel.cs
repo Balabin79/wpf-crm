@@ -141,6 +141,7 @@ namespace Dental.ViewModels.EmployeeDir
                 if (response.ToString() == "No") return;
 
                 new UserFilesManagement(Model.Guid).DeleteDirectory();
+                
                 var id = Model?.Id;
                 //удалить также в расписании и в счетах
                 db.Appointments.Where(f => f.EmployeeId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
@@ -156,6 +157,9 @@ namespace Dental.ViewModels.EmployeeDir
 
                 db.SaveChanges();
                 VmList?.EmployeeWin.Close();
+                // удаляем фото 
+                var pathToPhoto = Path.Combine(PathToEmployeesDirectory, Model?.Guid);
+                if (Directory.Exists(pathToPhoto)) Directory.Delete(pathToPhoto, true);
             }
             catch
             {
@@ -249,12 +253,51 @@ namespace Dental.ViewModels.EmployeeDir
 
         #region Управление фото
 
-        private string GetPathToPhoto() => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6\\Files", Model?.Guid, "Photo");
+        private void ImgLoading(Employee model)
+        {
+            try
+            {
+                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, model.Guid, "Photo");
+                if (Directory.Exists(pathToEmpPhoto))
+                {
+                    var files = Directory.GetFiles(pathToEmpPhoto);
+                    if (files.Length > 0) model.Photo = files[0];
+                }
+
+                if (!string.IsNullOrEmpty(model.Photo) && File.Exists(model.Photo))
+                {
+                    using (var stream = new FileStream(model.Photo, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
+                else model.Photo = null;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
         
         private void PhotoLoading()
         {
             try
             {
+                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, Model?.Guid, "Photo");
+                if (Directory.Exists(pathToEmpPhoto))
+                {
+                    var files = Directory.GetFiles(pathToEmpPhoto);
+                    if (files.Length > 0) Model.Photo = files[0];
+                }
+
                 if (!string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo))
                 {
                     using (var stream = new FileStream(Model.Photo, FileMode.Open))
@@ -289,18 +332,19 @@ namespace Dental.ViewModels.EmployeeDir
                     if (((FileStream)img?.StreamSource)?.Name == Model?.Photo) return;
                 }
 
-                if (!string.IsNullOrEmpty(Model.Photo))
+                if (!string.IsNullOrEmpty(Model?.Photo))
                 {
-                    if (!Directory.Exists(GetPathToPhoto())) Directory.CreateDirectory(GetPathToPhoto());
-                    FileInfo logo = new FileInfo(Model.Photo);
+                    string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, Model?.Guid, "Photo");
+                    if (!Directory.Exists(pathToEmpPhoto)) Directory.CreateDirectory(pathToEmpPhoto);
+                    FileInfo logo = new FileInfo(Model?.Photo);
                     if (!logo.Exists) logo.Create();
-                    logo.CopyTo(Path.Combine(GetPathToPhoto(), logo.Name), true);
+                    logo.CopyTo(Path.Combine(pathToEmpPhoto, logo.Name), true);
 
-                    FileInfo newFile = new FileInfo(Path.Combine(GetPathToPhoto(), logo.Name)) { CreationTime = DateTime.Now };
+                    FileInfo newFile = new FileInfo(Path.Combine(pathToEmpPhoto, logo.Name)) { CreationTime = DateTime.Now };
                     Model.Photo = newFile.FullName;
 
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве фото, остальные удаляем.
-                    var files = new DirectoryInfo(GetPathToPhoto()).GetFiles();
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
+                    var files = new DirectoryInfo(pathToEmpPhoto).GetFiles();
                     foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
                     PhotoLoading();
                 }
@@ -318,9 +362,12 @@ namespace Dental.ViewModels.EmployeeDir
                 var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото сотрудника?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
-                if (Directory.Exists(GetPathToPhoto()))
+
+                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, Model?.Guid, "Photo");
+
+                if (Directory.Exists(pathToEmpPhoto))
                 {
-                    new DirectoryInfo(GetPathToPhoto()).GetFiles()?.ForEach(f => f.Delete());
+                    new DirectoryInfo(pathToEmpPhoto).GetFiles()?.ForEach(f => f.Delete());
                 }
 
                 if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();

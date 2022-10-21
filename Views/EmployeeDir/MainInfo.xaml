@@ -73,10 +73,10 @@
 
                                 <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
                                     <ext:ImageEditEx                       
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
                                       ImagePath = "{Binding EmployeeInfoViewModel.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding EmployeeInfoViewModel.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      IsReadOnly="{DXBinding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                       Height="128"  >
                                         <dxe:ImageEdit.EmptyContentTemplate>
                                             <ControlTemplate >
@@ -198,16 +198,20 @@
 
                                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-                                        <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                        <dxb:ToolBarControl 
+                                            ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" 
+                                            AllowCustomizationMenu="False" AllowQuickCustomization="False"
+                                            Name="fileToolBar">
                                             <dxb:BarButtonItem
                                                  Content="Директория" 
                                                  Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                                  GlyphSize="Small" 
                                                  Command="{Binding ElementName=layoutGroup1, Path=DataContext.UserFiles.OpenDirectoryCommand}"
-                                                 IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                 IsEnabled="{DXBinding Expr='!@e(layoutGroup1).DataContext.IsReadOnly and @e(layoutGroup1).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                />
 
                                             <dxb:BarButtonItem 
-                                                IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                IsEnabled="{DXBinding  Expr='!@e(layoutGroup1).DataContext.IsReadOnly and @e(layoutGroup1).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Command="{Binding ElementName=layoutGroup1, Path=DataContext.UserFiles.AttachmentFileCommand}" 
                                                 Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                         Content="Прикрепить файл"                                     
