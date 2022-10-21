@@ -38,50 +38,43 @@
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Image Height="23" Width="23" Margin="3 0 3 0">
+                    <Image Height="20" Width="20" Margin="5 -5 0 0">
                         <Image.Source>
                             <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/org.png" />
                         </Image.Source>
                     </Image>
-                    <TextBlock Text="Реквизиты организации" FontSize="15" Padding="0 8 5 0" />
+                    <TextBlock Text="Реквизиты организации" FontSize="14" Padding="5 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
                     <dxb:ToolBarControl x:Name="fileToolBar" 
                                         Caption="File" 
                                         ShowDragWidget="False"
+                                        BarItemDisplayMode="ContentAndGlyph"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
                         <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
-                                           LargeGlyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Content="Сохранить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           GlyphSize="Small"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Content="Удалить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name) and Model.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           LargeGlyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" 
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="28,28"
+                                           GlyphSize="Small"
                                            Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
@@ -119,14 +112,14 @@
                                     <dxlc:LayoutItem  Label="Юридический адрес:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                        <dxe:MemoEdit Name="LegalAddress" 
+                                        <dxe:MemoEdit Name="LegalAddress" ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
                                       Text="{Binding Model.LegalAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem  Label="Фактический адрес:" 
                                       LabelPosition="Top"  
                                       HorizontalAlignment="Stretch">
-                                        <dxe:MemoEdit Name="Address" 
+                                        <dxe:MemoEdit Name="Address" ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
                                       Text="{Binding Model.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
@@ -254,9 +247,11 @@
                                     <dxlc:LayoutItem  Label="Кем выдана:"                                                   
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
-                                        <dxe:MemoEdit Name="WhoIssuedBy" 
-                                                  Text="{Binding Model.WhoIssuedBy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        <dxe:MemoEdit 
+                                            Name="WhoIssuedBy" 
+                                            ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
+                                            Text="{Binding Model.WhoIssuedBy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
 
 
@@ -312,8 +307,8 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Logo"   Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
-                                      ImagePath = "{Binding Model.Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG)|*.bmp;*.jpg;*.gif;*.png;"                        
+                                      ImagePath = "{Binding Model.LogoFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"
@@ -335,8 +330,8 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Stamp"  Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
-                                      ImagePath = "{Binding Model.Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
+                                      ImagePath = "{Binding Model.StampFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"
@@ -358,8 +353,8 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Signature" Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.TIF, *.PNG, *.ICO, *.EMF, *.WMF)|*.bmp;*.jpg;*.gif; *.tif; *.png; *.ico; *.emf; *.wmf"                        
-                                      ImagePath = "{Binding Model.Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                      
+                                      ImagePath = "{Binding Model.SignatureFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       EditValue = "{Binding Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"

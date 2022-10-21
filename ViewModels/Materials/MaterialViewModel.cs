@@ -26,7 +26,7 @@ using Dental.ViewModels.Base;
 
 namespace Dental.ViewModels.Materials
 {
-    class MaterialViewModel : BaseViewModel<Nomenclature>
+    class MaterialViewModel : TreeBaseViewModel<Nomenclature>
     {
         private readonly ApplicationContext db;
         public MaterialViewModel(ApplicationContext ctx, DbSet<Nomenclature> context) : base(ctx, context)

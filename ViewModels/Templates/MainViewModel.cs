@@ -46,7 +46,7 @@ namespace Dental.ViewModels.Templates
                 }*/
                 new TemplatesWin() 
                 { 
-                    DataContext = new BaseViewModel<Diagnos>(db, db?.Diagnoses),
+                    DataContext = new TreeBaseViewModel<Diagnos>(db, db?.Diagnoses),
                     TitleWin = "Шаблоны \"Диагнозы\"",
                 }?.ShowDialog();
             } 
@@ -65,7 +65,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Лечение\"",
-                    DataContext = new BaseViewModel<Diary>(db, db?.Diaries)
+                    DataContext = new TreeBaseViewModel<Diary>(db, db?.Diaries)
                 }?.ShowDialog();
             }
             catch
@@ -83,7 +83,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Аллергии\"",
-                    DataContext = new BaseViewModel<Allergy>(db, db?.Allergies)
+                    DataContext = new TreeBaseViewModel<Allergy>(db, db?.Allergies)
                 }?.ShowDialog();
 
             }
@@ -102,7 +102,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Жалобы пациента\"",
-                    DataContext = new BaseViewModel<Complaint>(db, db?.Complaints)
+                    DataContext = new TreeBaseViewModel<Complaint>(db, db?.Complaints)
                 }?.ShowDialog();
             }
             catch
@@ -121,7 +121,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Планы лечения\"",
-                    DataContext = new BaseViewModel<TreatmentPlan>(db, db?.TreatmentPlans)
+                    DataContext = new TreeBaseViewModel<TreatmentPlan>(db, db?.TreatmentPlans)
                 }?.ShowDialog();
             }
             catch
@@ -139,7 +139,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Объективное обследование\"",
-                    DataContext = new BaseViewModel<Objectively>(db, db?.Objectively)
+                    DataContext = new TreeBaseViewModel<Objectively>(db, db?.Objectively)
                 }?.ShowDialog();
             }
             catch
@@ -157,7 +157,7 @@ namespace Dental.ViewModels.Templates
                 new TemplatesWin()
                 {
                     TitleWin = "Шаблоны \"Описание рентгеновских снимков\"",
-                    DataContext = new BaseViewModel<DescriptionXRay>(db, db?.DescriptionXRay)
+                    DataContext = new TreeBaseViewModel<DescriptionXRay>(db, db?.DescriptionXRay)
                 }?.ShowDialog();
             }
             catch
@@ -174,7 +174,7 @@ namespace Dental.ViewModels.Templates
             {
                 new TemplatesWin()
                 {
-                    DataContext = new BaseViewModel<Anamnes>(db, db?.Anamneses),
+                    DataContext = new TreeBaseViewModel<Anamnes>(db, db?.Anamneses),
                     TitleWin = "Шаблоны \"Анамнезы\""
                 }?.ShowDialog();
             }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Media;
 
 namespace Dental.Models
 {
@@ -46,27 +47,6 @@ namespace Dental.Models
         {
             get { return GetProperty(() => Kpp); }
             set { SetProperty(() => Kpp, value?.Trim()); }
-        }
-
-        [Display(Name = "Логотип")]
-        public string Logo
-        {
-            get { return GetProperty(() => Logo); }
-            set { SetProperty(() => Logo, value?.Trim()); }
-        }
-
-        [Display(Name = "Фото печати")]
-        public string Stamp
-        {
-            get { return GetProperty(() => Stamp); }
-            set { SetProperty(() => Stamp, value?.Trim()); }
-        }
-
-        [Display(Name = "Фото подписи")]
-        public string Signature
-        {
-            get { return GetProperty(() => Signature); }
-            set { SetProperty(() => Signature, value?.Trim()); }
         }
 
         // Контактная инф-ция
@@ -163,13 +143,6 @@ namespace Dental.Models
             set { SetProperty(() => WhoIssuedBy, value?.Trim()); }
         }
 
-        [Display(Name = "Дополнительно")]
-        public string Additional
-        {
-            get { return GetProperty(() => Additional); }
-            set { SetProperty(() => Additional, value?.Trim()); }
-        }
-
         [Display(Name = "ОКВЭД")]
         [MaxLength(6, ErrorMessage = "Длина не более 6 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
@@ -204,6 +177,27 @@ namespace Dental.Models
             set { SetProperty(() => Site, value?.Trim()); }
         }
 
+        [NotMapped]
+        public string LogoFilePath
+        {
+            get { return GetProperty(() => LogoFilePath); }
+            set { SetProperty(() => LogoFilePath, value); }
+        }
+
+        [NotMapped]
+        public string StampFilePath
+        {
+            get { return GetProperty(() => StampFilePath); }
+            set { SetProperty(() => StampFilePath, value); }
+        }
+
+        [NotMapped]
+        public string SignatureFilePath
+        {
+            get { return GetProperty(() => SignatureFilePath); }
+            set { SetProperty(() => SignatureFilePath, value); }
+        }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -217,9 +211,9 @@ namespace Dental.Models
                 ShortName = this.ShortName,
                 Kpp = this.Kpp,
                 Inn = this.Inn,
-                Logo = this.Logo,
-                Stamp = this.Stamp,
-                Signature = this.Signature,
+                LogoFilePath = this.LogoFilePath,
+                StampFilePath = this.StampFilePath,
+                SignatureFilePath = this.SignatureFilePath,
                 Address = this.Address,
                 LegalAddress = this.LegalAddress,
                 Phone = this.Phone,
@@ -234,7 +228,6 @@ namespace Dental.Models
                 LicenseName = this.LicenseName,
                 Site = this.Site,
                 WhoIssuedBy = this.WhoIssuedBy,
-                Additional = this.Additional,
                 Okpo = this.Okpo,
                 Okved = this.Okved,
             };
@@ -247,9 +240,9 @@ namespace Dental.Models
             model.ShortName = this.ShortName;
             model.Kpp = this.Kpp;
             model.Inn = this.Inn;
-            model.Logo = this.Logo;
-            model.Stamp = this.Stamp;
-            model.Signature = this.Signature;
+            model.LogoFilePath = this.LogoFilePath;
+            model.StampFilePath = this.StampFilePath;
+            model.SignatureFilePath = this.SignatureFilePath;
             model.Address = this.Address;
             model.LegalAddress = this.LegalAddress;
             model.Phone = this.Phone;
@@ -264,7 +257,6 @@ namespace Dental.Models
             model.LicenseName = this.LicenseName;
             model.Site = this.Site;
             model.WhoIssuedBy = this.WhoIssuedBy;
-            model.Additional = this.Additional;
             model.Okpo = this.Okpo;
             model.Okved = this.Okved;
             return model;
@@ -312,9 +304,9 @@ namespace Dental.Models
             StringParamsIsEquel(this.ShortName, other.ShortName, "Сокращенное наименование");
             StringParamsIsEquel(this.Kpp, other.Kpp, "КПП");
             StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
-            StringParamsIsEquel(this.Logo, other.Logo, "Логотип");
-            StringParamsIsEquel(this.Stamp, other.Stamp, "Печать");
-            StringParamsIsEquel(this.Signature, other.Signature, "Подпись");
+            StringParamsIsEquel(this.LogoFilePath, other.LogoFilePath, "Логотип");
+            StringParamsIsEquel(this.StampFilePath, other.StampFilePath, "Печать");
+            StringParamsIsEquel(this.SignatureFilePath, other.SignatureFilePath, "Подпись");
             StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
             StringParamsIsEquel(this.Email, other.Email, "Email");
             StringParamsIsEquel(this.Address, other.Address, "Фактический адрес");
@@ -330,7 +322,6 @@ namespace Dental.Models
             StringParamsIsEquel(this.LicenseName, other.LicenseName, "Лицензия");
             StringParamsIsEquel(this.WhoIssuedBy, other.WhoIssuedBy, "Кем выдана");
             StringParamsIsEquel(this.CorrAccountNumber, other.CorrAccountNumber, "Корреспондирующий счет");
-            StringParamsIsEquel(this.Additional, other.Additional, "Дополнительно");
             StringParamsIsEquel(this.Site, other.Site, "Сайт");
 
             return NotIsChanges;

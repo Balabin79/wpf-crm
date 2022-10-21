@@ -21,33 +21,24 @@ using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, /* ViewModelBase,*/ IImageDeletable
+    class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
     {
         private readonly ApplicationContext db;
 
         public OrganizationViewModel()
         {
-            IsReadOnly = true;
             try
             {
                 db = new ApplicationContext();
                 Files = new ObservableCollection<FileInfo>();
                 Model = GetModel();
-                ImagesLoading();
-                if (Model != null)
-                {
-                    IsReadOnly = true;
+                if (Model.Id > 0) ImagesLoading();
+                IsReadOnly = Model.Id > 0;
 
-                    if (Directory.Exists(PathToOrgDirectory))
-                    {
-                        Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
-                    }
-                }
-                else
-                {
-                    IsReadOnly = false;
-
-                }
+                Files = Directory.Exists(PathToOrgFilesDirectory) ? 
+                    new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection() : 
+                    new ObservableCollection<FileInfo>();
+                
                 ModelBeforeChanges = (Organization)Model.Clone();
             }
             catch (Exception e)
@@ -57,24 +48,8 @@ namespace Dental.ViewModels
             }
         }
 
-        #region Блокировка полей
-
-
         [Command]
-        public void Editable(object p)
-        {
-            try
-            {
-                IsReadOnly = !IsReadOnly;
-
-                //if (Model != null && Model.Id != 0) BtnAfterSaveEnable = !IsReadOnly;
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
+        public void Editable(object p) => IsReadOnly = !IsReadOnly;
 
         public bool IsReadOnly
         {
@@ -111,8 +86,6 @@ namespace Dental.ViewModels
             get { return GetProperty(() => Files); }
             set { SetProperty(() => Files, value); }
         }
-
-
 
         [Command]
         public void Save(object p)
@@ -152,11 +125,9 @@ namespace Dental.ViewModels
                 Delete();
 
                 Model = new Organization();
-                var notification = new Notification();
+                
                 ModelBeforeChanges = (Organization)Model.Clone();
-
-                notification.Content = "Данные организации полностью удалены!";
-                notification.run();
+                new Notification {Content = "Данные организации полностью удалены!" }.run();
             }
             catch (Exception e)
             {
@@ -175,7 +146,7 @@ namespace Dental.ViewModels
                 Stamp = null;
                 Signature = null;
                 Files.Clear();
-                new DirectoryInfo(PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(PathToOrgFilesDirectory).GetFiles()?.ForEach(f => f.Delete());
                 new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
                 new DirectoryInfo(PathToStampDirectory).GetFiles()?.ForEach(f => f.Delete());
                 new DirectoryInfo(PathToSignatureDirectory).GetFiles()?.ForEach(f => f.Delete());
@@ -212,27 +183,40 @@ namespace Dental.ViewModels
             return response.ToString() == "Cancel";
         }
 
-
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
-        #endregion
-
+      
         #region Управление файлами лого, печати и подписи
-        private const string LOGO_DIRECTORY = "Dental\\Logo";
-        private const string STAMP_DIRECTORY = "Dental\\Stamp";
-        private const string SIGNATURE_DIRECTORY = "Dental\\Signature";
-
-        private string PathToLogoDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), LOGO_DIRECTORY);
-        private string PathToStampDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), STAMP_DIRECTORY);
-        private string PathToSignatureDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), SIGNATURE_DIRECTORY);
+        private string PathToOrgDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization");
+        private string PathToOrgFilesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Files");
+        private string PathToLogoDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Logo");
+        private string PathToStampDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Stamp");
+        private string PathToSignatureDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Signature");
 
         private void ImagesLoading()
         {
             try
             {
-                string[] images = new string[] { Model.Logo, Model.Stamp, Model.Signature };
+                if (Directory.Exists(PathToLogoDirectory))
+                {
+                    var files = Directory.GetFiles(PathToLogoDirectory);
+                    if (files.Length > 0) Model.LogoFilePath = files[0];
+                }
+                if (Directory.Exists(PathToStampDirectory))
+                {
+                    var files = Directory.GetFiles(PathToStampDirectory);
+                    if (files.Length > 0) Model.StampFilePath = files[0];
+                }
+                if (Directory.Exists(PathToSignatureDirectory))
+                {
+                    var files = Directory.GetFiles(PathToSignatureDirectory);
+                    if (files.Length > 0) Model.SignatureFilePath = files[0];
+                }
+
+                string[] images = new string[] { Model.LogoFilePath, Model.StampFilePath, Model.SignatureFilePath };
                 for (int i = 0; i < images.Length; i++)
                 {
-                    if (!string.IsNullOrEmpty(images[i]) && File.Exists(images[i]))
+
+                        if (!string.IsNullOrEmpty(images[i]) && File.Exists(images[i]))
                     {
                         using (var stream = new FileStream(images[i], FileMode.Open))
                         {
@@ -259,29 +243,27 @@ namespace Dental.ViewModels
             }
         }
 
-
         [Command]
         public void SaveLogo()
         {
             try
             {
-                if (Logo == null) return;
-                if (Model?.Logo == ModelBeforeChanges?.Logo) return;
+                if (Logo == null || (Model?.LogoFilePath!=null && ModelBeforeChanges?.LogoFilePath !=null && Model?.LogoFilePath == ModelBeforeChanges?.LogoFilePath)) return;
                 if (Logo is BitmapImage img)
                 {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.Logo) return;
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.LogoFilePath) return;
                 }
 
-                if (!string.IsNullOrEmpty(Model.Logo))
+                if (!string.IsNullOrEmpty(Model?.LogoFilePath))
                 {
                     if (!Directory.Exists(PathToLogoDirectory)) Directory.CreateDirectory(PathToLogoDirectory);
-                    FileInfo logo = new FileInfo(Model.Logo);
+                    FileInfo logo = new FileInfo(Model?.LogoFilePath);
                     if (!logo.Exists) logo.Create();
                     logo.CopyTo(Path.Combine(PathToLogoDirectory, logo.Name), true);
 
                     FileInfo newFile = new FileInfo(Path.Combine(PathToLogoDirectory, logo.Name));
                     newFile.CreationTime = DateTime.Now;
-                    Model.Logo = newFile.FullName;
+                    Model.LogoFilePath = newFile.FullName;
 
                     // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
                     var files = new DirectoryInfo(PathToLogoDirectory).GetFiles();
@@ -300,28 +282,25 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (Stamp == null) return;
-                if (Model?.Stamp == ModelBeforeChanges.Stamp) return;
-                if (Stamp is BitmapImage img)
+                if (Stamp == null || (Model?.StampFilePath != null && ModelBeforeChanges?.StampFilePath != null && Model?.StampFilePath == ModelBeforeChanges?.StampFilePath)) return;
+                if (Logo is BitmapImage img)
                 {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.Stamp) return;
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.StampFilePath) return;
                 }
 
-                if (!string.IsNullOrEmpty(Model.Stamp))
+                if (!string.IsNullOrEmpty(Model?.StampFilePath))
                 {
                     if (!Directory.Exists(PathToStampDirectory)) Directory.CreateDirectory(PathToStampDirectory);
-                    FileInfo stamp = new FileInfo(Model.Stamp);
-                    if (!stamp.Exists) stamp.Create();
-                    stamp.CopyTo(Path.Combine(PathToStampDirectory, stamp.Name), true);
+                    FileInfo logo = new FileInfo(Model?.StampFilePath);
+                    if (!logo.Exists) logo.Create();
+                    logo.CopyTo(Path.Combine(PathToStampDirectory, logo.Name), true);
 
-                    FileInfo newFile = new FileInfo(Path.Combine(PathToStampDirectory, stamp.Name));
+                    FileInfo newFile = new FileInfo(Path.Combine(PathToStampDirectory, logo.Name));
                     newFile.CreationTime = DateTime.Now;
-                    Model.Stamp = newFile.FullName;
+                    Model.StampFilePath = newFile.FullName;
 
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве печати, остальные удаляем.
                     var files = new DirectoryInfo(PathToStampDirectory).GetFiles();
                     foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                    //StampLoading();
                 }
             }
             catch (Exception e)
@@ -335,28 +314,25 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (Signature == null) return;
-                if (Model?.Signature == ModelBeforeChanges.Signature) return;
-                if (Signature is BitmapImage img)
+                if (Signature == null || (Model?.SignatureFilePath != null && ModelBeforeChanges?.SignatureFilePath != null && Model?.SignatureFilePath == ModelBeforeChanges?.SignatureFilePath)) return;
+                if (Logo is BitmapImage img)
                 {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.Signature) return;
+                    if (((FileStream)img?.StreamSource)?.Name == Model?.SignatureFilePath) return;
                 }
 
-                if (!string.IsNullOrEmpty(Model.Signature))
+                if (!string.IsNullOrEmpty(Model?.SignatureFilePath))
                 {
                     if (!Directory.Exists(PathToSignatureDirectory)) Directory.CreateDirectory(PathToSignatureDirectory);
-                    FileInfo signature = new FileInfo(Model.Signature);
-                    if (!signature.Exists) signature.Create();
-                    signature.CopyTo(Path.Combine(PathToSignatureDirectory, signature.Name), true);
+                    FileInfo logo = new FileInfo(Model?.SignatureFilePath);
+                    if (!logo.Exists) logo.Create();
+                    logo.CopyTo(Path.Combine(PathToSignatureDirectory, logo.Name), true);
 
-                    FileInfo newFile = new FileInfo(Path.Combine(PathToSignatureDirectory, signature.Name));
+                    FileInfo newFile = new FileInfo(Path.Combine(PathToSignatureDirectory, logo.Name));
                     newFile.CreationTime = DateTime.Now;
-                    Model.Signature = newFile.FullName;
+                    Model.SignatureFilePath = newFile.FullName;
 
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве печати, остальные удаляем.
                     var files = new DirectoryInfo(PathToSignatureDirectory).GetFiles();
                     foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                    //SignatureLoading();
                 }
             }
             catch (Exception e)
@@ -413,15 +389,12 @@ namespace Dental.ViewModels
         #endregion
 
         #region команды, связанных с прикреплением файлов 
-        private const string ORG_DIRECTORY = "Dental\\Organization";
-        private string PathToOrgDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ORG_DIRECTORY);
-
         [Command]
         public void OpenDirectory(object p)
         {
             try
             {
-                if (Directory.Exists(PathToOrgDirectory)) Process.Start(PathToOrgDirectory);
+                if (Directory.Exists(PathToOrgFilesDirectory)) Process.Start(PathToOrgFilesDirectory);
             }
             catch (Exception e)
             {
@@ -481,14 +454,14 @@ namespace Dental.ViewModels
                     }
                 }
 
-                if (!Directory.Exists(PathToOrgDirectory)) Directory.CreateDirectory(PathToOrgDirectory);
+                if (!Directory.Exists(PathToOrgFilesDirectory)) Directory.CreateDirectory(PathToOrgFilesDirectory);
 
-                File.Copy(file.FullName, Path.Combine(PathToOrgDirectory, file.Name), true);
+                File.Copy(file.FullName, Path.Combine(PathToOrgFilesDirectory, file.Name), true);
 
-                FileInfo newFile = new FileInfo(Path.Combine(PathToOrgDirectory, file.Name));
+                FileInfo newFile = new FileInfo(Path.Combine(PathToOrgFilesDirectory, file.Name));
                 newFile.CreationTime = DateTime.Now;
 
-                Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
+                Files = new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -506,7 +479,7 @@ namespace Dental.ViewModels
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     file.Delete();
-                    Files = new DirectoryInfo(PathToOrgDirectory).GetFiles().ToObservableCollection();
+                    Files = new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection();
                 }
             }
             catch (Exception e)

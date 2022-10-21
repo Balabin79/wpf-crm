@@ -72,7 +72,8 @@
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                            CommandParameter="0" />
 
-                            <dxb:BarButtonItem Content="Добавить группу" Margin="0 0 5 0"                                         
+                            <dxb:BarButtonItem Content="Добавить группу" 
+                                           Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"

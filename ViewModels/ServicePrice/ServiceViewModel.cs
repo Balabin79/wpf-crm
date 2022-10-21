@@ -25,7 +25,7 @@ using Dental.ViewModels.Base;
 
 namespace Dental.ViewModels.ServicePrice
 {
-    public class ServiceViewModel : BaseViewModel<Service>
+    public class ServiceViewModel : TreeBaseViewModel<Service>
     {
         public ServiceViewModel(ApplicationContext ctx, DbSet<Service> context) : base(ctx, context)
         {

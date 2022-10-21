@@ -21,10 +21,10 @@ using Dental.Views.ServicePrice;
 
 namespace Dental.ViewModels.Base
 {
-    public class BaseViewModel<T> : ViewModelBase where T : BaseTemplate<T>
+    public class TreeBaseViewModel<T> : ViewModelBase where T : BaseTemplate<T>
     {
         protected ApplicationContext db;
-        public BaseViewModel(ApplicationContext ctx, DbSet<T> context)
+        public TreeBaseViewModel(ApplicationContext ctx, DbSet<T> context)
         { 
             db = ctx;
             Context = context;
