@@ -7,6 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System;
+using System.Data.Entity;
+using DevExpress.Mvvm.Native;
+using DevExpress.Mvvm.DataAnnotations;
+using System.Windows.Data;
+using System.IO;
 
 namespace Dental.Views
 {

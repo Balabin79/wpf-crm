@@ -21,6 +21,7 @@
       xmlns:dxscht="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/themekeys" 
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
      xmlns:System="clr-namespace:System;assembly=mscorlib"
+     xmlns:file="clr-namespace:System.IO;assembly=WindowsBase"
     x:Class="Dental.Views.Sheduler" 
       dx:ThemeManager.ThemeName="Office2019White"    
       mc:Ignorable="d"
@@ -32,7 +33,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-
+                    
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:ShedulerViewModel x:Key="vm"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
@@ -114,11 +115,11 @@
                         <Setter Property="ContentOrientation" Value="Horizontal" />
                     </Style>
                     <DataTemplate x:Key="FlyoutTemplate">
-                        <dxlc:LayoutControl Width="250" MinHeight="150" IsHitTestVisible="False" Orientation="Vertical" Padding="11">
+                        <dxlc:LayoutControl Width="250" MinHeight="80" IsHitTestVisible="False" Orientation="Vertical" Padding="11">
                             <StackPanel Orientation="Vertical">
                                 <Border Height="5" Margin="1,0,1,-1" Panel.ZIndex="1" VerticalAlignment="Top" Background="{Binding StatusBrush}"/>
                                 <dxschv:DayAppointmentControl
-                                    MinHeight="35"
+                                    MinHeight="25"
                                     Panel.ZIndex="0"
                                     VerticalAlignment="Top"
                                     Content="{Binding}"
@@ -133,9 +134,6 @@
                             <dxlc:LayoutControl Margin="0,5,0,0" VerticalAlignment="Top" Orientation="Vertical" Padding="0">
                                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_Start}}" />
                                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=LayoutItem_End}}" />
-                                <dxlc:LayoutItem Label="Файл:" FontWeight="DemiBold" LabelPosition="Left" >
-                                    <TextBlock Text="{DXBinding Expr='CustomFields[`AttachmentFile`] eq null ? `Не прикреплен` : CustomFields[`AttachmentFile`]', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontWeight="Normal"/>
-                                </dxlc:LayoutItem>
                             </dxlc:LayoutControl>
 
                         </dxlc:LayoutControl>
@@ -402,6 +400,7 @@
                                         <dxsch:CustomFieldMapping Mapping="LocationId" Name="LocationId"/>
                                         <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
                                         <dxsch:CustomFieldMapping Mapping="AttachmentFile" Name="AttachmentFile"/>
+                                    <dxsch:CustomFieldMapping Mapping="AttachmentFileName" Name="AttachmentFileName"/>
                                     </dxsch:AppointmentMappings>
                                 </dxsch:DataSource.AppointmentMappings>
 

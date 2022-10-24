@@ -22,6 +22,8 @@ using Dental.Services;
 using Dental.Views.PatientCard;
 using Dental.ViewModels.ClientDir;
 using Dental.Models.Base;
+using System.Windows.Data;
+
 
 namespace Dental.ViewModels
 {
@@ -80,6 +82,17 @@ namespace Dental.ViewModels
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
                 db.Entry(item).State = EntityState.Added;
+                SaveFile(item.AttachmentFile, item.Guid, ref item);
+                if (p is AppointmentAddedEventArgs arg)
+                {
+                    foreach (var i in arg.Appointments)
+                    {
+                        i.CustomFields["AttachmentFile"] = item.AttachmentFile;
+                        i.CustomFields["AttachmentFileName"] = item.AttachmentFileName;
+                    }
+                }
+
+
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -97,8 +110,37 @@ namespace Dental.ViewModels
                 {
                     foreach (var i in arg.Appointments)
                     {
-                       // var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();
+                        try
+                        {
+                            var fileName = i.CustomFields["AttachmentFile"]?.ToString();
 
+                            var item = Appointments.FirstOrDefault(f => f.Id == (int)i.Id);
+                            
+                            string pathToAttachFile = Path.Combine(PathToAppointmentsDirectory, item?.Guid);
+
+                            //если пути не совпадают, то сохранить новый
+                            if (!string.IsNullOrEmpty(fileName) && pathToAttachFile != fileName)
+                            {
+                                if (Directory.Exists(pathToAttachFile))Directory.Delete(pathToAttachFile, true);
+                                SaveFile(fileName, item.Guid, ref item);
+                                break;
+                            }
+
+                            if (string.IsNullOrEmpty(fileName) && Directory.GetFiles(pathToAttachFile).Length > 0)
+                            {
+                                Directory.Delete(pathToAttachFile, true);
+                                i.CustomFields["AttachmentFile"] = null;
+                                i.CustomFields["AttachmentFileName"] = null;
+                                item.AttachmentFile = null;
+                                item.AttachmentFile = null;
+                            }
+                                
+                                
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
                     }
                 }
 
@@ -118,8 +160,22 @@ namespace Dental.ViewModels
                 if (p is AppointmentRemovedEventArgs arg)
                 foreach (var i in arg.Appointments)
                 {
-                   // var item = db.Appointments.Where(f => f.Guid == ((Appointments)i.SourceObject).Guid)?.FirstOrDefault();              
-                }
+                        try
+                        {
+                            var fileName = i.CustomFields["AttachmentFile"]?.ToString();
+                            if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName)) 
+                            {
+                                Directory.Delete(Path.GetDirectoryName(fileName), true);
+                                //File.Delete(fileName);
+                            } 
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                    }
+
+
                 Services.Reestr.Update((int)Tables.Appointments);
                 db.SaveChanges();
             }
@@ -128,6 +184,39 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+
+        private string PathToAppointmentsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Appointments");
+
+        private void SaveFile(string attachmentFile, string guid, ref Appointments item)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(attachmentFile))
+                {
+                    string pathToAttachFile = Path.Combine(PathToAppointmentsDirectory, guid);
+
+                    if (!Directory.Exists(pathToAttachFile)) Directory.CreateDirectory(pathToAttachFile);
+
+                    FileInfo file = new FileInfo(attachmentFile);
+                    if (!file.Exists) file.Create();
+                    file.CopyTo(Path.Combine(pathToAttachFile, file.Name), true);
+
+                    FileInfo newFile = new FileInfo(Path.Combine(pathToAttachFile, file.Name)) { CreationTime = DateTime.Now };
+
+                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
+                    var files = new DirectoryInfo(pathToAttachFile).GetFiles();
+                    foreach (var f in files) 
+                        if (f.FullName != newFile.FullName) file.Delete();
+                    item.AttachmentFile = newFile.FullName;
+                    item.AttachmentFileName = newFile.Name;
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
 
         #region Справочник "Места встреч"
         [Command]
@@ -367,7 +456,7 @@ namespace Dental.ViewModels
         #endregion
 
 
-        public  ObservableCollection<Service> ClassificatorCategories
+        public ObservableCollection<Service> ClassificatorCategories
         {
             get { return GetProperty(() => ClassificatorCategories); }
             set { SetProperty(() => ClassificatorCategories, value); }
@@ -388,7 +477,6 @@ namespace Dental.ViewModels
             get { return GetProperty(() => SelectedDoctors); }
             set { SetProperty(() => SelectedDoctors, value); }
         }
-
 
         /*****************************************************************************************/
         [Command]
@@ -479,7 +567,6 @@ namespace Dental.ViewModels
 
         private void LoadClients(ApplicationContext db) => Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
         
-
         private void SetSelectedEmployees()
         {
             var userSession = (UserSession)Application.Current.Resources["UserSession"];
