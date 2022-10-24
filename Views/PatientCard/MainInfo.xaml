@@ -10,12 +10,12 @@
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels" 
-              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions"
-              d:DesignWidth="800"
-              >
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions"
+       d:DesignWidth="800">
+    
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
         <converter:BoolIntConverter x:Key="boolConverter" />

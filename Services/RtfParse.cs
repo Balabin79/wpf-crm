@@ -18,6 +18,7 @@ namespace Dental.Services
             db = new ApplicationContext();
             RtfText = txt;
             CommonValues = db.CommonValues.ToArray();
+            Organization = db.Organizations.FirstOrDefault() ?? new Organization();
         }
 
         public RtfParse(string txt, object model) : this(txt) 
@@ -32,12 +33,27 @@ namespace Dental.Services
                 Employee = employee;
                 AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
             }
+
+            if (model is Invoice invoice)
+            {
+                Invoice = invoice;
+                InvoiceServiceItems = db.InvoiceServiceItems.Where(f => f.InvoiceId == invoice.Id).
+                    Include(f => f.Employee).Include(f => f.Service).ToArray();
+                InvoiceMaterialItems = db.InvoiceMaterialItems.Include(f => f.Nomenclature).ToArray();
+
+                // строку выбирать из бд динамически непосредственно при парсинге
+                //AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
+                if (invoice.ClientId != null )
+                    AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == invoice.ClientId).
+                        Include(f => f.AdditionalField).ToArray();
+            }
         }
 
         public string Run()
         {
             try
             {
+                if (Employee != null) Employee.Password = "";
                 Regex regex = new Regex(@"\[(.+?)\]");
 
                 var matches = regex.Matches(RtfText);
@@ -74,9 +90,11 @@ namespace Dental.Services
                 {
                     //case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Client": return Client.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
-                    case "Employee": return Employee.GetType().GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";        
-                    case "ClientAdditionalValues": return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
-                    case "EmployeeAdditionalValues": return AdditionalEmployeeValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "Employee": return Employee.GetType().GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";
+                    case "Org": return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
+                        
+                    case "ClientAdditionalFields": return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "EmployeeAdditionalFields": return AdditionalEmployeeValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
                     case "CommonValues": return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
 
                     default: return "";
@@ -88,12 +106,18 @@ namespace Dental.Services
             }        
         }
 
-        // case "Employee": return ((Employee)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
+
         private string RtfText { get; set; }
         private Employee Employee { get; set; }
         private Client Client{ get; set; }
+        private Organization Organization { get; set; }
+
         private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
         private ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
         private ICollection<CommonValue> CommonValues { get; set; }
+
+        private Invoice Invoice { get; set; }
+        private ICollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
+        private ICollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }
     }
 }

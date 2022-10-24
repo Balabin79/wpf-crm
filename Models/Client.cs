@@ -38,8 +38,8 @@ namespace Dental.Models
 
         public string BirthDate
         {
-            get { return GetProperty(() => MiddleName); }
-            set { SetProperty(() => MiddleName, value); }
+            get { return GetProperty(() => BirthDate); }
+            set { SetProperty(() => BirthDate, value); }
         }
 
         public string Sex
@@ -56,8 +56,8 @@ namespace Dental.Models
 
         public string Email
         {
-            get { return GetProperty(() => Phone); }
-            set { SetProperty(() => Phone, value?.Trim()); }
+            get { return GetProperty(() => Email); }
+            set { SetProperty(() => Email, value?.Trim()); }
         }
 
         public string Address
