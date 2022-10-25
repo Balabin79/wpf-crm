@@ -115,7 +115,10 @@ namespace Dental.ViewModels.EmployeeDir
         public string BirthDate
         {
             get { return GetProperty(() => BirthDate); }
-            set { SetProperty(() => BirthDate, value); }
+            set 
+            {
+                if (value != null && DateTime.TryParse(value, out DateTime result)) SetProperty(() => BirthDate, result.ToShortDateString());
+            }
         }
         
         public string Sex

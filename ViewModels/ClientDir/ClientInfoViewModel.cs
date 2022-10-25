@@ -71,7 +71,15 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => MiddleName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
         }
 
-        public string BirthDate { get; set; }
+        public string BirthDate
+        {
+            get { return GetProperty(() => BirthDate); }
+            set
+            {
+                if (value != null && DateTime.TryParse(value, out DateTime result)) SetProperty(() => BirthDate, result.ToShortDateString());
+            }
+        }
+
         public string Sex { get; set; }
 
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]

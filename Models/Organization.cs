@@ -119,7 +119,11 @@ namespace Dental.Models
         public string LicenseDate
         {
             get { return GetProperty(() => LicenseDate); }
-            set { SetProperty(() => LicenseDate, value?.Trim()); }
+            set
+            {
+                if (value != null && DateTime.TryParse(value, out DateTime result)) 
+                    SetProperty(() => LicenseDate, result.ToShortDateString());
+            }
         }
 
         [Display(Name = "Генеральный директор")]

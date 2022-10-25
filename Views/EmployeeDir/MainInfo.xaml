@@ -164,12 +164,14 @@
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Адрес" AddColonToLabel="True">
-                                    <dxe:MemoEdit 
+                                    <dxe:MemoEdit
+                                        ShowIcon="False" ShowText="True" TextWrapping="Wrap" PrintTextWrapping="Wrap" MemoTextWrapping="Wrap"
                                                 EditValue="{Binding Path=EmployeeInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Примечание"  LabelPosition="Left" >
                                     <dxe:MemoEdit ShowIcon="False" VerticalContentAlignment="Top"
+                                                  ShowText="True" TextWrapping="Wrap" PrintTextWrapping="Wrap" MemoTextWrapping="Wrap"
                                             Text="{Binding EmployeeInfoViewModel.Note, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>

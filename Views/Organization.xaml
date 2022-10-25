@@ -238,10 +238,9 @@
                                                   LabelPosition="Top"  
                                                   HorizontalAlignment="Stretch">
                                         <dxe:DateEdit Name="RegisterDate" 
-                                                  MaskType="DateTimeAdvancingCaret" 
                                                   Mask="d" 
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                  Text="{Binding Model.LicenseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString},ValidatesOnDataErrors=True }"  />
+                                                  EditValue="{Binding Model.LicenseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString},ValidatesOnDataErrors=True }"  />
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem  Label="Кем выдана:"                                                   

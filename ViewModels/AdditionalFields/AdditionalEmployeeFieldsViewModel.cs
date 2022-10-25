@@ -51,6 +51,7 @@ namespace Dental.ViewModels.AdditionalFields
                     if (model.Id != 0 && !DeleteMsgShow(model)) return;
                     if (model.Id != 0)
                     {
+                        db.AdditionalEmployeeValue.Where(f => f.AdditionalFieldId == model.Id)?.ForEach(f => db.AdditionalEmployeeValue.Remove(f));
                         db.AdditionalEmployeeFields.Remove(model);
                         if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
                     }

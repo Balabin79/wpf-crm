@@ -4,17 +4,12 @@ using Dental.Infrastructures.Logs;
 //using DevExpress.Xpf.Charts;
 using DevExpress.Xpf.Grid;
 //using DevExpress.Xpf.PivotGrid;
-using DevExpress.Xpf.Scheduling;
 using DevExpress.Xpf.Printing;
 using System.IO;
-using DevExpress.Xpf.RichEdit;
 using Dental.Services;
 using DevExpress.XtraRichEdit;
 using Dental.Models;
 using Dental.Infrastructures.Converters;
-using DevExpress.XtraPrinting;
-using System.Windows.Controls;
-using System.Drawing.Printing;
 using Dental.Views.Documents;
 using Dental.Services.Files;
 
@@ -108,7 +103,5 @@ namespace Dental.Infrastructures.Commands
                 return DocumentFormat.PlainText;
             }
         }
-
-
     }
 }

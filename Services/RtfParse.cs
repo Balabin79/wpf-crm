@@ -95,7 +95,7 @@ namespace Dental.Services
                         
                     case "ClientAdditionalFields": return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
                     case "EmployeeAdditionalFields": return AdditionalEmployeeValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
-                    case "CommonValues": return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "CommonFields": return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
 
                     default: return "";
                 }
