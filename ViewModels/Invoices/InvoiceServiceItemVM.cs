@@ -20,12 +20,6 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => Service, value); }
         }
 
-        public Employee Employee
-        {
-            get { return GetProperty(() => Employee); }
-            set { SetProperty(() => Employee, value); }
-        }
-
         public int Count
         {
             get { return GetProperty(() => Count); }

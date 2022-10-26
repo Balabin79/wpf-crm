@@ -19,13 +19,6 @@ namespace Dental.Models
        
        public Invoice Invoice { get; set; }
        public int? InvoiceId { get; set; }       
-        
-        public Employee Employee
-        {
-            get { return GetProperty(() => Employee); }
-            set { SetProperty(() => Employee, value); }
-        }
-        public int? EmployeeId { get; set; }
 
         public int Count 
         {

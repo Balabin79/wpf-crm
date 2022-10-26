@@ -12,18 +12,13 @@ using Dental.Infrastructures.Converters;
 using Dental.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.Invoices;
-using System.Collections;
+
 using DevExpress.Xpf.Bars;
-using DevExpress.Utils.Svg;
-//using DevExpress.XtraPrinting.Drawing;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Data;
 using Dental.Infrastructures.Commands;
 using Dental.Views.Documents;
 using Dental.Services.Files;
-using System.IO;
-using DevExpress.Xpf.Grid;
 using Dental.Services;
 using Dental.Models.Base;
 
@@ -45,7 +40,7 @@ namespace Dental.ViewModels.Invoices
             }
             catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
+              ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -88,6 +83,9 @@ namespace Dental.ViewModels.Invoices
             {
                 Visibility visibility = fromPatientCard == true ? Visibility.Collapsed : Visibility.Visible;
                 string title = "Редактирование счета";
+                Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+
+
                 if (p != null) Invoice = Invoices.FirstOrDefault(f => f.Id == (int)p);                
                 else
                 {
@@ -108,12 +106,13 @@ namespace Dental.ViewModels.Invoices
                     Number = Invoice.Number,
                     Date = Invoice.Date,
                     Client = Invoice?.Client ?? Client,
+                    Employee = Invoice?.Employee,
                     Paid = Invoice.Paid,
                     Total = Invoice.Total,
                     ClientFieldVisibility = visibility,
                     Clients = db.Clients.OrderBy(f => f.LastName).ToArray()
             };
-                var height = fromPatientCard ? 230 : 270;
+                var height = fromPatientCard ? 275 : 320;
                 InvoiceWindow = new InvoiceWindow() { DataContext = this, Height = height, MaxHeight = height };
                 InvoiceWindow.ShowDialog();
             }
@@ -130,11 +129,13 @@ namespace Dental.ViewModels.Invoices
             {
                 var client = InvoiceVM.Client ?? Client;
                 if (client == null) return;
-                bool edited = Invoice.Id != 0 && (Invoice.Client != client || Invoice.Date != InvoiceVM.Date || Invoice.Paid != InvoiceVM.Paid);
+                bool edited = Invoice.Id != 0 && (Invoice.Client != client || Invoice.Date != InvoiceVM.Date || Invoice.Paid != InvoiceVM.Paid || Invoice.Employee != InvoiceVM.Employee);
 
                 Invoice.Number = InvoiceVM.Number;
                 Invoice.Date = InvoiceVM.Date;
                 Invoice.Client = client;
+                Invoice.Employee = InvoiceVM?.Employee;
+                Invoice.EmployeeId = InvoiceVM?.Employee?.Id;
                 Invoice.Paid = InvoiceVM.Paid;
                 Invoice.Total = InvoiceVM.Total;
 
@@ -250,8 +251,7 @@ namespace Dental.ViewModels.Invoices
         public void OpenFormInvoiceService(object p)
         {
             try
-            {
-                Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+            {               
                 Services = db.Services.ToArray();
                 if (p is Invoice invoice)
                 {
@@ -279,7 +279,6 @@ namespace Dental.ViewModels.Invoices
                     InvoiceServiceItemVM = new InvoiceServiceItemVM()
                     {
                         Invoice = item.Invoice,
-                        Employee = item.Employee,
                         Service = item.Service,
                         Count = item.Count,
                         Price = item.Price,
@@ -304,7 +303,6 @@ namespace Dental.ViewModels.Invoices
             {
                 InvoiceServiceItem.Invoice = InvoiceServiceItemVM.Invoice;
                 InvoiceServiceItem.Service = InvoiceServiceItemVM.Service;
-                InvoiceServiceItem.Employee = InvoiceServiceItemVM.Employee;
                 InvoiceServiceItem.Count = InvoiceServiceItemVM.Count;
                 InvoiceServiceItem.Price = InvoiceServiceItemVM.Price;
                 var invoice = Invoices.FirstOrDefault(f => f.Id == InvoiceServiceItem.Invoice.Id);
@@ -514,7 +512,7 @@ namespace Dental.ViewModels.Invoices
         {
             try
             {
-                Documents.PrintMenuUpdating += PrintMenuLoading;
+                //Documents.PrintMenuUpdating += PrintMenuLoading;
                 DocumentsWindow = new DocumentsWindow() { DataContext = Documents };
                 DocumentsWindow.ShowDialog();
             }
@@ -585,8 +583,7 @@ namespace Dental.ViewModels.Invoices
 
             Invoices = fromPatientCard && Client == null 
                 ? new ObservableCollection<Invoice>()
-                : query.Include(f => f.Client)
-                .Include(f => f.InvoiceServiceItems.Select(x => x.Employee))
+                : query.Include(f => f.Client).Include(f => f.Employee)
                 .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
                 .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
                 .ToObservableCollection() ?? new ObservableCollection<Invoice>();

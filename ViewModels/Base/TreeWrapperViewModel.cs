@@ -5,6 +5,7 @@ using Dental.Models.Base;
 using Dental.Models.Templates;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Editors;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,6 +41,19 @@ namespace Dental.ViewModels
                     }
                     parameters.Popup.ClosePopup();
                 }
+            }
+            catch
+            {
+
+            }
+        }
+
+        [Command]
+        public void ClearSelectField(object p)
+        {
+            try
+            {
+                if (p is PopupBaseEdit popup)  popup.EditValue = null;          
             }
             catch
             {

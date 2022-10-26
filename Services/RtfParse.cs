@@ -34,19 +34,6 @@ namespace Dental.Services
                 AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
             }
 
-            if (model is Invoice invoice)
-            {
-                Invoice = invoice;
-                InvoiceServiceItems = db.InvoiceServiceItems.Where(f => f.InvoiceId == invoice.Id).
-                    Include(f => f.Employee).Include(f => f.Service).ToArray();
-                InvoiceMaterialItems = db.InvoiceMaterialItems.Include(f => f.Nomenclature).ToArray();
-
-                // строку выбирать из бд динамически непосредственно при парсинге
-                //AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
-                if (invoice.ClientId != null )
-                    AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == invoice.ClientId).
-                        Include(f => f.AdditionalField).ToArray();
-            }
         }
 
         public string Run()
@@ -116,8 +103,5 @@ namespace Dental.Services
         private ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
         private ICollection<CommonValue> CommonValues { get; set; }
 
-        private Invoice Invoice { get; set; }
-        private ICollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
-        private ICollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }
     }
 }

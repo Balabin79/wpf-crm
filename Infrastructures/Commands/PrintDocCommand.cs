@@ -38,7 +38,7 @@ namespace Dental.Infrastructures.Commands
                     PathToFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), InvoicesDocumentsViewModel.FILES, invoice.FilePath);
                     Model = invoice.Model;
                 }
-                //Model = ((GridCellData)(param.Item).DataContext).Row;
+
                 if (p is DocParams param)
                 {
                     PathToFile = param.PathToFile;

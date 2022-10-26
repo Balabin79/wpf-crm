@@ -9,7 +9,7 @@
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        Name="Window"
+        Name="Window" 
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6 Sheduler" 
         >
@@ -49,6 +49,23 @@
                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                     </dxe:DateEdit.StyleSettings>
                 </dxe:DateEdit>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Сотрудник:" Name="Employee" LabelPosition="Top" >
+                <dxe:ComboBoxEdit 
+                                        ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        NullText="Сотрудники" 
+                                        IsTextEditable="False"
+                                        DisplayMember="Fio"
+                                        IncrementalFiltering="True"
+                                        IncrementalSearch="True"
+                                        IsCaseSensitiveFilter="False"
+                                        ValidateOnTextInput="False"
+                                        SelectedItem ="{Binding InvoiceVM.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        EditValue ="{Binding InvoiceVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                    <dxe:ComboBoxEdit.StyleSettings>
+                        <dxe:RadioComboBoxStyleSettings />
+                    </dxe:ComboBoxEdit.StyleSettings>
+                </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Оплачен:"  LabelPosition="Top" >
                 <dxe:CheckEdit EditValue="{Binding InvoiceVM.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />

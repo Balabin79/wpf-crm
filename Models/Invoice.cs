@@ -35,6 +35,13 @@ namespace Dental.Models
         }
         public int? ClientId { get; set; }
 
+        public Employee Employee
+        {
+            get { return GetProperty(() => Employee); }
+            set { SetProperty(() => Employee, value); }
+        }
+        public int? EmployeeId { get; set; }
+
         public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
         public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }
 

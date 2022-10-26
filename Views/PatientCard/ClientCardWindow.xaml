@@ -18,7 +18,7 @@
     dx:ThemeManager.ThemeName="Office2019White"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
     Title="B6 Dental"
-    Closing="Window_Closing" Topmost="True"
+    Closing="Window_Closing"
     x:Name="win">
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>

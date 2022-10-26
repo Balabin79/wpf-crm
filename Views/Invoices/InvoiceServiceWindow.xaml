@@ -111,24 +111,7 @@
                     </dxe:PopupBaseEdit.PopupContentTemplate>
                 </dxe:PopupBaseEdit>
             </dxlc:LayoutItem>
-            <dxlc:LayoutItem Label="Сотрудник:" Name="Employee" LabelPosition="Top" >
-                    <dxe:ComboBoxEdit 
-                                        ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Сотрудники" 
-                                        IsTextEditable="False"
-                                        DisplayMember="Fio"
-                                        IncrementalFiltering="True"
-                                        IncrementalSearch="True"
-                                        IsCaseSensitiveFilter="False"
-                                        ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding InvoiceServiceItemVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding InvoiceServiceItemVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:RadioComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
-            <dxlc:LayoutGroup Orientation="Horizontal">
+
                 <dxlc:LayoutItem Label="Количество:"  LabelPosition="Top" >
                     <dxe:TextEdit Mask="d" MaskType="Numeric" 
                          EditValue="{Binding InvoiceServiceItemVM.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
@@ -137,7 +120,7 @@
                     <dxe:TextEdit Mask="d" MaskType="Numeric" IsReadOnly="True"
                          EditValue="{Binding ElementName=popup, Path=EditValue.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}}" />
                 </dxlc:LayoutItem>
-            </dxlc:LayoutGroup>
+
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
                 <dx:SimpleButton 
                     Height="23" Content="Сохранить" 
