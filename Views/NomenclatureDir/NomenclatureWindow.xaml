@@ -18,7 +18,7 @@
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         Height="{DXBinding Expr='Model.IsDir == 0 ? 325 : 235'}"
         x:Name="win">
 
@@ -72,19 +72,21 @@
                                     SelectedItem="{Binding Copy.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  />
                     </dxlc:LayoutItem>
-
-                    <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
-                        <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
+                    <dxlc:LayoutGroup Orientation="Horizontal">
+                        <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
+                            <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
                      EditValue="{Binding Path=Copy.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                                                                 
                      NullText="Выберите родительскую категорию" IsTextEditable="False">
-                            <dxe:PopupBaseEdit.PopupContentTemplate>
-                                <ControlTemplate>
-                                    <dxg:TreeListControl AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                 ItemsSource="{Binding Copy.Materials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                <dxe:PopupBaseEdit.PopupContentTemplate>
+                                    <ControlTemplate>
+                                        <dxg:TreeListControl  
+                                            x:Name="treeControl" 
+                                            AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  >
-                                        <dxg:TreeListControl.View>
-                                            <dxg:TreeListView                                                          
+                                            <dxg:TreeListControl.View>
+                                                <dxg:TreeListView                                                          
                                                         x:Name="tree_view"
                                                         KeyFieldName="Id"
                                                         ParentFieldName="ParentId"
@@ -108,50 +110,63 @@
                                                         AllowScrollToFocusedRow="True"
                                                         ShowVerticalLines="False"                                                      
                                                         NavigationStyle="Row">
-                                                <dxmvvm:Interaction.Behaviors>
-                                                    <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
+                                                    <dxmvvm:Interaction.Behaviors>
+                                                        <dxmvvm2:EventToCommand EventName="MouseDoubleClick" 
                                                            Command="{Binding SelectItemInFieldCommand }">
-                                                        <dxmvvm2:EventToCommand.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource multiConv}">
-                                                                <Binding ElementName="treeControl"/>
-                                                                <Binding ElementName="popup" />
-                                                            </MultiBinding>
-                                                        </dxmvvm2:EventToCommand.CommandParameter>
-                                                    </dxmvvm2:EventToCommand>
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="treeControl"/>
+                                                                    <Binding ElementName="popup" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
 
-                                                    <dxmvvm2:EventToCommand EventName="MouseDown" 
+                                                        <dxmvvm2:EventToCommand EventName="MouseDown" 
                                                             Command="{Binding SelectItemInFieldCommand }">
-                                                        <dxmvvm2:EventToCommand.CommandParameter>
-                                                            <MultiBinding Converter="{StaticResource multiConv}">
-                                                                <Binding ElementName="treeControl"/>
-                                                                <Binding ElementName="popup" />
-                                                            </MultiBinding>
-                                                        </dxmvvm2:EventToCommand.CommandParameter>
-                                                    </dxmvvm2:EventToCommand>
-                                                </dxmvvm:Interaction.Behaviors>
+                                                            <dxmvvm2:EventToCommand.CommandParameter>
+                                                                <MultiBinding Converter="{StaticResource multiConv}">
+                                                                    <Binding ElementName="treeControl"/>
+                                                                    <Binding ElementName="popup" />
+                                                                </MultiBinding>
+                                                            </dxmvvm2:EventToCommand.CommandParameter>
+                                                        </dxmvvm2:EventToCommand>
+                                                    </dxmvvm:Interaction.Behaviors>
 
-                                                <dxg:TreeListView.NodeImageSelector>
-                                                    <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                                                </dxg:TreeListView.NodeImageSelector>
+                                                    <dxg:TreeListView.NodeImageSelector>
+                                                        <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
+                                                    </dxg:TreeListView.NodeImageSelector>
 
-                                            </dxg:TreeListView>
-                                        </dxg:TreeListControl.View>
+                                                </dxg:TreeListView>
+                                            </dxg:TreeListControl.View>
 
-                                        <dxg:TreeListColumn Width="auto" MinWidth="150" FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
-                                            <dxg:TreeListColumn.CellDisplayTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
+                                            <dxg:TreeListColumn Width="auto" MinWidth="150" FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
+                                                <dxg:TreeListColumn.CellDisplayTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
                                                 Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                </DataTemplate>
-                                            </dxg:TreeListColumn.CellDisplayTemplate>
-                                        </dxg:TreeListColumn>
+                                                    </DataTemplate>
+                                                </dxg:TreeListColumn.CellDisplayTemplate>
+                                            </dxg:TreeListColumn>
 
-                                    </dxg:TreeListControl>
-                                </ControlTemplate>
-                            </dxe:PopupBaseEdit.PopupContentTemplate>
-                        </dxe:PopupBaseEdit>
-                    </dxlc:LayoutItem>
-
+                                        </dxg:TreeListControl>
+                                    </ControlTemplate>
+                                </dxe:PopupBaseEdit.PopupContentTemplate>
+                            </dxe:PopupBaseEdit>
+                        </dxlc:LayoutItem>
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Height="30"  
+                                            Margin="-3 15 -10 0" Width="35" Padding="0"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="Default">
+                            <dxb:BarButtonItem Margin="0" Padding="0"
+                                 Content="Очистить поле" 
+                                 KeyGesture="Delete" 
+                                 GlyphSize="Small" 
+                                 GlyphAlignment="Left" 
+                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"                                
+                                 Command="{Binding ElementName=popup, Path=DataContext.ClearSelectFieldCommand }"
+                                 IsEnabled="{DXBinding Expr='@e(popup).EditValue != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                 CommandParameter="{Binding ElementName=popup}"/>
+                        </dxb:ToolBarControl>
+                    </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
 
 
