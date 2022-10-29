@@ -42,8 +42,16 @@ namespace Dental.Models
         }
         public int? EmployeeId { get; set; }
 
-        public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems { get; set; }
-        public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems { get; set; }
+        public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems 
+        {
+            get { return GetProperty(() => InvoiceServiceItems); }
+            set { SetProperty(() => InvoiceServiceItems, value); }
+        }
+        public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems 
+        {
+            get { return GetProperty(() => InvoiceMaterialItems); }
+            set { SetProperty(() => InvoiceMaterialItems, value); }
+        }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

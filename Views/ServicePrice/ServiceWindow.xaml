@@ -11,7 +11,7 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler"
+        Title="B6Dental"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
@@ -32,35 +32,39 @@
         <converter:MultiBindingConverter x:Key="multiConv" />
     </Window.Resources>
 
-        <Grid>
-            <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" >
-                <Grid >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="689*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1" Grid.ColumnSpan="2" >
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
                 <TextBlock Text="{DXBinding Expr='Copy.IsDir == 0 ? `Услуга` : `Группа`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
-                    <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
+                <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
 
-                        <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
+                    <dxlc:LayoutItem Label="*Наименование:" LabelPosition="Top" IsRequired="True" >
                         <dxe:TextEdit  Text="{Binding Copy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
-                        </dxlc:LayoutItem>
+                    </dxlc:LayoutItem>
 
-                        <dxlc:LayoutGroup Orientation="Horizontal" 
+                    <dxlc:LayoutGroup Orientation="Horizontal" 
                                           Visibility="{DXBinding Expr='Copy.IsDir == 0 ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                            <dxlc:LayoutItem Label="Код:" LabelPosition="Top" >
+                        <dxlc:LayoutItem Label="Код:" LabelPosition="Top" >
                             <dxe:TextEdit Text="{Binding Copy.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }"/>
-                            </dxlc:LayoutItem>
-                            <dxlc:LayoutItem Label="Стоимость:" LabelPosition="Top" >
-                                <dxe:TextEdit                                   
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Стоимость:" LabelPosition="Top" >
+                            <dxe:TextEdit                                   
                                     MaskType="Numeric" Mask="c"
                                     Text="{Binding Copy.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
                                     ValidatesOnDataErrors=True, StringFormat={}{0:c2}, ConverterCulture={x:Static SystemGlobalization:CultureInfo.CurrentCulture} 
                                     }"  />
-                            </dxlc:LayoutItem>
-                        </dxlc:LayoutGroup>
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
                     <dxlc:LayoutGroup Orientation="Horizontal">
                         <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
                             <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
@@ -157,13 +161,13 @@
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
 
-                    <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
-                        <dx:SimpleButton
+                <StackPanel Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <dx:SimpleButton
                             Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=win}" 
                             IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Copy.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Click="Close_Click" Margin="4 0 0 0"/>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-        </Grid>
+                    <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Click="Close_Click" Margin="4 0 0 0"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
 </Window>

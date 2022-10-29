@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Dental.Views.Header"
         mc:Ignorable="d"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler" 
+        Title="B6Dental" 
         Closing="Window_Closing"
         Height="450" Width="800">
     <Grid>

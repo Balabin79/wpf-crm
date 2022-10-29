@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Dental.Models
 {
     [Table("InvoiceServiceItems")]
-    public class InvoiceServiceItems : AbstractBaseModel, IDataErrorInfo, INotifyPropertyChanged
+    public class InvoiceServiceItems : AbstractBaseModel, IDataErrorInfo
     {
         public Service Service 
         {

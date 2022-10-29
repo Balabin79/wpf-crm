@@ -21,6 +21,8 @@ using Dental.Views.Documents;
 using Dental.Services.Files;
 using Dental.Services;
 using Dental.Models.Base;
+using DevExpress.Xpf.Printing;
+//using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
 {
@@ -116,7 +118,7 @@ namespace Dental.ViewModels.Invoices
                 InvoiceWindow = new InvoiceWindow() { DataContext = this, Height = height, MaxHeight = height };
                 InvoiceWindow.ShowDialog();
             }
-            catch
+            catch(Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму счета!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -309,8 +311,8 @@ namespace Dental.ViewModels.Invoices
                 if (InvoiceServiceItem.Id == 0)
                 {
 
-                    //db.Entry(InvoiceServiceItem).State = EntityState.Added;
-                    invoice.InvoiceServiceItems.Add(InvoiceServiceItem);
+                    db.Entry(InvoiceServiceItem).State = EntityState.Added;
+                    //invoice.InvoiceServiceItems.Add(InvoiceServiceItem);
 
                 }
                 db.SaveChanges();
@@ -603,8 +605,17 @@ namespace Dental.ViewModels.Invoices
         public InvoiceServiceItemVM InvoiceServiceItemVM { get; set; }
         public InvoiceMaterialItemVM InvoiceMaterialItemVM { get; set; }
         public Invoice Invoice { get; set; }
-        public InvoiceServiceItems InvoiceServiceItem { get; set; }
-        public InvoiceMaterialItems InvoiceMaterialItem { get; set; }
+
+        public InvoiceServiceItems InvoiceServiceItem 
+        {
+            get { return GetProperty(() => InvoiceServiceItem); }
+            set { SetProperty(() => InvoiceServiceItem, value); }
+        }
+        public InvoiceMaterialItems InvoiceMaterialItem 
+        {
+            get { return GetProperty(() => InvoiceMaterialItem); }
+            set { SetProperty(() => InvoiceMaterialItem, value); }
+        }
         public Client Client
         {
             get { return GetProperty(() => Client); }
@@ -644,6 +655,19 @@ namespace Dental.ViewModels.Invoices
         {           
             Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
             if (InvoiceVM != null) InvoiceVM.Client = Client;
+        }
+
+        [Command]
+        public void PrintInvoice(object p)
+        {
+            if (int.TryParse(p.ToString(), out int result))
+            {               
+                //InvoiceServiceReport report = new InvoiceServiceReport();
+                //report.DataSource = db.Organizations.FirstOrDefault();
+                // Invoke the Print dialog.
+              //  PrintHelper.ShowPrintPreview(this, report);
+            }
+
         }
     }
 }

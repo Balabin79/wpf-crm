@@ -15,7 +15,7 @@
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler"
+        Title="B6Dental"
         Closing="Window_Closing"
         >
     <Window.Resources>

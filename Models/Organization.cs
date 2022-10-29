@@ -181,6 +181,13 @@ namespace Dental.Models
             set { SetProperty(() => Site, value?.Trim()); }
         }
 
+        [Display(Name = "Логотип")]
+        public string Logo
+        {
+            get { return GetProperty(() => Logo); }
+            set { SetProperty(() => Logo, value?.Trim()); }
+        }
+
         [NotMapped]
         public string LogoFilePath
         {

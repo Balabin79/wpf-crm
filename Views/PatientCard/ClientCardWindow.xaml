@@ -17,7 +17,7 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     dx:ThemeManager.ThemeName="Office2019White"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-    Title="B6 Dental"
+    Title="B6Dental"
     Closing="Window_Closing"
     x:Name="win">
     <Window.Resources>

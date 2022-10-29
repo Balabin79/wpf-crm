@@ -6,7 +6,7 @@
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler">
+        Title="B6Dental">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Loaded" Command="{Binding LoadDocForPrintCommand}" PassEventArgsToCommand="True"/>
     </dxmvvm:Interaction.Behaviors>

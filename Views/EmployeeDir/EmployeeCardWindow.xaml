@@ -19,7 +19,7 @@
     Closing="Window_Closing"
     dx:ThemeManager.ThemeName="Office2019White"
     Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-    Title="B6 Dental">
+    Title="B6Dental">
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
     </Window.Resources>

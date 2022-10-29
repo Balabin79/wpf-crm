@@ -16,7 +16,7 @@
         MaxHeight="270"
         Name="Window"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-        Title="B6 Sheduler" 
+        Title="B6Dental" 
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceMaterialItem}" PassEventArgsToCommand="True"/>

@@ -18,7 +18,7 @@
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         xmlns:dxdialogs="http://schemas.devexpress.com/winfx/2008/xaml/dialogs"
-        Title="B6 Dental"
+        Title="B6Dental"
                  >
     <dx:ThemedWindow.Resources>
         <converter:MultiBindingConverter x:Key="multiConv" />

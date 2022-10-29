@@ -13,7 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dental.Models;
+//using Dental.Reports;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Printing;
+using DevExpress.DataAccess.Sql;
+using DevExpress.XtraReports.Parameters;
+using DevExpress.XtraReports.Expressions;
 
 namespace Dental.Views.Invoices
 {
@@ -88,6 +93,29 @@ namespace Dental.Views.Invoices
                 e.TotalValueReady = true;
             }
             catch { }
+        }
+
+        private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+           /* InvoiceServiceReport report = new InvoiceServiceReport();
+            var parameter = new Parameter()
+            {
+                Name = "Id",
+                Description = "Id:",
+                Type = typeof(int),
+                Value = 4,
+                Visible = false
+            };
+            report.RequestParameters = false;
+            report.Parameters.Add(parameter);
+            report.FilterString = "[Id] = [Parameters.Id]";*/
+
+           
+            
+                
+
+                // Invoke the Print dialog.
+                //PrintHelper.ShowPrintPreview(this, report);
         }
     }
 }

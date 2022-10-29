@@ -157,10 +157,18 @@
 
                                                 <dxb:BarSubItem 
                                                 x:Name="Print" Content="Печать" 
-                                                ItemLinksSource="{Binding ElementName=grid, Path=DataContext.ItemLinksSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           
                                                 Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
-                                                </dxb:BarSubItem>
-                                                <dxb:BarButtonItem         
+
+                                                    <dxb:BarButtonItem Margin="0 0 5 0"
+                                                Content="Счет"                                                             
+                                                Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                                GlyphSize="Small"
+                                                ItemClick="BarButtonItem_ItemClick"/>
+                                                        
+                                                        
+                                                    </dxb:BarSubItem>
+                                                    <dxb:BarButtonItem         
                                                 Content="Удалить"  
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"
