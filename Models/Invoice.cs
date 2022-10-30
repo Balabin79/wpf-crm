@@ -53,6 +53,20 @@ namespace Dental.Models
             set { SetProperty(() => InvoiceMaterialItems, value); }
         }
 
+        public Discount Discount
+        {
+            get { return GetProperty(() => Discount); }
+            set { SetProperty(() => Discount, value); }
+        }
+
+        public int? DiscountId { get; set; }
+
+        public decimal? DiscountSum
+        {
+            get { return GetProperty(() => DiscountSum); }
+            set { SetProperty(() => DiscountSum, value); }
+        }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 

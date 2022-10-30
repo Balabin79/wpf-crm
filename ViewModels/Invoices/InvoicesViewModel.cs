@@ -22,6 +22,8 @@ using Dental.Services.Files;
 using Dental.Services;
 using Dental.Models.Base;
 using DevExpress.Xpf.Printing;
+using Dental.Reports;
+using DevExpress.XtraReports.Parameters;
 //using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
@@ -38,12 +40,12 @@ namespace Dental.ViewModels.Invoices
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetInvoices();
-                PrintMenuLoading();
+                //PrintMenuLoading();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-              ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
+                          messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -87,8 +89,8 @@ namespace Dental.ViewModels.Invoices
                 string title = "Редактирование счета";
                 Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
 
-
-                if (p != null) Invoice = Invoices.FirstOrDefault(f => f.Id == (int)p);                
+                if (p is Invoice inv) Invoice = inv;
+                if (int.TryParse(p.ToString(), out int result)) Invoice = Invoices.FirstOrDefault(f => f.Id == (int)p);
                 else
                 {
                     title = "Добавить счет";
@@ -113,12 +115,12 @@ namespace Dental.ViewModels.Invoices
                     Total = Invoice.Total,
                     ClientFieldVisibility = visibility,
                     Clients = db.Clients.OrderBy(f => f.LastName).ToArray()
-            };
+                };
                 var height = fromPatientCard ? 275 : 320;
                 InvoiceWindow = new InvoiceWindow() { DataContext = this, Height = height, MaxHeight = height };
                 InvoiceWindow.ShowDialog();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму счета!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -145,9 +147,9 @@ namespace Dental.ViewModels.Invoices
                 {
                     db.Entry(Invoice).State = EntityState.Added;
                     // если статус счета(оплачен или нет)  не отличается от статуса фильтра или статус фильтра "Показывать все",  то тогда добавить
-                    if (ShowPaid == Invoice?.Paid || ShowPaid == null)  Invoices?.Add(Invoice);
+                    if (ShowPaid == Invoice?.Paid || ShowPaid == null) Invoices?.Add(Invoice);
                 }
-                
+
                 if (edited)
                 {
                     if (ShowPaid == Invoice.Paid || ShowPaid == null)
@@ -164,16 +166,16 @@ namespace Dental.ViewModels.Invoices
                     else // иначе если статусы отличаются, то только удалить из отображаемого списка
                     {
                         var invoice = Invoices.FirstOrDefault(f => f.Id == Invoice.Id);
-                        if (invoice != null) 
+                        if (invoice != null)
                         {
                             Invoices?.Remove(invoice);
                         }
                     }
-                }               
+                }
                 db.SaveChanges();
                 Dental.Services.Reestr.Update((int)Tables.Invoices);
             }
-            catch 
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить счет в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -197,7 +199,7 @@ namespace Dental.ViewModels.Invoices
                     db.Entry(invoice).State = EntityState.Deleted;
 
                     // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    if (Invoices.Count(f => f.Id == invoice.Id) > 0 ) Invoices.Remove(invoice);                    
+                    if (Invoices.Count(f => f.Id == invoice.Id) > 0) Invoices.Remove(invoice);
                     db.SaveChanges();
                     Dental.Services.Reestr.Update((int)Tables.Invoices);
                 }
@@ -222,7 +224,7 @@ namespace Dental.ViewModels.Invoices
             }
             catch
             {
-               
+
             }
         }
         #endregion
@@ -245,7 +247,7 @@ namespace Dental.ViewModels.Invoices
             }
             catch
             {
-                
+
             }
         }
 
@@ -253,7 +255,7 @@ namespace Dental.ViewModels.Invoices
         public void OpenFormInvoiceService(object p)
         {
             try
-            {               
+            {
                 Services = db.Services.ToArray();
                 if (p is Invoice invoice)
                 {
@@ -307,14 +309,9 @@ namespace Dental.ViewModels.Invoices
                 InvoiceServiceItem.Service = InvoiceServiceItemVM.Service;
                 InvoiceServiceItem.Count = InvoiceServiceItemVM.Count;
                 InvoiceServiceItem.Price = InvoiceServiceItemVM.Price;
-                var invoice = Invoices.FirstOrDefault(f => f.Id == InvoiceServiceItem.Invoice.Id);
-                if (InvoiceServiceItem.Id == 0)
-                {
 
-                    db.Entry(InvoiceServiceItem).State = EntityState.Added;
-                    //invoice.InvoiceServiceItems.Add(InvoiceServiceItem);
+                if (InvoiceServiceItem.Id == 0) db.Entry(InvoiceServiceItem).State = EntityState.Added;
 
-                }
                 db.SaveChanges();
                 Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
             }
@@ -338,7 +335,7 @@ namespace Dental.ViewModels.Invoices
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     item.Invoice = null;
-                    db.InvoiceServiceItems.Remove(item);                   
+                    db.InvoiceServiceItems.Remove(item);
                     db.SaveChanges();
                     Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
                 }
@@ -523,7 +520,7 @@ namespace Dental.ViewModels.Invoices
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        
+
         private void PrintMenuLoading()
         {
             try
@@ -548,7 +545,7 @@ namespace Dental.ViewModels.Invoices
                     binding.Bindings.Add(new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay });
 
                     item.SetBinding(BarButtonItem.CommandParameterProperty, binding);
-                    ItemLinksSource.Add(item);               
+                    ItemLinksSource.Add(item);
                 }
             }
             catch (Exception e)
@@ -568,7 +565,7 @@ namespace Dental.ViewModels.Invoices
 
         private string NewNumberGenerate() =>
             int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
-            ?  string.Format("{0:00000000}", ++result) : "00000001";
+            ? string.Format("{0:00000000}", ++result) : "00000001";
 
 
         public ObservableCollection<Invoice> Invoices
@@ -583,13 +580,13 @@ namespace Dental.ViewModels.Invoices
 
             if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
 
-            Invoices = fromPatientCard && Client == null 
+            Invoices = fromPatientCard && Client == null
                 ? new ObservableCollection<Invoice>()
                 : query.Include(f => f.Client).Include(f => f.Employee)
                 .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
                 .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
                 .ToObservableCollection() ?? new ObservableCollection<Invoice>();
-    }
+        }
 
         public ICollection<Employee> Employees { get; set; }
         public ICollection<Measure> Measuries { get; set; }
@@ -606,12 +603,12 @@ namespace Dental.ViewModels.Invoices
         public InvoiceMaterialItemVM InvoiceMaterialItemVM { get; set; }
         public Invoice Invoice { get; set; }
 
-        public InvoiceServiceItems InvoiceServiceItem 
+        public InvoiceServiceItems InvoiceServiceItem
         {
             get { return GetProperty(() => InvoiceServiceItem); }
             set { SetProperty(() => InvoiceServiceItem, value); }
         }
-        public InvoiceMaterialItems InvoiceMaterialItem 
+        public InvoiceMaterialItems InvoiceMaterialItem
         {
             get { return GetProperty(() => InvoiceMaterialItem); }
             set { SetProperty(() => InvoiceMaterialItem, value); }
@@ -637,22 +634,22 @@ namespace Dental.ViewModels.Invoices
                 {
                     ShowPaid = null;
                     SetInvoices();
-                }                   
+                }
                 SetInvoices(ShowPaid);
                 return;
             }
             ShowPaid = null;
             SetInvoices();
-        }  
-        
+        }
+
         public int? ShowPaid
         {
             get { return GetProperty(() => ShowPaid); }
             set { SetProperty(() => ShowPaid, value); }
         }
 
-        public void NewClientSaved(Client client) 
-        {           
+        public void NewClientSaved(Client client)
+        {
             Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
             if (InvoiceVM != null) InvoiceVM.Client = Client;
         }
@@ -660,14 +657,45 @@ namespace Dental.ViewModels.Invoices
         [Command]
         public void PrintInvoice(object p)
         {
-            if (int.TryParse(p.ToString(), out int result))
-            {               
-                //InvoiceServiceReport report = new InvoiceServiceReport();
-                //report.DataSource = db.Organizations.FirstOrDefault();
-                // Invoke the Print dialog.
-              //  PrintHelper.ShowPrintPreview(this, report);
-            }
 
+            if (p is PageIntCommandParameters conv)
+            {
+                ServicesInvoiceReport report = new ServicesInvoiceReport();
+                var parameter = new Parameter()
+                {
+                    Name = "Id",
+                    Description = "Id:",
+                    Type = typeof(int),
+                    Value = conv.Param,
+                    Visible = false
+                };
+                report.RequestParameters = false;
+                report.Parameters.Add(parameter);
+                report.FilterString = "[Id] = [Parameters.Id]";
+                PrintHelper.ShowPrintPreview(conv.Page, report);
+            }
+        }
+
+        [Command]
+        public void PrintNomenclatureInvoice(object p)
+        {
+
+            if (p is PageIntCommandParameters conv)
+            {
+                ServicesInvoiceReport report = new ServicesInvoiceReport();
+                var parameter = new Parameter()
+                {
+                    Name = "Id",
+                    Description = "Id:",
+                    Type = typeof(int),
+                    Value = conv.Param,
+                    Visible = false
+                };
+                report.RequestParameters = false;
+                report.Parameters.Add(parameter);
+                report.FilterString = "[Id] = [Parameters.Id]";
+                PrintHelper.ShowPrintPreview(conv.Page, report);
+            }
         }
     }
 }

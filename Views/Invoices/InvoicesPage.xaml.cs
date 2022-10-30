@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Dental.Models;
-//using Dental.Reports;
+using Dental.Reports;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.Printing;
 using DevExpress.DataAccess.Sql;
@@ -97,7 +97,7 @@ namespace Dental.Views.Invoices
 
         private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-           /* InvoiceServiceReport report = new InvoiceServiceReport();
+            /*ServicesInvoiceReport report = new ServicesInvoiceReport();
             var parameter = new Parameter()
             {
                 Name = "Id",
