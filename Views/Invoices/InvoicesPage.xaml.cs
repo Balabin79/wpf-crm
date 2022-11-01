@@ -36,11 +36,11 @@ namespace Dental.Views.Invoices
         private void ServiceItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
             try
-            {
+            {/*
                 if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
                 {
                     if (e.Row == null) return;
-                    var items = ((InvoiceServiceItems)e.Row)?.Invoice?.InvoiceServiceItems;
+                    var items = ((InvoiceItems)e.Row)?.Invoice?.InvoiceItems;
                     if (items == null) return;
                     decimal price = 0;
                     foreach (var item in items)
@@ -52,7 +52,7 @@ namespace Dental.Views.Invoices
                     }
                     e.TotalValue = price;
                 }
-                e.TotalValueReady = true;
+                e.TotalValueReady = true;*/
             }
             catch { }
         }
@@ -75,7 +75,7 @@ namespace Dental.Views.Invoices
         {
             try
             {
-                if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
+             /*   if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
                 {
                     if (e.Row == null) return;
                     var items = ((InvoiceMaterialItems)e.Row)?.Invoice?.InvoiceMaterialItems;
@@ -90,32 +90,9 @@ namespace Dental.Views.Invoices
                     }
                     e.TotalValue = price;
                 }
-                e.TotalValueReady = true;
+                e.TotalValueReady = true;*/
             }
             catch { }
-        }
-
-        private void BarButtonItem_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
-        {
-            /*ServicesInvoiceReport report = new ServicesInvoiceReport();
-            var parameter = new Parameter()
-            {
-                Name = "Id",
-                Description = "Id:",
-                Type = typeof(int),
-                Value = 4,
-                Visible = false
-            };
-            report.RequestParameters = false;
-            report.Parameters.Add(parameter);
-            report.FilterString = "[Id] = [Parameters.Id]";*/
-
-           
-            
-                
-
-                // Invoke the Print dialog.
-                //PrintHelper.ShowPrintPreview(this, report);
         }
     }
 }

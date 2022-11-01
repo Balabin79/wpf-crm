@@ -52,12 +52,12 @@ namespace Dental.Models.Base
         private void SetGuid() => Guid = KeyGenerator.GetUniqueKey();
         private int GetUTCTimestamp() => (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /*public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
+        }*/
 
         public virtual void Update() => SetUpdatedAt();
     }

@@ -13,8 +13,7 @@ namespace Dental.Models
     {
         public Invoice()
         {
-            InvoiceServiceItems = new ObservableCollection<InvoiceServiceItems>();
-            InvoiceMaterialItems = new ObservableCollection<InvoiceMaterialItems>();
+            InvoiceItems = new ObservableCollection<InvoiceItems>();
         }
 
         public string Date
@@ -42,15 +41,10 @@ namespace Dental.Models
         }
         public int? EmployeeId { get; set; }
 
-        public ObservableCollection<InvoiceServiceItems> InvoiceServiceItems 
+        public ObservableCollection<InvoiceItems> InvoiceItems
         {
-            get { return GetProperty(() => InvoiceServiceItems); }
-            set { SetProperty(() => InvoiceServiceItems, value); }
-        }
-        public ObservableCollection<InvoiceMaterialItems> InvoiceMaterialItems 
-        {
-            get { return GetProperty(() => InvoiceMaterialItems); }
-            set { SetProperty(() => InvoiceMaterialItems, value); }
+            get { return GetProperty(() => InvoiceItems); }
+            set { SetProperty(() => InvoiceItems, value); }
         }
 
         public Discount Discount

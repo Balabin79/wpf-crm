@@ -33,16 +33,13 @@
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                     <converter:MultiBindingConverter x:Key="multiConv" />
                     <converter:MultiBindingPageIntConverter x:Key="multiPageInt" />
+                    <converter:MultiBindingInvoiceItemConverter x:Key="multiInvoiceItem" />
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
-                    
-                    
-                    <DataTemplate x:Key="ContentDetail" >
+
+
+                    <DataTemplate x:Key="ContentDetail" x:Name="dataTemplate">
                         <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="templ" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
 
                             <dxlc:LayoutGroup Grid.Row="0" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                                 <dxlc:LayoutGroup.HeaderTemplate>
@@ -52,43 +49,68 @@
                                             <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
                                                 <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                                     <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
-                                            CommandParameter="{Binding ElementName=templ, Path=DataContext}"
-                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Content="Добавить услугу" >
+                                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceItemCommand}"
+                                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Content="Добавить услугу" >
+                                                        <dxb:BarButtonItem.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiInvoiceItem}">
+                                                                <Binding Source="0"/>
+                                                                <Binding ElementName="templ" Path="DataContext"/>
+                                                            </MultiBinding>
+                                                        </dxb:BarButtonItem.CommandParameter>
                                                     </dxb:BarButtonItem>
+
+                                                    <dxb:BarButtonItem 
+                                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceItemCommand}"
+                                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        Content="Добавить номенклатуру" >
+                                                        <dxb:BarButtonItem.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiInvoiceItem}">
+                                                                <Binding Source="1"/>
+                                                                <Binding ElementName="templ" Path="DataContext"/>
+                                                            </MultiBinding>
+                                                        </dxb:BarButtonItem.CommandParameter>
+                                                    </dxb:BarButtonItem>
+
                                                 </dxb:ToolBarControl>
                                             </dxb:BarContainerControl>
                                         </DockPanel>
                                     </DataTemplate>
                                 </dxlc:LayoutGroup.HeaderTemplate>
 
-                                <dxg:GridControl x:Name="ServiceItems" CustomSummary="TreatmentPlanItems_CustomSummary"                  
-                        ItemsSource="{Binding Path=InvoiceServiceItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                <dxg:GridControl 
+                                    x:Name="ServiceItems" 
+                                    CustomSummary="CustomSummary"                  
+                        ItemsSource="{Binding Path=InvoiceItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    
                                     <dxg:GridControl.Columns>
-                                        <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Service">
+                                        <dxg:GridColumn  Header="Наименование" Width="6*" MinWidth="250" FieldName="Name" >
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Row.Service, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                    <TextBlock 
+                                                        Margin="3 0 0 0"
+                                                        x:Name="PART_Editor" TextWrapping="Wrap" 
+                                                        Text="{DXBinding 'Row.Name + ` (` + Row.Code + `)`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
 
-                                        <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
+                                        <dxg:GridColumn  Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center" FieldName="Count">
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock x:Name="PART_Editor" TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
 
-                                        <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
+                                        <dxg:GridColumn HorizontalHeaderContentAlignment="Center" FieldName="Price" Header="Стоимость" Width="1*" >
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
-                                            Text="{Binding Row.Service.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
@@ -99,17 +121,18 @@
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                                                         <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                             <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                                    GlyphSize="Small"
-                                                    Command="{Binding ElementName=view, Path=DataContext.EditInvoiceServiceCommand}" 
-                                                    CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
+                                                                IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
+                                                                GlyphSize="Small"
+                                                                Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceItemCommand}" 
+                                                                CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
+
                                                             <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                                    GlyphSize="Small"
-                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}" 
-                                                    CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
+                                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                                                GlyphSize="Small"
+                                                                Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceServiceCommand}" 
+                                                                CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
                                                         </dxb:ToolBarControl>
                                                     </dxb:BarContainerControl>
                                                 </DataTemplate>
@@ -130,7 +153,7 @@
                                 UseEvenRowBackground="True"
                                 ShowIndicator="False"                                
                                 ShowTotalSummary="True" 
-                                CustomRowAppearance="attachFileTableView_CustomRowAppearance" >
+                                CustomRowAppearance="CustomRowAppearance" >
 
                                             <dxg:TableView.InputBindings>
                                                 <KeyBinding 
@@ -197,189 +220,18 @@
                                         </dxg:TableView>
                                     </dxg:GridControl.View>
                                     <dxg:GridControl.TotalSummary>
-                                        <dxg:GridSummaryItem DisplayFormat=" {0:c2}"
-                             FieldName="Price"
-                             SummaryType="Custom" />
-                                    </dxg:GridControl.TotalSummary>
-                                </dxg:GridControl>
-                            </dxlc:LayoutGroup>
-
-                            <dxlc:LayoutGroup x:Name="Layot" Grid.Row="1" Margin="0 10 0 0" MaxHeight="800" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
-                                <dxlc:LayoutGroup.HeaderTemplate>
-                                    <DataTemplate>
-                                        <DockPanel HorizontalAlignment="Stretch">
-                                            <TextBlock Text="Список материалов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                            <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
-                                                    <dxb:BarButtonItem 
-                                            Margin="5 0 0 0"
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                            CommandParameter="{Binding ElementName=templ, Path=DataContext}"
-                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Content="Добавить материал" >
-                                                    </dxb:BarButtonItem>
-
-                                                </dxb:ToolBarControl>
-                                            </dxb:BarContainerControl>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </dxlc:LayoutGroup.HeaderTemplate>
-
-                                <dxg:GridControl 
-                        x:Name="MaterialItems" CustomSummary="MaterialItems_CustomSummary"                 
-                        ItemsSource="{Binding Path=InvoiceMaterialItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                                    <dxg:GridControl.Columns>
-                                        <dxg:GridColumn  Header="Материал" Width="6*" MinWidth="250" FieldName="Nomenclature">
-                                            <dxg:GridColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" Text="{Binding Row.Nomenclature, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                </DataTemplate>
-                                            </dxg:GridColumn.CellTemplate>
-                                        </dxg:GridColumn>
-
-                                        <dxg:GridColumn FieldName="Nomenclature.Measure" Header="Ед.Изм." Width="4*" MinWidth="130"  HorizontalHeaderContentAlignment="Center">
-                                            <dxg:GridColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Text="{Binding Path=Row.Nomenclature.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                </DataTemplate>
-                                            </dxg:GridColumn.CellTemplate>
-                                        </dxg:GridColumn>
-
-                                        <dxg:GridColumn FieldName="Count" Header="Кол-во" Width="1*" HorizontalHeaderContentAlignment="Center">
-                                            <dxg:GridColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock TextAlignment="Center" Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </dxg:GridColumn.CellTemplate>
-                                        </dxg:GridColumn>
-
-                                        <dxg:GridColumn FieldName="Price" HorizontalHeaderContentAlignment="Center" Header="Стоимость" Width="1*" >
-                                            <dxg:GridColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
-                                            Text="{Binding Row.Nomenclature.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
-                                                </DataTemplate>
-                                            </dxg:GridColumn.CellTemplate>
-                                        </dxg:GridColumn>
-
-                                        <dxg:GridColumn Width="auto">
-                                            <dxg:GridColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                        <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                                                            <dxb:BarButtonItem Content="Редактировать" 
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                    Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                                    GlyphSize="Small"
-                                                    Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}" 
-                                                    CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                            <dxb:BarButtonItem Content="Удалить" 
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                                    GlyphSize="Small"
-                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}" 
-                                                    CommandParameter="{Binding RowData.Row, Mode=TwoWay}"/>
-                                                        </dxb:ToolBarControl>
-                                                    </dxb:BarContainerControl>
-                                                </DataTemplate>
-                                            </dxg:GridColumn.CellTemplate>
-                                        </dxg:GridColumn>
-
-                                    </dxg:GridControl.Columns>
-
-                                    <dxg:GridControl.View>
-                                        <dxg:TableView                                                                        
-                                x:Name="materialTableView"
-                                NavigationStyle="Row"
-                                AutoWidth="True"
-                                AllowEditing="False"
-                                ShowGroupPanel="False"                                                      
-                                ShowVerticalLines="False"
-                                ShowHorizontalLines="True"
-                                UseEvenRowBackground="True"
-                                ShowIndicator="False"                                
-                                ShowTotalSummary="True" 
-                                CustomRowAppearance="attachFileTableView_CustomRowAppearance" >
-
-                                            <dxg:TableView.InputBindings>
-                                                <KeyBinding 
-                                        Key="Delete"
-                                        Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
-
-                                                <KeyBinding 
-                                        Key="N"     
-                                        Modifiers="Ctrl"
-                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem.Invoice}"/>
-
-                                                <KeyBinding 
-                                        Key="E"     
-                                        Modifiers="Ctrl"
-                                        Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
-
-                                                <MouseBinding 
-                                        Gesture="LeftDoubleClick"      
-                                        Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
-
-                                            </dxg:TableView.InputBindings>
-                                            <dxg:TableView.RowCellMenuCustomizations >
-                                                <dxb:BarButtonItem 
-                                        GlyphSize="Small" 
-                                        GlyphAlignment="Left"
-                                        KeyGesture="Ctrl+N"
-                                        Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem.Invoice}"
-                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Content="Добавить запись" />
-
-                                                <dxb:BarButtonItem 
-                                        GlyphSize="Small" 
-                                        GlyphAlignment="Left"
-                                        KeyGesture="Ctrl+E"
-                                        Command="{Binding ElementName=view, Path=DataContext.EditInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"
-                                        Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
-                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Content="Редактировать запись" />
-
-                                                <dxb:BarButtonItem Content="Удалить" 
-                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                        IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        KeyGesture="Delete"     
-                                        Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceMaterialCommand}"
-                                        CommandParameter="{Binding ElementName=MaterialItems, Path=CurrentItem}"/>
-
-                                            </dxg:TableView.RowCellMenuCustomizations>
-
-                                            <dxg:TableView.TotalSummaryContentStyle>
-                                                <Style TargetType="dx:DataContentPresenter">
-                                                    <Setter Property="TextBlock.FontStyle" Value="Italic"/>
-                                                    <Setter Property="TextBlock.FontWeight" Value="DemiBold"/>
-                                                    <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-                                                </Style>
-                                            </dxg:TableView.TotalSummaryContentStyle>
-
-                                        </dxg:TableView>
-                                    </dxg:GridControl.View>
-                                    <dxg:GridControl.TotalSummary>
                                         <dxg:GridSummaryItem DisplayFormat=" {0:c2}" FieldName="Price" SummaryType="Custom" />
                                     </dxg:GridControl.TotalSummary>
                                 </dxg:GridControl>
                             </dxlc:LayoutGroup>
-
                         </Grid>
+
                     </DataTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-          
-        
+
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -407,7 +259,7 @@
                                 Content="Создать счет" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                  />
-                            
+
                             <dxb:BarButtonItem 
                                 Content="Все счета" Margin="0 0 5 0"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -426,7 +278,7 @@
                                            CommandParameter="0"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                             <dxb:BarButtonItem 
+                            <dxb:BarButtonItem 
                                  Content="Не оплаченные"
                                  IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
@@ -434,7 +286,7 @@
                                            Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
                                            CommandParameter="-1"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
-                                
+
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
                 </DockPanel>
@@ -442,7 +294,7 @@
         </dxlc:LayoutGroup.HeaderTemplate>
 
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Invoices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" >
+                 ItemsSource="{Binding Invoices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" >
             <dxg:GridControl.View>
                 <dxg:TableView  
                     Name="view"
@@ -469,7 +321,7 @@
                         <KeyBinding  Key="Delete"         
                             Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                        
+
                         <MouseBinding Gesture="LeftDoubleClick"      
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
@@ -522,7 +374,7 @@
                             <TextBlock Margin="0 3 0 0"  Text="{DXBinding Expr='`№` + Row.Number + ` от `', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                             <TextBlock Margin="3 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
-  
+
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
@@ -539,26 +391,21 @@
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
-                                
-                                <dxb:BarSubItem 
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                              
-                                    Content="Печать"  
-                                    Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
-                                    <dxb:BarButtonItem 
-                                           Content="Счет на услуги"                                                            
+
+                                <dxb:BarButtonItem 
+                                           Content="Печать"                                                            
                                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"
                                            >
-                                        <dxb:BarButtonItem.CommandParameter>
-                                            <MultiBinding Converter="{StaticResource multiPageInt}" >
-                                                <Binding ElementName="UTreatmentPlan"/>
-                                                <Binding ElementName="grid" Path="CurrentItem.Id"/>
-                                            </MultiBinding>
-                                        </dxb:BarButtonItem.CommandParameter>
-                                    </dxb:BarButtonItem>
-                                </dxb:BarSubItem>
+                                    <dxb:BarButtonItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                            <Binding ElementName="UTreatmentPlan"/>
+                                            <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem Content="Удалить" 
                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -574,10 +421,12 @@
             </dxg:GridColumn>
 
             <dxg:GridControl.DetailDescriptor>
-                <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor"/>
+                <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor" >
+                    
+                </dxg:ContentDetailDescriptor>
             </dxg:GridControl.DetailDescriptor>
         </dxg:GridControl>
-        
+
     </dxlc:LayoutGroup>
 
 </UserControl>

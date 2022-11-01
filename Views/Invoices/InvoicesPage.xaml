@@ -30,6 +30,7 @@
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+                    <converter:MultiBindingPageIntConverter x:Key="multiPageInt" />
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
@@ -156,19 +157,60 @@
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"/>
 
                                                 <dxb:BarSubItem 
-                                                x:Name="Print" Content="Печать" 
-                                           
-                                                Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
-
-                                                    <dxb:BarButtonItem Margin="0 0 5 0"
-                                                Content="Счет"                                                             
-                                                Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
-                                                GlyphSize="Small"
-                                                ItemClick="BarButtonItem_ItemClick"/>
-                                                        
-                                                        
-                                                    </dxb:BarSubItem>
-                                                    <dxb:BarButtonItem         
+                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                              
+                                    Content="Печать"  
+                                    Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}">
+                                                    <dxb:BarButtonItem 
+                                           Content="Счет"                                                            
+                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=grid, Path=DataContext.PrintFullInvoiceCommand}"
+                                           >
+                                                        <dxb:BarButtonItem.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                                                <Binding ElementName="UTreatmentPlan"/>
+                                                                <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                                            </MultiBinding>
+                                                        </dxb:BarButtonItem.CommandParameter>
+                                                    </dxb:BarButtonItem>
+                                                    
+                                                    
+                                                    <dxb:BarButtonItem 
+                                           Content="Счет на услуги"                                                            
+                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"
+                                           >
+                                                        <dxb:BarButtonItem.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                                                <Binding ElementName="UTreatmentPlan"/>
+                                                                <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                                            </MultiBinding>
+                                                        </dxb:BarButtonItem.CommandParameter>
+                                                    </dxb:BarButtonItem>
+                                                   
+                                                    
+                                                    <dxb:BarButtonItem 
+                                           Content="Счет на номенклатуру"                                                            
+                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
+                                           GlyphSize="Small"
+                                           Command="{Binding ElementName=grid, Path=DataContext.PrintNomenclatureInvoiceCommand}"
+                                           >
+                                                        <dxb:BarButtonItem.CommandParameter>
+                                                            <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                                                <Binding ElementName="UTreatmentPlan"/>
+                                                                <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                                            </MultiBinding>
+                                                        </dxb:BarButtonItem.CommandParameter>
+                                                    </dxb:BarButtonItem>
+                                                </dxb:BarSubItem>
+                                                
+                                                
+                                                
+                                                <dxb:BarButtonItem         
                                                 Content="Удалить"  
                                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                 GlyphSize="Small"

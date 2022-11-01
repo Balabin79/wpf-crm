@@ -25,7 +25,7 @@ namespace Dental.Models
 
         public void UpdateFields()
         {
-            OnPropertyChanged(nameof(Name));
+            //OnPropertyChanged(nameof(Name));
         }
 
         public override string ToString() => Name;

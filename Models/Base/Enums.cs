@@ -38,4 +38,11 @@ namespace Dental.Models.Base
         TreatmentPlans = 28,
         Organizations = 29
     }
+
+    public enum InvoiceType
+    { 
+        Service,
+        Nomenclature
+    }
+
 }

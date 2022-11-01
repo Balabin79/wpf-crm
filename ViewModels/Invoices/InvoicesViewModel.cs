@@ -24,6 +24,7 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Printing;
 using Dental.Reports;
 using DevExpress.XtraReports.Parameters;
+using Dental.Models.Templates;
 //using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
@@ -59,12 +60,6 @@ namespace Dental.ViewModels.Invoices
         public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanCancelFormInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanSelectItemInMaterialField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanOpenFormInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanEditInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanSaveMaterialRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDeleteInvoiceMaterial(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanCancelFormInvoiceMaterialItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanOpenFormDocuments() => true;
         public bool CanStatusChanged(object p) => true;
 
@@ -185,7 +180,7 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
-        [Command]
+    /*    [Command]
         public void DeleteInvoice(object p)
         {
             try
@@ -208,7 +203,7 @@ namespace Dental.ViewModels.Invoices
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удалить счет из базы данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-        }
+        }*/
 
         [Command]
         public void CancelFormInvoice(object p)
@@ -229,40 +224,47 @@ namespace Dental.ViewModels.Invoices
         }
         #endregion
 
-        #region Услуги в смете
+        #region Позиция в смете
+
         [Command]
-        public void SelectItemInServiceField(object p)
+        public void OpenFormInvoiceItem(object p)
         {
             try
-            {
-                if (p is FindCommandParameters parameters)
+            {       
+
+                if (p is InvoiceItemCommandParameters parameter)
                 {
-                    if (parameters.Tree.CurrentItem is Service service)
+                    var vm = new InvoiceItemVM(parameter.Param)
                     {
-                        if (service.IsDir == 1) return;
-                        parameters.Popup.EditValue = service;
-                    }
-                    parameters.Popup.ClosePopup();
+                        Invoice = parameter.Invoice,
+                        Type = parameter.Param,
+                        Title = parameter.Param == 0 ? "Услуга" : "Номенклатура",
+                        Model = new InvoiceItems() { Invoice = parameter.Invoice, InvoiceId = parameter.Invoice?.Id },
+
+                    };
+                    vm.EventSave += SaveInvoiceItem;
+                    new InvoiceItemWindow() { DataContext = vm }.Show();
                 }
-            }
-            catch
-            {
 
-            }
-        }
 
-        [Command]
-        public void OpenFormInvoiceService(object p)
-        {
-            try
-            {
-                Services = db.Services.ToArray();
-                if (p is Invoice invoice)
+                if (p is InvoiceItems item)
                 {
-                    InvoiceServiceItem = new InvoiceServiceItems();
-                    InvoiceServiceItemVM = new InvoiceServiceItemVM() { Invoice = invoice, Title = "Добавление услуги" };
-                    InvoiceServiceWindow = new InvoiceServiceWindow() { DataContext = this };
-                    InvoiceServiceWindow.ShowDialog();
+                    object selected = null;
+                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
+                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.ItemId);
+
+                    var vm = new InvoiceItemVM(item.Type)
+                    {
+                        Invoice = item.Invoice,
+                        Type = item.Type,
+                        Count = item.Count,
+                        Price = item.Price,
+                        Title = item.Type == 0 ? "Услуга" : "Номенклатура",
+                        SelectedItem = selected,
+                        Model = item
+                    };
+                    vm.EventSave += SaveInvoiceItem;
+                    new InvoiceItemWindow() { DataContext = vm }.Show();
                 }
             }
             catch (Exception e)
@@ -271,92 +273,19 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
+        public InvoiceItemWindow InvoiceItemWindow;
+
         [Command]
-        public void EditInvoiceService(object p)
+        public void SaveInvoiceItem(object p)
         {
             try
             {
-                if (p is InvoiceServiceItems item)
+                if (p is InvoiceItems item)
                 {
-                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
-                    Services = db.Services.ToArray();
-                    InvoiceServiceItemVM = new InvoiceServiceItemVM()
-                    {
-                        Invoice = item.Invoice,
-                        Service = item.Service,
-                        Count = item.Count,
-                        Price = item.Price,
-                        Title = "Редактирование услуги"
-                    };
-                    InvoiceServiceItem = item;
-                    InvoiceServiceWindow = new InvoiceServiceWindow() { DataContext = this };
-                    InvoiceServiceWindow.ShowDialog();
+                    if (item.Id == 0) {  db.Entry(item).State = EntityState.Added; }
+                    int cnt = db.SaveChanges();
+                    Services.Reestr.Update((int)Tables.InvoiceServiceItems);
                 }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void SaveRowInInvoice()
-        {
-            if (string.IsNullOrEmpty(InvoiceServiceItemVM.Service?.Name)) return;
-            try
-            {
-                InvoiceServiceItem.Invoice = InvoiceServiceItemVM.Invoice;
-                InvoiceServiceItem.Service = InvoiceServiceItemVM.Service;
-                InvoiceServiceItem.Count = InvoiceServiceItemVM.Count;
-                InvoiceServiceItem.Price = InvoiceServiceItemVM.Price;
-
-                if (InvoiceServiceItem.Id == 0) db.Entry(InvoiceServiceItem).State = EntityState.Added;
-
-                db.SaveChanges();
-                Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-            finally
-            {
-                InvoiceServiceWindow?.Close();
-            }
-        }
-
-        [Command]
-        public void DeleteInvoiceService(object p)
-        {
-            try
-            {
-                if (p is InvoiceServiceItems item)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-                    item.Invoice = null;
-                    db.InvoiceServiceItems.Remove(item);
-                    db.SaveChanges();
-                    Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void CancelFormInvoiceItem(object p)
-        {
-            try
-            {
-                if (p is System.ComponentModel.CancelEventArgs arg)
-                {
-                    arg.Cancel = false;
-                    return;
-                }
-                InvoiceServiceWindow?.Close();
             }
             catch (Exception e)
             {
@@ -364,146 +293,30 @@ namespace Dental.ViewModels.Invoices
             }
         }
         #endregion
+        /* 
 
-        #region Материалы в смете
-        [Command]
-        public void SelectItemInMaterialField(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.CurrentItem is Nomenclature material)
-                    {
-                        if (material.IsDir == 1) return;
-                        parameters.Popup.EditValue = material;
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
+         [Command]
+         public void DeleteInvoiceService(object p)
+         {
+             try
+             {
+                 if (p is InvoiceItems item)
+                 {
+                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                     if (response.ToString() == "No") return;
+                     item.Invoice = null;
+                     db.InvoiceServiceItems.Remove(item);
+                     db.SaveChanges();
+                     Dental.Services.Reestr.Update((int)Tables.InvoiceServiceItems);
+                 }
+             }
+             catch (Exception e)
+             {
+                 (new ViewModelLog(e)).run();
+             }
+         }
 
-        [Command]
-        public void OpenFormInvoiceMaterial(object p)
-        {
-            try
-            {
-                Materials = db.Nomenclature.ToArray();
-
-                if (p is Invoice invoice)
-                {
-                    InvoiceMaterialItem = new InvoiceMaterialItems();
-                    InvoiceMaterialItemVM = new InvoiceMaterialItemVM() { Invoice = invoice, Title = "Добавление материала" };
-                    InvoiceMaterialWindow = new InvoiceMaterialWindow() { DataContext = this };
-                    InvoiceMaterialWindow.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void EditInvoiceMaterial(object p)
-        {
-            try
-            {
-                if (p is InvoiceMaterialItems item)
-                {
-                    Materials = db.Nomenclature.ToArray();
-                    Measuries = db.Measure.OrderBy(f => f.Name).ToArray();
-                    InvoiceMaterialItemVM = new InvoiceMaterialItemVM()
-                    {
-                        Invoice = item.Invoice,
-                        Nomenclature = item.Nomenclature,
-                        Count = item.Count,
-                        Price = item.Price,
-                        Title = "Редактирование материала"
-                    };
-                    InvoiceMaterialItem = item;
-                    InvoiceMaterialWindow = new InvoiceMaterialWindow() { DataContext = this };
-                    InvoiceMaterialWindow.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void SaveMaterialRowInInvoice()
-        {
-            if (string.IsNullOrEmpty(InvoiceMaterialItemVM.Nomenclature?.Name)) return;
-            try
-            {
-                InvoiceMaterialItem.Invoice = InvoiceMaterialItemVM.Invoice;
-                InvoiceMaterialItem.Nomenclature = InvoiceMaterialItemVM.Nomenclature;
-                InvoiceMaterialItem.Count = InvoiceMaterialItemVM.Count;
-                InvoiceMaterialItem.Price = InvoiceMaterialItemVM.Price;
-
-                if (InvoiceMaterialItem.Id == 0)
-                {
-                    db.Entry(InvoiceMaterialItem).State = EntityState.Added;
-                }
-                db.SaveChanges();
-                Dental.Services.Reestr.Update((int)Tables.InvoiceMaterialItems);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-            finally
-            {
-                InvoiceMaterialWindow?.Close();
-            }
-        }
-
-        [Command]
-        public void DeleteInvoiceMaterial(object p)
-        {
-            try
-            {
-                if (p is InvoiceMaterialItems item)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить материал в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-
-                    item.Invoice = null;
-                    db.InvoiceMaterialItems.Remove(item);
-                    db.SaveChanges();
-                    Dental.Services.Reestr.Update((int)Tables.InvoiceMaterialItems);
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void CancelFormInvoiceMaterialItem(object p)
-        {
-            try
-            {
-                if (p is System.ComponentModel.CancelEventArgs arg)
-                {
-                    arg.Cancel = false;
-                    return;
-                }
-                InvoiceMaterialWindow?.Close();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-        #endregion
+ */
 
         #region Печать
         [Command]
@@ -576,43 +389,25 @@ namespace Dental.ViewModels.Invoices
 
         private void SetInvoices(int? showPaid = null)
         {
-            var query = (fromPatientCard && Client?.Id > 0) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
+            var query = db.Invoices.Where(f => f.ClientId == Client.Id);
 
             if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-
-            Invoices = fromPatientCard && Client == null
-                ? new ObservableCollection<Invoice>()
-                : query.Include(f => f.Client).Include(f => f.Employee)
-                .Include(f => f.InvoiceServiceItems.Select(x => x.Service))
-                .Include(f => f.InvoiceMaterialItems.Select(x => x.Nomenclature.Measure))
+            Invoices = query.Include(f => f.Client).Include(f => f.Employee)
+                .Include(f => f.InvoiceItems)
                 .ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
 
         public ICollection<Employee> Employees { get; set; }
         public ICollection<Measure> Measuries { get; set; }
-        public ICollection<Service> Services { get; set; }
-        public ICollection<Nomenclature> Materials { get; set; }
         public InvoiceVM InvoiceVM
         {
             get { return GetProperty(() => InvoiceVM); }
             set { SetProperty(() => InvoiceVM, value); }
         }
 
-
-        public InvoiceServiceItemVM InvoiceServiceItemVM { get; set; }
-        public InvoiceMaterialItemVM InvoiceMaterialItemVM { get; set; }
         public Invoice Invoice { get; set; }
 
-        public InvoiceServiceItems InvoiceServiceItem
-        {
-            get { return GetProperty(() => InvoiceServiceItem); }
-            set { SetProperty(() => InvoiceServiceItem, value); }
-        }
-        public InvoiceMaterialItems InvoiceMaterialItem
-        {
-            get { return GetProperty(() => InvoiceMaterialItem); }
-            set { SetProperty(() => InvoiceMaterialItem, value); }
-        }
+
         public Client Client
         {
             get { return GetProperty(() => Client); }
@@ -620,8 +415,6 @@ namespace Dental.ViewModels.Invoices
         }
 
         private InvoiceWindow InvoiceWindow;
-        public InvoiceServiceWindow InvoiceServiceWindow;
-        public InvoiceMaterialWindow InvoiceMaterialWindow;
 
         // фильтр показывать оплаченные/неоплаченные счета
         [Command]
@@ -656,28 +449,6 @@ namespace Dental.ViewModels.Invoices
 
         [Command]
         public void PrintInvoice(object p)
-        {
-
-            if (p is PageIntCommandParameters conv)
-            {
-                ServicesInvoiceReport report = new ServicesInvoiceReport();
-                var parameter = new Parameter()
-                {
-                    Name = "Id",
-                    Description = "Id:",
-                    Type = typeof(int),
-                    Value = conv.Param,
-                    Visible = false
-                };
-                report.RequestParameters = false;
-                report.Parameters.Add(parameter);
-                report.FilterString = "[Id] = [Parameters.Id]";
-                PrintHelper.ShowPrintPreview(conv.Page, report);
-            }
-        }
-
-        [Command]
-        public void PrintNomenclatureInvoice(object p)
         {
 
             if (p is PageIntCommandParameters conv)

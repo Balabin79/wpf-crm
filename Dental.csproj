@@ -291,7 +291,7 @@
     <Compile Update="Views\Invoices\InvoicesControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Invoices\InvoiceServiceWindow.xaml.cs">
+    <Compile Update="Views\Invoices\InvoiceItemWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Invoices\InvoiceWindow.xaml.cs">
@@ -391,7 +391,7 @@
     <Page Update="Views\Invoices\InvoiceMaterialWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
-    <Page Update="Views\Invoices\InvoiceServiceWindow.xaml">
+    <Page Update="Views\Invoices\InvoiceItemWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

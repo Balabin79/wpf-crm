@@ -14,21 +14,21 @@ namespace Dental.Views.Invoices
             InitializeComponent();
         }
 
-        private void TreatmentPlanItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
+        private void CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
             try
             {
                 if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
                 {
                     if (e.Row == null) return;
-                    var items = ((InvoiceServiceItems)e.Row)?.Invoice?.InvoiceServiceItems;
+                    var items = ((InvoiceItems)e.Row)?.Invoice?.InvoiceItems;
                     decimal price = 0;
                     if (items == null) return;
                     foreach (var item in items)
                     {
-                        if (decimal.TryParse(item.Service?.Price?.ToString(), out decimal result))
+                        if (decimal.TryParse(item?.Price?.ToString(), out decimal result))
                         {
-                            if (item.Count > 0) price += (result * item.Count);
+                            if (item.Count > 0) price += result * item.Count;
                         }
                     }
                     e.TotalValue = price;
@@ -39,7 +39,7 @@ namespace Dental.Views.Invoices
 
         }
 
-        private void attachFileTableView_CustomRowAppearance(object sender, CustomRowAppearanceEventArgs e)
+        private void CustomRowAppearance(object sender, CustomRowAppearanceEventArgs e)
         {
             try
             {
@@ -49,31 +49,6 @@ namespace Dental.Views.Invoices
                     dataControl.UpdateTotalSummary();
                     return;
                 }
-            } 
-            catch { }
-
-        } 
-
-        private void MaterialItems_CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)
-        {
-            try
-            {
-                if (((GridSummaryItem)e.Item).FieldName == "Price" && e.SummaryProcess == DevExpress.Data.CustomSummaryProcess.Finalize)
-                {
-                    if (e.Row == null) return;
-                    var items = ((InvoiceMaterialItems)e.Row)?.Invoice?.InvoiceMaterialItems;
-                    decimal price = 0;
-                    if (items == null) return;
-                    foreach (var item in items)
-                    {
-                        if (decimal.TryParse(item.Nomenclature?.Price?.ToString(), out decimal result))
-                        {
-                            if (item.Count > 0) price += (result * item.Count);
-                        }
-                    }
-                    e.TotalValue = price;
-                }
-                e.TotalValueReady = true;
             }
             catch { }
 
