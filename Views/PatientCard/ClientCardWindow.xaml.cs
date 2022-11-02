@@ -22,7 +22,7 @@ namespace Dental.Views.PatientCard
 
             ClientCardViewModel clientCardViewModel = new ClientCardViewModel(clientId, vm);
             FieldsViewModel fieldsViewModel = new FieldsViewModel(client, vm);
-            InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db, true);
+            InvoicesViewModel invoicesViewModel = new InvoicesViewModel(client, db);
             TreatmentStageViewModel treatmentStageViewModel  = new TreatmentStageViewModel(client, db);
 
             clientCardViewModel.EventChangeReadOnly += invoicesViewModel.StatusReadOnly;

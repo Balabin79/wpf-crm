@@ -388,6 +388,17 @@
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
+                        <KeyBinding  
+                            Gesture="Ctrl+P"  
+                            Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}">
+                            <KeyBinding.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                    <Binding ElementName="UTreatmentPlan"/>
+                                    <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                </MultiBinding>
+                            </KeyBinding.CommandParameter>
+                        </KeyBinding>
+
                     </dxg:TableView.InputBindings>
                     <dxg:TableView.RowCellMenuCustomizations >
                         <dxb:BarButtonItem 
@@ -416,6 +427,21 @@
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                             IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <dxb:BarButtonItem 
+                                           Content="Печать"                                                            
+                                           IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
+                                           KeyGesture="Ctrl+P" GlyphSize="Small" GlyphAlignment="Left" 
+                                           Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"
+                                           >
+                            <dxb:BarButtonItem.CommandParameter>
+                                <MultiBinding Converter="{StaticResource multiPageInt}" >
+                                    <Binding ElementName="UTreatmentPlan"/>
+                                    <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                </MultiBinding>
+                            </dxb:BarButtonItem.CommandParameter>
+                        </dxb:BarButtonItem>
 
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>

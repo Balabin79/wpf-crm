@@ -381,22 +381,28 @@ namespace Dental.ViewModels.Invoices
         [Command]
         public void PrintInvoice(object p)
         {
-
-            if (p is PageIntCommandParameters conv)
+            try
             {
-                ServicesInvoiceReport report = new ServicesInvoiceReport();
-                var parameter = new Parameter()
+                if (p is PageIntCommandParameters conv)
                 {
-                    Name = "Id",
-                    Description = "Id:",
-                    Type = typeof(int),
-                    Value = conv.Param,
-                    Visible = false
-                };
-                report.RequestParameters = false;
-                report.Parameters.Add(parameter);
-                report.FilterString = "[Id] = [Parameters.Id]";
-                PrintHelper.ShowPrintPreview(conv.Page, report);
+                    ServicesInvoiceReport report = new ServicesInvoiceReport();
+                    var parameter = new Parameter()
+                    {
+                        Name = "Id",
+                        Description = "Id:",
+                        Type = typeof(int),
+                        Value = conv.Param,
+                        Visible = false
+                    };
+                    report.RequestParameters = false;
+                    report.Parameters.Add(parameter);
+                    report.FilterString = "[Id] = [Parameters.Id]";
+                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
             }
         }
 
