@@ -10,6 +10,8 @@
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         Name="Window" 
+        Height="320"
+        MaxHeight="320"
         Icon="pack://application:,,,/Resources/Icons/te4.ico" 
         Title="B6Dental" 
         >
@@ -24,27 +26,14 @@
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-            <TextBlock Text="{Binding Path=InvoiceVM.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
+            <TextBlock Text="{DXBinding Expr='`Счет №` + Number', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
-                <dxlc:LayoutItem Label="Клиент*:" Name="Client" LabelPosition="Top" IsRequired="True" Visibility="{Binding InvoiceVM.ClientFieldVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" >
-                    <dxe:ComboBoxEdit 
-                                        ItemsSource="{Binding InvoiceVM.Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Клиенты" 
-                                        IsTextEditable="False"
-                                        DisplayMember="FullName"
-                                        IncrementalFiltering="True"
-                                        IncrementalSearch="True"
-                                        IsCaseSensitiveFilter="False"
-                                        ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding InvoiceVM.Client, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                        EditValue ="{Binding InvoiceVM.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
-                        <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:RadioComboBoxStyleSettings />
-                        </dxe:ComboBoxEdit.StyleSettings>
-                    </dxe:ComboBoxEdit>
-                </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Название счета:"  LabelPosition="Top" >
+                <dxe:TextEdit EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+            </dxlc:LayoutItem>
+            
             <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top">
-                <dxe:DateEdit  Mask="G" MaskUseAsDisplayFormat="True" EditValue="{Binding InvoiceVM.Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit  Mask="G" MaskUseAsDisplayFormat="True" EditValue="{Binding Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                     <dxe:DateEdit.StyleSettings>
                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                     </dxe:DateEdit.StyleSettings>
@@ -60,21 +49,24 @@
                                         IncrementalSearch="True"
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding InvoiceVM.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding InvoiceVM.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                                        SelectedItem ="{Binding Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        EditValue ="{Binding Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>
                 </dxe:ComboBoxEdit>
             </dxlc:LayoutItem>
             <dxlc:LayoutItem Label="Оплачен:"  LabelPosition="Top" >
-                <dxe:CheckEdit EditValue="{Binding InvoiceVM.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <dxe:CheckEdit EditValue="{Binding Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
             </dxlc:LayoutItem>
 
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
-                <dx:SimpleButton IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(InvoiceVM.Client)',UpdateSourceTrigger=PropertyChanged}"
-                    Height="23" Content="Сохранить" VerticalContentAlignment="Center" Command="{Binding SaveInvoiceCommand}" />
-                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Command="{Binding  CancelFormInvoiceCommand}" Margin="4 0 0 0"/>
+                <dx:SimpleButton IsEnabled="{DXBinding Expr='!string.IsNullOrEmpty(Name)',UpdateSourceTrigger=PropertyChanged}"
+                    Height="23" Content="Сохранить" VerticalContentAlignment="Center" 
+                                 Command="{Binding SaveCommand}" 
+                                 CommandParameter="{Binding ElementName=Window}"/>
+                
+                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form" Margin="4 0 0 0"/>
             </dxlc:LayoutGroup>
         </dxlc:LayoutGroup>
     </GroupBox>

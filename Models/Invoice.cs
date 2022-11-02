@@ -16,6 +16,12 @@ namespace Dental.Models
             InvoiceItems = new ObservableCollection<InvoiceItems>();
         }
 
+        public string Name
+        {
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value); }
+        }
+
         public string Date
         {
             get { return GetProperty(() => Date); }
@@ -24,7 +30,6 @@ namespace Dental.Models
 
         public string Number { get; set; }
         public int? Paid { get; set; }
-        public decimal Total { get; set; }
 
         [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
         public Client Client
@@ -77,7 +82,7 @@ namespace Dental.Models
                     StringParamsIsEquel(Number, model.Number) && 
                     StringParamsIsEquel(Date, model.Date) &&
                     StringParamsIsEquel(Client?.Guid, model.Client?.Guid) && 
-                    this.Paid == model.Paid && this.Total == model.Total 
+                    this.Paid == model.Paid
                     ) return true;
             }
             return false;

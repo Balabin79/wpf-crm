@@ -126,7 +126,7 @@
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
                 <dx:SimpleButton 
                     Height="23" Content="Сохранить" 
-                    IsEnabled="{DXBinding Expr='SelectedItem != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    IsEnabled="{DXBinding Expr='SelectedItem != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     VerticalContentAlignment="Center" 
                     Command="{Binding SaveCommand}" 
                     CommandParameter="{Binding ElementName=Window}"/>

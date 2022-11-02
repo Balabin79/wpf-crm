@@ -35,7 +35,6 @@ namespace Dental
                 nomenclaturesBtn.IsVisible = userSession.NomenclaturesRead;
                 templatesBtnItem.IsVisible = userSession.TemplatesRead;
                 addFieldsBtnItem.IsVisible = userSession.AddFieldsRead;
-                invoicesBtnItem.IsVisible = userSession.InvoicesRead;
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
                 syncBtnItem.IsVisible = userSession.SyncRun;
 
@@ -46,7 +45,6 @@ namespace Dental
                 if (userSession.NomenclaturesRead) { nav.LeftMenuClick("Dental.Views.NomenclatureDir.Nomenclature"); return; }
                 if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
                 if (userSession.AddFieldsRead) { nav.LeftMenuClick("Dental.Views.AdditionalFields.AdditionalFieldsPage"); return; }
-                if (userSession.InvoicesRead) { nav.LeftMenuClick("Dental.Views.Invoices.InvoicesPage"); return; }
                 if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
         }
 

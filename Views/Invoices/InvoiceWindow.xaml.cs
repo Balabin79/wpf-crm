@@ -17,5 +17,7 @@ namespace Dental.Views.Invoices
             }
             e.Handled = true;
         }
+
+        private void Cancel_Form(object sender, RoutedEventArgs e) => Close();     
     }
 }

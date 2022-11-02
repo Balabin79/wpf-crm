@@ -182,24 +182,6 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem Name ="invoicesBtnItem"
-                IsVisible="{DXBinding Expr='@r(UserSession).InvoicesRead', UpdateSourceTrigger=PropertyChanged}"
-                Command="{Binding LeftMenuClickCommand}" 
-                CommandParameter="Dental.Views.Invoices.InvoicesPage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/XAF/Action_Grand_Totals_Row.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Счета" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Invoices.InvoicesPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
             <dxb:BarButtonItem Name="orgBtnItem" 
                 IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Организация"
