@@ -13,7 +13,8 @@
     xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
     xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
     xmlns:vm="clr-namespace:Dental.ViewModels"
-     xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+    xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+    xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
     mc:Ignorable="d"
     d:DesignHeight="400"
     dx:ThemeManager.ThemeName="Office2019White"
@@ -34,6 +35,7 @@
                     <converter:MultiBindingConverter x:Key="multiConv" />
                     <converter:MultiBindingPageIntConverter x:Key="multiPageInt" />
                     <converter:MultiBindingInvoiceItemConverter x:Key="multiInvoiceItem" />
+                    <converter:RowTotalConverter x:Key="rowTotal" />
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
 
@@ -110,7 +112,27 @@
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock x:Name="PART_Editor" TextWrapping="Wrap" TextAlignment="Center"
-                                            Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, 
+                                                        StringFormat={}{0:c2}, 
+                                                        ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture} }"/>
+                                                </DataTemplate>
+                                            </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn>
+
+                                        <dxg:GridColumn HorizontalHeaderContentAlignment="Right" Header="Всего"  Width="1*" >
+                                            <dxg:GridColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Margin="0 0 3 0" 
+                                                        TextWrapping="Wrap" 
+                                                        TextAlignment="Right">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding Converter="{StaticResource rowTotal}">
+                                                                <Binding Path="Row.Count"/>
+                                                                <Binding Path="Row.Price"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+
+                                                    </TextBlock>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                         </dxg:GridColumn>
