@@ -15,11 +15,12 @@ namespace Dental.Infrastructures.Converters
         {
             try
             {
+                if (Values == null || Values.Length == 0) return string.Format(CultureInfo.CurrentCulture, "{0:C2}", 0);
                 int cnt = 0;
-                if (int.TryParse(Values[0].ToString(), out int result)) cnt = result;
+                if (int.TryParse(Values[0]?.ToString(), out int result)) cnt = result;
 
                 decimal? price = 0;
-                if (decimal.TryParse(Values[1].ToString(), out decimal param)) price = param;
+                if (decimal.TryParse(Values[1]?.ToString(), out decimal param)) price = param;
 
                 return cnt == 0 || price == 0
                     ?

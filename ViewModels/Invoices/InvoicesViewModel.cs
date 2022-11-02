@@ -31,12 +31,11 @@ namespace Dental.ViewModels.Invoices
     public class InvoicesViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        private readonly bool fromPatientCard;
-        public InvoicesViewModel(Client client = null, ApplicationContext context = null, bool fromPatientCard = false)
+
+        public InvoicesViewModel(Client client = null, ApplicationContext context = null)
         {
             try
             {
-                this.fromPatientCard = fromPatientCard;
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetInvoices();
@@ -57,7 +56,7 @@ namespace Dental.ViewModels.Invoices
         public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanOpenFormDocuments() => true;
+       // public bool CanOpenFormDocuments() => true;
         public bool CanStatusChanged(object p) => true;
 
 
@@ -271,6 +270,7 @@ namespace Dental.ViewModels.Invoices
 
 
         #region Печать
+        /*
         [Command]
         public void OpenFormDocuments()
         {
@@ -318,14 +318,14 @@ namespace Dental.ViewModels.Invoices
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке загрузить меню печати счетов!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
+        
         public DocumentsWindow DocumentsWindow { get; set; }
         public InvoicesDocumentsViewModel Documents { get; private set; } = new InvoicesDocumentsViewModel();
         public ObservableCollection<BarButtonItem> ItemLinksSource
         {
             get { return GetProperty(() => ItemLinksSource); }
             set { SetProperty(() => ItemLinksSource, value); }
-        }
+        }*/
         #endregion
 
         private string NewNumberGenerate() =>
@@ -377,7 +377,6 @@ namespace Dental.ViewModels.Invoices
             get { return GetProperty(() => ShowPaid); }
             set { SetProperty(() => ShowPaid, value); }
         }
-
 
         [Command]
         public void PrintInvoice(object p)
