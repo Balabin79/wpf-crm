@@ -34,40 +34,7 @@ namespace Dental.ViewModels
             Patients = clients;
             Services = services;
             Locations = locations;
-            AppointmentItem = appointmentItem;
-            //AttachmentFile = appointmentItem.CustomFields["AttachmentFile"]?.ToString();
-            try
-            {
-                if (((int)AppointmentItem?.Id) > 0)
-                {
-                    using (ApplicationContext db = new ApplicationContext())
-                    {
-                        var appointment = db.Appointments.FirstOrDefault(f => f.Id == (int)AppointmentItem.Id);
-                        if (appointment != null)
-                        {
-                            var path = Path.Combine(PathToAppointmentsDirectory, appointment?.Guid);
-                            if (Directory.Exists(path))
-                            {
-                                var files = Directory.GetFiles(path);
-                                if (files.Length > 0)
-                                {
-                                    var name = new FileInfo(files[0]).Name;
-                                    AttachmentFile = files[0];
-                                    AttachmentFileName = name;
-                                    CustomFields["AttachmentFile"] = files[0];
-                                    CustomFields["AttachmentFileName"] = name;
-                                }
-                            }
-                        }
 
-                    }
-                }
-            }
-            catch
-            {
-                AttachmentFile = null;
-                AttachmentFileName = null;
-            }
 
             Patient = clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
             if (CustomFields["Client"] is Client client)
@@ -105,8 +72,6 @@ namespace Dental.ViewModels
             }
         }
 
-        public bool CanUploadFile() => true;
-        public bool CanClearFile() => true;
        
         public ObservableCollection<Client> Patients {
             get => patients;
@@ -177,64 +142,6 @@ namespace Dental.ViewModels
 
         /**** File *****/
         protected IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }
-
-        private AppointmentItem AppointmentItem { get; set; }
-
-        public string AttachmentFile
-        {
-            get { return GetProperty(() => AttachmentFile); }
-            set { 
-                SetProperty(() => AttachmentFile, value);
-                CustomFields["AttachmentFile"] = value;
-            }
-        }
-
-        private string PathToAppointmentsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Appointments");
-
-        public string AttachmentFileName
-        {
-            get { return GetProperty(() => AttachmentFileName); }
-            set { 
-                SetProperty(() => AttachmentFileName, value);
-                CustomFields["AttachmentFileName"] = value;
-            }
-        }
-
-        [Command]
-        public void UploadFile()
-        {
-            if (OpenFileDialogService.ShowDialog())
-            {
-                AttachmentFile = OpenFileDialogService.File.GetFullName();
-                AttachmentFileName = OpenFileDialogService.File?.Name;
-            }
-        }
-
-        [Command]
-        public void OpenFile(object p)
-        {
-            try
-            {
-                var fileName = p.ToString();
-                if (fileName?.Length < 2 || !File.Exists(fileName)) return; 
-                Process.Start(fileName);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файла!",
-                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void ClearFile() 
-        { 
-            AttachmentFile = null; 
-            AttachmentFileName = null; 
-        }
-        
 
     }
 }

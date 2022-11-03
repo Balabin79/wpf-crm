@@ -48,7 +48,7 @@ namespace Dental.ViewModels
                 LoadClients(db);
                 SetSelectedEmployees();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -82,17 +82,6 @@ namespace Dental.ViewModels
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
                 db.Entry(item).State = EntityState.Added;
-                SaveFile(item.AttachmentFile, item.Guid, ref item);
-                if (p is AppointmentAddedEventArgs arg)
-                {
-                    foreach (var i in arg.Appointments)
-                    {
-                        i.CustomFields["AttachmentFile"] = item.AttachmentFile;
-                        i.CustomFields["AttachmentFileName"] = item.AttachmentFileName;
-                    }
-                }
-
-
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -106,44 +95,6 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is AppointmentEditedEventArgs arg)
-                {
-                    foreach (var i in arg.Appointments)
-                    {
-                        try
-                        {
-                            var fileName = i.CustomFields["AttachmentFile"]?.ToString();
-
-                            var item = Appointments.FirstOrDefault(f => f.Id == (int)i.Id);
-                            
-                            string pathToAttachFile = Path.Combine(PathToAppointmentsDirectory, item?.Guid);
-
-                            //если пути не совпадают, то сохранить новый
-                            if (!string.IsNullOrEmpty(fileName) && pathToAttachFile != fileName)
-                            {
-                                if (Directory.Exists(pathToAttachFile))Directory.Delete(pathToAttachFile, true);
-                                SaveFile(fileName, item.Guid, ref item);
-                                break;
-                            }
-
-                            if (string.IsNullOrEmpty(fileName) && Directory.GetFiles(pathToAttachFile).Length > 0)
-                            {
-                                Directory.Delete(pathToAttachFile, true);
-                                i.CustomFields["AttachmentFile"] = null;
-                                i.CustomFields["AttachmentFileName"] = null;
-                                item.AttachmentFile = null;
-                                item.AttachmentFile = null;
-                            }
-                                
-                                
-                        }
-                        catch (Exception e)
-                        {
-                            continue;
-                        }
-                    }
-                }
-
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -157,25 +108,6 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is AppointmentRemovedEventArgs arg)
-                foreach (var i in arg.Appointments)
-                {
-                        try
-                        {
-                            var fileName = i.CustomFields["AttachmentFile"]?.ToString();
-                            if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName)) 
-                            {
-                                Directory.Delete(Path.GetDirectoryName(fileName), true);
-                                //File.Delete(fileName);
-                            } 
-                        }
-                        catch (Exception e)
-                        {
-                            continue;
-                        }
-                    }
-
-
                 Services.Reestr.Update((int)Tables.Appointments);
                 db.SaveChanges();
             }
@@ -184,39 +116,6 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private string PathToAppointmentsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Appointments");
-
-        private void SaveFile(string attachmentFile, string guid, ref Appointments item)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(attachmentFile))
-                {
-                    string pathToAttachFile = Path.Combine(PathToAppointmentsDirectory, guid);
-
-                    if (!Directory.Exists(pathToAttachFile)) Directory.CreateDirectory(pathToAttachFile);
-
-                    FileInfo file = new FileInfo(attachmentFile);
-                    if (!file.Exists) file.Create();
-                    file.CopyTo(Path.Combine(pathToAttachFile, file.Name), true);
-
-                    FileInfo newFile = new FileInfo(Path.Combine(pathToAttachFile, file.Name)) { CreationTime = DateTime.Now };
-
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
-                    var files = new DirectoryInfo(pathToAttachFile).GetFiles();
-                    foreach (var f in files) 
-                        if (f.FullName != newFile.FullName) file.Delete();
-                    item.AttachmentFile = newFile.FullName;
-                    item.AttachmentFileName = newFile.Name;
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
 
         #region Справочник "Места встреч"
         [Command]
@@ -479,7 +378,7 @@ namespace Dental.ViewModels
         }
 
         /*****************************************************************************************/
-
+       
 
         private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
 
@@ -514,29 +413,28 @@ namespace Dental.ViewModels
             Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
-                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, i?.Guid, "Photo");
-                if (Directory.Exists(pathToEmpPhoto))
-                {
-                    var files = Directory.GetFiles(pathToEmpPhoto);
-                    if (files.Length > 0) i.Photo = files[0];
-                }
+                
 
-                if (!string.IsNullOrEmpty(i.Photo) && File.Exists(i.Photo))
+                if (!string.IsNullOrEmpty(i.Photo) )
                 {
-                    using (var stream = new FileStream(i.Photo, FileMode.Open))
+                    string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, i?.Photo);
+                    if (File.Exists(pathToEmpPhoto))
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        i.Image = img;
-                        stream.Close(); 
-                        stream.Dispose();
+                        using (var stream = new FileStream(pathToEmpPhoto, FileMode.Open))
+                        {
+                            var img = new BitmapImage();
+                            img.BeginInit();
+                            img.CacheOption = BitmapCacheOption.OnLoad;
+                            img.StreamSource = stream;
+                            img.EndInit();
+                            img.Freeze();
+                            i.Image = img;
+                            stream.Close();
+                            stream.Dispose();
+                        }
                     }
-                }
-                else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
+                    else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
+                }           
             }
         }
 

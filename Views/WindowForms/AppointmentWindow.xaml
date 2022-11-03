@@ -52,13 +52,6 @@
             <dxb:BarCheckItem x:Name="barItemRecurrence" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Recurrence}}" />
             <dxb:BarEditItem x:Name="barItemReminder" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Reminder}}" />
             
-            <dxb:BarButtonItem Content="Upload"
-                               IsEnabled="{DXBinding Expr='Patient != null'}"
-                               ToolTip="Прикрепить файл к расписанию"
-                               GlyphSize="Large"
-                               LargeGlyph="{dx:DXImage SvgImages/Business Objects/BO_FileAttachment.svg}"
-                               MediumGlyph="{dx:DXImage SvgImages/Business Objects/BO_FileAttachment.svg}"
-                               Command="{Binding UploadFileCommand}" />
         </dxb:ToolBarControl>
         <dxlc:LayoutControl x:Name="validationContainer" Orientation="Vertical" dxe:ValidationService.IsValidationContainer="True">
             <dxlc:LayoutGroup Orientation="Horizontal">
@@ -245,29 +238,7 @@
 
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-            <dxlc:LayoutItem Label="Прикрепленный файл:" LabelPosition="Left" Margin="0,5,0,0" 
-                             IsEnabled="{DXBinding Expr='Patient != null'}">
-                <StackPanel Orientation="Horizontal">
-                    <dxe:HyperlinkEdit 
-                                Text="{Binding AttachmentFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="{Binding AttachmentFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                EditValue="{Binding AttachmentFileName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                Command="{Binding OpenFileCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        CommandParameter="{Binding AttachmentFile, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                FontWeight="DemiBold"
-                                Foreground="#333"
-                                 />
-                    <dxb:ToolBarControl ShowDragWidget="False" Caption="File" VerticalAlignment="Top"  Margin="10 0 0 0"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Очистить" 
-                                           IsEnabled="{DXBinding Expr='AttachmentFile!=null', UpdateSourceTrigger=PropertyChanged}"
-                                           GlyphSize="Small"
-                                           Command="{Binding ClearFileCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Delete.svg}"/>
-
-                    </dxb:ToolBarControl>
-                </StackPanel>
-            </dxlc:LayoutItem>
+   
             <dxlc:LayoutGroup Margin="0,5,0,0" Orientation="Vertical" HorizontalAlignment="Stretch">
                 <dxlc:LayoutItem Label="Дополнительная информация:" />
                 <dxlc:LayoutItem Style="{DynamicResource {dxscht:AppointmentWindowThemeKey ResourceKey=LayoutItem_Description}}">

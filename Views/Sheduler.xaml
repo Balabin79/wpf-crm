@@ -88,13 +88,11 @@
                         Source="{Binding Resource.CustomFields.ImageName}"
                         Stretch="Uniform" />
                             <StackPanel Grid.Row="1">
-                                <dxe:HyperlinkEdit 
+                                <TextBlock
+                                    TextWrapping="Wrap" 
                                 Text="{Binding Resource.Caption, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                ToolTip="Перейти в анкету сотрудника"
-                                EditValue="Перейти в анкету сотрудника"
-                                Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
-                                CommandParameter="{Binding Path=Resource.Id}"
-                                FontWeight="Bold"
+                                    FontSize="11"
+                                FontWeight="DemiBold"
                                 Foreground="Black"
                                 HorizontalAlignment="Center"
                                  />
@@ -398,10 +396,8 @@
                                         </dxsch:AppointmentMappings.End>
                                         <dxsch:CustomFieldMapping Mapping="ClientInfoId" Name="ClientInfoId"/>
                                         <dxsch:CustomFieldMapping Mapping="LocationId" Name="LocationId"/>
-                                        <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
-                                        <dxsch:CustomFieldMapping Mapping="AttachmentFile" Name="AttachmentFile"/>
-                                    <dxsch:CustomFieldMapping Mapping="AttachmentFileName" Name="AttachmentFileName"/>
-                                    </dxsch:AppointmentMappings>
+                                    <dxsch:CustomFieldMapping Mapping="ServiceId" Name="ServiceId"/>
+                                </dxsch:AppointmentMappings>
                                 </dxsch:DataSource.AppointmentMappings>
 
                                 <dxsch:DataSource.AppointmentStatusMappings>
