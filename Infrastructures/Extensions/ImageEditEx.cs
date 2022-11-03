@@ -69,10 +69,23 @@ namespace Dental.Infrastructures.Extensions
 
         static ImageEditEx()
         {
-            Type ownerType = typeof(ImageEditEx);
-            CommandManager.RegisterClassCommandBinding(ownerType, new CommandBinding(ApplicationCommands.Delete, (d, e) => {                            
-                ((IImageDeletable)((FrameworkElement)d).DataContext).ImageDelete(d);
-            }, (d, e) => ((ImageEditEx)d).CanDelete(d, e)));
+            try
+            {
+
+                Type ownerType = typeof(ImageEditEx);
+                CommandManager.RegisterClassCommandBinding(
+                    ownerType, 
+                    new CommandBinding(ApplicationCommands.Delete, 
+                    (d, e) => 
+                        {
+                            ((IImageDeletable)((FrameworkElement)d).DataContext).ImageDelete(d);
+                        }, 
+                    (d, e) => ((ImageEditEx)d).CanDelete(d, e)));
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
     }

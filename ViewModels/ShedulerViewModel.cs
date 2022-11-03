@@ -479,32 +479,7 @@ namespace Dental.ViewModels
         }
 
         /*****************************************************************************************/
-        [Command]
-        public void OpenFormEmployeeCard(object p)
-        {
-            try
-            {
-                if (p == null) return;
-                var employee = db.Employes.FirstOrDefault(f => f.Id == (int)p);
-                var win = new EmployeeCardWindow(employee);
-                win.ShowDialog();
 
-                if (win.DataContext is EmployeeViewModel vm)
-                {
-                    if(employee.FirstName != vm.Model.FirstName || 
-                        employee.LastName != vm.Model.LastName || 
-                        employee.MiddleName != vm.Model.MiddleName || 
-                        employee.Post != vm.Model.Post)
-                    {
-                        if (Application.Current.Resources["Router"] is Navigator nav) { nav.LeftMenuClick("Dental.Views.Sheduler"); }                       
-                    }
-                }      
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
 
         private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
 

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Dental.Models.Base;
 using System.Windows.Media;
+using System.Globalization;
 
 namespace Dental.Models
 {
@@ -40,25 +41,30 @@ namespace Dental.Models
             set { SetProperty(() => Photo, value); }
         }
 
+        [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string FirstName {
             get { return GetProperty(() => FirstName); }
-            set { SetProperty(() => FirstName, value?.Trim()); }
+            set { SetProperty(() => FirstName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
         }
 
+        [Required(ErrorMessage = @"Поле ""Фамилия"" обязательно для заполнения")]
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string LastName
         {
             get { return GetProperty(() => LastName); }
-            set { SetProperty(() => LastName, value?.Trim()); }
+            set { SetProperty(() => LastName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
         }
 
+        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Отчество"" не более 255 символов")]
         public string MiddleName
         {
             get { return GetProperty(() => MiddleName); }
-            set { SetProperty(() => MiddleName, value?.Trim()); }
+            set { SetProperty(() => MiddleName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
         }
 
-        public string BirthDate { get; set; }
 
+        [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email
         {
             get { return GetProperty(() => Email); }
@@ -67,29 +73,22 @@ namespace Dental.Models
 
         public string Note { get; set; }
 
+        [Phone(ErrorMessage = @"В поле ""Телефон"" введено некорректное значение")]
         public string Phone
         {
             get { return GetProperty(() => Phone); }
             set { SetProperty(() => Phone, value); }
         }
 
-        public string Status
+        public string Post
         {
-            get { return GetProperty(() => Status); }
-            set { SetProperty(() => Status, value); }
+            get { return GetProperty(() => Post); }
+            set { SetProperty(() => Post, (value ?? "").Trim()); }
         }
 
-        public string Address
-        {
-            get { return GetProperty(() => Address); }
-            set { SetProperty(() => Address, value?.Trim()); }
-        }
 
-        public string Post { get; set; }
-        public string Sex { get; set; }
         public int? IsInSheduler { get; set; } = 1;
         public bool? IsInArchive { get; set; } = false;
-        public int? UseIndividualPrice { get; set; }
 
         public int? IsAdmin { get; set; } = 0;
         public int? IsDoctor { get; set; } = 1;

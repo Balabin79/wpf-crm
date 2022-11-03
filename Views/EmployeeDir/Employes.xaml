@@ -17,9 +17,10 @@
        d:DesignHeight="400"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:Dental.ViewModels.EmployeeDir" 
-       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        d:DesignWidth="800"
-       Title="Сотрудники"      
+       Title="Сотрудники"   
        >
 
     <Page.Resources>
@@ -28,71 +29,151 @@
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <vm:ListEmployeesViewModel x:Key="vm"/>
+        
         <DataTemplate x:Key="HeaderCardTemplate">
+            <DockPanel>
             <TextBlock 
+                Margin="0 3 0 0"
+                DockPanel.Dock="Left"
                 FontWeight="Bold"
                 TextAlignment="Left"
                 FontStyle="Italic"
-                Width="260" 
-                Text="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName + ` ` + RowData.Row.MiddleName'}" 
+                Text="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName.Substring(0, 1) + `.`+  RowData.Row.MiddleName.Substring(0, 1) + `.`'}" 
                 ToolTip="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName + ` ` + RowData.Row.MiddleName'}" />
+
+                <dxb:ToolBarControl x:Name="fileToolBar" DockPanel.Dock="Right" Background="Transparent" HorizontalAlignment="Right" Margin="0" Padding="0"
+                                        BarItemDisplayMode="Default"
+                                        Caption="File" 
+                                        ShowDragWidget="False"
+                                        AllowCustomizationMenu="False" 
+                                        AllowQuickCustomization="False">
+                    <dxb:BarButtonItem IsVisible="{DXBinding Expr='RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Content="Закрыть для редактирования" 
+                                       GlyphSize="Small"
+                                       Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}"
+                                       CommandParameter="{Binding RowData.Row}"
+                                       Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
+
+                    <dxb:BarButtonItem IsVisible="{DXBinding Expr='!RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Content="Редактировать данные" 
+                                       Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                       GlyphSize="Small"
+                                       CommandParameter="{Binding RowData.Row}"
+                                       Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
+
+                    <dxb:BarButtonItem  Content="Сохранить"                                   
+                                        IsEnabled="{DXBinding Expr='RowData.Row.IsVisible and !string.IsNullOrEmpty(RowData.Row.LastName) and !string.IsNullOrEmpty(RowData.Row.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                        GlyphSize="Small"
+                                        CommandParameter="{Binding RowData.Row}"
+                                        Command="{Binding Source={StaticResource vm}, Path=SaveCommand, Mode=OneWay}"/>
+                    <dxb:BarItemLinkSeparator/>
+                    <dxb:BarButtonItem  Content="Удалить" 
+                                        IsEnabled="{DXBinding Expr='RowData.Row.IsVisible and RowData.Row.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                        GlyphSize="Small"
+                                        CommandParameter="{Binding RowData.Row}"
+                                        Command="{Binding Source={StaticResource vm}, Path=DeleteCommand, Mode=OneWay}"/>
+                    <dxb:BarItemLinkSeparator />
+                </dxb:ToolBarControl>
+
+            </DockPanel>
         </DataTemplate>
 
         <DataTemplate x:Key="readonlyCardTemplate" >
-            <StackPanel Orientation="Vertical" Width="270">
-                <Grid Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <dxe:ImageEdit Grid.Column="0"
+            <StackPanel Orientation="Vertical" >
+            <DockPanel Width="360" MaxWidth="360" HorizontalAlignment="Left" x:Name="info">
+
+                    <extens:ImageEditEx DataContext="{StaticResource vm}" 
+                            DockPanel.Dock="Left"
                                    Stretch="UniformToFill"
                                    Background="White"
-                                   Height="100"
-                                   Width="90"
-                                   Source="{Binding Path=Row.Image, Mode=OneWay}"
-                                   ShowMenu="False"
-                                   IsReadOnly="True" >
+                                   Height="160"
+                                   Width="120"
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
+                                      ImagePath = "{Binding ElementName=info, Path=DataContext.Row.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      EditValue = "{Binding ElementName=info, Path=DataContext.Row.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                                      IsReadOnly="{DXBinding Expr='@e(info).DataContext.Row.Id == 0 or (@e(info).DataContext.Row.Id != 0 and !@e(info).DataContext.Row.IsVisible)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  >
                         <dxe:ImageEdit.EmptyContentTemplate>
-                            <ControlTemplate>
+                            <ControlTemplate >
                                 <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
                             </ControlTemplate>
                         </dxe:ImageEdit.EmptyContentTemplate>
-                    </dxe:ImageEdit>
-                    <StackPanel ToolTip="{Binding Row.Phone}"  Orientation="Vertical" VerticalAlignment="Top" Margin="12,0,0,0" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Medium" Text="Осн. телефон: " />
-                            <TextBlock Text="{Binding Row.Phone}" />
-                        </StackPanel>
-                        <StackPanel ToolTip="{Binding Row.Email}" Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Medium" Text="Email: " />
-                            <TextBlock Text="{Binding Row.Email}" />
-                        </StackPanel>
-                        <StackPanel ToolTip="{Binding Row.Post}" Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Medium" Text="Должность: " />
-                            <TextBlock Text="{Binding Row.Post}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <TextBlock FontWeight="Medium" Text="Статус: " />
-                            <TextBlock Text="{DXBinding Expr='Row.IsInArchive == true ? `В архиве` : `Активен`'}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontWeight="Medium" Text="Подробнее: " />
-                            <dxe:HyperlinkEdit 
-                                Text="Перейти" 
-                                ToolTip="Перейти в анкету сотрудника"
-                                EditValue="Перейти в анкету сотрудника"
-                                Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
-                                CommandParameter="{Binding Path=Row.Id}"
-                                Margin="0 -3 0 0" />
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
+                    </extens:ImageEditEx>
+
+                    <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical"  DockPanel.Dock="Right" Margin="10 5 0 5" Padding="0">
+                    <dxlc:LayoutGroup Orientation="Vertical">
+                        <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
+                            <dxe:TextEdit ShowBorder="False"  
+                                                EditValue="{Binding Path=Row.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Имя" AddColonToLabel="True">
+                            <dxe:TextEdit ShowBorder="False"  
+                                                EditValue="{Binding Path=Row.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Отчество" AddColonToLabel="True">
+                            <dxe:TextEdit ShowBorder="False"  
+                                                EditValue="{Binding Path=Row.MiddleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="Телефон" AddColonToLabel="True">
+                            <dxe:ButtonEdit IsTextEditable="True" ShowBorder="False"
+                                            AllowDefaultButton="False"
+                                            MaskType="Simple"
+                                            Mask="(999) 000-0000"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=Row.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" />
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Email" AddColonToLabel="True" >
+                            <dxe:ButtonEdit IsTextEditable="True"  ShowBorder="False"
+                                            AllowDefaultButton="False"
+                                            MaskType="RegEx"
+                                            Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                            EditValue="{Binding Path=Row.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="True"
+                                            IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                <dxe:ImageButtonInfo
+                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  />
+                            </dxe:ButtonEdit>
+                        </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Должность:"  LabelPosition="Left" >
+                                <dxe:TextEdit  Padding="0" Margin="0"  ShowBorder="False"                                             
+                                                EditValue="{Binding Row.Post, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                               />
+                            </dxlc:LayoutItem>
+
+                            <dxlc:LayoutGroup Orientation="Horizontal">
+                                <dxlc:LayoutItem Label="В архиве: "
+                                            LabelPosition="Left" >
+                                    <dxe:CheckEdit         
+                                                EditValue="{Binding Row.IsInArchive, Mode=TwoWay,                                            
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="В расписании: "
+                                            LabelPosition="Left" >
+                                    <dxe:CheckEdit         
+                                                EditValue="{Binding Row.IsInSheduler, Mode=TwoWay,                                              
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </dxlc:LayoutGroup>
+                </dxlc:LayoutControl>
+            </DockPanel>
+
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
 
-    <Border 
+    <Border
         BorderBrush="LightGray" 
         BorderThickness="1" 
         Margin="5" 
@@ -120,7 +201,7 @@
                 <DockPanel LastChildFill="True" Grid.Row="0">
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                         <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                                Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
+                               Source="pack://application:,,,/Resources/Icons/emp3.png" />
                         <TextBlock Text="Сотрудники" FontSize="14" Padding="2 5 5 0" />
                     </StackPanel>
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -129,18 +210,8 @@
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                             <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
-                                           Command="{Binding OpenFormEmployeeCardCommand}"
+                                           Command="{Binding AddCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
-
-                            <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
-                                           GlyphSize="Small"
-                                           Command="{Binding OpenFormDocumentsCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
-
-                            <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding OpenFormFieldsCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
 
                             <dxb:BarButtonItem Content="Свернуть/Развернуть"                                        
                                            GlyphSize="Small"
@@ -164,65 +235,73 @@
                 </DockPanel>
 
 
-                <dxg:GridControl
-                ShowBorder="True"
-                Grid.Row="2" 
+                <dxg:GridControl  Grid.Row="2" 
+                ShowBorder="False" SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" 
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                 Name="grid"                             
                 DataContext="{StaticResource vm}" 
                 ItemsSource="{Binding Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"               
                 Margin="2 0 2 2"
-                DefaultSorting="LastName"
+                DefaultSorting="LastName" 
                 >
 
-                    <dxg:GridControl.View>
-                        <dxg:CardView 
+                    <dxg:GridControl.View >
+                        <dxg:CardView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2" Margin="2"
                         ShowColumnHeaders="False"
                         AllowSorting="True"
                         Name="view"
                         NavigationStyle="Row"
                         EditorButtonShowMode="ShowAlways"
-                        ShowGroupPanel="False"                       
+                        ShowGroupPanel="False"      
                         ShowGroupedColumns="True"
                         CardTemplate="{StaticResource readonlyCardTemplate}"       
-                        CardHeaderTemplate="{StaticResource HeaderCardTemplate}"
+                        CardHeaderTemplate="{StaticResource HeaderCardTemplate}"                      
                         PrintMaximumCardColumns="2"
                         PrintAutoCardWidth="True"
-                        UseLegacyFilterPanel="False" AllowEditing="False" CardLayout="Columns">
+                        UseLegacyFilterPanel="False" 
+                        AllowEditing="True" 
+                            CardLayout="Columns">
 
                             <dxg:CardView.InputBindings>
                                 <KeyBinding 
                                     Key="E" 
                                     Modifiers="Ctrl" 
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                                    Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
 
                                 <KeyBinding 
-                                    Key="O"     
-                                    Modifiers="Ctrl"
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"  />
-
-                                <KeyBinding 
-                                    Key="N"     
-                                    Modifiers="Ctrl"
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"/>
-
-                                <MouseBinding 
-                                    Gesture="LeftDoubleClick"      
-                                    Command="{Binding Source={StaticResource vm}, Path=OpenFormEmployeeCardCommand}"
-                                    CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                    Key="Delete"     
+                                    Command="{Binding Source={StaticResource vm}, Path=DeleteCommand}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
                             </dxg:CardView.InputBindings>
                             <dxg:CardView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
-                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
-                                            Name="editRow" KeyGesture="Ctrl+O" Content="Открыть анкету сотрудника"  
-                                            Command="{Binding Path=OpenFormEmployeeCardCommand}"
-                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
-                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую анкету"  
-                                            Command="{Binding Path=OpenFormEmployeeCardCommand}"/>
+                                <dxb:BarButtonItem IsVisible="{DXBinding Expr='RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Content="Закрыть для редактирования" 
+                                       GlyphSize="Small"
+                                       KeyGesture="Ctrl+E" GlyphAlignment="Left"
+                                       Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}"
+                                       CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                                       Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
+
+                                <dxb:BarButtonItem IsVisible="{DXBinding Expr='!RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       Content="Редактировать данные" 
+                                       KeyGesture="Ctrl+E"
+                                       Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
+                                       GlyphSize="Small" GlyphAlignment="Left"
+                                       CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                                       Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
+
+                                <dxb:BarButtonItem  Content="Удалить" 
+                                        IsEnabled="{DXBinding Expr='RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                        GlyphSize="Small"
+                                        KeyGesture="Delete"
+                                                    GlyphAlignment="Left"
+                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                                        Command="{Binding DeleteCommand}"/>
+
                             </dxg:CardView.RowCellMenuCustomizations>
                         </dxg:CardView>
                     </dxg:GridControl.View>

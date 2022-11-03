@@ -19,10 +19,13 @@ using Dental.Views.Documents;
 using Dental.Services.Files;
 using Dental.Views.AdditionalFields;
 using Dental.ViewModels.AdditionalFields;
+using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Models.Base;
+using Dental.Infrastructures.Extensions;
 
 namespace Dental.ViewModels.EmployeeDir
 {
-    public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase
+    public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
     {
         public readonly ApplicationContext db;
         public ListEmployeesViewModel()
@@ -31,7 +34,11 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 db = new ApplicationContext();
                 SetCollection();
-                foreach (var i in Collection) ImgLoading(i);
+                foreach (var i in Collection)
+                {
+                    ImgLoading(i);
+                    i.IsVisible = false;
+                }
             }
             catch (Exception e)
             {
@@ -40,47 +47,18 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
-        public bool CanOpenFormEmployeeCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
-        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeAddFieldsEditable;
+        public bool CanEditable(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+        public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeDeletable;
         public bool CanExpandAll(object p) => true;
-        public bool CanNavigateTo(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
-        public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeTemplatesEditable;
         public bool CanShowArchive() => true;
 
         [Command]
-        public void OpenFormEmployeeCard(object p)
+        public void Editable(object p)
         {
-            try
+            if (p is Employee employee)
             {
-                EmployeeWin = (p != null)
-                    ? new EmployeeCardWindow(Collection.Where(f => f.Id == (int)p).FirstOrDefault(), this)
-                    : new EmployeeCardWindow(new Employee(), this);
-                EmployeeWin.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void OpenFormFields()
-        {
-            try
-            {
-                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == FieldsWindow?.ToString()).FirstOrDefault();
-                if (wnd != null)
-                {
-                    wnd.Activate();
-                    return;
-                }
-
-                FieldsWindow = new EmployeeFieldsWindow() { DataContext = new AdditionalEmployeeFieldsViewModel() };
-                FieldsWindow.Show();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Дополнительные поля\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                employee.IsVisible = !employee.IsVisible;
             }
         }
 
@@ -102,47 +80,6 @@ namespace Dental.ViewModels.EmployeeDir
         }
 
         [Command]
-        public void NavigateTo(object p)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(p.ToString())) return;
-
-                if (!int.TryParse(p.ToString(), out int param)) param = 0;
-                if (Application.Current.Resources["Router"] is Navigator nav)
-                {
-                    if (param == -1 || param == 0) nav.LeftMenuClick("Dental.Views.EmployeeDir.Employee");
-                    else nav.LeftMenuClick(new object[] { "Dental.Views.EmployeeDir.Employee", param });
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void OpenFormDocuments()
-        {
-            try
-            {
-                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DocumentsWindow?.ToString()).FirstOrDefault();
-                if (wnd != null)
-                {
-                    wnd.Activate();
-                    return;
-                }
-
-                DocumentsWindow = new DocumentsWindow() { DataContext = new EmployeesDocumentsViewModel() };
-                DocumentsWindow.Show();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
         public void ShowArchive()
         {
             try
@@ -156,13 +93,148 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        [Command]
+        public void Add() => Collection.Add(new Employee() { IsVisible = true });
+        
+
+        [Command]
+        public void Save(object p)
+        {
+            try
+            {
+                if (p is Employee model)
+                {
+                    if (model.Id == 0) db.Entry(model).State = EntityState.Added;
+                    if (model.Id > 0) model.Photo = SavePhoto(model);
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "Записано в базу данных!" }.run();
+                        Services.Reestr.Update((int)Tables.Employees);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с анкетой сотрудника!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void Delete(object p)
+        {
+            try
+            {
+                if (p is Employee model)
+                {
+                    if(model.Id == 0)
+                    {
+                        Collection.Remove(model);
+                        return;
+                    }
+
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить анкету сотрудника из базы данных, без возможности восстановления? Также будут удалены связанные с сотрудником записи в расписании!",
+                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                    if (response.ToString() == "No") return;
+
+                    //удалить также в расписании и в счетах
+                    db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+
+                    db.Entry(model).State = EntityState.Deleted;
+                    if (db.SaveChanges() > 0) 
+                    {
+                        Collection.Remove(model);
+                        new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run(); 
+                    }
+
+                    // удаляем фото 
+                    var pathToPhoto = Path.Combine(PathToEmployeesDirectory, model?.Photo);
+                    if (File.Exists(pathToPhoto)) File.Delete(pathToPhoto);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При удалении анкеты сотрудника произошла ошибка, перейдите в раздел \"Сотрудники\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+        #region Управление фото
+        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
+
+        private string SavePhoto(Employee model)
+        {
+            try
+            {
+                if (model == null) return "";
+
+                if (!string.IsNullOrEmpty(model?.Photo))
+                {                           
+                    if (!Directory.Exists(PathToEmployeesDirectory)) Directory.CreateDirectory(PathToEmployeesDirectory);
+
+                    FileInfo photo = new FileInfo(model?.Photo);
+                    string copiedName = model.Guid + photo.Extension;
+
+                    if (model?.Photo == copiedName) return model?.Photo;
+
+                    if (!photo.Exists) photo.Create();
+                    var fileInfo = photo.Attributes;
+                    
+                    photo.CopyTo(Path.Combine(PathToEmployeesDirectory, copiedName), true);
+                    new Notification() { Content = "Фото сотрудника сохранено!" }.run();
+                    return copiedName;
+                }
+                return "";
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+        }
+
+        public void ImageDelete(object p)
+        {
+            try
+            {
+                if (p is ImageEditEx img)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото сотрудника?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                    if (response.ToString() == "No") return;
+
+                    var pathToFile = Path.Combine(PathToEmployeesDirectory, img?.ImagePath);
+                    if (File.Exists(pathToFile)) 
+                    {
+                        var file = new FileInfo(pathToFile);
+                        string name = file.Name;
+
+                        img?.Clear();
+                        File.Delete(pathToFile);
+                        var employee = db.Employes.FirstOrDefault(f => f.Photo == name);
+                        employee.Photo = null;
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Фото сотрудника удалено!" }.run();
+
+                    }
+                }            
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+
+
+        /***********************************/
         public ObservableCollection<Employee> Collection
         {
             get { return GetProperty(() => Collection); }
             set { SetProperty(() => Collection, value); }
         }
 
-        public EmployeeCardWindow EmployeeWin { get; set; }
         public DocumentsWindow DocumentsWindow { get; set; }
 
         public EmployeeFieldsWindow FieldsWindow { get; set; }
@@ -173,24 +245,18 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection();
+        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
 
-        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
 
         private void ImgLoading(Employee model)
         {
             try
             {
-                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, model.Guid, "Photo");
-                if (Directory.Exists(pathToEmpPhoto))
+                if (model?.Photo == null) return;
+                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, model?.Photo);
+                if (File.Exists(pathToEmpPhoto))
                 {
-                    var files = Directory.GetFiles(pathToEmpPhoto);
-                    if (files.Length > 0) model.Photo = files[0];
-                }
-
-                if (!string.IsNullOrEmpty(model.Photo) && File.Exists(model.Photo))
-                {
-                    using (var stream = new FileStream(model.Photo, FileMode.Open))
+                    using (var stream = new FileStream(pathToEmpPhoto, FileMode.Open))
                     {
                         var img = new BitmapImage();
                         img.BeginInit();
@@ -201,7 +267,6 @@ namespace Dental.ViewModels.EmployeeDir
                         model.Image = img;
                     }
                 }
-                else model.Photo = null;
             }
             catch (Exception e)
             {

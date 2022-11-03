@@ -99,7 +99,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Business Objects/BO_Position.svg}"/>
+                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/emp3.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Сотрудники" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
