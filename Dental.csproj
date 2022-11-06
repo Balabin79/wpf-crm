@@ -278,12 +278,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Views\AdditionalFields\EmployeeFieldsWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\AdditionalFields\CommonValuesWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Invoices\InvoicesControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -358,14 +352,6 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AdditionalFields\EmployeeFieldsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AdditionalFields\CommonValuesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

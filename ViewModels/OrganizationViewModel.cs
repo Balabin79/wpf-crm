@@ -97,7 +97,6 @@ namespace Dental.ViewModels
                 if (Model.Id == 0) db.Organizations.Add(Model);
                 SaveLogo();
                 SaveStamp();
-                SaveSignature();
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
@@ -206,13 +205,8 @@ namespace Dental.ViewModels
                     var files = Directory.GetFiles(PathToStampDirectory);
                     if (files.Length > 0) Model.StampFilePath = files[0];
                 }
-                if (Directory.Exists(PathToSignatureDirectory))
-                {
-                    var files = Directory.GetFiles(PathToSignatureDirectory);
-                    if (files.Length > 0) Model.SignatureFilePath = files[0];
-                }
 
-                string[] images = new string[] { Model.LogoFilePath, Model.StampFilePath, Model.SignatureFilePath };
+                string[] images = new string[] { Model.LogoFilePath, Model.StampFilePath };
                 for (int i = 0; i < images.Length; i++)
                 {
 
@@ -300,38 +294,6 @@ namespace Dental.ViewModels
                     Model.StampFilePath = newFile.FullName;
 
                     var files = new DirectoryInfo(PathToStampDirectory).GetFiles();
-                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void SaveSignature()
-        {
-            try
-            {
-                if (Signature == null || (Model?.SignatureFilePath != null && ModelBeforeChanges?.SignatureFilePath != null && Model?.SignatureFilePath == ModelBeforeChanges?.SignatureFilePath)) return;
-                if (Logo is BitmapImage img)
-                {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.SignatureFilePath) return;
-                }
-
-                if (!string.IsNullOrEmpty(Model?.SignatureFilePath))
-                {
-                    if (!Directory.Exists(PathToSignatureDirectory)) Directory.CreateDirectory(PathToSignatureDirectory);
-                    FileInfo logo = new FileInfo(Model?.SignatureFilePath);
-                    if (!logo.Exists) logo.Create();
-                    logo.CopyTo(Path.Combine(PathToSignatureDirectory, logo.Name), true);
-
-                    FileInfo newFile = new FileInfo(Path.Combine(PathToSignatureDirectory, logo.Name));
-                    newFile.CreationTime = DateTime.Now;
-                    Model.SignatureFilePath = newFile.FullName;
-
-                    var files = new DirectoryInfo(PathToSignatureDirectory).GetFiles();
                     foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
                 }
             }

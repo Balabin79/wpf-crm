@@ -237,8 +237,6 @@ namespace Dental.ViewModels.EmployeeDir
 
         public DocumentsWindow DocumentsWindow { get; set; }
 
-        public EmployeeFieldsWindow FieldsWindow { get; set; }
-
         public bool IsArchiveList
         {
             get { return GetProperty(() => IsArchiveList); }

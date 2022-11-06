@@ -28,12 +28,6 @@ namespace Dental.Services
             set { SetProperty(() => EmployeesListRead, value); }
         }
 
-        public bool AddFieldsRead
-        {
-            get { return GetProperty(() => AddFieldsRead); }
-            set { SetProperty(() => AddFieldsRead, value); }
-        }
-
         public bool SheduleRead
         {
             get { return GetProperty(() => SheduleRead); }
@@ -108,7 +102,6 @@ namespace Dental.Services
 
         public bool TemplateEditable { get; set; } = false;
         public bool TemplateDeletable { get; set; } = false;
-
 
         public bool OrgEditable { get; set; } = false;
         public bool OrgDeletable { get; set; } = false;

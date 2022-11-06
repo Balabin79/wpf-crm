@@ -57,13 +57,6 @@ namespace Dental.Models
             set { SetProperty(() => Address, value?.Trim()); }
         }
 
-        [Display(Name = "Юридический адрес")]
-        public string LegalAddress
-        {
-            get { return GetProperty(() => LegalAddress); }
-            set { SetProperty(() => LegalAddress, value?.Trim()); }
-        }
-
         [Phone]
         [Display(Name = "Телефон")]
         public string Phone
@@ -147,15 +140,6 @@ namespace Dental.Models
             set { SetProperty(() => WhoIssuedBy, value?.Trim()); }
         }
 
-        [Display(Name = "ОКВЭД")]
-        [MaxLength(6, ErrorMessage = "Длина не более 6 цифр")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
-        public string Okved
-        {
-            get { return GetProperty(() => Okved); }
-            set { SetProperty(() => Okved, value?.Trim()); }
-        }
-
         [Display(Name = "ОКПО")]
         [MaxLength(10, ErrorMessage = "Длина не более 10 цифр")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Разрешено вводить только цифры")]
@@ -202,13 +186,6 @@ namespace Dental.Models
             set { SetProperty(() => StampFilePath, value); }
         }
 
-        [NotMapped]
-        public string SignatureFilePath
-        {
-            get { return GetProperty(() => SignatureFilePath); }
-            set { SetProperty(() => SignatureFilePath, value); }
-        }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -224,9 +201,7 @@ namespace Dental.Models
                 Inn = this.Inn,
                 LogoFilePath = this.LogoFilePath,
                 StampFilePath = this.StampFilePath,
-                SignatureFilePath = this.SignatureFilePath,
                 Address = this.Address,
-                LegalAddress = this.LegalAddress,
                 Phone = this.Phone,
                 Email = this.Email,
                 AccountNumber = this.AccountNumber,
@@ -239,8 +214,7 @@ namespace Dental.Models
                 LicenseName = this.LicenseName,
                 Site = this.Site,
                 WhoIssuedBy = this.WhoIssuedBy,
-                Okpo = this.Okpo,
-                Okved = this.Okved,
+                Okpo = this.Okpo
             };
 
         }
@@ -253,9 +227,7 @@ namespace Dental.Models
             model.Inn = this.Inn;
             model.LogoFilePath = this.LogoFilePath;
             model.StampFilePath = this.StampFilePath;
-            model.SignatureFilePath = this.SignatureFilePath;
             model.Address = this.Address;
-            model.LegalAddress = this.LegalAddress;
             model.Phone = this.Phone;
             model.Email = this.Email;
             model.AccountNumber = this.AccountNumber;
@@ -269,7 +241,6 @@ namespace Dental.Models
             model.Site = this.Site;
             model.WhoIssuedBy = this.WhoIssuedBy;
             model.Okpo = this.Okpo;
-            model.Okved = this.Okved;
             return model;
         }
 
@@ -317,17 +288,14 @@ namespace Dental.Models
             StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
             StringParamsIsEquel(this.LogoFilePath, other.LogoFilePath, "Логотип");
             StringParamsIsEquel(this.StampFilePath, other.StampFilePath, "Печать");
-            StringParamsIsEquel(this.SignatureFilePath, other.SignatureFilePath, "Подпись");
             StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
             StringParamsIsEquel(this.Email, other.Email, "Email");
             StringParamsIsEquel(this.Address, other.Address, "Фактический адрес");
-            StringParamsIsEquel(this.LegalAddress, other.LegalAddress, "Юридический адрес");
             StringParamsIsEquel(this.Bik, other.Bik, "БИК");
             StringParamsIsEquel(this.AccountNumber, other.AccountNumber, "Расчетный счет");
             StringParamsIsEquel(this.BankName, other.BankName, "Наименование банка");
             StringParamsIsEquel(this.Ogrn, other.Ogrn, "ОГРН");
             StringParamsIsEquel(this.Okpo, other.Okpo, "ОКПО");
-            StringParamsIsEquel(this.Okved, other.Okved, "ОКВЭД");
             StringParamsIsEquel(this.LicenseDate, other.LicenseDate, "Дата регистрации");
             StringParamsIsEquel(this.GeneralDirector, other.GeneralDirector, "Генеральный директор");
             StringParamsIsEquel(this.LicenseName, other.LicenseName, "Лицензия");

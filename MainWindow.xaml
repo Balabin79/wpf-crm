@@ -165,24 +165,6 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem Name="addFieldsBtnItem"
-                IsVisible="{DXBinding Expr='@r(UserSession).AddFieldsRead', UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Дополнительные поля"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.AdditionalFields.AdditionalFieldsPage" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/RichEdit/ListBullets.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Доп.поля" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.AdditionalFields.AdditionalFieldsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.AdditionalFields.AdditionalFieldsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
             <dxb:BarButtonItem Name="orgBtnItem" 
                 IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Организация"

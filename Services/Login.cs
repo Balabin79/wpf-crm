@@ -141,7 +141,6 @@ namespace Dental.Services
                                 case "EmployeeTemplatesEditable": UserSession.EmployeeTemplatesEditable = HasAccess(role); break;
                                 case "EmployeeAddFieldsEditable": UserSession.EmployeeAddFieldsEditable = HasAccess(role); break;
 
-                                case "AddFieldsRead": UserSession.AddFieldsRead = HasAccess(role); break;
                                 case "AddFieldsEditable": UserSession.AddFieldsEditable = HasAccess(role); break;
                                 case "AddFieldsDeletable": UserSession.AddFieldsDeletable = HasAccess(role); break;
 
@@ -195,8 +194,6 @@ namespace Dental.Services
             UserSession.EmployeeEditable = true;
             UserSession.EmployeeDeletable = true;
 
-
-            UserSession.AddFieldsRead = true;
             UserSession.AddFieldsEditable = true;
             UserSession.AddFieldsDeletable = true;
 
