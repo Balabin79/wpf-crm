@@ -14,7 +14,7 @@ namespace Dental.ViewModels.Invoices
 {
     public class MaterialVM : BindableBase, IDataErrorInfo
     {
-        public MaterialVM(ApplicationContext db, int id = 0) => Materials = db?.Nomenclature.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent).Include(f => f.Measure)
+        public MaterialVM(ApplicationContext db, int id = 0) => Materials = db?.Nomenclature.Where(f => f.IsDir == 1 && f.Id != id).Include(f => f.Parent)
             .OrderBy(f => f.Name).ToObservableCollection();
 
         [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
@@ -35,13 +35,6 @@ namespace Dental.ViewModels.Invoices
             get { return GetProperty(() => Price); }
             set { SetProperty(() => Price, value); }
         }
-
-        public Measure Measure
-        {
-            get { return GetProperty(() => Measure); }
-            set { SetProperty(() => Measure, value); }
-        }
-        public int? MeasureId { get; set; }
 
         public int? IsDir
         {

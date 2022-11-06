@@ -22,17 +22,6 @@ namespace Dental.Models
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 
-        [Display(Name = "Единица измерения")]
-        [Clonable]
-        public Measure Measure 
-        {
-            get { return GetProperty(() => Measure); }
-            set { SetProperty(() => Measure, value); }
-        }
-
-        [Clonable]
-        public int? MeasureId { get; set; }
-
         [Clonable]
         public decimal? Price
         {
@@ -50,9 +39,7 @@ namespace Dental.Models
                 ParentId = ParentId,
                 UpdatedAt = UpdatedAt,
                 Code = Code,
-                Price = Price,
-                Measure = Measure,
-                MeasureId = MeasureId
+                Price = Price
             };
         }
 

@@ -11,18 +11,6 @@ namespace Dental.Views.NomenclatureDir
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty MeasuresProp = DependencyProperty.Register(
-            "Measures",
-            typeof(ICollection<Measure>),
-            typeof(NomenclatureWindow)
-        );
-
-        public ICollection<Measure> Measures
-        {
-            get => (ICollection<Measure>)GetValue(MeasuresProp);
-            set => SetValue(MeasuresProp, value);
-        }
-
         private void TextEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
         {
             if (e.NewValue?.ToString() == "0")

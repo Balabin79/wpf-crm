@@ -36,7 +36,6 @@ namespace Dental.ViewModels.Materials
                 db = ctx;
                 Context = context;
                 Collection = GetCollection();
-                SetMeasures();
             }
             catch
             {
@@ -51,34 +50,11 @@ namespace Dental.ViewModels.Materials
         public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
         public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
         public bool CanCancelForm() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
-        public bool CanOpenFormMeasure() => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
         public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
         public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).NomenclatureEditable;
 
         public bool CanPrintPrice() => true;
         public bool CanLoadDocForPrint() => true;
-
-
-        [Command]
-        public void OpenFormMeasure()
-        {
-            try
-            {
-                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == MeasureWin?.ToString()).FirstOrDefault();
-                if (wnd != null)
-                {
-                    wnd.Activate();
-                    return;
-                }
-
-                MeasureWin = new MeasureWindow() { DataContext = new MeasureViewModel( this, db) };
-                MeasureWin.Show();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке открытия формы \"Единицы измерения\" произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
 
         public override ObservableCollection<Nomenclature> Collection
         {
@@ -86,17 +62,7 @@ namespace Dental.ViewModels.Materials
             set { SetProperty(() => Collection, value); }
         }
 
-        protected override Window GetWindow() => new NomenclatureWindow() { Measures = Measures };
-
-        public ICollection<Measure> Measures
-        {
-            get { return GetProperty(() => Measures); }
-            set { SetProperty(() => Measures, value); }
-        }
-
-        private MeasureWindow MeasureWin;
-
-        public void SetMeasures() => Measures = db.Measure.ToObservableCollection();
+        protected override Window GetWindow() => new NomenclatureWindow();
 
 
         #region Печать
@@ -145,7 +111,7 @@ namespace Dental.ViewModels.Materials
         }
         #endregion
 
-        protected override ObservableCollection<Nomenclature> GetCollection() => Context?.OrderBy(f => f.IsDir == 0).ThenBy(f => f.Name).Include(f => f.Parent).Include(f => f.Measure).ToObservableCollection();
+        protected override ObservableCollection<Nomenclature> GetCollection() => Context?.OrderBy(f => f.IsDir == 0).ThenBy(f => f.Name).Include(f => f.Parent).ToObservableCollection();
     }
 
 }

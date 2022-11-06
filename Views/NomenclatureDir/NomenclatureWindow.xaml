@@ -18,14 +18,11 @@
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-        Height="{DXBinding Expr='Model.IsDir == 0 ? 325 : 235'}"
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        Height="{DXBinding Expr='Model.IsDir == 0 ? 280 : 235'}"
         x:Name="win">
 
-
-    <dxmvvm:Interaction.Behaviors>
-        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceItemCommand}" PassEventArgsToCommand="True"/>
-    </dxmvvm:Interaction.Behaviors>
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:DateToStringConverter x:Key="DateToString"/>
@@ -61,17 +58,7 @@
                                     }"  />
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
-
-                    <dxlc:LayoutItem Label="Единица измерения:" 
-                                         LabelPosition="Top" 
-                                         Visibility="{DXBinding Expr='Copy.IsDir == 0 ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                        <dxe:ComboBoxEdit  
-                                    DisplayMember="Name" NullText="Выберите единицу измерения" IsTextEditable="False"
-                                    ItemsSource="{Binding ElementName=win, Path=Measures}"
-                                    EditValue="{Binding Copy.Measure, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
-                                    SelectedItem="{Binding Copy.Measure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 />
-                    </dxlc:LayoutItem>
+                    
                     <dxlc:LayoutGroup Orientation="Horizontal">
                         <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
                             <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
