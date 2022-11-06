@@ -20,7 +20,12 @@ namespace Dental.Models
             set { SetProperty(() => Caption, value?.Trim()); }
         }
 
-        public string BrushColor { get; set; }
+        public string BrushColor
+        {
+            get { return GetProperty(() => BrushColor); }
+            set { SetProperty(() => BrushColor, value?.Trim()); }
+        }
+
 
         [NotMapped]
         public SolidColorBrush Brush 

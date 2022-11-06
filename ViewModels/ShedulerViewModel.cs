@@ -42,8 +42,6 @@ namespace Dental.ViewModels
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
 
-                LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
-
                 LoadEmployees(db);
                 LoadClients(db);
                 SetSelectedEmployees();
@@ -123,6 +121,8 @@ namespace Dental.ViewModels
         {
             try
             {
+                db.LocationAppointment.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == LocationWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
                 {
@@ -171,14 +171,7 @@ namespace Dental.ViewModels
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
-                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
-                    //LocationAppointments = GetLocationCollection();
-                    if (cnt > 0)
-                    {
-                        LocationAppointmentsBeforeChanges.Clear();
-                        LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
-                    }
-                    
+                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());                 
                 }
             }
             catch (Exception e)
@@ -197,8 +190,6 @@ namespace Dental.ViewModels
                     if (string.IsNullOrEmpty(item.Name)) continue;
                     if (item.Id == 0) db.Entry(item).State = EntityState.Added;
                 }
-                LocationAppointmentsBeforeChanges.Clear();
-                LocationAppointments.ForEach(f => LocationAppointmentsBeforeChanges.Add((LocationAppointment)f.Clone()));
                 if (db.SaveChanges() > 0) 
                 { 
                     new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
@@ -219,7 +210,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => LocationAppointments, value); }
         }
 
-        public ObservableCollection<LocationAppointment> LocationAppointmentsBeforeChanges { get; set; } = new ObservableCollection<LocationAppointment>();
         private ObservableCollection<LocationAppointment>  GetLocationCollection() => db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
         #endregion
 
@@ -229,6 +219,8 @@ namespace Dental.ViewModels
         {
             try
             {
+                db.AppointmentStatus.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == StatusWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
                 {
@@ -272,14 +264,9 @@ namespace Dental.ViewModels
 
                     if (item.Id == 0) db.Entry(item).State = EntityState.Added;
                     // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
-                    if (db.Entry(item).State == EntityState.Added
-                        || StatusAppointmentsBeforeChanges.Where(f => item.Guid == f.Guid && item.Brush != f.Brush).FirstOrDefault() != null)
-                    {
-                        item.BrushColor = item.Brush?.Color.ToString();
-                    }
+                    item.BrushColor = item.Brush?.Color.ToString();
+                    
                 }
-                StatusAppointmentsBeforeChanges.Clear();
-                StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
 
                 if (db.SaveChanges() > 0) 
                 { 
@@ -311,12 +298,6 @@ namespace Dental.ViewModels
 
                     else db.Entry(model).State = EntityState.Detached;
                     StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
-
-                    if (cnt > 0)
-                    {
-                        StatusAppointmentsBeforeChanges.Clear();
-                        StatusAppointments.ForEach(f => StatusAppointmentsBeforeChanges.Add((AppointmentStatus)f.Clone()));
-                    }
                 }
             }
             catch (Exception e)
@@ -333,7 +314,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => StatusAppointments, value); }
         }
 
-        public ObservableCollection<AppointmentStatus> StatusAppointmentsBeforeChanges { get; set; } = new ObservableCollection<AppointmentStatus>();
         private ObservableCollection<AppointmentStatus> GetStatusCollection()
         {
             var collection = db.AppointmentStatus.OrderBy(f => f.Caption).ToObservableCollection();
@@ -341,8 +321,12 @@ namespace Dental.ViewModels
             {
                 try
                 {
-                    Color colorName = (Color)ColorConverter.ConvertFromString(i.BrushColor);
-                    i.Brush = new SolidColorBrush(colorName);
+                    Color colorName;
+                    if (i.BrushColor != null)
+                    {
+                        colorName = (Color)ColorConverter.ConvertFromString(i.BrushColor);
+                        i.Brush = new SolidColorBrush(colorName);
+                    }
                 }
                 catch
                 {
