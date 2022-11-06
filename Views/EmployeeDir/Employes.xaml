@@ -84,7 +84,7 @@
 
         <DataTemplate x:Key="readonlyCardTemplate" >
             <StackPanel Orientation="Vertical" >
-            <DockPanel Width="360" MaxWidth="360" HorizontalAlignment="Left" x:Name="info">
+            <DockPanel HorizontalAlignment="Left" x:Name="info" Width="360" MaxWidth="360">
 
                     <extens:ImageEditEx DataContext="{StaticResource vm}" 
                             DockPanel.Dock="Left"
@@ -249,7 +249,9 @@
                 >
 
                     <dxg:GridControl.View >
-                        <dxg:CardView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2" Margin="2"
+                        <dxg:CardView 
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                            ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="2" Margin="2"
                         ShowColumnHeaders="False"
                         AllowSorting="True"
                         Name="view"
@@ -263,7 +265,7 @@
                         PrintAutoCardWidth="True"
                         UseLegacyFilterPanel="False" 
                         AllowEditing="True" 
-                            CardLayout="Columns">
+                            CardLayout="Rows">
 
                             <dxg:CardView.InputBindings>
                                 <KeyBinding 
