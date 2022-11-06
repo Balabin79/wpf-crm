@@ -46,7 +46,8 @@
                                         <DockPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="Список услуг" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                                             <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                                <dxb:ToolBarControl Background="Transparent"
+                                                    BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                                     <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                             CommandParameter="{Binding ElementName=templ, Path=DataContext}"
@@ -102,7 +103,8 @@
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                        <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                                        <dxb:ToolBarControl Background="Transparent"
+                                                            Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                             <dxb:BarButtonItem Content="Редактировать" 
                                                     IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
@@ -214,7 +216,8 @@
                                         <DockPanel HorizontalAlignment="Stretch">
                                             <TextBlock Text="Список материалов" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                                             <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                                <dxb:ToolBarControl Background="Transparent"
+                                                    BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                                     <dxb:BarButtonItem 
                                             Margin="5 0 0 0"
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceMaterialCommand}"
@@ -272,7 +275,8 @@
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                        <dxb:ToolBarControl Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                                        <dxb:ToolBarControl Background="Transparent"
+                                                            Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                                             <dxb:BarButtonItem Content="Редактировать" 
                                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}"
@@ -400,7 +404,7 @@
                         <TextBlock Text="Планы лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                         <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                            <dxb:ToolBarControl 
+                            <dxb:ToolBarControl Background="Transparent"
                             ShowDragWidget="False" 
                             BarItemDisplayMode="ContentAndGlyph" 
                             Caption="File" 
@@ -518,7 +522,8 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                <dxb:ToolBarControl Background="Transparent"
+                                    x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                     <dxb:BarButtonItem 
                                            Content="Открыть форму"                                                            
                                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

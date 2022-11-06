@@ -38,7 +38,9 @@
                         <DockPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="Состав" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                             <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                                <dxb:ToolBarControl 
+                                    BarItemDisplayMode="ContentAndGlyph" Caption="File" Background="Transparent"
+                                    AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                     <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormInvoiceServiceCommand}"
                                             CommandParameter="{Binding ElementName=templ, Path=DataContext}"
@@ -71,7 +73,10 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Complaint" >
-                        <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                        <dxb:ToolBarControl 
+                            Background="Transparent"
+                            Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" 
+                            AllowQuickCustomization="False" ShowDragWidget="False">
                             <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -119,7 +124,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Anamnes" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -167,7 +173,9 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Objectivly" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl 
+                                Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -215,7 +223,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="DescriptionXRay" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -263,7 +272,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Diagnos" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -311,7 +321,9 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Plan" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl 
+                                Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -359,7 +371,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Treatment" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -407,7 +420,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Allergy" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
+                            <dxb:ToolBarControl Background="Transparent"
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -455,7 +469,8 @@
                             />
                         </dxlc:LayoutItem>
                         <StackPanel Grid.Column="1" Width="18" Margin="7 15 0 5" Name="Recomendation" >
-                            <dxb:ToolBarControl Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" 
+                            <dxb:ToolBarControl Background="Transparent" 
+                                Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" 
                                                 AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
                                             Command="{Binding ElementName=view, Path=DataContext.ClearCommand}"

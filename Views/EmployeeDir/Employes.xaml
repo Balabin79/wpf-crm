@@ -41,7 +41,9 @@
                 Text="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName.Substring(0, 1) + `.`+  RowData.Row.MiddleName.Substring(0, 1) + `.`'}" 
                 ToolTip="{DXBinding Expr='RowData.Row.LastName + ` ` + RowData.Row.FirstName + ` ` + RowData.Row.MiddleName'}" />
 
-                <dxb:ToolBarControl x:Name="fileToolBar" DockPanel.Dock="Right" Background="Transparent" HorizontalAlignment="Right" Margin="0" Padding="0"
+                <dxb:ToolBarControl 
+                    x:Name="fileToolBar" 
+                    DockPanel.Dock="Right" Background="Transparent" HorizontalAlignment="Right" Margin="0" Padding="0"
                                         BarItemDisplayMode="Default"
                                         Caption="File" 
                                         ShowDragWidget="False"
@@ -206,7 +208,7 @@
                     </StackPanel>
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                             <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"

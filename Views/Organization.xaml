@@ -46,7 +46,7 @@
                     <TextBlock Text="Реквизиты организации" FontSize="14" Padding="5 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
-                    <dxb:ToolBarControl x:Name="fileToolBar" 
+                    <dxb:ToolBarControl x:Name="fileToolBar" Background="Transparent"
                                         Caption="File" 
                                         ShowDragWidget="False"
                                         BarItemDisplayMode="ContentAndGlyph"
@@ -383,7 +383,7 @@
 
                                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right" >
 
-                                        <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" 
+                                        <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Background="Transparent"
                                                                 Caption="File" 
                                                                 ShowDragWidget="False" 
                                                                 AllowCustomizationMenu="False" 
@@ -425,7 +425,7 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                <dxb:ToolBarControl 
+                                                <dxb:ToolBarControl Background="Transparent"
                                                     x:Name="fileToolBar2" Caption="File" 
                                                     AllowCustomizationMenu="False" 
                                                     AllowQuickCustomization="False"

@@ -64,7 +64,9 @@
                             <DataTemplate>
                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                    <dxb:ToolBarControl 
+                                        x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" 
+                                        AllowQuickCustomization="False" Background="Transparent">
                                         <dxb:BarButtonItem 
                                            Content="Открыть документ"                                                            
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 

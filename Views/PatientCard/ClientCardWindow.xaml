@@ -65,7 +65,7 @@
 
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                        <dxb:ToolBarControl 
+                        <dxb:ToolBarControl Background="Transparent"
                             x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                             BarItemDisplayMode="ContentAndGlyph">
 

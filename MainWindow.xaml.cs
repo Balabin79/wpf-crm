@@ -36,7 +36,6 @@ namespace Dental
                 templatesBtnItem.IsVisible = userSession.TemplatesRead;
                 addFieldsBtnItem.IsVisible = userSession.AddFieldsRead;
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
-                syncBtnItem.IsVisible = userSession.SyncRun;
 
                 if (userSession.ClientsListRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
                 if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }

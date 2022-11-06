@@ -153,7 +153,7 @@
                                 </dxe:PopupBaseEdit.PopupContentTemplate>
                             </dxe:PopupBaseEdit>
                         </dxlc:LayoutItem>
-                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Height="30"  
+                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Height="30" Background="Transparent"  
                                             Margin="-3 15 -10 0" Width="35" Padding="0"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="Default">
                             <dxb:BarButtonItem Margin="0" Padding="0"

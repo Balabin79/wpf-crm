@@ -54,7 +54,7 @@
                                 <TextBlock Text="Области лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                                 <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                    <dxb:ToolBarControl 
+                                    <dxb:ToolBarControl Background="Transparent"
                             ShowDragWidget="False" 
                             BarItemDisplayMode="ContentAndGlyph" 
                             Caption="File" 
@@ -163,7 +163,8 @@
                                 <DataTemplate>
                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
-                                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                        <dxb:ToolBarControl Background="Transparent"
+                                            x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                             <dxb:BarButtonItem 
                                            Content="Открыть форму"                                                            

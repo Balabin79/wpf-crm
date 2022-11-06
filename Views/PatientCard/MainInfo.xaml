@@ -195,7 +195,8 @@
 
                             <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-                                <dxb:ToolBarControl ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                <dxb:ToolBarControl Background="Transparent"
+                                    ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                     <dxb:BarButtonItem
                                            Content="Директория" 
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
@@ -241,7 +242,8 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                        <dxb:ToolBarControl ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" >
+                                        <dxb:ToolBarControl Background="Transparent"
+                                            ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" >
                                             <dxb:BarButtonItem
                                             Content="Открыть файл"                                                            
                                             IsEnabled="{Binding BtnIconEditableVisible, Mode=TwoWay}"

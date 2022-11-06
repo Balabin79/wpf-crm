@@ -135,7 +135,6 @@ namespace Dental.Services
                                 case "ClientTemplatesEditable": UserSession.ClientTemplatesEditable = HasAccess(role); break;
                                 case "ClientAddFieldsEditable": UserSession.ClientAddFieldsEditable = HasAccess(role); break;
 
-                                case "OpenEmployeeCard": UserSession.OpenEmployeeCard = HasAccess(role); break;
                                 case "EmployeesListRead": UserSession.EmployeesListRead = HasAccess(role); break;
                                 case "EmployeeEditable": UserSession.EmployeeEditable = HasAccess(role); break;
                                 case "EmployeeDeletable": UserSession.EmployeeDeletable = HasAccess(role); break;
@@ -169,8 +168,6 @@ namespace Dental.Services
                                 case "TemplateDeletable": UserSession.TemplateDeletable = HasAccess(role); break;
 
                                 case "SettingsRead": UserSession.SettingsRead = HasAccess(role); break;
-
-                                case "SyncRun": UserSession.SyncRun = HasAccess(role); break;
                             }
                         }
                     }
@@ -194,12 +191,10 @@ namespace Dental.Services
             UserSession.ClientTemplatesEditable = true;
             UserSession.ClientAddFieldsEditable = true;
 
-            UserSession.OpenEmployeeCard = true;
             UserSession.EmployeesListRead = true;
             UserSession.EmployeeEditable = true;
             UserSession.EmployeeDeletable = true;
-            UserSession.EmployeeTemplatesEditable = true;
-            UserSession.EmployeeAddFieldsEditable = true;
+
 
             UserSession.AddFieldsRead = true;
             UserSession.AddFieldsEditable = true;
@@ -228,8 +223,6 @@ namespace Dental.Services
             UserSession.TemplateDeletable = true;
 
             UserSession.SettingsRead = true;
-
-            UserSession.SyncRun = true;
         }
 
         public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);   

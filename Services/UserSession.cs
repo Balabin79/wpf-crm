@@ -76,12 +76,6 @@ namespace Dental.Services
             set { SetProperty(() => OrgRead, value); }
         }
 
-        public bool SyncRun
-        {
-            get { return GetProperty(() => SyncRun); }
-            set { SetProperty(() => SyncRun, value); }
-        }
-
 
         public bool OpenClientCard { get; set; } = false;
         public bool ClientEditable { get; set; } = false;
