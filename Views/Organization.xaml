@@ -303,12 +303,11 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Logo"   Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG)|*.bmp;*.jpg;*.gif;*.png;"                        
-                                      ImagePath = "{Binding Model.LogoFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG)|*.bmp;*.jpg;*.gif;*.png;"                                                       
                                       EditValue = "{Binding Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      IsReadOnly="{DXBinding Expr='Model.Id == 0 or (Model.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                       
                                       ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
@@ -326,12 +325,11 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Stamp"  Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
-                                      ImagePath = "{Binding Model.StampFilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                                                         
                                       EditValue = "{Binding Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                       Background="White"                        
                                       ShowBorder="False"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      IsReadOnly="{DXBinding Expr='Model.Id == 0 or (Model.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                       
                                       ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>

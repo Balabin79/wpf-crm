@@ -165,27 +165,6 @@ namespace Dental.Models
             set { SetProperty(() => Site, value?.Trim()); }
         }
 
-        [Display(Name = "Логотип")]
-        public string Logo
-        {
-            get { return GetProperty(() => Logo); }
-            set { SetProperty(() => Logo, value?.Trim()); }
-        }
-
-        [NotMapped]
-        public string LogoFilePath
-        {
-            get { return GetProperty(() => LogoFilePath); }
-            set { SetProperty(() => LogoFilePath, value); }
-        }
-
-        [NotMapped]
-        public string StampFilePath
-        {
-            get { return GetProperty(() => StampFilePath); }
-            set { SetProperty(() => StampFilePath, value); }
-        }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -199,8 +178,6 @@ namespace Dental.Models
                 ShortName = this.ShortName,
                 Kpp = this.Kpp,
                 Inn = this.Inn,
-                LogoFilePath = this.LogoFilePath,
-                StampFilePath = this.StampFilePath,
                 Address = this.Address,
                 Phone = this.Phone,
                 Email = this.Email,
@@ -225,8 +202,6 @@ namespace Dental.Models
             model.ShortName = this.ShortName;
             model.Kpp = this.Kpp;
             model.Inn = this.Inn;
-            model.LogoFilePath = this.LogoFilePath;
-            model.StampFilePath = this.StampFilePath;
             model.Address = this.Address;
             model.Phone = this.Phone;
             model.Email = this.Email;
@@ -286,8 +261,6 @@ namespace Dental.Models
             StringParamsIsEquel(this.ShortName, other.ShortName, "Сокращенное наименование");
             StringParamsIsEquel(this.Kpp, other.Kpp, "КПП");
             StringParamsIsEquel(this.Inn, other.Inn, "ИНН");
-            StringParamsIsEquel(this.LogoFilePath, other.LogoFilePath, "Логотип");
-            StringParamsIsEquel(this.StampFilePath, other.StampFilePath, "Печать");
             StringParamsIsEquel(this.Phone, other.Phone, "Телефон");
             StringParamsIsEquel(this.Email, other.Email, "Email");
             StringParamsIsEquel(this.Address, other.Address, "Фактический адрес");

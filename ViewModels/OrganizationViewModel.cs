@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Commands.Base;
+using Dental.Infrastructures.Extensions;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
@@ -21,7 +22,7 @@ using DevExpress.Xpf.Core;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
+    class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
 
@@ -30,15 +31,10 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Files = new ObservableCollection<FileInfo>();
                 Model = GetModel();
                 if (Model.Id > 0) ImagesLoading();
                 IsReadOnly = Model.Id > 0;
 
-                Files = Directory.Exists(PathToOrgFilesDirectory) ? 
-                    new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection() : 
-                    new ObservableCollection<FileInfo>();
-                
                 ModelBeforeChanges = (Organization)Model.Clone();
             }
             catch (Exception e)
@@ -75,17 +71,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Stamp, value); }
         }
 
-        public ImageSource Signature
-        {
-            get { return GetProperty(() => Signature); }
-            set { SetProperty(() => Signature, value); }
-        }
-
-        public ObservableCollection<FileInfo> Files
-        {
-            get { return GetProperty(() => Files); }
-            set { SetProperty(() => Files, value); }
-        }
 
         [Command]
         public void Save(object p)
@@ -95,8 +80,7 @@ namespace Dental.ViewModels
                 if (Model == null) return;
                 var notification = new Notification();
                 if (Model.Id == 0) db.Organizations.Add(Model);
-                SaveLogo();
-                SaveStamp();
+
                 db.SaveChanges();
                 notification.Content = "Изменения сохранены в базу данных!";
 
@@ -124,9 +108,9 @@ namespace Dental.ViewModels
                 Delete();
 
                 Model = new Organization();
-                
+
                 ModelBeforeChanges = (Organization)Model.Clone();
-                new Notification {Content = "Данные организации полностью удалены!" }.run();
+                new Notification { Content = "Данные организации полностью удалены!" }.run();
             }
             catch (Exception e)
             {
@@ -143,12 +127,7 @@ namespace Dental.ViewModels
                 db.SaveChanges();
                 Logo = null;
                 Stamp = null;
-                Signature = null;
-                Files.Clear();
-                new DirectoryInfo(PathToOrgFilesDirectory).GetFiles()?.ForEach(f => f.Delete());
-                new DirectoryInfo(PathToLogoDirectory).GetFiles()?.ForEach(f => f.Delete());
-                new DirectoryInfo(PathToStampDirectory).GetFiles()?.ForEach(f => f.Delete());
-                new DirectoryInfo(PathToSignatureDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
             }
             catch (Exception e)
             {
@@ -183,123 +162,96 @@ namespace Dental.ViewModels
         }
 
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
-      
+
         #region Управление файлами лого, печати и подписи
+
         private string PathToOrgDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization");
-        private string PathToOrgFilesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Files");
-        private string PathToLogoDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Logo");
-        private string PathToStampDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Stamp");
-        private string PathToSignatureDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization", "Signature");
+
 
         private void ImagesLoading()
         {
             try
             {
-                if (Directory.Exists(PathToLogoDirectory))
-                {
-                    var files = Directory.GetFiles(PathToLogoDirectory);
-                    if (files.Length > 0) Model.LogoFilePath = files[0];
-                }
-                if (Directory.Exists(PathToStampDirectory))
-                {
-                    var files = Directory.GetFiles(PathToStampDirectory);
-                    if (files.Length > 0) Model.StampFilePath = files[0];
-                }
+                var files = new string[] { };
+                if (Directory.Exists(PathToOrgDirectory)) files = Directory.GetFiles(PathToOrgDirectory);
 
-                string[] images = new string[] { Model.LogoFilePath, Model.StampFilePath };
-                for (int i = 0; i < images.Length; i++)
+
+
+                for (int i = 0; i < files.Length; i++)
                 {
 
-                        if (!string.IsNullOrEmpty(images[i]) && File.Exists(images[i]))
+                    using (var stream = new FileStream(files[i], FileMode.Open))
                     {
-                        using (var stream = new FileStream(images[i], FileMode.Open))
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+
+                        if (files[i].Contains("Logo")) Logo = img;
+                        if (files[i].Contains("Stamp")) Stamp = img;
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void ImageSave(object p)
+        {
+            try
+            {
+                if (p is ImageEditEx img && img.HasImage)
+                {
+                    if (!Directory.Exists(PathToOrgDirectory)) Directory.CreateDirectory(PathToOrgDirectory);
+                    var files = Directory.GetFiles(PathToOrgDirectory);
+                    if (img.Name == "Logo")
+                    {
+                        foreach (var file in files)
                         {
-                            var img = new BitmapImage();
-                            img.BeginInit();
-                            img.CacheOption = BitmapCacheOption.OnLoad;
-                            img.StreamSource = stream;
-                            img.EndInit();
-                            img.Freeze();
-                            switch (i)
+                            if (file.Contains("Logo"))
                             {
-                                case 0: Logo = img; break;
-                                case 1: Stamp = img; break;
-                                case 2: Signature = img; break;
+                                var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить файл логотипа?",
+                                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                                if (response.ToString() == "No") return;
+                                File.Delete(file);
+                                break;
                             }
                         }
+                        FileInfo photo = new FileInfo(img.ImagePath);
+                        photo.CopyTo(Path.Combine(PathToOrgDirectory, "Logo" + photo.Extension), true);
+                        new Notification() { Content = "Логотип сохранен!" }.run();
                     }
-                    else images[i] = null;
+
+                    if (img.Name == "Stamp")
+                    {
+                        foreach (var file in files)
+                        {
+                            if (file.Contains("Stamp"))
+                            {
+                                var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить файл печати?",
+                                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                                if (response.ToString() == "No") return;
+                                File.Delete(file);
+                                break;
+                            }
+                        }
+                        FileInfo photo = new FileInfo(img.ImagePath);
+                        photo.CopyTo(Path.Combine(PathToOrgDirectory, "Stamp" + photo.Extension), true);
+                        new Notification() { Content = "Файл печати сохранен!" }.run();
+                    }
                 }
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
-            }
-        }
 
-        [Command]
-        public void SaveLogo()
-        {
-            try
-            {
-                if (Logo == null || (Model?.LogoFilePath!=null && ModelBeforeChanges?.LogoFilePath !=null && Model?.LogoFilePath == ModelBeforeChanges?.LogoFilePath)) return;
-                if (Logo is BitmapImage img)
-                {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.LogoFilePath) return;
-                }
-
-                if (!string.IsNullOrEmpty(Model?.LogoFilePath))
-                {
-                    if (!Directory.Exists(PathToLogoDirectory)) Directory.CreateDirectory(PathToLogoDirectory);
-                    FileInfo logo = new FileInfo(Model?.LogoFilePath);
-                    if (!logo.Exists) logo.Create();
-                    logo.CopyTo(Path.Combine(PathToLogoDirectory, logo.Name), true);
-
-                    FileInfo newFile = new FileInfo(Path.Combine(PathToLogoDirectory, logo.Name));
-                    newFile.CreationTime = DateTime.Now;
-                    Model.LogoFilePath = newFile.FullName;
-
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
-                    var files = new DirectoryInfo(PathToLogoDirectory).GetFiles();
-                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                    //LogoLoading();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void SaveStamp()
-        {
-            try
-            {
-                if (Stamp == null || (Model?.StampFilePath != null && ModelBeforeChanges?.StampFilePath != null && Model?.StampFilePath == ModelBeforeChanges?.StampFilePath)) return;
-                if (Logo is BitmapImage img)
-                {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.StampFilePath) return;
-                }
-
-                if (!string.IsNullOrEmpty(Model?.StampFilePath))
-                {
-                    if (!Directory.Exists(PathToStampDirectory)) Directory.CreateDirectory(PathToStampDirectory);
-                    FileInfo logo = new FileInfo(Model?.StampFilePath);
-                    if (!logo.Exists) logo.Create();
-                    logo.CopyTo(Path.Combine(PathToStampDirectory, logo.Name), true);
-
-                    FileInfo newFile = new FileInfo(Path.Combine(PathToStampDirectory, logo.Name));
-                    newFile.CreationTime = DateTime.Now;
-                    Model.StampFilePath = newFile.FullName;
-
-                    var files = new DirectoryInfo(PathToStampDirectory).GetFiles();
-                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
             }
         }
 
@@ -308,140 +260,23 @@ namespace Dental.ViewModels
         {
             try
             {
-                string path = "";
                 string msg = "";
-                if (p is FrameworkElement name)
+                if (p is ImageEditEx img)
                 {
-                    if (name?.Name == "Logo")
-                    {
-                        msg = "Удалить файл логотипа?";
-                        path = PathToLogoDirectory;
-                    }
-                    if (name?.Name == "Stamp")
-                    {
-                        msg = "Удалить файл печати?";
-                        path = PathToStampDirectory;
-                    }
-                    if (name?.Name == "Signature")
-                    {
-                        msg = "Удалить файл подписи?";
-                        path = PathToSignatureDirectory;
-                    }
-                    if (string.IsNullOrEmpty(path)) return;
-                }
+                    if (img?.Name == "Logo") msg = "Удалить файл логотипа?";
+                    if (img?.Name == "Stamp") msg = "Удалить файл печати?";
 
-
-                var response = ThemedMessageBox.Show(title: "Внимание", text: msg, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                if (response.ToString() == "No") return;
-                if (Directory.Exists(path))
-                {
-                    new DirectoryInfo(path).GetFiles()?.ForEach(f => f.Delete());
-                }
-
-                if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
-                ImagesLoading();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        #endregion
-
-        #region команды, связанных с прикреплением файлов 
-        [Command]
-        public void OpenDirectory(object p)
-        {
-            try
-            {
-                if (Directory.Exists(PathToOrgFilesDirectory)) Process.Start(PathToOrgFilesDirectory);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть содержащую файл директорию!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void ExecuteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file) Process.Start(file.FullName);
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файла!",
-                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void AttachmentFile(object p)
-        {
-            try
-            {
-                var filePath = string.Empty;
-                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    dialog.InitialDirectory = "c:\\";
-                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
-                    dialog.FilterIndex = 2;
-                    dialog.RestoreDirectory = true;
-
-                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-                    filePath = dialog.FileName;
-                    if (string.IsNullOrEmpty(filePath)) return;
-                }
-
-                FileInfo file = new FileInfo(filePath);
-
-                // проверяем на наличие существующего файла
-                foreach (var i in Files)
-                {
-                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
-
-                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
-                        i.Delete();
-                    }
-                }
-
-                if (!Directory.Exists(PathToOrgFilesDirectory)) Directory.CreateDirectory(PathToOrgFilesDirectory);
-
-                File.Copy(file.FullName, Path.Combine(PathToOrgFilesDirectory, file.Name), true);
-
-                FileInfo newFile = new FileInfo(Path.Combine(PathToOrgFilesDirectory, file.Name));
-                newFile.CreationTime = DateTime.Now;
-
-                Files = new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection();
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        [Command]
-        public void DeleteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: msg, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                    file.Delete();
-                    Files = new DirectoryInfo(PathToOrgFilesDirectory).GetFiles().ToObservableCollection();
+
+                    if (Directory.Exists(PathToOrgDirectory))
+                    {
+                        var files = Directory.GetFiles(PathToOrgDirectory);
+                        foreach (var file in files) if (file.Contains(img?.Name)) File.Delete(file);
+                    }
+                    img.Clear();
+                    msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
+                    new Notification() { Content = msg }.run();
                 }
             }
             catch (Exception e)
@@ -449,6 +284,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+
         #endregion
     }
 }

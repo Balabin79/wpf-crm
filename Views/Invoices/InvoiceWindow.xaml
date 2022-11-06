@@ -33,7 +33,9 @@
             </dxlc:LayoutItem>
             
             <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top">
-                <dxe:DateEdit  Mask="G" MaskUseAsDisplayFormat="True" EditValue="{Binding Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit  Mask="G" 
+                               MaskUseAsDisplayFormat="True"
+                               EditValue="{Binding Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                     <dxe:DateEdit.StyleSettings>
                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                     </dxe:DateEdit.StyleSettings>

@@ -73,6 +73,7 @@ namespace Dental.Infrastructures.Extensions
             {
 
                 Type ownerType = typeof(ImageEditEx);
+
                 CommandManager.RegisterClassCommandBinding(
                     ownerType, 
                     new CommandBinding(ApplicationCommands.Delete, 
@@ -81,6 +82,15 @@ namespace Dental.Infrastructures.Extensions
                             ((IImageDeletable)((FrameworkElement)d).DataContext).ImageDelete(d);
                         }, 
                     (d, e) => ((ImageEditEx)d).CanDelete(d, e)));
+
+                CommandManager.RegisterClassCommandBinding(
+                    ownerType,
+                    new CommandBinding(ApplicationCommands.Save,
+                    (d, e) =>
+                    {
+                        ((IImageSave)((FrameworkElement)d).DataContext).ImageSave(d);
+                    },
+                    (d, e) => ((ImageEditEx)d).CanSave(d, e)));
             }
             catch (Exception e)
             {
