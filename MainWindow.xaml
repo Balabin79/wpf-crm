@@ -85,13 +85,11 @@
                                 TextAlignment="Center"  Text="Клиенты" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
                                 TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />                        
+                                       />
                         </StackPanel>
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
-
-            <dxb:BarItemSeparator/>
 
             <dxb:BarButtonItem  Name="employeesBtn"
                 IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead',  UpdateSourceTrigger=PropertyChanged}"
@@ -113,35 +111,17 @@
 
             <dxb:BarButtonItem  Name="servicesBtn"
                 IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead', UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Прайс услуг"
+                 ToolTip="Прейскурант"
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage  Source="pack://application:,,,/Resources/Icons/svg/search-dollar.svg" Height="30"/>
                             <TextBlock 
-                                TextAlignment="Center"  Text="Прайс услуг" 
+                                TextAlignment="Center"  Text="Прейскурант" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
                                 TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />                            
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem Name="nomenclaturesBtn"
-                IsVisible="{DXBinding Expr='@r(UserSession).NomenclaturesRead', UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Материалы"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.NomenclatureDir.Nomenclature" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Business Objects/BO_Product_Group.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Материалы" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.NomenclatureDir.Nomenclature`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.NomenclatureDir.Nomenclature`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
                         </StackPanel>
                     </DataTemplate>
                 </dxb:BarButtonItem.ContentTemplate>
@@ -175,7 +155,7 @@
                         <StackPanel>
                             <dx:DXImage Source="pack://application:,,,/Resources/Icons/Template/org.png" Height="30" />
                             <TextBlock 
-                                TextAlignment="Center"  Text="Реквизиты" 
+                                TextAlignment="Center"  Text="Организация" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
                                 TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />

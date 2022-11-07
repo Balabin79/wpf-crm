@@ -154,7 +154,6 @@ namespace Dental.Services
                                 case "InvoiceEditable": UserSession.InvoiceEditable = HasAccess(role); break;
                                 case "InvoiceDeletable": UserSession.InvoiceDeletable = HasAccess(role); break;
 
-                                case "NomenclaturesRead": UserSession.NomenclaturesRead = HasAccess(role); break;
                                 case "NomenclatureEditable": UserSession.NomenclatureEditable = HasAccess(role); break;
                                 case "NomenclatureDeletable": UserSession.NomenclatureDeletable = HasAccess(role); break;
 
@@ -207,7 +206,6 @@ namespace Dental.Services
             UserSession.InvoiceEditable = true;
             UserSession.InvoiceDeletable = true;
 
-            UserSession.NomenclaturesRead = true;
             UserSession.NomenclatureEditable = true;
             UserSession.NomenclatureDeletable = true;
 

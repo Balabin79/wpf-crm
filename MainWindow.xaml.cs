@@ -32,7 +32,6 @@ namespace Dental
                 clientsBtn.IsVisible = userSession.ClientsListRead;
                 employeesBtn.IsVisible = userSession.EmployeesListRead;
                 servicesBtn.IsVisible = userSession.ServicesRead;
-                nomenclaturesBtn.IsVisible = userSession.NomenclaturesRead;
                 templatesBtnItem.IsVisible = userSession.TemplatesRead;
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
 
@@ -40,7 +39,6 @@ namespace Dental
                 if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
                 if (userSession.EmployeesListRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
                 if (userSession.ServicesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
-                if (userSession.NomenclaturesRead) { nav.LeftMenuClick("Dental.Views.NomenclatureDir.Nomenclature"); return; }
                 if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
                 if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
         }

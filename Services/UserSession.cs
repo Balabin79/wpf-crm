@@ -40,12 +40,6 @@ namespace Dental.Services
             set { SetProperty(() => InvoicesRead, value); }
         }
 
-        public bool NomenclaturesRead
-        {
-            get { return GetProperty(() => NomenclaturesRead); }
-            set { SetProperty(() => NomenclaturesRead, value); }
-        }
-
         public bool ServicesRead
         {
             get { return GetProperty(() => ServicesRead); }

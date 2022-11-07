@@ -1,5 +1,5 @@
 ﻿using Dental.Models;
-using Dental.ViewModels.Materials;
+using Dental.ViewModels.ServicePrice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,17 +15,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.NomenclatureDir
+namespace Dental.Views.ServicePrice
 {
     /// <summary>
-    /// Логика взаимодействия для Nomenclature
-    public partial class Nomenclature : Page
+    /// Логика взаимодействия для ServiceControl.xaml
+    /// </summary>
+    public partial class ServiceControl : UserControl
     {
-        public Nomenclature()
+        public ServiceControl()
         {
             InitializeComponent();
             var db = new ApplicationContext();
-            DataContext = new MaterialViewModel(db, db?.Nomenclature);
+            DataContext = new ServiceViewModel(db, db?.Services);
         }
     }
 }
