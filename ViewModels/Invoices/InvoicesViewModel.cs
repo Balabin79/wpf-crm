@@ -141,7 +141,8 @@ namespace Dental.ViewModels.Invoices
                             }
                         }
                     }
-                    db.SaveChanges();
+                    int cnt = db.SaveChanges();
+                    if (cnt > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                     Services.Reestr.Update((int)Tables.Invoices);
                 }          
             }
@@ -165,7 +166,8 @@ namespace Dental.ViewModels.Invoices
 
                     // может не оказаться этого эл-та в списке, например, он в другом статусе
                     if (Invoices.Count(f => f.Id == invoice.Id) > 0) Invoices.Remove(invoice);
-                    db.SaveChanges();
+                    int cnt = db.SaveChanges();
+                    if (cnt > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
                     Services.Reestr.Update((int)Tables.Invoices);
                 }
             }

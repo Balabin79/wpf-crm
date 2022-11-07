@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
 using Dental.Infrastructures.Collection;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -87,7 +88,8 @@ namespace Dental.ViewModels.ClientDir
                     db.TreatmentStage.Remove(model);
                     Collection.Remove(model);
                     Services.Reestr.Update((int)Tables.TreatmentStage);
-                    db.SaveChanges();
+                    int cnt = db.SaveChanges();
+                    if (cnt > 0) new Notification() { Content = "Удалено из базы данных!" }.run();
                 }
             }
             catch (Exception e)
@@ -121,7 +123,9 @@ namespace Dental.ViewModels.ClientDir
                     db?.TreatmentStage.Add(item);
                 }
                 Services.Reestr.Update((int)Tables.TreatmentStage);
-                db.SaveChanges();
+                int cnt = db.SaveChanges();
+                TreatmentStageWindow?.Close();
+                if (cnt > 0) new Notification() { Content = "Сохранено в базу данных!" }.run();
             }
             catch (Exception e)
             {

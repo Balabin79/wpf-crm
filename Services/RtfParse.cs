@@ -28,11 +28,9 @@ namespace Dental.Services
                 Client = client;
                 AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
             }
-            if (model is Employee employee) 
-            {
-                Employee = employee;
-                AdditionalEmployeeValues = db.AdditionalEmployeeValue.Where(f => f.EmployeeId == employee.Id).Include(f => f.AdditionalField).ToArray();
-            }
+            if (model is Employee employee) Employee = employee;
+
+            
 
         }
 
@@ -81,7 +79,7 @@ namespace Dental.Services
                     case "Org": return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
                         
                     case "ClientAdditionalFields": return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
-                    case "EmployeeAdditionalFields": return AdditionalEmployeeValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+
                     case "CommonFields": return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
 
                     default: return "";
@@ -100,7 +98,7 @@ namespace Dental.Services
         private Organization Organization { get; set; }
 
         private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
-        private ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
+
         private ICollection<CommonValue> CommonValues { get; set; }
 
     }

@@ -49,52 +49,6 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-        public FieldsViewModel(Employee employee, ListEmployeesViewModel vm)
-        {
-            this.db = vm?.db ?? new ApplicationContext();
-
-            // получаем все поля для раздела
-            AdditionalEmployeeFields = db.AdditionalEmployeeFields.Include(f => f.TypeValue).ToArray();
-            if (AdditionalEmployeeFields.Count() == 0) return;
-
-            Fields = new ObservableCollection<LayoutItem>();
-
-            // загружаем значения полей
-            AdditionalEmployeeValues = (employee != null) ? db.AdditionalEmployeeValue?.Where(f => f.EmployeeId == employee.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalEmployeeValue>() : new ObservableCollection<AdditionalEmployeeValue>();
-
-            EmployeeFieldsLoading(employee);
-
-            if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
-        }
-
-        private void EmployeeFieldsLoading(Employee employee)
-        {
-
-            foreach (var i in AdditionalEmployeeFields)
-            {
-                var value = AdditionalEmployeeValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id && f.EmployeeId == employee.Id);
-                var binding = new Binding()
-                {
-                    Source = this,
-                    Path = new PropertyPath("IsReadOnly"),
-                    Mode = BindingMode.TwoWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-                };
-
-                var el = GetField(i?.TypeValue?.SysName, value?.Value);
-                el.SetBinding(BaseEdit.IsReadOnlyProperty, binding);
-
-                var label = new LayoutItem()
-                {
-                    Label = i.Label,
-                    LabelPosition = LayoutItemLabelPosition.Top,
-                    Content = el,
-                    Margin = new Thickness(0, 0, 0, 5)
-                };
-                Fields.Add(label);
-            }
-
-        }
 
         private void ClientFieldsLoading(Client client)
         {            
@@ -177,38 +131,12 @@ namespace Dental.ViewModels.AdditionalFields
 
         }
 
-        public bool Save(Employee employee)
-        {
-            try
-            {
-                foreach (var i in Fields)
-                {
-                    var value = db.AdditionalEmployeeValue.FirstOrDefault(f => f.AdditionalField.Label == i.Label && f.EmployeeId == employee.Id);
-                    var val = ((BaseEdit)i.Content).EditValue?.ToString();
-                    if (value == null && val != null)
-                    {
-                        var item = new AdditionalEmployeeValue() { EmployeeId = employee.Id, Value = val, AdditionalFieldId = AdditionalEmployeeFields.FirstOrDefault(f => f.Label == i.Label).Id };
-                        db.AdditionalEmployeeValue.Add(item);
-                    }
-                    if (value != null) value.Value = val;
-                }
-                Services.Reestr.Update((int)Tables.AdditionalEmployeeValues);
-                return db.SaveChanges() > 0;               
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-
-        }
 
         public ICollection<LayoutItem> Fields { get; set; }
         
         public ICollection<AdditionalClientField> AdditionalClientFields { get; set; }
-        public ICollection<AdditionalEmployeeField> AdditionalEmployeeFields { get; set; }
 
         public ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
-        public ICollection<AdditionalEmployeeValue> AdditionalEmployeeValues { get; set; }
 
         public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Hidden;
 
