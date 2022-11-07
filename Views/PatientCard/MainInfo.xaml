@@ -61,9 +61,10 @@
                         <dxlc:LayoutItem HorizontalAlignment="Right" VerticalAlignment="Top">
                             <ext:ImageEditEx                       
                                       OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
-                                      ImagePath = "{Binding ClientInfoViewModel.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                      ImagePath = "{Binding ClientInfoViewModel.Photo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"   
+                                      ImageGuid="{Binding ClientInfoViewModel.Guid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                       EditValue = "{Binding ClientInfoViewModel.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
-                                      IsReadOnly="{DXBinding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                      IsReadOnly="{DXBinding Expr='Model.Id == 0 or (Model.Id != 0 and !IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                       Height="128"  >
                                 <dxe:ImageEdit.EmptyContentTemplate>
                                     <ControlTemplate >

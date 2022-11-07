@@ -33,13 +33,13 @@ namespace Dental.Models
             get => ToString();
         }
 
-        // Общая информация
-        [Display(Name = "Фото")]
-        public string Photo 
+        [NotMapped]
+        public string Photo
         {
             get { return GetProperty(() => Photo); }
             set { SetProperty(() => Photo, value); }
         }
+
 
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]

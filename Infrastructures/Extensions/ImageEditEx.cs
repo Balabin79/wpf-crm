@@ -21,6 +21,9 @@ namespace Dental.Infrastructures.Extensions
         public static readonly DependencyProperty ImagePathProperty = DependencyProperty.Register("ImagePath",
             typeof(string), typeof(ImageEditEx), null);
 
+        public static readonly DependencyProperty ImageGuidProperty = DependencyProperty.Register("ImageGuid",
+            typeof(string), typeof(ImageEditEx), null);
+
 
         public static readonly DependencyProperty OpenFileDialogFilterProperty = DependencyProperty.Register("OpenFileDialogFilter",
             typeof(string), typeof(ImageEditEx), null);
@@ -30,6 +33,12 @@ namespace Dental.Infrastructures.Extensions
         {
             get { return (string)GetValue(ImagePathProperty); }
             set { SetValue(ImagePathProperty, value); }
+        }
+
+        public string ImageGuid
+        {
+            get { return (string)GetValue(ImageGuidProperty); }
+            set { SetValue(ImageGuidProperty, value); }
         }
 
         public string OpenFileDialogFilter
@@ -71,7 +80,7 @@ namespace Dental.Infrastructures.Extensions
         {
             try
             {
-
+                
                 Type ownerType = typeof(ImageEditEx);
 
                 CommandManager.RegisterClassCommandBinding(
@@ -91,6 +100,8 @@ namespace Dental.Infrastructures.Extensions
                         ((IImageSave)((FrameworkElement)d).DataContext).ImageSave(d);
                     },
                     (d, e) => ((ImageEditEx)d).CanSave(d, e)));
+
+              
             }
             catch (Exception e)
             {

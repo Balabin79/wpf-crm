@@ -19,6 +19,7 @@
        xmlns:vm ="clr-namespace:Dental.ViewModels.EmployeeDir" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
        d:DesignWidth="800"
        Title="Сотрудники"   
        >
@@ -27,6 +28,7 @@
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+        <converter:MultiBindingImageEditExEmployeeConverter x:Key="multiImg" />
         <converter:BoolIntConverter x:Key="boolConverter" />
         <vm:ListEmployeesViewModel x:Key="vm"/>
         
@@ -86,21 +88,33 @@
             <StackPanel Orientation="Vertical" >
             <DockPanel HorizontalAlignment="Left" x:Name="info" Width="360" MaxWidth="360">
 
-                    <extens:ImageEditEx DataContext="{StaticResource vm}" 
+                    <extens:ImageEditEx DataContext="{StaticResource vm}" x:Name="img"
                             DockPanel.Dock="Left"
+                                        
+                            OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;" 
                                    Stretch="UniformToFill"
                                    Background="White"
                                    Height="160"
                                    Width="120"
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                         
-                                      ImagePath = "{Binding ElementName=info, Path=DataContext.Row.Photo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      EditValue = "{Binding ElementName=info, Path=DataContext.Row.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
-                                      IsReadOnly="{DXBinding Expr='@e(info).DataContext.Row.Id == 0 or (@e(info).DataContext.Row.Id != 0 and !@e(info).DataContext.Row.IsVisible)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"  >
+                                   ImagePath="{Binding ElementName=info, Path=DataContext.Row.Photo, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                   ImageGuid="{Binding ElementName=info, Path=DataContext.Row.Guid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                   EditValue="{Binding ElementName=info, Path=DataContext.Row.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                                   IsReadOnly="{DXBinding Expr='@e(info).DataContext.Row.Id == 0 or (@e(info).DataContext.Row.Id != 0 and !@e(info).DataContext.Row.IsVisible)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                                
+                                        >
                         <dxe:ImageEdit.EmptyContentTemplate>
                             <ControlTemplate >
                                 <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
                             </ControlTemplate>
                         </dxe:ImageEdit.EmptyContentTemplate>
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:MethodToCommandBehavior Method="Save"  
+                            Command="{Binding ImageSaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            CommandParameter="{Binding ElementName=info, Path=DataContext.Row, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            />
+
+
+
+                        </dxmvvm:Interaction.Behaviors>
                     </extens:ImageEditEx>
 
                     <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical"  DockPanel.Dock="Right" Margin="10 5 0 5" Padding="0">

@@ -22,10 +22,11 @@ using Dental.ViewModels.AdditionalFields;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
+using Dental.Infrastructures.Converters;
 
 namespace Dental.ViewModels.EmployeeDir
 {
-    public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
+    public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         public readonly ApplicationContext db;
         public ListEmployeesViewModel()
@@ -96,7 +97,6 @@ namespace Dental.ViewModels.EmployeeDir
         [Command]
         public void Add() => Collection.Add(new Employee() { IsVisible = true });
         
-
         [Command]
         public void Save(object p)
         {
@@ -105,7 +105,6 @@ namespace Dental.ViewModels.EmployeeDir
                 if (p is Employee model)
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;
-                    if (model.Id > 0) model.Photo = SavePhoto(model);
 
                     if (db.SaveChanges() > 0)
                     {
@@ -151,11 +150,11 @@ namespace Dental.ViewModels.EmployeeDir
                     }
 
                     // удаляем фото 
-                    var pathToPhoto = Path.Combine(PathToEmployeesDirectory, model?.Photo);
-                    if (File.Exists(pathToPhoto)) File.Delete(pathToPhoto);
+                    var photo = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
+                    if (photo != null && File.Exists(photo)) File.Delete(photo);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении анкеты сотрудника произошла ошибка, перейдите в раздел \"Сотрудники\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -165,33 +164,34 @@ namespace Dental.ViewModels.EmployeeDir
         #region Управление фото
         private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
 
-        private string SavePhoto(Employee model)
+        [Command]
+        public void ImageSave(object p)
         {
             try
             {
-                if (model == null) return "";
-
-                if (!string.IsNullOrEmpty(model?.Photo))
-                {                           
+                if (p is ImageEditEx param)
+                {
                     if (!Directory.Exists(PathToEmployeesDirectory)) Directory.CreateDirectory(PathToEmployeesDirectory);
 
-                    FileInfo photo = new FileInfo(model?.Photo);
-                    string copiedName = model.Guid + photo.Extension;
+                    var oldPhoto = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
 
-                    if (model?.Photo == copiedName) return model?.Photo;
+                    if (oldPhoto != null && File.Exists(oldPhoto))
+                    {
+                         var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить текущее фото сотрудника?",
+                         messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-                    if (!photo.Exists) photo.Create();
-                    var fileInfo = photo.Attributes;
+                        if (response.ToString() == "No") return;
+                        File.Delete(oldPhoto);
+                    }
                     
-                    photo.CopyTo(Path.Combine(PathToEmployeesDirectory, copiedName), true);
-                    new Notification() { Content = "Фото сотрудника сохранено!" }.run();
-                    return copiedName;
+                    FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
+                    photo.CopyTo(Path.Combine(PathToEmployeesDirectory, param.ImageGuid + photo.Extension), true);
+                    new Notification() { Content = "Фото сотрудника сохраненo!" }.run();
                 }
-                return "";
             }
             catch (Exception e)
             {
-                return "";
+
             }
         }
 
@@ -201,23 +201,15 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is ImageEditEx img)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото сотрудника?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить фото сотрудника?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                     if (response.ToString() == "No") return;
 
-                    var pathToFile = Path.Combine(PathToEmployeesDirectory, img?.ImagePath);
-                    if (File.Exists(pathToFile)) 
-                    {
-                        var file = new FileInfo(pathToFile);
-                        string name = file.Name;
+                    var file = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
-                        img?.Clear();
-                        File.Delete(pathToFile);
-                        var employee = db.Employes.FirstOrDefault(f => f.Photo == name);
-                        employee.Photo = null;
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Фото сотрудника удалено!" }.run();
-
-                    }
+                    if (file != null) File.Delete(file);
+                    img?.Clear();
+                    new Notification() { Content = "Фото сотрудника удалено!" }.run();                
                 }            
             }
             catch (Exception e)
@@ -250,20 +242,21 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
-                if (model?.Photo == null) return;
-                string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, model?.Photo);
-                if (File.Exists(pathToEmpPhoto))
+                if (Directory.Exists(PathToEmployeesDirectory))
                 {
-                    using (var stream = new FileStream(pathToEmpPhoto, FileMode.Open))
+                    var file = Directory.GetFiles(PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    if (file == null) return;
+
+                    using (var stream = new FileStream(file, FileMode.Open))
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
-                    }
+                         var img = new BitmapImage();
+                         img.BeginInit();
+                         img.CacheOption = BitmapCacheOption.OnLoad;
+                         img.StreamSource = stream;
+                         img.EndInit();
+                         img.Freeze();
+                         model.Image = img;
+                    }                  
                 }
             }
             catch (Exception e)

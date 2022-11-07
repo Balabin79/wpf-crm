@@ -32,8 +32,8 @@ namespace Dental.ViewModels.ClientDir
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
             IsChild = client.IsChild;
-            Photo = client.Photo;
             Image = client.Image;
+            Photo = client.Photo;
         }
 
         public int Id
@@ -47,7 +47,7 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => Guid); }
             set { SetProperty(() => Guid, value); }
         }
- 
+
         [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
         public string FirstName
@@ -161,7 +161,6 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(PassportSeries, other.PassportSeries, "Серия паспорта");
                 StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
-                StringParamsIsEquel(Photo, other.Photo, "Фото");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
@@ -200,8 +199,8 @@ namespace Dental.ViewModels.ClientDir
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
             client.IsChild = IsChild;
-            client.Photo = Photo;
             client.Image = Image;
+            client.Photo = Photo;
             return client;
         }
     }

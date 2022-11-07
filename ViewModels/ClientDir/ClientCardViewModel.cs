@@ -17,10 +17,11 @@ using Dental.Models.Base;
 using Dental.Infrastructures.Logs;
 using System.IO;
 using System.Windows.Media.Imaging;
+using Dental.Infrastructures.Extensions;
 
 namespace Dental.ViewModels.ClientDir
 {
-    class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable
+    class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
         private readonly PatientListViewModel VmList;
@@ -52,7 +53,7 @@ namespace Dental.ViewModels.ClientDir
                     .Include(f => f.Service).Include(f => f.Employee).Include(f => f.Location).Where(f => f.ClientInfoId == Model.Id).OrderBy(f => f.CreatedAt)
                     .ToArray();
                 AdditionalFieldsVisible = Visibility.Hidden;
-                PhotoLoading();
+                ImgLoading(ClientInfoViewModel);
             }
             catch (Exception e)
             {
@@ -81,7 +82,6 @@ namespace Dental.ViewModels.ClientDir
             {
                 bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
-                SavePhoto();
                 if (Model.Id == 0) // новый элемент
                 {
                     db.Clients.Add(Model);
@@ -164,8 +164,9 @@ namespace Dental.ViewModels.ClientDir
                 db.SaveChanges();
                 VmList?.ClientCardWin.Close();
                 // удаляем фото 
-                var pathToPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid);
-                if (Directory.Exists(pathToPhoto)) Directory.Delete(pathToPhoto, true);
+                // удаляем фото 
+                var photo = Directory.GetFiles(PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
+                if (photo != null && File.Exists(photo)) File.Delete(photo);
             }
             catch
             {
@@ -281,72 +282,36 @@ namespace Dental.ViewModels.ClientDir
         #region Управление фото
 
         private string PathToClientsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients");
+        private string PathToClientsPhotoDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients", "Photo");
 
-        private void PhotoLoading()
+        [Command]
+        public void ImageSave(object p)
         {
             try
             {
-                string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
-                if (Directory.Exists(pathToClientPhoto))
+                if (p is ImageEditEx param)
                 {
-                    var files = Directory.GetFiles(pathToClientPhoto);
-                    if (files.Length > 0) Model.Photo = files[0];
-                }
+                    if (!Directory.Exists(PathToClientsPhotoDirectory)) Directory.CreateDirectory(PathToClientsPhotoDirectory);
 
-                if (!string.IsNullOrEmpty(Model.Photo) && File.Exists(Model.Photo))
-                {
-                    using (var stream = new FileStream(Model.Photo, FileMode.Open))
+                    var oldPhoto = Directory.GetFiles(PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
+
+                    if (oldPhoto != null && File.Exists(oldPhoto))
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        ClientInfoViewModel.Image = img;
+                        var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить текущее фото клиента?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                        if (response.ToString() == "No") return;
+                        File.Delete(oldPhoto);
                     }
-                }
-                else ClientInfoViewModel.Image = null;
-                ClientInfoViewModel.Photo = Model.Photo;
 
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
-        }
-
-        private void SavePhoto()
-        {
-            try
-            {
-                if (ClientInfoViewModel?.Image == null) return;
-                if (ClientInfoViewModel?.Image is BitmapImage img)
-                {
-                    if (((FileStream)img?.StreamSource)?.Name == Model?.Photo) return;
-                }
-
-                if (!string.IsNullOrEmpty(Model?.Photo))
-                {
-                    string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
-                    if (!Directory.Exists(pathToClientPhoto)) Directory.CreateDirectory(pathToClientPhoto);
-                    FileInfo logo = new FileInfo(Model?.Photo);
-                    if (!logo.Exists) logo.Create();
-                    logo.CopyTo(Path.Combine(pathToClientPhoto, logo.Name), true);
-
-                    FileInfo newFile = new FileInfo(Path.Combine(pathToClientPhoto, logo.Name)) { CreationTime = DateTime.Now };
-                    Model.Photo = newFile.FullName;
-
-                    // подчищаем директорию. Оставляем только файл, который используется в качестве логотипа, остальные удаляем.
-                    var files = new DirectoryInfo(pathToClientPhoto).GetFiles();
-                    foreach (var file in files) if (file.FullName != newFile.FullName) file.Delete();
-                    PhotoLoading();
+                    FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
+                    photo.CopyTo(Path.Combine(PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
+                    new Notification() { Content = "Фото клиента сохраненo!" }.run();
                 }
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+
             }
         }
 
@@ -354,26 +319,45 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл фото клиента?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                if (response.ToString() == "No") return;
-
-                string pathToClientPhoto = Path.Combine(PathToClientsDirectory, Model?.Guid, "Photo");
-
-                if (Directory.Exists(pathToClientPhoto))
+                if (p is ImageEditEx img)
                 {
-                    new DirectoryInfo(pathToClientPhoto).GetFiles()?.ForEach(f => f.Delete());
-                }
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить фото клиента?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
-                if (p is Infrastructures.Extensions.ImageEditEx ie) ie.Clear();
-                var model = VmList?.Collection?.FirstOrDefault(f => f.Id == Model.Id);
-                if (model != null)
+                    if (response.ToString() == "No") return;
+
+                    var file = Directory.GetFiles(PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
+
+                    if (file != null) File.Delete(file);
+                    img?.Clear();
+                    new Notification() { Content = "Фото клиента удалено!" }.run();
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        private void ImgLoading(ClientInfoViewModel model)
+        {
+            try
+            {
+                if (Directory.Exists(PathToClientsPhotoDirectory))
                 {
-                    model.Image = null;
-                    model.Photo = null;
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Фото  клиента удалено!" }.run();
-                }
+                    var file = Directory.GetFiles(PathToClientsPhotoDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    if (file == null) return;
 
+                    using (var stream = new FileStream(file, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
             }
             catch (Exception e)
             {
