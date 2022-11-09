@@ -10,7 +10,6 @@ namespace Dental.Models
     {
         public string Account { get; set; }
         public string Password { get; set; }
-        public string Url { get; set; }
         public int? RolesEnabled { get; set; }
         public int? IsPasswordRequired { get; set; }
     }

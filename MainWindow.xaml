@@ -186,7 +186,7 @@
             <dxb:BarButtonItem 
                 ToolTip="Переключить сеанс"                                     
                 ItemClick="BarButtonItem_ItemClick"
-                IsEnabled="{Binding RoleEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                IsVisible="{DXBinding Expr='RoleEnabled==true', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
