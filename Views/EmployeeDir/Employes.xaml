@@ -218,7 +218,7 @@
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                         <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                Source="pack://application:,,,/Resources/Icons/emp3.png" />
-                        <TextBlock Text="Сотрудники" FontSize="14" Padding="2 5 5 0" />
+                        <TextBlock Text="Сотрудники" FontSize="14" Padding="3 2 5 0"  />
                     </StackPanel>
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 

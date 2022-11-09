@@ -51,16 +51,16 @@
         </Grid.RowDefinitions>
 
         <dxb:ToolBarControl Background="Transparent" 
-            Grid.Row="0" VerticalAlignment="Top" VerticalContentAlignment="Top" AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
+            Grid.Row="0"  AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
           
-            <dxb:BarButtonItem Name="sheduleBtn"
+            <dxb:BarButtonItem Name="sheduleBtn" Margin="0 2 0 0"
                 IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Расписание сотрудников" 
                  Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Sheduler" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage Source="{dx:DXImage SvgImages/Business Objects/BO_Appearance.svg}"/>
+                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/sheduler.png" Height="30" />
                             <TextBlock   
                                 Text="Расписание"
                                 TextAlignment="Center"
@@ -80,7 +80,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}" VerticalAlignment="Top"/>
+                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/clients3.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Клиенты" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -153,7 +153,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/Template/org.png" Height="30" />
+                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/org.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Организация" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -204,7 +204,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Icon Builder/Security_Assistance.svg}"/>
+                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/info5.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Справка" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                

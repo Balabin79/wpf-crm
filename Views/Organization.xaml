@@ -43,7 +43,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Image Height="20" Width="20" Margin="5 -5 0 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/org.png" />
+                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/org.png" />
                         </Image.Source>
                     </Image>
                     <TextBlock Text="Реквизиты организации" FontSize="14" Padding="5 5 5 0" />

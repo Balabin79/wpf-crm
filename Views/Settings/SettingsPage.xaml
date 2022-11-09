@@ -75,7 +75,7 @@
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dx:DXTabControl >
+                <dx:DXTabControl Margin="3 10 3 3">
                     <dx:DXTabItem Header="Настройки" >
                         <dxlc:LayoutGroup View="Group" Orientation="Vertical">
 

@@ -59,8 +59,8 @@
                 <DockPanel LastChildFill="True" Grid.Row="0">
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                         <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                                Source="{dx:DXImage SvgImages/RichEdit/Reviewers.svg}"/>
-                        <TextBlock Text="Клиенты" FontSize="14" Padding="2 2 5 0" />
+                                Source="pack://application:,,,/Resources/Icons/clients3.png" />
+                        <TextBlock Text="Клиенты" FontSize="14" Padding="3 2 5 0" />
                     </StackPanel>
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 

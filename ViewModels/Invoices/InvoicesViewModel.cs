@@ -343,10 +343,15 @@ namespace Dental.ViewModels.Invoices
 
         private void SetInvoices(int? showPaid = null)
         {
+            if (Client == null || Client.Id == 0)
+            {
+                Invoices = new ObservableCollection<Invoice>();
+                return;
+            }
             var query = db.Invoices.Where(f => f.ClientId == Client.Id);
 
             if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-            Invoices = query.Include(f => f.Client).Include(f => f.Employee).Include(f => f.InvoiceItems).ToObservableCollection() ?? new ObservableCollection<Invoice>();
+            Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.ToObservableCollection();
         }
 
         public Client Client
