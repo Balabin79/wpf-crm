@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Services
 {
-    static class Reestr
+    static class TablesSync
     {
         public static void Update(object p)
         {
@@ -31,10 +31,10 @@ namespace Dental.Services
                     }
 
                     if (id == 0) return;
-                    var value = db.Reestr.FirstOrDefault(f => f.Table == id);
-                    if (value == null)
+                    //var value = db.Reestr.FirstOrDefault(f => f.Table == id);
+                    /*if (value == null)
                     {
-
+                        
                         db.Reestr.Add(
                             new Models.Reestr()
                             {
@@ -47,7 +47,7 @@ namespace Dental.Services
                     {
                         value.UpdatedAt = GetTimestamp();
                         value.IsSynchronized = 0;
-                    }
+                    }*/
                     db.SaveChanges();
                 }
             }

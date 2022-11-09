@@ -177,7 +177,6 @@ namespace Dental.ViewModels.Base
                         Collection.Add(model);
                     }
                 }
-                Services.Reestr.Update(model);
             }
             catch (Exception e)
             {
@@ -210,7 +209,6 @@ namespace Dental.ViewModels.Base
                         db.SaveChanges();                       
                         DelItems?.ForEach(f => Collection.Remove(f));
                     }
-                    Services.Reestr.Update(model);
                 }
             }
             catch (Exception e)

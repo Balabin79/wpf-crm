@@ -92,7 +92,6 @@ namespace Dental.ViewModels.AdditionalFields
                 {
                     SetCollection();
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    Services.Reestr.Update((int)Tables.AdditionalClientFields);
                 }
             }
             catch 

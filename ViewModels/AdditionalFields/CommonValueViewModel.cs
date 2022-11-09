@@ -93,7 +93,6 @@ namespace Dental.ViewModels.AdditionalFields
                 {
                     SetCommonValues();
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    Services.Reestr.Update((int)Tables.CommonValues);
                 }            
             }
             catch (Exception e)

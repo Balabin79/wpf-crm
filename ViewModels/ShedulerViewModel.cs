@@ -106,7 +106,6 @@ namespace Dental.ViewModels
         {
             try
             {
-                Services.Reestr.Update((int)Tables.Appointments);
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -167,7 +166,6 @@ namespace Dental.ViewModels
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
                         cnt = db.SaveChanges();
-                        Services.Reestr.Update((int)Tables.LocationAppointment);
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
@@ -193,7 +191,6 @@ namespace Dental.ViewModels
                 if (db.SaveChanges() > 0) 
                 { 
                     new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    Services.Reestr.Update((int)Tables.LocationAppointment);
                 }              
             }
             catch (Exception e)
@@ -268,11 +265,7 @@ namespace Dental.ViewModels
                     
                 }
 
-                if (db.SaveChanges() > 0) 
-                { 
-                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    Services.Reestr.Update((int)Tables.AppointmentsStatuses);
-                }
+                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();               
             }
             catch (Exception e)
             {
@@ -293,7 +286,6 @@ namespace Dental.ViewModels
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
                         cnt = db.SaveChanges();
-                        Services.Reestr.Update((int)Tables.AppointmentsStatuses);
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
@@ -397,28 +389,26 @@ namespace Dental.ViewModels
             Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
-                
-
-                if (!string.IsNullOrEmpty(i.Photo) )
+                if (Directory.Exists(PathToEmployeesDirectory))
                 {
-                    string pathToEmpPhoto = Path.Combine(PathToEmployeesDirectory, i?.Photo);
-                    if (File.Exists(pathToEmpPhoto))
+                    var file = Directory.GetFiles(PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(i.Guid));
+                    if (file == null) 
                     {
-                        using (var stream = new FileStream(pathToEmpPhoto, FileMode.Open))
-                        {
-                            var img = new BitmapImage();
-                            img.BeginInit();
-                            img.CacheOption = BitmapCacheOption.OnLoad;
-                            img.StreamSource = stream;
-                            img.EndInit();
-                            img.Freeze();
-                            i.Image = img;
-                            stream.Close();
-                            stream.Dispose();
-                        }
+                        i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
+                        return; 
                     }
-                    else i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
-                }           
+
+                    using (var stream = new FileStream(file, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        i.Image = img;
+                    }
+                }
             }
         }
 

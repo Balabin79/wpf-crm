@@ -121,7 +121,6 @@ namespace Dental.ViewModels.AdditionalFields
                     }
                     if (value != null) value.Value = val;                  
                 }
-                Services.Reestr.Update((int)Tables.AdditionalClientValues);
                 return db.SaveChanges() > 0;                
             }
             catch(Exception e)

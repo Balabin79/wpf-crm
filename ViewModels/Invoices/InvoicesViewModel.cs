@@ -143,7 +143,6 @@ namespace Dental.ViewModels.Invoices
                     }
                     int cnt = db.SaveChanges();
                     if (cnt > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
-                    Services.Reestr.Update((int)Tables.Invoices);
                 }          
             }
             catch
@@ -168,7 +167,6 @@ namespace Dental.ViewModels.Invoices
                     if (Invoices.Count(f => f.Id == invoice.Id) > 0) Invoices.Remove(invoice);
                     int cnt = db.SaveChanges();
                     if (cnt > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
-                    Services.Reestr.Update((int)Tables.Invoices);
                 }
             }
             catch
@@ -239,7 +237,6 @@ namespace Dental.ViewModels.Invoices
                 {
                     if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
                     int cnt = db.SaveChanges();
-                    Services.Reestr.Update((int)Tables.InvoiceItems);
                 }
             }
             catch (Exception e)
@@ -260,7 +257,6 @@ namespace Dental.ViewModels.Invoices
                     item.Invoice = null;
                     db.InvoiceItems.Remove(item);
                     db.SaveChanges();
-                    Services.Reestr.Update((int)Tables.InvoiceItems);
                 }
             }
             catch (Exception e)

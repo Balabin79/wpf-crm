@@ -106,11 +106,8 @@ namespace Dental.ViewModels.EmployeeDir
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;
 
-                    if (db.SaveChanges() > 0)
-                    {
-                        new Notification() { Content = "Записано в базу данных!" }.run();
-                        Services.Reestr.Update((int)Tables.Employees);
-                    }
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
+                    
                 }
             }
             catch (Exception e)
