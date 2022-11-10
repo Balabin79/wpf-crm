@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("Appointments")]
     public class Appointments : AbstractBaseModel, IDataErrorInfo
     {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("TemplateType")]
     public class TemplateType : AbstractBaseModel
     {

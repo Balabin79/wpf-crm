@@ -1,12 +1,15 @@
 ﻿using DevExpress.Mvvm;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 
 
 namespace Dental.Models.Base
 {
+    [Serializable]
     abstract class TreeModelBase : AbstractBaseModel, ITree, IModel, IDataErrorInfo
     {
         [Column("ParentId")]
@@ -31,6 +34,7 @@ namespace Dental.Models.Base
         [NotMapped]
         public int? IsDelete { get; set; }
 
+        [JsonIgnore]
         [NotMapped]
         public bool IsExpanded { 
             get {

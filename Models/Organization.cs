@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using System.Windows.Media;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("Organizations")]
     public class Organization : AbstractBaseModel, IDataErrorInfo
     {
@@ -171,7 +173,6 @@ namespace Dental.Models
 
         public object Clone()
         {
-
             return new Organization
             {
                 Name = this.Name,
@@ -287,9 +288,11 @@ namespace Dental.Models
             FieldsChanges.Add(fieldName);
         }
 
+        [JsonIgnore]
         [NotMapped]
         public List<string> FieldsChanges { get; set; } = new List<string>();
 
+        [JsonIgnore]
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
     }

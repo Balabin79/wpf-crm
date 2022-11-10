@@ -10,6 +10,7 @@ using Dental.Infrastructures.Attributes;
 
 namespace Dental.Models.Base
 {
+    [Serializable]
     abstract public class AbstractBaseModel : BindableBase, IModel
     {
         public AbstractBaseModel()

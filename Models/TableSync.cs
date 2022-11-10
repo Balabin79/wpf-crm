@@ -12,7 +12,8 @@ namespace Dental.Models
     [Table("TablesSync")]
     public class TableSync : AbstractBaseModel
     {
-        public string Tables { get; set; }
+        public string Table { get; set; }
         public string Hash { get; set; }
+        public string Date { get; set; }
     }
 }

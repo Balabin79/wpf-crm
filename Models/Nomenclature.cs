@@ -2,12 +2,15 @@ using Dental.Infrastructures.Attributes;
 using Dental.Models.Base;
 using Dental.Models.Templates;
 using DevExpress.Mvvm;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("Nomenclature")]
     public class Nomenclature : BaseTemplate<Nomenclature>
     {
@@ -19,6 +22,7 @@ namespace Dental.Models
             set { SetProperty(() => Code, value?.Trim()); }
         }
 
+        [JsonIgnore]
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 

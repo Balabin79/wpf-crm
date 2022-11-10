@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("ShedulerStatuses")]
     public class ShedulerStatuses : AbstractBaseModel, IDataErrorInfo
     {

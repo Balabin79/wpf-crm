@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("AdditionalClientValues")]
     public class AdditionalClientValue : AbstractBaseModel, IDataErrorInfo
     {

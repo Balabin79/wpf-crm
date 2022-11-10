@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using Dental.Models;
 using System.Data.Entity;
 using System.Collections;
@@ -106,7 +107,16 @@ namespace Dental.ViewModels.EmployeeDir
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;
 
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
+                    if (db.SaveChanges() > 0) 
+                    { 
+                        new Notification() { Content = "Записано в базу данных!" }.run();
+
+                        //var serializer = 
+                     //       new TableRowSerializer<Employee>().Run(model);
+                        //var text = JsonSerializer.Serialize(model);
+                        new TableRowDeserializer<Employee>().Run("Employees", db.Employes);
+
+                    }
                     
                 }
             }
@@ -147,7 +157,7 @@ namespace Dental.ViewModels.EmployeeDir
                     }
 
                     // удаляем фото 
-                    var photo = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
+                    var photo = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
                     if (photo != null && File.Exists(photo)) File.Delete(photo);
                 }
             }
@@ -159,8 +169,6 @@ namespace Dental.ViewModels.EmployeeDir
 
 
         #region Управление фото
-        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
-
         [Command]
         public void ImageSave(object p)
         {
@@ -168,9 +176,9 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is ImageEditEx param)
                 {
-                    if (!Directory.Exists(PathToEmployeesDirectory)) Directory.CreateDirectory(PathToEmployeesDirectory);
+                    if (!Directory.Exists(Config.PathToEmployeesDirectory)) Directory.CreateDirectory(Config.PathToEmployeesDirectory);
 
-                    var oldPhoto = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
+                    var oldPhoto = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
 
                     if (oldPhoto != null && File.Exists(oldPhoto))
                     {
@@ -182,7 +190,7 @@ namespace Dental.ViewModels.EmployeeDir
                     }
                     
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
-                    photo.CopyTo(Path.Combine(PathToEmployeesDirectory, param.ImageGuid + photo.Extension), true);
+                    photo.CopyTo(Path.Combine(Config.PathToEmployeesDirectory, param.ImageGuid + photo.Extension), true);
                     new Notification() { Content = "Фото сотрудника сохраненo!" }.run();
                 }
             }
@@ -202,7 +210,7 @@ namespace Dental.ViewModels.EmployeeDir
 
                     if (response.ToString() == "No") return;
 
-                    var file = Directory.GetFiles(PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
+                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
                     if (file != null) File.Delete(file);
                     img?.Clear();
@@ -239,9 +247,9 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
-                if (Directory.Exists(PathToEmployeesDirectory))
+                if (Directory.Exists(Config.PathToEmployeesDirectory))
                 {
-                    var file = Directory.GetFiles(PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
                     if (file == null) return;
 
                     using (var stream = new FileStream(file, FileMode.Open))

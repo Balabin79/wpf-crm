@@ -7,13 +7,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Dental.Models.Base;
 using System.Windows.Media;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
+    [Serializable]
     [Table("Employees")]
     public class Employee : AbstractBaseModel, IDataErrorInfo
     {
         [NotMapped]
+        [JsonIgnore]
         public ImageSource Image 
         {
             get { return GetProperty(() => Image); }
@@ -21,6 +24,7 @@ namespace Dental.Models
         }
 
         [NotMapped]
+        [JsonIgnore]
         public bool IsVisible
         {
             get { return GetProperty(() => IsVisible); }
@@ -28,12 +32,14 @@ namespace Dental.Models
         }
 
         [NotMapped]
+        [JsonIgnore]
         public string Fio
         {
             get => ToString();
         }
 
         [NotMapped]
+        [JsonIgnore]
         public string Photo
         {
             get { return GetProperty(() => Photo); }

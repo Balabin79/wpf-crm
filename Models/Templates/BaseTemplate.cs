@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Models.Templates
 {
+    [Serializable]
     public abstract class BaseTemplate<T> : AbstractBaseModel, IDataErrorInfo, ITree, IModel, ICloneable
     {
         [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
