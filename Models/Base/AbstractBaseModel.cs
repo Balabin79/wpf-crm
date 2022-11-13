@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using Dental.Infrastructures.Logs;
 using DevExpress.Mvvm;
 using Dental.Infrastructures.Attributes;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Dental.Models.Base
 {
@@ -37,8 +39,13 @@ namespace Dental.Models.Base
             set { SetProperty(() => Id, value); }
         }
 
-
         public string Guid { get; set; }
+
+        public string Owner { get; set; } = BitConverter.ToString(MD5.Create().
+            ComputeHash(new UTF8Encoding().
+            GetBytes(Environment.MachineName))).
+            Replace("-", string.Empty);
+
         public int? CreatedAt { get; set; }
 
         [Clonable]
