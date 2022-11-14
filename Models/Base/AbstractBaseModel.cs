@@ -41,10 +41,10 @@ namespace Dental.Models.Base
 
         public string Guid { get; set; }
 
-        public string Owner { get; set; } = BitConverter.ToString(MD5.Create().
+        /*public string Owner { get; set; } = BitConverter.ToString(MD5.Create().
             ComputeHash(new UTF8Encoding().
             GetBytes(Environment.MachineName))).
-            Replace("-", string.Empty);
+            Replace("-", string.Empty);*/
 
         public int? CreatedAt { get; set; }
 

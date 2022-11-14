@@ -50,18 +50,6 @@ namespace Dental.Models
 
         public int AllDay { get; set; }
 
-        public string AttachmentFile
-        {
-            get { return GetProperty(() => AttachmentFile); }
-            set { SetProperty(() => AttachmentFile, value?.Trim()); }
-        }
-
-        public string AttachmentFileName
-        {
-            get { return GetProperty(() => AttachmentFileName); }
-            set { SetProperty(() => AttachmentFileName, value?.Trim()); }
-        }
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
