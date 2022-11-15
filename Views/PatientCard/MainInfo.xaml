@@ -13,11 +13,13 @@
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions"
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+              xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions"
        d:DesignWidth="800">
     
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:BirthDateConverter x:Key="birthToDateString" />
         <converter:BoolIntConverter x:Key="boolConverter" />
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto"  >
@@ -79,8 +81,9 @@
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Дата рождения:" LabelPosition="Top" >
-                        <dxe:DateEdit Margin="0,0,8,0"  EditValue="{Binding ClientInfoViewModel.BirthDate, Mode=TwoWay, 
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource dateToString}, ValidatesOnDataErrors=True}" 
+                        <dxe:DateEdit Margin="0,0,8,0"  
+                                      EditValue="{Binding ClientInfoViewModel.BirthDate, Mode=TwoWay, StringFormat=D,
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
 

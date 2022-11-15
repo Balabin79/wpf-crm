@@ -358,32 +358,6 @@ namespace Dental.ViewModels
 
         private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
 
-        [Command]
-        public void OpenFormClientCard(object p)
-        {
-            try
-            {
-                if (p == null) return;
-                var client = db.Clients.FirstOrDefault(f => f.Id == (int)p);
-                //var win = new ClientCardControl(client.Id);
-             //   win.ShowDialog();
-
-               /* if (win.DataContext is ClientCardViewModel vm)
-                {
-                    if (client.FirstName != vm.Model.FirstName ||
-                        client.LastName != vm.Model.LastName ||
-                        client.MiddleName != vm.Model.MiddleName)
-                    {
-                        if (Application.Current.Resources["Router"] is Navigator nav) { nav.LeftMenuClick("Dental.Views.Sheduler"); }
-                    }
-                }*/
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта сотрудника\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
         private void LoadEmployees(ApplicationContext db)
         {
             Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();

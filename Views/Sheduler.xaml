@@ -213,21 +213,9 @@
                                                         </DataTemplate>
                                                     </dxg:GridColumn.HeaderTemplate>
                                                     <dxg:GridColumn.CellDisplayTemplate>
-                                                        <DataTemplate>
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                                                <dxe:HyperlinkEdit Margin="5 -3 0 0"
-                                                                Text="->"
-                                                                ToolTip="Перейти в карту клиента"
-                                                                EditValue="Перейти в карту клиента"
-                                                                FontWeight="DemiBold"
-                                                                Command="{Binding Source={StaticResource vm}, Path=OpenFormClientCardCommand}"
-                                                                CommandParameter="{Binding Path=Row.Id}"
-                                                                 />
-                                                            </StackPanel>
-
-
-                                                        </DataTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
                                                     </dxg:GridColumn.CellDisplayTemplate>
                                                 </dxg:GridColumn>
                                             </dxg:GridControl.Columns>

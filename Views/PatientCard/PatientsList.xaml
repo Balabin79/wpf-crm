@@ -12,7 +12,10 @@
        xmlns:vm ="clr-namespace:Dental.ViewModels.ClientDir"
        xmlns:local ="clr-namespace:Dental.Views.PatientCard"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+       xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" 
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
        Title="Клиенты">
 
     <Page.Resources>
@@ -21,6 +24,7 @@
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:ClientsViewModel x:Key="vm"/>
+                    <converter:BirthDateConverter x:Key="birthToDateString" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
                 <ResourceDictionary>
@@ -132,7 +136,7 @@
                                                             <TextBlock Margin="0 2 0 0" 
                                                                TextWrapping="Wrap" 
                                                                FontStyle="Italic"
-                                                               Text="{DXBinding Expr='(Row.BirthDate ?? `Дата рождения не заполнена`)', Mode=OneWay}"
+                                                               Text="{DXBinding Expr='(Row.BirthDate ?? `Дата рождения не заполнена`)', Converter={StaticResource birthToDateString}, Mode=OneWay}"
                                                                ToolTip="{Binding Row.Address}" />
 
                                                             <TextBlock Margin="0 2 0 0" 
