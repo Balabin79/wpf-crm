@@ -13,7 +13,6 @@ using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("ClientInfo")]
     public class Client : AbstractBaseModel, ICloneable
     {
@@ -36,7 +35,6 @@ namespace Dental.Models
             set { SetProperty(() => MiddleName, value?.Trim()); }
         }
 
-        [JsonIgnore]
         [NotMapped]
         public string FullName { get => ToString(); }
 
@@ -70,7 +68,6 @@ namespace Dental.Models
             set { SetProperty(() => Address, value?.Trim()); }
         }
 
-        [JsonIgnore]
         [NotMapped]
         public ImageSource Image
         {
@@ -78,7 +75,6 @@ namespace Dental.Models
             set { SetProperty(() => Image, value); }
         }
 
-        [JsonIgnore]
         [NotMapped]
         public string Photo
         {

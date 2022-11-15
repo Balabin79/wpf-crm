@@ -9,7 +9,6 @@ using System.Windows.Media;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("AppointmentsStatuses")]
     public class AppointmentStatus : AbstractBaseModel, IDataErrorInfo
     {
@@ -28,7 +27,6 @@ namespace Dental.Models
             set { SetProperty(() => BrushColor, value?.Trim()); }
         }
 
-        [JsonIgnore]
         [NotMapped]
         public SolidColorBrush Brush 
         {

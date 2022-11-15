@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("CommonValues")]
     public class CommonValue : AbstractBaseModel, IDataErrorInfo
     {

@@ -12,7 +12,6 @@ using System.Text;
 
 namespace Dental.Models.Base
 {
-    [Serializable]
     abstract public class AbstractBaseModel : BindableBase, IModel
     {
         public AbstractBaseModel()

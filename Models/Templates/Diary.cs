@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Serializable]
     [Table("Treatments")]
     public class Diary : BaseTemplate<Diary>
     {

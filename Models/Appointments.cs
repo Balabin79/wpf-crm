@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("Appointments")]
     public class Appointments : AbstractBaseModel, IDataErrorInfo
     {
@@ -53,5 +52,4 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
     }
-
 }

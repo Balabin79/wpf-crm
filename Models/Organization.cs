@@ -10,7 +10,6 @@ using System.Windows.Media;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("Organizations")]
     public class Organization : AbstractBaseModel, IDataErrorInfo
     {
@@ -288,11 +287,9 @@ namespace Dental.Models
             FieldsChanges.Add(fieldName);
         }
 
-        [JsonIgnore]
         [NotMapped]
         public List<string> FieldsChanges { get; set; } = new List<string>();
 
-        [JsonIgnore]
         [NotMapped]
         public bool NotIsChanges { get; set; } = true;
     }

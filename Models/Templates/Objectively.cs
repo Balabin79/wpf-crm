@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Serializable]
     [Table("Objectively")]
     public class Objectively : BaseTemplate<Objectively>
     {

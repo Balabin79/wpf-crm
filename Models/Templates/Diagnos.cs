@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Serializable]
     [Table("Diagnoses")]
     public class Diagnos : BaseTemplate<Diagnos>
     {

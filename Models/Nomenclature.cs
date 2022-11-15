@@ -10,7 +10,6 @@ using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
-    [Serializable]
     [Table("Nomenclature")]
     public class Nomenclature : BaseTemplate<Nomenclature>
     {
@@ -22,7 +21,6 @@ namespace Dental.Models
             set { SetProperty(() => Code, value?.Trim()); }
         }
 
-        [JsonIgnore]
         [NotMapped]
         public string FullName { get => string.IsNullOrEmpty(Code) ? Name : Name + " (Код: " + Code + ")"; }
 
