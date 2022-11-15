@@ -24,7 +24,7 @@ namespace Dental.ViewModels.ClientDir
     class ClientCardViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
-        private readonly PatientListViewModel VmList;
+        private readonly ClientsViewModel VmList;
 
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
@@ -36,7 +36,7 @@ namespace Dental.ViewModels.ClientDir
         public delegate bool SaveCard(Client client);
         public event SaveCard EventSaveCard;
 
-        public ClientCardViewModel(int clientId, PatientListViewModel vmList)
+        public ClientCardViewModel(int clientId, ClientsViewModel vmList)
         {
             try
             {
@@ -160,7 +160,6 @@ namespace Dental.ViewModels.ClientDir
 
                 db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
-                VmList?.ClientCardWin.Close();
                 // удаляем фото 
                 // удаляем фото 
                 var photo = Directory.GetFiles(PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));

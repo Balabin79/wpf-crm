@@ -1,5 +1,5 @@
-﻿<Window
-    x:Class="Dental.Views.PatientCard.ClientCardWindow"
+﻿<UserControl
+    x:Class="Dental.Views.PatientCard.ClientCardControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,11 +16,8 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     dx:ThemeManager.ThemeName="Office2019White"
-    Icon="pack://application:,,,/Resources/Icons/te4.ico" 
-    Title="B6Dental"
-    Closing="Window_Closing"
     x:Name="win">
-    <Window.Resources>
+    <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="dateToString" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
@@ -35,10 +32,10 @@
                 </Grid>
             </Grid>
         </DataTemplate>
-    </Window.Resources>
+    </UserControl.Resources>
 
 
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5">
+    <Border BorderBrush="LightGray" BorderThickness="1" >
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка карты клиента"  BorderEffect="None">
             <dx:LoadingDecorator.SplashScreenTemplate>
                 <DataTemplate>
@@ -67,30 +64,35 @@
 
                         <dxb:ToolBarControl Background="Transparent"
                             x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
-                            BarItemDisplayMode="ContentAndGlyph">
+                            BarItemDisplayMode="Default">
 
-                            <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            <dxb:BarButtonItem 
+                                           IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
-                                           GlyphSize="Small"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="21,21"    
                                            Command="{Binding EditableCommand}"/>
 
                             <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
-                                           GlyphSize="Small"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="21,21"   
                                            Command="{Binding EditableCommand}"/>
 
                             <dxb:BarButtonItem Content="Сохранить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Small"
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="21,21"   
                                            Command="{Binding SaveCommand}"/>
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem  Content="Удалить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and Model.Id !=0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Small" 
+                                           GlyphSize="Custom"
+                                           CustomGlyphSize="21,21"   
                                            Command="{Binding DeleteCommand}"/>
                             <dxb:BarItemLinkSeparator />
                         </dxb:ToolBarControl>
@@ -122,17 +124,17 @@
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Счета" >
-                                <invoices:InvoicesControl  x:Name="Invoices"/>
+                                <invoices:InvoicesControl DataContext="{Binding InvoicesViewModel}"  x:Name="Invoices"/>
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Посещения" >
                                 <tp:Services DataContext="{Binding}"/>
                             </dx:DXTabItem>
                             <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                <add:ClientControl x:Name="Fields"/>
+                                <add:ClientControl x:Name="Fields" DataContext="{Binding FieldsViewModel}"/>
                             </dx:DXTabItem>
                             <dx:DXTabItem Header="Врачебная" >
-                                <tp:MedicalTab x:Name="Medical"/>
+                                <tp:MedicalTab x:Name="Medical" DataContext="{Binding TreatmentStageViewModel}"/>
                             </dx:DXTabItem>
 
                         </dx:DXTabControl>
@@ -142,4 +144,4 @@
             </Grid>
         </dx:LoadingDecorator>
     </Border>
-</Window>
+</UserControl>

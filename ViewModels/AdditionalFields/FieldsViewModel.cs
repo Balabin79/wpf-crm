@@ -23,7 +23,7 @@ namespace Dental.ViewModels.AdditionalFields
     {
         private readonly ApplicationContext db;      
 
-        public FieldsViewModel(Client client, PatientListViewModel vm)
+        public FieldsViewModel(Client client, ClientsViewModel vm)
         {
             try
             {

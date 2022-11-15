@@ -365,10 +365,10 @@ namespace Dental.ViewModels
             {
                 if (p == null) return;
                 var client = db.Clients.FirstOrDefault(f => f.Id == (int)p);
-                var win = new ClientCardWindow(client.Id);
-                win.ShowDialog();
+                //var win = new ClientCardControl(client.Id);
+             //   win.ShowDialog();
 
-                if (win.DataContext is ClientCardViewModel vm)
+               /* if (win.DataContext is ClientCardViewModel vm)
                 {
                     if (client.FirstName != vm.Model.FirstName ||
                         client.LastName != vm.Model.LastName ||
@@ -376,7 +376,7 @@ namespace Dental.ViewModels
                     {
                         if (Application.Current.Resources["Router"] is Navigator nav) { nav.LeftMenuClick("Dental.Views.Sheduler"); }
                     }
-                }
+                }*/
             }
             catch (Exception e)
             {
