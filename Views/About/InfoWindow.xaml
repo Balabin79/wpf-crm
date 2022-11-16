@@ -1,0 +1,29 @@
+﻿<Window x:Class="Dental.Views.About.InfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dental.Views.About"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Title="О программе" Height="380" Width="320" Background="#F5F6F7">
+    
+    <StackPanel VerticalAlignment="Stretch">
+        <Image Height="80" Width="80" Margin="0 40 0 0" HorizontalAlignment="Center">
+            <Image.Source>
+                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/te4.ico" />
+            </Image.Source>
+        </Image>
+        <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="Автоматизация стоматологии" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="B6Dental" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0 10 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="Версия программы 1.0" FontSize="14"/>
+
+        <TextBlock HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="#4D4D4D" Text="Email: support@b6soft.com" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Center" Foreground="#4D4D4D" Text="Сайт: www.b6soft.com" FontSize="14"/>
+
+        <TextBlock HorizontalAlignment="Center" Margin="0 10 0 0"   Foreground="#4D4D4D" Text="ТМ и (с) 2023 г" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0"   Foreground="#4D4D4D" Text="Все права защищены" FontSize="14"/>
+
+    </StackPanel>
+</Window>

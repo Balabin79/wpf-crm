@@ -3,19 +3,18 @@ using System.Linq;
 using Dental.Models;
 using DevExpress.Xpf.Core;
 using System.Windows;
-
-using Dental.Views.Header;
 using DevExpress.Mvvm.DataAnnotations;
 using System.IO;
 using Dental.Services;
+using Dental.Views.About;
 
 namespace Dental.ViewModels
 {
-    class MainWindowViewModel : DevExpress.Mvvm.ViewModelBase
+    class HelpViewModel : DevExpress.Mvvm.ViewModelBase
     {
 
         private readonly ApplicationContext db;
-        public MainWindowViewModel()
+        public HelpViewModel()
         {
             try
             {
@@ -56,12 +55,12 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenRegForm()
+        public void OpenLicenseForm()
         {
             try
             {
-                RegWin = new RegWindow();
-                RegWin.ShowDialog();
+                NewLicense = null;
+                new LicenseWindow() { DataContext = this }?.ShowDialog();
             }
             catch
             {
@@ -74,8 +73,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                AboutWin = new AboutWindow();
-                AboutWin.ShowDialog();
+                new InfoWindow()?.ShowDialog();
             }
             catch
             {
@@ -83,8 +81,28 @@ namespace Dental.ViewModels
             }
         }
 
-        public HelpWindow HelpWin { get; set; }
-        public RegWindow RegWin { get; set; }
-        public AboutWindow AboutWin { get; set; }
+        [Command]
+        public void SaveLicense()
+        {
+            try
+            {
+                
+            }
+            catch
+            {
+
+            }
+        }
+
+        public string License
+        {
+            get { return GetProperty(() => License); }
+        }
+
+        public string NewLicense
+        {
+            get { return GetProperty(() => NewLicense); }
+            set { SetProperty(() => NewLicense, value?.Trim()); }
+        }
     }
 }

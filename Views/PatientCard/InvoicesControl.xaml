@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="Dental.Views.PatientCard.InvoicesControl"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+       xmlns:commands="clr-namespace:Dental.Infrastructures.Commands" 
+       xmlns:services="clr-namespace:Dental.Services" 
+       dx:ThemeManager.ThemeName="Office2019White"
+       xmlns:vm ="clr-namespace:Dental.ViewModels.Invoices"
+       xmlns:local ="clr-namespace:Dental.Views.PatientCard"
+       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+       xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" 
+       xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <vm:InvoicesViewModel x:Key="vm"/>
+                    <converter:BirthDateConverter x:Key="birthToDateString" />
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary>
+                    <Style TargetType="TextBlock" x:Key="HoverUnderlineStyle">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  DataContext="{StaticResource vm}"
+                        DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
+                        AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
+                         MaxHeight="1800"
+                         ItemsSource="{Binding Invoices, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                         
+                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                         ShowBorder="True" x:Name="grid">
+            <dxg:GridControl.GroupSummary>
+                <dxg:GridSummaryItem SummaryType="Count" />
+            </dxg:GridControl.GroupSummary>
+            <dxg:GridControl.Columns>
+
+                <dxg:GridColumn FieldName="Name" Header="Название" Width="2*" UnboundType="String" ReadOnly="True" >
+                    <dxg:GridColumn.CellDisplayTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{DXBinding Expr='Row.Name ?? `Название не заполнено`'}" Margin="3 0 0 0" FontWeight="DemiBold"/>
+                                <TextBlock Margin="3 0 0 0">
+                                    <Run Text="Дата счета: " FontWeight="DemiBold"/>
+                                    <Run Text="{DXBinding Expr='Row.Date ?? `не установлена`', Mode=OneWay}"/>
+                                </TextBlock>
+                                <TextBlock Margin="3 0 0 0">
+                                    <Run Text="Клиент: " FontWeight="DemiBold"/>
+                                    <Run Text="{DXBinding Expr='Row.Client.FullName ?? `не установлен`', Mode=OneWay}"/>
+                                </TextBlock>
+                                <TextBlock Margin="3 0 0 0">
+                                    <Run Text="Сотрудник: " FontWeight="DemiBold"/>
+                                    <Run Text="{DXBinding Expr='Row.Employee.Fio ?? `не установлен`', Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </dxg:GridColumn.CellDisplayTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Date" Header="Дата" Width="2*" UnboundType="String" ReadOnly="True" Visible="False" AllowSearchPanel="True"/>
+                <dxg:GridColumn FieldName="Client.FullName" Header="Клиент" Width="2*" UnboundType="String" ReadOnly="True" Visible="False" AllowSearchPanel="False" />
+
+
+            </dxg:GridControl.Columns>
+
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
+                <dxg:GridSummaryItem FieldName="Name" SummaryType="Count" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.View>
+                <dxg:TableView           
+                                        
+                                        ShowVerticalLines="False"
+                                        ShowColumnHeaders="False"
+                                        ShowGroupPanel="False"
+                                        ShowFixedTotalSummary="True"                           
+                                        AllowScrollAnimation="True"
+                                        Name="view"
+                                        AllowSorting="True"
+                                        ShowSearchPanelMode="Always"
+                                        SearchPanelAllowFilter="True"
+                                        UseLegacyFilterPanel="True"
+               
+                                        NavigationStyle="Row"
+                                        AllowPrintColumnHeaderImage="True"
+                                        HighlightItemOnHover="True"
+                                        SearchPanelHorizontalAlignment="Stretch"
+                                        SearchPanelNullText="Счет"
+                    SearchPanelHighlightResults="True"
+                                        SearchColumns="Name;Date;Client.FullName"
+                    
+                    >
+                    <dxg:TableView.InputBindings>
+                        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
+                        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        <KeyBinding Key="Return" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                    </dxg:TableView.InputBindings>
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
+                                            Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту клиента"  
+                                            Command="{Binding Path=OpenClientCardCommand}"
+                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                        <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
+                                            Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту клиента"  
+                                            Command="{Binding Path=OpenClientCardCommand}"/>
+                    </dxg:TableView.RowCellMenuCustomizations>
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand 
+                                                EventName="PreviewMouseDown" Command="{Binding LoadCommand}" PassEventArgsToCommand="True"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
+                        <dxmvvm:EventToCommand 
+                                                EventName="PreviewMouseDoubleClick" Command="{Binding LoadCommand}" PassEventArgsToCommand="True"
+                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                    </dxmvvm:Interaction.Behaviors>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>

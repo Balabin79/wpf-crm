@@ -27,7 +27,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <conv:ImageConverter x:Key="ImageConverter" />
-                    <viewModels:MainWindowViewModel x:Key="mv"/>
                     <DataTemplate x:Key="cont">
                         <TextBlock FontWeight="Bold" Text="{Binding Source=ToolTip, Mode=TwoWay}"/>
                     </DataTemplate>
@@ -198,17 +197,16 @@
             </dxb:BarButtonItem>
             
             <dxb:BarButtonItem 
-                DataContext="{StaticResource mv}"
                 ToolTip="Справка"                                     
-                Command="{Binding OpenHelpFormCommand}" CommandParameter="Dental.Views.UserActions"   >
+                Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.About.HelpPage"   >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
                             <dx:DXImage  Source="pack://application:,,,/Resources/Icons/info5.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Справка" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.UserActions`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.About.HelpPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.About.HelpPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                        />
                         </StackPanel>
                     </DataTemplate>
