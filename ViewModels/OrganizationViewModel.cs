@@ -19,6 +19,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Editors;
 
 namespace Dental.ViewModels
 {
@@ -93,6 +94,18 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void ClearDate(object p)
+        {
+            if (p is DateEdit field)
+            {
+                field.ClearError();
+                field.Clear();
+                field.ClosePopup();
+               // field.EditValue = null;
             }
         }
 

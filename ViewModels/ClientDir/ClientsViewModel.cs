@@ -24,6 +24,7 @@ using Dental.Infrastructures.Extensions.Notifications;
 using Dental.ViewModels.Invoices;
 using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
+using DevExpress.Xpf.Editors;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -268,7 +269,7 @@ namespace Dental.ViewModels.ClientDir
                 {
                     db.Clients.Add(Model);
                     // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                    if (IsArchiveList == Model.IsInArchive) Collection?.Add(Model);
+                    if (IsArchiveList == Model.IsInArchive) Collection?.Insert(0, Model);
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
@@ -279,25 +280,6 @@ namespace Dental.ViewModels.ClientDir
                 { // редактирование су-щего эл-та
                     if (db.SaveChanges() > 0)
                     {
-                        // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то поменять элемент(отображение изменений), иначе просто добавить
-                        if (IsArchiveList == Model.IsInArchive)
-                        {
-                            var item = Collection.FirstOrDefault(f => f.Id == Model.Id);
-                            if (item == null) Collection?.Add(Model); // добавляем
-                            else // меняем
-                            {
-                                Collection?.Remove(item);
-                                Collection?.Add(Model);
-                            }
-                        }
-                        else // иначе если статусы отличаются (допустим убрали анкету в архив), то только удалить из отображаемого списка
-                        {
-                            var item = Collection.FirstOrDefault(f => f.Id == Model.Id);
-                            if (item != null)
-                            {
-                                Collection?.Remove(item);
-                            }
-                        }
                         new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                         notificationShowed = true;
                     }
@@ -356,7 +338,18 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-
+        [Command]
+        public void ClearDate(object p)
+        {
+            if (p is DateEdit field)
+            {
+                field.ClearError();
+                field.Clear();
+                field.ClosePopup();
+                field.EditValue = null;
+                ClientInfoViewModel.BirthDate = null;
+            }
+        }
 
         public Client Model
         {
@@ -407,6 +400,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
+
 
         #endregion
 

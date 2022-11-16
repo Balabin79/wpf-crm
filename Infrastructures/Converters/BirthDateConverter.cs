@@ -17,6 +17,7 @@ namespace Dental.Infrastructures.Converters
             try
             {
                 if (string.IsNullOrEmpty(value?.ToString())) return null;
+
                 if (DateTime.TryParse(value?.ToString(), out DateTime result))
                     return result.ToString("D");
                 return value.ToString();

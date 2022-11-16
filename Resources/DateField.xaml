@@ -1,0 +1,43 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+    xmlns:dxepc="clr-namespace:DevExpress.Xpf.Editors.Popups.Calendar;assembly=DevExpress.Xpf.Core.v20.1">
+    <ControlTemplate x:Key="{dxet:DateEditThemeKey ResourceKey=CalendarTemplate, ThemeName=Office2019White}" TargetType="{x:Type dxepc:DateEditCalendar}">
+        <Border Width="Auto" Height="Auto" SnapsToDevicePixels="True" Background="{x:Null}" CornerRadius="0,0,0,0">
+            <StackPanel Margin="0,0,0,0" Width="Auto" Height="Auto" Background="{x:Null}">
+                <Border Width="Auto" Height="Auto" Background="#FFC7DBF8" BorderBrush="#FF86A9D9" BorderThickness="0,0,0,1" CornerRadius="0,0,0,0">
+                    <Button x:Name="PART_Today" Style="{DynamicResource {dxet:DateEditThemeKey IsVisibleInBlend=True, ResourceKey=HeaderButtonStyle, ThemeName=Office2019White}}" Width="Auto" Height="Auto" Content="{Binding Path=DateTimeText, RelativeSource={RelativeSource TemplatedParent}}" />
+                </Border>
+                <Border Width="Auto" Height="Auto" Background="#FFFFFFFF" Padding="0,5,0,5">
+                    <Grid Margin="7,0,7,0" Width="Auto" Height="Auto" Background="{x:Null}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <RepeatButton Margin="0,0,0,0" x:Name="PART_LeftArrow" Style="{DynamicResource {dxet:DateEditThemeKey IsVisibleInBlend=True, ResourceKey=LeftArrowStyle, ThemeName=Office2016White}}" Grid.Column="0" />
+                        <Button HorizontalAlignment="Stretch" x:Name="PART_CurrentDate" Style="{DynamicResource {dxet:DateEditThemeKey IsVisibleInBlend=True, ResourceKey=CurrentDateButtonStyle, ThemeName=Office2019White}}" Content="{Binding Path=CurrentDateText, RelativeSource={RelativeSource TemplatedParent}}" Grid.Column="1" />
+                        <RepeatButton x:Name="PART_RightArrow" Style="{DynamicResource {dxet:DateEditThemeKey IsVisibleInBlend=True, ResourceKey=RightArrowStyle, ThemeName=Office2016White}}" Grid.Column="2" />
+                    </Grid>
+                </Border>
+                <Border Background="#FFFFFFFF">
+                    <Grid Margin="25,0,25,0">
+                        <dxepc:DateEditCalendarContent IsEnabled="False" Opacity="0" Template="{TemplateBinding MonthInfoTemplate}" State="Month" />
+                        <dxepc:DateEditCalendarContent IsEnabled="False" Opacity="0" Template="{TemplateBinding YearInfoTemplate}" State="Year" />
+                        <dxepc:DateEditCalendarContent IsEnabled="False" Opacity="0" Template="{TemplateBinding YearsInfoTemplate}" State="Years" />
+                        <dxepc:DateEditCalendarContent IsEnabled="False" Opacity="0" Template="{TemplateBinding YearsGroupInfoTemplate}" State="YearsGroup" />
+                        <dxepc:DateEditCalendarTransferControl x:Name="PART_CalendarTransferContent" Style="{TemplateBinding CalendarTransferStyle}" />
+                    </Grid>
+                </Border>
+                <Border Width="Auto" Height="Auto" Background="#FFFFFFFF" CornerRadius="0,0,0,0" Padding="0,8,0,12">
+                    <StackPanel Orientation="Horizontal">
+                    <Button  HorizontalAlignment="Center" Margin="0,0,0,0" Style="{DynamicResource {dxet:DateEditThemeKey IsVisibleInBlend=True, ResourceKey=ClearButtonStyle, ThemeName=Office2019White}}" Height="Auto" Content="Очистить" 
+                               Command="{Binding ClearDateCommand}" CommandParameter="{Binding ElementName=DateEdit}"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Border>
+    </ControlTemplate>
+</ResourceDictionary>

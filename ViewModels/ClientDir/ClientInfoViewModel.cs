@@ -74,10 +74,7 @@ namespace Dental.ViewModels.ClientDir
         public string BirthDate
         {
             get { return GetProperty(() => BirthDate); }
-            set
-            {
-                if (value != null && DateTime.TryParse(value, out DateTime result)) SetProperty(() => BirthDate, result.ToShortDateString());
-            }
+            set { SetProperty(() => BirthDate, value); }
         }
 
         public string Sex { get; set; }
@@ -178,6 +175,7 @@ namespace Dental.ViewModels.ClientDir
 
         public static List<string> CreateFieldsChanges() => new List<string>();
 
+        public ICollection<string> GenderList { get => new List<string> { "Мужчина", "Женщина" }; }
 
         public override string ToString() => LastName + ' ' + FirstName + " " + MiddleName ?? "";
 
