@@ -52,6 +52,18 @@
                     <dxb:ToolBarControl Background="Transparent"
                         x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+
+                        <dxb:BarButtonItem Content="Лицензия" 
+                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_KeyProperty.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenLicenseFormCommand}"/>
+                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarButtonItem Content="О программе"  
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/About.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenAboutFormCommand}"/>
+                        <dxb:BarItemLinkSeparator/>
+                        
                         <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
@@ -63,6 +75,7 @@
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                             GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
+
                         <dxb:BarButtonItem Content="Сохранить"                                         
                                            GlyphSize="Small"
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Settings.GoogleAccount)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 

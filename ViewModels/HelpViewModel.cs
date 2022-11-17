@@ -54,55 +54,5 @@ namespace Dental.ViewModels
             }
         }
 
-        [Command]
-        public void OpenLicenseForm()
-        {
-            try
-            {
-                NewLicense = null;
-                new LicenseWindow() { DataContext = this }?.ShowDialog();
-            }
-            catch
-            {
-
-            }
-        }
-
-        [Command]
-        public void OpenAboutForm()
-        {
-            try
-            {
-                new InfoWindow()?.ShowDialog();
-            }
-            catch
-            {
-
-            }
-        }
-
-        [Command]
-        public void SaveLicense()
-        {
-            try
-            {
-                
-            }
-            catch
-            {
-
-            }
-        }
-
-        public string License
-        {
-            get { return GetProperty(() => License); }
-        }
-
-        public string NewLicense
-        {
-            get { return GetProperty(() => NewLicense); }
-            set { SetProperty(() => NewLicense, value?.Trim()); }
-        }
     }
 }

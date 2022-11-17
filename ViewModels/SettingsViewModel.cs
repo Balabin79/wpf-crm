@@ -15,6 +15,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
 using Dental.Models.Settings;
+using Dental.Views.About;
 
 namespace Dental.ViewModels
 {
@@ -76,6 +77,58 @@ namespace Dental.ViewModels
             catch (Exception e)
             {
             }
+        }
+
+
+        [Command]
+        public void OpenLicenseForm()
+        {
+            try
+            {
+                NewLicense = null;
+                new LicenseWindow() { DataContext = this }?.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
+
+        [Command]
+        public void OpenAboutForm()
+        {
+            try
+            {
+                new InfoWindow()?.ShowDialog();
+            }
+            catch
+            {
+
+            }
+        }
+
+        [Command]
+        public void SaveLicense()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        public string License
+        {
+            get { return GetProperty(() => License); }
+        }
+
+        public string NewLicense
+        {
+            get { return GetProperty(() => NewLicense); }
+            set { SetProperty(() => NewLicense, value?.Trim()); }
         }
     }
 

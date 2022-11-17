@@ -198,7 +198,7 @@
             
             <dxb:BarButtonItem 
                 ToolTip="Справка"                                     
-                Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.About.HelpPage"   >
+                Command="{Binding HelpCommand}" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>

@@ -14,6 +14,8 @@ using Dental.Views;
 using DevExpress.Xpf.Core;
 using Dental.Views.PatientCard;
 using DevExpress.Mvvm.DataAnnotations;
+using System.Diagnostics;
+using System.IO;
 
 namespace Dental.Services
 {
@@ -127,5 +129,20 @@ namespace Dental.Services
         public static Func<bool> HasUnsavedChanges { get; set; }
         public static Func<bool> UserSelectedBtnCancel { get; set; }
         #endregion
+
+
+        [Command]
+        public void Help()
+        {
+            try
+            {
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "B6Dental.chm");
+                if (File.Exists(path)) Process.Start(path);
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Невозможно выполнить загрузку файла!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
     }
 }

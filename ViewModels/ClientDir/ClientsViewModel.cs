@@ -62,7 +62,7 @@ namespace Dental.ViewModels.ClientDir
 
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
 
-        public bool CanOpenClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
+        //public bool CanOpenClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
 
         public bool CanShowArchive() => true;
 
@@ -108,19 +108,6 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        [Command]
-        public void OpenClientCard(object p)
-        {
-            try
-            {
-               // ClientCardWin = (p != null) ? new ClientCardWindow((int)p, this) : new ClientCardWindow(0, this);
-                //ClientCardWin?.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Карта клиента\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
 
         [Command]
         public void ShowArchive()

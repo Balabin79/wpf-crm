@@ -210,7 +210,7 @@
                     <dxlc:LayoutItem Label="Телефон">
                         <dxe:TextEdit EditValue="{Binding Patient.Phone}" IsReadOnly="True" />
                     </dxlc:LayoutItem>
-                    <dxlc:LayoutItem Label="Дата встречи">
+                    <dxlc:LayoutItem Label="Дата рождения">
                         <dxe:DateEdit EditValue="{Binding Patient.BirthDate}" IsReadOnly="True" ShowEditorButtons="False" />
                     </dxlc:LayoutItem>
 
