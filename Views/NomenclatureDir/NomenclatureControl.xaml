@@ -41,13 +41,13 @@
             <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                 <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
                                 Source="{dx:DXImage SvgImages/Business Objects/BO_Product_Group.svg}"/>
-                <TextBlock Text="Материалы" FontSize="14" Padding="2 2 5 0" />
+                <TextBlock Text="Товары" FontSize="14" Padding="2 2 5 0" />
             </StackPanel>
             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                 <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                    <dxb:BarButtonItem Content="Добавить материал" Margin="0 0 5 0"                                         
+                    <dxb:BarButtonItem Content="Добавить товар" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
@@ -178,7 +178,7 @@
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/EmployeeDirectory.svg}" 
                                     KeyGesture="Ctrl+V" 
-                                    Content="Добавить материал в выдел. директорию"  
+                                    Content="Добавить товар в выдел. директорию"  
                                     Command="{Binding ElementName=win, Path=DataContext.OpenByParentFormCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 

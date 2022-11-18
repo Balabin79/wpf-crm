@@ -55,7 +55,7 @@
                 <local:ServiceControl/>
             </dx:DXTabItem>
 
-            <dx:DXTabItem Header="Материалы" >
+            <dx:DXTabItem Header="Товары" >
                 <nomenclature:NomenclatureControl/>
             </dx:DXTabItem>
             

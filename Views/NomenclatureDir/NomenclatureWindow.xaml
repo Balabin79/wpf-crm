@@ -37,7 +37,7 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="{DXBinding Expr='Copy.IsDir == 0 ? `Материал` : `Группа`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBlock Text="{DXBinding Expr='Copy.IsDir == 0 ? `Товар` : `Группа`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                Grid.Row="0" FontSize="15" FontWeight="DemiBold"/>
                 <dxlc:LayoutGroup Orientation="Vertical" Grid.Row="1" >
 

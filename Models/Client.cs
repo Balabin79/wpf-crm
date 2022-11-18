@@ -44,10 +44,16 @@ namespace Dental.Models
             set { SetProperty(() => BirthDate, value); }
         }
 
-        public string Sex
+        public string Gender
         {
-            get { return GetProperty(() => Sex); }
-            set { SetProperty(() => Sex, value); }
+            get { return GetProperty(() => Gender); }
+            set { SetProperty(() => Gender, value); }
+        }
+
+        public string Snils
+        {
+            get { return GetProperty(() => Snils); }
+            set { SetProperty(() => Snils, value?.Trim()); }
         }
 
         public string Phone

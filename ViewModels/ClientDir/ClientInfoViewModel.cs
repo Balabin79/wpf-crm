@@ -21,9 +21,10 @@ namespace Dental.ViewModels.ClientDir
             LastName = client.LastName;
             MiddleName = client.MiddleName;
             BirthDate = client.BirthDate;
-            Sex = client.Sex;
+            Gender = client.Gender;
             Phone = client.Phone;
             Address = client.Address;
+            Snils = client.Snils;
             Note = client.Note;
             IsInArchive = client.IsInArchive;
             Email = client.Email;
@@ -77,7 +78,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => BirthDate, value); }
         }
 
-        public string Sex { get; set; }
+        public string Gender { get; set; }
 
         [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
         public string Email
@@ -103,6 +104,13 @@ namespace Dental.ViewModels.ClientDir
         {
             get { return GetProperty(() => Note); }
             set { SetProperty(() => Note, value?.Trim()); }
+        }
+
+        [MaxLength(11, ErrorMessage = @"Максимальная длина в поле ""СНИЛС"" не более 11 символов")]
+        public string Snils
+        {
+            get { return GetProperty(() => Snils); }
+            set { SetProperty(() => Snils, value?.Trim()); }
         }
 
         public bool? IsChild { get; set; } = false;
@@ -149,9 +157,10 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(LastName, other.LastName, "Фамилия");
                 StringParamsIsEquel(MiddleName, other.MiddleName, "Отчество");
                 StringParamsIsEquel(BirthDate, other.BirthDate, "Дата рождения");
-                StringParamsIsEquel(Sex, other.Sex, "Пол");
+                StringParamsIsEquel(Gender, other.Gender, "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Телефон");
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
+                StringParamsIsEquel(Snils, other.Snils, "СНИЛС");
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
                 StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate,  "Дата выдачи паспорта");
                 StringParamsIsEquel(WhomIssued, other.WhomIssued, "Кем выдан");
@@ -186,7 +195,8 @@ namespace Dental.ViewModels.ClientDir
             client.LastName = LastName;
             client.MiddleName = MiddleName;
             client.BirthDate = BirthDate;
-            client.Sex = Sex;
+            client.Gender = Gender;
+            client.Snils = Snils;
             client.Phone = Phone;
             client.Email = Email;
             client.Address = Address;

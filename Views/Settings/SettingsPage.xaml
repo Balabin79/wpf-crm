@@ -124,20 +124,15 @@
                             <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                                 <dxlc:LayoutGroup.HeaderTemplate>
                                     <DataTemplate >
-                                        <TextBlock Text="Настройки синхронизации" VerticalAlignment="Center" Height="22"/>
+                                        <TextBlock Text="Настройки сервиса &quot;Продокторов&quot;" VerticalAlignment="Center" Height="22"/>
                                     </DataTemplate>
                                 </dxlc:LayoutGroup.HeaderTemplate>
                                 <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                                    <dxe:TextEdit Text="{Binding Settings.Account, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                    <dxe:TextEdit Text="{Binding Settings.LoginProdoctorov, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                         IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
-                                    <dxe:TextEdit Text="{Binding Settings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                </dxlc:LayoutItem>
-
-                                <dxlc:LayoutItem Label="Url:" LabelPosition="Top">
-                                    <dxe:TextEdit Text="{Binding Settings.Url, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                    <dxe:TextEdit Text="{Binding Settings.PasswordProdoctorov, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                         IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>

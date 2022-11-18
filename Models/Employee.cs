@@ -104,5 +104,8 @@ namespace Dental.Models
         public override int GetHashCode() => Guid.GetHashCode();
 
         public override string ToString() => (LastName + " " + FirstName + " " + MiddleName).Trim(' ');
+
+        [NotMapped]
+        public string FullName { get => ToString(); }
     }
 }

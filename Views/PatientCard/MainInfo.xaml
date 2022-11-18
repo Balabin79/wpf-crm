@@ -101,7 +101,7 @@
 
                     <dxlc:LayoutItem Label="Пол:" LabelPosition="Top" >
                         <dxe:ComboBoxEdit ItemsSource="{Binding ClientInfoViewModel.GenderList}"                                      
-                                      SelectedItem="{Binding ClientInfoViewModel.Sex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      SelectedItem="{Binding ClientInfoViewModel.Gender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Пол" IsTextEditable="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <dxe:ComboBoxEdit.StyleSettings>
@@ -135,6 +135,10 @@
                         <dxe:ImageButtonInfo
                                     Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                     </dxe:ButtonEdit>
+                </dxlc:LayoutItem>
+                <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
+                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
 
@@ -174,9 +178,12 @@
                     <dxe:MemoEdit ShowIcon="False" ShowText="True" Text="{Binding ClientInfoViewModel.WhomIssued, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
-                    <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <dxlc:LayoutItem Label="СНИЛС:" LabelPosition="Top">
+                    <dxe:TextEdit 
+                        Mask="###-###-###-##"
+                        MaskType="Numeric"
+                        Text="{Binding ClientInfoViewModel.Snils, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
 
                 <dxlc:LayoutItem Label="Примечание:" LabelPosition="Top" Height="86">
