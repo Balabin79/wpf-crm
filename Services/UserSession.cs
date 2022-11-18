@@ -16,16 +16,16 @@ namespace Dental.Services
             set { SetProperty(() => Employee, value); }
         }
 
-        public bool ClientsListRead
+        public bool ClientsRead
         {
-            get { return GetProperty(() => ClientsListRead); }
-            set { SetProperty(() => ClientsListRead, value); }
+            get { return GetProperty(() => ClientsRead); }
+            set { SetProperty(() => ClientsRead, value); }
         }
 
-        public bool EmployeesListRead
+        public bool EmployeesRead
         {
-            get { return GetProperty(() => EmployeesListRead); }
-            set { SetProperty(() => EmployeesListRead, value); }
+            get { return GetProperty(() => EmployeesRead); }
+            set { SetProperty(() => EmployeesRead, value); }
         }
 
         public bool SheduleRead
@@ -34,16 +34,10 @@ namespace Dental.Services
             set { SetProperty(() => SheduleRead, value); }
         }
 
-        public bool InvoicesRead
+        public bool PricesRead
         {
-            get { return GetProperty(() => InvoicesRead); }
-            set { SetProperty(() => InvoicesRead, value); }
-        }
-
-        public bool ServicesRead
-        {
-            get { return GetProperty(() => ServicesRead); }
-            set { SetProperty(() => ServicesRead, value); }
+            get { return GetProperty(() => PricesRead); }
+            set { SetProperty(() => PricesRead, value); }
         }
 
         public bool TemplatesRead
@@ -65,34 +59,21 @@ namespace Dental.Services
         }
 
 
-        public bool OpenClientCard { get; set; } = false;
         public bool ClientEditable { get; set; } = false;
         public bool ClientDeletable { get; set; } = false;
         public bool ClientTemplatesEditable { get; set; } = false;
-        public bool ClientAddFieldsEditable { get; set; } = false;
 
-        public bool OpenEmployeeCard { get; set; } = false;
         public bool EmployeeEditable { get; set; } = false;
         public bool EmployeeDeletable { get; set; } = false;
-        public bool EmployeeTemplatesEditable { get; set; } = false;
-        public bool EmployeeAddFieldsEditable { get; set; } = false;
-
-        public bool AddFieldsEditable { get; set; } = false;
-        public bool AddFieldsDeletable { get; set; } = false;
 
         public bool SheduleStatusEditable { get; set; } = false;
         public bool SheduleStatusDeletable { get; set; } = false;
         public bool SheduleLocationEditable { get; set; } = false;
         public bool SheduleLocationDeletable { get; set; } = false;
 
-        public bool InvoiceEditable { get; set; } = false;
-        public bool InvoiceDeletable { get; set; } = false;
+        public bool PriceEditable { get; set; } = false;
+        public bool PriceDeletable { get; set; } = false;
 
-        public bool NomenclatureEditable { get; set; } = false;
-        public bool NomenclatureDeletable { get; set; } = false;
-
-        public bool ServiceEditable { get; set; } = false;
-        public bool ServiceDeletable { get; set; } = false;
 
         public bool TemplateEditable { get; set; } = false;
         public bool TemplateDeletable { get; set; } = false;

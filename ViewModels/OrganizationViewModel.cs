@@ -45,6 +45,10 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OrgEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OrgDeletable;
+
+
         [Command]
         public void Editable(object p) => IsReadOnly = !IsReadOnly;
 

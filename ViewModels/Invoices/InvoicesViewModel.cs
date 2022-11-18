@@ -50,14 +50,14 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
-        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanOpenFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDeletable;
-        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanOpenFormInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanOpenFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanOpenFormInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
        // public bool CanOpenFormDocuments() => true;
         public bool CanStatusChanged(object p) => true;
 

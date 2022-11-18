@@ -37,9 +37,9 @@ namespace Dental.ViewModels.AdditionalFields
             }
         }
 
-        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
-        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
         [Command]
         public void Delete(object p)

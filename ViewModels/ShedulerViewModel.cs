@@ -69,9 +69,6 @@ namespace Dental.ViewModels
         public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
         public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
 
-        public bool CanOpenFormEmployeeCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenEmployeeCard;
-        public bool CanOpenFormClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
-
         [Command]
         public void AppointmentAdded(object p)
         {

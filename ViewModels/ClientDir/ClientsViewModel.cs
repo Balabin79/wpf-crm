@@ -59,8 +59,11 @@ namespace Dental.ViewModels.ClientDir
         }
 
         public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).ClientTemplatesEditable;
+        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
-        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientAddFieldsEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientDeletable;
+        public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
         //public bool CanOpenClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
 

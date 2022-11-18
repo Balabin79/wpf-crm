@@ -29,18 +29,20 @@ namespace Dental
                 var nav = (Navigator)Application.Current.Resources["Router"];
 
                 sheduleBtn.IsVisible = userSession.SheduleRead;
-                clientsBtn.IsVisible = userSession.ClientsListRead;
-                employeesBtn.IsVisible = userSession.EmployeesListRead;
-                servicesBtn.IsVisible = userSession.ServicesRead;
+                clientsBtn.IsVisible = userSession.ClientsRead;
+                employeesBtn.IsVisible = userSession.EmployeesRead;
+                servicesBtn.IsVisible = userSession.PricesRead;
                 templatesBtnItem.IsVisible = userSession.TemplatesRead;
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
+                orgBtnItem.IsVisible = userSession.OrgRead;
 
-                if (userSession.ClientsListRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
+                if (userSession.ClientsRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
                 if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
-                if (userSession.EmployeesListRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
-                if (userSession.ServicesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
+                if (userSession.EmployeesRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
+                if (userSession.PricesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
                 if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
                 if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
+                if (userSession.OrgRead) { nav.LeftMenuClick("Dental.Views.Dental.Views.Organization"); return; }
         }
 
         private void Login()
