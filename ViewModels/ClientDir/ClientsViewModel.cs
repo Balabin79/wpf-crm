@@ -25,6 +25,8 @@ using Dental.ViewModels.Invoices;
 using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
 using DevExpress.Xpf.Editors;
+using System.Diagnostics;
+using System.Windows.Media;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -49,6 +51,7 @@ namespace Dental.ViewModels.ClientDir
                 db = new ApplicationContext();
                 SetCollection();
                 Model = new Client();
+
                 Init(Model);
             }
             catch (Exception e)
@@ -65,7 +68,10 @@ namespace Dental.ViewModels.ClientDir
         public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientDeletable;
         public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
-        //public bool CanOpenClientCard(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OpenClientCard;
+        public bool OpenDirectory() => Model?.Id != 0;
+        public bool ExecuteFile() => Model?.Id != 0;
+        public bool AttachmentFile() => Model?.Id != 0;
+        public bool DeleteFile() => Model?.Id != 0;
 
         public bool CanShowArchive() => true;
 
@@ -208,6 +214,11 @@ namespace Dental.ViewModels.ClientDir
 
             //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
             SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
+            PathToUserFiles = Path.Combine(PathToFilesDirectory, Model?.Guid);
+            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() :
+                new ObservableCollection<FileInfo>();
+            
+
         }
 
         [Command]
@@ -263,6 +274,7 @@ namespace Dental.ViewModels.ClientDir
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
+                    PathToUserFiles = Path.Combine(PathToFilesDirectory, Model?.Guid);
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
                 }
@@ -317,6 +329,10 @@ namespace Dental.ViewModels.ClientDir
                 // удаляем фото 
                 var photo = Directory.GetFiles(PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
                 if (photo != null && File.Exists(photo)) File.Delete(photo);
+
+                // удаляем файлы 
+                if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);
+
                 //загружаем новую анкету
                 Model = new Client();
                 Init(Model);
@@ -420,6 +436,12 @@ namespace Dental.ViewModels.ClientDir
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
                     photo.CopyTo(Path.Combine(PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
                     new Notification() { Content = "Фото клиента сохраненo!" }.run();
+                    var model = Collection.FirstOrDefault(f => f.Guid == param?.ImageGuid);
+                    if (model != null)
+                    {
+                        model.Photo = param.ImagePath;
+                        if (param.EditValue is ImageSource img) model.Image = img;
+                    }
                 }
             }
             catch (Exception e)
@@ -442,6 +464,12 @@ namespace Dental.ViewModels.ClientDir
 
                     if (file != null) File.Delete(file);
                     img?.Clear();
+                    var model = Collection.FirstOrDefault(f => f.Guid == img?.ImageGuid);
+                    if (model != null)
+                    {
+                        model.Photo = null;
+                        model.Image = null;
+                    }
                     new Notification() { Content = "Фото клиента удалено!" }.run();
                 }
             }
@@ -451,25 +479,114 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        private void ImgLoading(ClientInfoViewModel model)
+        #endregion
+
+        #region команды, связанных с прикреплением файлов 
+        private string PathToFilesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Files");
+
+        public string PathToUserFiles
+        {
+            get { return GetProperty(() => PathToUserFiles); }
+            set { SetProperty(() => PathToUserFiles, value); }
+        }
+
+        public ObservableCollection<FileInfo> Files
+        {
+            get { return GetProperty(() => Files); }
+            set { SetProperty(() => Files, value); }
+        }
+
+        [Command]
+        public void OpenDirectory(object p)
         {
             try
             {
-                if (Directory.Exists(PathToClientsPhotoDirectory))
-                {
-                    var file = Directory.GetFiles(PathToClientsPhotoDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
-                    if (file == null) return;
+                if (PathToUserFiles != null && Directory.Exists(PathToUserFiles)) Process.Start(PathToUserFiles);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                    text: "Невозможно открыть содержащую файл директорию!",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
+        }
 
-                    using (var stream = new FileStream(file, FileMode.Open))
+        [Command]
+        public void ExecuteFile(object p)
+        {
+            try
+            {
+                if (p is FileInfo file) Process.Start(file.FullName);
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка",
+                   text: "Невозможно выполнить загрузку файла!",
+                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void AttachmentFile(object p)
+        {
+            try
+            {
+                var filePath = string.Empty;
+                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
+                {
+                    dialog.InitialDirectory = "c:\\";
+                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
+                    dialog.FilterIndex = 2;
+                    dialog.RestoreDirectory = true;
+
+                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+                    filePath = dialog.FileName;
+                    if (string.IsNullOrEmpty(filePath)) return;
+                }
+
+                FileInfo file = new FileInfo(filePath);
+
+                // проверяем на наличие существующего файла
+                foreach (var i in Files)
+                {
+                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
+
+                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
+                        i.Delete();
                     }
+                }
+
+                if (PathToUserFiles!= null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
+
+                File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
+
+                FileInfo newFile = new FileInfo(Path.Combine(PathToUserFiles, file.Name));
+                newFile.CreationTime = DateTime.Now;
+
+                Files = new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void DeleteFile(object p)
+        {
+            try
+            {
+                if (p is FileInfo file)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    file.Delete();
+                    Files = new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection();
                 }
             }
             catch (Exception e)

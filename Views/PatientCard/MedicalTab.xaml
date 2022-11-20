@@ -94,28 +94,28 @@
 
                                 <dxg:TableView.InputBindings>
                                     <KeyBinding Key="N" Modifiers="Ctrl"                                    
-                                    Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"/>
+                                    Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"/>
 
                                     <KeyBinding Key="E" Modifiers="Ctrl"
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
-                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}" />
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
+                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
 
                                     <KeyBinding  Key="Delete"         
-                            Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}"
+                            Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
                                     <MouseBinding Gesture="LeftDoubleClick"      
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
                                 </dxg:TableView.InputBindings>
                                 <dxg:TableView.RowCellMenuCustomizations >
                                     <dxb:BarButtonItem 
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}" 
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                            Content="Создать счет" 
+                            Content="Создать новую область"
                             KeyGesture="Ctrl+N"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
 
                                     <dxb:BarButtonItem 
@@ -123,19 +123,19 @@
                             GlyphAlignment="Left"
                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                             KeyGesture="Ctrl+E"
-                            Content="Редактировать счет" 
-                            Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
-                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem.Id}"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Content="Редактировать область" 
+                            Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
+                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
+                            IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     />
 
                                     <dxb:BarButtonItem  
-                            Content="Удалить счет"
-                            Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}"
+                            Content="Удалить область"
+                            Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                                 </dxg:TableView.RowCellMenuCustomizations>
                             </dxg:TableView>

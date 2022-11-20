@@ -144,7 +144,7 @@
                                                                FontStyle="Italic"
                                                                ToolTip="{Binding Row.Address}" 
                                                                TextTrimming="CharacterEllipsis"
-                                                               Text="{DXBinding Expr='(Row.Sex ?? `Пол не заполнен`)', Mode=OneWay}"  />
+                                                               Text="{DXBinding Expr='(Row.Gender ?? `Пол не заполнен`)', Mode=OneWay}"  />
 
                                                         </StackPanel>
                                                     </StackPanel>
@@ -177,21 +177,22 @@
                                         SearchPanelHorizontalAlignment="Stretch"
                                         SearchPanelNullText="Фамилия клиента">
                                         <dxg:TableView.InputBindings>
-                                            <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}"/>
-                                            <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                            <KeyBinding Key="Return" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
-                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                            <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=CreateCommand}"/>
+                                            <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                            <KeyBinding Key="Return" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                         </dxg:TableView.InputBindings>
                                         <dxg:TableView.RowCellMenuCustomizations>
                                             <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Employee.svg}" 
                                             Name="editRow" KeyGesture="Ctrl+O" Content="Открыть карту клиента"  
-                                            Command="{Binding Path=OpenClientCardCommand}"
-                                            CommandParameter="{Binding ElementName=view, Path=FocusedRow.Id}"/>
+                                            Command="{Binding Path=LoadCommand}"
+                                            CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                            
                                             <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" DataContext="{StaticResource vm}"
                                             Glyph="{dx:DXImage SvgImages/Business Objects/BO_Resume.svg}" 
                                             Name="addRow" KeyGesture="Ctrl+N" Content="Создать новую карту клиента"  
-                                            Command="{Binding Path=OpenClientCardCommand}"/>
+                                            Command="{Binding Path=CreateCommand}"/>
                                         </dxg:TableView.RowCellMenuCustomizations>
                                         <dxmvvm:Interaction.Behaviors>
                                             <dxmvvm:EventToCommand 
