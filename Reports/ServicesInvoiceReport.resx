@@ -120,19 +120,64 @@
   <metadata name="sqlDataSource2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 56</value>
   </metadata>
+  <data name="customSqlQuery1.Sql" xml:space="preserve">
+    <value>select [Organizations].[Id], [Organizations].[Name],
+       [Organizations].[ShortName], [Organizations].[Inn],
+       [Organizations].[Kpp], [Organizations].[Address],
+       [Organizations].[Phone], [Organizations].[Email],
+       [Organizations].[Bik], [Organizations].[AccountNumber],
+       [Organizations].[BankName], [Organizations].[Ogrn],
+       [Organizations].[LicenseDate],
+       [Organizations].[GeneralDirector],
+       [Organizations].[LicenseName], [Organizations].[WhoIssuedBy],
+       [Organizations].[Okpo], [Organizations].[CorrAccountNumber],
+       [Organizations].[Site]
+  from [Organizations] [Organizations]</value>
+  </data>
   <data name="sqlDataSource2.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTIiPjxWaWV3IE5hbWU9Ik9yZ2FuaXphdGlvbnMiPjxGaWVsZCBOYW1lPSJJZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hvcnROYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklubiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJLcHAiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWRkcmVzcyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMZWdhbEFkZHJlc3MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUGhvbmUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmlrIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFjY291bnROdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmFua05hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT2dybiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMaWNlbnNlRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJHZW5lcmFsRGlyZWN0b3IiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGljZW5zZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV2hvSXNzdWVkQnkiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT2t2ZWQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT2twbyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb3JyQWNjb3VudE51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTaXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkxvZ28iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU3RhbXAiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2lnbmF0dXJlIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
-  </data>
-  <data name="vendorLogo2.ImageSource" xml:space="preserve">
-    <value>iVBORw0KGgoAAAANSUhEUgAAAP0AAAB4CAMAAAAOlgSlAAAABGdBTUEAALGPC/xhBQAAADBQTFRFw8PD+/v7y8vLz8/P09PT19fX39/f4+Pj5+fn6+vr8/Pz9/f3x8fH7+/v29vb////x2qpKQAAAAlwSFlzAAAOvwAADr8BOAVTJAAABPpJREFUeF7tmu16gyAMhes3Wm3v/26HEMmBqoM9zbq1eX9NxJSzhBDQi6IoiqIoiqIoiqIoiqIoiqIoiqIoyv+lue1Dt9+c4b7PTPffm89W315JbkQ10O23p1sq0kxUS0e3PoNmIuGWW02Nn8NI0i2fJ17Vb6j6D0PVE6r+V2hb+uPl/L76drnf/4r8cvX1bRiX6TotZjitj+q26824dhwNd6xdeXWlKyLX5NMpVF+beHdwNQduvEERuVKZZm1uqbaGijrbpABF6hvoHVicrIh6SDYQjqm+3OjP+0g9s03KUKK+p44pY7IpPup35x/bQj/XpBD56mebrTauxuD+0HoVYJOV6buuH3cCwe+js01Kka1+DhO5unnH3Hi+VvAsn5psChruOA0eZyHbpBjZ6rljmJQ+fzsmarJ5jVrs+EP0zsGp3GbJNSlHrnr2aE8tlppD1VDThYMZTokMNUWN2SblyFRfUx/rPWpxhBwe3DfTpQUSd0NN+Hi2SUEy1e86L9JKa1hHlxYIcugXfiXbpCB56tlPSZEKNQ3lLbpKPMrxvD2fb1KQPPVw+h2PCNZrP3m5Z1TNci7f5ni+SUHy1B9mYp7Q98U1sO8P1G9hnm9SkCz1MBfTAVGzxUc6LHjumuDIpzdlBSYFyVIPqSxdhliWfx5U7Wc9muQFJgXJUg9TMcrPFg5p0vWY3ywcETsF/rcm5chSz4vTQyKCDO13rTzxwaf8K5vUEpNyZKmHTulQYZ9CMzoMnit1TmTXbToUmRQjS/3JeOB5civUddscD7Nhayk0Kcap+toY55i8oW4+ZLH3aRyGEfZtPI/LTEpxqt5WJG7RORkP3AoqashbyASFe6FJIU7VryrWVkhRaSyCDzlFzXsnW9dISqlJGc7Uu3VqDVaoStPFGYYaLU8tGLZUY3T3RyYFOFPv7q0eg9Ik3XfB8hQ9704rBzOOoxn67jGsfmBSgBP1vkBbZyXsx9KylEM8quuda88ydrlJCU7U+7rFSYC07W4FoISFAKa0dxq3hSZlOFHvI9CNAHJU3ItLWEx6FLunq3WZSSGO1VNsuriEXWe8CHG5Dh4MGc2k/1CgzKQQx+pJg999cx6Od+OcoWDVhuV+GtqjA5oik0IcqycNfmiQovGsEapaEAlJe2UyOzm/0KQQh+q36Ud5l/uFjYqFW3GKwlq+sfdqssSkEIfqtxs0+WYO5yWMlXezcYKDeoWp0n9AkUkB5s5ASbrY0oShxpB6GliGvVdmzk/Jkj1DQkeqeCaXmHw6uy+PH6He+JLpXi3GwOXjutwMkPqAa+T/IpPPBc6WTqHu1jEH/63qcYLOnXtxC4EViJa3ApNPZic37ULdV9ZPblKq4SGhU1DZ3Xw7JPnfEq/umSafzg/U28Emn5lM/l00Um/+9EE+35L39+lClmHyDwGfGHU74wyFKmS4NoqAx2T+jcn/A7+BjqK3B/8n727eCF7DkyId3svLl++vgjdo6ZkFlzHyr2ZfBS+j6YLN2/b39f3Rxs1C7e887zm5px7moyz5jeurgNotrmp43v/CxvVVwKa9ij464pz/vq6PTjZo3+bgDxbFTypfCazrNr91zRrmNbzaeGvx6GVPhdfye7dXc3S0YbX/6f3Ls6h3jzam/hO0O5p+nKCyXwx9hP1BzHXdtE1Tf5xwRVEURVEURVEURVEURVEURVH2uVy+AMfSyau4MvLMAAAAAElFTkSuQmCC</value>
-  </data>
-  <data name="vendorLogo.ImageSource" xml:space="preserve">
-    <value>iVBORw0KGgoAAAANSUhEUgAAAP0AAAB4CAMAAAAOlgSlAAAABGdBTUEAALGPC/xhBQAAADBQTFRFw8PD+/v7y8vLz8/P09PT19fX39/f4+Pj5+fn6+vr8/Pz9/f3x8fH7+/v29vb////x2qpKQAAAAlwSFlzAAAOvwAADr8BOAVTJAAABPpJREFUeF7tmu16gyAMhes3Wm3v/26HEMmBqoM9zbq1eX9NxJSzhBDQi6IoiqIoiqIoiqIoiqIoiqIoiqIoyv+lue1Dt9+c4b7PTPffm89W315JbkQ10O23p1sq0kxUS0e3PoNmIuGWW02Nn8NI0i2fJ17Vb6j6D0PVE6r+V2hb+uPl/L76drnf/4r8cvX1bRiX6TotZjitj+q26824dhwNd6xdeXWlKyLX5NMpVF+beHdwNQduvEERuVKZZm1uqbaGijrbpABF6hvoHVicrIh6SDYQjqm+3OjP+0g9s03KUKK+p44pY7IpPup35x/bQj/XpBD56mebrTauxuD+0HoVYJOV6buuH3cCwe+js01Kka1+DhO5unnH3Hi+VvAsn5psChruOA0eZyHbpBjZ6rljmJQ+fzsmarJ5jVrs+EP0zsGp3GbJNSlHrnr2aE8tlppD1VDThYMZTokMNUWN2SblyFRfUx/rPWpxhBwe3DfTpQUSd0NN+Hi2SUEy1e86L9JKa1hHlxYIcugXfiXbpCB56tlPSZEKNQ3lLbpKPMrxvD2fb1KQPPVw+h2PCNZrP3m5Z1TNci7f5ni+SUHy1B9mYp7Q98U1sO8P1G9hnm9SkCz1MBfTAVGzxUc6LHjumuDIpzdlBSYFyVIPqSxdhliWfx5U7Wc9muQFJgXJUg9TMcrPFg5p0vWY3ywcETsF/rcm5chSz4vTQyKCDO13rTzxwaf8K5vUEpNyZKmHTulQYZ9CMzoMnit1TmTXbToUmRQjS/3JeOB5civUddscD7Nhayk0Kcap+toY55i8oW4+ZLH3aRyGEfZtPI/LTEpxqt5WJG7RORkP3AoqashbyASFe6FJIU7VryrWVkhRaSyCDzlFzXsnW9dISqlJGc7Uu3VqDVaoStPFGYYaLU8tGLZUY3T3RyYFOFPv7q0eg9Ik3XfB8hQ9704rBzOOoxn67jGsfmBSgBP1vkBbZyXsx9KylEM8quuda88ydrlJCU7U+7rFSYC07W4FoISFAKa0dxq3hSZlOFHvI9CNAHJU3ItLWEx6FLunq3WZSSGO1VNsuriEXWe8CHG5Dh4MGc2k/1CgzKQQx+pJg999cx6Od+OcoWDVhuV+GtqjA5oik0IcqycNfmiQovGsEapaEAlJe2UyOzm/0KQQh+q36Ud5l/uFjYqFW3GKwlq+sfdqssSkEIfqtxs0+WYO5yWMlXezcYKDeoWp0n9AkUkB5s5ASbrY0oShxpB6GliGvVdmzk/Jkj1DQkeqeCaXmHw6uy+PH6He+JLpXi3GwOXjutwMkPqAa+T/IpPPBc6WTqHu1jEH/63qcYLOnXtxC4EViJa3ApNPZic37ULdV9ZPblKq4SGhU1DZ3Xw7JPnfEq/umSafzg/U28Emn5lM/l00Um/+9EE+35L39+lClmHyDwGfGHU74wyFKmS4NoqAx2T+jcn/A7+BjqK3B/8n727eCF7DkyId3svLl++vgjdo6ZkFlzHyr2ZfBS+j6YLN2/b39f3Rxs1C7e887zm5px7moyz5jeurgNotrmp43v/CxvVVwKa9ij464pz/vq6PTjZo3+bgDxbFTypfCazrNr91zRrmNbzaeGvx6GVPhdfye7dXc3S0YbX/6f3Ls6h3jzam/hO0O5p+nKCyXwx9hP1BzHXdtE1Tf5xwRVEURVEURVEURVEURVEURVH2uVy+AMfSyau4MvLMAAAAAElFTkSuQmCC</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTIiPjxWaWV3IE5hbWU9Ik9yZ2FuaXphdGlvbnMiPjxGaWVsZCBOYW1lPSJJZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2hvcnROYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IklubiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJLcHAiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWRkcmVzcyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbWFpbCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCaWsiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWNjb3VudE51bWJlciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCYW5rTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPZ3JuIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkxpY2Vuc2VEYXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkdlbmVyYWxEaXJlY3RvciIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMaWNlbnNlTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJXaG9Jc3N1ZWRCeSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPa3BvIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNvcnJBY2NvdW50TnVtYmVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNpdGUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
   </data>
   <metadata name="sqlDataSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="customSqlQuery2.Sql" xml:space="preserve">
+    <value>select [Invoices].[Number], [Invoices].[Date],
+       [Invoices].[Total],
+       [Invoices].[EmployeeId], [Invoices].[Paid],
+       [Invoices].[ClientId], [Invoices].[Id],
+       [ClientInfo].[FirstName],
+       [ClientInfo].[LastName],
+       [ClientInfo].[MiddleName],
+       [ClientInfo].[BirthDate],
+       [ClientInfo].[Phone],
+       [ClientInfo].[Address],
+       [ClientInfo].[Note],
+       [ClientInfo].[PassportNo],
+       [ClientInfo].[PassportSeries],
+       [ClientInfo].[PassportIssuanceDate],
+       [ClientInfo].[WhomIssued],
+       [ClientInfo].[Email],
+	 [ClientInfo].[Gender],
+       [Employees].[FirstName] as [Employees_FirstName],
+       [Employees].[LastName] as [Employees_LastName],
+       [Employees].[MiddleName] as [Employees_MiddleName],
+       [Employees].[Email] as [Employees_Email],
+       [Employees].[Phone] as [Employees_Phone],
+       [Employees].[Post],
+       [Employees].[Note] as [Employees_Note],
+       [InvoiceItems].[Name],
+       [InvoiceItems].[Code],
+       [InvoiceItems].[Count],
+       [InvoiceItems].[Price]
+  from [Invoices] [Invoices]
+  inner join [ClientInfo] [ClientInfo]
+       on ([ClientInfo].[Id] = [Invoices].[ClientId])
+  inner join [Employees] [Employees]
+       on ([Employees].[Id] = [Invoices].[EmployeeId])
+  inner join [InvoiceItems] [InvoiceItems]
+       on ([InvoiceItems].[InvoiceId] = [Invoices].[Id])</value>
+  </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ikludm9pY2VzXzEiPjxGaWVsZCBOYW1lPSJOdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUb3RhbCIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZUlkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iUGFpZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkNsaWVudElkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iSWQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJGaXJzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGFzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTWlkZGxlTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCaXJ0aERhdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iU2V4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBob25lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkFkZHJlc3MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTm90ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQYXNzcG9ydE5vIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBhc3Nwb3J0U2VyaWVzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBhc3Nwb3J0SXNzdWFuY2VEYXRlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ildob21Jc3N1ZWQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX0ZpcnN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZXNfTGFzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX01pZGRsZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX0JpcnRoRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZXNfRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX0FkZHJlc3MiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX1Bob25lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkVtcGxveWVlc19TZXgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUG9zdCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZXNfTm90ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQaG90byIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkNvZGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ291bnQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJQcmljZSIgVHlwZT0iRG91YmxlIiAvPjwvVmlldz48L0RhdGFTZXQ+</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ikludm9pY2VzXzEiPjxGaWVsZCBOYW1lPSJOdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUb3RhbCIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZUlkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iUGFpZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkNsaWVudElkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iSWQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJGaXJzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTGFzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iTWlkZGxlTmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCaXJ0aERhdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUGhvbmUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQWRkcmVzcyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJOb3RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlBhc3Nwb3J0Tm8iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUGFzc3BvcnRTZXJpZXMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iUGFzc3BvcnRJc3N1YW5jZURhdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iV2hvbUlzc3VlZCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbWFpbCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJHZW5kZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX0ZpcnN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJFbXBsb3llZXNfTGFzdE5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX01pZGRsZU5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1wbG95ZWVzX0VtYWlsIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkVtcGxveWVlc19QaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQb3N0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkVtcGxveWVlc19Ob3RlIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb3VudCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IlByaWNlIiBUeXBlPSJEb3VibGUiIC8+PC9WaWV3PjwvRGF0YVNldD4=</value>
   </data>
 </root>

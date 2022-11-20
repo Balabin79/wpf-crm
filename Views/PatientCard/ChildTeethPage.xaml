@@ -11,7 +11,7 @@
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              dx:ThemeManager.ThemeName="Office2019White" 
              >
-    <Grid  VerticalAlignment="Center" x:Name="gridTeeth">
+    <Grid  VerticalAlignment="Top" x:Name="gridTeeth" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>

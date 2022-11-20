@@ -180,7 +180,7 @@ namespace Dental.ViewModels
 
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
 
-        #region Управление файлами лого, печати и подписи
+        #region Управление файлами лого и печати
 
         private string PathToOrgDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization");
 
@@ -192,11 +192,8 @@ namespace Dental.ViewModels
                 var files = new string[] { };
                 if (Directory.Exists(PathToOrgDirectory)) files = Directory.GetFiles(PathToOrgDirectory);
 
-
-
                 for (int i = 0; i < files.Length; i++)
                 {
-
                     using (var stream = new FileStream(files[i], FileMode.Open))
                     {
                         var img = new BitmapImage();
@@ -206,10 +203,9 @@ namespace Dental.ViewModels
                         img.EndInit();
                         img.Freeze();
 
-                        if (files[i].Contains("Logo")) Logo = img;
+                        if (files[i].Contains("Logo")) Logo = img;                      
                         if (files[i].Contains("Stamp")) Stamp = img;
                     }
-
                 }
             }
             catch (Exception e)
@@ -244,6 +240,7 @@ namespace Dental.ViewModels
                         FileInfo photo = new FileInfo(img.ImagePath);
                         photo.CopyTo(Path.Combine(PathToOrgDirectory, "Logo" + photo.Extension), true);
                         new Notification() { Content = "Логотип сохранен!" }.run();
+                        db.SaveChanges();
                     }
 
                     if (img.Name == "Stamp")
@@ -293,6 +290,7 @@ namespace Dental.ViewModels
                     }
                     img.Clear();
                     msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
+                    db.SaveChanges();
                     new Notification() { Content = msg }.run();
                 }
             }

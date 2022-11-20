@@ -129,7 +129,7 @@
                             IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     />
 
-                                    <dxb:BarButtonItem  
+                            <dxb:BarButtonItem  
                             Content="Удалить область"
                             Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
@@ -187,10 +187,6 @@
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>
-
-
-
-
 
                         <dxg:GridControl.DetailDescriptor>
                             <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor"/>

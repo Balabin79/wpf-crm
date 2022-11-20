@@ -53,6 +53,7 @@
     <None Remove="Resources\Icons\Lightning.png" />
     <None Remove="Resources\Icons\logo.ico" />
     <None Remove="Resources\Icons\logo.png" />
+    <None Remove="Resources\Icons\logoFile.png" />
     <None Remove="Resources\Icons\org.png" />
     <None Remove="Resources\Icons\Page.png" />
     <None Remove="Resources\Icons\path878.ico" />
@@ -237,6 +238,7 @@
     <Resource Include="Resources\Icons\info5.png" />
     <Resource Include="Resources\Icons\Lightning.png" />
     <Resource Include="Resources\Icons\logo.png" />
+    <Resource Include="Resources\Icons\logoFile.png" />
     <Resource Include="Resources\Icons\org.png" />
     <Resource Include="Resources\Icons\Page.png" />
     <Resource Include="Resources\Icons\service.png" />

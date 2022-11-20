@@ -321,7 +321,7 @@
                                       ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                 <ControlTemplate>
-                                                    <Image Source="pack://application:,,,/Resources/Icons/logo.png"/>
+                                                    <Image Source="pack://application:,,,/Resources/Icons/logoFile.png"/>
                                                 </ControlTemplate>
                                             </dxe:ImageEdit.EmptyContentTemplate>
                                         </ext:ImageEditEx>
