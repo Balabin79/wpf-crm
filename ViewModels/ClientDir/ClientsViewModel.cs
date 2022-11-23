@@ -56,7 +56,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список клиентов\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -155,16 +155,13 @@ namespace Dental.ViewModels.ClientDir
             //.OfType<Client>()
             .ToObservableCollection();
 
-        private string PathToClientsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients");
-        private string PathToClientsPhotoDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Clients", "Photo");
-
         private void ImgLoading(Client model)
         {
             try
             {
-                if (Directory.Exists(PathToClientsPhotoDirectory))
+                if (Directory.Exists(Config.PathToClientsPhotoDirectory))
                 {
-                    var file = Directory.GetFiles(PathToClientsPhotoDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    var file = Directory.GetFiles(Config.PathToClientsPhotoDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
                     if (file == null) return;
 
                     using (var stream = new FileStream(file, FileMode.Open))
@@ -214,7 +211,7 @@ namespace Dental.ViewModels.ClientDir
 
             //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
             SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
-            PathToUserFiles = Path.Combine(PathToFilesDirectory, Model?.Guid);
+            PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
             Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() :
                 new ObservableCollection<FileInfo>();
             
@@ -245,6 +242,7 @@ namespace Dental.ViewModels.ClientDir
             {
                 Model = new Client();
                 Init(Model);
+                SelectedItem();
             }
             catch (Exception e)
             {
@@ -274,9 +272,10 @@ namespace Dental.ViewModels.ClientDir
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                     EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
-                    PathToUserFiles = Path.Combine(PathToFilesDirectory, Model?.Guid);
+                    PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     notificationShowed = true;
+                    SelectedItem();
                 }
                 else
                 { // редактирование су-щего эл-та
@@ -327,7 +326,7 @@ namespace Dental.ViewModels.ClientDir
                 db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
                 // удаляем фото 
-                var photo = Directory.GetFiles(PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
+                var photo = Directory.GetFiles(Config.PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
                 if (photo != null && File.Exists(photo)) File.Delete(photo);
 
                 // удаляем файлы 
@@ -336,7 +335,8 @@ namespace Dental.ViewModels.ClientDir
                 //загружаем новую анкету
                 Model = new Client();
                 Init(Model);
-               // SetCollection();
+                SelectedItem();
+                // SetCollection();
             }
             catch (Exception e)
             {
@@ -420,9 +420,9 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (p is ImageEditEx param)
                 {
-                    if (!Directory.Exists(PathToClientsPhotoDirectory)) Directory.CreateDirectory(PathToClientsPhotoDirectory);
+                    if (!Directory.Exists(Config.PathToClientsPhotoDirectory)) Directory.CreateDirectory(Config.PathToClientsPhotoDirectory);
 
-                    var oldPhoto = Directory.GetFiles(PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
+                    var oldPhoto = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
 
                     if (oldPhoto != null && File.Exists(oldPhoto))
                     {
@@ -434,7 +434,7 @@ namespace Dental.ViewModels.ClientDir
                     }
 
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
-                    photo.CopyTo(Path.Combine(PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
+                    photo.CopyTo(Path.Combine(Config.PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
                     new Notification() { Content = "Фото клиента сохраненo!" }.run();
                     var model = Collection.FirstOrDefault(f => f.Guid == param?.ImageGuid);
                     if (model != null)
@@ -460,7 +460,7 @@ namespace Dental.ViewModels.ClientDir
 
                     if (response.ToString() == "No") return;
 
-                    var file = Directory.GetFiles(PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
+                    var file = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
                     if (file != null) File.Delete(file);
                     img?.Clear();
@@ -481,9 +481,7 @@ namespace Dental.ViewModels.ClientDir
 
         #endregion
 
-        #region команды, связанных с прикреплением файлов 
-        private string PathToFilesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Files");
-
+        #region команды, связанных с прикреплением файлов        
         public string PathToUserFiles
         {
             get { return GetProperty(() => PathToUserFiles); }
@@ -595,5 +593,15 @@ namespace Dental.ViewModels.ClientDir
             }
         }
         #endregion
+
+        private void SelectedItem()
+        {
+            var navigator = (Navigator)Application.Current.Resources["Router"];
+
+            if (navigator?.CurrentPage is PatientsList page)
+            {
+                page.SelectedItem();
+            }
+        }
     }
 }

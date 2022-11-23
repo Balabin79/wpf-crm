@@ -109,8 +109,6 @@ namespace Dental.ViewModels.Invoices
                 {
                     item.Count = Count;
                     item.Price = service?.Price;
-                    item.ItemId = service?.Id;
-                    item.ItemGuid = service?.Guid;
                     item.Name = service?.Name;
                     item.Code = service?.Code;
                 }
@@ -120,8 +118,6 @@ namespace Dental.ViewModels.Invoices
                     Model.Count = Count;
                     Model.Type = Type;
                     Model.Price = nom?.Price;
-                    Model.ItemId = nom?.Id;
-                    Model.ItemGuid = nom?.Guid;
                     Model.Name = nom?.Name;
                     Model.Code = nom?.Code;
                 }

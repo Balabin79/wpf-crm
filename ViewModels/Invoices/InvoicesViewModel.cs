@@ -44,8 +44,8 @@ namespace Dental.ViewModels.Invoices
                 //PrintMenuLoading();
             }
             catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Счета\"!",
+            {               
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
                           messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -66,6 +66,7 @@ namespace Dental.ViewModels.Invoices
         {
             IsReadOnly = status;
         }
+
         public bool IsReadOnly
         {
             get { return GetProperty(() => IsReadOnly); }
@@ -186,7 +187,6 @@ namespace Dental.ViewModels.Invoices
         {
             try
             {
-
                 if (p is InvoiceItemCommandParameters parameter)
                 {
                     var vm = new InvoiceItemVM(parameter.Param)
@@ -205,8 +205,8 @@ namespace Dental.ViewModels.Invoices
                 if (p is InvoiceItems item)
                 {
                     object selected = null;
-                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
-                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.ItemId);
+                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.Id);
+                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.Id);
 
                     var vm = new InvoiceItemVM(item.Type)
                     {

@@ -144,7 +144,7 @@ namespace Dental.ViewModels
                 db.SaveChanges();
                 Logo = null;
                 Stamp = null;
-                new DirectoryInfo(PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
+                new DirectoryInfo(Config.PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
             }
             catch (Exception e)
             {
@@ -181,16 +181,13 @@ namespace Dental.ViewModels
         private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
 
         #region Управление файлами лого и печати
-
-        private string PathToOrgDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Organization");
-
-
+      
         private void ImagesLoading()
         {
             try
             {
                 var files = new string[] { };
-                if (Directory.Exists(PathToOrgDirectory)) files = Directory.GetFiles(PathToOrgDirectory);
+                if (Directory.Exists(Config.PathToOrgDirectory)) files = Directory.GetFiles(Config.PathToOrgDirectory);
 
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -221,8 +218,8 @@ namespace Dental.ViewModels
             {
                 if (p is ImageEditEx img && img.HasImage)
                 {
-                    if (!Directory.Exists(PathToOrgDirectory)) Directory.CreateDirectory(PathToOrgDirectory);
-                    var files = Directory.GetFiles(PathToOrgDirectory);
+                    if (!Directory.Exists(Config.PathToOrgDirectory)) Directory.CreateDirectory(Config.PathToOrgDirectory);
+                    var files = Directory.GetFiles(Config.PathToOrgDirectory);
                     if (img.Name == "Logo")
                     {
                         foreach (var file in files)
@@ -238,7 +235,7 @@ namespace Dental.ViewModels
                             }
                         }
                         FileInfo photo = new FileInfo(img.ImagePath);
-                        photo.CopyTo(Path.Combine(PathToOrgDirectory, "Logo" + photo.Extension), true);
+                        photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension), true);
                         new Notification() { Content = "Логотип сохранен!" }.run();
                         db.SaveChanges();
                     }
@@ -258,7 +255,7 @@ namespace Dental.ViewModels
                             }
                         }
                         FileInfo photo = new FileInfo(img.ImagePath);
-                        photo.CopyTo(Path.Combine(PathToOrgDirectory, "Stamp" + photo.Extension), true);
+                        photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Stamp" + photo.Extension), true);
                         new Notification() { Content = "Файл печати сохранен!" }.run();
                     }
                 }
@@ -283,9 +280,9 @@ namespace Dental.ViewModels
                     var response = ThemedMessageBox.Show(title: "Внимание", text: msg, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
 
-                    if (Directory.Exists(PathToOrgDirectory))
+                    if (Directory.Exists(Config.PathToOrgDirectory))
                     {
-                        var files = Directory.GetFiles(PathToOrgDirectory);
+                        var files = Directory.GetFiles(Config.PathToOrgDirectory);
                         foreach (var file in files) if (file.Contains(img?.Name)) File.Delete(file);
                     }
                     img.Clear();

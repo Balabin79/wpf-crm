@@ -16,7 +16,7 @@
        xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" 
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
-       Title="Клиенты">
+       Title="Клиенты" Loaded="Page_Loaded">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -62,7 +62,8 @@
                         <dxb:BarButtonItem Content="Добавить клиента" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding CreateCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
+                                           />
 
                         <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
                                            GlyphSize="Small"
@@ -96,12 +97,13 @@
                     <dx:DXTabControl Margin="2">
                         <dx:DXTabItem Header="Клиенты" >
                             <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                        DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
-                        AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
-                         MaxHeight="1800"
-                         ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                         
-                         dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                         ShowBorder="True" x:Name="grid">
+                                DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
+                                AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
+                                MaxHeight="1800"
+                                ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                                ShowBorder="True" x:Name="grid"
+                                             >
                                 <dxg:GridControl.GroupSummary>
                                     <dxg:GridSummaryItem SummaryType="Count" />
                                 </dxg:GridControl.GroupSummary>
@@ -159,7 +161,7 @@
                                     <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
                                 </dxg:GridControl.TotalSummary>
                                 <dxg:GridControl.View>
-                                    <dxg:TableView                         
+                                    <dxg:TableView       
                                         ShowVerticalLines="False"
                                         ShowColumnHeaders="False"
                                         ShowGroupPanel="False"
@@ -175,7 +177,8 @@
                                         HighlightItemOnHover="True"
                                         SearchColumns="LastName"
                                         SearchPanelHorizontalAlignment="Stretch"
-                                        SearchPanelNullText="Фамилия клиента">
+                                        SearchPanelNullText="Фамилия клиента"
+                                        >
                                         <dxg:TableView.InputBindings>
                                             <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=CreateCommand}"/>
                                             <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
@@ -214,7 +217,7 @@
                         </dx:DXTabItem>
                     </dx:DXTabControl>
 
-                    <local:ClientCardControl Margin="0 2 2 2" />
+                    <local:ClientCardControl Margin="0 2 2 2" x:Name="clientCard" />
                 </DockPanel>
             </Border>
         </Grid>

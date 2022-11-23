@@ -31,10 +31,9 @@ namespace Dental.ViewModels.AdditionalFields
             
                 // получаем все поля для раздела
                 AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
-                if (AdditionalClientFields.Count() == 0) return;
-
                 Fields = new ObservableCollection<LayoutItem>();
-
+                if (AdditionalClientFields.Count() == 0) return;
+              
                 // загружаем значения полей
                 AdditionalClientValues = (client != null) ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
 

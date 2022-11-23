@@ -85,7 +85,7 @@
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
-                                           CustomGlyphSize="21,21"   
+                                           CustomGlyphSize="21,21" 
                                            Command="{Binding SaveCommand}"/>
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem  Content="Удалить" 

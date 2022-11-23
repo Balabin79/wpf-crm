@@ -28,20 +28,8 @@ namespace Dental.Models
             set { SetProperty(() => Type, value); }
         }
 
-        public string ItemGuid
-        {
-            get { return GetProperty(() => ItemGuid); }
-            set { SetProperty(() => ItemGuid, value); }
-        }
-
-        public int? ItemId
-        {
-            get { return GetProperty(() => ItemId); }
-            set { SetProperty(() => ItemId, value); }
-        }
-
         public Invoice Invoice { get; set; }
-       public int? InvoiceId { get; set; }       
+        public int? InvoiceId { get; set; }       
 
         public int Count 
         {
