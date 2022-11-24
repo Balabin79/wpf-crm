@@ -19,5 +19,7 @@ namespace Dental.Services
         public static string PathToClientsPhotoDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "B6Dental", "Clients", "Photo");
 
         public static string PathToFilesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "B6Dental", "Files");
+        
+        public static string PathToProgramDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "B6Dental");
     }
 }

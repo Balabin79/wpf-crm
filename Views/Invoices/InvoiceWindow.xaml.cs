@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Dental.ViewModels.Invoices;
+using System;
+using System.Windows;
 
 namespace Dental.Views.Invoices
 {
@@ -18,6 +20,15 @@ namespace Dental.Views.Invoices
             e.Handled = true;
         }
 
-        private void Cancel_Form(object sender, RoutedEventArgs e) => Close();     
+        private void Cancel_Form(object sender, RoutedEventArgs e) => Close();
+
+        private void DateEdit_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
+        {
+            if (DataContext is InvoiceVM vm)
+            {
+                var dateEdit = DateInvoice.EditValue?.ToString();
+                if (dateEdit != null && DateTime.TryParse(dateEdit, out DateTime date)) vm.DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds();
+            }          
+        }
     }
 }

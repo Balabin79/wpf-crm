@@ -6,15 +6,44 @@ using Dental.Models.Base;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Dental.Models.Templates;
+using System.Configuration;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.Common;
+using Dental.Services;
+using System;
+using System.IO;
+using System.Data.SQLite;
+using System.Data.Entity.Infrastructure;
 
 namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base("DefaultConnection")
-        {
+        public ApplicationContext() : base("DefaultConnection") { }
 
-        }
+        /* public ApplicationContext(string conn) : base("DefaultConnection")
+         {
+             try
+             {
+        //Path.Combine("Data Source=", Config.PathToProgramDirectory, "dental.db")
+                 var originalConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                 var entityBuilder = new EntityConnectionStringBuilder(originalConnectionString);
+
+                 var factory = DbProviderFactories.GetFactory(entityBuilder.Provider);
+
+                 var providerBuilder = factory.CreateConnectionStringBuilder();
+                 providerBuilder.ConnectionString = entityBuilder.ProviderConnectionString;
+                 //providerBuilder.Add("Password", "Mypassword");
+                 entityBuilder.ProviderConnectionString = providerBuilder.ToString();
+                 string NewConnectionString = entityBuilder.ToString();
+             }
+             catch (Exception e)
+             {
+
+             }
+         }*/
+
+
 
         /*
         public List<ValidationResult> CustomErrors { get; set; } = new List<ValidationResult>();

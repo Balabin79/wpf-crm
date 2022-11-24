@@ -209,15 +209,13 @@
                                 </dxg:GridControl.View>
                             </dxg:GridControl>
                         </dx:DXTabItem>
-                        
-                        
-                        
+                     
                         <dx:DXTabItem Header="Счета" >
                             <local:InvoicesControl Margin="0 2 2 2" />
                         </dx:DXTabItem>
                     </dx:DXTabControl>
 
-                    <local:ClientCardControl Margin="0 2 2 2" x:Name="clientCard" />
+                    <local:ClientCardControl Margin="0 2 2 2" x:Name="clientCard" DataContext="{Binding}"/>
                 </DockPanel>
             </Border>
         </Grid>

@@ -14,7 +14,7 @@ namespace Dental.ViewModels.Invoices
         public delegate void SaveCommand(object m);
         public event SaveCommand EventSave;
 
-        public InvoiceVM(Employee[] employees) => Employees = employees;            
+        public InvoiceVM(ICollection<Employee> employees) => Employees = employees;            
 
         [Required(ErrorMessage = @"Поле ""Название счета"" обязательно для заполнения")]
         public string Name
@@ -46,8 +46,14 @@ namespace Dental.ViewModels.Invoices
         {
             get { return GetProperty(() => Date); }
             set { SetProperty(() => Date, value); }
+        }        
+        
+        public long? DateTimestamp
+        {
+            get { return GetProperty(() => DateTimestamp); }
+            set { SetProperty(() => DateTimestamp, value); }
         }
-
+        
         public int? Paid
         {
             get { return GetProperty(() => Paid); }
@@ -77,6 +83,7 @@ namespace Dental.ViewModels.Invoices
                 Model.Employee = Employee;
                 Model.EmployeeId = Employee?.Id;
                 Model.Date = Date;
+                Model.DateTimestamp = DateTimestamp;
                 Model.Paid = Paid;
 
                 EventSave?.Invoke(Model);

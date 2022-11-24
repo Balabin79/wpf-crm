@@ -28,6 +28,12 @@ namespace Dental.Models
             set { SetProperty(() => Date, value); }
         }
 
+        public long? DateTimestamp
+        {
+            get { return GetProperty(() => DateTimestamp); }
+            set { SetProperty(() => DateTimestamp, value); }
+        }
+
         public string Number { get; set; }
         public int? Paid { get; set; }
 

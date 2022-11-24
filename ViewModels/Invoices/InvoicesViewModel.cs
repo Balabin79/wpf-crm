@@ -24,6 +24,9 @@ using Dental.Models.Base;
 using DevExpress.Xpf.Printing;
 using Dental.Reports;
 using DevExpress.XtraReports.Parameters;
+using Dental.ViewModels.EmployeeDir;
+using System.Data.SqlClient;
+using System.IO;
 //using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
@@ -41,6 +44,12 @@ namespace Dental.ViewModels.Invoices
                 db = context ?? new ApplicationContext();
                 Client = client;
                 SetInvoices();
+                Employees = db.Employes.OrderBy(f => f.LastName).ToArray() ?? new Employee[] { };
+                foreach (var i in Employees)
+                {
+                    ImgLoading(i);
+                    i.IsVisible = false;
+                }
                 //PrintMenuLoading();
             }
             catch (Exception e)
@@ -82,20 +91,26 @@ namespace Dental.ViewModels.Invoices
                 Invoice invoice;
 
                 if (p is Invoice inv) invoice = inv;
-                else invoice = new Invoice()
+                else
                 {
-                    Number = NewNumberGenerate(),
-                    Client = Client,
-                    ClientId = Client?.Id,
-                    Date = DateTime.Now.ToString(),
-                    Paid = 0
-                };
+                    var date = DateTime.Now;
+                    invoice = new Invoice()
+                    {
+                        Number = NewNumberGenerate(),
+                        Client = Client,
+                        ClientId = Client?.Id,
+                        Date = date.ToString(),
+                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                        Paid = 0
+                    };
+                }
 
-                var vm = new InvoiceVM(db.Employes.OrderBy(f => f.LastName).ToArray() ?? new Employee[] { })
+                var vm = new InvoiceVM(Employees)
                 {
                     Name = invoice.Name,
                     Number = invoice.Number,
                     Date = invoice.Date,
+                    DateTimestamp = invoice.DateTimestamp,
                     Client = invoice?.Client ?? Client,
                     Employee = invoice?.Employee,
                     Paid = invoice.Paid,
@@ -350,7 +365,7 @@ namespace Dental.ViewModels.Invoices
             var query = (Client != null) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
 
             if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-            Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+            Invoices = query?.Include(f => f.Employee).Include(f => f.Client).Include(f => f.InvoiceItems).OrderByDescending(f => f.CreatedAt).ToObservableCollection();
         }
 
         public Client Client
@@ -359,6 +374,7 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => Client, value); }
         }
 
+        public ICollection<Employee> Employees { get; set; }
         // фильтр показывать оплаченные/неоплаченные счета
         [Command]
         public void StatusChanged(object p)
@@ -413,6 +429,101 @@ namespace Dental.ViewModels.Invoices
         }
 
         public void NewClientSaved(Client client) => Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
+
+        #region Поиск
+        public object EmployeeSearch { get; set; }
+        public object ClientSearch { get; set; }
+        public object DateFromSearch { get; set; }
+        public object DateToSearch { get; set; }
+        public object InvoiceNameSearch { get; set; }
+        public object InvoicePaidSearch { get; set; }
+
+        [Command]
+        public void Search()
+        {
+            try
+            {
+                List<string> where = new List<string>();
+                long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
+                long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+
+                if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
+                if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
+
+                if (bool.TryParse(InvoicePaidSearch?.ToString(), out bool isPaid))
+                {
+                    if (isPaid) where.Add("Paid = 1");
+                    else where.Add("Paid = 0");
+                }               
+
+                if (DateFromSearch != null && DateTime.TryParse(DateFromSearch.ToString(), out DateTime dateTimeFrom))
+                {
+                    dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
+                }
+
+                if (DateToSearch != null && DateTime.TryParse(DateToSearch.ToString(), out DateTime dateTimeTo))
+                {
+                    dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
+                }
+
+                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
+                string parameters = "WHERE ";
+                for (int i = 0; i < where.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        parameters += where[i];
+                        continue;
+                    }
+                    parameters += " AND " + where[i];
+                }
+                parameters += " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+
+              /*  if (InvoiceNameSearch != null)
+                {
+                    parameters += " AND Name LIKE %" + InvoiceNameSearch.ToString() + "% ";
+                }*/
+                //SqlParameter param = SqlParameter("@name", "%Samsung%");
+                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
+
+                Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        #endregion
+
+        private void ImgLoading(Employee model)
+        {
+            try
+            {
+                if (Directory.Exists(Config.PathToEmployeesDirectory))
+                {
+                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    if (file == null) return;
+
+                    using (var stream = new FileStream(file, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
     }
 }
 

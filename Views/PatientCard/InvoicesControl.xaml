@@ -23,6 +23,30 @@
                 <ResourceDictionary>
                     <vm:InvoicesViewModel x:Key="vm"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
+
+
+                    <ControlTemplate x:Key="popupContentTemplate">
+                        <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="FullName" Header="Фамилия Имя Отчество" />
+                                <dxg:GridColumn FieldName="Image" Width="60" FixedWidth="True" Header="Фото">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:ImageEditSettings ShowMenu="True" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView 
+                                       ShowGroupedColumns="True"
+                                       AutoWidth="True"
+                                       AllowPerPixelScrolling="True"
+                                       ScrollAnimationDuration="0"
+                                       ShowAutoFilterRow="True"
+                                       ShowTotalSummary="True"
+                                       IsSynchronizedWithCurrentItem="False" />
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </ControlTemplate>
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
                 <ResourceDictionary>
@@ -38,7 +62,100 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  DataContext="{StaticResource vm}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal" >
+                <dxg:LookUpEdit
+                                Width="172" Margin="0 0 5 5"
+                                EditValue="{Binding Source={StaticResource vm}, Path=ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PopupHeight="500"
+                                PopupWidth="400"
+                                PopupMinHeight="100"
+                                PopupMinWidth="100"
+                                IsPopupAutoWidth="False"
+                                FilterCondition="StartsWith"
+                                FindButtonPlacement="Popup"
+                                FindMode="Always"
+                                PopupContentTemplate="{StaticResource popupContentTemplate}"
+                                ItemsSource="{Binding Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutoPopulateColumns="False"
+                                DisplayMember="FullName"
+                                ValueMember="Id"
+                                ShowSizeGrip="True"
+                                IsTextEditable="False"
+                                ImmediatePopup="True"
+                                NullText="Выберите клиента"
+                                AutoComplete="True"
+                                IncrementalFiltering="True">
+                    <dxg:LookUpEdit.StyleSettings>
+                        <dxg:SearchLookUpEditStyleSettings />
+                    </dxg:LookUpEdit.StyleSettings>
+                </dxg:LookUpEdit>
+
+                <dxg:LookUpEdit
+                                Width="172" Margin="0 0 0 5"
+                                EditValue="{Binding Source={StaticResource vm}, Path=EmployeeSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                PopupHeight="500"
+                                PopupWidth="400"
+                                PopupMinHeight="100"
+                                PopupMinWidth="100"
+                                IsPopupAutoWidth="True"
+                                FilterCondition="StartsWith"
+                                FindButtonPlacement="Popup"
+                                FindMode="Always"
+                                PopupContentTemplate="{StaticResource popupContentTemplate}"
+                                ItemsSource="{Binding Source={StaticResource vm}, Path=Employees, Mode=OneWay}"
+                                AutoPopulateColumns="False"
+                                DisplayMember="FullName"
+                                ValueMember="Id"
+                                NullText="Выберите сотрудника"
+                                ShowSizeGrip="True"
+                                IsTextEditable="False"
+                                ImmediatePopup="True"
+                                AutoComplete="True"
+                                IncrementalFiltering="True">
+                    <dxg:LookUpEdit.StyleSettings>
+                        <dxg:SearchLookUpEditStyleSettings />
+                    </dxg:LookUpEdit.StyleSettings>
+                </dxg:LookUpEdit>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="172"
+                                      DisplayFormatString="D" NullText="Дата от"
+                                      EditValue="{Binding Source={StaticResource vm}, Path=DateFromSearch, Mode=TwoWay, StringFormat=D,
+                                                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
+
+                <dxe:DateEdit Mask="G" MaskType="DateTime" Width="172" 
+                                      DisplayFormatString="D" NullText="Дата до"
+                                      EditValue="{Binding Source={StaticResource vm}, Path=DateToSearch, Mode=TwoWay, StringFormat=D,
+                                                UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
+            </StackPanel>
+            <DockPanel>
+                <dxe:TextEdit Margin="0 5 5 0" NullText="Название счета" DockPanel.Dock="Left"
+                    Width="172" 
+                    Text="{Binding Source={StaticResource vm}, Path=InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <dxe:CheckEdit IsThreeState="True" Width="50" Margin="0 5 0 0"  
+                                  IsChecked="{Binding Source={StaticResource vm}, Path=InvoicePaidSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 />
+
+                <dx:SimpleButton Command="{Binding Source={StaticResource vm}, Path=SearchCommand}" DockPanel.Dock="Right" 
+                    Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="0 5 0 0"/>
+            </DockPanel>
+        </StackPanel>
+        <dxg:GridControl Grid.Row="1"
+            ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  DataContext="{StaticResource vm}"
                         DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
                         AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
                          MaxHeight="1800"
@@ -59,21 +176,10 @@
                                     <Run Text="Дата счета: " FontWeight="DemiBold"/>
                                     <Run Text="{DXBinding Expr='Row.Date ?? `не установлена`', Mode=OneWay}"/>
                                 </TextBlock>
-                                <TextBlock Margin="3 0 0 0">
-                                    <Run Text="Клиент: " FontWeight="DemiBold"/>
-                                    <Run Text="{DXBinding Expr='Row.Client.FullName ?? `не установлен`', Mode=OneWay}"/>
-                                </TextBlock>
-                                <TextBlock Margin="3 0 0 0">
-                                    <Run Text="Сотрудник: " FontWeight="DemiBold"/>
-                                    <Run Text="{DXBinding Expr='Row.Employee.Fio ?? `не установлен`', Mode=OneWay}"/>
-                                </TextBlock>
                             </StackPanel>
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>
-                <dxg:GridColumn FieldName="Date" Header="Дата" Width="2*" UnboundType="String" ReadOnly="True" Visible="False" AllowSearchPanel="True"/>
-                <dxg:GridColumn FieldName="Client.FullName" Header="Клиент" Width="2*" UnboundType="String" ReadOnly="True" Visible="False" AllowSearchPanel="False" />
-
 
             </dxg:GridControl.Columns>
 
@@ -82,8 +188,7 @@
                 <dxg:GridSummaryItem FieldName="Name" SummaryType="Count" />
             </dxg:GridControl.TotalSummary>
             <dxg:GridControl.View>
-                <dxg:TableView           
-                                        
+                <dxg:TableView                                              
                                         ShowVerticalLines="False"
                                         ShowColumnHeaders="False"
                                         ShowGroupPanel="False"
@@ -91,17 +196,15 @@
                                         AllowScrollAnimation="True"
                                         Name="view"
                                         AllowSorting="True"
-                                        ShowSearchPanelMode="Always"
+                                        ShowSearchPanelMode="Never"
                                         SearchPanelAllowFilter="True"
                                         UseLegacyFilterPanel="True"
                
                                         NavigationStyle="Row"
                                         AllowPrintColumnHeaderImage="True"
                                         HighlightItemOnHover="True"
-                                        SearchPanelHorizontalAlignment="Stretch"
-                                        SearchPanelNullText="Счет"
-                    SearchPanelHighlightResults="True"
-                                        SearchColumns="Name;Date;Client.FullName"
+                              
+                                        SearchColumns="Name"
                     
                     >
                     <dxg:TableView.InputBindings>

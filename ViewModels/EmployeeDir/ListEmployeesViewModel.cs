@@ -30,11 +30,13 @@ namespace Dental.ViewModels.EmployeeDir
     public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         public readonly ApplicationContext db;
-        public ListEmployeesViewModel()
+
+        public ListEmployeesViewModel() : this(null){}
+        public ListEmployeesViewModel(ApplicationContext ctx) 
         {
             try
             {
-                db = new ApplicationContext();
+                db = ctx == null ? new ApplicationContext() : ctx;
                 SetCollection();
                 foreach (var i in Collection)
                 {

@@ -33,7 +33,8 @@
             </dxlc:LayoutItem>
             
             <dxlc:LayoutItem Label="Дата:"  LabelPosition="Top">
-                <dxe:DateEdit  Mask="G" 
+                <dxe:DateEdit  Mask="G" x:Name="DateInvoice"
+                    EditValueChanged="DateEdit_EditValueChanged"
                                MaskUseAsDisplayFormat="True"
                                EditValue="{Binding Date, Mode=TwoWay, Converter={StaticResource dateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                     <dxe:DateEdit.StyleSettings>
