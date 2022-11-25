@@ -27,6 +27,7 @@ using DevExpress.XtraReports.Parameters;
 using Dental.ViewModels.EmployeeDir;
 using System.Data.SqlClient;
 using System.IO;
+using Dental.Views.PatientCard;
 //using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
@@ -437,6 +438,18 @@ namespace Dental.ViewModels.Invoices
         public object DateToSearch { get; set; }
         public object InvoiceNameSearch { get; set; }
         public object InvoicePaidSearch { get; set; }
+        public int? InvoicesSearchMode
+        {
+            get { return GetProperty(() => InvoicesSearchMode); }
+            set { SetProperty(() => InvoicesSearchMode, value); }
+        }
+
+        [Command]
+        public void SwitchInvoicesSearchMode(object p)
+        {
+            if (p == null) p = 0;
+            if (int.TryParse(p.ToString(), out int param)) InvoicesSearchMode = param;
+        }
 
         [Command]
         public void Search()
@@ -452,11 +465,11 @@ namespace Dental.ViewModels.Invoices
                 if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
                 if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
 
-                if (bool.TryParse(InvoicePaidSearch?.ToString(), out bool isPaid))
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
                 {
-                    if (isPaid) where.Add("Paid = 1");
-                    else where.Add("Paid = 0");
-                }               
+                    if (paimentStatus == 1) where.Add("Paid = 1");
+                    if (paimentStatus == 2) where.Add("Paid = 0");
+                }
 
                 if (DateFromSearch != null && DateTime.TryParse(DateFromSearch.ToString(), out DateTime dateTimeFrom))
                 {
@@ -479,17 +492,25 @@ namespace Dental.ViewModels.Invoices
                     }
                     parameters += " AND " + where[i];
                 }
-                parameters += " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+                if (where.Count > 0) parameters += " AND ";
+                parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-              /*  if (InvoiceNameSearch != null)
-                {
-                    parameters += " AND Name LIKE %" + InvoiceNameSearch.ToString() + "% ";
-                }*/
                 //SqlParameter param = SqlParameter("@name", "%Samsung%");
                 //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
 
                 Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
                 //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+                if (!string.IsNullOrEmpty(InvoiceNameSearch.ToString()))
+                {
+                    Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
+                }
+
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+
+                if (navigator?.CurrentPage is PatientsList page)
+                {
+                    page.SelectedInvoiceItem();
+                }
             }
             catch (Exception e)
             {
@@ -524,6 +545,7 @@ namespace Dental.ViewModels.Invoices
                 (new ViewModelLog(e)).run();
             }
         }
+
     }
 }
 

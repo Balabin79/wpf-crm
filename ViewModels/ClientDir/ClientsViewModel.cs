@@ -223,10 +223,27 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+
                 if (p is Client model) 
                 { 
                     Model = model; 
-                    Init(Model); 
+                    Init(Model);
+                    if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
+                }
+
+                if (p is Invoice invoice && invoice.Client != null)
+                {
+                    Model = invoice.Client;
+                    Init(invoice.Client);
+                    if (navigator?.CurrentPage is PatientsList page) 
+                    { 
+                        page.clientCard.tabs.SelectedIndex = 2;
+                        if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
+                        {
+                            page.clientCard.Invoices.grid.SelectedItem = invoice;                          
+                        }                           
+                    }                   
                 }
             }
             catch (Exception e)

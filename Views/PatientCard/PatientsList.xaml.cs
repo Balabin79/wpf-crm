@@ -16,19 +16,35 @@ namespace Dental.Views.PatientCard
 
         public void SelectedItem()
         {
-            if (clientCard.DataContext is ClientsViewModel vm)
+            try
             {
-                if (vm?.Model?.Id == 0)
+                if (clientCard.DataContext is ClientsViewModel vm)
                 {
-                    grid.SelectedItem = null;
-                    return;
-                }
-                else
-                {
-                    var model = vm?.Collection?.FirstOrDefault(f => f.Id == vm?.Model?.Id);
-                    grid.SelectedItem = model;
-                }
+                    if (vm?.Model?.Id == 0)
+                    {
+                        grid.SelectedItem = null;
+                        return;
+                    }
+                    else
+                    {
+                        var model = vm?.Collection?.FirstOrDefault(f => f.Id == vm?.Model?.Id);
+                        grid.SelectedItem = model;
+                    }
+                }               
             }
+            catch
+            {
+
+            }
+        }
+
+        public void SelectedInvoiceItem()
+        {
+            try
+            {
+                invoicesList.grid.SelectedItem = null;
+            }
+            catch { }
         }
     }
 }

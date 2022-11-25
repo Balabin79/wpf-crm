@@ -136,12 +136,17 @@ namespace Dental.Services
         {
             try
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "B6Dental.chm");
-                if (File.Exists(path)) Process.Start(path);
+                var path = Path.Combine(Config.PathToProgramDirectory, "B6Dental.chm");
+                if (!File.Exists(path)) 
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Не найден файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    return; 
+                }
+                Process.Start(path);
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Невозможно выполнить загрузку файла!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
     }

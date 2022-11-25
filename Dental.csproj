@@ -49,6 +49,9 @@
     <None Remove="Resources\Icons\Formheading.png" />
     <None Remove="Resources\Icons\info4.png" />
     <None Remove="Resources\Icons\info5.png" />
+    <None Remove="Resources\Icons\invoice_green.png" />
+    <None Remove="Resources\Icons\invoice_red.png" />
+    <None Remove="Resources\Icons\invoice_yel.png" />
     <None Remove="Resources\Icons\lifeguard.png" />
     <None Remove="Resources\Icons\Lightning.png" />
     <None Remove="Resources\Icons\logo.ico" />
@@ -236,6 +239,9 @@
     <Resource Include="Resources\Icons\Form.png" />
     <Resource Include="Resources\Icons\Formheading.png" />
     <Resource Include="Resources\Icons\info5.png" />
+    <Resource Include="Resources\Icons\invoice_green.png" />
+    <Resource Include="Resources\Icons\invoice_red.png" />
+    <Resource Include="Resources\Icons\invoice_yel.png" />
     <Resource Include="Resources\Icons\Lightning.png" />
     <Resource Include="Resources\Icons\logo.png" />
     <Resource Include="Resources\Icons\logoFile.png" />
