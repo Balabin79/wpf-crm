@@ -94,7 +94,11 @@ namespace Dental.Models
         public int? IsDoctor { get; set; } = 1;
         public int? IsReception { get; set; } = 0;
 
-        public string Password { get; set; }
+        public string Password
+        {
+            get { return GetProperty(() => Password); }
+            set { SetProperty(() => Password, value); }
+        }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

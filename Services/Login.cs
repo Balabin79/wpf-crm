@@ -212,7 +212,7 @@ namespace Dental.Services
         {
             try
             {
-                return Password == Encoding.UTF8.GetString(Convert.FromBase64String(Employee?.Password));
+                return Employee?.Password == BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(Password))).Replace("-", string.Empty);
             }
             catch
             {
