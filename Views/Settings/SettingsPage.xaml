@@ -50,7 +50,7 @@
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl Background="Transparent"
-                        x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
                         <dxb:BarButtonItem Content="Лицензия" 
@@ -73,7 +73,7 @@
                         <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
-                                            GlyphSize="Small"
+                                           GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Content="Сохранить"                                         
@@ -101,11 +101,11 @@
 
                                 <dxlc:LayoutItem Label="Включить ролевой доступ:" LabelPosition="Top" >
                                     <dxe:CheckEdit Name="roleEnabled"
-                                        Checked="CheckEdit_Checked"
-                                        Unchecked="CheckEdit_Unchecked"
-                                                EditValue="{Binding Settings.RolesEnabled, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                   Checked="CheckEdit_Checked"
+                                                   Unchecked="CheckEdit_Unchecked"
+                                                   EditValue="{Binding Settings.RolesEnabled, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                   UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem                                   
                                     Label="Использовать вход с паролем:" LabelPosition="Top" >
@@ -113,13 +113,32 @@
                                         Name="passEnabled"
                                         Checked="CheckEditPass_Checked"
                                         Unchecked="CheckEditPass_Unchecked"
-                                               IsEnabled="{DXBinding Expr='@e(roleEnabled).EditValue == true' }"
-                                                EditValue="{Binding Settings.IsPasswordRequired, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                        IsEnabled="{DXBinding Expr='@e(roleEnabled).EditValue == true' }"
+                                        EditValue="{Binding Settings.IsPasswordRequired, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                        UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
 
+                            <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" >
+                                <dxlc:LayoutGroup.HeaderTemplate>
+                                    <DataTemplate >
+                                        <TextBlock Text="Настройки доступа к API &quot;B6 Dental&quot;" VerticalAlignment="Center" Height="22"/>
+                                    </DataTemplate>
+                                </dxlc:LayoutGroup.HeaderTemplate>
+                                <dxlc:LayoutItem Label="URL (Сетевой адрес API):" LabelPosition="Top">
+                                    <dxe:TextEdit Text="{Binding Settings.UrlApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
+                                    <dxe:TextEdit Text="{Binding Settings.LoginApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
+                                    <dxe:TextEdit Text="{Binding Settings.PasswordApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
 
                             <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                                 <dxlc:LayoutGroup.HeaderTemplate>
@@ -129,24 +148,23 @@
                                 </dxlc:LayoutGroup.HeaderTemplate>
                                 <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
                                     <dxe:TextEdit Text="{Binding Settings.LoginProdoctorov, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                                 <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
                                     <dxe:TextEdit Text="{Binding Settings.PasswordProdoctorov, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>
                         </dxlc:LayoutGroup>
                     </dx:DXTabItem>
 
-
                     <dx:DXTabItem Header="Ролевой доступ" >
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
                             <dxg:GridControl  AutoGenerateColumns="None" 
-                                  MaxHeight="2000" 
-                                  Name="gridAd"  
-                                  ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Margin="2">
+                                              MaxHeight="2000" 
+                                              Name="gridAd"  
+                                              ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                              Margin="2">
 
                                 <dxg:GridControl.View>
                                     <dxg:TableView                   
@@ -185,17 +203,17 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"         
-                                                EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                           EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"         
-                                                EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                           EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -204,17 +222,17 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"          
-                                                EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                           EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"          
-                                                EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                           EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -223,17 +241,17 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit   HorizontalAlignment="Center"        
-                                                EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                             EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                             UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                             IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit  HorizontalAlignment="Center"        
-                                                EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                            EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                            IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -255,47 +273,45 @@
                             </dxg:GridControl>
                         </ScrollViewer>
                     </dx:DXTabItem>
-
-                    
-                    
+                                      
                     <dx:DXTabItem Header="Настройка ролей" >
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
                             <dxg:GridControl  AutoGenerateColumns="None" 
-                                  MaxHeight="2000" 
-                                  Name="gridRoleSettings"  
-                                  ItemsSource="{Binding Roles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Margin="2">
+                                              MaxHeight="2000" 
+                                              Name="gridRoleSettings"  
+                                              ItemsSource="{Binding Roles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                              Margin="2">
 
                                 <dxg:GridControl.View>
                                     <dxg:TreeListView                                
-                            x:Name="view"
-                            KeyFieldName="Id"
-                            ParentFieldName="ParentId"
-                            TreeDerivationMode="Selfreference" 
-                            ShowTotalSummary="False" 
-                            UseLegacyFilterPanel="True"
-                            ShowSearchPanelMode="Always"
-                            SearchPanelAllowFilter="True"
-                            AllowResizing="True"
-                            BestFitModeOnSourceChange="VisibleRows"            
-                            NavigationStyle="Cell"
-                            AllowScrollToFocusedRow="True" 
-                            VerticalScrollbarVisibility="Auto"
-                            AllowPrintColumnHeaderImage="True" 
-                            PrintNodeImages="False"
-                            PrintExpandButtons="False"
-                            PrintFixedTotalSummary="False"
-                            PrintNodeFooters="False"
-                            PrintRootIndent="False"
-                            PrintTotalSummary="False"
-                            PrintAllNodes="False"
-                            ShowNodeImages="True"
-                            NodeImageSize="15,15"
-                            ExpandNodesOnFiltering="True"
-                            FilterMode="Extended"    
-                            ImmediateUpdateRowPosition="True"
-                            ShowVerticalLines="False"
-                            >
+                                        x:Name="view"
+                                        KeyFieldName="Id"
+                                        ParentFieldName="ParentId"
+                                        TreeDerivationMode="Selfreference" 
+                                        ShowTotalSummary="False" 
+                                        UseLegacyFilterPanel="True"
+                                        ShowSearchPanelMode="Always"
+                                        SearchPanelAllowFilter="True"
+                                        AllowResizing="True"
+                                        BestFitModeOnSourceChange="VisibleRows"            
+                                        NavigationStyle="Cell"
+                                        AllowScrollToFocusedRow="True" 
+                                        VerticalScrollbarVisibility="Auto"
+                                        AllowPrintColumnHeaderImage="True" 
+                                        PrintNodeImages="False"
+                                        PrintExpandButtons="False"
+                                        PrintFixedTotalSummary="False"
+                                        PrintNodeFooters="False"
+                                        PrintRootIndent="False"
+                                        PrintTotalSummary="False"
+                                        PrintAllNodes="False"
+                                        ShowNodeImages="True"
+                                        NodeImageSize="15,15"
+                                        ExpandNodesOnFiltering="True"
+                                        FilterMode="Extended"    
+                                        ImmediateUpdateRowPosition="True"
+                                        ShowVerticalLines="False"
+                                        >
                                         <dxg:TreeListView.NodeImageSelector>
                                             <tree:NodeImageSelectorForSettings  />
                                         </dxg:TreeListView.NodeImageSelector>
@@ -324,18 +340,18 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit  HorizontalAlignment="Center"      
-                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                                            EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                            IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"       
-                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                           EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
                                            
 
@@ -348,18 +364,18 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit  HorizontalAlignment="Center"      
-                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                                            EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                            IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"       
-                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                           EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                           UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                           IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
 
 
@@ -372,10 +388,10 @@
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit  HorizontalAlignment="Center"      
-                                                EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                                            EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                            IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
