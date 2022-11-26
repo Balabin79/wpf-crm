@@ -170,7 +170,9 @@
     <PackageReference Include="DevExpress.Wpf.Scheduling" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
     <PackageReference Include="SharpVectors" Version="1.7.7" />
+    <PackageReference Include="SQLite.CodeFirst" Version="1.7.0.34" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
+    <PackageReference Include="System.Data.SQLite.EF6.Migrations" Version="1.0.113" />
     <PackageReference Include="System.Text.Json" Version="6.0.5" />
   </ItemGroup>
 

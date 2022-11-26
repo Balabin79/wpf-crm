@@ -14,53 +14,55 @@ using System;
 using System.IO;
 using System.Data.SQLite;
 using System.Data.Entity.Infrastructure;
+using System.Data.SQLite.EF6;
+using System.Data.Entity.Core.Common;
+using System.Data.SqlClient;
 
 namespace Dental.Models
 {
+   /* public class MyDbConfig : DbConfiguration, IDbConnectionFactory
+    {
+        public MyDbConfig()
+        {
+            try
+            {
+                //SqlConnectionFactory defaultFactory =
+                //new SqlConnectionFactory("Server=MyDbServer;User=username;Password=12345;");
+
+                //this.SetDefaultConnectionFactory(defaultFactory);
+             
+                //this.sqlTypeEnum = sqlTypeEnum;
+                SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
+                SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
+
+                var providerServices = (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices));
+
+                SetProviderServices("System.Data.SQLite", providerServices);
+                SetProviderServices("System.Data.SQLite.EF6", providerServices);
+
+                
+                //SetDefaultConnectionFactory(new LocalDbConnectionFactory("Version = 3",@"Data Source=.\dental.db"));
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+        public DbConnection CreateConnection(string nameOrConnectionString = @"Data Source=.\dental.db")
+        {
+            return new LocalDbConnectionFactory().CreateConnection(@"Data Source=.\dental.db");
+        }
+    }*/
+
+    //[DbConfigurationType(typeof(MyDbConfig))]
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base("DefaultConnection") { }
-
-        /* public ApplicationContext(string conn) : base("DefaultConnection")
-         {
-             try
-             {
-        //Path.Combine("Data Source=", Config.PathToProgramDirectory, "dental.db")
-                 var originalConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                 var entityBuilder = new EntityConnectionStringBuilder(originalConnectionString);
-
-                 var factory = DbProviderFactories.GetFactory(entityBuilder.Provider);
-
-                 var providerBuilder = factory.CreateConnectionStringBuilder();
-                 providerBuilder.ConnectionString = entityBuilder.ProviderConnectionString;
-                 //providerBuilder.Add("Password", "Mypassword");
-                 entityBuilder.ProviderConnectionString = providerBuilder.ToString();
-                 string NewConnectionString = entityBuilder.ToString();
-             }
-             catch (Exception e)
-             {
-
-             }
-         }*/
-
-
-
-        /*
-        public List<ValidationResult> CustomErrors { get; set; } = new List<ValidationResult>();
-
-        public void CustomValidate()
-        {
-            var changedEntities = ChangeTracker.Entries().Where(_ => _.State == EntityState.Added || _.State == EntityState.Modified);
-
-            foreach (var e in changedEntities)
-            {
-                var vc = new ValidationContext(e.Entity, null, null);
-                Validator.TryValidateObject(e.Entity, vc, CustomErrors, validateAllProperties: true);
-            }
-
-        }
-        */
-
+        public ApplicationContext() : base(
+            /*"DefaultConnection"*/
+            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true
+            ) 
+        { }
+        
         public override int SaveChanges()
         {
             AddTimestamps();
