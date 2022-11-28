@@ -58,8 +58,9 @@ namespace Dental.Models
     public class ApplicationContext : DbContext
     {
         public ApplicationContext() : base(
-            /*"DefaultConnection"*/
-            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true
+            //"DefaultConnection"
+           // new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true
+            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Config.PathToProgramDirectory + "\\dental.db"}.ConnectionString}, true
             ) 
         { }
         
