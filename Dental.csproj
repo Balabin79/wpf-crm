@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <StartupObject>Dental.App</StartupObject>
     <UserSecretsId>d4ef489f-d1b0-465b-aad3-292f5b9de869</UserSecretsId>
+    <ApplicationIcon>te4.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -172,7 +173,6 @@
     <PackageReference Include="SharpVectors" Version="1.7.7" />
     <PackageReference Include="SQLite.CodeFirst" Version="1.7.0.34" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
-    <PackageReference Include="System.Data.SQLite.EF6.Migrations" Version="1.0.113" />
     <PackageReference Include="System.Text.Json" Version="6.0.5" />
   </ItemGroup>
 
