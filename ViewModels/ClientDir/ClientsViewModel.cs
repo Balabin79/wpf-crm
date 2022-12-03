@@ -292,6 +292,8 @@ namespace Dental.ViewModels.ClientDir
                 Model = new Client();
                 Init(Model);
                 SelectedItem();
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+                if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
             }
             catch (Exception e)
             {

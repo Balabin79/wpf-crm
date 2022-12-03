@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Icon="/Resources/Icons/te4.ico" 
-        Title="О программе" Height="380" Width="320" Background="#F5F6F7">
+        Title="О программе" Height="400" Width="320" Background="#F5F6F7">
     
     <StackPanel VerticalAlignment="Stretch">
         <Image Height="80" Width="80" Margin="0 40 0 0" HorizontalAlignment="Center">
@@ -16,8 +16,10 @@
             </Image.Source>
         </Image>
         <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="Автоматизация стоматологии" FontSize="16"/>
-        <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="B6Dental" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="B6 Dental" FontSize="16"/>
+        
         <TextBlock HorizontalAlignment="Center" Margin="0 10 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="Версия программы 1.0" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Center" Margin="0 0 0 0"   Foreground="#4D4D4D" Text="Разработка: Александр Балабин" FontSize="14"/>
 
         <TextBlock HorizontalAlignment="Center" Margin="0 10 0 0" Foreground="#4D4D4D" Text="Email: support@b6soft.com" FontSize="14"/>
         <TextBlock HorizontalAlignment="Center" Foreground="#4D4D4D" Text="Сайт: www.b6soft.com" FontSize="14"/>
