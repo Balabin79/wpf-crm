@@ -25,9 +25,9 @@ namespace Dental.Models
         public ApplicationContext() : base(
             //"DefaultConnection"
             //new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true       
-            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Path.Combine(Config.PathToProgramDirectory, "dental.db"), ReadOnly = false}.ConnectionString}, true
+            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Path.Combine(Config.PathToProgramDirectory, "dental.db"), Version = 3}.ConnectionString}, true
             ) 
-        { }
+        {}
 
 
         

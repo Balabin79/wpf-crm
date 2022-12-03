@@ -23,7 +23,7 @@ using DevExpress.Xpf.Editors;
 
 namespace Dental.ViewModels
 {
-    class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
+    public class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
 
@@ -75,7 +75,6 @@ namespace Dental.ViewModels
             get { return GetProperty(() => Stamp); }
             set { SetProperty(() => Stamp, value); }
         }
-
 
         [Command]
         public void Save(object p)
@@ -182,7 +181,7 @@ namespace Dental.ViewModels
 
         #region Управление файлами лого и печати
       
-        private void ImagesLoading()
+        public void ImagesLoading()
         {
             try
             {

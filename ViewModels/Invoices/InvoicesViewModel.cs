@@ -28,6 +28,9 @@ using Dental.ViewModels.EmployeeDir;
 using System.Data.SqlClient;
 using System.IO;
 using Dental.Views.PatientCard;
+using DevExpress.DataAccess.Sql;
+using System.Configuration;
+using DevExpress.DataAccess.ConnectionParameters;
 //using Dental.Reports;
 
 namespace Dental.ViewModels.Invoices
@@ -420,10 +423,29 @@ namespace Dental.ViewModels.Invoices
                     report.RequestParameters = false;
                     report.Parameters.Add(parameter);
                     report.FilterString = "[Id] = [Parameters.Id]";
+
+                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+
+                    //report.Parameters
+                    //report.vendorLogo 
+
+
+                    if (report.DataSource is SqlDataSource source)
+                    {
+                        string connectionName = "DefaultConnection"; // AppSetting.json  
+                        //string connectionString = ConfigurationManager.ConnectionStrings;
+                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
+                        SqlDataSource ds = report.DataSource as SqlDataSource;
+
+                        var con = "XpoProvider=SQLite;" + connectionString;
+                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
+                        
+                    }
+
                     PrintHelper.ShowPrintPreview(conv.Page, report);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
             }

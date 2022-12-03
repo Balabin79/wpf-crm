@@ -25,5 +25,8 @@ namespace Dental.Services
         public static string PathToFilesDirectory = Path.Combine(path, "B6 Software", "Dental", "Files");
         
         public static string PathToProgramDirectory = Path.Combine(path, "B6 Software", "Dental");
+
+
+        public static string GetPathToLogo() => Path.Combine(PathToOrgDirectory, "Logo.jpg");
     }
 }
