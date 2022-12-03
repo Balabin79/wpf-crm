@@ -30,7 +30,7 @@
                 <dxb:PopupMenu>
                     <dxb:PopupMenu.Items>
                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-green.png" 
+                                            Glyph="/Resources/Icons/teeth/tooth-green.png" 
                                             Content="Здоровый (З)"  
                                             Command="{Binding ToothMarkedCommand}">
                                     <dxb:BarButtonItem.CommandParameter>
@@ -42,7 +42,7 @@
                                 </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-gray.png"
                                             Content="Отсутствует (О)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -54,7 +54,7 @@
                         </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-gray.png"
                                             Content="Непрорезавшийся (НП)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -66,7 +66,7 @@
                         </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-gray.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-gray.png"
                                             Content="Корень (КН)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -78,7 +78,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-red.png"
                                             Content="Кариес (К)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -90,7 +90,7 @@
                         </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-red.png"
                                             Content="Пульпит (П)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -102,7 +102,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-red.png"
                                             Content="Гангрена (Г)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -114,7 +114,7 @@
                         </dxb:BarButtonItem>
                         
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-red.png"
                                             Content="Гранулема (ГР)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -126,7 +126,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-red.png"
+                                            Glyph="/Resources/Icons/teeth/tooth-red.png"
                                             Content="Подлежащий удалению (Э)" 
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -138,7 +138,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Glyph="/Resources/Icons/teeth/tooth-yel.png" 
                                             Content="Коронка металлическая (КМ)"  
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -150,7 +150,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Glyph="/Resources/Icons/teeth/tooth-yel.png" 
                                             Content="Мостовидный протез (М)"  
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -162,7 +162,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Glyph="/Resources/Icons/teeth/tooth-yel.png" 
                                             Content="Съемный протез (ПР)"  
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -174,7 +174,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/tooth-yel.png" 
+                                            Glyph="/Resources/Icons/teeth/tooth-yel.png" 
                                             Content="Пломбв (ПЛ)"  
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>
@@ -186,7 +186,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" 
-                                            Glyph="pack://application:,,,/Resources/Icons/teeth/implant.png" 
+                                            Glyph="/Resources/Icons/teeth/implant.png" 
                                             Content="Имплант"  
                                             Command="{Binding ToothMarkedCommand}" >
                             <dxb:BarButtonItem.CommandParameter>

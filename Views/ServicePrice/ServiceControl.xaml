@@ -29,7 +29,7 @@
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -41,7 +41,7 @@
         <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                 <dx:DXImage Height="20" Width="20" Margin="5,2,0,0"
-                                Source="pack://application:,,,/Resources/Icons/service2.png" VerticalAlignment="Top"/>
+                                Source="/Resources/Icons/service2.png" VerticalAlignment="Top"/>
                 <TextBlock Text="Услуги" FontSize="14" Padding="2 2 5 0" />
             </StackPanel>
             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -216,7 +216,7 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
+                            <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>

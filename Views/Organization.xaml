@@ -30,7 +30,7 @@
                     <vm:OrganizationViewModel x:Key="vm"/>
                     <af:CommonValueViewModel x:Key="af"/>
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Resources/DateField.xaml"/>
+                <ResourceDictionary Source="/Resources/DateField.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -51,7 +51,7 @@
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <Image Height="20" Width="20" Margin="5 -5 0 0">
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/org.png" />
+                            <BitmapImage UriSource="/Resources/Icons/org.png" />
                         </Image.Source>
                     </Image>
                     <TextBlock Text="Реквизиты организации" FontSize="14" Padding="5 5 5 0" />
@@ -194,7 +194,7 @@
                                       MaskUseAsDisplayFormat="True"
                                       EditValue="{Binding Path=Model.Phone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <dxe:ImageButtonInfo Glyph="pack://application:,,,/Resources/Icons/svg/phone.svg" Margin="0 0 5 0"/>
+                                            <dxe:ImageButtonInfo Glyph="/Resources/Icons/svg/phone.svg" Margin="0 0 5 0"/>
                                         </dxe:ButtonEdit>
                                     </dxlc:LayoutItem>
 
@@ -209,7 +209,7 @@
                                         IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                         ValidateOnTextInput="True">
                                             <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg" Margin="0 0 5 0" />
+                                    Glyph="/Resources/Icons/svg/envelope.svg" Margin="0 0 5 0" />
                                         </dxe:ButtonEdit>
                                     </dxlc:LayoutItem>
                                     
@@ -321,7 +321,7 @@
                                       ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                 <ControlTemplate>
-                                                    <Image Source="pack://application:,,,/Resources/Icons/logoFile.png"/>
+                                                    <Image Source="/Resources/Icons/logoFile.png"/>
                                                 </ControlTemplate>
                                             </dxe:ImageEdit.EmptyContentTemplate>
                                         </ext:ImageEditEx>
@@ -343,7 +343,7 @@
                                       ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                 <ControlTemplate>
-                                                    <Image Source="pack://application:,,,/Resources/Icons/stamp.png"/>
+                                                    <Image Source="/Resources/Icons/stamp.png"/>
                                                 </ControlTemplate>
                                             </dxe:ImageEdit.EmptyContentTemplate>
                                         </ext:ImageEditEx>
@@ -437,7 +437,7 @@
                                     <dxg:GridColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                                <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"/>
                                                 <TextBlock Text="Название поля" Margin="3 0 0 0"/>
                                             </StackPanel>
                                         </DataTemplate>

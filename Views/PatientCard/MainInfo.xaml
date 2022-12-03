@@ -26,7 +26,7 @@
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                     <converter:BoolIntConverter x:Key="boolConverter" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Resources/DateField.xaml"/>
+                <ResourceDictionary Source="/Resources/DateField.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
@@ -80,7 +80,7 @@
                                       Height="128"  >
                                 <dxe:ImageEdit.EmptyContentTemplate>
                                     <ControlTemplate >
-                                        <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                                        <Image Source="/Resources/Icons/Template/user-avatar.png"/>
                                     </ControlTemplate>
                                 </dxe:ImageEdit.EmptyContentTemplate>
                             </ext:ImageEditEx>
@@ -120,7 +120,7 @@
                                             EditValue="{Binding Path=ClientInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                     IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
+                                    Glyph="/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                     </dxe:ButtonEdit>
                 </dxlc:LayoutItem>
 
@@ -133,7 +133,7 @@
                                             ValidateOnTextInput="True"
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
+                                    Glyph="/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                     </dxe:ButtonEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >

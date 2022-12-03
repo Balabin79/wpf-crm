@@ -12,7 +12,7 @@
         Name="Window" 
         Height="320"
         MaxHeight="320"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="B6Dental" 
         >
     <dxmvvm:Interaction.Behaviors>

@@ -103,7 +103,7 @@
                                         >
                         <dxe:ImageEdit.EmptyContentTemplate>
                             <ControlTemplate >
-                                <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                                <Image Source="/Resources/Icons/Template/user-avatar.png"/>
                             </ControlTemplate>
                         </dxe:ImageEdit.EmptyContentTemplate>
                         <dxmvvm:Interaction.Behaviors>
@@ -143,7 +143,7 @@
                                             EditValue="{Binding Path=Row.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                 <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/mobile-alt.svg" />
+                                    Glyph="/Resources/Icons/svg/mobile-alt.svg" />
                             </dxe:ButtonEdit>
                         </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Email" AddColonToLabel="True" >
@@ -155,7 +155,7 @@
                                             ValidateOnTextInput="True"
                                             IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                 <dxe:ImageButtonInfo
-                                    Glyph="pack://application:,,,/Resources/Icons/svg/envelope.svg"  />
+                                    Glyph="/Resources/Icons/svg/envelope.svg"  />
                             </dxe:ButtonEdit>
                         </dxlc:LayoutItem>
                             <dxlc:LayoutItem Label="Должность:"  LabelPosition="Left" >
@@ -217,7 +217,7 @@
                 <DockPanel LastChildFill="True" Grid.Row="0">
                     <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                         <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                               Source="pack://application:,,,/Resources/Icons/emp3.png" />
+                               Source="/Resources/Icons/emp3.png" />
                         <TextBlock Text="Сотрудники" FontSize="14" Padding="3 2 5 0"  />
                     </StackPanel>
                     <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">

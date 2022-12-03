@@ -34,9 +34,11 @@ namespace Dental.Services
                     RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
                 }
             }
-            catch
+            catch (Exception e)
             {
                 RoleEnabled = false;
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
+        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }         
         }
 

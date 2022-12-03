@@ -120,7 +120,7 @@
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Документы">
-                                <doc:DocumentsControl DataContext="{Binding}"/>
+                                <doc:DocumentsControl DataContext="{Binding Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Счета" Name="invoicesTab">

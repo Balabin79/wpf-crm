@@ -20,7 +20,7 @@
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"
-    Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+    Icon="/Resources/Icons/te4.ico" 
     Title="B6 Dental">
     <dx:ThemedWindow.Resources>
         <ResourceDictionary>
@@ -59,7 +59,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/sheduler.png" Height="30" />
+                            <dx:DXImage Source="/Resources/Icons/sheduler.png" Height="30" />
                             <TextBlock   
                                 Text="Расписание"
                                 TextAlignment="Center"
@@ -79,7 +79,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/clients3.png" Height="30" />
+                            <dx:DXImage  Source="/Resources/Icons/clients3.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Клиенты" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -97,7 +97,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/emp3.png" Height="30" />
+                            <dx:DXImage  Source="/Resources/Icons/emp3.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Сотрудники" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -115,7 +115,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/svg/search-dollar.svg" Height="30"/>
+                            <dx:DXImage  Source="/Resources/Icons/svg/search-dollar.svg" Height="30"/>
                             <TextBlock 
                                 TextAlignment="Center"  Text="Прейскурант" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -152,7 +152,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage Source="pack://application:,,,/Resources/Icons/org.png" Height="30" />
+                            <dx:DXImage Source="/Resources/Icons/org.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Организация" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
@@ -202,7 +202,7 @@
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
-                            <dx:DXImage  Source="pack://application:,,,/Resources/Icons/info5.png" Height="30" />
+                            <dx:DXImage  Source="/Resources/Icons/info5.png" Height="30" />
                             <TextBlock 
                                 TextAlignment="Center"  Text="Справка" 
                                 FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.About.HelpPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                

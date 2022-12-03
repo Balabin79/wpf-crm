@@ -27,7 +27,7 @@
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -212,7 +212,7 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
+                            <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>

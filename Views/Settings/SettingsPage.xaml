@@ -25,11 +25,11 @@
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
-                    <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg" x:Key="sc"/>
-                    <dx:DXImage Source="pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg" x:Key="ec"/>
+                    <dx:DXImage Source="/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Check.svg" x:Key="sc"/>
+                    <dx:DXImage Source="/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Security_WarningCircled2.svg" x:Key="ec"/>
 
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
@@ -187,7 +187,7 @@
                                     <dxg:GridColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                                <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"/>
                                                 <TextBlock Text="ФИО" Margin="3 0 0 0"/>
                                             </StackPanel>
                                         </DataTemplate>
@@ -322,7 +322,7 @@
                                     <dxg:GridColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                                <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"/>
                                                 <TextBlock Text="Раздел" Margin="3 0 0 0"/>
                                             </StackPanel>
                                         </DataTemplate>

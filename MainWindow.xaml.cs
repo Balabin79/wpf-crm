@@ -3,6 +3,7 @@ using Dental.Services;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace Dental
@@ -14,8 +15,20 @@ namespace Dental
     {
         public MainWindow()
         {
-            Login();
-            InitializeComponent();
+            try
+            {
+                Login();
+                InitializeComponent();
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message + " WWW " + ex.FileName);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + " WWW " + e.InnerException.Message);
+            }
+
         }
 
         private void Restart()

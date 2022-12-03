@@ -17,7 +17,7 @@
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
        Closing="Window_Closing"
-      Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+      Icon="/Resources/Icons/te4.ico" 
       Title="B6Dental" >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -116,7 +116,7 @@
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                    <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"/>
                                     <TextBlock Text="Название поля" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>

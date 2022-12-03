@@ -31,7 +31,7 @@
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>

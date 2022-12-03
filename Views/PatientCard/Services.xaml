@@ -57,7 +57,7 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"  />
+                            <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
                             <TextBlock Text="Наименование" Margin="3 0 0 0"/>
                         </StackPanel>
                     </DataTemplate>

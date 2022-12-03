@@ -13,7 +13,7 @@
     
     <Grid >
         <dxlc:LayoutGroup Name="layoutGroupClient" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0"  >
+                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0"  >
             <dxlc:LayoutGroup.HeaderTemplate>
                 <DataTemplate >
                     <TextBlock Text="Дополнительные поля" VerticalAlignment="Center" Height="22"/>

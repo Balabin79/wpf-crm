@@ -30,8 +30,11 @@ namespace Dental.Services
                 }
                 catch(Exception e)
                 {
+
                     IsRoleAccessEnabled = false;
                     IsPasswordRequired = false;
+                    ThemedMessageBox.Show(title: "Ошибка", text: e.InnerException.Message + " WWW " + e.StackTrace + " WWW " + e.Source + " WWW " + e.Message,
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 }            
             }
         }

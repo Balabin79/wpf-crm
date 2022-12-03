@@ -26,7 +26,7 @@
                     <vm:ClientsViewModel x:Key="vm"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
                 <ResourceDictionary>
                     <Style TargetType="TextBlock" x:Key="HoverUnderlineStyle">
                         <Style.Triggers>
@@ -52,7 +52,7 @@
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
                     <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                                Source="pack://application:,,,/Resources/Icons/clients3.png" />
+                                Source="/Resources/Icons/clients3.png" />
                     <TextBlock Text="Клиенты" FontSize="14" Padding="3 2 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
@@ -122,7 +122,7 @@
                                                             IsReadOnly="True" Margin="0 0 5 0" Height="58" Width="58"  >
                                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                                 <ControlTemplate >
-                                                                    <Image Source="pack://application:,,,/Resources/Icons/Template/user-avatar.png"/>
+                                                                    <Image Source="/Resources/Icons/Template/user-avatar.png"/>
                                                                 </ControlTemplate>
                                                             </dxe:ImageEdit.EmptyContentTemplate>
                                                         </ext:ImageEditEx>

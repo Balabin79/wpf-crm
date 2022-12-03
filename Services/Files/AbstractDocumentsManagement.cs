@@ -19,6 +19,10 @@ namespace Dental.Services.Files
     {
         public Action PrintMenuUpdating;
 
+        // обновление документов в списке при импорте и удалении
+        public delegate void UpdateDocuments();
+        public event UpdateDocuments EventUpdateDocuments;
+
         public AbstractDocumentsManagement(string pathToDir, string guid = null)
         {
             PathToDir = pathToDir;
@@ -58,6 +62,7 @@ namespace Dental.Services.Files
                     File.Delete(fileName);
                     Files = GetFiles().ToObservableCollection();
                     PrintMenuUpdating?.Invoke();
+                    EventUpdateDocuments?.Invoke();
                 }
             }
             catch
@@ -102,6 +107,7 @@ namespace Dental.Services.Files
                 File.Copy(filePath, newPath, true);
                 Files = GetFiles();
                 PrintMenuUpdating?.Invoke();
+                EventUpdateDocuments?.Invoke();
             }
             catch
             {

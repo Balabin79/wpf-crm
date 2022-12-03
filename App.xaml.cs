@@ -18,18 +18,30 @@ namespace Dental
     {
          App()
          {
-            ApplicationThemeHelper.ApplicationThemeName = Theme.Office2019WhiteName;
-            SplashScreenManager.CreateFluent(
-                new DXSplashScreenViewModel
-                    {                    
+            try
+            {
+                ApplicationThemeHelper.ApplicationThemeName = Theme.Office2019WhiteName;
+                SplashScreenManager.CreateFluent(
+                    new DXSplashScreenViewModel
+                    {
                         Copyright = "Все права защищены",
                         IsIndeterminate = true,
                         Logo = null,//new System.Uri("pack://application:,,,/Resources/Icons/zzz.png", UriKind.RelativeOrAbsolute),
                         Status = "Запуск...",
-                        Title = "B6 Dental",                       
+                        Title = "B6 Dental",
                         Subtitle = "Автоматизация стоматологической клиники"
                     }
-                ).ShowOnStartup();
+                    ).ShowOnStartup();
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message + " ЦЦЦ " + ex.FileName);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + " WWW " + e.InnerException.Message);
+            }
+
          }
     }
 

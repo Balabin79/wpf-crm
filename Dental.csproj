@@ -9,6 +9,11 @@
     <ApplicationIcon>te4.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Infrastructures\Pages\**" />
     <Compile Remove="Infrastructures\Reports\**" />
@@ -170,6 +175,7 @@
     <PackageReference Include="DevExpress.Wpf.RichEdit.ru" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.Scheduling" Version="20.1.4" />
     <PackageReference Include="DevExpress.Wpf.SchedulingReporting.ru" Version="20.1.4" />
+    <PackageReference Include="EntityFramework6.Npgsql" Version="6.4.3" />
     <PackageReference Include="SharpVectors" Version="1.7.7" />
     <PackageReference Include="SQLite.CodeFirst" Version="1.7.0.34" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
@@ -305,6 +311,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Update="Views\Invoices\InvoicesControl.xaml.cs">
       <SubType>Code</SubType>

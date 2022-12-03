@@ -11,14 +11,15 @@
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="B6Dental"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         Height="{DXBinding Expr='Model.IsDir == 0 ? 270 : 240'}"
         x:Name="win">
 

@@ -56,7 +56,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
+                ThemedMessageBox.Show(title: "Ошибка", text:"Ошибка подключения к базе данных при попытке загрузить список клиентов",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -75,6 +75,7 @@ namespace Dental.ViewModels.ClientDir
 
         public bool CanShowArchive() => true;
 
+        #region Документы
         [Command]
         public void OpenFormDocuments()
         {
@@ -87,7 +88,9 @@ namespace Dental.ViewModels.ClientDir
                     return;
                 }
 
-                DocumentsWindow = new DocumentsWindow() { DataContext = new ClientsDocumentsViewModel() };
+                var vm = new ClientsDocumentsViewModel();
+                vm.EventUpdateDocuments += LoadDocuments;
+                DocumentsWindow = new DocumentsWindow() { DataContext = vm };
                 DocumentsWindow.Show();
             }
             catch 
@@ -95,6 +98,37 @@ namespace Dental.ViewModels.ClientDir
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
+        public void LoadDocuments()
+        {
+            try
+            {
+                Documents = new ObservableCollection<FileInfo>();
+                if (Directory.Exists(Config.PathToClientsDocumentsDirectory))
+                {
+                    IEnumerable<string> filesNames = new List<string>();
+                    string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
+                    foreach (var format in formats)
+                    {
+                        var collection = Directory.EnumerateFiles(Config.PathToClientsDocumentsDirectory, format).ToList();
+                        if (collection.Count > 0) filesNames = filesNames.Union(collection);
+                    }
+                    foreach (var filePath in filesNames) Documents.Add(new FileInfo(filePath));
+                }
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        public ObservableCollection<FileInfo> Documents
+        {
+            get { return GetProperty(() => Documents); }
+            set { SetProperty(() => Documents, value); }
+        }
+        #endregion
 
         [Command]
         public void OpenFormFields()
@@ -212,10 +246,8 @@ namespace Dental.ViewModels.ClientDir
             //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
             SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
             PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() :
-                new ObservableCollection<FileInfo>();
-            
-
+            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
+            LoadDocuments();
         }
 
         [Command]
@@ -309,7 +341,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с картой клиента!",
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message + " WWW " + e.InnerException.Message,
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -343,8 +375,11 @@ namespace Dental.ViewModels.ClientDir
                 db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
                 // удаляем фото 
-                var photo = Directory.GetFiles(Config.PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
-                if (photo != null && File.Exists(photo)) File.Delete(photo);
+                if (Directory.Exists(Config.PathToClientsDirectory))
+                {
+                    var photo = Directory.GetFiles(Config.PathToClientsDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
+                    if (photo != null && File.Exists(photo)) File.Delete(photo);
+                }
 
                 // удаляем файлы 
                 if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);

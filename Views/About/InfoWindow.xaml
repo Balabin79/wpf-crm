@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:Dental.Views.About"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="О программе" Height="380" Width="320" Background="#F5F6F7">
     
     <StackPanel VerticalAlignment="Stretch">
         <Image Height="80" Width="80" Margin="0 40 0 0" HorizontalAlignment="Center">
             <Image.Source>
-                <BitmapImage UriSource="pack://application:,,,/Resources/Icons/te4.ico" />
+                <BitmapImage UriSource="/Resources/Icons/te4.ico" />
             </Image.Source>
         </Image>
         <TextBlock HorizontalAlignment="Center" Margin="0 20 0 0" FontWeight="DemiBold"  Foreground="#4D4D4D" Text="Автоматизация стоматологии" FontSize="16"/>

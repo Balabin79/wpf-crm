@@ -16,7 +16,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Image  Margin="0 2 4 0" Height="4" Width="4" >
                         <Image.Source>
-                            <BitmapImage UriSource="pack://application:,,,/Resources/Icons/Template/error-item.png"  />
+                            <BitmapImage UriSource="/Resources/Icons/Template/error-item.png"  />
                         </Image.Source>
                     </Image>
                     <TextBlock Text="{Binding}" FontSize="12" />

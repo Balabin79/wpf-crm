@@ -20,52 +20,20 @@ using System.Data.SqlClient;
 
 namespace Dental.Models
 {
-   /* public class MyDbConfig : DbConfiguration, IDbConnectionFactory
-    {
-        public MyDbConfig()
-        {
-            try
-            {
-                //SqlConnectionFactory defaultFactory =
-                //new SqlConnectionFactory("Server=MyDbServer;User=username;Password=12345;");
-
-                //this.SetDefaultConnectionFactory(defaultFactory);
-             
-                //this.sqlTypeEnum = sqlTypeEnum;
-                SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-                SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
-
-                var providerServices = (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices));
-
-                SetProviderServices("System.Data.SQLite", providerServices);
-                SetProviderServices("System.Data.SQLite.EF6", providerServices);
-
-                
-                //SetDefaultConnectionFactory(new LocalDbConnectionFactory("Version = 3",@"Data Source=.\dental.db"));
-            }
-            catch(Exception e)
-            {
-
-            }
-        }
-        public DbConnection CreateConnection(string nameOrConnectionString = @"Data Source=.\dental.db")
-        {
-            return new LocalDbConnectionFactory().CreateConnection(@"Data Source=.\dental.db");
-        }
-    }*/
-
-    //[DbConfigurationType(typeof(MyDbConfig))]
     public class ApplicationContext : DbContext
     {
         public ApplicationContext() : base(
             //"DefaultConnection"
-           // new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true
-            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Config.PathToProgramDirectory + "\\dental.db"}.ConnectionString}, true
+            //new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true       
+            new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Path.Combine(Config.PathToProgramDirectory, "dental.db"), ReadOnly = false}.ConnectionString}, true
             ) 
         { }
+
+
         
         public override int SaveChanges()
         {
+          
             AddTimestamps();
             return base.SaveChanges();
         }

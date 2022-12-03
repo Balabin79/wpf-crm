@@ -8,7 +8,7 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         mc:Ignorable="d"              
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="B6Dental"
         Closing="RichEdit_DocumentClosing">
     <Grid>

@@ -36,7 +36,7 @@
             </dxlc:LayoutGroup.HeaderTemplate>
     
                 <dxg:GridControl                 
-                    ItemsSource="{Binding ElementName=gridIds, Path=DataContext.Document.Files, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding ElementName=gridIds, Path=DataContext.Documents, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="2000"  Name="GridControlIds" 
                     Width="auto">
                     <dxg:GridControl.Columns>
@@ -44,7 +44,7 @@
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                    <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"/>
                                     <TextBlock Text="Название документа" Margin="3 0 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -52,8 +52,8 @@
                         <dxg:GridColumn.CellDisplayTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/file-alt.svg" Height="12" VerticalAlignment="Center" Margin="3 0 3 0"/>
-                                    <TextBlock Text="{Binding Row.Name}" VerticalAlignment="Center"/>
+                                    <svgc:SvgViewbox Source="/Resources/Icons/svg/file-alt.svg" Height="12" VerticalAlignment="Center" Margin="3 0 3 0"/>
+                                    <TextBlock Text="{Binding Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxg:GridColumn.CellDisplayTemplate>

@@ -11,7 +11,7 @@
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="B6Dental"
         ResizeMode="CanMinimize"
         HorizontalAlignment="Center"

@@ -37,7 +37,7 @@
         
         
         <DataTemplate x:Key="GroupIconTemplate">
-            <dx:DXImage Width="16" Height="16" Source="pack://application:,,,/DevExpress.Images.v21.2;component/SvgImages/Business Objects/BO_Employee.svg"/>
+            <dx:DXImage Width="16" Height="16" Source="/DevExpress.Images.v21.2;component/SvgImages/Business Objects/BO_Employee.svg"/>
         </DataTemplate>
     </Window.Resources>
     <Grid>

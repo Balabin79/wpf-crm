@@ -16,7 +16,7 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         xmlns:dxdialogs="http://schemas.devexpress.com/winfx/2008/xaml/dialogs"
         Title="B6Dental"
                  >

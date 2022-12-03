@@ -50,7 +50,7 @@
                         </dxg:GridControl>
                     </ControlTemplate>
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Views/PrintFields.xaml"/>
+                <ResourceDictionary Source="/Views/PrintFields.xaml"/>
                 <ResourceDictionary>
                     <Style TargetType="TextBlock" x:Key="HoverUnderlineStyle">
                         <Style.Triggers>
@@ -159,7 +159,7 @@
                     <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Все счета" 
-                        Glyph="pack://application:,,,/Resources/Icons/invoice_yel.png" 
+                        Glyph="/Resources/Icons/invoice_yel.png" 
                         GlyphSize="Custom"
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
@@ -168,7 +168,7 @@
                     <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Оплаченные" 
-                        Glyph="pack://application:,,,/Resources/Icons/invoice_green.png" 
+                        Glyph="/Resources/Icons/invoice_green.png" 
                         GlyphSize="Custom"
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
@@ -176,7 +176,7 @@
                     <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Не оплаченные" 
-                        Glyph="pack://application:,,,/Resources/Icons/invoice_red.png" 
+                        Glyph="/Resources/Icons/invoice_red.png" 
                         GlyphSize="Custom"
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"

@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Name="Window"
         Height="220"
-        Icon="pack://application:,,,/Resources/Icons/te4.ico" 
+        Icon="/Resources/Icons/te4.ico" 
         Title="B6Dental" 
         >
     <Window.Resources>
