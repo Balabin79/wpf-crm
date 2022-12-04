@@ -15,14 +15,14 @@ namespace Dental.Services
 {
     public class RtfParse : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
-
         public RtfParse(string txt)
         {
-            db = new ApplicationContext();
             RtfText = txt;
-            CommonValues = db.CommonValues.ToArray();
-            Organization = db.Organizations.FirstOrDefault() ?? new Organization();
+            using (var db = new ApplicationContext())
+            {
+                CommonValues = db.CommonValues.ToArray();
+                Organization = db.Organizations.FirstOrDefault() ?? new Organization();
+            }
         }
 
         public RtfParse(string txt, object model) : this(txt)
@@ -30,7 +30,8 @@ namespace Dental.Services
             if (model is Client client)
             {
                 Client = client;
-                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
+                using (var db = new ApplicationContext())
+                    AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
             }
             if (model is Employee employee) Employee = employee;
 
@@ -111,7 +112,7 @@ namespace Dental.Services
                 }
                 new SelectEmployee() { DataContext = this }?.ShowDialog();
             }
-            catch (Exception e)
+            catch
             {
 
             }

@@ -10,12 +10,15 @@ using System.Windows;
 using System.Data.Entity;
 using Dental.Models;
 using System.Collections.ObjectModel;
-using Dental.Views;
 using DevExpress.Xpf.Core;
 using Dental.Views.PatientCard;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Diagnostics;
 using System.IO;
+using System.Data.SQLite;
+using Dental.Views;
+using Dental.ViewModels.Org;
+using Dental.ViewModels.AdditionalFields;
 
 namespace Dental.Services
 {
@@ -34,11 +37,14 @@ namespace Dental.Services
                     RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
                 }
             }
+            catch(SQLiteException e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
             catch (Exception e)
             {
                 RoleEnabled = false;
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message,
-        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }         
         }
 
@@ -81,17 +87,35 @@ namespace Dental.Services
         {
             try
             {
-                if (HasUnsavedChanges != null && UserSelectedBtnCancel != null)
+                List<string> forms = new List<string>();
+                switch (CurrentPage.ToString())
                 {
-                    if (HasUnsavedChanges.Invoke() && UserSelectedBtnCancel.Invoke()) return;
-                    HasUnsavedChanges = null;
-                    UserSelectedBtnCancel = null;
+                    case "Dental.Views.Organization":
+                        if (CurrentPage.Resources["vm"] is OrganizationViewModel org && CurrentPage.Resources["af"] is CommonValueViewModel comFields)
+                        {                          
+                            if (org.OrganizationVM.HasChanges())
+                            {
+                                forms.Add("форме \"Организации\"");
+                            }
+
+                            if (comFields.HasChanges())
+                            {
+                                forms.Add("форме \"Дополнительные поля\"");
+                            }
+                            if (forms.Count > 0)
+                            {
+                                var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения в " + String.Join(" и в ", forms) + ". Закрыть без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                                if (response.ToString() == "No") return;
+                            }
+
+                        }
+                        break;
                 }
                 await GoToPage(p);
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                //ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 

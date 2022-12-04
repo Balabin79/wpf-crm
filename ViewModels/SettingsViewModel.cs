@@ -23,21 +23,23 @@ namespace Dental.ViewModels
 {
     public class SettingsViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
+        //private readonly ApplicationContext db;
 
         public SettingsViewModel()
         {
             try
             {
-                db = new ApplicationContext();
-                Settings = db.Settings.FirstOrDefault() ?? new Setting();
+                using (var db = new ApplicationContext())
+                {
+                    Settings = db.Settings.FirstOrDefault() ?? new Setting();
+                    Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
+                    Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
+                }
+                
                 IsReadOnly = true;
-                Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
-
+                
                 EmployeeWrappers = new List<EmployeeWrapper>();
-                Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
-
-                Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
+                Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));             
             }
             catch (Exception e)
             {
@@ -79,22 +81,23 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (Settings?.Id == 0) db.Settings.Add(Settings);
-
-                var employeesEdited = Employees.Where(f => db.Entry(f).State == EntityState.Modified).ToList();
-                foreach(var i in employeesEdited)
+                using (var db = new ApplicationContext())
                 {
-                    var wrapper = EmployeeWrappers.FirstOrDefault(f => f.Id == i.Id);
-                    if (wrapper == null || wrapper.Password == i.Password) continue;
-                    if (string.IsNullOrEmpty(i.Password)) { wrapper.Password = null; continue; }
-                    i.Password = BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(i.Password))).Replace("-", string.Empty);        
-                }
+                    if (Settings?.Id == 0) db.Settings.Add(Settings);
+                    var employeesEdited = Employees.Where(f => db.Entry(f).State == EntityState.Modified).ToList();
 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Настройки сохранены!" }.run();
+                    foreach (var i in employeesEdited)
+                    {
+                        var wrapper = EmployeeWrappers.FirstOrDefault(f => f.Id == i.Id);
+                        if (wrapper == null || wrapper.Password == i.Password) continue;
+                        if (string.IsNullOrEmpty(i.Password)) { wrapper.Password = null; continue; }
+                        i.Password = BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(i.Password))).Replace("-", string.Empty);
+                    }
+
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Настройки сохранены!" }.run();
+                }
             }
-            catch (Exception e)
-            {
-            }
+            catch{}
         }
 
 
@@ -106,10 +109,7 @@ namespace Dental.ViewModels
                 NewLicense = null;
                 new LicenseWindow() { DataContext = this }?.ShowDialog();
             }
-            catch
-            {
-
-            }
+            catch{}
         }
 
         [Command]

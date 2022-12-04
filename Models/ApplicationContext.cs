@@ -22,9 +22,7 @@ namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base(
-            //"DefaultConnection"
-            //new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = @".\dental.db"}.ConnectionString}, true       
+        public ApplicationContext() : base(     
             new SQLiteConnection(){ConnectionString = new SQLiteConnectionStringBuilder(){ DataSource = Path.Combine(Config.PathToProgramDirectory, "dental.db"), Version = 3}.ConnectionString}, true
             ) 
         {}

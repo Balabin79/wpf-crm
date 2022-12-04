@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-      xmlns:vm ="clr-namespace:Dental.ViewModels"  
+      xmlns:vm ="clr-namespace:Dental.ViewModels.Org"  
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
@@ -77,13 +77,13 @@
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Content="Сохранить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(OrganizationVM.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Content="Удалить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(Model.Name) and Model.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(OrganizationVM.Name) and OrganizationVM.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding DeleteCommand}"/>
@@ -107,109 +107,109 @@
                             <dxlc:LayoutGroup Orientation="Horizontal" Header="Общая информация" Margin="0 0 0 5">
                                 <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
                                     <dxlc:LayoutItem  Label="Название:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:TextEdit Name="Name" 
-                                      Text="{Binding Model.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      Text="{Binding OrganizationVM.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem  Label="Сокращенное наименование:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:TextEdit Name="ShortName" 
-                                      Text="{Binding Model.ShortName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      Text="{Binding OrganizationVM.ShortName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
              
                                     <dxlc:LayoutItem  Label="Адрес:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:MemoEdit Name="Address" ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
-                                      Text="{Binding Model.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      Text="{Binding OrganizationVM.Address, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem  Label="Сайт:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:TextEdit Name="Site" 
-                                      Text="{Binding Model.Site, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      Text="{Binding OrganizationVM.Site, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
 
                                 </dxlc:LayoutGroup>
                                 <dxlc:LayoutGroup Orientation="Vertical" Margin="2 0 0 0">
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem  Label="ИНН:" 
-                                    LabelPosition="Top"  
-                                    HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="Inn" 
-                                          MaskType="Numeric"
-                                          EditValueChanged="TextEdit_EditValueChanged"
-                                          Mask="##########" 
-                                          Text="{Binding Model.Inn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          MaskType="Numeric"
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          Mask="##########" 
+                                                          Text="{Binding OrganizationVM.Inn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem  Label="КПП:" 
-                                          LabelPosition="Top"  
-                                          HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="Kpp" 
-                                          MaskType="Numeric"
-                                          EditValueChanged="TextEdit_EditValueChanged"
-                                          Mask="#########" 
-                                          Text="{Binding Model.Kpp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          MaskType="Numeric"
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          Mask="#########" 
+                                                          Text="{Binding OrganizationVM.Kpp, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem  Label="ОГРН:"                                                   
-                                                      LabelPosition="Top"  
-                                                      HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="Ogrn" 
-                                                      MaskType="Numeric"
-                                                      EditValueChanged="TextEdit_EditValueChanged"
-                                                      Mask="#############" 
-                                                      Text="{Binding Model.Ogrn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          MaskType="Numeric"
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          Mask="#############" 
+                                                          Text="{Binding OrganizationVM.Ogrn, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
 
                                         <dxlc:LayoutItem  Label="ОКПО:" 
-                                          LabelPosition="Top"  
-                                          HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="Okpo" 
-                                          MaskType="Numeric"
-                                          EditValueChanged="TextEdit_EditValueChanged"
-                                          Mask="##########" 
-                                          Text="{Binding Model.Okpo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          MaskType="Numeric"
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          Mask="##########" 
+                                                          Text="{Binding OrganizationVM.Okpo, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
                                     <dxlc:LayoutItem  Label="Телефон:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:ButtonEdit IsTextEditable="True"
-                                      AllowDefaultButton="False"
-                                      MaskType="Simple"
-                                      Mask="(999) 000-0000"
-                                      MaskUseAsDisplayFormat="True"
-                                      EditValue="{Binding Path=Model.Phone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                        AllowDefaultButton="False"
+                                                        MaskType="Simple"
+                                                        Mask="(999) 000-0000"
+                                                        MaskUseAsDisplayFormat="True"
+                                                        EditValue="{Binding Path=OrganizationVM.Phone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <dxe:ImageButtonInfo Glyph="/Resources/Icons/svg/phone.svg" Margin="0 0 5 0"/>
                                         </dxe:ButtonEdit>
                                     </dxlc:LayoutItem>
 
                                     <dxlc:LayoutItem  Label="Email:" 
-                                      LabelPosition="Top"  
-                                      HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:ButtonEdit IsTextEditable="True"
-                                        AllowDefaultButton="False"
-                                        MaskType="RegEx"
-                                        Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
-                                        EditValue="{Binding Path=Model.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                        ValidateOnTextInput="True">
+                                                        AllowDefaultButton="False"
+                                                        MaskType="RegEx"
+                                                        Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
+                                                        EditValue="{Binding Path=OrganizationVM.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                        ValidateOnTextInput="True">
                                             <dxe:ImageButtonInfo
-                                    Glyph="/Resources/Icons/svg/envelope.svg" Margin="0 0 5 0" />
+                                                Glyph="/Resources/Icons/svg/envelope.svg" Margin="0 0 5 0" />
                                         </dxe:ButtonEdit>
                                     </dxlc:LayoutItem>
                                     
@@ -222,38 +222,38 @@
                             <dxlc:LayoutGroup Orientation="Horizontal" Margin="0 0 0 5" >
                                 <dxlc:LayoutGroup Orientation="Vertical" Margin="0 0 2 0">
                                     <dxlc:LayoutItem  Label="Генеральный директор:"
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:TextEdit Name="GeneralDirector" 
-                                                  Text="{Binding Model.GeneralDirector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      Text="{Binding OrganizationVM.GeneralDirector, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem  Label="Лицензия:"                                                   
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="License" 
-                                                  Text="{Binding Model.LicenseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          Text="{Binding OrganizationVM.LicenseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem  Label="Дата лицензии:" Width="130"
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:DateEdit 
-                                                  Mask="D" MaskType="DateTime" 
-                                                  DisplayFormatString="D"  x:Name="DateEdit"
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                                                  EditValue="{Binding Model.LicenseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString},ValidatesOnDataErrors=True }"  />
+                                                Mask="D" MaskType="DateTime" 
+                                                DisplayFormatString="D"  x:Name="DateEdit"
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                                EditValue="{Binding OrganizationVM.LicenseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString},ValidatesOnDataErrors=True }"  />
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
 
                                     <dxlc:LayoutItem  Label="Кем выдана:"                                                   
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:MemoEdit 
                                             Name="WhoIssuedBy" 
                                             ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
-                                            Text="{Binding Model.WhoIssuedBy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                            Text="{Binding OrganizationVM.WhoIssuedBy, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
                                             IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
 
@@ -262,42 +262,42 @@
 
                                 <dxlc:LayoutGroup Orientation="Vertical" Margin="2 0 0 0">
                                     <dxlc:LayoutItem  Label="Наименование банка:"  
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
-                                        <dxe:TextEdit Text="{Binding Model.BankName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                  Name="BankName" 
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
+                                        <dxe:TextEdit Text="{Binding OrganizationVM.BankName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                      Name="BankName" 
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutItem  Label="БИК:"  
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                      LabelPosition="Top"  
+                                                      HorizontalAlignment="Stretch">
                                         <dxe:TextEdit Name="Bik" 
-                                                  MaskType="Numeric"
-                                                  EditValueChanged="TextEdit_EditValueChanged"
-                                                  Mask="############" 
-                                                  Text="{Binding Model.Bik, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      MaskType="Numeric"
+                                                      EditValueChanged="TextEdit_EditValueChanged"
+                                                      Mask="############" 
+                                                      Text="{Binding OrganizationVM.Bik, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                     </dxlc:LayoutItem>
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <dxlc:LayoutItem  Label="Расчетный счет:"  
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="AccountNumber"
-                                                  EditValueChanged="TextEdit_EditValueChanged"
-                                                  MaskType="Numeric" 
-                                                  Mask="####################" 
-                                                  Text="{Binding Model.AccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          MaskType="Numeric" 
+                                                          Mask="####################" 
+                                                          Text="{Binding OrganizationVM.AccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                         <dxlc:LayoutItem  Label="Корреспондирующий счет:"  
-                                                  LabelPosition="Top"  
-                                                  HorizontalAlignment="Stretch">
+                                                          LabelPosition="Top"  
+                                                          HorizontalAlignment="Stretch">
                                             <dxe:TextEdit Name="CorrAccountNumber"
-                                                  EditValueChanged="TextEdit_EditValueChanged"
-                                                  MaskType="Numeric" 
-                                                  Mask="####################" 
-                                                  Text="{Binding Model.CorrAccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                          EditValueChanged="TextEdit_EditValueChanged"
+                                                          MaskType="Numeric" 
+                                                          Mask="####################" 
+                                                          Text="{Binding OrganizationVM.CorrAccountNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"  
+                                                          IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                         </dxlc:LayoutItem>
                                     </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
@@ -305,20 +305,20 @@
                         </GroupBox>
                     </StackPanel>
                     <GroupBox  Grid.Column="1" BorderBrush="LightGray" 
-                              BorderThickness="1" Margin="5 5 5 5"  VerticalContentAlignment="Top" Padding="0"
-                              Header="Файлы" >
+                               BorderThickness="1" Margin="5 5 5 5"  VerticalContentAlignment="Top" Padding="0"
+                               Header="Файлы" >
                         <StackPanel Margin="0" VerticalAlignment="Center">
                             <dxlc:LayoutItem Margin="5 10 5 5" Width="128">
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Logo"   Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG)|*.bmp;*.jpg;*.gif;*.png;"                                                       
-                                      EditValue = "{Binding Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      Background="White"                        
-                                      ShowBorder="False"
-                                      IsReadOnly="{DXBinding Expr='Model.Id == 0 or (Model.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                         OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG)|*.bmp;*.jpg;*.gif;*.png;"                                                       
+                                                         EditValue = "{Binding Logo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                                         Background="White"                        
+                                                         ShowBorder="False"
+                                                         IsReadOnly="{DXBinding Expr='OrganizationVM.Id == 0 or (OrganizationVM.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                       
-                                      ShowMenu="True">
+                                                         ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                 <ControlTemplate>
                                                     <Image Source="/Resources/Icons/logoFile.png"/>
@@ -334,13 +334,13 @@
                                 <StackPanel>
                                     <Decorator   >
                                         <ext:ImageEditEx x:Name="Stamp"  Height="128" Width="128"  HorizontalAlignment="Left"                   
-                                      OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                                                         
-                                      EditValue = "{Binding Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
-                                      Background="White"                        
-                                      ShowBorder="False"
-                                      IsReadOnly="{DXBinding Expr='Model.Id == 0 or (Model.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                         OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;"                                                         
+                                                         EditValue = "{Binding Stamp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                                         Background="White"                        
+                                                         ShowBorder="False"
+                                                         IsReadOnly="{DXBinding Expr='OrganizationVM.Id == 0 or (OrganizationVM.Id != 0 and IsReadOnly)', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                       
-                                      ShowMenu="True">
+                                                         ShowMenu="True">
                                             <dxe:ImageEdit.EmptyContentTemplate>
                                                 <ControlTemplate>
                                                     <Image Source="/Resources/Icons/stamp.png"/>
@@ -355,7 +355,7 @@
                     </GroupBox>
 
                     <dxlc:LayoutGroup HorizontalAlignment="Stretch" Grid.ColumnSpan="3" Grid.Row="2" DataContext="{StaticResource af}"
-                        Margin="5" MaxHeight="800" View="GroupBox" Orientation="Horizontal" ItemLabelsAlignment="Default" >
+                                      Margin="5" MaxHeight="800" View="GroupBox" Orientation="Horizontal" ItemLabelsAlignment="Default" >
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
                                 <DockPanel  HorizontalAlignment="Stretch">
@@ -364,15 +364,15 @@
                                     <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right" >
 
                                         <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                                                            AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                                             <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding Source={StaticResource af}, Path=AddCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                                                               GlyphSize="Small"
+                                                               Command="{Binding Source={StaticResource af}, Path=AddCommand}"
+                                                               Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
                                             <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding Source={StaticResource af}, Path=SaveCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
+                                                               GlyphSize="Small"
+                                                               Command="{Binding Source={StaticResource af}, Path=SaveCommand}"
+                                                               Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
 
                                         </dxb:ToolBarControl>
                                     </dxb:BarContainerControl>
@@ -382,31 +382,31 @@
 
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
                             <dxg:GridControl  AutoGenerateColumns="None" 
-                                  MaxHeight="2000" 
-                                  Name="gridAd"  
-                                  ItemsSource="{Binding CommonValues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Margin="2">
+                                              MaxHeight="2000" 
+                                              Name="gridAd"  
+                                              ItemsSource="{Binding CommonValues, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                              Margin="2">
 
                                 <dxg:GridControl.View>
                                     <dxg:TableView                   
-                    x:Name="viewAd"
-                    ShowTotalSummary="False" 
-                    UseLegacyFilterPanel="True"
-                    ShowSearchPanelMode="Never"
-                    SearchPanelAllowFilter="False"
-                    AutoWidth="True" 
-                    PrintAutoWidth="True"
-                    BestFitModeOnSourceChange="VisibleRows"            
-                    NavigationStyle="Cell"
-                    AllowScrollToFocusedRow="True" 
-                    VerticalScrollbarVisibility="Auto"
-                    AllowPrintColumnHeaderImage="True"
-                    ShowGroupPanel="False"
-                    >
+                                        x:Name="viewAd"
+                                        ShowTotalSummary="False" 
+                                        UseLegacyFilterPanel="True"
+                                        ShowSearchPanelMode="Never"
+                                        SearchPanelAllowFilter="False"
+                                        AutoWidth="True" 
+                                        PrintAutoWidth="True"
+                                        BestFitModeOnSourceChange="VisibleRows"            
+                                        NavigationStyle="Cell"
+                                        AllowScrollToFocusedRow="True" 
+                                        VerticalScrollbarVisibility="Auto"
+                                        AllowPrintColumnHeaderImage="True"
+                                        ShowGroupPanel="False"
+                                        >
                                         <dxg:TableView.InputBindings>
                                             <KeyBinding Key="Delete"        
-                                Command="{Binding DeleteCommand}"
-                                CommandParameter="{Binding ElementName=gridAd, Path=DataContext.CurrentItem}" />
+                                                        Command="{Binding DeleteCommand}"
+                                                        CommandParameter="{Binding ElementName=gridAd, Path=DataContext.CurrentItem}" />
 
                                             <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
 
@@ -417,18 +417,18 @@
 
                                         <dxg:TableView.RowCellMenuCustomizations>
                                             <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                                    KeyGesture="Ctrl+N" Content="Создать"  
-                                                    Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
+                                                                KeyGesture="Ctrl+N" Content="Создать"  
+                                                                Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
 
                                             <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
-                                                   Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
-                                  KeyGesture="Ctrl+S" Content="Сохранить"  
-                                                   Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}" />
+                                                               Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
+                                                               KeyGesture="Ctrl+S" Content="Сохранить"  
+                                                               Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}" />
 
                                             <dxb:BarButtonItem  Content="Удалить" 
-                                                   Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
-                                                   CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
+                                                                Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
+                                                                CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"
+                                                                KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
                                         </dxg:TableView.RowCellMenuCustomizations>
                                     </dxg:TableView>
                                 </dxg:GridControl.View>
@@ -485,18 +485,18 @@
                                             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
 
                                                 <dxb:ToolBarControl Background="Transparent"
-                                         Caption="File" 
-                                         ShowDragWidget="False"
-                                         AllowCustomizationMenu="False" 
-                                         AllowQuickCustomization="False">
+                                                                    Caption="File" 
+                                                                    ShowDragWidget="False"
+                                                                    AllowCustomizationMenu="False" 
+                                                                    AllowQuickCustomization="False">
 
                                                     <dxb:BarButtonItem         
-                                           Content="Удалить" 
-                                           IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Small"
-                                           Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+                                                        Content="Удалить" 
+                                                        IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}"
+                                                        Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                                                        GlyphSize="Small"
+                                                        Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
+                                                        CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
 
                                                 </dxb:ToolBarControl>
                                             </dxb:BarContainerControl>
@@ -506,9 +506,6 @@
                             </dxg:GridControl>
                         </ScrollViewer>
                     </dxlc:LayoutGroup>
-
-
-
                 </Grid>
             </ScrollViewer>
 

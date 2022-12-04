@@ -37,18 +37,18 @@ namespace Dental.ViewModels.Invoices
 {
     public class InvoicesViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
+        public InvoicesViewModel(): this(null) { }
 
-        public InvoicesViewModel(): this(null, null) { }
-
-        public InvoicesViewModel(Client client = null, ApplicationContext context = null)
+        public InvoicesViewModel(Client client = null)
         {
             try
             {
-                db = context ?? new ApplicationContext();
-                Client = client;
-                SetInvoices();
-                Employees = db.Employes.OrderBy(f => f.LastName).ToArray() ?? new Employee[] { };
+                using (var db = new ApplicationContext())
+                {
+                    Client = client;
+                    SetInvoices();
+                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray() ?? new Employee[] { };
+                }
                 foreach (var i in Employees)
                 {
                     ImgLoading(i);
@@ -123,7 +123,7 @@ namespace Dental.ViewModels.Invoices
                 vm.EventSave += SaveInvoice;
                 new InvoiceWindow() { DataContext = vm }.Show();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму счета!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -133,38 +133,40 @@ namespace Dental.ViewModels.Invoices
         {
             try
             {
-                if (p is Invoice invoice)
-                {
-                    if (invoice.Id == 0)
+                using (var db = new ApplicationContext()) {
+                    if (p is Invoice invoice)
                     {
-                        db.Entry(invoice).State = EntityState.Added;
-                        // если статус счета(оплачен или нет)  не отличается от статуса фильтра или статус фильтра "Показывать все",  то тогда добавить
-                        if (ShowPaid == invoice?.Paid || ShowPaid == null) Invoices?.Add(invoice);
-                    }
+                        if (invoice.Id == 0)
+                        {
+                            db.Entry(invoice).State = EntityState.Added;
+                            // если статус счета(оплачен или нет)  не отличается от статуса фильтра или статус фильтра "Показывать все",  то тогда добавить
+                            if (ShowPaid == invoice?.Paid || ShowPaid == null) Invoices?.Add(invoice);
+                        }
 
-                    else
-                    {
-                        if (ShowPaid == invoice.Paid || ShowPaid == null)
+                        else
                         {
-                            var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
-                            if (inv == null) Invoices?.Add(invoice);
-                            else
+                            if (ShowPaid == invoice.Paid || ShowPaid == null)
                             {
-                                Invoices?.Remove(inv);
-                                Invoices?.Add(inv);
+                                var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
+                                if (inv == null) Invoices?.Add(invoice);
+                                else
+                                {
+                                    Invoices?.Remove(inv);
+                                    Invoices?.Add(inv);
+                                }
+                            }
+                            else // иначе если статусы отличаются, то только удалить из отображаемого списка
+                            {
+                                var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
+                                if (inv != null)
+                                {
+                                    Invoices?.Remove(inv);
+                                }
                             }
                         }
-                        else // иначе если статусы отличаются, то только удалить из отображаемого списка
-                        {
-                            var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
-                            if (inv != null)
-                            {
-                                Invoices?.Remove(inv);
-                            }
-                        }
+                        int cnt = db.SaveChanges();
+                        if (cnt > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                     }
-                    int cnt = db.SaveChanges();
-                    if (cnt > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                 }          
             }
             catch
@@ -180,15 +182,18 @@ namespace Dental.ViewModels.Invoices
             {
                 if (p is Invoice invoice)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-                    db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                    db.Entry(invoice).State = EntityState.Deleted;
+                    using (var db = new ApplicationContext())
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return;
+                        db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.Entry(invoice).State = EntityState.Deleted;
 
-                    // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    if (Invoices.Count(f => f.Id == invoice.Id) > 0) Invoices.Remove(invoice);
-                    int cnt = db.SaveChanges();
-                    if (cnt > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
+                        // может не оказаться этого эл-та в списке, например, он в другом статусе
+                        if (Invoices.Count(f => f.Id == invoice.Id) > 0) Invoices.Remove(invoice);
+                        int cnt = db.SaveChanges();
+                        if (cnt > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
+                    }
                 }
             }
             catch
@@ -224,8 +229,11 @@ namespace Dental.ViewModels.Invoices
                 if (p is InvoiceItems item)
                 {
                     object selected = null;
-                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.Id);
-                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.Id);
+                    using (var db = new ApplicationContext())
+                    {
+                        if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.Id);
+                        else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.Id);
+                    }
 
                     var vm = new InvoiceItemVM(item.Type)
                     {
@@ -256,8 +264,11 @@ namespace Dental.ViewModels.Invoices
             {
                 if (p is InvoiceItems item)
                 {
-                    if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
-                    int cnt = db.SaveChanges();
+                    using (var db = new ApplicationContext())
+                    {
+                        if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
+                        int cnt = db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -276,8 +287,11 @@ namespace Dental.ViewModels.Invoices
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     item.Invoice = null;
-                    db.InvoiceItems.Remove(item);
-                    db.SaveChanges();
+                    using (var db = new ApplicationContext())
+                    {
+                        db.InvoiceItems.Remove(item);
+                        db.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -347,9 +361,14 @@ namespace Dental.ViewModels.Invoices
         }*/
         #endregion
 
-        private string NewNumberGenerate() =>
-            int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
+        private string NewNumberGenerate()
+        {
+            using (var db = new ApplicationContext())
+            {
+                return int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
             ? string.Format("{0:00000000}", ++result) : "00000001";
+            }
+        }
 
 
         public ObservableCollection<Invoice> Invoices
@@ -365,11 +384,14 @@ namespace Dental.ViewModels.Invoices
                 Invoices = new ObservableCollection<Invoice>();
                 return;
             }
+            using (var db = new ApplicationContext())
+            {
+                var query = (Client != null) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
 
-            var query = (Client != null) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
+                if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
 
-            if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-            Invoices = query?.Include(f => f.Employee).Include(f => f.Client).Include(f => f.InvoiceItems).OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+                Invoices = query?.Include(f => f.Employee).Include(f => f.Client).Include(f => f.InvoiceItems).OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+            }
         }
 
         public Client Client
@@ -445,13 +467,16 @@ namespace Dental.ViewModels.Invoices
                     PrintHelper.ShowPrintPreview(conv.Page, report);
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
             }
         }
 
-        public void NewClientSaved(Client client) => Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
+        public void NewClientSaved(Client client) {
+            using (var db = new ApplicationContext())
+                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client(); 
+        }
 
         #region Поиск
         public object EmployeeSearch { get; set; }
@@ -519,8 +544,8 @@ namespace Dental.ViewModels.Invoices
 
                 //SqlParameter param = SqlParameter("@name", "%Samsung%");
                 //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
-
-                Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                using (var db = new ApplicationContext())
+                    Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
                 //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
                 if (!string.IsNullOrEmpty(InvoiceNameSearch.ToString()))
                 {

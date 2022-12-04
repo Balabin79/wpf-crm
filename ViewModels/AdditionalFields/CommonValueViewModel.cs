@@ -20,16 +20,16 @@ namespace Dental.ViewModels.AdditionalFields
 {
     public class CommonValueViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
-
         public CommonValueViewModel()
         {
             try
             {
-                db = new ApplicationContext();
-                SetCommonValues();
+                using (var db = new ApplicationContext())
+                {
+                    CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
+                }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Общие значения\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -44,6 +44,31 @@ namespace Dental.ViewModels.AdditionalFields
         public void Add() => CommonValues?.Add(new CommonValue());
 
         [Command]
+        public void Save()
+        {
+            try
+            {
+                using (var db = new ApplicationContext())
+                {
+                    foreach (var item in CommonValues)
+                    {
+                        if (string.IsNullOrEmpty(item.Name)) continue;
+                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    }
+                    if (db.SaveChanges() > 0)
+                    {    
+                        CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();                       
+                        new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    }
+                }        
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
         public void Delete(object p)
         {
             try
@@ -51,14 +76,17 @@ namespace Dental.ViewModels.AdditionalFields
                 if (p is CommonValue model)
                 {
                     if (model.Id != 0 && !DeleteMsgShow(model)) return;
-                    if (model.Id != 0)
+                    using (var db = new ApplicationContext())
                     {
-                        db.CommonValues.Remove(model);
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
-                    }
-                    else 
-                    { 
-                        db.Entry(model).State = EntityState.Detached;
+                        if (model.Id != 0)
+                        {
+                            db.Entry(model).State = EntityState.Deleted;
+                            if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
+                        }
+                        else
+                        {
+                            db.Entry(model).State = EntityState.Detached;
+                        }
                     }
                     CommonValues?.Remove(model);
                 }
@@ -71,53 +99,25 @@ namespace Dental.ViewModels.AdditionalFields
 
         private bool DeleteMsgShow(CommonValue model)
         {
-            var val = db.CommonValues.FirstOrDefault(f => f.Id == model.Id);
-            string msg = val == null ? "Вы уверены?" : "Внимание! В поле " + model.Name + " записано значение. Вы уверены что хотите удалить это поле?";
-            var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
-
-            return (response.ToString() == "Yes"); 
-        }
-
-        [Command]
-        public void Save()
-        {
-            try
+            using (var db = new ApplicationContext())
             {
-                foreach (var item in CommonValues)
-                {
-                    if (string.IsNullOrEmpty(item.Name)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;                    
-                }
-                if (db.SaveChanges() > 0) 
-                {
-                    SetCommonValues();
-                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                }            
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
+                var val = db.CommonValues.FirstOrDefault(f => f.Id == model.Id);
+                string msg = val == null ? "Вы уверены?" : "Внимание! В поле " + model.Name + " записано значение. Вы уверены что хотите удалить это поле?";
+
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+                return response.ToString() == "Yes";
             }
         }
 
-        public bool HasUnsavedChanges()
+        public bool HasChanges()
         {
-          //  if (CollectionBeforeChanges?.Count != MaterialViewModel?.Measures?.Count) return true;
             foreach (var item in CommonValues)
             {
-                if (string.IsNullOrEmpty(item.Name)) continue;
-                if (item.Id == 0) return true;
-                //if (!item.Equals(CollectionBeforeChanges.Where(f => f.Guid == item.Guid).FirstOrDefault())) return true;
+                if (string.IsNullOrEmpty(item?.Name)) continue;
+                if (item?.Id == 0) return true;
             }
             return false;
-        }
-
-        public bool UserSelectedBtnCancel()
-        {
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения! Закрыть без сохранения?",
-               messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning) ;
-            return response.ToString() == "No";
         }
 
         public ICollection<CommonValue> CommonValues
@@ -125,8 +125,5 @@ namespace Dental.ViewModels.AdditionalFields
             get { return GetProperty(() => CommonValues); }
             set { SetProperty(() => CommonValues, value); }
         }
-
-        public void SetCommonValues() => CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
-
     }
 }

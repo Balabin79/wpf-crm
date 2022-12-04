@@ -13,7 +13,11 @@ namespace Dental.ViewModels.AdditionalFields
 {
     public class FieldVM : BindableBase, IDataErrorInfo
     {
-        public int? Id { get; set; }
+        public int? Id
+        {
+            get { return GetProperty(() => Id); }
+            set { SetProperty(() => Id, value); }
+        }
 
         [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         public string Label

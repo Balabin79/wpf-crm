@@ -42,19 +42,16 @@ namespace Dental.ViewModels.ClientDir
         public delegate bool SaveCard(Client client);
         public event SaveCard EventSaveCard;
 
-
-        public readonly ApplicationContext db;
         public ClientsViewModel()
         {
             try
             {
-                db = new ApplicationContext();
                 SetCollection();
                 Model = new Client();
 
                 Init(Model);
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text:"Ошибка подключения к базе данных при попытке загрузить список клиентов",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -182,12 +179,13 @@ namespace Dental.ViewModels.ClientDir
         public ClientFieldsWindow FieldsWindow { get; set; }
         public ClientCardControl ClientCardWin { get; set; }
 
-        public void SetCollection(bool isArhive=false) => Collection = db.Clients
-            .Where(f => f.IsInArchive == isArhive)
-            //.Select(f => new {f.Id, f.Guid, f.LastName, f.FirstName, f.MiddleName, f.BirthDate, f.Sex, f.Address })
-            .OrderBy(f => f.LastName)
-            //.OfType<Client>()
-            .ToObservableCollection();
+        public void SetCollection(bool isArhive = false)
+        {
+            using (var db = new ApplicationContext())
+            {
+                Collection = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection();
+            }
+        }
 
         private void ImgLoading(Client model)
         {
@@ -225,10 +223,13 @@ namespace Dental.ViewModels.ClientDir
             Document = new ClientsDocumentsViewModel();
             foreach (var i in Collection) ImgLoading(i);
 
+            FieldsViewModel = new FieldsViewModel(model);
 
-            FieldsViewModel = new FieldsViewModel(model, this);
-            InvoicesViewModel = new InvoicesViewModel(model, db);
-            TreatmentStageViewModel = new TreatmentStageViewModel(model, db);
+            using (var db = new ApplicationContext())
+            {
+                InvoicesViewModel = new InvoicesViewModel(model);
+                TreatmentStageViewModel = new TreatmentStageViewModel(model);
+            }
 
             EventChangeReadOnly += InvoicesViewModel.StatusReadOnly;
             EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
@@ -278,10 +279,7 @@ namespace Dental.ViewModels.ClientDir
                     }                   
                 }
             }
-            catch (Exception e)
-            {
-
-            }
+            catch{}
         }
 
         [Command]
@@ -295,10 +293,7 @@ namespace Dental.ViewModels.ClientDir
                 var navigator = (Navigator)Application.Current.Resources["Router"];
                 if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
             }
-            catch (Exception e)
-            {
-
-            }
+            catch {}
         }
 
         [Command]
@@ -315,25 +310,29 @@ namespace Dental.ViewModels.ClientDir
             {
                 bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
-                if (Model.Id == 0) // новый элемент
+
+                using (var db = new ApplicationContext())
                 {
-                    db.Clients.Add(Model);
-                    // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                    if (IsArchiveList == Model.IsInArchive) Collection?.Insert(0, Model);
-                    db.SaveChanges();
-                    EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
-                    EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
-                    PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-                    new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
-                    notificationShowed = true;
-                    SelectedItem();
-                }
-                else
-                { // редактирование су-щего эл-та
-                    if (db.SaveChanges() > 0)
+                    if (Model.Id == 0) // новый элемент
                     {
-                        new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
+                        db.Clients.Add(Model);
+                        // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
+                        if (IsArchiveList == Model.IsInArchive) Collection?.Insert(0, Model);
+                        db.SaveChanges();
+                        EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
+                        EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
+                        PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
+                        new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                         notificationShowed = true;
+                        SelectedItem();
+                    }
+                    else
+                    { // редактирование су-щего эл-та
+                        if (db.SaveChanges() > 0)
+                        {
+                            new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
+                            notificationShowed = true;
+                        }
                     }
                 }
                 if (Model != null)
@@ -341,9 +340,9 @@ namespace Dental.ViewModels.ClientDir
                     if (EventSaveCard?.Invoke(Model) == true && !notificationShowed) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message + " WWW " + e.InnerException.Message,
+                ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных клиента возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -360,22 +359,26 @@ namespace Dental.ViewModels.ClientDir
 
                 new UserFilesManagement(Model.Guid).DeleteDirectory();
                 var id = Model?.Id;
-                //удалить также в расписании и в счетах
-                db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                using (var db = new ApplicationContext())
+                {
+                    //удалить также в расписании и в счетах
+                    db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                    db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                db.Entry(Model).State = EntityState.Deleted;
-                if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
+                    db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                var item = Collection.FirstOrDefault(f => f.Guid == Model.Guid);
-                if (item != null) Collection.Remove(item);
+                    db.Entry(Model).State = EntityState.Deleted;
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
-                db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                db.SaveChanges();
+                    // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
+                    var item = Collection.FirstOrDefault(f => f.Guid == Model.Guid);
+                    if (item != null) Collection.Remove(item);
+
+                    db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                    db.SaveChanges();
+                }
                 // удаляем фото 
                 if (Directory.Exists(Config.PathToClientsDirectory))
                 {
@@ -392,7 +395,7 @@ namespace Dental.ViewModels.ClientDir
                 SelectedItem();
                 // SetCollection();
             }
-            catch (Exception e)
+            catch 
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -461,9 +464,7 @@ namespace Dental.ViewModels.ClientDir
 
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
 
-
         #endregion
-
 
         #region Управление фото
 

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Security.Cryptography;
+using System.Data.SQLite;
 
 namespace Dental.Services
 {
@@ -28,13 +29,17 @@ namespace Dental.Services
                     IsPasswordRequired = Setting?.IsPasswordRequired == 1;
                     Employees = db.Employes.OrderBy(f => f.LastName).ToArray();                    
                 }
-                catch(Exception e)
+                catch (SQLiteException e)
                 {
-
                     IsRoleAccessEnabled = false;
                     IsPasswordRequired = false;
-                    ThemedMessageBox.Show(title: "Ошибка", text: e.InnerException.Message + " WWW " + e.StackTrace + " WWW " + e.Source + " WWW " + e.Message,
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                }
+                catch (Exception e)
+                {
+                    IsRoleAccessEnabled = false;
+                    IsPasswordRequired = false;
+                    ThemedMessageBox.Show(title: "Ошибка", text: e.Message,messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 }            
             }
         }

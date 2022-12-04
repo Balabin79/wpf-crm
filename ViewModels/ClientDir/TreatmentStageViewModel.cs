@@ -23,17 +23,16 @@ namespace Dental.ViewModels.ClientDir
 {
     public class TreatmentStageViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;
-        public TreatmentStageViewModel(Client client = null, ApplicationContext context = null)
+        public TreatmentStageViewModel(Client client = null)
         {
             try
             {
-                db = context ?? new ApplicationContext();
+                if (client == null) return;
                 Client = client;
                 SetCollection();
                 SetTeeth();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с вкладкой \"Врачебная\" в карте клиента!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -85,13 +84,16 @@ namespace Dental.ViewModels.ClientDir
 
                     if (response.ToString() == "No") return;
 
-                    db.TreatmentStage.Remove(model);
-                    Collection.Remove(model);
-                    int cnt = db.SaveChanges();
-                    if (cnt > 0) new Notification() { Content = "Удалено из базы данных!" }.run();
+                    using (var db = new ApplicationContext())
+                    {
+                        db.TreatmentStage.Remove(model);
+                        Collection.Remove(model);
+                        int cnt = db.SaveChanges();
+                        if (cnt > 0) new Notification() { Content = "Удалено из базы данных!" }.run();
+                    }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления области!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -103,29 +105,33 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if(VM.Model != null)
+                using (var db = new ApplicationContext())
                 {
-                    var model = db.TreatmentStage.FirstOrDefault(f => f.Guid == VM.Model.Guid);
-                    model.Name = VM?.Name;
-                    model.Date = VM?.Date;
-                }
-                else
-                {
-                    var item = new TreatmentStage()
+                    if (VM.Model != null)
                     {
-                        Client = Client,
-                        ClientId = Client?.Id,
-                        Date = VM?.Date ?? DateTime.Now.ToShortDateString(),
-                        Name = VM.Name ?? "Без названия"
-                    };
-                    Collection?.Add(item);
-                    db?.TreatmentStage.Add(item);
+                        var model = db.TreatmentStage.FirstOrDefault(f => f.Guid == VM.Model.Guid);
+                        model.Name = VM?.Name;
+                        model.Date = VM?.Date;
+                    }
+                    else
+                    {
+                        var item = new TreatmentStage()
+                        {
+                            Client = Client,
+                            ClientId = Client?.Id,
+                            Date = VM?.Date ?? DateTime.Now.ToShortDateString(),
+                            Name = VM.Name ?? "Без названия"
+                        };
+                        Collection?.Add(item);
+                        db?.TreatmentStage.Add(item);
+                    }
+                    int cnt = db.SaveChanges();
+
+                    TreatmentStageWindow?.Close();
+                    if (cnt > 0) new Notification() { Content = "Сохранено в базу данных!" }.run();
                 }
-                int cnt = db.SaveChanges();
-                TreatmentStageWindow?.Close();
-                if (cnt > 0) new Notification() { Content = "Сохранено в базу данных!" }.run();
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -140,72 +146,75 @@ namespace Dental.ViewModels.ClientDir
                 {
                     Templates = new List<TreeTemplate>();
                     TemplateName = parameters.Name;
-                    switch (parameters.Name)
+                    using (var db = new ApplicationContext())
                     {
-                        case "Complaint":
-                            Templates = db.Complaints.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Anamnes" :
-                            Templates = db.Anamneses.Select(f => new TreeTemplate()
+                        switch (parameters.Name)
+                        {
+                            case "Complaint":
+                                Templates = db.Complaints.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "Objectivly" :
-                            Templates = db.Objectively.Select(f => new TreeTemplate()
+                            case "Anamnes":
+                                Templates = db.Anamneses.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "DescriptionXRay" :
-                            Templates = db.DescriptionXRay.Select(f => new TreeTemplate()
+                            case "Objectivly":
+                                Templates = db.Objectively.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "Diagnos" :
-                            Templates = db.Diagnoses.Select(f => new TreeTemplate()
+                            case "DescriptionXRay":
+                                Templates = db.DescriptionXRay.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "Plan" :
-                            Templates = db.TreatmentPlans.Select(f => new TreeTemplate()
+                            case "Diagnos":
+                                Templates = db.Diagnoses.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "Treatment" :
-                            Templates = db.Diaries.Select(f => new TreeTemplate() // override on Treatment
+                            case "Plan":
+                                Templates = db.TreatmentPlans.Select(f => new TreeTemplate()
                                 {
                                     Id = f.Id,
                                     IsDir = f.IsDir,
                                     ParentId = f.ParentId,
                                     Name = f.Name
                                 }).ToArray(); break;
-                            case "Allergy" :
-                            Templates = db.Allergies.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
+                            case "Treatment":
+                                Templates = db.Diaries.Select(f => new TreeTemplate() // override on Treatment
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                            case "Allergy":
+                                Templates = db.Allergies.Select(f => new TreeTemplate()
+                                {
+                                    Id = f.Id,
+                                    IsDir = f.IsDir,
+                                    ParentId = f.ParentId,
+                                    Name = f.Name
+                                }).ToArray(); break;
+                        }
                     }
                     Model = model;
 
@@ -246,7 +255,7 @@ namespace Dental.ViewModels.ClientDir
                     TemplateWin?.Close();
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -293,9 +302,10 @@ namespace Dental.ViewModels.ClientDir
             {
                 Client.Teeth = JsonSerializer.Serialize(Teeth);
                 Client.ChildTeeth = JsonSerializer.Serialize(ChildTeeth);
-                return db.SaveChanges() > 0;
+                using (var db = new ApplicationContext())
+                    return db.SaveChanges() > 0;
             }
-            catch (Exception e)
+            catch
             {
                 Client.Teeth = null;
                 Client.ChildTeeth = null;
@@ -330,24 +340,27 @@ namespace Dental.ViewModels.ClientDir
                     }
                 }
             }
-            catch(Exception e)
+            catch
             {
 
             }
         }
 
-        public void StatusReadOnly(bool status)
-        {
-            IsReadOnly = status;
-        }
-
+        public void StatusReadOnly(bool status) => IsReadOnly = status;
+        
         public bool IsReadOnly
         {
             get { return GetProperty(() => IsReadOnly); }
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        private void SetCollection() => Collection = Client == null ? new ObservableCollection<TreatmentStage>() : db.TreatmentStage.Where(f => f.ClientId == Client.Id).Include(f => f.Client).ToObservableCollection();
+        private void SetCollection() 
+        {
+            using (var db = new ApplicationContext())
+            {
+                Collection = Client == null ? new ObservableCollection<TreatmentStage>() : db.TreatmentStage.Where(f => f.ClientId == Client.Id).Include(f => f.Client).ToObservableCollection();
+            }
+        }
 
 
         public TreatmentStage Model { get; set; } //этап лечения
@@ -379,7 +392,8 @@ namespace Dental.ViewModels.ClientDir
 
         public void NewClientSaved(Client client)
         {
-            Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
+            using (var db = new ApplicationContext())
+                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client();
         }
 
         public void SetTeeth()

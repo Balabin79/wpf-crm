@@ -29,22 +29,25 @@ namespace Dental.ViewModels
 {
     class ShedulerViewModel : ViewModelBase
     {
-        private readonly ApplicationContext db;
+        //private readonly ApplicationContext db;
         public ShedulerViewModel()
         {
             try
             {
-                db = new ApplicationContext();
-                LocationAppointments = GetLocationCollection();
-                StatusAppointments = GetStatusCollection();
-                ClassificatorCategories = db.Services.ToObservableCollection();
+                using (var db = new ApplicationContext())
+                {
+                    LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
+                    StatusAppointments = GetStatusCollection(db);
+                    ClassificatorCategories = db.Services.ToObservableCollection();
 
-                Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
-                    .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
+                    Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
+                        .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
 
-                LoadEmployees(db);
-                LoadClients(db);
-                SetSelectedEmployees();
+                    LoadEmployees(db);
+                    LoadClients(db);
+                    SetSelectedEmployees();
+                }
+
             }
             catch (Exception e)
             {
@@ -76,8 +79,11 @@ namespace Dental.ViewModels
             {
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
-                db.Entry(item).State = EntityState.Added;
-                db.SaveChanges();
+                using (var db = new ApplicationContext())
+                {
+                    db.Entry(item).State = EntityState.Added;
+                    db.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -90,7 +96,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db.SaveChanges();
+                using (var db = new ApplicationContext()) db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -103,7 +109,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db.SaveChanges();
+                using (var db = new ApplicationContext())  db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -117,7 +123,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db.LocationAppointment.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+                using (var db = new ApplicationContext())  db.LocationAppointment.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
 
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == LocationWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
@@ -161,11 +167,14 @@ namespace Dental.ViewModels
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
-                        db.Entry(model).State = EntityState.Deleted;
-                        cnt = db.SaveChanges();
+                        using (var db = new ApplicationContext())
+                        {
+                            db.Entry(model).State = EntityState.Deleted;
+                            cnt = db.SaveChanges();
+                        }
                     }
 
-                    else db.Entry(model).State = EntityState.Detached;
+                    else using (var db = new ApplicationContext())  db.Entry(model).State = EntityState.Detached;
                     LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());                 
                 }
             }
@@ -180,15 +189,18 @@ namespace Dental.ViewModels
         {
             try
             {
-                foreach (var item in LocationAppointments)
+                using (var db = new ApplicationContext())
                 {
-                    if (string.IsNullOrEmpty(item.Name)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                }
-                if (db.SaveChanges() > 0) 
-                { 
-                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                }              
+                    foreach (var item in LocationAppointments)
+                    {
+                        if (string.IsNullOrEmpty(item.Name)) continue;
+                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    }
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    }
+                }            
             }
             catch (Exception e)
             {
@@ -204,7 +216,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => LocationAppointments, value); }
         }
 
-        private ObservableCollection<LocationAppointment>  GetLocationCollection() => db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
         #endregion
 
         #region Справочник "Статусы в шедулере"       
@@ -213,8 +224,11 @@ namespace Dental.ViewModels
         {
             try
             {
-                db.AppointmentStatus.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
-
+                using (var db = new ApplicationContext())
+                {
+                    db.AppointmentStatus.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+                }
+                   
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == StatusWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
                 {
@@ -232,7 +246,7 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void CloseWindowStatus() => StatusWindow.Close();
+        public void CloseWindowStatus() => StatusWindow?.Close();
 
         [Command]
         public void AddStatus(object p)
@@ -252,17 +266,20 @@ namespace Dental.ViewModels
         {
             try
             {
-                foreach (var item in StatusAppointments)
+                using (var db = new ApplicationContext())
                 {
-                    if (string.IsNullOrEmpty(item.Caption)) continue;
+                    foreach (var item in StatusAppointments)
+                    {
+                        if (string.IsNullOrEmpty(item.Caption)) continue;
 
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                    // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
-                    item.BrushColor = item.Brush?.Color.ToString();
-                    
-                }
+                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                        // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
+                        item.BrushColor = item.Brush?.Color.ToString();
 
-                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();               
+                    }
+
+                    if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                }            
             }
             catch (Exception e)
             {
@@ -275,18 +292,21 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is AppointmentStatus model)
+                using (var db = new ApplicationContext())
                 {
-                    int cnt = 0;
-                    if (model.Id != 0)
+                    if (p is AppointmentStatus model)
                     {
-                        if (!new ConfirDeleteInCollection().run(0)) return;
-                        db.Entry(model).State = EntityState.Deleted;
-                        cnt = db.SaveChanges();
-                    }
+                        int cnt = 0;
+                        if (model.Id != 0)
+                        {
+                            if (!new ConfirDeleteInCollection().run(0)) return;
+                            db.Entry(model).State = EntityState.Deleted;
+                            cnt = db.SaveChanges();
+                        }
 
-                    else db.Entry(model).State = EntityState.Detached;
-                    StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                        else db.Entry(model).State = EntityState.Detached;
+                        StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                    }
                 }
             }
             catch (Exception e)
@@ -303,7 +323,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => StatusAppointments, value); }
         }
 
-        private ObservableCollection<AppointmentStatus> GetStatusCollection()
+        private ObservableCollection<AppointmentStatus> GetStatusCollection(ApplicationContext db)
         {
             var collection = db.AppointmentStatus.OrderBy(f => f.Caption).ToObservableCollection();
             foreach (var i in collection)

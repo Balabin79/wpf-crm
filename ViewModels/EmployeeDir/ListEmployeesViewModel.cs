@@ -29,14 +29,10 @@ namespace Dental.ViewModels.EmployeeDir
 {
     public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
-        public readonly ApplicationContext db;
-
-        public ListEmployeesViewModel() : this(null){}
-        public ListEmployeesViewModel(ApplicationContext ctx) 
+        public ListEmployeesViewModel() 
         {
             try
-            {
-                db = ctx == null ? new ApplicationContext() : ctx;
+            {             
                 SetCollection();
                 foreach (var i in Collection)
                 {
@@ -107,14 +103,17 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is Employee model)
                 {
-                    if (model.Id == 0) db.Entry(model).State = EntityState.Added;
+                    using (var db = new ApplicationContext())
+                    {
+                        if (model.Id == 0) db.Entry(model).State = EntityState.Added;
 
-                    if (db.SaveChanges() > 0)  new Notification() { Content = "Записано в базу данных!" }.run();                  
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
+                    }          
                 }
             }
-            catch (Exception e)
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с анкетой сотрудника!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных сотрудника возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
@@ -137,20 +136,25 @@ namespace Dental.ViewModels.EmployeeDir
 
                     if (response.ToString() == "No") return;
 
-                    //удалить также в расписании и в счетах
-                    db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-
-                    db.Entry(model).State = EntityState.Deleted;
-                    if (db.SaveChanges() > 0) 
+                    using (var db = new ApplicationContext())
                     {
-                        Collection.Remove(model);
-                        new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run(); 
-                    }
+                        //удалить также в расписании и в счетах
+                        db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
+
+                        db.Entry(model).State = EntityState.Deleted;
+                        if (db.SaveChanges() > 0)
+                        {
+                            Collection.Remove(model);
+                            new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run();
+                        }
+                    }
                     // удаляем фото 
-                    var photo = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
-                    if (photo != null && File.Exists(photo)) File.Delete(photo);
+                    if (Directory.Exists(Config.PathToEmployeesDirectory))
+                    {
+                        var photo = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
+                        if (photo != null && File.Exists(photo)) File.Delete(photo);
+                    }                    
                 }
             }
             catch (Exception e)
@@ -202,9 +206,13 @@ namespace Dental.ViewModels.EmployeeDir
 
                     if (response.ToString() == "No") return;
 
-                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
+                    if (Directory.Exists(Config.PathToEmployeesDirectory))
+                    {
+                        var file = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
-                    if (file != null) File.Delete(file);
+                        if (file != null) File.Delete(file);
+                    }
+
                     img?.Clear();
                     new Notification() { Content = "Фото сотрудника удалено!" }.run();                
                 }            
@@ -215,7 +223,6 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
         #endregion
-
 
         /***********************************/
         public ObservableCollection<Employee> Collection
@@ -232,8 +239,13 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
-
+        public void SetCollection(bool isArhive = false) 
+        {
+            using (var db = new ApplicationContext())
+            {
+                Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
+            }
+        }
 
         private void ImgLoading(Employee model)
         {

@@ -21,33 +21,30 @@ namespace Dental.ViewModels.AdditionalFields
 {
     public class FieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
-        private readonly ApplicationContext db;      
-
-        public FieldsViewModel(Client client, ClientsViewModel vm)
+        public FieldsViewModel(Client client)
         {
             try
             {
-                this.db = vm?.db ?? new ApplicationContext(); ;
-            
-                // получаем все поля для раздела
-                AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
-                Fields = new ObservableCollection<LayoutItem>();
-                if (AdditionalClientFields.Count() == 0) return;
-              
-                // загружаем значения полей
-                AdditionalClientValues = (client != null) ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
+                using (var db = new ApplicationContext())
+                {
+                    // получаем все поля для раздела
+                    AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
+                    Fields = new ObservableCollection<LayoutItem>();
+                    if (AdditionalClientFields.Count() == 0) return;
+
+                    // загружаем значения полей
+                    AdditionalClientValues = (client != null) ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
+                }       
 
                 ClientFieldsLoading(client);
 
-                if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
-                
+                if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;           
             }
             catch (Exception e)
             {
 
             }
         }
-
 
         private void ClientFieldsLoading(Client client)
         {            
@@ -108,21 +105,23 @@ namespace Dental.ViewModels.AdditionalFields
         public bool Save(Client client)
         {
             try
-            {       
-                foreach (var i in Fields)
+            {   using (var db = new ApplicationContext())
                 {
-                    var value = db.AdditionalClientValue.FirstOrDefault(f => f.AdditionalField.Label == i.Label && f.ClientId == client.Id);
-                    var val = ((BaseEdit)i.Content).EditValue?.ToString();
-                    if (value == null && val != null) 
-                    {  
-                        var item = new AdditionalClientValue() { ClientId = client.Id, Value = val, AdditionalFieldId = AdditionalClientFields.FirstOrDefault(f => f.Label == i.Label).Id };
-                        db.AdditionalClientValue.Add(item);
+                    foreach (var i in Fields)
+                    {
+                        var value = db.AdditionalClientValue.FirstOrDefault(f => f.AdditionalField.Label.ToString() == i.Label.ToString() && f.ClientId == client.Id);
+                        var val = ((BaseEdit)i.Content).EditValue?.ToString();
+                        if (value == null && val != null)
+                        {
+                            var item = new AdditionalClientValue() { ClientId = client.Id, Value = val, AdditionalFieldId = AdditionalClientFields.FirstOrDefault(f => f.Label.ToString() == i.Label.ToString()).Id };
+                            db.AdditionalClientValue.Add(item);
+                        }
+                        if (value != null) value.Value = val;
                     }
-                    if (value != null) value.Value = val;                  
-                }
-                return db.SaveChanges() > 0;                
+                    return db.SaveChanges() > 0;
+                }                    
             }
-            catch(Exception e)
+            catch
             {
                 return false;
             }

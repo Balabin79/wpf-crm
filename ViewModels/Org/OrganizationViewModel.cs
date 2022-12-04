@@ -16,29 +16,30 @@ using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Models.Base;
 using Dental.Services;
+using Dental.ViewModels.Org;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Editors;
 
-namespace Dental.ViewModels
+namespace Dental.ViewModels.Org
 {
     public class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
-        private readonly ApplicationContext db;
-
         public OrganizationViewModel()
         {
             try
             {
-                db = new ApplicationContext();
-                Model = GetModel();
-                if (Model.Id > 0) ImagesLoading();
-                IsReadOnly = Model.Id > 0;
-
-                ModelBeforeChanges = (Organization)Model.Clone();
+                OrganizationVM = new OrganizationVM();
+                using (var db = new ApplicationContext())
+                {
+                    var model = db.Organizations.FirstOrDefault() ?? new Organization();
+                    OrganizationVM.Copy(model);
+                    IsReadOnly = model?.Id > 0;
+                    if (IsReadOnly) ImagesLoading();
+                }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Организации\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -48,55 +49,49 @@ namespace Dental.ViewModels
         public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OrgEditable;
         public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).OrgDeletable;
 
-
         [Command]
         public void Editable(object p) => IsReadOnly = !IsReadOnly;
-
-        public bool IsReadOnly
-        {
-            get { return GetProperty(() => IsReadOnly); }
-            set { SetProperty(() => IsReadOnly, value); }
-        }
-
-        public Organization Model
-        {
-            get { return GetProperty(() => Model); }
-            set { SetProperty(() => Model, value); }
-        }
-
-        public ImageSource Logo
-        {
-            get { return GetProperty(() => Logo); }
-            set { SetProperty(() => Logo, value); }
-        }
-
-        public ImageSource Stamp
-        {
-            get { return GetProperty(() => Stamp); }
-            set { SetProperty(() => Stamp, value); }
-        }
 
         [Command]
         public void Save(object p)
         {
             try
             {
-                if (Model == null) return;
-                var notification = new Notification();
-                if (Model.Id == 0) db.Organizations.Add(Model);
-
-                db.SaveChanges();
-                notification.Content = "Изменения сохранены в базу данных!";
-
-                if (HasUnsavedChanges())
+                using (var db = new ApplicationContext())
                 {
-                    notification.run();
-                    ModelBeforeChanges = (Organization)Model.Clone();
+                    var model = db.Organizations.FirstOrDefault() ?? new Organization();
+
+                    model.Name = OrganizationVM.Name;
+                    model.ShortName = OrganizationVM.ShortName;
+                    model.Kpp = OrganizationVM.Kpp;
+                    model.Inn = OrganizationVM.Inn;
+                    model.Address = OrganizationVM.Address;
+                    model.Phone = OrganizationVM.Phone;
+                    model.Email = OrganizationVM.Email;
+                    model.AccountNumber = OrganizationVM.AccountNumber;
+                    model.CorrAccountNumber = OrganizationVM.CorrAccountNumber;
+                    model.Bik = OrganizationVM.Bik;
+                    model.BankName = OrganizationVM.BankName;
+                    model.Ogrn = OrganizationVM.Ogrn;
+                    model.LicenseDate = OrganizationVM.LicenseDate;
+                    model.GeneralDirector = OrganizationVM.GeneralDirector;
+                    model.LicenseName = OrganizationVM.LicenseName;
+                    model.Site = OrganizationVM.Site;
+                    model.WhoIssuedBy = OrganizationVM.WhoIssuedBy;
+                    model.Okpo = OrganizationVM.Okpo;
+
+                    if (model?.Id == 0) db.Organizations.Add(model);
+                    if (db.SaveChanges() > 0) 
+                    {
+                        OrganizationVM.Id = model.Id;
+                        new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
+                    }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                (new ViewModelLog(e)).run();
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении данных организации!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -108,7 +103,6 @@ namespace Dental.ViewModels
                 field.ClearError();
                 field.Clear();
                 field.ClosePopup();
-               // field.EditValue = null;
             }
         }
 
@@ -121,63 +115,30 @@ namespace Dental.ViewModels
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
-                Delete();
 
-                Model = new Organization();
 
-                ModelBeforeChanges = (Organization)Model.Clone();
-                new Notification { Content = "Данные организации полностью удалены!" }.run();
+                using (var db = new ApplicationContext())
+                {
+                    var model = db.Organizations.FirstOrDefault();
+                    if (model == null || db.Entry(model).State == EntityState.Deleted) return;
+
+                    db.Entry(model).State = EntityState.Deleted;
+                    if (db.SaveChanges() > 0)
+                    {
+                        OrganizationVM = new OrganizationVM();
+                        Logo = null;
+                        Stamp = null;
+                        if (Directory.Exists(Config.PathToOrgDirectory)) new DirectoryInfo(Config.PathToOrgDirectory)?.GetFiles()?.ForEach(f => f.Delete());     
+                  
+                        new Notification { Content = "Данные организации полностью удалены!" }.run();
+                    }
+                }
             }
             catch (Exception e)
             {
                 (new ViewModelLog(e)).run();
             }
         }
-
-        private void Delete()
-        {
-            try
-            {
-                if (db.Entry(Model).State == EntityState.Deleted) return;
-                db.Entry(Model).State = EntityState.Deleted;
-                db.SaveChanges();
-                Logo = null;
-                Stamp = null;
-                new DirectoryInfo(Config.PathToOrgDirectory).GetFiles()?.ForEach(f => f.Delete());
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-
-        }
-
-        public Organization ModelBeforeChanges { get; set; }
-
-        public bool HasUnsavedChanges()
-        {
-            bool hasUnsavedChanges = false;
-            if (Model?.FieldsChanges != null) Model.FieldsChanges = new List<string>();
-            if (!Model.Equals(ModelBeforeChanges)) hasUnsavedChanges = true;
-            return hasUnsavedChanges;
-        }
-
-        public bool UserSelectedBtnCancel()
-        {
-            string warningMessage = "\nПоля: ";
-            foreach (var fieldName in Model.FieldsChanges)
-            {
-                warningMessage += " " + "\"" + fieldName + "\"" + ",";
-            }
-            warningMessage = warningMessage.Remove(warningMessage.Length - 1);
-
-            var response = ThemedMessageBox.Show(title: "Внимание", text: "В форме организации имеются несохраненные изменения! Если вы не хотите их потерять, то нажмите кнопку \"Отмена\", а затем кнопку сохранить (иконка с дискетой).\nИзменения:" + warningMessage,
-               messageBoxButtons: MessageBoxButton.OKCancel, icon: MessageBoxImage.Warning);
-
-            return response.ToString() == "Cancel";
-        }
-
-        private Organization GetModel() => db.Organizations.FirstOrDefault() ?? new Organization();
 
         #region Управление файлами лого и печати
       
@@ -236,7 +197,7 @@ namespace Dental.ViewModels
                         FileInfo photo = new FileInfo(img.ImagePath);
                         photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension), true);
                         new Notification() { Content = "Логотип сохранен!" }.run();
-                        db.SaveChanges();
+                        using (var db = new ApplicationContext())  db.SaveChanges();
                     }
 
                     if (img.Name == "Stamp")
@@ -259,10 +220,7 @@ namespace Dental.ViewModels
                     }
                 }
             }
-            catch (Exception e)
-            {
-
-            }
+            catch {}
         }
 
         [Command]
@@ -286,7 +244,7 @@ namespace Dental.ViewModels
                     }
                     img.Clear();
                     msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
-                    db.SaveChanges();
+                    using (var db = new ApplicationContext())  db.SaveChanges();
                     new Notification() { Content = msg }.run();
                 }
             }
@@ -294,6 +252,33 @@ namespace Dental.ViewModels
             {
                 (new ViewModelLog(e)).run();
             }
+        }
+
+        #endregion
+
+        #region Свойства
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
+        public OrganizationVM OrganizationVM
+        {
+            get { return GetProperty(() => OrganizationVM); }
+            set { SetProperty(() => OrganizationVM, value); }
+        }
+
+        public ImageSource Logo
+        {
+            get { return GetProperty(() => Logo); }
+            set { SetProperty(() => Logo, value); }
+        }
+
+        public ImageSource Stamp
+        {
+            get { return GetProperty(() => Stamp); }
+            set { SetProperty(() => Stamp, value); }
         }
 
         #endregion

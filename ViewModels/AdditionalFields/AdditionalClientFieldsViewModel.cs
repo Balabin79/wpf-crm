@@ -21,15 +21,16 @@ using Dental.Services;
 namespace Dental.ViewModels.AdditionalFields
 {
     public class AdditionalClientFieldsViewModel : DevExpress.Mvvm.ViewModelBase
-    {
-        private readonly ApplicationContext db;
+    {     
         public AdditionalClientFieldsViewModel()
         {
             try
             {
-                db = new ApplicationContext();
-                SetCollection();
-                Templates = db.TemplateType.ToArray();
+                using (var db = new ApplicationContext())
+                {
+                    SetCollection();
+                    Templates = db.TemplateType.ToArray();
+                }
             }
             catch
             {
@@ -49,15 +50,18 @@ namespace Dental.ViewModels.AdditionalFields
                 if (p is AdditionalClientField model)
                 {
                     if (model.Id != 0 && !DeleteMsgShow(model)) return;
-                    if (model.Id != 0)
+                    using (var db = new ApplicationContext())
                     {
-                        db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id)?.ForEach(f => db.AdditionalClientValue.Remove(f));
-                        db.AdditionalClientFields.Remove(model);
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
-                    }
-                    else
-                    {
-                        db.Entry(model).State = EntityState.Detached;
+                        if (model.Id != 0)
+                        {
+                            db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id)?.ForEach(f => db.AdditionalClientValue.Remove(f));
+                            db.AdditionalClientFields.Remove(model);
+                            if (db.SaveChanges() > 0) new Notification() { Content = "Успешно удалено из базы данных!" }.run();
+                        }
+                        else
+                        {
+                            db.Entry(model).State = EntityState.Detached;
+                        }
                     }
                     Collection?.Remove(model);
                 }
@@ -70,12 +74,15 @@ namespace Dental.ViewModels.AdditionalFields
 
         private bool DeleteMsgShow(AdditionalClientField model)
         {
-            var val = db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id).Count();
-            string msg = val < 1 ? "Вы уверены?" : "Внимание! В поле " + model.Label + " записано значение, которое заполнено в картах клиентов (Всего: " + val + "). Вы уверены что хотите удалить это поле?";
-            var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
+            using (var db = new ApplicationContext())
+            {
+                var val = db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id).Count();
+                string msg = val < 1 ? "Вы уверены?" : "Внимание! В поле " + model.Label + " записано значение, которое заполнено в картах клиентов (Всего: " + val + "). Вы уверены что хотите удалить это поле?";
+                var response = ThemedMessageBox.Show(title: "Подтверждение действия", text: msg,
+                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Exclamation);
 
-            return response.ToString() == "Yes";
+                return response.ToString() == "Yes";
+            }
         }
 
         [Command]
@@ -83,15 +90,18 @@ namespace Dental.ViewModels.AdditionalFields
         {
             try
             {
-                foreach (var item in Collection)
+                using (var db = new ApplicationContext())
                 {
-                    if (string.IsNullOrEmpty(item.Label) || string.IsNullOrEmpty(item.SysName)) continue;
-                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                }
-                if (db.SaveChanges() > 0)
-                {
-                    SetCollection();
-                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    foreach (var item in Collection)
+                    {
+                        if (string.IsNullOrEmpty(item.Label) || string.IsNullOrEmpty(item.SysName)) continue;
+                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    }
+                    if (db.SaveChanges() > 0)
+                    {
+                        SetCollection();
+                        new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    }
                 }
             }
             catch 
@@ -103,7 +113,12 @@ namespace Dental.ViewModels.AdditionalFields
         [Command]
         public void Add() => Collection.Add(new AdditionalClientField());
 
-        private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
+        private void SetCollection() {
+            using (var db = new ApplicationContext())
+            {
+                Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
+            }
+        }
 
         public bool HasUnsavedChanges()
         {
