@@ -12,11 +12,9 @@ using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
-using Dental.ViewModels.Materials;
-using Dental.Views.AdditionalFields;
-using Dental.Models.Base;
 
-namespace Dental.ViewModels.AdditionalFields
+
+namespace Dental.ViewModels.Org
 {
     public class CommonValueViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -31,7 +29,7 @@ namespace Dental.ViewModels.AdditionalFields
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Общие значения\"!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }

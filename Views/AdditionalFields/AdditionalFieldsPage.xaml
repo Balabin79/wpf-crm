@@ -11,7 +11,7 @@
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
-      xmlns:vm ="clr-namespace:Dental.ViewModels.AdditionalFields" 
+      xmlns:vm ="clr-namespace:Dental.ViewModels.Org" 
       Title="B6 Sheduler" 
       d:DesignHeight="450" d:DesignWidth="800">
     <Page.Resources>

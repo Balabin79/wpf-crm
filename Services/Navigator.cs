@@ -100,14 +100,13 @@ namespace Dental.Services
 
                             if (comFields.HasChanges())
                             {
-                                forms.Add("форме \"Дополнительные поля\"");
+                                forms.Add("форме \"Дополнительные значения\"");
                             }
                             if (forms.Count > 0)
                             {
                                 var response = ThemedMessageBox.Show(title: "Внимание", text: "Имеются несохраненные изменения в " + String.Join(" и в ", forms) + ". Закрыть без сохранения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                                 if (response.ToString() == "No") return;
                             }
-
                         }
                         break;
                 }

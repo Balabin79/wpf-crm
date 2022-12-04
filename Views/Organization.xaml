@@ -15,7 +15,7 @@
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
       xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
       dx:ThemeManager.ThemeName="Office2019White"
-      xmlns:af ="clr-namespace:Dental.ViewModels.AdditionalFields" 
+      xmlns:af ="clr-namespace:Dental.ViewModels.Org" 
       >
     <Page.Resources>
         <ResourceDictionary>
