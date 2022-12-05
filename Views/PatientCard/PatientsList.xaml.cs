@@ -27,7 +27,7 @@ namespace Dental.Views.PatientCard
                     }
                     else
                     {
-                        var model = vm?.Collection?.FirstOrDefault(f => f.Id == vm?.Model?.Id);
+                        var model = vm?.Clients?.FirstOrDefault(f => f.Id == vm?.Model?.Id);
                         grid.SelectedItem = model;
                     }
                 }               

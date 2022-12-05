@@ -24,7 +24,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:InvoicesViewModel x:Key="vm"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
 
                     <ControlTemplate x:Key="popupContentTemplate">
@@ -72,7 +71,7 @@
             <StackPanel Orientation="Horizontal" >
                 <dxg:LookUpEdit
                     Width="172" Margin="0 0 5 5"
-                    EditValue="{Binding Source={StaticResource vm}, Path=ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    EditValue="{Binding ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     PopupHeight="500"
                     PopupWidth="400"
                     PopupMinHeight="100"
@@ -83,7 +82,7 @@
                     FindButtonPlacement="Popup"
                     FindMode="Always"
                     PopupContentTemplate="{StaticResource popupContentTemplate}"
-                    ItemsSource="{Binding Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding Clients, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     AutoPopulateColumns="False"
                     DisplayMember="FullName"
                     ValueMember="Id"
@@ -100,7 +99,7 @@
 
                 <dxg:LookUpEdit
                     Width="172" Margin="0 0 0 5"
-                    EditValue="{Binding Source={StaticResource vm}, Path=EmployeeSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    EditValue="{Binding EmployeeSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     PopupHeight="500"
                     PopupWidth="400"
                     PopupMinHeight="100"
@@ -111,7 +110,7 @@
                     NullValueButtonPlacement="EditBox"
                     FindMode="Always"
                     PopupContentTemplate="{StaticResource popupContentTemplate}"
-                    ItemsSource="{Binding Source={StaticResource vm}, Path=Employees, Mode=OneWay}"
+                    ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     AutoPopulateColumns="False"
                     DisplayMember="FullName"
                     ValueMember="Id"
@@ -130,7 +129,7 @@
                 <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="172"
                               NullValueButtonPlacement="EditBox"
                               DisplayFormatString="D" NullText="Дата от"
-                              EditValue="{Binding Source={StaticResource vm}, Path=DateFromSearch, Mode=TwoWay, StringFormat=D,
+                              EditValue="{Binding DateFromSearch, Mode=TwoWay, StringFormat=D,
                               UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                     <dxe:DateEdit.StyleSettings>
                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
@@ -140,7 +139,7 @@
                 <dxe:DateEdit Mask="G" MaskType="DateTime" Width="172" 
                               NullValueButtonPlacement="EditBox"
                               DisplayFormatString="D" NullText="Дата до"
-                              EditValue="{Binding Source={StaticResource vm}, Path=DateToSearch, Mode=TwoWay, StringFormat=D,
+                              EditValue="{Binding DateToSearch, Mode=TwoWay, StringFormat=D,
                               UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                     <dxe:DateEdit.StyleSettings>
                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
@@ -150,9 +149,9 @@
             <DockPanel>
                 <dxe:TextEdit Margin="0 5 0 5" NullText="Название счета" DockPanel.Dock="Left" 
                               Width="172" 
-                              Text="{Binding Source={StaticResource vm}, Path=InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                              Text="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <dxb:ToolBarControl Background="Transparent" DataContext="{Binding Source={StaticResource vm}}" Margin="0 2 0 0"
+                <dxb:ToolBarControl Background="Transparent" Margin="0 2 0 0"
                                     x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                                     BarItemDisplayMode="ContentAndGlyph">
 
@@ -183,12 +182,12 @@
                         CommandParameter="0" />
                 </dxb:ToolBarControl>
 
-                <dx:SimpleButton Command="{Binding Source={StaticResource vm}, Path=SearchCommand}" DockPanel.Dock="Right" 
+                <dx:SimpleButton Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                                  Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="0 5 0 5" Width="60" HorizontalAlignment="Right"/>
             </DockPanel>
         </StackPanel>
         <dxg:GridControl Grid.Row="1"
-                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  DataContext="{StaticResource vm}"
+                         ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                          DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
                          AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
                          MaxHeight="1800"

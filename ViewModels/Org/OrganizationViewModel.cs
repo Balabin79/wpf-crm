@@ -26,18 +26,18 @@ namespace Dental.ViewModels.Org
 {
     public class OrganizationViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
+
+        private readonly ApplicationContext db;
         public OrganizationViewModel()
         {
             try
             {
+                db = new ApplicationContext();
                 OrganizationVM = new OrganizationVM();
-                using (var db = new ApplicationContext())
-                {
-                    var model = db.Organizations.FirstOrDefault() ?? new Organization();
-                    OrganizationVM.Copy(model);
-                    IsReadOnly = model?.Id > 0;
-                    if (IsReadOnly) ImagesLoading();
-                }
+                var model = db.Organizations.FirstOrDefault() ?? new Organization();
+                OrganizationVM.Copy(model);
+                IsReadOnly = model?.Id > 0;
+                if (IsReadOnly) ImagesLoading();              
             }
             catch
             {

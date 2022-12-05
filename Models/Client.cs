@@ -14,30 +14,8 @@ using System.Text.Json.Serialization;
 namespace Dental.Models
 {
     [Table("ClientInfo")]
-    public class Client : AbstractBaseModel, ICloneable
+    public class Client : AbstractUser, ICloneable
     {
-
-        public string FirstName
-        {
-            get { return GetProperty(() => FirstName); }
-            set { SetProperty(() => FirstName, value?.Trim()); }
-        }
-
-        public string LastName
-        {
-            get { return GetProperty(() => LastName); }
-            set { SetProperty(() => LastName, value?.Trim()); }
-        }
-
-        public string MiddleName
-        {
-            get { return GetProperty(() => MiddleName); }
-            set { SetProperty(() => MiddleName, value?.Trim()); }
-        }
-
-        [NotMapped]
-        public string FullName { get => ToString(); }
-
         public string BirthDate
         {
             get { return GetProperty(() => BirthDate); }
@@ -56,36 +34,10 @@ namespace Dental.Models
             set { SetProperty(() => Snils, value?.Trim()); }
         }
 
-        public string Phone
-        {
-            get { return GetProperty(() => Phone); }
-            set { SetProperty(() => Phone, value); }
-        }
-
-        public string Email
-        {
-            get { return GetProperty(() => Email); }
-            set { SetProperty(() => Email, value?.Trim()); }
-        }
-
         public string Address
         {
             get { return GetProperty(() => Address); }
             set { SetProperty(() => Address, value?.Trim()); }
-        }
-
-        [NotMapped]
-        public ImageSource Image
-        {
-            get { return GetProperty(() => Image); }
-            set { SetProperty(() => Image, value); }
-        }
-
-        [NotMapped]
-        public string Photo
-        {
-            get { return GetProperty(() => Photo); }
-            set { SetProperty(() => Photo, value); }
         }
 
         public string Teeth { get; set; }
@@ -100,7 +52,5 @@ namespace Dental.Models
         public string WhomIssued { get; set; }     
 
         public object Clone() => (Client)this.MemberwiseClone();
-      
-        public override string ToString() => (LastName + " " + FirstName + " " + MiddleName).Trim(' ');
     }
 }

@@ -100,7 +100,7 @@
                                 DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
                                 AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
                                 MaxHeight="1800"
-                                ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                                 ShowBorder="True" x:Name="grid"
                                              >
@@ -199,7 +199,7 @@
                         </dx:DXTabItem>
                      
                         <dx:DXTabItem Header="Счета" >
-                            <local:InvoicesControl Margin="0 2 2 2" x:Name="invoicesList"/>
+                            <local:InvoicesControl DataContext="{Binding}" Margin="0 2 2 2" x:Name="invoicesList"/>
                         </dx:DXTabItem>
                     </dx:DXTabControl>
 

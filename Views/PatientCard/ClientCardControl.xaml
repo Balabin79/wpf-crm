@@ -124,7 +124,7 @@
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Счета" Name="invoicesTab">
-                                <invoices:InvoicesControl DataContext="{Binding InvoicesViewModel}"  x:Name="Invoices"/>
+                                <invoices:ClientInvoicesControl DataContext="{Binding}"  x:Name="Invoices"/>
                             </dx:DXTabItem>
 
                             <dx:DXTabItem Header="Посещения" >

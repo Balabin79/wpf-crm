@@ -29,12 +29,6 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => Number, value); }
         }
 
-        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
-        public Client Client
-        {
-            get { return GetProperty(() => Client); }
-            set { SetProperty(() => Client, value); }
-        }
 
         public Employee Employee
         {
@@ -85,7 +79,6 @@ namespace Dental.ViewModels.Invoices
                 Model.Date = Date;
                 Model.DateTimestamp = DateTimestamp;
                 Model.Paid = Paid;
-
                 EventSave?.Invoke(Model);
                 if (p is Window win) win?.Close();
             }

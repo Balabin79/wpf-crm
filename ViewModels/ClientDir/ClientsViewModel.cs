@@ -27,11 +27,15 @@ using Dental.Infrastructures.Extensions;
 using DevExpress.Xpf.Editors;
 using System.Diagnostics;
 using System.Windows.Media;
+using Dental.Views.Invoices;
+using Dental.Infrastructures.Converters;
 
 namespace Dental.ViewModels.ClientDir
 {
     public class ClientsViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
+        private readonly ApplicationContext db;
+
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
 
@@ -46,18 +50,21 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                SetCollection();
+                db = new ApplicationContext();
+                LoadClients();
+                LoadInvoices();
+                LoadEmployees();
                 Model = new Client();
 
                 Init(Model);
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text:"Ошибка подключения к базе данных при попытке загрузить список клиентов",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
+        #region Права на выполнение команд
         public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).ClientTemplatesEditable;
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
@@ -69,8 +76,468 @@ namespace Dental.ViewModels.ClientDir
         public bool ExecuteFile() => Model?.Id != 0;
         public bool AttachmentFile() => Model?.Id != 0;
         public bool DeleteFile() => Model?.Id != 0;
-
         public bool CanShowArchive() => true;
+
+
+        // Счета
+        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanOpenFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanOpenFormInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        #endregion
+
+        #region Загрузка списков клиентов и всех инвойсов 
+        public void LoadClients(bool isArhive = false)
+        {
+            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();        
+            foreach (var i in Clients) ImgLoading(i);          
+        }
+
+        public void LoadInvoices()
+        {
+            // общие инвойсы
+            Invoices = db.Invoices?.Include(f => f.Employee).Include(f => f.Client).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();          
+        }
+
+        public void LoadEmployees()
+        {
+
+           Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();          
+            foreach (var i in Employees)
+            {
+                ImgLoading(i);
+                i.IsVisible = false;
+            }
+        }
+
+        private void ImgLoading(AbstractUser model)
+        {
+            try
+            {
+                var path = "";
+                if (model is Employee) path = Config.PathToEmployeesDirectory;
+
+                if (model is Client) path = Config.PathToClientsPhotoDirectory;
+
+                if (Directory.Exists(path))
+                {
+                    var file = Directory.GetFiles(path)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    if (file == null) return;
+
+                    using (var stream = new FileStream(file, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
+            }
+            catch 
+            {
+
+            }
+        }
+
+        public ObservableCollection<Client> Clients
+        {
+            get { return GetProperty(() => Clients); }
+            set { SetProperty(() => Clients, value); }
+        }
+
+        public ObservableCollection<Invoice> Invoices
+        {
+            get { return GetProperty(() => Invoices); }
+            set { SetProperty(() => Invoices, value); }
+        }
+
+        public ObservableCollection<Invoice> ClientInvoices
+        {
+            get { return GetProperty(() => ClientInvoices); }
+            set { SetProperty(() => ClientInvoices, value); }
+        }
+
+        public ObservableCollection<Employee> Employees
+        {
+            get { return GetProperty(() => Employees); }
+            set { SetProperty(() => Employees, value); }
+        }
+        #endregion
+
+        #region Переход из списка инвойсов или списков клиентов (загрузка карты)
+        [Command]
+        public void Load(object p)
+        {
+            try
+            {
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+
+                if (p is Client model)
+                {
+                    Model = model;
+                    Init(Model);
+                    if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
+                }
+
+                if (p is Invoice invoice && invoice.Client != null)
+                {
+                    if (invoice.Client == null) return;
+                    Model = invoice.Client;
+                    Init(invoice.Client);
+                    if (navigator?.CurrentPage is PatientsList page)
+                    {
+                        page.clientCard.tabs.SelectedIndex = 2;
+                        if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
+                        {
+                            page.clientCard.Invoices.grid.SelectedItem = invoice;
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+        #endregion
+
+        #region Работа с фильтрами и поиском в списке инвойсов
+        public object EmployeeSearch { get; set; }
+        public object ClientSearch { get; set; }
+        public object DateFromSearch { get; set; }
+        public object DateToSearch { get; set; }
+        public object InvoiceNameSearch { get; set; }
+        public object InvoicePaidSearch { get; set; }
+        public int? InvoicesSearchMode
+        {
+            get { return GetProperty(() => InvoicesSearchMode); }
+            set { SetProperty(() => InvoicesSearchMode, value); }
+        }
+
+        [Command]
+        public void SwitchInvoicesSearchMode(object p)
+        {
+            if (p == null) p = 0;
+            if (int.TryParse(p.ToString(), out int param)) InvoicesSearchMode = param;
+        }
+
+        [Command]
+        public void Search()
+        {
+            try
+            {
+                List<string> where = new List<string>();
+                long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
+                long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+
+                if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
+                if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
+
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
+                {
+                    if (paimentStatus == 1) where.Add("Paid = 1");
+                    if (paimentStatus == 2) where.Add("Paid = 0");
+                }
+
+                if (DateFromSearch != null && DateTime.TryParse(DateFromSearch?.ToString(), out DateTime dateTimeFrom))
+                {
+                    dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
+                }
+
+                if (DateToSearch != null && DateTime.TryParse(DateToSearch?.ToString(), out DateTime dateTimeTo))
+                {
+                    dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
+                }
+
+                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
+                string parameters = "WHERE ";
+                for (int i = 0; i < where.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        parameters += where[i];
+                        continue;
+                    }
+                    parameters += " AND " + where[i];
+                }
+                if (where.Count > 0) parameters += " AND ";
+                parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+
+                //SqlParameter param = SqlParameter("@name", "%Samsung%");
+                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
+                Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+                if (!string.IsNullOrEmpty(InvoiceNameSearch?.ToString()))
+                {
+                    Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
+                }
+
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+
+                if (navigator?.CurrentPage is PatientsList page)
+                {
+                    page.SelectedInvoiceItem();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        #endregion
+
+        #region Работа с разделом карты "Административная"
+        private void Init(Client model)
+        {
+            ClientInfoViewModel = new ClientInfoViewModel(model);
+            IsReadOnly = model?.Id != 0;
+
+            // загружаем инвойсы и дневники отдельного клиента
+            ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
+                
+                //InvoicesViewModel = new InvoicesViewModel(model);
+                TreatmentStageViewModel = new TreatmentStageViewModel(model);
+            
+            
+
+            Document = new ClientsDocumentsViewModel();
+            FieldsViewModel = new FieldsViewModel(model);
+
+
+
+
+            //EventChangeReadOnly += InvoicesViewModel.StatusReadOnly;
+            EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
+            EventChangeReadOnly += TreatmentStageViewModel.StatusReadOnly;
+
+            //InvoicesViewModel.StatusReadOnly(true);
+            TreatmentStageViewModel.StatusReadOnly(true);
+            FieldsViewModel.IsReadOnly = true;
+
+            EventSaveCard += FieldsViewModel.Save;
+            EventSaveCard += TreatmentStageViewModel.Save;
+           // EventNewClientSaved += InvoicesViewModel.NewClientSaved;
+            EventNewClientSaved += TreatmentStageViewModel.NewClientSaved;
+
+            //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
+            SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
+            PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
+            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
+            LoadDocuments();
+        }
+        #endregion
+
+
+        #region Работа с разделом карты "Счета"
+        #region Счета
+        [Command]
+        public void OpenFormInvoice(object p)
+        {
+            try
+            {
+                Invoice invoice;
+
+                if (p is Invoice inv) invoice = inv;
+                else
+                {
+                    var date = DateTime.Now;
+                    invoice = new Invoice()
+                    {
+                        Number = NewInvoiceNumberGenerate(),
+                        Date = date.ToString(),
+                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                        Paid = 0
+                    };
+                }
+               
+                var vm = new InvoiceVM(Employees)
+                {
+                    Name = invoice.Name,
+                    Number = invoice.Number,
+                    Date = invoice.Date,
+                    DateTimestamp = invoice.DateTimestamp,
+                    Employee = Employees.FirstOrDefault(f => f.Id == invoice?.Employee?.Id),
+                    Paid = invoice.Paid,
+                    Model = invoice
+                };
+                vm.EventSave += SaveInvoice;
+                new InvoiceWindow() { DataContext = vm }.Show();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму счета!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        public void SaveInvoice(object p)
+        {
+            try
+            {
+                if (p is Invoice invoice)
+                {
+                    invoice.Client = Model;
+                    invoice.ClientId = Model.Id;
+
+                    if (invoice.Id == 0)
+                    {
+                        db.Entry(invoice).State = EntityState.Added;
+                        ClientInvoices?.Add(invoice);
+                        Invoices?.Add(invoice);
+                    }                        
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
+                    }               
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить счет в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void DeleteInvoice(object p)
+        {
+            try
+            {
+                if (p is Invoice invoice)
+                {
+                   var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                        
+                    db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.Entry(invoice).State = EntityState.Deleted;
+
+                    // может не оказаться этого эл-та в списке, например, он в другом статусе
+                    var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
+                    if (inv != null) Invoices.Remove(inv);
+
+                    var clientInv = ClientInvoices.FirstOrDefault(f => f.Id == invoice.Id);
+                    if (clientInv != null) ClientInvoices.Remove(clientInv);
+
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();           
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удалить счет из базы данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        private string NewInvoiceNumberGenerate()
+        {
+            using (var db = new ApplicationContext())
+            {
+                return int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
+            ? string.Format("{0:00000000}", ++result) : "00000001";
+            }
+        }
+        #endregion
+
+        #region Позиция в смете
+
+        [Command]
+        public void OpenFormInvoiceItem(object p)
+        {
+            try
+            {
+                if (p is InvoiceItemCommandParameters parameter)
+                {
+                    var vm = new InvoiceItemVM(parameter.Param)
+                    {
+                        Invoice = parameter.Invoice,
+                        Type = parameter.Param,
+                        Title = parameter.Param == 0 ? "Услуга" : "Номенклатура",
+                        Model = new InvoiceItems() { Invoice = parameter.Invoice, InvoiceId = parameter.Invoice?.Id },
+
+                    };
+                    vm.EventSave += SaveInvoiceItem;
+                    new InvoiceItemWindow() { DataContext = vm }.Show();
+                }
+
+
+                if (p is InvoiceItems item)
+                {
+                    object selected = null;
+                    using (var db = new ApplicationContext())
+                    {
+                        if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.Id);
+                        else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.Id);
+                    }
+
+                    var vm = new InvoiceItemVM(item.Type)
+                    {
+                        Invoice = item.Invoice,
+                        Type = item.Type,
+                        Count = item.Count,
+                        Price = item.Price,
+                        Title = item.Type == 0 ? "Услуга" : "Номенклатура",
+                        SelectedItem = selected,
+                        Model = item
+                    };
+                    vm.EventSave += SaveInvoiceItem;
+                    new InvoiceItemWindow() { DataContext = vm }.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму добавления услуги!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        public InvoiceItemWindow InvoiceItemWindow;
+
+        [Command]
+        public void SaveInvoiceItem(object p)
+        {
+            try
+            {
+                if (p is InvoiceItems item)
+                {
+                    using (var db = new ApplicationContext())
+                    {
+                        if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
+                        int cnt = db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void DeleteInvoiceItem(object p)
+        {
+            try
+            {
+                if (p is InvoiceItems item)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+                    item.Invoice = null;
+                    using (var db = new ApplicationContext())
+                    {
+                        db.InvoiceItems.Remove(item);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+
+        #endregion
+
+
 
         #region Документы
         [Command]
@@ -154,8 +621,8 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                IsArchiveList = !IsArchiveList; 
-                SetCollection(IsArchiveList);
+                IsArchiveList = !IsArchiveList;
+                LoadClients(IsArchiveList);
             }
             catch (Exception e)
             {
@@ -169,24 +636,14 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public ObservableCollection<Client> Collection
-        {
-            get { return GetProperty(() => Collection); }
-            set { SetProperty(() => Collection, value); }
-        }
+        
 
         public DocumentsWindow DocumentsWindow { get; set; }
         public ClientFieldsWindow FieldsWindow { get; set; }
         public ClientCardControl ClientCardWin { get; set; }
 
-        public void SetCollection(bool isArhive = false)
-        {
-            using (var db = new ApplicationContext())
-            {
-                Collection = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection();
-            }
-        }
 
+/*
         private void ImgLoading(Client model)
         {
             try
@@ -213,74 +670,10 @@ namespace Dental.ViewModels.ClientDir
                 (new ViewModelLog(e)).run();
             }
         }
-
+*/
 
         #region Карта клиента
-        private void Init(Client model)
-        {        
-            ClientInfoViewModel = new ClientInfoViewModel(model);
-            IsReadOnly = model?.Id != 0;
-            Document = new ClientsDocumentsViewModel();
-            foreach (var i in Collection) ImgLoading(i);
 
-            FieldsViewModel = new FieldsViewModel(model);
-
-            using (var db = new ApplicationContext())
-            {
-                InvoicesViewModel = new InvoicesViewModel(model);
-                TreatmentStageViewModel = new TreatmentStageViewModel(model);
-            }
-
-            EventChangeReadOnly += InvoicesViewModel.StatusReadOnly;
-            EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
-            EventChangeReadOnly += TreatmentStageViewModel.StatusReadOnly;
-
-            InvoicesViewModel.StatusReadOnly(true);
-            TreatmentStageViewModel.StatusReadOnly(true);
-            FieldsViewModel.IsReadOnly = true;
-
-            EventSaveCard += FieldsViewModel.Save;
-            EventSaveCard += TreatmentStageViewModel.Save;
-            EventNewClientSaved += InvoicesViewModel.NewClientSaved;
-            EventNewClientSaved += TreatmentStageViewModel.NewClientSaved;
-
-            //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
-            SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
-            PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
-            LoadDocuments();
-        }
-
-        [Command]
-        public void Load(object p)
-        {
-            try
-            {
-                var navigator = (Navigator)Application.Current.Resources["Router"];
-
-                if (p is Client model) 
-                { 
-                    Model = model; 
-                    Init(Model);
-                    if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
-                }
-
-                if (p is Invoice invoice && invoice.Client != null)
-                {
-                    Model = invoice.Client;
-                    Init(invoice.Client);
-                    if (navigator?.CurrentPage is PatientsList page) 
-                    { 
-                        page.clientCard.tabs.SelectedIndex = 2;
-                        if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
-                        {
-                            page.clientCard.Invoices.grid.SelectedItem = invoice;                          
-                        }                           
-                    }                   
-                }
-            }
-            catch{}
-        }
 
         [Command]
         public void Create()
@@ -317,7 +710,7 @@ namespace Dental.ViewModels.ClientDir
                     {
                         db.Clients.Add(Model);
                         // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                        if (IsArchiveList == Model.IsInArchive) Collection?.Insert(0, Model);
+                        if (IsArchiveList == Model.IsInArchive) Clients?.Insert(0, Model);
                         db.SaveChanges();
                         EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
                         EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
@@ -373,8 +766,8 @@ namespace Dental.ViewModels.ClientDir
                     if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
                     // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                    var item = Collection.FirstOrDefault(f => f.Guid == Model.Guid);
-                    if (item != null) Collection.Remove(item);
+                    var item = Clients.FirstOrDefault(f => f.Guid == Model.Guid);
+                    if (item != null) Clients.Remove(item);
 
                     db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                     db.SaveChanges();
@@ -491,7 +884,7 @@ namespace Dental.ViewModels.ClientDir
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
                     photo.CopyTo(Path.Combine(Config.PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
                     new Notification() { Content = "Фото клиента сохраненo!" }.run();
-                    var model = Collection.FirstOrDefault(f => f.Guid == param?.ImageGuid);
+                    var model = Clients.FirstOrDefault(f => f.Guid == param?.ImageGuid);
                     if (model != null)
                     {
                         model.Photo = param.ImagePath;
@@ -519,7 +912,7 @@ namespace Dental.ViewModels.ClientDir
 
                     if (file != null) File.Delete(file);
                     img?.Clear();
-                    var model = Collection.FirstOrDefault(f => f.Guid == img?.ImageGuid);
+                    var model = Clients.FirstOrDefault(f => f.Guid == img?.ImageGuid);
                     if (model != null)
                     {
                         model.Photo = null;

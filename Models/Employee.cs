@@ -12,15 +12,8 @@ using System.Text.Json.Serialization;
 namespace Dental.Models
 {
     [Table("Employees")]
-    public class Employee : AbstractBaseModel, IDataErrorInfo
+    public class Employee : AbstractUser, IDataErrorInfo, ICloneable
     {
-        [NotMapped]
-        public ImageSource Image 
-        {
-            get { return GetProperty(() => Image); }
-            set { SetProperty(() => Image, value); }
-        }
-
         [NotMapped]
         public bool IsVisible
         {
@@ -34,52 +27,7 @@ namespace Dental.Models
             get => ToString();
         }
 
-        [NotMapped]
-        public string Photo
-        {
-            get { return GetProperty(() => Photo); }
-            set { SetProperty(() => Photo, value); }
-        }
-
-
-        [Required(ErrorMessage = @"Поле ""Имя"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
-        public string FirstName {
-            get { return GetProperty(() => FirstName); }
-            set { SetProperty(() => FirstName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
-        }
-
-        [Required(ErrorMessage = @"Поле ""Фамилия"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Имя"" не более 255 символов")]
-        public string LastName
-        {
-            get { return GetProperty(() => LastName); }
-            set { SetProperty(() => LastName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
-        }
-
-        [MaxLength(255, ErrorMessage = @"Максимальная длина строки в поле ""Отчество"" не более 255 символов")]
-        public string MiddleName
-        {
-            get { return GetProperty(() => MiddleName); }
-            set { SetProperty(() => MiddleName, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
-        }
-
-
-        [EmailAddress(ErrorMessage = @"В поле ""Email"" введено некорректное значение")]
-        public string Email
-        {
-            get { return GetProperty(() => Email); }
-            set { SetProperty(() => Email, value?.Trim()); }
-        }
-
         public string Note { get; set; }
-
-        [Phone(ErrorMessage = @"В поле ""Телефон"" введено некорректное значение")]
-        public string Phone
-        {
-            get { return GetProperty(() => Phone); }
-            set { SetProperty(() => Phone, value); }
-        }
 
         public string Post
         {
@@ -106,10 +54,5 @@ namespace Dental.Models
         public object Clone() => this.MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
-
-        public override string ToString() => (LastName + " " + FirstName + " " + MiddleName).Trim(' ');
-
-        [NotMapped]
-        public string FullName { get => ToString(); }
     }
 }

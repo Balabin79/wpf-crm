@@ -4,12 +4,10 @@ using System.Windows.Controls;
 
 namespace Dental.Views.Invoices
 {
-    /// <summary>
-    /// Логика взаимодействия для InvoicesControl.xaml
-    /// </summary>
-    public partial class InvoicesControl : UserControl
+
+    public partial class ClientInvoicesControl : UserControl
     {
-        public InvoicesControl()
+        public ClientInvoicesControl()
         {
             InitializeComponent();
         }

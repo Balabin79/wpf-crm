@@ -86,6 +86,302 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => IsReadOnly, value); }
         }
 
+
+
+        #region Печать
+        /*
+        [Command]
+        public void OpenFormDocuments()
+        {
+            try
+            {
+                //Documents.PrintMenuUpdating += PrintMenuLoading;
+                DocumentsWindow = new DocumentsWindow() { DataContext = Documents };
+                DocumentsWindow.ShowDialog();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        private void PrintMenuLoading()
+        {
+            try
+            {
+                ItemLinksSource = new ObservableCollection<BarButtonItem>();
+                foreach (var doc in Documents.Files)
+                {
+                    var item = new BarButtonItem()
+                    {
+                        Content = doc.Name.Length > 120 ? doc.Name.Substring(0, 119) + "..." : doc.Name,
+                        Glyph = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/XAF/Action_Printing_Preview.png")),
+                        Command = new PrintDocCommand()
+                    };
+
+                    //var binding = new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay };
+                    var binding = new MultiBinding()
+                    {
+                        Converter = new InvoiceMultiBindingConverter()
+                    };
+
+                    binding.Bindings.Add(new Binding() { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource() { Mode = RelativeSourceMode.Self } });
+                    binding.Bindings.Add(new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay });
+
+                    item.SetBinding(BarButtonItem.CommandParameterProperty, binding);
+                    ItemLinksSource.Add(item);
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке загрузить меню печати счетов!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+        
+        public DocumentsWindow DocumentsWindow { get; set; }
+        public InvoicesDocumentsViewModel Documents { get; private set; } = new InvoicesDocumentsViewModel();
+        public ObservableCollection<BarButtonItem> ItemLinksSource
+        {
+            get { return GetProperty(() => ItemLinksSource); }
+            set { SetProperty(() => ItemLinksSource, value); }
+        }*/
+        #endregion
+
+        
+
+
+
+        public Client Client
+        {
+            get { return GetProperty(() => Client); }
+            set { SetProperty(() => Client, value); }
+        }
+
+        public ICollection<Employee> Employees { get; set; }
+        // фильтр показывать оплаченные/неоплаченные счета
+        [Command]
+        public void StatusChanged(object p)
+        {
+            if (int.TryParse(p?.ToString(), out int param))
+            {
+                ShowPaid = param;
+                if (param == -1)
+                {
+                    ShowPaid = null;
+                    SetInvoices();
+                }
+                SetInvoices(ShowPaid);
+                return;
+            }
+            ShowPaid = null;
+            SetInvoices();
+        }
+
+        public int? ShowPaid
+        {
+            get { return GetProperty(() => ShowPaid); }
+            set { SetProperty(() => ShowPaid, value); }
+        }
+
+        [Command]
+        public void PrintInvoice(object p)
+        {
+            try
+            {
+                if (p is PageIntCommandParameters conv)
+                {
+                    ServicesInvoiceReport report = new ServicesInvoiceReport();
+                    var parameter = new Parameter()
+                    {
+                        Name = "Id",
+                        Description = "Id:",
+                        Type = typeof(int),
+                        Value = conv.Param,
+                        Visible = false
+                    };
+                    report.RequestParameters = false;
+                    report.Parameters.Add(parameter);
+                    report.FilterString = "[Id] = [Parameters.Id]";
+
+                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+
+                    //report.Parameters
+                    //report.vendorLogo 
+
+
+                    if (report.DataSource is SqlDataSource source)
+                    {
+                        string connectionName = "DefaultConnection"; // AppSetting.json  
+                        //string connectionString = ConfigurationManager.ConnectionStrings;
+                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
+                        SqlDataSource ds = report.DataSource as SqlDataSource;
+
+                        var con = "XpoProvider=SQLite;" + connectionString;
+                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
+                        
+                    }
+
+                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+            }
+        }
+
+        public void NewClientSaved(Client client) {
+            using (var db = new ApplicationContext())
+                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client(); 
+        }
+
+  
+
+
+
+
+
+
+        /*********************************************************/
+        #region Поиск
+        public object EmployeeSearch { get; set; }
+        public object ClientSearch { get; set; }
+        public object DateFromSearch { get; set; }
+        public object DateToSearch { get; set; }
+        public object InvoiceNameSearch { get; set; }
+        public object InvoicePaidSearch { get; set; }
+        public int? InvoicesSearchMode
+        {
+            get { return GetProperty(() => InvoicesSearchMode); }
+            set { SetProperty(() => InvoicesSearchMode, value); }
+        }
+
+        [Command]
+        public void SwitchInvoicesSearchMode(object p)
+        {
+            if (p == null) p = 0;
+            if (int.TryParse(p.ToString(), out int param)) InvoicesSearchMode = param;
+        }
+
+        [Command]
+        public void Search()
+        {
+            try
+            {
+                List<string> where = new List<string>();
+                long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
+                long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+
+                if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
+                if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
+
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
+                {
+                    if (paimentStatus == 1) where.Add("Paid = 1");
+                    if (paimentStatus == 2) where.Add("Paid = 0");
+                }
+
+                if (DateFromSearch != null && DateTime.TryParse(DateFromSearch.ToString(), out DateTime dateTimeFrom))
+                {
+                    dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
+                }
+
+                if (DateToSearch != null && DateTime.TryParse(DateToSearch.ToString(), out DateTime dateTimeTo))
+                {
+                    dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
+                }
+
+                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
+                string parameters = "WHERE ";
+                for (int i = 0; i < where.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        parameters += where[i];
+                        continue;
+                    }
+                    parameters += " AND " + where[i];
+                }
+                if (where.Count > 0) parameters += " AND ";
+                parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+
+                //SqlParameter param = SqlParameter("@name", "%Samsung%");
+                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
+                using (var db = new ApplicationContext())
+                    Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+                if (!string.IsNullOrEmpty(InvoiceNameSearch.ToString()))
+                {
+                    Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
+                }
+
+                var navigator = (Navigator)Application.Current.Resources["Router"];
+
+                if (navigator?.CurrentPage is PatientsList page)
+                {
+                    page.SelectedInvoiceItem();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        #endregion
+
+        public ObservableCollection<Invoice> Invoices
+        {
+            get { return GetProperty(() => Invoices); }
+            set { SetProperty(() => Invoices, value); }
+        }
+
+        private void SetInvoices(int? showPaid = null)
+        {
+            if (Client?.Id == 0)
+            {
+                Invoices = new ObservableCollection<Invoice>();
+                return;
+            }
+            using (var db = new ApplicationContext())
+            {
+                var query = (Client != null) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
+
+                if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
+
+                Invoices = query?.Include(f => f.Employee).Include(f => f.Client).Include(f => f.InvoiceItems).OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+            }
+        }
+
+        private void ImgLoading(Employee model)
+        {
+            try
+            {
+                if (Directory.Exists(Config.PathToEmployeesDirectory))
+                {
+                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
+                    if (file == null) return;
+
+                    using (var stream = new FileStream(file, FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+
         #region Счета
         [Command]
         public void OpenFormInvoice(object p)
@@ -115,12 +411,11 @@ namespace Dental.ViewModels.Invoices
                     Number = invoice.Number,
                     Date = invoice.Date,
                     DateTimestamp = invoice.DateTimestamp,
-                    Client = invoice?.Client ?? Client,
                     Employee = invoice?.Employee,
                     Paid = invoice.Paid,
                     Model = invoice
                 };
-                vm.EventSave += SaveInvoice;
+               // vm.EventSave += SaveInvoice;
                 new InvoiceWindow() { DataContext = vm }.Show();
             }
             catch
@@ -129,11 +424,12 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
-        public void SaveInvoice(object p)
+     /*   public void SaveInvoice(object p)
         {
             try
             {
-                using (var db = new ApplicationContext()) {
+                using (var db = new ApplicationContext())
+                {
                     if (p is Invoice invoice)
                     {
                         if (invoice.Id == 0)
@@ -167,13 +463,13 @@ namespace Dental.ViewModels.Invoices
                         int cnt = db.SaveChanges();
                         if (cnt > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                     }
-                }          
+                }
             }
             catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить счет в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-        }
+        }*/
 
         [Command]
         public void DeleteInvoice(object p)
@@ -202,6 +498,14 @@ namespace Dental.ViewModels.Invoices
             }
         }
 
+        private string NewNumberGenerate()
+        {
+            using (var db = new ApplicationContext())
+            {
+                return int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
+            ? string.Format("{0:00000000}", ++result) : "00000001";
+            }
+        }
         #endregion
 
         #region Позиция в смете
@@ -301,297 +605,6 @@ namespace Dental.ViewModels.Invoices
         }
         #endregion
 
-
-        #region Печать
-        /*
-        [Command]
-        public void OpenFormDocuments()
-        {
-            try
-            {
-                //Documents.PrintMenuUpdating += PrintMenuLoading;
-                DocumentsWindow = new DocumentsWindow() { DataContext = Documents };
-                DocumentsWindow.ShowDialog();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        private void PrintMenuLoading()
-        {
-            try
-            {
-                ItemLinksSource = new ObservableCollection<BarButtonItem>();
-                foreach (var doc in Documents.Files)
-                {
-                    var item = new BarButtonItem()
-                    {
-                        Content = doc.Name.Length > 120 ? doc.Name.Substring(0, 119) + "..." : doc.Name,
-                        Glyph = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/XAF/Action_Printing_Preview.png")),
-                        Command = new PrintDocCommand()
-                    };
-
-                    //var binding = new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay };
-                    var binding = new MultiBinding()
-                    {
-                        Converter = new InvoiceMultiBindingConverter()
-                    };
-
-                    binding.Bindings.Add(new Binding() { Path = new PropertyPath("Content"), RelativeSource = new RelativeSource() { Mode = RelativeSourceMode.Self } });
-                    binding.Bindings.Add(new Binding() { ElementName = "grid", Path = new PropertyPath("CurrentItem"), Mode = BindingMode.TwoWay });
-
-                    item.SetBinding(BarButtonItem.CommandParameterProperty, binding);
-                    ItemLinksSource.Add(item);
-                }
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке загрузить меню печати счетов!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-        
-        public DocumentsWindow DocumentsWindow { get; set; }
-        public InvoicesDocumentsViewModel Documents { get; private set; } = new InvoicesDocumentsViewModel();
-        public ObservableCollection<BarButtonItem> ItemLinksSource
-        {
-            get { return GetProperty(() => ItemLinksSource); }
-            set { SetProperty(() => ItemLinksSource, value); }
-        }*/
-        #endregion
-
-        private string NewNumberGenerate()
-        {
-            using (var db = new ApplicationContext())
-            {
-                return int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
-            ? string.Format("{0:00000000}", ++result) : "00000001";
-            }
-        }
-
-
-        public ObservableCollection<Invoice> Invoices
-        {
-            get { return GetProperty(() => Invoices); }
-            set { SetProperty(() => Invoices, value); }
-        }
-
-        private void SetInvoices(int? showPaid = null)
-        {
-            if (Client?.Id == 0)
-            {
-                Invoices = new ObservableCollection<Invoice>();
-                return;
-            }
-            using (var db = new ApplicationContext())
-            {
-                var query = (Client != null) ? db.Invoices.Where(f => f.ClientId == Client.Id) : db.Invoices;
-
-                if (showPaid != null) query = query.Where(f => f.Paid == showPaid);
-
-                Invoices = query?.Include(f => f.Employee).Include(f => f.Client).Include(f => f.InvoiceItems).OrderByDescending(f => f.CreatedAt).ToObservableCollection();
-            }
-        }
-
-        public Client Client
-        {
-            get { return GetProperty(() => Client); }
-            set { SetProperty(() => Client, value); }
-        }
-
-        public ICollection<Employee> Employees { get; set; }
-        // фильтр показывать оплаченные/неоплаченные счета
-        [Command]
-        public void StatusChanged(object p)
-        {
-            if (int.TryParse(p?.ToString(), out int param))
-            {
-                ShowPaid = param;
-                if (param == -1)
-                {
-                    ShowPaid = null;
-                    SetInvoices();
-                }
-                SetInvoices(ShowPaid);
-                return;
-            }
-            ShowPaid = null;
-            SetInvoices();
-        }
-
-        public int? ShowPaid
-        {
-            get { return GetProperty(() => ShowPaid); }
-            set { SetProperty(() => ShowPaid, value); }
-        }
-
-        [Command]
-        public void PrintInvoice(object p)
-        {
-            try
-            {
-                if (p is PageIntCommandParameters conv)
-                {
-                    ServicesInvoiceReport report = new ServicesInvoiceReport();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-
-                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
-
-                    //report.Parameters
-                    //report.vendorLogo 
-
-
-                    if (report.DataSource is SqlDataSource source)
-                    {
-                        string connectionName = "DefaultConnection"; // AppSetting.json  
-                        //string connectionString = ConfigurationManager.ConnectionStrings;
-                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
-                        SqlDataSource ds = report.DataSource as SqlDataSource;
-
-                        var con = "XpoProvider=SQLite;" + connectionString;
-                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
-                        
-                    }
-
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
-            }
-        }
-
-        public void NewClientSaved(Client client) {
-            using (var db = new ApplicationContext())
-                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client(); 
-        }
-
-        #region Поиск
-        public object EmployeeSearch { get; set; }
-        public object ClientSearch { get; set; }
-        public object DateFromSearch { get; set; }
-        public object DateToSearch { get; set; }
-        public object InvoiceNameSearch { get; set; }
-        public object InvoicePaidSearch { get; set; }
-        public int? InvoicesSearchMode
-        {
-            get { return GetProperty(() => InvoicesSearchMode); }
-            set { SetProperty(() => InvoicesSearchMode, value); }
-        }
-
-        [Command]
-        public void SwitchInvoicesSearchMode(object p)
-        {
-            if (p == null) p = 0;
-            if (int.TryParse(p.ToString(), out int param)) InvoicesSearchMode = param;
-        }
-
-        [Command]
-        public void Search()
-        {
-            try
-            {
-                List<string> where = new List<string>();
-                long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
-                long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
-
-                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
-
-                if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
-                if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
-
-                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
-                {
-                    if (paimentStatus == 1) where.Add("Paid = 1");
-                    if (paimentStatus == 2) where.Add("Paid = 0");
-                }
-
-                if (DateFromSearch != null && DateTime.TryParse(DateFromSearch.ToString(), out DateTime dateTimeFrom))
-                {
-                    dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
-                }
-
-                if (DateToSearch != null && DateTime.TryParse(DateToSearch.ToString(), out DateTime dateTimeTo))
-                {
-                    dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
-                }
-
-                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
-                string parameters = "WHERE ";
-                for (int i = 0; i < where.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        parameters += where[i];
-                        continue;
-                    }
-                    parameters += " AND " + where[i];
-                }
-                if (where.Count > 0) parameters += " AND ";
-                parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
-
-                //SqlParameter param = SqlParameter("@name", "%Samsung%");
-                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
-                using (var db = new ApplicationContext())
-                    Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
-                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
-                if (!string.IsNullOrEmpty(InvoiceNameSearch.ToString()))
-                {
-                    Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
-                }
-
-                var navigator = (Navigator)Application.Current.Resources["Router"];
-
-                if (navigator?.CurrentPage is PatientsList page)
-                {
-                    page.SelectedInvoiceItem();
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-        #endregion
-
-        private void ImgLoading(Employee model)
-        {
-            try
-            {
-                if (Directory.Exists(Config.PathToEmployeesDirectory))
-                {
-                    var file = Directory.GetFiles(Config.PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
-                    if (file == null) return;
-
-                    using (var stream = new FileStream(file, FileMode.Open))
-                    {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
 
     }
 }

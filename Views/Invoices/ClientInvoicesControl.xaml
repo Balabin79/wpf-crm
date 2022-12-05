@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.Invoices.InvoicesControl"
+﻿<UserControl x:Class="Dental.Views.Invoices.ClientInvoicesControl"
    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -362,7 +362,7 @@
         </dxlc:LayoutGroup.HeaderTemplate>
 
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Invoices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" >
+                 ItemsSource="{Binding ClientInvoices, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" >
             <dxg:GridControl.View>
                 <dxg:TableView  
                     Name="view"
