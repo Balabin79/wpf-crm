@@ -1,5 +1,6 @@
 ﻿using Dental.Infrastructures.Converters;
 using Dental.Models;
+using Dental.Models.Base;
 using Dental.Models.Templates;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -15,13 +16,11 @@ namespace Dental.ViewModels.Invoices
         public delegate void SaveCommand(object m);
         public event SaveCommand EventSave;
 
-        public InvoiceItemVM(int type)
+        public InvoiceItemVM(int type, ApplicationContext db)
         {
-            using (var db = new ApplicationContext())
-            {
-                if (type == 0) Collection = db.Services.ToArray();
-                else Collection = db.Nomenclature.ToArray();
-            }
+            if (type == 0) Collection = db.Services.ToArray();
+            else Collection = db.Nomenclature.ToArray();
+            
         }
 
         public Invoice Invoice
@@ -42,6 +41,13 @@ namespace Dental.ViewModels.Invoices
             get { return GetProperty(() => Model); }
             set { SetProperty(() => Model, value); }
         }
+
+        public IInvoiceItem Element
+        {
+            get { return GetProperty(() => Element); }
+            set { SetProperty(() => Element, value); }
+        }
+
 
         public int Type
         {
@@ -111,6 +117,8 @@ namespace Dental.ViewModels.Invoices
                     item.Price = service?.Price;
                     item.Name = service?.Name;
                     item.Code = service?.Code;
+                    item.ItemId = service?.Id;
+                    item.Item = service;
                 }
 
                 if (SelectedItem is Nomenclature nom)
@@ -120,12 +128,8 @@ namespace Dental.ViewModels.Invoices
                     Model.Price = nom?.Price;
                     Model.Name = nom?.Name;
                     Model.Code = nom?.Code;
-                }
-
-                if (Model.Id > 0)
-                {
-                    Invoice.InvoiceItems.Remove(item);
-                    Invoice.InvoiceItems.Add(item);
+                    item.ItemId = nom?.Id;
+                    item.Item = nom;
                 }
 
                 EventSave?.Invoke(item);

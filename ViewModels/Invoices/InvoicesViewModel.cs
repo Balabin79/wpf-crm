@@ -515,7 +515,7 @@ namespace Dental.ViewModels.Invoices
         {
             try
             {
-                if (p is InvoiceItemCommandParameters parameter)
+               /* if (p is InvoiceItemCommandParameters parameter)
                 {
                     var vm = new InvoiceItemVM(parameter.Param)
                     {
@@ -551,7 +551,7 @@ namespace Dental.ViewModels.Invoices
                     };
                     vm.EventSave += SaveInvoiceItem;
                     new InvoiceItemWindow() { DataContext = vm }.Show();
-                }
+                }*/
             }
             catch (Exception e)
             {

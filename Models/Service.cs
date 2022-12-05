@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 namespace Dental.Models
 {
     [Table("Services")]
-    public class Service : BaseTemplate<Service>
+    public class Service : BaseTemplate<Service>, IInvoiceItem
     {
        [Display(Name = "Код")]
         [Clonable]

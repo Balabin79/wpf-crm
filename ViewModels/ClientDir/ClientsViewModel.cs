@@ -88,6 +88,7 @@ namespace Dental.ViewModels.ClientDir
         public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        public bool CanStatusChanged(object p) => true;
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 
@@ -389,9 +390,10 @@ namespace Dental.ViewModels.ClientDir
                         db.Entry(invoice).State = EntityState.Added;
                         ClientInvoices?.Add(invoice);
                         Invoices?.Add(invoice);
-                    }                        
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
-                    }               
+                    }  
+                    
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
+                }               
             }
             catch
             {
@@ -428,14 +430,8 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        private string NewInvoiceNumberGenerate()
-        {
-            using (var db = new ApplicationContext())
-            {
-                return int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result)
-            ? string.Format("{0:00000000}", ++result) : "00000001";
-            }
-        }
+        private string NewInvoiceNumberGenerate() => int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result) ? string.Format("{0:00000000}", ++result) : "00000001";
+                
         #endregion
 
         #region Позиция в смете
@@ -447,29 +443,24 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (p is InvoiceItemCommandParameters parameter)
                 {
-                    var vm = new InvoiceItemVM(parameter.Param)
+                    var vm = new InvoiceItemVM(parameter.Param, db)
                     {
                         Invoice = parameter.Invoice,
                         Type = parameter.Param,
                         Title = parameter.Param == 0 ? "Услуга" : "Номенклатура",
                         Model = new InvoiceItems() { Invoice = parameter.Invoice, InvoiceId = parameter.Invoice?.Id },
-
                     };
                     vm.EventSave += SaveInvoiceItem;
                     new InvoiceItemWindow() { DataContext = vm }.Show();
                 }
 
-
                 if (p is InvoiceItems item)
                 {
-                    object selected = null;
-                    using (var db = new ApplicationContext())
-                    {
-                        if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.Id);
-                        else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.Id);
-                    }
-
-                    var vm = new InvoiceItemVM(item.Type)
+                    IInvoiceItem selected = null;
+                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
+                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.ItemId);
+                    
+                    var vm = new InvoiceItemVM(item.Type, db)
                     {
                         Invoice = item.Invoice,
                         Type = item.Type,
@@ -477,6 +468,7 @@ namespace Dental.ViewModels.ClientDir
                         Price = item.Price,
                         Title = item.Type == 0 ? "Услуга" : "Номенклатура",
                         SelectedItem = selected,
+                        Element = selected,                       
                         Model = item
                     };
                     vm.EventSave += SaveInvoiceItem;
@@ -498,11 +490,8 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (p is InvoiceItems item)
                 {
-                    using (var db = new ApplicationContext())
-                    {
-                        if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
-                        int cnt = db.SaveChanges();
-                    }
+                    if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
+                    db.SaveChanges();                   
                 }
             }
             catch (Exception e)
@@ -521,11 +510,10 @@ namespace Dental.ViewModels.ClientDir
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
                     item.Invoice = null;
-                    using (var db = new ApplicationContext())
-                    {
-                        db.InvoiceItems.Remove(item);
-                        db.SaveChanges();
-                    }
+
+                    db.InvoiceItems.Remove(item);
+                    db.SaveChanges();
+                    
                 }
             }
             catch (Exception e)
@@ -533,6 +521,37 @@ namespace Dental.ViewModels.ClientDir
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
+
+        #region Работа с фильтрами во вкладке "Счета" в карте клиента
+        // фильтр показывать оплаченные/неоплаченные счета
+        [Command]
+        public void StatusChanged(object p)
+        {
+            try {
+                if (int.TryParse(p?.ToString(), out int param))
+                {
+                    ShowPaid = param;
+                    if (param == -1)
+                    {
+                        ShowPaid = null;
+                        ClientInvoices = db.Invoices?.Where(f => f.ClientId == Model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection();
+                        return;
+                    }
+
+                    ClientInvoices = db.Invoices?.Where(f => f.ClientId == Model.Id && f.Paid == ShowPaid)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection();
+                    return; 
+                }
+            }
+            catch { }
+        }
+
+        public int? ShowPaid
+        {
+            get { return GetProperty(() => ShowPaid); }
+            set { SetProperty(() => ShowPaid, value); }
+        }
+
         #endregion
 
         #endregion
