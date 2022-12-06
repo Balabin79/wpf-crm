@@ -19,7 +19,8 @@
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
-        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars">
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        Name="win">
     <Window.Resources>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:DateToStringConverter x:Key="DateToString"/>
@@ -46,8 +47,8 @@
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                         <dxb:BarButtonItem Content="Добавить отмеченное" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
-                                           Command="{Binding AddCheckedCommand}"
-                                           CommandParameter="{Binding ElementName=view}"
+                                           Command="{Binding VM.AddCheckedCommand}"
+                                           CommandParameter="{Binding ElementName=win}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

@@ -34,6 +34,9 @@ using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.Parameters;
 using DevExpress.DataAccess.Sql;
 using DevExpress.DataAccess.ConnectionParameters;
+using System.Text.Json;
+using DevExpress.Xpf.Grid;
+using System.Text;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -65,10 +68,11 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text:"Ошибка подключения к базе данных при попытке загрузить список клиентов",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
+
         #region Права на выполнение команд
         public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).ClientTemplatesEditable;
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
@@ -94,25 +98,35 @@ namespace Dental.ViewModels.ClientDir
         public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanStatusChanged(object p) => true;
+
+        // Врачебная
+        public bool CanOpenTreatmentForm(object p) => true;
+        public bool CanDeleteTreatment(object p) => true;
+        public bool CanSaveTreatment(object p) => true;
+        public bool CanOpenFormTemplate(object p) => true;
+        // public bool CanCancelForm() => true;
+        // public bool CanAddChecked(object p) => true;
+        // public bool CanClear(object p) => true;
+        // public bool CanToothMarked(object p) => true;
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 
         public void LoadClients(bool isArhive = false)
         {
-            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();        
-            foreach (var i in Clients) ImgLoading(i);          
+            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
+            foreach (var i in Clients) ImgLoading(i);
         }
 
         public void LoadInvoices()
         {
             // общие инвойсы
-            Invoices = db.Invoices?.Include(f => f.Employee).Include(f => f.Client).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();          
+            Invoices = db.Invoices?.Include(f => f.Employee).Include(f => f.Client).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
 
         public void LoadEmployees()
         {
 
-           Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();          
+            Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Employees)
             {
                 ImgLoading(i);
@@ -146,7 +160,7 @@ namespace Dental.ViewModels.ClientDir
                     }
                 }
             }
-            catch 
+            catch
             {
 
             }
@@ -301,43 +315,40 @@ namespace Dental.ViewModels.ClientDir
         #region Работа с разделом карты "Административная"
         private void Init(Client model)
         {
-            ClientInfoViewModel = new ClientInfoViewModel(model);
-            IsReadOnly = model?.Id != 0;
+            try
+            {
+                ClientInfoViewModel = new ClientInfoViewModel(model);
+                IsReadOnly = model?.Id != 0;
 
-            // загружаем инвойсы и дневники отдельного клиента
-            ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
-            // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
-            ShowPaid = null;
-
-            //InvoicesViewModel = new InvoicesViewModel(model);
-            TreatmentStageViewModel = new TreatmentStageViewModel(model);
-            
-            
-
-            Document = new ClientsDocumentsViewModel();
-            FieldsViewModel = new FieldsViewModel(model);
+                // загружаем инвойсы и дневники отдельного клиента
+                ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
+                // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
+                ShowPaid = null;
 
 
+                // Устанавливаем Планы лечения для вкладки "Врачебная" и зубную карту
+                SetClientStages(model);
+                SetTeeth(model);
 
+                Document = new ClientsDocumentsViewModel();
+                FieldsViewModel = new FieldsViewModel(model);
 
-            //EventChangeReadOnly += InvoicesViewModel.StatusReadOnly;
-            EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
-            EventChangeReadOnly += TreatmentStageViewModel.StatusReadOnly;
+                EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
 
-            //InvoicesViewModel.StatusReadOnly(true);
-            TreatmentStageViewModel.StatusReadOnly(true);
-            FieldsViewModel.IsReadOnly = true;
+                FieldsViewModel.IsReadOnly = true;
 
-            EventSaveCard += FieldsViewModel.Save;
-            EventSaveCard += TreatmentStageViewModel.Save;
-           // EventNewClientSaved += InvoicesViewModel.NewClientSaved;
-            EventNewClientSaved += TreatmentStageViewModel.NewClientSaved;
+                EventSaveCard += FieldsViewModel.Save;
 
-            //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
-            SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
-            PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-            Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
-            LoadDocuments();
+                //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
+                SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
+                PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
+                Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
+                LoadDocuments();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
         #endregion
 
@@ -363,7 +374,7 @@ namespace Dental.ViewModels.ClientDir
                         Paid = 0
                     };
                 }
-               
+
                 var vm = new InvoiceVM(Employees)
                 {
                     Name = invoice.Name,
@@ -397,10 +408,10 @@ namespace Dental.ViewModels.ClientDir
                         db.Entry(invoice).State = EntityState.Added;
                         ClientInvoices?.Add(invoice);
                         Invoices?.Add(invoice);
-                    }  
-                    
+                    }
+
                     if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
-                }               
+                }
             }
             catch
             {
@@ -415,9 +426,9 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (p is Invoice invoice)
                 {
-                   var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
-                        
+
                     db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                     db.Entry(invoice).State = EntityState.Deleted;
 
@@ -428,7 +439,7 @@ namespace Dental.ViewModels.ClientDir
                     var clientInv = ClientInvoices.FirstOrDefault(f => f.Id == invoice.Id);
                     if (clientInv != null) ClientInvoices.Remove(clientInv);
 
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();           
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
                 }
             }
             catch
@@ -438,7 +449,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         private string NewInvoiceNumberGenerate() => int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result) ? string.Format("{0:00000000}", ++result) : "00000001";
-                
+
         #endregion
 
         #region Позиция в смете
@@ -466,7 +477,7 @@ namespace Dental.ViewModels.ClientDir
                     IInvoiceItem selected = null;
                     if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
                     else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.ItemId);
-                    
+
                     var vm = new InvoiceItemVM(item.Type, db)
                     {
                         Invoice = item.Invoice,
@@ -475,7 +486,7 @@ namespace Dental.ViewModels.ClientDir
                         Price = item.Price,
                         Title = item.Type == 0 ? "Услуга" : "Номенклатура",
                         SelectedItem = selected,
-                        Element = selected,                       
+                        Element = selected,
                         Model = item
                     };
                     vm.EventSave += SaveInvoiceItem;
@@ -488,8 +499,6 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        public InvoiceItemWindow InvoiceItemWindow;
-
         [Command]
         public void SaveInvoiceItem(object p)
         {
@@ -498,7 +507,7 @@ namespace Dental.ViewModels.ClientDir
                 if (p is InvoiceItems item)
                 {
                     if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
-                    db.SaveChanges();                   
+                    db.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -520,7 +529,6 @@ namespace Dental.ViewModels.ClientDir
 
                     db.InvoiceItems.Remove(item);
                     db.SaveChanges();
-                    
                 }
             }
             catch (Exception e)
@@ -530,7 +538,7 @@ namespace Dental.ViewModels.ClientDir
         }
         #endregion
 
-        #region
+        #region Печать счета
         [Command]
         public void PrintInvoice(object p)
         {
@@ -554,8 +562,6 @@ namespace Dental.ViewModels.ClientDir
 
                     if (report.DataSource is SqlDataSource source)
                     {
-                        //string connectionName = "DefaultConnection"; // AppSetting.json  
-                        //string connectionString = ConfigurationManager.ConnectionStrings;
                         string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
                         SqlDataSource ds = report.DataSource as SqlDataSource;
 
@@ -571,7 +577,6 @@ namespace Dental.ViewModels.ClientDir
                 ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
             }
         }
-
         #endregion
 
         #region Работа с фильтрами во вкладке "Счета" в карте клиента
@@ -579,7 +584,8 @@ namespace Dental.ViewModels.ClientDir
         [Command]
         public void StatusChanged(object p)
         {
-            try {
+            try
+            {
                 if (int.TryParse(p?.ToString(), out int param))
                 {
                     ShowPaid = param;
@@ -591,7 +597,7 @@ namespace Dental.ViewModels.ClientDir
                     }
 
                     ClientInvoices = db.Invoices?.Where(f => f.ClientId == Model.Id && f.Paid == ShowPaid)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection();
-                    return; 
+                    return;
                 }
             }
             catch { }
@@ -602,12 +608,270 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => ShowPaid); }
             set { SetProperty(() => ShowPaid, value); }
         }
-
         #endregion
 
         #endregion
 
+        #region Работа с разделом карты "Врачебная"
+        //Свойства
+        public ObservableCollection<TreatmentStage> ClientStages
+        {
+            get { return GetProperty(() => ClientStages); }
+            set { SetProperty(() => ClientStages, value); }
+        }
+        public PatientTeeth Teeth
+        {
+            get { return GetProperty(() => Teeth); }
+            set { SetProperty(() => Teeth, value); }
+        }
+        public ChildTeeth ChildTeeth
+        {
+            get { return GetProperty(() => ChildTeeth); }
+            set { SetProperty(() => ChildTeeth, value); }
+        }
 
+        public void SetTeeth(Client client)
+        {
+            try
+            {
+                if (client?.Id != 0 && client.Teeth?.Length > 100) Teeth = JsonSerializer.Deserialize<PatientTeeth>(client.Teeth);
+                else Teeth = new PatientTeeth();
+
+                if (client?.Id != 0 && client.ChildTeeth?.Length > 100) ChildTeeth = JsonSerializer.Deserialize<ChildTeeth>(client.ChildTeeth);
+                else ChildTeeth = new ChildTeeth();
+            }
+            catch
+            {
+                Teeth = new PatientTeeth();
+                ChildTeeth = new ChildTeeth();
+            }
+        }
+
+        private void SetClientStages(Client client) => ClientStages = client?.Id == 0 ? new ObservableCollection<TreatmentStage>() : db.TreatmentStage.Where(f => f.ClientId == client.Id).Include(f => f.Client).ToObservableCollection();
+
+        [Command]
+        public void OpenTreatmentForm(object p)
+        {
+            try
+            {
+                if (p is TreatmentStage model)
+                {
+                    var vm = new TreatmentStageVM() { Date = model?.Date, Name = model?.Name, Model = model };
+                    vm.EventSave += SaveTreatment;
+                    new TreatmentStageWindow() { DataContext = vm }.Show();
+                }
+                else
+                {
+                    var vm = new TreatmentStageVM() { Model = new TreatmentStage() { Client = Model, ClientId = Model.Id } };
+                    vm.EventSave += SaveTreatment;
+                    new TreatmentStageWindow() { DataContext = vm }?.Show();
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void SaveTreatment(object p)
+        {
+            try
+            {
+                if (p is TreatmentStage model)
+                {
+                    if (model?.Date == null) model.Date = DateTime.Now.ToShortDateString();
+                    if (string.IsNullOrEmpty(model?.Name)) model.Date = "Без названия";
+                    if (model?.Id == 0)
+                    {
+                        db?.TreatmentStage.Add(model);
+                        ClientStages?.Add(model);
+                    }
+                }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Сохранено в базу данных!" }.run();
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void DeleteTreatment(object p)
+        {
+            try
+            {
+                if (p is TreatmentStage model)
+                {
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить область?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                    if (response.ToString() == "No") return;
+
+                    db.TreatmentStage.Remove(model);
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Удалено из базы данных!" }.run();
+                    ClientStages.Remove(model);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления области!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void OpenFormTemplate(object p)
+        {
+            if (p is TreatmentParameters parameters)
+            {
+                if (parameters.Model is TreatmentStage model)
+                {
+                    var vm = new SelectTemplateInTreatmentStageVM() { TemplateName = parameters.Name, Model = model, VM = this };
+
+                    switch (parameters.Name)
+                    {
+                        case "Complaint":
+                            vm.Templates = db.Complaints.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Anamnes":
+                            vm.Templates = db.Anamneses.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Objectivly":
+                            vm.Templates = db.Objectively.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "DescriptionXRay":
+                            vm.Templates = db.DescriptionXRay.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Diagnos":
+                            vm.Templates = db.Diagnoses.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Plan":
+                            vm.Templates = db.TreatmentPlans.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Treatment":
+                            vm.Templates = db.Diaries.Select(f => new TreeTemplate() // override on Treatment
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                        case "Allergy":
+                            vm.Templates = db.Allergies.Select(f => new TreeTemplate()
+                            {
+                                Id = f.Id,
+                                IsDir = f.IsDir,
+                                ParentId = f.ParentId,
+                                Name = f.Name
+                            }).ToArray(); break;
+                    }
+                    new SelectValueInTemplateWin() { DataContext = vm }?.ShowDialog();
+                }
+            }
+        }
+
+        [Command]
+        public void AddChecked(object p)
+        {
+            try
+            {
+                if (p is SelectValueInTemplateWin win && win.view is TreeListView tree && tree.DataContext is SelectTemplateInTreatmentStageVM vm) 
+                {
+                    var values = vm.Templates.Where(f => f.IsChecked == true).ToArray();
+                    var str = new StringBuilder();
+                    values.ForEach(f => str.Append(f.Name + "\n"));
+
+                    int idx = ClientStages.IndexOf(f => f.Guid == vm.Model?.Guid);
+                    if (idx < 0) return;
+
+                    switch (vm.TemplateName)
+                    {
+                        case "Complaint": ClientStages[idx].Complaints = str.ToString(); break;
+                        case "Anamnes": ClientStages[idx].Anamneses = str.ToString(); break;
+                        case "Objectivly": ClientStages[idx].Objectively = str.ToString(); break;
+                        case "DescriptionXRay": ClientStages[idx].DescriptionXRay = str.ToString(); break;
+                        case "Diagnos": ClientStages[idx].Diagnoses = str.ToString(); break;
+                        case "Plan": ClientStages[idx].Plans = str.ToString(); break;
+                        case "Treatment": ClientStages[idx].Treatments = str.ToString(); break;
+                        case "Allergy": ClientStages[idx].Allergies = str.ToString(); break;
+                    }                                   
+                    win?.Close();
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void Clear(object p)
+        {
+            try
+            {
+                if (p is TreatmentParameters parameters)
+                {
+                    if (parameters.Model is TreatmentStage model)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание", text: "Очистить поле?",
+                            messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                        if (response.ToString() == "No") return;
+
+                        switch (parameters.Name)
+                        {
+                            case "Complaint": model.Complaints = null; break;
+                            case "Anamnes": model.Anamneses = null; break;
+                            case "Objectivly": model.Objectively = null; break;
+                            case "DescriptionXRay": model.DescriptionXRay = null; break;
+                            case "Diagnos": model.Diagnoses = null; break;
+                            case "Plan": model.Plans = null; break;
+                            case "Treatment": model.Treatments = null; break;
+                            case "Allergy": model.Allergies = null; break;
+                            case "Recomendation": model.Recommendations = null; break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке очистить поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+
+
+        #endregion
 
         #region Документы
         [Command]
@@ -627,7 +891,7 @@ namespace Dental.ViewModels.ClientDir
                 DocumentsWindow = new DocumentsWindow() { DataContext = vm };
                 DocumentsWindow.Show();
             }
-            catch 
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -706,41 +970,11 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        
+
 
         public DocumentsWindow DocumentsWindow { get; set; }
         public ClientFieldsWindow FieldsWindow { get; set; }
         public ClientCardControl ClientCardWin { get; set; }
-
-
-/*
-        private void ImgLoading(Client model)
-        {
-            try
-            {
-                if (Directory.Exists(Config.PathToClientsPhotoDirectory))
-                {
-                    var file = Directory.GetFiles(Config.PathToClientsPhotoDirectory)?.FirstOrDefault(f => f.Contains(model.Guid));
-                    if (file == null) return;
-
-                    using (var stream = new FileStream(file, FileMode.Open))
-                    {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-*/
 
         #region Карта клиента
 
@@ -756,7 +990,7 @@ namespace Dental.ViewModels.ClientDir
                 var navigator = (Navigator)Application.Current.Resources["Router"];
                 if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
             }
-            catch {}
+            catch { }
         }
 
         [Command]
@@ -774,8 +1008,7 @@ namespace Dental.ViewModels.ClientDir
                 bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
 
-                using (var db = new ApplicationContext())
-                {
+
                     if (Model.Id == 0) // новый элемент
                     {
                         db.Clients.Add(Model);
@@ -797,13 +1030,13 @@ namespace Dental.ViewModels.ClientDir
                             notificationShowed = true;
                         }
                     }
-                }
+                
                 if (Model != null)
                 {
                     if (EventSaveCard?.Invoke(Model) == true && !notificationShowed) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных клиента возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -858,7 +1091,7 @@ namespace Dental.ViewModels.ClientDir
                 SelectedItem();
                 // SetCollection();
             }
-            catch 
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -913,17 +1146,6 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => FieldsViewModel, value); }
         }
 
-        public InvoicesViewModel InvoicesViewModel
-        {
-            get { return GetProperty(() => InvoicesViewModel); }
-            set { SetProperty(() => InvoicesViewModel, value); }
-        }
-
-        public TreatmentStageViewModel TreatmentStageViewModel
-        {
-            get { return GetProperty(() => TreatmentStageViewModel); }
-            set { SetProperty(() => TreatmentStageViewModel, value); }
-        }
 
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
 
@@ -1077,7 +1299,7 @@ namespace Dental.ViewModels.ClientDir
                     }
                 }
 
-                if (PathToUserFiles!= null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
+                if (PathToUserFiles != null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
 
                 File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
 

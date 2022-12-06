@@ -78,7 +78,7 @@
                             Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" 
                             AllowQuickCustomization="False" ShowDragWidget="False">
                             <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -127,7 +127,7 @@
                             <dxb:ToolBarControl Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -177,7 +177,7 @@
                                 Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -226,7 +226,7 @@
                             <dxb:ToolBarControl Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -275,7 +275,7 @@
                             <dxb:ToolBarControl Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -325,7 +325,7 @@
                                 Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -374,7 +374,7 @@
                             <dxb:ToolBarControl Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >
@@ -423,7 +423,7 @@
                             <dxb:ToolBarControl Background="Transparent"
                                 Orientation="Vertical" BarItemDisplayMode="Default" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False" ShowDragWidget="False">
                                 <dxb:BarButtonItem 
-                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormCommand}"
+                                            Command="{Binding ElementName=view, Path=DataContext.OpenFormTemplateCommand}"
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                             Content="Добавить из шаблонов" >

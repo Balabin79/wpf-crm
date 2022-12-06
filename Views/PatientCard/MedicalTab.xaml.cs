@@ -29,19 +29,19 @@ namespace Dental.Views.PatientCard
         {
             childTeethPage.Visibility = Visibility.Collapsed;
             teethPage.Visibility = Visibility.Visible;
-            if (childTeethPage.DataContext is TreatmentStageViewModel vm && vm.Client != null) vm.Client.IsChild = false;
+            if (childTeethPage.DataContext is ClientsViewModel vm && vm.Model != null) vm.Model.IsChild = false;
         }
 
         private void ToggleSwitch_Checked(object sender, RoutedEventArgs e)
         {          
             childTeethPage.Visibility = Visibility.Visible;
             teethPage.Visibility = Visibility.Collapsed;
-            if (childTeethPage.DataContext is TreatmentStageViewModel vm && vm.Client != null) vm.Client.IsChild = true; 
+            if (childTeethPage.DataContext is ClientsViewModel vm && vm.Model != null) vm.Model.IsChild = true; 
         }
 
         private void teethPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (childTeethPage.DataContext is TreatmentStageViewModel vm && vm.Client?.IsChild == true)
+            if (childTeethPage.DataContext is ClientsViewModel vm && vm.Model?.IsChild == true)
             {
                 childTeethPage.Visibility = Visibility.Visible;
                 teethPage.Visibility = Visibility.Collapsed;
@@ -55,7 +55,7 @@ namespace Dental.Views.PatientCard
 
         private void childTeethPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (childTeethPage.DataContext is TreatmentStageViewModel vm && vm.Client?.IsChild == true)
+            if (childTeethPage.DataContext is ClientsViewModel vm && vm.Model?.IsChild == true)
             {
                 childTeethPage.Visibility = Visibility.Visible;
                 teethPage.Visibility = Visibility.Collapsed;
