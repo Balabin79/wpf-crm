@@ -29,6 +29,11 @@ using System.Diagnostics;
 using System.Windows.Media;
 using Dental.Views.Invoices;
 using Dental.Infrastructures.Converters;
+using Dental.Reports;
+using DevExpress.Xpf.Printing;
+using DevExpress.XtraReports.Parameters;
+using DevExpress.DataAccess.Sql;
+using DevExpress.DataAccess.ConnectionParameters;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -301,9 +306,11 @@ namespace Dental.ViewModels.ClientDir
 
             // загружаем инвойсы и дневники отдельного клиента
             ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
-                
-                //InvoicesViewModel = new InvoicesViewModel(model);
-                TreatmentStageViewModel = new TreatmentStageViewModel(model);
+            // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
+            ShowPaid = null;
+
+            //InvoicesViewModel = new InvoicesViewModel(model);
+            TreatmentStageViewModel = new TreatmentStageViewModel(model);
             
             
 
@@ -521,6 +528,50 @@ namespace Dental.ViewModels.ClientDir
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
+
+        #region
+        [Command]
+        public void PrintInvoice(object p)
+        {
+            try
+            {
+                if (p is PageIntCommandParameters conv)
+                {
+                    ServicesInvoiceReport report = new ServicesInvoiceReport();
+                    var parameter = new Parameter()
+                    {
+                        Name = "Id",
+                        Description = "Id:",
+                        Type = typeof(int),
+                        Value = conv.Param,
+                        Visible = false
+                    };
+                    report.RequestParameters = false;
+                    report.Parameters.Add(parameter);
+                    report.FilterString = "[Id] = [Parameters.Id]";
+                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+
+                    if (report.DataSource is SqlDataSource source)
+                    {
+                        //string connectionName = "DefaultConnection"; // AppSetting.json  
+                        //string connectionString = ConfigurationManager.ConnectionStrings;
+                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
+                        SqlDataSource ds = report.DataSource as SqlDataSource;
+
+                        var con = "XpoProvider=SQLite;" + connectionString;
+                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
+                    }
+
+                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                }
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+            }
+        }
+
         #endregion
 
         #region Работа с фильтрами во вкладке "Счета" в карте клиента

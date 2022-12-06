@@ -325,13 +325,13 @@
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.OpenFormInvoiceCommand}" 
                                 Glyph="{dx:DXImage SvgImages/Outlook Inspired/CustomerQuickSales.svg}"
                                 Content="Создать счет" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                 />
 
                             <dxb:BarButtonItem 
                                 Content="Все счета" Margin="0 0 5 0"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
                                 CommandParameter="1"
@@ -339,7 +339,7 @@
 
                             <dxb:BarButtonItem 
                                 Content="Оплаченные" Margin="0 0 5 0"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
@@ -348,7 +348,7 @@
 
                             <dxb:BarButtonItem 
                                 Content="Не оплаченные"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
@@ -412,7 +412,7 @@
                             Glyph="{dx:DXImage SvgImages/Outlook Inspired/CustomerQuickSales.svg}"
                             Content="Создать счет" 
                             KeyGesture="Ctrl+N"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
 
                         <dxb:BarButtonItem 
@@ -423,7 +423,7 @@
                             Content="Редактировать счет" 
                             Command="{Binding ElementName=grid, Path=DataContext.OpenFormInvoiceCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             />
 
                         <dxb:BarButtonItem  
@@ -432,11 +432,11 @@
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <dxb:BarButtonItem 
                             Content="Печать"                                                            
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                             KeyGesture="Ctrl+P" GlyphSize="Small" GlyphAlignment="Left" 
                             Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"

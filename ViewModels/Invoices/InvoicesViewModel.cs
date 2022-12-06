@@ -183,56 +183,9 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => ShowPaid, value); }
         }
 
-        [Command]
-        public void PrintInvoice(object p)
-        {
-            try
-            {
-                if (p is PageIntCommandParameters conv)
-                {
-                    ServicesInvoiceReport report = new ServicesInvoiceReport();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-
-                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
-
-                    //report.Parameters
-                    //report.vendorLogo 
-
-
-                    if (report.DataSource is SqlDataSource source)
-                    {
-                        string connectionName = "DefaultConnection"; // AppSetting.json  
-                        //string connectionString = ConfigurationManager.ConnectionStrings;
-                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
-                        SqlDataSource ds = report.DataSource as SqlDataSource;
-
-                        var con = "XpoProvider=SQLite;" + connectionString;
-                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
-                        
-                    }
-
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
-            }
-        }
 
         public void NewClientSaved(Client client) {
-            using (var db = new ApplicationContext())
-                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client(); 
+               // Client = db.Clients.FirstOrDefault(f => f.Id == client.Id) ?? new Client(); 
         }
 
   
