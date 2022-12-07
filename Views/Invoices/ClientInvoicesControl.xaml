@@ -39,7 +39,6 @@
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
 
-
                     <DataTemplate x:Key="ContentDetail" x:Name="dataTemplate">
                         <Grid  VerticalAlignment="Stretch" Margin="5" MaxHeight="1200" x:Name="templ" >
 
@@ -467,7 +466,6 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Margin="0 3 0 0"  Text="{DXBinding Expr='Row.Name + ` №` + Row.Number + ` от ` + Row.Date + ( Row.Employee == null ? `` : ` (` + Row.Employee + `)`) ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                         </StackPanel>
-
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
@@ -516,9 +514,7 @@
             </dxg:GridColumn>
 
             <dxg:GridControl.DetailDescriptor>
-                <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor" >
-                    
-                </dxg:ContentDetailDescriptor>
+                <dxg:ContentDetailDescriptor ContentTemplate="{StaticResource ContentDetail}" HeaderContent="ContentDetailDescriptor" />
             </dxg:GridControl.DetailDescriptor>
         </dxg:GridControl>
 

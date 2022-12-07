@@ -33,7 +33,7 @@
         Header="Записи в расписании">
        
         <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                 ItemsSource="{Binding Path=Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
+                 ItemsSource="{Binding Appointments, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" 
                          >
             <dxg:GridControl.View>
                 <dxg:TableView  

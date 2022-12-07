@@ -16,6 +16,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
+        x:Name="win"
        Closing="Window_Closing"
       Icon="/Resources/Icons/te4.ico" 
       Title="B6Dental" >

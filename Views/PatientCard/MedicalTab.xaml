@@ -15,7 +15,8 @@
              xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
              xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             x:Name="userControl">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -203,16 +204,17 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <dxe:ToggleSwitch Grid.Row="0"
-                                  ContentPlacement="Inside" HorizontalAlignment="Left" CheckedStateContent="Детская" UncheckedStateContent="Взрослая"
+                                  ContentPlacement="Inside" HorizontalAlignment="Left" CheckedStateContent="Детская" UncheckedStateContent="Взрослая"        
+                                  Checked="ToggleSwitch_Checked"
                                   Unchecked="ToggleSwitch_Unchecked"
                                   ToggleSwitchWidth="80"
-                                  IsChecked="{Binding Client.IsChild, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  Checked="ToggleSwitch_Checked"
+                                  IsChecked="{DXBinding Expr='Model.IsChild == 1',  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsEnabled="{DXBinding Expr='IsReadOnly == false and Model.Id !=0', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                   />
 
-                <local:TeethPage DataContext="{Binding}"  Grid.Row="1" x:Name="teethPage" Loaded="teethPage_Loaded"/>
-                <local:ChildTeethPage DataContext="{Binding}"  Grid.Row="1" x:Name="childTeethPage" Loaded="childTeethPage_Loaded"/>
+                <local:TeethPage Loaded="teethPage_Loaded" DataContext="{Binding}"  Grid.Row="1" x:Name="teethPage" Visibility="{DXBinding Expr='Model.IsChild == 1 or Model.IsChild == null ? `Visible` : `Collapsed`', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+
+                <local:ChildTeethPage Loaded="childTeethPage_Loaded" DataContext="{Binding}"  Grid.Row="1" x:Name="childTeethPage" Visibility="{DXBinding Expr='Model.IsChild == tr ? `Visible` : `Collapsed`', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
             </Grid>
         </dx:DXTabItem>
     </dx:DXTabControl>

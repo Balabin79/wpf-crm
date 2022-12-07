@@ -42,7 +42,7 @@ namespace Dental.Models
 
         public string Teeth { get; set; }
         public string ChildTeeth { get; set; }
-        public bool? IsChild { get; set; }
+        public int? IsChild { get; set; }
 
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;

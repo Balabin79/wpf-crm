@@ -23,9 +23,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="{Binding ElementName=uc, Path=RowPositionAbbr}" Name="txtBlock"
-                   Text="{Binding ElementName=uc, Path=Tooth.Abbr}" FontSize="16"  HorizontalAlignment="Center" Foreground="Gray" FontWeight="DemiBold"/>
+                   Text="{Binding ElementName=uc, Path=Tooth.Abbr}" FontSize="14"  HorizontalAlignment="Center" Foreground="Gray" FontWeight="DemiBold"/>
         <Button Grid.Row="1" BorderBrush="Transparent" Padding="0" BorderThickness="0" dxb:BarManager.MenuShowMouseButton="LeftButton">
-            <Image Source="{Binding ElementName=uc, Path=Tooth.ToothImagePath}" Height="40" Width="40" VerticalAlignment="Center"/>
+            <Image Source="{Binding ElementName=uc, Path=Tooth.ToothImagePath}" Height="40" Width="25" VerticalAlignment="Center"/>
             <dxb:BarManager.DXContextMenu >
                 <dxb:PopupMenu>
                     <dxb:PopupMenu.Items>
@@ -202,6 +202,6 @@
             </dxb:BarManager.DXContextMenu>
         </Button>
         <TextBlock  Grid.Row="{Binding ElementName=uc, Path=RowPositionNumber}" 
-                   Text="{Binding ElementName=uc, Path=Tooth.ToothNumber}" FontSize="16" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Gray"/>
+                   Text="{Binding ElementName=uc, Path=Tooth.ToothNumber}" FontSize="14" HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="Gray"/>
     </Grid>
 </UserControl>

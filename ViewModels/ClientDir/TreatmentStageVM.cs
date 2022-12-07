@@ -20,6 +20,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Date, value); }
         }
 
+        [Required(ErrorMessage = @"Поле ""Название области"" обязательно для заполнения")]
         public string Name
         {
             get { return GetProperty(() => Name); }

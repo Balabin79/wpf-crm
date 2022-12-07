@@ -28,6 +28,7 @@
 
                     <ControlTemplate x:Key="popupContentTemplate">
                         <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True" >
+                            
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn FieldName="FullName" Header="Фамилия Имя Отчество" />
                                 <dxg:GridColumn FieldName="Image" Width="60" FixedWidth="True" Header="Фото">
@@ -148,7 +149,7 @@
             </StackPanel>
             <DockPanel>
                 <dxe:TextEdit Margin="0 5 0 5" NullText="Название счета" DockPanel.Dock="Left" 
-                              Width="172" 
+                              Width="172"  
                               Text="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <dxb:ToolBarControl Background="Transparent" Margin="0 2 0 0"

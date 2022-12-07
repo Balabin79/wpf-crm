@@ -10,8 +10,9 @@
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              dx:ThemeManager.ThemeName="Office2019White" 
+             Name="Teeth"
              >
-    <Grid  VerticalAlignment="Top" x:Name="gridTeeth" HorizontalAlignment="Center">
+    <Grid  VerticalAlignment="Top" x:Name="gridTeeth" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -34,30 +35,29 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <local:ToothControl Grid.Row="0" Grid.Column="0" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth55, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="1" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth54, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="2" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth53, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="3" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth52, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="4" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth51, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="6" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth61, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="7" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth62, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="8" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth63, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="9" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="0" Grid.Column="10" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth65, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            
-            <Rectangle  Fill="LightGray" Height="1" Grid.ColumnSpan="17"  Grid.Row="1"  HorizontalAlignment="Stretch"  />
-            <Rectangle  Fill="LightGray" Width="1" Grid.RowSpan="3"  Grid.Row="0"  VerticalAlignment="Stretch" Grid.Column="5"  />
+            <local:ToothControl Grid.Row="0" Grid.Column="0" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth55, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="1" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth54, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="2" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth53, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="3" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth52, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="4" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth51, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="6" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth61, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="7" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth62, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="8" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth63, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="9" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth64, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="0" Grid.Column="10" RowPositionAbbr="0" RowPositionNumber="2" Tooth="{Binding ChildTeeth.Tooth65, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <local:ToothControl Grid.Row="2" Grid.Column="0" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth85, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="1" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth84, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="2" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth83, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="3" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth82, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="4" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth81, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="6" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth71, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="7" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth72, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="8" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth73, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="9" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth74, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <local:ToothControl Grid.Row="2" Grid.Column="10" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth75, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Rectangle  Fill="LightGray" Height="1" Grid.ColumnSpan="17"  Grid.Row="1"  HorizontalAlignment="Stretch"  />
+
+            <local:ToothControl Grid.Row="2" Grid.Column="0" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth85, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="1" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth84, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="2" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth83, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="3" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth82, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="4" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth81, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="6" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth71, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="7" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth72, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="8" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth73, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="9" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth74, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <local:ToothControl Grid.Row="2" Grid.Column="10" RowPositionAbbr="2" RowPositionNumber="0" Tooth="{Binding ChildTeeth.Tooth75, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{DXBinding Expr='@e(Teeth).DataContext.IsReadOnly != true and @e(Teeth).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </Grid>
 </UserControl>

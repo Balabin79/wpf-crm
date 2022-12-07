@@ -14,7 +14,6 @@ namespace Dental.ViewModels.ClientDir
     {
         public ClientInfoViewModel(Client client)
         {
-            //Estimates = new ObservableCollection<Estimate>();
             Id = client.Id;
             Guid = client.Guid;
             FirstName = client.FirstName;
@@ -32,7 +31,6 @@ namespace Dental.ViewModels.ClientDir
             PassportNo = client.PassportNo;
             PassportIssuanceDate = client.PassportIssuanceDate;
             WhomIssued = client.WhomIssued;
-            IsChild = client.IsChild;
             Image = client.Image;
             Photo = client.Photo;
         }
@@ -113,8 +111,6 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Snils, value?.Trim()); }
         }
 
-        public bool? IsChild { get; set; } = false;
-
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
@@ -134,13 +130,6 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => Photo); }
             set { SetProperty(() => Photo, value); }
         }
-
-
-        /* public ObservableCollection<Estimate> Estimates
-         {
-             get { return GetProperty(() => Estimates); }
-             set { SetProperty(() => Estimates, value); }
-         }*/
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -206,7 +195,6 @@ namespace Dental.ViewModels.ClientDir
             client.PassportNo = PassportNo;
             client.PassportIssuanceDate = PassportIssuanceDate;
             client.WhomIssued = WhomIssued;
-            client.IsChild = IsChild;
             client.Image = Image;
             client.Photo = Photo;
             return client;

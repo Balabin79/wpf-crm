@@ -37,6 +37,10 @@ using DevExpress.DataAccess.ConnectionParameters;
 using System.Text.Json;
 using DevExpress.Xpf.Grid;
 using System.Text;
+using System.Windows.Controls;
+using DevExpress.Xpf.LayoutControl;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -46,13 +50,6 @@ namespace Dental.ViewModels.ClientDir
 
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
-
-        public delegate void NewClientSaved(Client client);
-        public event NewClientSaved EventNewClientSaved;
-
-        // bool чтобы знать есть ли изменения в другой вкладке (для показа уведомления)
-        public delegate bool SaveCard(Client client);
-        public event SaveCard EventSaveCard;
 
         public ClientsViewModel()
         {
@@ -104,10 +101,9 @@ namespace Dental.ViewModels.ClientDir
         public bool CanDeleteTreatment(object p) => true;
         public bool CanSaveTreatment(object p) => true;
         public bool CanOpenFormTemplate(object p) => true;
-        // public bool CanCancelForm() => true;
-        // public bool CanAddChecked(object p) => true;
-        // public bool CanClear(object p) => true;
-        // public bool CanToothMarked(object p) => true;
+        public bool CanAddChecked(object p) => true;
+        public bool CanClear(object p) => true;
+        public bool CanToothMarked(object p) => true;
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 
@@ -325,21 +321,21 @@ namespace Dental.ViewModels.ClientDir
                 // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
                 ShowPaid = null;
 
-
                 // Устанавливаем Планы лечения для вкладки "Врачебная" и зубную карту
                 SetClientStages(model);
                 SetTeeth(model);
 
-                Document = new ClientsDocumentsViewModel();
-                FieldsViewModel = new FieldsViewModel(model);
+                // загружаем встречи для вкладки "Посещения"
+                Appointments = db.Appointments.Where(f => f.ClientInfoId == model.Id).Include(f => f.Employee).Include(f => f.Service).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Appointments>();
 
+                // вкладка "Документы"
+                Document = new ClientsDocumentsViewModel();
+
+                FieldsViewModel = new FieldsViewModel(model, db);
                 EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
 
                 FieldsViewModel.IsReadOnly = true;
 
-                EventSaveCard += FieldsViewModel.Save;
-
-                //fieldsViewModel.EventChangeVisibleTab += clientCardViewModel.SetTabVisibility;
                 SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
@@ -869,8 +865,59 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
+        [Command]
+        public void ToothMarked(object p)
+        {
+            try
+            {
+                if (p is ToothCommandParameters param)
+                {
+                    switch (param.Diagnos)
+                    {
+                        case "Healthy": param.Tooth.ToothImagePath = TeethImages.ImgPathGreen; param.Tooth.Abbr = "З"; break;
+                        case "Missing": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "О"; break;
+                        case "Impacted": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "НП"; break;
+                        case "Radiks": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "КН"; break;
+                        case "Caries": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "К"; break;
+                        case "Pulpit": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "П"; break;
+                        case "Gangrene": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Г"; break;
+                        case "Granuloma": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Гр"; break;
+                        case "Deletable": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Э"; break;
+                        case "MetalCrown": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "КМ"; break;
+                        case "Bridge": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "М"; break;
+                        case "Rp": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПР"; break;
+                        case "Seal": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПЛ"; break;
+                        case "Imp": param.Tooth.ToothImagePath = TeethImages.ImgPathImp; param.Tooth.Abbr = "Имп"; break;
+                    }
+                }
+            }
+            catch
+            {
 
+            }
+        }
 
+        public void SaveTeeth(Client client)
+        {
+            try
+            {
+                client.Teeth = JsonSerializer.Serialize(Teeth);
+                client.ChildTeeth = JsonSerializer.Serialize(ChildTeeth);
+            }
+            catch
+            {
+                client.Teeth = null;
+                client.ChildTeeth = null;
+            }
+        }
+        #endregion
+
+        #region Работа с разделом карты "Дополнительные поля"
+        public ObservableCollection<Appointments> Appointments
+        {
+            get { return GetProperty(() => Appointments); }
+            set { SetProperty(() => Appointments, value); }
+        }
         #endregion
 
         #region Документы
@@ -927,28 +974,27 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Documents, value); }
         }
         #endregion
-
+        
+        #region Раздел карты "Дополнительные поля"
         [Command]
         public void OpenFormFields()
         {
             try
             {
-                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == FieldsWindow?.ToString()).FirstOrDefault();
-                if (wnd != null)
-                {
-                    wnd.Activate();
-                    return;
-                }
-
-                FieldsWindow = new ClientFieldsWindow() { DataContext = new AdditionalClientFieldsViewModel() };
-                FieldsWindow.Show();
+                var vm = new AdditionalClientFieldsViewModel(db);
+                vm.EventFieldChanges += UpdateFields;
+                new ClientFieldsWindow() { DataContext = vm }?.Show();
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Дополнительные поля\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
+        public void UpdateFields() => 
+            FieldsViewModel.ClientFieldsLoading(Model);
+        
+        #endregion
 
         [Command]
         public void ShowArchive()
@@ -973,8 +1019,6 @@ namespace Dental.ViewModels.ClientDir
 
 
         public DocumentsWindow DocumentsWindow { get; set; }
-        public ClientFieldsWindow FieldsWindow { get; set; }
-        public ClientCardControl ClientCardWin { get; set; }
 
         #region Карта клиента
 
@@ -1005,7 +1049,6 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                bool notificationShowed = false;
                 ClientInfoViewModel.Copy(Model);
 
 
@@ -1015,26 +1058,19 @@ namespace Dental.ViewModels.ClientDir
                         // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
                         if (IsArchiveList == Model.IsInArchive) Clients?.Insert(0, Model);
                         db.SaveChanges();
-                        EventChangeReadOnly?.Invoke(false); // разблокировать команды счетов
-                        EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
+                        EventChangeReadOnly?.Invoke(false); // разблокировать дополнительные поля
+                        //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
                         PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                         new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
-                        notificationShowed = true;
                         SelectedItem();
                     }
                     else
                     { // редактирование су-щего эл-та
-                        if (db.SaveChanges() > 0)
-                        {
-                            new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
-                            notificationShowed = true;
-                        }
+                    SaveTeeth(Model);
+                    FieldsViewModel?.Save(Model);
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();                     
                     }
-                
-                if (Model != null)
-                {
-                    if (EventSaveCard?.Invoke(Model) == true && !notificationShowed) new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run();
-                }
+               
             }
             catch (Exception e)
             {
