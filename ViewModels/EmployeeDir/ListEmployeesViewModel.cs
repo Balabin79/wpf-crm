@@ -29,10 +29,12 @@ namespace Dental.ViewModels.EmployeeDir
 {
     public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
-        public ListEmployeesViewModel() 
+        private readonly ApplicationContext db;
+        public ListEmployeesViewModel()
         {
             try
-            {             
+            {
+                db = new ApplicationContext();
                 SetCollection();
                 foreach (var i in Collection)
                 {
@@ -95,7 +97,7 @@ namespace Dental.ViewModels.EmployeeDir
 
         [Command]
         public void Add() => Collection.Add(new Employee() { IsVisible = true });
-        
+
         [Command]
         public void Save(object p)
         {
@@ -103,12 +105,8 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is Employee model)
                 {
-                    using (var db = new ApplicationContext())
-                    {
-                        if (model.Id == 0) db.Entry(model).State = EntityState.Added;
-
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
-                    }          
+                    if (model.Id == 0) db.Entry(model).State = EntityState.Added;
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
                 }
             }
             catch
@@ -125,7 +123,7 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 if (p is Employee model)
                 {
-                    if(model.Id == 0)
+                    if (model.Id == 0)
                     {
                         Collection.Remove(model);
                         return;
@@ -136,25 +134,22 @@ namespace Dental.ViewModels.EmployeeDir
 
                     if (response.ToString() == "No") return;
 
-                    using (var db = new ApplicationContext())
+                    //удалить также в расписании и в счетах
+                    db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+                    db.Entry(model).State = EntityState.Deleted;
+                    if (db.SaveChanges() > 0)
                     {
-                        //удалить также в расписании и в счетах
-                        db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-
-                        db.Entry(model).State = EntityState.Deleted;
-                        if (db.SaveChanges() > 0)
-                        {
-                            Collection.Remove(model);
-                            new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run();
-                        }
+                        Collection.Remove(model);
+                        new Notification() { Content = "Анкета сотрудника полностью удалена из базы данных!" }.run();
                     }
+
                     // удаляем фото 
                     if (Directory.Exists(Config.PathToEmployeesDirectory))
                     {
                         var photo = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(model?.Guid));
                         if (photo != null && File.Exists(photo)) File.Delete(photo);
-                    }                    
+                    }
                 }
             }
             catch (Exception e)
@@ -178,13 +173,13 @@ namespace Dental.ViewModels.EmployeeDir
 
                     if (oldPhoto != null && File.Exists(oldPhoto))
                     {
-                         var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить текущее фото сотрудника?",
-                         messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить текущее фото сотрудника?",
+                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                         if (response.ToString() == "No") return;
                         File.Delete(oldPhoto);
                     }
-                    
+
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
                     photo.CopyTo(Path.Combine(Config.PathToEmployeesDirectory, param.ImageGuid + photo.Extension), true);
                     new Notification() { Content = "Фото сотрудника сохраненo!" }.run();
@@ -214,8 +209,8 @@ namespace Dental.ViewModels.EmployeeDir
                     }
 
                     img?.Clear();
-                    new Notification() { Content = "Фото сотрудника удалено!" }.run();                
-                }            
+                    new Notification() { Content = "Фото сотрудника удалено!" }.run();
+                }
             }
             catch (Exception e)
             {
@@ -239,13 +234,7 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(bool isArhive = false) 
-        {
-            using (var db = new ApplicationContext())
-            {
-                Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
-            }
-        }
+        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
 
         private void ImgLoading(Employee model)
         {
@@ -258,14 +247,14 @@ namespace Dental.ViewModels.EmployeeDir
 
                     using (var stream = new FileStream(file, FileMode.Open))
                     {
-                         var img = new BitmapImage();
-                         img.BeginInit();
-                         img.CacheOption = BitmapCacheOption.OnLoad;
-                         img.StreamSource = stream;
-                         img.EndInit();
-                         img.Freeze();
-                         model.Image = img;
-                    }                  
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
+                        model.Image = img;
+                    }
                 }
             }
             catch (Exception e)
@@ -273,6 +262,5 @@ namespace Dental.ViewModels.EmployeeDir
                 (new ViewModelLog(e)).run();
             }
         }
-
     }
 }

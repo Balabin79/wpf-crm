@@ -29,9 +29,11 @@ namespace Dental.ViewModels.AdditionalFields
             catch { }
         }
 
+        #region Права на выполнение команд
         public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
         public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
+        #endregion
 
         [Command]
         public void Delete(object p)
@@ -103,12 +105,8 @@ namespace Dental.ViewModels.AdditionalFields
         [Command]
         public void Add() => Collection.Add(new AdditionalClientField());
 
-        private void SetCollection()
-        {
+        private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
 
-            Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
-
-        }
 
         public bool HasUnsavedChanges()
         {

@@ -29,25 +29,23 @@ namespace Dental.ViewModels
 {
     class ShedulerViewModel : ViewModelBase
     {
-        //private readonly ApplicationContext db;
+        private readonly ApplicationContext db;
         public ShedulerViewModel()
         {
             try
             {
-                using (var db = new ApplicationContext())
-                {
-                    LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
-                    StatusAppointments = GetStatusCollection(db);
-                    ClassificatorCategories = db.Services.ToObservableCollection();
+                db = new ApplicationContext();
 
-                    Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
-                        .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
+                LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
+                StatusAppointments = GetStatusCollection(db);
+                ClassificatorCategories = db.Services.ToObservableCollection();
 
-                    LoadEmployees(db);
-                    LoadClients(db);
-                    SetSelectedEmployees();
-                }
+                Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
+                    .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
 
+                LoadEmployees(db);
+                LoadClients(db);
+                SetSelectedEmployees();
             }
             catch (Exception e)
             {
@@ -56,6 +54,7 @@ namespace Dental.ViewModels
             }
         }
 
+        #region Права на выполнение команд
         public bool CanAppointmentAdded(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
         public bool CanAppointmentEdited(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
         public bool CanAppointmentRemoved(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
@@ -71,6 +70,7 @@ namespace Dental.ViewModels
         public bool CanAddStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
         public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
         public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
+        #endregion
 
         [Command]
         public void AppointmentAdded(object p)
@@ -79,11 +79,9 @@ namespace Dental.ViewModels
             {
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
-                using (var db = new ApplicationContext())
-                {
-                    db.Entry(item).State = EntityState.Added;
-                    db.SaveChanges();
-                }
+
+                db.Entry(item).State = EntityState.Added;
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -96,7 +94,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext()) db.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -109,7 +107,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())  db.SaveChanges();
+                db.SaveChanges();
             }
             catch (Exception e)
             {
@@ -123,7 +121,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())  db.LocationAppointment.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+                db.LocationAppointment.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
 
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == LocationWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
@@ -167,15 +165,12 @@ namespace Dental.ViewModels
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
-                        using (var db = new ApplicationContext())
-                        {
-                            db.Entry(model).State = EntityState.Deleted;
-                            cnt = db.SaveChanges();
-                        }
-                    }
+                        db.Entry(model).State = EntityState.Deleted;
+                        cnt = db.SaveChanges();
 
-                    else using (var db = new ApplicationContext())  db.Entry(model).State = EntityState.Detached;
-                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());                 
+                    }
+                    else db.Entry(model).State = EntityState.Detached;
+                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
                 }
             }
             catch (Exception e)
@@ -189,18 +184,15 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())
+                foreach (var item in LocationAppointments)
                 {
-                    foreach (var item in LocationAppointments)
-                    {
-                        if (string.IsNullOrEmpty(item.Name)) continue;
-                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                    }
-                    if (db.SaveChanges() > 0)
-                    {
-                        new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    }
-                }            
+                    if (string.IsNullOrEmpty(item.Name)) continue;
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                }
+                if (db.SaveChanges() > 0)
+                {
+                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                }
             }
             catch (Exception e)
             {
@@ -224,11 +216,10 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())
-                {
-                    db.AppointmentStatus.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
-                }
-                   
+
+                db.AppointmentStatus.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+
+
                 Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == StatusWindow?.ToString()).FirstOrDefault();
                 if (wnd != null)
                 {
@@ -266,20 +257,17 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())
+                foreach (var item in StatusAppointments)
                 {
-                    foreach (var item in StatusAppointments)
-                    {
-                        if (string.IsNullOrEmpty(item.Caption)) continue;
+                    if (string.IsNullOrEmpty(item.Caption)) continue;
 
-                        if (item.Id == 0) db.Entry(item).State = EntityState.Added;
-                        // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
-                        item.BrushColor = item.Brush?.Color.ToString();
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                    // если эл-т новый или модифицированный, то необходимо сериализовать цвет и присвоить соответствующему полю
+                    item.BrushColor = item.Brush?.Color.ToString();
 
-                    }
+                }
 
-                    if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                }            
+                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
@@ -292,21 +280,18 @@ namespace Dental.ViewModels
         {
             try
             {
-                using (var db = new ApplicationContext())
+                if (p is AppointmentStatus model)
                 {
-                    if (p is AppointmentStatus model)
+                    int cnt = 0;
+                    if (model.Id != 0)
                     {
-                        int cnt = 0;
-                        if (model.Id != 0)
-                        {
-                            if (!new ConfirDeleteInCollection().run(0)) return;
-                            db.Entry(model).State = EntityState.Deleted;
-                            cnt = db.SaveChanges();
-                        }
-
-                        else db.Entry(model).State = EntityState.Detached;
-                        StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                        if (!new ConfirDeleteInCollection().run(0)) return;
+                        db.Entry(model).State = EntityState.Deleted;
+                        cnt = db.SaveChanges();
                     }
+
+                    else db.Entry(model).State = EntityState.Detached;
+                    StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
                 }
             }
             catch (Exception e)
@@ -371,9 +356,9 @@ namespace Dental.ViewModels
         }
 
         /*****************************************************************************************/
-       
 
-        private string PathToEmployeesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "B6Dental", "Employees");
+
+        private string PathToEmployeesDirectory = Config.PathToEmployeesDirectory;
 
         private void LoadEmployees(ApplicationContext db)
         {
@@ -383,10 +368,10 @@ namespace Dental.ViewModels
                 if (Directory.Exists(PathToEmployeesDirectory))
                 {
                     var file = Directory.GetFiles(PathToEmployeesDirectory)?.FirstOrDefault(f => f.Contains(i.Guid));
-                    if (file == null) 
+                    if (file == null)
                     {
                         i.Image = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Template/avatar.png"));
-                        return; 
+                        continue;
                     }
 
                     using (var stream = new FileStream(file, FileMode.Open))
@@ -404,22 +389,23 @@ namespace Dental.ViewModels
         }
 
         private void LoadClients(ApplicationContext db) => Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
-        
+
         private void SetSelectedEmployees()
         {
             var userSession = (UserSession)Application.Current.Resources["UserSession"];
             SelectedDoctors = new List<object>();
-            try 
+            try
             {
                 if (userSession?.Employee != null && userSession?.Employee?.IsDoctor == 1)
                 {
                     SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
                 }
                 else Doctors.ForEach(f => SelectedDoctors.Add(f));
-            } catch 
+            }
+            catch
             {
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
             }
-        }    
+        }
     }
 }

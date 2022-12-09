@@ -15,10 +15,11 @@ namespace Dental.Services
 {
     public class RtfParse : DevExpress.Mvvm.ViewModelBase
     {
+        private readonly ApplicationContext db;
         public RtfParse(string txt)
         {
             RtfText = txt;
-            using (var db = new ApplicationContext())
+            db = new ApplicationContext();
             {
                 CommonValues = db.CommonValues.ToArray();
                 Organization = db.Organizations.FirstOrDefault() ?? new Organization();
@@ -30,13 +31,9 @@ namespace Dental.Services
             if (model is Client client)
             {
                 Client = client;
-                using (var db = new ApplicationContext())
-                    AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
+                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
             }
             if (model is Employee employee) Employee = employee;
-
-
-
         }
 
         public string Run()
@@ -82,7 +79,7 @@ namespace Dental.Services
                     case "Client":
                         return Client.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
                     case "Employee":
-                        if (Employee == null && !NotSetEmployee) SetEmployee(); 
+                        if (Employee == null && !NotSetEmployee) SetEmployee();
                         return Employee?.GetType()?.GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";
                     case "Org":
                         return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
@@ -106,10 +103,7 @@ namespace Dental.Services
         {
             try
             {
-                using (var db = new ApplicationContext())
-                {
-                    Employees = db.Employes.ToArray();
-                }
+                Employees = db.Employes.ToArray();
                 new SelectEmployee() { DataContext = this }?.ShowDialog();
             }
             catch
@@ -125,7 +119,7 @@ namespace Dental.Services
         private string RtfText { get; set; }
         public Employee Employee { get; set; }
         public object SelectedItem { get; set; }
-        private Client Client{ get; set; }
+        private Client Client { get; set; }
         private Organization Organization { get; set; }
 
         private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
@@ -138,7 +132,7 @@ namespace Dental.Services
             if (NotSetEmployee == false && SelectedItem == null)
             {
                 ThemedMessageBox.Show(
-                    title: "Внимание", 
+                    title: "Внимание",
                     text: "Этот документ содержит в шаблоне динамически подставляемые данные сотрудника. Выберите сотрудника или поставьте галочку \"Не устанавливать сотрудника\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information);
                 return;

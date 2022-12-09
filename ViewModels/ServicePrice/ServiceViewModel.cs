@@ -41,7 +41,7 @@ namespace Dental.ViewModels.ServicePrice
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
+        #region Права на выполнение команд
         public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PricesRead;
         public bool CanExpandTree(object p) => true;
         public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceDeletable;
@@ -52,7 +52,7 @@ namespace Dental.ViewModels.ServicePrice
         public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
         public bool CanPrintPrice() => true;
         public bool CanLoadDocForPrint() => true;
-
+        #endregion
         public override ObservableCollection<Service> Collection
         {
             get { return GetProperty(() => Collection); }
@@ -76,10 +76,10 @@ namespace Dental.ViewModels.ServicePrice
             // Assign your data templates to different report areas.
             CollectionViewLink link = new CollectionViewLink();
             CollectionViewSource Source = new CollectionViewSource();
-  
+
             SetSourceCollectttion();
             Source.Source = SourceCollection;
-      
+
             Source.GroupDescriptions.Add(new PropertyGroupDescription("ParentName"));
 
             link.CollectionView = Source.View;
@@ -92,13 +92,13 @@ namespace Dental.ViewModels.ServicePrice
             // Generate the report document 
             // and show pages as soon as they are created.
             link.CreateDocument(true);
-        }      
+        }
 
         public ICollection<PrintService> SourceCollection { get; set; } = new List<PrintService>();
 
         private void SetSourceCollectttion() => Context?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).ForEach(f => f.ForEach(
                 i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
-        
+
 
         protected override ObservableCollection<Service> GetCollection() => Context?.OrderBy(f => f.IsDir == 0).ThenBy(f => f.Name).Include(f => f.Parent).ToObservableCollection();
 

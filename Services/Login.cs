@@ -18,29 +18,28 @@ namespace Dental.Services
 {
     public class Login : ViewModelBase
     {
+        private readonly ApplicationContext db;
         public Login()
         {
-            using (ApplicationContext db = new ApplicationContext())
+            db = new ApplicationContext();
+            try
             {
-                try
-                {
-                    Setting = db.Settings.FirstOrDefault();
-                    IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
-                    IsPasswordRequired = Setting?.IsPasswordRequired == 1;
-                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();                    
-                }
-                catch (SQLiteException e)
-                {
-                    IsRoleAccessEnabled = false;
-                    IsPasswordRequired = false;
-                    ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                }
-                catch (Exception e)
-                {
-                    IsRoleAccessEnabled = false;
-                    IsPasswordRequired = false;
-                    ThemedMessageBox.Show(title: "Ошибка", text: e.Message,messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                }            
+                Setting = db.Settings.FirstOrDefault();
+                IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
+                IsPasswordRequired = Setting?.IsPasswordRequired == 1;
+                Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+            }
+            catch (SQLiteException e)
+            {
+                IsRoleAccessEnabled = false;
+                IsPasswordRequired = false;
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+            catch (Exception e)
+            {
+                IsRoleAccessEnabled = false;
+                IsPasswordRequired = false;
+                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
@@ -51,7 +50,7 @@ namespace Dental.Services
                 LoginWin = new LoginWin() { DataContext = this };
                 LoginWin.ShowDialog();
             }
-            else 
+            else
             {
                 UserSession = new UserSession();
                 SetUserSessionForAdmin();
@@ -59,17 +58,17 @@ namespace Dental.Services
             }
         }
 
-       /* public void SetUserSession()
-        {
-           try
-           {
-               Application.Current.Resources["UserSession"] = UserSession;
-           }
-            catch(Exception e)
-           {
+        /* public void SetUserSession()
+         {
+            try
+            {
+                Application.Current.Resources["UserSession"] = UserSession;
+            }
+             catch(Exception e)
+            {
 
-           }                      
-        }*/
+            }                      
+         }*/
 
         [Command]
         public void CloseForm(object p)
@@ -77,7 +76,7 @@ namespace Dental.Services
             if (CanLoginWinClosing) return;
             if (p is CancelEventArgs args)
             {
-                if (CanLoginWinClosing) 
+                if (CanLoginWinClosing)
                 {
                     CanLoginWinClosing = false;
                     return;
@@ -89,7 +88,7 @@ namespace Dental.Services
                 {
                     args.Cancel = true;
                     return;
-                } 
+                }
                 else App.Current.Shutdown();
             }
         }
@@ -123,58 +122,56 @@ namespace Dental.Services
                     return;
                 }
             }
-            using (ApplicationContext db = new ApplicationContext())
+            try
             {
-                try
+                var roles = db.RolesManagment.ToArray();
+
+                if (Employee.IsAdmin == 1) SetUserSessionForAdmin();
+                else
                 {
-                    var roles = db.RolesManagment.ToArray();
-
-                    if (Employee.IsAdmin == 1) SetUserSessionForAdmin();
-                    else
+                    foreach (var role in roles)
                     {
-                        foreach (var role in roles)
+                        switch (role?.PageName)
                         {
-                            switch (role?.PageName)
-                            {
-                                case "ClientsRead": UserSession.ClientsRead = HasAccess(role); break;
-                                case "ClientEditable": UserSession.ClientEditable = HasAccess(role); break;
-                                case "ClientDeletable": UserSession.ClientDeletable = HasAccess(role); break;
-                                case "ClientTemplatesEditable": UserSession.ClientTemplatesEditable = HasAccess(role); break;
-                                case "ClientAddFieldsEditable": UserSession.ClientEditable = HasAccess(role); break;
+                            case "ClientsRead": UserSession.ClientsRead = HasAccess(role); break;
+                            case "ClientEditable": UserSession.ClientEditable = HasAccess(role); break;
+                            case "ClientDeletable": UserSession.ClientDeletable = HasAccess(role); break;
+                            case "ClientTemplatesEditable": UserSession.ClientTemplatesEditable = HasAccess(role); break;
+                            case "ClientAddFieldsEditable": UserSession.ClientEditable = HasAccess(role); break;
 
-                                case "EmployeesRead": UserSession.EmployeesRead = HasAccess(role); break;
-                                case "EmployeeEditable": UserSession.EmployeeEditable = HasAccess(role); break;
-                                case "EmployeeDeletable": UserSession.EmployeeDeletable = HasAccess(role); break;
+                            case "EmployeesRead": UserSession.EmployeesRead = HasAccess(role); break;
+                            case "EmployeeEditable": UserSession.EmployeeEditable = HasAccess(role); break;
+                            case "EmployeeDeletable": UserSession.EmployeeDeletable = HasAccess(role); break;
 
-                                case "SheduleRead": UserSession.SheduleRead = HasAccess(role); break;
-                                case "SheduleStatusEditable": UserSession.SheduleStatusEditable = HasAccess(role); break;
-                                case "SheduleStatusDeletable": UserSession.SheduleStatusDeletable = HasAccess(role); break;
-                                case "SheduleLocationEditable": UserSession.SheduleLocationEditable = HasAccess(role); break;
-                                case "SheduleLocationDeletable": UserSession.SheduleLocationDeletable = HasAccess(role); break;
+                            case "SheduleRead": UserSession.SheduleRead = HasAccess(role); break;
+                            case "SheduleStatusEditable": UserSession.SheduleStatusEditable = HasAccess(role); break;
+                            case "SheduleStatusDeletable": UserSession.SheduleStatusDeletable = HasAccess(role); break;
+                            case "SheduleLocationEditable": UserSession.SheduleLocationEditable = HasAccess(role); break;
+                            case "SheduleLocationDeletable": UserSession.SheduleLocationDeletable = HasAccess(role); break;
 
-                                case "PricesRead": UserSession.PricesRead = HasAccess(role); break;
-                                case "PriceEditable": UserSession.PriceEditable = HasAccess(role); break;
-                                case "PriceDeletable": UserSession.PriceDeletable = HasAccess(role); break;
+                            case "PricesRead": UserSession.PricesRead = HasAccess(role); break;
+                            case "PriceEditable": UserSession.PriceEditable = HasAccess(role); break;
+                            case "PriceDeletable": UserSession.PriceDeletable = HasAccess(role); break;
 
-                                case "TemplatesRead": UserSession.TemplatesRead = HasAccess(role); break;
-                                case "TemplateEditable": UserSession.TemplateEditable = HasAccess(role); break;
-                                case "TemplateDeletable": UserSession.TemplateDeletable = HasAccess(role); break;
+                            case "TemplatesRead": UserSession.TemplatesRead = HasAccess(role); break;
+                            case "TemplateEditable": UserSession.TemplateEditable = HasAccess(role); break;
+                            case "TemplateDeletable": UserSession.TemplateDeletable = HasAccess(role); break;
 
-                                case "SettingsRead": UserSession.SettingsRead = HasAccess(role); break;
+                            case "SettingsRead": UserSession.SettingsRead = HasAccess(role); break;
 
-                                case "OrgRead": UserSession.OrgRead = HasAccess(role); break;
-                                case "OrgEditable": UserSession.OrgEditable = HasAccess(role); break;
-                                case "OrgDeletable": UserSession.OrgDeletable = HasAccess(role); break;
-                            }
+                            case "OrgRead": UserSession.OrgRead = HasAccess(role); break;
+                            case "OrgEditable": UserSession.OrgEditable = HasAccess(role); break;
+                            case "OrgDeletable": UserSession.OrgDeletable = HasAccess(role); break;
                         }
                     }
                 }
-                catch (Exception e)
-                {
-
-                }
             }
-           // SetUserSession();
+            catch (Exception e)
+            {
+
+            }
+
+            // SetUserSession();
             CanLoginWinClosing = true;
             LoginWin?.Close();
         }
@@ -211,8 +208,8 @@ namespace Dental.Services
             UserSession.OrgDeletable = true;
         }
 
-        public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);   
-        
+        public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);
+
 
         /*  Password */
 
@@ -232,7 +229,7 @@ namespace Dental.Services
 
 
         public Setting Setting { get; set; }
-        public UserSession UserSession { get; set; } 
+        public UserSession UserSession { get; set; }
 
         public Employee Employee
         {
@@ -252,7 +249,7 @@ namespace Dental.Services
         private bool IsRoleAccessEnabled { get; set; }
         private LoginWin LoginWin { get; set; }
         private bool CanLoginWinClosing { get; set; } = false;
-        
+
     }
     public enum Roles { Guest = -1, Doctor = 1, Reception = 2, Admin = 3 }
 }

@@ -37,7 +37,7 @@ namespace Dental.ViewModels.Org
                 var model = db.Organizations.FirstOrDefault() ?? new Organization();
                 OrganizationVM.Copy(model);
                 IsReadOnly = model?.Id > 0;
-                if (IsReadOnly) ImagesLoading();              
+                if (IsReadOnly) ImagesLoading();
             }
             catch
             {
@@ -57,36 +57,34 @@ namespace Dental.ViewModels.Org
         {
             try
             {
-                using (var db = new ApplicationContext())
+                var model = db.Organizations.FirstOrDefault() ?? new Organization();
+
+                model.Name = OrganizationVM.Name;
+                model.ShortName = OrganizationVM.ShortName;
+                model.Kpp = OrganizationVM.Kpp;
+                model.Inn = OrganizationVM.Inn;
+                model.Address = OrganizationVM.Address;
+                model.Phone = OrganizationVM.Phone;
+                model.Email = OrganizationVM.Email;
+                model.AccountNumber = OrganizationVM.AccountNumber;
+                model.CorrAccountNumber = OrganizationVM.CorrAccountNumber;
+                model.Bik = OrganizationVM.Bik;
+                model.BankName = OrganizationVM.BankName;
+                model.Ogrn = OrganizationVM.Ogrn;
+                model.LicenseDate = OrganizationVM.LicenseDate;
+                model.GeneralDirector = OrganizationVM.GeneralDirector;
+                model.LicenseName = OrganizationVM.LicenseName;
+                model.Site = OrganizationVM.Site;
+                model.WhoIssuedBy = OrganizationVM.WhoIssuedBy;
+                model.Okpo = OrganizationVM.Okpo;
+
+                if (model?.Id == 0) db.Organizations.Add(model);
+                if (db.SaveChanges() > 0)
                 {
-                    var model = db.Organizations.FirstOrDefault() ?? new Organization();
-
-                    model.Name = OrganizationVM.Name;
-                    model.ShortName = OrganizationVM.ShortName;
-                    model.Kpp = OrganizationVM.Kpp;
-                    model.Inn = OrganizationVM.Inn;
-                    model.Address = OrganizationVM.Address;
-                    model.Phone = OrganizationVM.Phone;
-                    model.Email = OrganizationVM.Email;
-                    model.AccountNumber = OrganizationVM.AccountNumber;
-                    model.CorrAccountNumber = OrganizationVM.CorrAccountNumber;
-                    model.Bik = OrganizationVM.Bik;
-                    model.BankName = OrganizationVM.BankName;
-                    model.Ogrn = OrganizationVM.Ogrn;
-                    model.LicenseDate = OrganizationVM.LicenseDate;
-                    model.GeneralDirector = OrganizationVM.GeneralDirector;
-                    model.LicenseName = OrganizationVM.LicenseName;
-                    model.Site = OrganizationVM.Site;
-                    model.WhoIssuedBy = OrganizationVM.WhoIssuedBy;
-                    model.Okpo = OrganizationVM.Okpo;
-
-                    if (model?.Id == 0) db.Organizations.Add(model);
-                    if (db.SaveChanges() > 0) 
-                    {
-                        OrganizationVM.Id = model.Id;
-                        new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
-                    }
+                    OrganizationVM.Id = model.Id;
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
+
             }
             catch
             {
@@ -116,23 +114,20 @@ namespace Dental.ViewModels.Org
 
                 if (response.ToString() == "No") return;
 
+                var model = db.Organizations.FirstOrDefault();
+                if (model == null || db.Entry(model).State == EntityState.Deleted) return;
 
-                using (var db = new ApplicationContext())
+                db.Entry(model).State = EntityState.Deleted;
+                if (db.SaveChanges() > 0)
                 {
-                    var model = db.Organizations.FirstOrDefault();
-                    if (model == null || db.Entry(model).State == EntityState.Deleted) return;
+                    OrganizationVM = new OrganizationVM();
+                    Logo = null;
+                    Stamp = null;
+                    if (Directory.Exists(Config.PathToOrgDirectory)) new DirectoryInfo(Config.PathToOrgDirectory)?.GetFiles()?.ForEach(f => f.Delete());
 
-                    db.Entry(model).State = EntityState.Deleted;
-                    if (db.SaveChanges() > 0)
-                    {
-                        OrganizationVM = new OrganizationVM();
-                        Logo = null;
-                        Stamp = null;
-                        if (Directory.Exists(Config.PathToOrgDirectory)) new DirectoryInfo(Config.PathToOrgDirectory)?.GetFiles()?.ForEach(f => f.Delete());     
-                  
-                        new Notification { Content = "Данные организации полностью удалены!" }.run();
-                    }
+                    new Notification { Content = "Данные организации полностью удалены!" }.run();
                 }
+
             }
             catch (Exception e)
             {
@@ -141,7 +136,7 @@ namespace Dental.ViewModels.Org
         }
 
         #region Управление файлами лого и печати
-      
+
         public void ImagesLoading()
         {
             try
@@ -151,18 +146,15 @@ namespace Dental.ViewModels.Org
 
                 for (int i = 0; i < files.Length; i++)
                 {
-                    using (var stream = new FileStream(files[i], FileMode.Open))
-                    {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
+                    var img = new BitmapImage();
+                    img.BeginInit();
+                    img.CacheOption = BitmapCacheOption.OnLoad;
+                    img.StreamSource = stream;
+                    img.EndInit();
+                    img.Freeze();
 
-                        if (files[i].Contains("Logo")) Logo = img;                      
-                        if (files[i].Contains("Stamp")) Stamp = img;
-                    }
+                    if (files[i].Contains("Logo")) Logo = img;
+                    if (files[i].Contains("Stamp")) Stamp = img;
                 }
             }
             catch (Exception e)
@@ -197,7 +189,7 @@ namespace Dental.ViewModels.Org
                         FileInfo photo = new FileInfo(img.ImagePath);
                         photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension), true);
                         new Notification() { Content = "Логотип сохранен!" }.run();
-                        using (var db = new ApplicationContext())  db.SaveChanges();
+                        db.SaveChanges();
                     }
 
                     if (img.Name == "Stamp")
@@ -220,7 +212,7 @@ namespace Dental.ViewModels.Org
                     }
                 }
             }
-            catch {}
+            catch { }
         }
 
         [Command]
@@ -244,7 +236,7 @@ namespace Dental.ViewModels.Org
                     }
                     img.Clear();
                     msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
-                    using (var db = new ApplicationContext())  db.SaveChanges();
+                    db.SaveChanges();
                     new Notification() { Content = msg }.run();
                 }
             }

@@ -18,8 +18,13 @@ using System.Collections.ObjectModel;
 
 namespace Dental.ViewModels.Templates
 {
-    class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
+        private readonly ApplicationContext db;
+        public MainViewModel() => db = new ApplicationContext();
+
+
+        #region Права на выполнение команд
         public bool CanOpenDiagnoses(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenDiaries(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenAllergies(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
@@ -28,21 +33,16 @@ namespace Dental.ViewModels.Templates
         public bool CanOpenObjectively(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenDescriptionXRay(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
         public bool CanOpenAnamneses(object p) => ((UserSession)Application.Current.Resources["UserSession"]).TemplatesRead;
+        #endregion 
 
         [Command]
         public void OpenDiagnoses(object p)
         {
             try
             {
-                using (var db = new ApplicationContext())
-                {
-                    new TemplatesWin()
-                    {
-                        DataContext = new TreeBaseViewModel<Diagnos>(db, db?.Diagnoses),
-                        TitleWin = "Шаблоны \"Диагнозы\""
-                    }?.ShowDialog();
-                }
-            } 
+                new TemplatesWin() { DataContext = new TreeBaseViewModel<Diagnos>(db, db?.Diagnoses), TitleWin = "Шаблоны \"Диагнозы\"" }?.ShowDialog();
+
+            }
             catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Диагнозы\"!",
@@ -55,14 +55,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Лечение\"",
-                        DataContext = new TreeBaseViewModel<Diary>(db, db?.Diaries)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Лечение\"",
+                    DataContext = new TreeBaseViewModel<Diary>(db, db?.Diaries)
+                }?.ShowDialog();
             }
             catch
             {
@@ -76,14 +73,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Аллергии\"",
-                        DataContext = new TreeBaseViewModel<Allergy>(db, db?.Allergies)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Аллергии\"",
+                    DataContext = new TreeBaseViewModel<Allergy>(db, db?.Allergies)
+                }?.ShowDialog();
             }
             catch
             {
@@ -97,14 +91,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Жалобы пациента\"",
-                        DataContext = new TreeBaseViewModel<Complaint>(db, db?.Complaints)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Жалобы пациента\"",
+                    DataContext = new TreeBaseViewModel<Complaint>(db, db?.Complaints)
+                }?.ShowDialog();
             }
             catch
             {
@@ -119,14 +110,12 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Планы лечения\"",
-                        DataContext = new TreeBaseViewModel<TreatmentPlan>(db, db?.TreatmentPlans)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Планы лечения\"",
+                    DataContext = new TreeBaseViewModel<TreatmentPlan>(db, db?.TreatmentPlans)
+                }?.ShowDialog();
+
             }
             catch
             {
@@ -140,14 +129,11 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Объективное обследование\"",
-                        DataContext = new TreeBaseViewModel<Objectively>(db, db?.Objectively)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Объективное обследование\"",
+                    DataContext = new TreeBaseViewModel<Objectively>(db, db?.Objectively)
+                }?.ShowDialog();
             }
             catch
             {
@@ -161,14 +147,12 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        TitleWin = "Шаблоны \"Описание рентгеновских снимков\"",
-                        DataContext = new TreeBaseViewModel<DescriptionXRay>(db, db?.DescriptionXRay)
-                    }?.ShowDialog();
-                }
+                    TitleWin = "Шаблоны \"Описание рентгеновских снимков\"",
+                    DataContext = new TreeBaseViewModel<DescriptionXRay>(db, db?.DescriptionXRay)
+                }?.ShowDialog();
+
             }
             catch
             {
@@ -182,14 +166,12 @@ namespace Dental.ViewModels.Templates
         {
             try
             {
-                using (var db = new ApplicationContext())
+                new TemplatesWin()
                 {
-                    new TemplatesWin()
-                    {
-                        DataContext = new TreeBaseViewModel<Anamnes>(db, db?.Anamneses),
-                        TitleWin = "Шаблоны \"Анамнезы\""
-                    }?.ShowDialog();
-                }
+                    DataContext = new TreeBaseViewModel<Anamnes>(db, db?.Anamneses),
+                    TitleWin = "Шаблоны \"Анамнезы\""
+                }?.ShowDialog();
+
             }
             catch
             {

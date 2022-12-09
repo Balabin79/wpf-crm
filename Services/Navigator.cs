@@ -25,19 +25,19 @@ namespace Dental.Services
 
     public sealed class Navigator : DevExpress.Mvvm.ViewModelBase
     {
+        private readonly ApplicationContext db;
         public Navigator()
         {
+            db = new ApplicationContext();
             CurrentPage = CreatePage(defaultPage);
             FrameOpacity = 1.1;
 
             try
             {
-                using(var db = new ApplicationContext())
-                {
-                    RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
-                }
+                RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
+
             }
-            catch(SQLiteException e)
+            catch (SQLiteException e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -45,14 +45,14 @@ namespace Dental.Services
             {
                 RoleEnabled = false;
                 ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }         
+            }
         }
 
         #region Общий ф-нал
         private async Task GoToPage(object p)
         {
             if (p is object[] arr) CurrentPage = CreatePage(arr[0].ToString(), (int)arr[1]);
-            else CurrentPage = CreatePage(p.ToString());                           
+            else CurrentPage = CreatePage(p.ToString());
         }
 
         private Page CreatePage(string pageName, int param = -1)
@@ -92,7 +92,7 @@ namespace Dental.Services
                 {
                     case "Dental.Views.Organization":
                         if (CurrentPage.Resources["vm"] is OrganizationViewModel org && CurrentPage.Resources["af"] is CommonValueViewModel comFields)
-                        {                          
+                        {
                             if (org.OrganizationVM.HasChanges())
                             {
                                 forms.Add("форме \"Организации\"");
@@ -162,10 +162,10 @@ namespace Dental.Services
             try
             {
                 var path = Path.Combine(Config.PathToProgramDirectory, "B6Dental.chm");
-                if (!File.Exists(path)) 
+                if (!File.Exists(path))
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Не найден файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    return; 
+                    return;
                 }
                 Process.Start(path);
             }

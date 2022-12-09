@@ -132,6 +132,5 @@ namespace Dental.ViewModels.AdditionalFields
             get { return GetProperty(() => IsReadOnly); }
             set { SetProperty(() => IsReadOnly, value); }
         }
-
     }
 }
