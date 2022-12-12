@@ -143,18 +143,20 @@ namespace Dental.ViewModels.Org
             {
                 var files = new string[] { };
                 if (Directory.Exists(Config.PathToOrgDirectory)) files = Directory.GetFiles(Config.PathToOrgDirectory);
-
                 for (int i = 0; i < files.Length; i++)
                 {
-                    var img = new BitmapImage();
-                    img.BeginInit();
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.StreamSource = stream;
-                    img.EndInit();
-                    img.Freeze();
+                    using (var stream = new FileStream(files[i], FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
 
-                    if (files[i].Contains("Logo")) Logo = img;
-                    if (files[i].Contains("Stamp")) Stamp = img;
+                        if (files[i].Contains("Logo")) Logo = img;
+                        if (files[i].Contains("Stamp")) Stamp = img;
+                    }
                 }
             }
             catch (Exception e)

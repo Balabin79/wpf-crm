@@ -148,9 +148,9 @@
                 </dxe:DateEdit>
             </StackPanel>
             <DockPanel>
-                <dxe:TextEdit Margin="0 5 0 5" NullText="Название счета" DockPanel.Dock="Left" 
-                              Width="172"  
-                              Text="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <dxe:ButtonEdit Width="172"  AllowDefaultButton="false" Margin="0 5 0 5" NullText="Название счета" DockPanel.Dock="Left"
+                                EditValue="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
+                
 
                 <dxb:ToolBarControl Background="Transparent" Margin="0 2 0 0"
                                     x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"

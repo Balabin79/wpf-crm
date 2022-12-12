@@ -18,6 +18,8 @@ using Dental.Models.Settings;
 using Dental.Views.About;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dental.ViewModels
 {
@@ -38,12 +40,60 @@ namespace Dental.ViewModels
 
                 EmployeeWrappers = new List<EmployeeWrapper>();
                 Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
+
+                // считываем значения для местоположения бд и программных файлов
+                if (Config.ConnectionString == Path.Combine(Config.PathToDbDefault)) 
+                { 
+                    IsPathToDbDefault = true;
+                    PathToDb = null;
+                }
+                else
+                {
+                    IsPathToDbDefault = false;
+                    PathToDb = Config.ConnectionString;
+                }
+
+                if (Config.ConnectionString == Path.Combine(Config.PathToDbDefault))
+                {
+                    IsPathToProgramFilesDefault = true;
+                    PathToProgramFiles = null;
+                }
+                else
+                {
+                    IsPathToProgramFilesDefault = false;
+                    PathToProgramFiles = Config.PathToProgramDirectory;
+                }
+
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
+        }
+
+        public bool IsPathToDbDefault
+        {
+            get { return GetProperty(() => IsPathToDbDefault); }
+            set { SetProperty(() => IsPathToDbDefault, value); }
+        }
+
+        public bool IsPathToProgramFilesDefault
+        {
+            get { return GetProperty(() => IsPathToProgramFilesDefault); }
+            set { SetProperty(() => IsPathToProgramFilesDefault, value); }
+        }
+
+        public string PathToDb
+        {
+            get { return GetProperty(() => PathToDb); }
+            set { SetProperty(() => PathToDb, value); }
+        }
+
+        public string PathToProgramFiles
+        {
+            get { return GetProperty(() => PathToProgramFiles); }
+            set { SetProperty(() => PathToProgramFiles, value); }
         }
 
         public bool CanEditable() => ((UserSession)Application.Current.Resources["UserSession"]).SettingsRead;
@@ -79,7 +129,7 @@ namespace Dental.ViewModels
         {
             try
             {
-
+                var pathsChanged = false;
                 if (Settings?.Id == 0) db.Settings.Add(Settings);
                 var employeesEdited = Employees.Where(f => db.Entry(f).State == EntityState.Modified).ToList();
 
@@ -91,10 +141,56 @@ namespace Dental.ViewModels
                     i.Password = BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(i.Password))).Replace("-", string.Empty);
                 }
 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Настройки сохранены!" }.run();
+                // проверяем значения
+                // если галочки отмечены, то файл конфига удаляем, если сняты, то сериализуем значения в полях и создаем файл
+                if (!IsPathToDbDefault || !IsPathToProgramFilesDefault)
+                {
+                    if (!IsPathToDbDefault)
+                    {
+                        if (string.IsNullOrEmpty(PathToDb?.Trim()))
+                        {
+                            ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к базе данных\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
+                            messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+
+                    if (IsPathToProgramFilesDefault == false)
+                    {
+                        if (string.IsNullOrEmpty(PathToProgramFiles?.Trim()))
+                        {
+                            ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к программным файлам\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
+                            messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                            return;
+                        }
+                    }
+
+                    //если пути изменены по сравнению со старой версией, то 
+                    pathsChanged = true;
+                    var dBName = Config.defaultDBName;
+                    var connectionString = PathToDb ?? Config.PathToDbDefault;
+                    var pathToProgram = PathToProgramFiles ?? Config.PathToProgramDirectory;
+
+                    var config = JsonSerializer.Serialize(new UserConfig()
+                    {
+                        DBName = dBName,
+                        ConnectionString = connectionString,
+                        PathToProgram = pathToProgram
+                    });
+                    File.WriteAllText("./dental.conf", config);
+
+                    Config.ConnectionString = connectionString;
+                    Config.PathToProgram = pathToProgram;
+
+                   // var json = File.ReadAllText("./dental.conf").Trim();
+                }
+                /*******************/
+
+                if (db.SaveChanges() > 0 || pathsChanged) new Notification() { Content = "Настройки сохранены!" }.run();
 
             }
-            catch { }
+            catch (Exception e)
+            { }
         }
 
 

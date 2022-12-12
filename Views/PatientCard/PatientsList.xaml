@@ -92,11 +92,42 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <Border VerticalAlignment="Stretch" Grid.Row="1" MaxHeight="1800" BorderBrush="LightGray" Margin="3" BorderThickness="1">
+            <Border VerticalAlignment="Stretch"  Grid.Row="1" MaxHeight="2800" BorderBrush="LightGray" Margin="3" BorderThickness="1" >
                 <DockPanel  >
-                    <dx:DXTabControl Margin="2">
-                        <dx:DXTabItem Header="Клиенты" >
-                            <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                    <dx:DXTabControl Margin="2" >
+                        <dx:DXTabItem Header="Клиенты"  >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                            <StackPanel Orientation="Horizontal">
+                                    <dxb:ToolBarControl Width="90" ShowDragWidget="False" Caption="File" Background="Transparent"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+
+                                        <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ShowArchiveCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
+
+                                        <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                                           IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                           GlyphSize="Small"
+                                           Command="{Binding ShowArchiveCommand}"
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
+                                    </dxb:ToolBarControl>
+
+                                    <dxe:ButtonEdit Width="194"  AllowDefaultButton="false" Margin="0 0 0 5" NullText="Фамилия клиента" DockPanel.Dock="Left"
+                                EditValue="{Binding LastNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
+
+                                    <dx:SimpleButton Command="{Binding ClientsSearchCommand}" DockPanel.Dock="Right" 
+                                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 5" Width="60" HorizontalAlignment="Right"/>
+                                
+                                </StackPanel>
+                                
+                            <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
                                 DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
                                 AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
                                 MaxHeight="1800"
@@ -168,7 +199,7 @@
                                         ShowFixedTotalSummary="True"                           
                                         AllowScrollAnimation="True"
                                         Name="view"
-                                        ShowSearchPanelMode="Always"
+                                        ShowSearchPanelMode="Never"
                                         SearchPanelAllowFilter="False"
                                         UseLegacyFilterPanel="True"
                                         AllowFixedGroups="True"
@@ -196,6 +227,7 @@
                                     </dxg:TableView>
                                 </dxg:GridControl.View>
                             </dxg:GridControl>
+                            </Grid>
                         </dx:DXTabItem>
                      
                         <dx:DXTabItem Header="Счета" >

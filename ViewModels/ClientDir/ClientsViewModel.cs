@@ -82,7 +82,7 @@ namespace Dental.ViewModels.ClientDir
         public bool ExecuteFile() => Model?.Id != 0;
         public bool AttachmentFile() => Model?.Id != 0;
         public bool DeleteFile() => Model?.Id != 0;
-        public bool CanShowArchive() => true;
+        //public bool CanShowArchive() => true;
 
 
         // Счета
@@ -306,6 +306,48 @@ namespace Dental.ViewModels.ClientDir
 
             }
         }
+        #endregion
+
+        #region Работа с фильтрами и поиском в списке клиентов
+        [Command]
+        public void ShowArchive()
+        {
+            try
+            {
+                IsArchiveList = !IsArchiveList;
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public bool IsArchiveList
+        {
+            get { return GetProperty(() => IsArchiveList); }
+            set { SetProperty(() => IsArchiveList, value); }
+        }
+
+        public object LastNameSearch { get; set; }
+
+        [Command]
+        public void ClientsSearch()
+        {
+            try
+            {
+                Clients = db.Clients.Where(f => f.IsInArchive == IsArchiveList).OrderBy(f => f.LastName).ToObservableCollection();
+
+                if (!string.IsNullOrEmpty(LastNameSearch?.ToString()))
+                {
+                    Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();                  
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         #endregion
 
         #region Работа с разделом карты "Административная"
@@ -993,26 +1035,6 @@ namespace Dental.ViewModels.ClientDir
 
         public void UpdateFields() => FieldsViewModel.ClientFieldsLoading(Model);
         #endregion
-
-        [Command]
-        public void ShowArchive()
-        {
-            try
-            {
-                IsArchiveList = !IsArchiveList;
-                LoadClients(IsArchiveList);
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        public bool IsArchiveList
-        {
-            get { return GetProperty(() => IsArchiveList); }
-            set { SetProperty(() => IsArchiveList, value); }
-        }
 
         public DocumentsWindow DocumentsWindow { get; set; }
 
