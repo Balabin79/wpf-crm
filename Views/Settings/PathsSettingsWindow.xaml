@@ -1,0 +1,89 @@
+﻿<Window x:Class="Dental.Views.Settings.PathsSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dental.Views.Settings" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanMinimize"
+        Title="B6 Dental" Height="260" Width="800">
+
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White">
+
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="0">
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
+                                Source="{dx:DXImage SvgImages/Dashboards/EditDataSource.svg}"/>
+                    <TextBlock Text="Расположение данных" FontSize="14" Padding="2 5 5 0" />
+                </StackPanel>
+
+            <Border BorderThickness="1" BorderBrush="LightGray" Grid.Row="1" Margin="10 5 10 10">
+                <dxlc:LayoutGroup Orientation="Vertical" Header="Путь к файлам"  Margin="10 10 10 0">
+
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                        <dxlc:LayoutItem Label="Путь к базе данных:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
+                            <dxe:TextEdit x:Name="pathToDb"
+                                Text="{Binding PathToDb, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                                  IsEnabled="{DXBinding Expr='!IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        
+                        </dxlc:LayoutItem>
+
+                        <dx:SimpleButton Height="22" Content="Найти" VerticalContentAlignment="Center" Width="80" Margin="0 17 0 0"
+                                 Glyph="{Binding Source=/Resources/Icons/svg/database.svg }" GlyphHeight="12"
+                                 Click="selectDbPath"/>
+                        
+                        <dxlc:LayoutItem Label="По умолчанию:" LabelPosition="Left" Margin="15 20 0 0" Width="110">
+                            <dxe:CheckEdit x:Name="pathToDbDefault"
+                                                   EditValue="{Binding IsPathToDbDefault, Mode=TwoWay,                                             
+                                                   UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </dxlc:LayoutItem>
+
+                    </dxlc:LayoutGroup>
+
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                        <dxlc:LayoutItem Label="Путь к программным файлам:" LabelPosition="Top">
+                            <dxe:TextEdit x:Name="programDataPath"
+                                Text="{Binding PathToProgramFilesDefault, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                  IsEnabled="{DXBinding Expr='!IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                />
+                        </dxlc:LayoutItem>
+
+                        <dx:SimpleButton Height="22" Content="Найти" VerticalContentAlignment="Center" Width="80" Margin="0 17 0 0"
+                                         Glyph="{Binding Source=/Resources/Icons/svg/folder.svg }" GlyphHeight="14"
+                                 Click="selectProgramDataPath"/>
+
+                        <dxlc:LayoutItem Label="По умолчанию:" LabelPosition="Left" Margin="15 20 0 0" Width="110" HorizontalAlignment="Right">
+                            <dxe:CheckEdit   x:Name="pathToProgramFilesDefault"             
+                                                   EditValue="{Binding IsPathToProgramFilesDefault, Mode=TwoWay,                                             
+                                                   UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0">
+                        <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" 
+                                 Command="{Binding SaveCommand}" 
+                                 CommandParameter="{Binding ElementName=Window}"/>
+
+                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form"  Margin="4 0 0 0"/>
+                    </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

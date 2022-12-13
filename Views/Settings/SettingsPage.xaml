@@ -49,8 +49,13 @@
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
                     <dxb:ToolBarControl Background="Transparent"
-                                        x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
+                                        ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+
+                        <dxb:BarButtonItem Content="Расположение данных" 
+                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditDataSource.svg}"
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenPathsSettingsFormCommand}"/>
 
                         <dxb:BarButtonItem Content="Лицензия" 
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_KeyProperty.svg}"
@@ -97,12 +102,7 @@
                                         <TextBlock Text="Обшие настройки" VerticalAlignment="Center" Height="22"/>
                                     </DataTemplate>
                                 </dxlc:LayoutGroup.HeaderTemplate>
-
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="3*"/>
-                                    </Grid.ColumnDefinitions>
+              
                                     <GroupBox Header="Вход в программу" Grid.Column="0" Margin="0 0 3 0">
                                     <StackPanel>
                                 <dxlc:LayoutItem Label="Включить ролевой доступ:" LabelPosition="Top" >
@@ -127,47 +127,7 @@
                                         </dxlc:LayoutItem>
                                     </StackPanel>
                                 </GroupBox>
-                                <GroupBox Header="Путь к файлам" Grid.Column="1" Margin="3 0 0 0" HorizontalContentAlignment="Stretch">
-
-                                        <dxlc:LayoutGroup Orientation="Vertical" Header="Путь к файлам">
-
-                                            <dxlc:LayoutGroup Orientation="Horizontal">
-                                                
-                                                <dxlc:LayoutItem Label="Путь к базе данных:" LabelPosition="Top" >
-                                                    <dxe:TextEdit Text="{Binding PathToDb, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                  IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                                  IsEnabled="{DXBinding Expr='!IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                                                </dxlc:LayoutItem>
-                                                
-                                                <dxlc:LayoutItem Label="По умолчанию:" LabelPosition="Left" Margin="15 20 0 0" Width="105">
-                                                    <dxe:CheckEdit 
-                                                   EditValue="{Binding IsPathToDbDefault, Mode=TwoWay,                                             
-                                                   UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                                </dxlc:LayoutItem>
-                                                
-                                            </dxlc:LayoutGroup>
-                                            
-                                            <dxlc:LayoutGroup Orientation="Horizontal">
-                                                
-                                                <dxlc:LayoutItem Label="Путь к программным файлам:" LabelPosition="Top" >
-                                                    <dxe:TextEdit Text="{Binding PathToProgramFilesDefault, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                  IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                  IsEnabled="{DXBinding Expr='!IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                />
-                                                </dxlc:LayoutItem>
-                                                
-                                                <dxlc:LayoutItem Label="По умолчанию:" LabelPosition="Left" Margin="15 20 0 0" Width="105">
-                                                    <dxe:CheckEdit                  
-                                                   EditValue="{Binding IsPathToProgramFilesDefault, Mode=TwoWay,                                             
-                                                   UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                                
-                                                </dxlc:LayoutItem>
-                                            </dxlc:LayoutGroup>
-                                            </dxlc:LayoutGroup>
-
-                                    </GroupBox>
-                                </Grid>
+    
                                 
                             </dxlc:LayoutGroup>
 

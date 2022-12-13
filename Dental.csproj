@@ -76,6 +76,7 @@
     <None Remove="Resources\Icons\svg\boxes.svg" />
     <None Remove="Resources\Icons\svg\chart-line.svg" />
     <None Remove="Resources\Icons\svg\coins.svg" />
+    <None Remove="Resources\Icons\svg\database.svg" />
     <None Remove="Resources\Icons\svg\document.png" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
@@ -84,6 +85,7 @@
     <None Remove="Resources\Icons\svg\file-invoice.svg" />
     <None Remove="Resources\Icons\svg\file.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
+    <None Remove="Resources\Icons\svg\folder.svg" />
     <None Remove="Resources\Icons\svg\gmail-mail.svg" />
     <None Remove="Resources\Icons\svg\google.svg" />
     <None Remove="Resources\Icons\svg\google_icon.svg" />
@@ -264,11 +266,13 @@
     <Resource Include="Resources\Icons\stamp.png" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
+    <Resource Include="Resources\Icons\svg\database.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
+    <Resource Include="Resources\Icons\svg\folder.svg" />
     <Resource Include="Resources\Icons\svg\gmail-mail.svg" />
     <Resource Include="Resources\Icons\svg\google.svg" />
     <Resource Include="Resources\Icons\svg\google_icon.svg" />
