@@ -16,41 +16,25 @@ namespace Dental.Services
         {
             try
             {
+                DBName = defaultDBName;
+                ConnectionString = Path.Combine(defaultPath, DBName);
+                PathToProgram = defaultPath;             
+
                 // открываем файл и пытаемся прочесть содержимое json
-                if (!File.Exists("./dental.conf")) File.Create("./dental.conf");
-                
-                var json = File.ReadAllText("./dental.conf").Trim();
-
-                if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
+                if (File.Exists("./dental.conf")) 
                 {
-                    DBName = config.DBName ?? defaultDBName;
-                    ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
-                    PathToProgram = config.PathToProgram ?? defaultPath;
+                    var json = File.ReadAllText("./dental.conf").Trim();
+
+                    if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
+                    {
+                        DBName = config.DBName ?? defaultDBName;
+                        ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
+                        PathToProgram = config.PathToProgram ?? defaultPath;
+                    }
                 }
-                else
-                {
-                    DBName = defaultDBName;
-                    ConnectionString = Path.Combine(defaultPath, DBName);
-                    PathToProgram = defaultPath;
-                }
-                
-
-                
-
-                /**************************/
-                /* var resourceNames = Application.Current.Resources;
-
-                 DBName = resourceNames.Contains("DBName") ? Application.Current.Resources["DBName"].ToString() : defaultDBName;
-
-                 ConnectionString = resourceNames.Contains("ConnectionString") ?
-                     Path.Combine(Application.Current.Resources["ConnectionString"].ToString(), DBName) :
-                     Path.Combine(defaultPath, DBName);
-
-                 PathToProgram = resourceNames.Contains("PathToProgram") ?
-                      Application.Current.Resources["PathToProgram"].ToString() :
-                      defaultPath;*/
+                PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
             }
-            catch (Exception e)
+            catch
             {
                 DBName = defaultDBName;
                 ConnectionString = Path.Combine(defaultPath, DBName);
@@ -69,7 +53,7 @@ namespace Dental.Services
 
         public static string PathToDbDefault = Path.Combine(defaultPath, defaultDBName);
 
-        public static string PathToEmployeesDirectory = Path.Combine(defaultPath, "Employees");
+        public static string PathToEmployeesDirectory;
 
         public static string PathToOrgDirectory = Path.Combine(defaultPath, "Organization");
 
@@ -83,8 +67,6 @@ namespace Dental.Services
         
         public static string PathToProgramDirectory = Path.Combine(defaultPath);
 
-        public static string GetPathToLogo() => Path.Combine(PathToOrgDirectory, "Logo.jpg");
-
-        
+        public static string GetPathToLogo() => Path.Combine(PathToOrgDirectory, "Logo.jpg");      
     }
 }

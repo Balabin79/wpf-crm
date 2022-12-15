@@ -24,6 +24,7 @@ using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
 using Dental.Infrastructures.Converters;
+using Dental.Views.Settings;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -42,10 +43,13 @@ namespace Dental.ViewModels.EmployeeDir
                     i.IsVisible = false;
                 }
             }
-            catch (Exception e)
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"! Проверьте настройки подключения к базе данных.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
+
             }
         }
 

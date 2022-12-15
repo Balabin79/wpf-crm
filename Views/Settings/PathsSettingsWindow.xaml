@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanMinimize"
-        Title="B6 Dental" Height="260" Width="800">
+        Title="B6 Dental" Height="260" Width="800" x:Name="win">
 
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White">
 
@@ -57,7 +57,7 @@
 
                         <dxlc:LayoutItem Label="Путь к программным файлам:" LabelPosition="Top">
                             <dxe:TextEdit x:Name="programDataPath"
-                                Text="{Binding PathToProgramFilesDefault, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                Text="{Binding PathToProgramFiles, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                   IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                   IsEnabled="{DXBinding Expr='!IsPathToProgramFilesDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"                />
                         </dxlc:LayoutItem>
@@ -78,7 +78,7 @@
                     <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0">
                         <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" 
                                  Command="{Binding SaveCommand}" 
-                                 CommandParameter="{Binding ElementName=Window}"/>
+                                 CommandParameter="{Binding ElementName=win}"/>
 
                         <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form"  Margin="4 0 0 0"/>
                     </dxlc:LayoutGroup>

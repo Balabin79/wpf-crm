@@ -22,6 +22,7 @@ using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 using DevExpress.Mvvm;
 using Dental.ViewModels.Base;
+using Dental.Views.Settings;
 
 namespace Dental.ViewModels.ServicePrice
 {
@@ -37,8 +38,10 @@ namespace Dental.ViewModels.ServicePrice
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"!",
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"! Проверьте настройки подключения к базе данных.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
         #region Права на выполнение команд

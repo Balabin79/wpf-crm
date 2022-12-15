@@ -42,10 +42,11 @@ namespace Dental.ViewModels
                 EmployeeWrappers = new List<EmployeeWrapper>();
                 Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
             }
-            catch (Exception e)
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"! Проверьте настройки подключения к базе данных.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

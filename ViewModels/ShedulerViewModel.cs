@@ -23,7 +23,7 @@ using Dental.Views.PatientCard;
 using Dental.ViewModels.ClientDir;
 using Dental.Models.Base;
 using System.Windows.Data;
-
+using Dental.Views.Settings;
 
 namespace Dental.ViewModels
 {
@@ -47,10 +47,12 @@ namespace Dental.ViewModels
                 LoadClients(db);
                 SetSelectedEmployees();
             }
-            catch (Exception e)
+            catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"! Проверьте настройки подключения к базе данных.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

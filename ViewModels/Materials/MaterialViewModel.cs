@@ -23,6 +23,7 @@ using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 using Dental.Services;
 using Dental.ViewModels.Base;
+using Dental.Views.Settings;
 
 namespace Dental.ViewModels.Materials
 {
@@ -38,8 +39,10 @@ namespace Dental.ViewModels.Materials
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Материалы\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Материалы\"! Проверьте настройки подключения к базе данных.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
+
             }
         }
 

@@ -12,7 +12,7 @@ using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
-
+using Dental.Views.Settings;
 
 namespace Dental.ViewModels.Org
 {
@@ -27,10 +27,14 @@ namespace Dental.ViewModels.Org
                 CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
 
             }
-            catch
+            catch 
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!",
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"! Проверьте настройки подключения к базе данных.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
+
             }
         }
 

@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Security.Cryptography;
 using System.Data.SQLite;
+using Dental.Views.Settings;
+using Dental.ViewModels;
 
 namespace Dental.Services
 {
@@ -39,7 +41,10 @@ namespace Dental.Services
             {
                 IsRoleAccessEnabled = false;
                 IsPasswordRequired = false;
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при загрузке программы. Возможно повреждена база данных. Проверьте настройки подключения к базе данных.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

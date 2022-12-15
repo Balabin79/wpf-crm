@@ -17,6 +17,7 @@ using Dental.Models;
 using Dental.Models.Base;
 using Dental.Services;
 using Dental.ViewModels.Org;
+using Dental.Views.Settings;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
@@ -39,10 +40,12 @@ namespace Dental.ViewModels.Org
                 IsReadOnly = model?.Id > 0;
                 if (IsReadOnly) ImagesLoading();
             }
-            catch
+            catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Организации\"!",
+                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Организации\"! Проверьте настройки подключения к базе данных.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                if (response.ToString() == "OK")
+                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

@@ -67,46 +67,53 @@ namespace Dental.ViewModels
         [Command]
         public void Save(object p)
         {
-            if (!IsPathToDbDefault || !IsPathToProgramFilesDefault)
+            try
             {
-                if (!IsPathToDbDefault)
+                // если какая-то из галочек снята
+                if (!IsPathToDbDefault || !IsPathToProgramFilesDefault)
                 {
-                    if (string.IsNullOrEmpty(PathToDb?.Trim()))
+                    if (!IsPathToDbDefault)
                     {
-                        ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к базе данных\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
-                        return;
+                        if (string.IsNullOrEmpty(PathToDb?.Trim()))
+                        {
+                            ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к базе данных\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
+                            messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                            return;
+                        }
                     }
+
+                    if (!IsPathToProgramFilesDefault)
+                    {
+                        if (string.IsNullOrEmpty(PathToProgramFiles?.Trim()))
+                        {
+                            ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к программным файлам\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
+                            messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
+                            return;
+                        }
+                    } 
                 }
 
-                if (IsPathToProgramFilesDefault == false)
-                {
-                    if (string.IsNullOrEmpty(PathToProgramFiles?.Trim()))
-                    {
-                        ThemedMessageBox.Show(title: "Внимание!", text: "Поле \"Путь к программным файлам\" не заполнено! Поставьте галочку \"По умолчанию\" или введите значение в поле",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Warning);
-                        return;
-                    }
-                }
-
-                //если пути изменены по сравнению со старой версией, то 
-    
-                var dBName = Config.defaultDBName;
-                var connectionString = PathToDb ?? Config.PathToDbDefault;
-                var pathToProgram = PathToProgramFiles ?? Config.PathToProgramDirectory;
+                // если галочка проставлена то обнуляем тектовое поле и обнуляем поле в файле конфигурации
+                if (IsPathToDbDefault) PathToDb = null;
+                if (IsPathToProgramFilesDefault) PathToProgramFiles = null;
 
                 var config = JsonSerializer.Serialize(new UserConfig()
                 {
-                    DBName = dBName,
-                    ConnectionString = connectionString,
-                    PathToProgram = pathToProgram
+                    DBName = Config.defaultDBName,
+                    ConnectionString = PathToDb,
+                    PathToProgram = PathToProgramFiles
                 });
+
                 File.WriteAllText("./dental.conf", config);
 
-                Config.ConnectionString = connectionString;
-                Config.PathToProgram = pathToProgram;
+                Config.ConnectionString = PathToDb ?? Config.PathToDbDefault;
+                Config.PathToProgram = PathToProgramFiles ?? Config.PathToFilesDirectory;
 
-                // var json = File.ReadAllText("./dental.conf").Trim();
+                if (p is Window win) win?.Close();             
+            }
+            catch (Exception e)
+            {
+
             }
         }
 

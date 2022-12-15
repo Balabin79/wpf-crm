@@ -19,6 +19,7 @@ using System.Data.SQLite;
 using Dental.Views;
 using Dental.ViewModels.Org;
 using Dental.ViewModels.AdditionalFields;
+using Dental.Views.Settings;
 
 namespace Dental.Services
 {
@@ -112,9 +113,9 @@ namespace Dental.Services
                 }
                 await GoToPage(p);
             }
-            catch
+            catch (Exception e)
             {
-                //ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Ошибка", text: "При переходе на другую страницу возникла ошибка! Данная страница отсутствует.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 
