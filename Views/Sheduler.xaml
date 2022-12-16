@@ -125,8 +125,8 @@
                                     ShowReminderImage="True"
                                     ShowStatus="True"
                                     ShowLocation="True" 
-                                    ShowDescription="True"                       
-                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment} }"
+                                    ShowDescription="True"
+                                    Style="{DynamicResource {dxscht:SchedulerFlyoutThemeKey ResourceKey=Appointment} }" 
                                     />
                             </StackPanel>
                             <dxlc:LayoutControl Margin="0,5,0,0" VerticalAlignment="Top" Orientation="Vertical" Padding="0">
@@ -136,6 +136,17 @@
 
                         </dxlc:LayoutControl>
                     </DataTemplate>
+
+
+
+
+
+                    <Style x:Key="appointmentStyle" TargetType="dxschv:AppointmentControl">
+                        <Setter Property="ShowInterval" Value="True"/>
+                        <!--<Setter Property="ShowDescription" Value="True"/>-->
+                    </Style>
+
+
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/Ribbon1.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -317,6 +328,8 @@
                         ResourcesPerPage="5"
                         ShowAllDayArea="False"
                         ShowWorkTimeOnly="True"
+                    
+               AppointmentStyle="{StaticResource appointmentStyle}"
                         SnapToCellsMode="Never"
                         TimeScale="00:10:00"
                         ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
@@ -331,6 +344,7 @@
                                 <dxsch:TimeScaleWorkHour />
                             </dxsch:TimelineView.TimeScales>
                         </dxsch:TimelineView>
+                        
                         <dxsch:SchedulerControl.DataSource>
                             <dxsch:DataSource ResourcesSource="{Binding Doctors}" 
                                               AppointmentsSource="{Binding Appointments }" 
@@ -394,6 +408,7 @@
 
                             </dxsch:DataSource>
                         </dxsch:SchedulerControl.DataSource>
+                        
                     </dxsch:SchedulerControl>
                 </DockPanel>
 

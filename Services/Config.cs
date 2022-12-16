@@ -47,7 +47,7 @@ namespace Dental.Services
 
         // This should give you something like C:\Users\Public        
 
-        private static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Dental");
+        public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Dental");
 
         public static string defaultDBName = "dental.db";
 
@@ -65,7 +65,7 @@ namespace Dental.Services
 
         public static string PathToFilesDirectory = Path.Combine(defaultPath, "Files");
         
-        public static string PathToProgramDirectory = Path.Combine(defaultPath);
+        public static string PathToProgramDirectory = defaultPath;
 
         public static string GetPathToLogo() => Path.Combine(PathToOrgDirectory, "Logo.jpg");      
     }

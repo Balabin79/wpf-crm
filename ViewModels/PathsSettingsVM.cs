@@ -17,7 +17,7 @@ namespace Dental.ViewModels
         public PathsSettingsVM()
         {
             // считываем значения для местоположения бд и программных файлов
-            if (Config.ConnectionString == Path.Combine(Config.PathToDbDefault))
+            if (Config.ConnectionString == Config.PathToDbDefault)
             {
                 IsPathToDbDefault = true;
                 PathToDb = null;
@@ -28,7 +28,7 @@ namespace Dental.ViewModels
                 PathToDb = Config.ConnectionString;
             }
 
-            if (Config.ConnectionString == Path.Combine(Config.PathToDbDefault))
+            if (Config.PathToProgram == Config.defaultPath)
             {
                 IsPathToProgramFilesDefault = true;
                 PathToProgramFiles = null;
@@ -36,7 +36,7 @@ namespace Dental.ViewModels
             else
             {
                 IsPathToProgramFilesDefault = false;
-                PathToProgramFiles = Config.PathToProgramDirectory;
+                PathToProgramFiles = Config.PathToProgram;
             }
         }
 
@@ -104,6 +104,8 @@ namespace Dental.ViewModels
                     PathToProgram = PathToProgramFiles
                 });
 
+                // File.WriteAllText("./dental.conf");
+                if (File.Exists("./dental.conf")) File.Delete("./dental.conf");
                 File.WriteAllText("./dental.conf", config);
 
                 Config.ConnectionString = PathToDb ?? Config.PathToDbDefault;
