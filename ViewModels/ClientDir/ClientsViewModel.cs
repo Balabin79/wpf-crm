@@ -64,12 +64,10 @@ namespace Dental.ViewModels.ClientDir
 
                 Init(Model);
             }
-            catch
+            catch (Exception e)
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов! Проверьте настройки подключения к базе данных",
+               ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

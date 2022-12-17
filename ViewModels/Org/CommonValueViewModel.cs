@@ -29,12 +29,8 @@ namespace Dental.ViewModels.Org
             }
             catch 
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
-
             }
         }
 

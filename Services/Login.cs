@@ -41,10 +41,6 @@ namespace Dental.Services
             {
                 IsRoleAccessEnabled = false;
                 IsPasswordRequired = false;
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при загрузке программы. Возможно повреждена база данных. Проверьте настройки подключения к базе данных.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 

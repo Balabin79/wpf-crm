@@ -39,10 +39,7 @@ namespace Dental.ViewModels.Materials
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Материалы\"! Проверьте настройки подключения к базе данных.", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
-
+                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Материалы\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
 

@@ -46,10 +46,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Диагнозы\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Диагнозы\"!",
                 messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -66,10 +64,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Лечение\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Лечение\"!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -86,10 +82,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Аллергии\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Аллергии\"!",
                  messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -106,10 +100,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Жалобы пациента\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Жалобы пациента\"!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
 
         }
@@ -128,10 +120,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Планы лечения\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Планы лечения\"!",
                 messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -148,10 +138,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Объективное обследование\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Объективное обследование\"!",
                      messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -169,10 +157,8 @@ namespace Dental.ViewModels.Templates
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Описание рентгеновских снимков\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Описание рентгеновских снимков\"!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
 
@@ -186,14 +172,11 @@ namespace Dental.ViewModels.Templates
                     DataContext = new TreeBaseViewModel<Anamnes>(db, db?.Anamneses),
                     TitleWin = "Шаблоны \"Анамнезы\""
                 }?.ShowDialog();
-
             }
             catch
             {
-                var response = ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Анамнезы\"! Проверьте настройки подключения к базе данных.",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму шаблонов \"Анамнезы\"!",
                     messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                if (response.ToString() == "OK")
-                    new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
             }
         }
     }
