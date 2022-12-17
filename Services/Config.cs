@@ -21,9 +21,9 @@ namespace Dental.Services
                 PathToProgram = defaultPath;             
 
                 // открываем файл и пытаемся прочесть содержимое json
-                if (File.Exists("./dental.conf")) 
+                if (File.Exists(PathToConfig)) 
                 {
-                    var json = File.ReadAllText("./dental.conf").Trim();
+                    var json = File.ReadAllText(PathToConfig).Trim();
 
                     if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
                     {
@@ -52,6 +52,8 @@ namespace Dental.Services
         public static string defaultDBName = "dental.db";
 
         public static string PathToDbDefault = Path.Combine(defaultPath, defaultDBName);
+
+        public static string PathToConfig = Path.Combine(defaultPath, "dental.conf");
 
         public static string PathToEmployeesDirectory;
 

@@ -105,11 +105,11 @@ namespace Dental.ViewModels
                 });
 
                 // File.WriteAllText("./dental.conf");
-                if (File.Exists("./dental.conf")) File.Delete("./dental.conf");
-                File.WriteAllText("./dental.conf", config);
+                if (File.Exists(Config.PathToConfig)) File.Delete(Config.PathToConfig);
+                File.WriteAllText(Config.PathToConfig, config);
 
                 Config.ConnectionString = PathToDb ?? Config.PathToDbDefault;
-                Config.PathToProgram = PathToProgramFiles ?? Config.PathToFilesDirectory;
+                Config.PathToProgram = PathToProgramFiles ?? Config.PathToProgramDirectory;
 
                 if (p is Window win) win?.Close();             
             }

@@ -29,6 +29,7 @@ namespace Dental.Services
         private readonly ApplicationContext db;
         public Navigator()
         {
+            new CheckDBConnection().Run();
             db = new ApplicationContext();
             CurrentPage = CreatePage(defaultPage);
             FrameOpacity = 1.1;
@@ -88,6 +89,7 @@ namespace Dental.Services
         {
             try
             {
+                new CheckDBConnection().Run();
                 List<string> forms = new List<string>();
                 switch (CurrentPage.ToString())
                 {
@@ -145,7 +147,7 @@ namespace Dental.Services
         }
 
         // страница по умолчанию (стартовая страница, если не удалось подгрузить страницу из настроек)
-        private readonly string defaultPage = "Dental.Views.PatientCard.PatientsList";
+        public readonly string defaultPage = "Dental.Views.PatientCard.PatientsList";
 
         public int? StartWithLastPage { get; set; }
 
