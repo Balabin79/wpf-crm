@@ -17,7 +17,7 @@ namespace Dental.Services
         public void Run()
         {
             bool successConn = false;
-            while (!successConn) successConn = CheckFileDbExists() && CheckConnectionToDb();
+            while (!successConn) successConn = CheckConnectionToDb();
         }
 
         private bool CheckConnectionToDb()
@@ -31,7 +31,7 @@ namespace Dental.Services
                     {
                         ConnectionString = new SQLiteConnectionStringBuilder()
                         {
-                            DataSource = Config.ConnectionString,
+                            DataSource = new Config().ConnectionString,
                             Version = 3
                         }.ConnectionString
                     })
@@ -55,22 +55,6 @@ namespace Dental.Services
                 }
             }
             while (!openDbSuccess);
-            return true;
-        }
-
-        private bool CheckFileDbExists()
-        {
-            while (!File.Exists(Config.ConnectionString))
-            {
-                ThemedMessageBox.Show(
-                    title: "Ошибка",
-                    text: "Не найден файл базы данных. Если используется локальная сеть, то, возможно, в данный момент недоступно сетевое расположение файла. Проверьте настройки подключения к базе данных.",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error, windowStartupLocation: WindowStartupLocation.CenterOwner
-                    );
-
-                new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
-            }
             return true;
         }
     }

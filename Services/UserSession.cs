@@ -58,6 +58,12 @@ namespace Dental.Services
             set { SetProperty(() => OrgRead, value); }
         }
 
+        public bool StatisticRead
+        {
+            get { return GetProperty(() => StatisticRead); }
+            set { SetProperty(() => StatisticRead, value); }
+        }
+
 
         public bool ClientEditable { get; set; } = false;
         public bool ClientDeletable { get; set; } = false;

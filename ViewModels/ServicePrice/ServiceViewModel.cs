@@ -23,6 +23,7 @@ using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 using DevExpress.Mvvm;
 using Dental.ViewModels.Base;
 using Dental.Views.Settings;
+using DevExpress.DataAccess.Sql;
 
 namespace Dental.ViewModels.ServicePrice
 {

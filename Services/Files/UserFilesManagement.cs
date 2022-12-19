@@ -12,7 +12,7 @@ namespace Dental.Services.Files
 {
     class UserFilesManagement : AbstractFilesManagement
     {
-        public UserFilesManagement(string Guid) : base(Path.Combine(Config.PathToFilesDirectory, Guid)){}
+        public UserFilesManagement(string Guid) : base(Path.Combine(new Config().PathToFilesDirectory, Guid)){}
 
     }
 }

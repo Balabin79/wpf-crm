@@ -35,11 +35,11 @@ namespace Dental
             }
             catch (FileNotFoundException ex)
             {
-                MessageBox.Show(ex.Message + " ÖÖÖ " + ex.FileName);
+                MessageBox.Show(ex.Message +  ex.FileName);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message + " WWW " + e.InnerException.Message);
+                MessageBox.Show(e.Message  + e.InnerException.Message);
             }
 
          }

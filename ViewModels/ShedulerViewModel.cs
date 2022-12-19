@@ -24,6 +24,8 @@ using Dental.ViewModels.ClientDir;
 using Dental.Models.Base;
 using System.Windows.Data;
 using Dental.Views.Settings;
+using Dental.Reports;
+using DevExpress.Xpf.Printing;
 
 namespace Dental.ViewModels
 {
@@ -35,6 +37,8 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
+                Config = new Config();
+                PathToEmployeesDirectory = Config.PathToEmployeesDirectory;
 
                 LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
                 StatusAppointments = GetStatusCollection(db);
@@ -46,6 +50,7 @@ namespace Dental.ViewModels
                 LoadEmployees(db);
                 LoadClients(db);
                 SetSelectedEmployees();
+                SetWorkTime();
             }
             catch
             {
@@ -300,6 +305,45 @@ namespace Dental.ViewModels
             }
         }
 
+        [Command]
+        public void Print(object p)
+        {
+            try
+            {
+                if (p is SchedulerControl scheduler)
+                {
+                    XtraSchedulerReport1 report = new XtraSchedulerReport1();
+                    DateTimeRange dateTimeRange = scheduler.VisibleIntervals[0];
+                    //TimeSpanRange timeSpanRange = scheduler.;
+                    scheduler.SchedulerPrintAdapter.DateTimeRange = dateTimeRange;
+                    scheduler.SelectedInterval = dateTimeRange;
+                    
+                    scheduler.SchedulerPrintAdapter.AssignToReport(report);
+                    PrintHelper.ShowPrintPreview(scheduler, report);
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void OpenWorkTime() 
+        {
+            var vm = new WorkTimeVM(db);
+            vm.SetWokTimeEvent += SetWorkTime;
+            new WorkTimeWindow() { DataContext = vm }.Show(); 
+        }
+
+        public void SetWorkTime() => WorkTime = db.Branches.FirstOrDefault()?.WorkTime ?? WorkTimeVM.workTimeDefault;
+
+        public string WorkTime
+        {
+            get { return GetProperty(() => WorkTime); }
+            set { SetProperty(() => WorkTime, value); }
+        }
+
         public StatusAppointmentWindow StatusWindow { get; set; }
 
         public ObservableCollection<AppointmentStatus> StatusAppointments
@@ -332,7 +376,6 @@ namespace Dental.ViewModels
         }
         #endregion
 
-
         public ObservableCollection<Service> ClassificatorCategories
         {
             get { return GetProperty(() => ClassificatorCategories); }
@@ -358,7 +401,7 @@ namespace Dental.ViewModels
         /*****************************************************************************************/
 
 
-        private string PathToEmployeesDirectory = Config.PathToEmployeesDirectory;
+        private string PathToEmployeesDirectory;
 
         private void LoadEmployees(ApplicationContext db)
         {
@@ -406,6 +449,12 @@ namespace Dental.ViewModels
             {
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
             }
+        }
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
         }
     }
 }

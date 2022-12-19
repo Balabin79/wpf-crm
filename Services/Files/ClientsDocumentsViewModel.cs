@@ -17,6 +17,6 @@ namespace Dental.Services.Files
     public class ClientsDocumentsViewModel : AbstractDocumentsManagement
     {
         public ClientsDocumentsViewModel() : this("") { }
-        public ClientsDocumentsViewModel(string Guid) : base(Path.Combine(Config.PathToClientsDocumentsDirectory, Guid)){}
+        public ClientsDocumentsViewModel(string Guid) : base(Path.Combine(new Config().PathToClientsDocumentsDirectory, Guid)){}
     }
 }

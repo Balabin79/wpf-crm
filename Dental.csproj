@@ -354,6 +354,9 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\WindowForms\WorkTimeWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\WindowForms\StatusAppointmentWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -448,6 +451,10 @@
     </Page>
     <Page Update="Views\Templates\TemplatesWin.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\WindowForms\WorkTimeWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\WindowForms\StatusAppointmentWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

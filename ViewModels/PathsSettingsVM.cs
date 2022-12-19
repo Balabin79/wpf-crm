@@ -1,5 +1,6 @@
 ﻿using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,9 @@ namespace Dental.ViewModels
     {
         public PathsSettingsVM()
         {
+            Config = new Config();
             // считываем значения для местоположения бд и программных файлов
-            if (Config.ConnectionString == Config.PathToDbDefault)
+            if (Config.ConnectionString == null || Config.ConnectionString == Config.PathToDbDefault)
             {
                 IsPathToDbDefault = true;
                 PathToDb = null;
@@ -28,7 +30,7 @@ namespace Dental.ViewModels
                 PathToDb = Config.ConnectionString;
             }
 
-            if (Config.PathToProgram == Config.defaultPath)
+            if (Config.PathToProgram == null || Config.PathToProgram == Config.defaultPath)
             {
                 IsPathToProgramFilesDefault = true;
                 PathToProgramFiles = null;
@@ -119,5 +121,23 @@ namespace Dental.ViewModels
             }
         }
 
+        [Command]
+        public void CloseApp(object p)
+        {
+            if (p is Window win) win?.Close();
+
+            var response = ThemedMessageBox.Show(title: "Внимание", text: "Завершить работу с приложением?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+            if (response.ToString() == "No") return;
+            
+
+            //Application.Current.Shutdown();
+            
+        }
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
+        }
     }
 }

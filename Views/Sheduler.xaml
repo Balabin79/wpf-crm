@@ -249,6 +249,7 @@
                     </dxa:AccordionControl>
                     <dxsch:SchedulerControl 
                     DockPanel.Dock="Left" 
+                    WorkTime="{Binding WorkTime, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     DataContext="{StaticResource vm}"
                     x:Name="scheduler" 
                     CommandBarStyle="Ribbon"                   
@@ -301,12 +302,18 @@
                             LargeGlyph="{dx:DXImage SvgImages/Scheduling/ChangeStatus.svg}"
                             Command="{Binding Source={StaticResource vm}, Path=OpenWindowStatusCommand}"
                             />
-                                </dxr:RibbonPageGroup>
+                                <dxb:BarButtonItem  
+                            Content="Рабочий интервал"                           
+                            Glyph="{dx:DXImage SvgImages/Spreadsheet/Time.svg}"
+                            LargeGlyph="{dx:DXImage SvgImages/Spreadsheet/Time.svg}"
+                            Command="{Binding Source={StaticResource vm}, Path=OpenWorkTimeCommand}"
+                            />
+                            </dxr:RibbonPageGroup>
                             </dxb:InsertAction>
                             <dxb:InsertAction ContainerName="{x:Static dxsch:DefaultBarItemNames.Pages_Home}" Index="6">
                                 <dxr:RibbonPageGroup Caption="Печать">
                                     <dxb:BarButtonItem 
-                                    Command="{Binding Source={StaticResource Print}}"                                        
+                                    Command="{Binding ElementName=scheduler, Path=DataContext.PrintCommand }"                                        
                                     CommandParameter="{DXBinding '@ElementName(scheduler)'}"
                                     Content="Печать"
                                     LargeGlyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" />

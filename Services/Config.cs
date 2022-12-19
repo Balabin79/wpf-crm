@@ -7,32 +7,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
+using DevExpress.Mvvm.Native;
 
 namespace Dental.Services
 {
-    public static class Config
+    public class Config
     {
-        static Config()
+        public Config()
         {
             try
             {
                 DBName = defaultDBName;
                 ConnectionString = Path.Combine(defaultPath, DBName);
-                PathToProgram = defaultPath;             
+                PathToProgram = defaultPath;
 
                 // открываем файл и пытаемся прочесть содержимое json
-                if (File.Exists(PathToConfig)) 
-                {
-                    var json = File.ReadAllText(PathToConfig).Trim();
-
-                    if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
+                    if (File.Exists(PathToConfig))
                     {
-                        DBName = config.DBName ?? defaultDBName;
-                        ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
-                        PathToProgram = config.PathToProgram ?? defaultPath;
+                        var json = File.ReadAllText(PathToConfig).Trim();
+                        if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
+                        {
+                            DBName = config.DBName ?? defaultDBName;
+                            ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
+                            PathToProgram = config.PathToProgram ?? defaultPath;
+                        }
                     }
-                }
                 PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
+                PathToOrgDirectory = Path.Combine(PathToProgram, "Organization");
+                PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
+                PathToClientsDocumentsDirectory = Path.Combine(PathToProgram, "Clients", "Documents");
+                PathToClientsPhotoDirectory = Path.Combine(PathToProgram, "Clients", "Photo");
+                PathToFilesDirectory = Path.Combine(PathToProgram, "Files");
+                PathToProgramDirectory = PathToProgram;
             }
             catch
             {
@@ -41,34 +47,35 @@ namespace Dental.Services
                 PathToProgram = defaultPath;
             }
         }
-        public static string ConnectionString;
-        public static string DBName;
-        public static string PathToProgram;
+        public string ConnectionString;
+        public string DBName;
+        public string PathToProgram;
 
-        // This should give you something like C:\Users\Public        
-
+        // эти пути всегда статичны       
         public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Dental");
-
         public static string defaultDBName = "dental.db";
-
         public static string PathToDbDefault = Path.Combine(defaultPath, defaultDBName);
-
         public static string PathToConfig = Path.Combine(defaultPath, "dental.conf");
 
-        public static string PathToEmployeesDirectory;
 
-        public static string PathToOrgDirectory = Path.Combine(defaultPath, "Organization");
+        // эти пути задаются динамически
+        public string PathToEmployeesDirectory;
+        public string PathToOrgDirectory;
+        public string PathToClientsDirectory;
+        public string PathToClientsPhotoDirectory;
+        public string PathToClientsDocumentsDirectory;
+        public string PathToFilesDirectory;    
+        public string PathToProgramDirectory;
 
-        public static string PathToClientsDirectory = Path.Combine(defaultPath, "Clients");
+        public string GetPathToLogo() 
+        {
+            var logo = "";
+            var files = new string[] { };
+            if (Directory.Exists(PathToOrgDirectory)) files = Directory.GetFiles(PathToOrgDirectory);
 
-        public static string PathToClientsPhotoDirectory = Path.Combine(defaultPath, "Clients", "Photo");
-
-        public static string PathToClientsDocumentsDirectory = Path.Combine(defaultPath, "Clients", "Documents");
-
-        public static string PathToFilesDirectory = Path.Combine(defaultPath, "Files");
-        
-        public static string PathToProgramDirectory = defaultPath;
-
-        public static string GetPathToLogo() => Path.Combine(PathToOrgDirectory, "Logo.jpg");      
+            foreach (var i in files) if (i.Contains("Logo")) logo = i;
+      
+            return Path.Combine(PathToOrgDirectory, logo);
+        }      
     }
 }

@@ -164,7 +164,7 @@ namespace Dental.Services
         {
             try
             {
-                var path = Path.Combine(Config.PathToProgramDirectory, "B6Dental.chm");
+                var path = Path.Combine(new Config().PathToProgramDirectory, "B6Dental.chm");
                 if (!File.Exists(path))
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Не найден файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

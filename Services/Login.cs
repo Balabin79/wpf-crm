@@ -160,6 +160,8 @@ namespace Dental.Services
 
                             case "SettingsRead": UserSession.SettingsRead = HasAccess(role); break;
 
+                            case "StatisticRead": UserSession.SettingsRead = HasAccess(role); break;
+
                             case "OrgRead": UserSession.OrgRead = HasAccess(role); break;
                             case "OrgEditable": UserSession.OrgEditable = HasAccess(role); break;
                             case "OrgDeletable": UserSession.OrgDeletable = HasAccess(role); break;
@@ -203,6 +205,8 @@ namespace Dental.Services
             UserSession.TemplateDeletable = true;
 
             UserSession.SettingsRead = true;
+
+            UserSession.StatisticRead = true;
 
             UserSession.OrgRead = true;
             UserSession.OrgEditable = true;

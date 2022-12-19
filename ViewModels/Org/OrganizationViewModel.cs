@@ -34,6 +34,7 @@ namespace Dental.ViewModels.Org
             try
             {
                 db = new ApplicationContext();
+                Config = new Config();
                 OrganizationVM = new OrganizationVM();
                 var model = db.Organizations.FirstOrDefault() ?? new Organization();
                 OrganizationVM.Copy(model);
@@ -274,6 +275,12 @@ namespace Dental.ViewModels.Org
         {
             get { return GetProperty(() => Stamp); }
             set { SetProperty(() => Stamp, value); }
+        }
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
         }
 
         #endregion

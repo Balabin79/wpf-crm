@@ -56,7 +56,9 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+
                 db = new ApplicationContext();
+                Config = new Config();
                 LoadClients();
                 LoadInvoices();
                 LoadEmployees();
@@ -135,10 +137,12 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                var config = new Config();
                 var path = "";
                 if (model is Employee) path = Config.PathToEmployeesDirectory;
 
-                if (model is Client) path = Config.PathToClientsPhotoDirectory;
+                if (model is Client) 
+                    path = Config.PathToClientsPhotoDirectory;
 
                 if (Directory.Exists(path))
                 {
@@ -599,8 +603,9 @@ namespace Dental.ViewModels.ClientDir
                     report.FilterString = "[Id] = [Parameters.Id]";
                     report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
 
-                    if (report.DataSource is SqlDataSource source)
+                    if (report?.DataSource is SqlDataSource source)
                     {
+
                         string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
                         SqlDataSource ds = report.DataSource as SqlDataSource;
 
@@ -1397,6 +1402,12 @@ namespace Dental.ViewModels.ClientDir
             {
                 page.SelectedItem();
             }
+        }
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
         }
     }
 }

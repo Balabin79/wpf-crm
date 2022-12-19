@@ -182,6 +182,25 @@
                 </dxb:BarButtonItem.ContentTemplate>
             </dxb:BarButtonItem>
 
+            <dxb:BarButtonItem Name="statBtnItem" 
+                IsVisible="{DXBinding Expr='@r(UserSession).StatisticRead', UpdateSourceTrigger=PropertyChanged}"
+                ToolTip="Статистика"
+                Command="{Binding LeftMenuClickCommand}" 
+                CommandParameter="Dental.Views.Statistic.StatisticPage">
+                <dxb:BarButtonItem.ContentTemplate>
+                    <DataTemplate >
+                        <StackPanel>
+                            <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
+                            <TextBlock 
+                                TextAlignment="Center"  Text="Статистика" 
+                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Statistic.StatisticPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
+                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Statistic.StatisticPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       />
+                        </StackPanel>
+                    </DataTemplate>
+                </dxb:BarButtonItem.ContentTemplate>
+            </dxb:BarButtonItem>
+
             <dxb:BarButtonItem 
                 ToolTip="Переключить сеанс"                                     
                 ItemClick="BarButtonItem_ItemClick"

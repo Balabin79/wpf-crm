@@ -33,7 +33,7 @@
                     <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
 
                         <dxlc:LayoutItem Label="Путь к базе данных:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
-                            <dxe:TextEdit x:Name="pathToDb"
+                            <dxe:TextEdit x:Name="pathToDb"     
                                 Text="{Binding PathToDb, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                   IsReadOnly="{DXBinding Expr='IsReadOnly or IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                   IsEnabled="{DXBinding Expr='!IsPathToDbDefault', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
@@ -75,12 +75,17 @@
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
 
-                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0">
-                        <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" 
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0 20 0 0">
+                        <dx:SimpleButton Height="23" Content="Закрыть программу" VerticalContentAlignment="Center" HorizontalAlignment="Left"
+                                 Command="{Binding CloseAppCommand}" 
+                                 CommandParameter="{Binding ElementName=win}"/>
+                        
+                        
+                        <dx:SimpleButton Height="23" Content="Сохранить" VerticalContentAlignment="Center" HorizontalAlignment="Right" 
                                  Command="{Binding SaveCommand}" 
                                  CommandParameter="{Binding ElementName=win}"/>
 
-                        <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form"  Margin="4 0 0 0"/>
+                        <dx:SimpleButton Height="23" HorizontalAlignment="Right"  Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form"  Margin="4 0 0 0"/>
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
             </Border>

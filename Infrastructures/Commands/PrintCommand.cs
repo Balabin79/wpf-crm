@@ -37,10 +37,6 @@ namespace Dental.Infrastructures.Commands
                     pivot.ShowPrintPreview(pivot);
                 }   */             
                 
-                if (p is SchedulerControl scheduler)
-                {
-                    MyPrintHelper.PrintScheduler(scheduler);
-                }
             }
 
             catch (Exception e)

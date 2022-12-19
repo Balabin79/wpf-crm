@@ -36,6 +36,7 @@ namespace Dental.ViewModels.EmployeeDir
             try
             {
                 db = new ApplicationContext();
+                Config = new Config();
                 SetCollection();
                 foreach (var i in Collection)
                 {
@@ -262,6 +263,12 @@ namespace Dental.ViewModels.EmployeeDir
             {
                 (new ViewModelLog(e)).run();
             }
+        }
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
         }
     }
 }

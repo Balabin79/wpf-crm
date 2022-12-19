@@ -1,0 +1,58 @@
+﻿<Window x:Class="Dental.Views.WindowForms.WorkTimeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterOwner"
+        Name="Window" 
+        Height="230"
+        MaxHeight="230"
+        Width="600"
+        Icon="/Resources/Icons/te4.ico" 
+        Title="Рабочее время" 
+        >
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceCommand}" PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
+    <Window.Resources>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DateToStringConverter x:Key="dateToString" />
+        <converter:BoolIntConverter x:Key="boolToInt"/>
+    </Window.Resources>
+
+    <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
+        <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
+            <TextBlock Text="Рабочее время" FontSize="15" FontWeight="DemiBold" Margin="0 0 0 5"/>
+
+            <dxlc:LayoutItem Label="Начало рабочего дня:"  LabelPosition="Top">
+                <dxe:TextEdit VerticalAlignment="Center"
+                                  MaskType="TimeSpan"
+                                  MaskUseAsDisplayFormat="true"
+                                  EditValue="{Binding WorkTimeFrom}">
+                </dxe:TextEdit>
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutItem Label="Конец рабочего дня:"  LabelPosition="Top">
+                <dxe:TextEdit VerticalAlignment="Center"
+                                  MaskType="TimeSpan"
+                                  MaskUseAsDisplayFormat="true"
+                                  EditValue="{Binding WorkTimeTo}">
+                </dxe:TextEdit>
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0">
+                <dx:SimpleButton 
+                    Height="23" Content="Сохранить" VerticalContentAlignment="Center" 
+                                 Command="{Binding SaveCommand}" 
+                                 CommandParameter="{Binding ElementName=Window}"/>
+                
+                <dx:SimpleButton Height="23" Content="Закрыть" VerticalContentAlignment="Center" Click="Cancel_Form" Margin="4 0 0 0"/>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+    </GroupBox>
+</Window>

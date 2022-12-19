@@ -32,7 +32,7 @@ namespace Dental.Models
             {
                 ConnectionString = new SQLiteConnectionStringBuilder()
                 {
-                    DataSource = Config.ConnectionString,
+                    DataSource = new Config().ConnectionString,
                     Version = 3
                 }.ConnectionString
             }, true
@@ -98,5 +98,6 @@ namespace Dental.Models
         public DbSet<RoleManagment> RolesManagment { get; set; }
 
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<Branch> Branches { get; set; }
     }
 }

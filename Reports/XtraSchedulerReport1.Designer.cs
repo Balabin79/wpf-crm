@@ -1,5 +1,5 @@
 ﻿
-namespace Dental.Infrastructures.Commands
+namespace Dental.Reports
 {
     partial class XtraSchedulerReport1
     {
@@ -30,15 +30,15 @@ namespace Dental.Infrastructures.Commands
         private void InitializeComponent()
         {
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.topMarginBand1 = new DevExpress.XtraReports.UI.TopMarginBand();
-            this.bottomMarginBand1 = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.horizontalResourceHeaders1 = new DevExpress.XtraScheduler.Reporting.HorizontalResourceHeaders();
+            this.reportDayView1 = new DevExpress.XtraScheduler.Reporting.ReportDayView();
             this.calendarControl1 = new DevExpress.XtraScheduler.Reporting.CalendarControl();
             this.dayViewTimeCells1 = new DevExpress.XtraScheduler.Reporting.DayViewTimeCells();
             this.horizontalDateHeaders1 = new DevExpress.XtraScheduler.Reporting.HorizontalDateHeaders();
             this.dayViewTimeRuler1 = new DevExpress.XtraScheduler.Reporting.DayViewTimeRuler();
             this.timeIntervalInfo1 = new DevExpress.XtraScheduler.Reporting.TimeIntervalInfo();
-            this.reportDayView1 = new DevExpress.XtraScheduler.Reporting.ReportDayView();
+            this.topMarginBand1 = new DevExpress.XtraReports.UI.TopMarginBand();
+            this.bottomMarginBand1 = new DevExpress.XtraReports.UI.BottomMarginBand();
             ((System.ComponentModel.ISupportInitialize)(this.reportDayView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -56,14 +56,6 @@ namespace Dental.Infrastructures.Commands
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.PageBreak = DevExpress.XtraReports.UI.PageBreak.AfterBand;
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // topMarginBand1
-            // 
-            this.topMarginBand1.Name = "topMarginBand1";
-            // 
-            // bottomMarginBand1
-            // 
-            this.bottomMarginBand1.Name = "bottomMarginBand1";
             // 
             // horizontalResourceHeaders1
             // 
@@ -85,6 +77,7 @@ namespace Dental.Infrastructures.Commands
             this.dayViewTimeCells1.HorizontalHeaders = this.horizontalDateHeaders1;
             this.dayViewTimeCells1.LocationFloat = new DevExpress.Utils.PointFloat(93.00003F, 207F);
             this.dayViewTimeCells1.Name = "dayViewTimeCells1";
+            this.dayViewTimeCells1.ShowWorkTimeOnly = true;
             this.dayViewTimeCells1.SizeF = new System.Drawing.SizeF(549.9999F, 692F);
             this.dayViewTimeCells1.View = this.reportDayView1;
             this.dayViewTimeCells1.VisibleTimeSnapMode = false;
@@ -112,6 +105,14 @@ namespace Dental.Infrastructures.Commands
             this.timeIntervalInfo1.Name = "timeIntervalInfo1";
             this.timeIntervalInfo1.SizeF = new System.Drawing.SizeF(242F, 100F);
             this.timeIntervalInfo1.TimeCells = this.dayViewTimeCells1;
+            // 
+            // topMarginBand1
+            // 
+            this.topMarginBand1.Name = "topMarginBand1";
+            // 
+            // bottomMarginBand1
+            // 
+            this.bottomMarginBand1.Name = "bottomMarginBand1";
             // 
             // XtraSchedulerReport1
             // 

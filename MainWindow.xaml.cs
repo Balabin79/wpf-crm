@@ -41,6 +41,7 @@ namespace Dental
 
                 var nav = (Navigator)Application.Current.Resources["Router"];
 
+                statBtnItem.IsVisible = userSession.StatisticRead;
                 sheduleBtn.IsVisible = userSession.SheduleRead;
                 clientsBtn.IsVisible = userSession.ClientsRead;
                 employeesBtn.IsVisible = userSession.EmployeesRead;
@@ -55,6 +56,7 @@ namespace Dental
                 if (userSession.PricesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
                 if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
                 if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
+                if (userSession.StatisticRead) { nav.LeftMenuClick("Dental.Views.Statistic.StatisticPage"); return; }
                 if (userSession.OrgRead) { nav.LeftMenuClick("Dental.Views.Dental.Views.Organization"); return; }
         }
 
@@ -86,13 +88,9 @@ namespace Dental
             }
             e.Cancel = false;
 
-           Application.Current.Shutdown();  
-          
+           Application.Current.Shutdown();         
         }
 
-        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            Restart();
-        }
+        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e) => Restart();   
     }
 }
