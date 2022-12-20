@@ -26,6 +26,7 @@ using System.Windows.Data;
 using Dental.Views.Settings;
 using Dental.Reports;
 using DevExpress.Xpf.Printing;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels
 {
@@ -40,8 +41,8 @@ namespace Dental.ViewModels
                 Config = new Config();
                 PathToEmployeesDirectory = Config.PathToEmployeesDirectory;
 
-                LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
-                StatusAppointments = GetStatusCollection(db);
+                SetLocationAppointments();
+                SetStatusCollection();
                 ClassificatorCategories = db.Services.ToObservableCollection();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
@@ -76,6 +77,8 @@ namespace Dental.ViewModels
         public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
         public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
         #endregion
+
+        public void SetLocationAppointments() => LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
 
         [Command]
         public void AppointmentAdded(object p)
@@ -166,16 +169,18 @@ namespace Dental.ViewModels
             {
                 if (p is LocationAppointment model)
                 {
-                    int cnt = 0;
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
-                        cnt = db.SaveChanges();
-
                     }
                     else db.Entry(model).State = EntityState.Detached;
-                    LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "Локация удалена из базы данных!" }.run();
+                        SetLocationAppointments();
+                    }
+                    //LocationAppointments.Remove(LocationAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
                 }
             }
             catch (Exception e)
@@ -196,7 +201,8 @@ namespace Dental.ViewModels
                 }
                 if (db.SaveChanges() > 0)
                 {
-                    new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    SetLocationAppointments();
                 }
             }
             catch (Exception e)
@@ -272,7 +278,11 @@ namespace Dental.ViewModels
 
                 }
 
-                if (db.SaveChanges() > 0) new Infrastructures.Extensions.Notifications.Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) 
+                { 
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    SetStatusCollection();
+                }
             }
             catch (Exception e)
             {
@@ -292,11 +302,15 @@ namespace Dental.ViewModels
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
                         db.Entry(model).State = EntityState.Deleted;
-                        cnt = db.SaveChanges();
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
-                    StatusAppointments.Remove(StatusAppointments.Where(f => f.Guid == model.Guid).FirstOrDefault());
+                    
+                    if(db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "Статус удален из базы данных!" }.run();
+                        SetStatusCollection();
+                    }
                 }
             }
             catch (Exception e)
@@ -352,7 +366,7 @@ namespace Dental.ViewModels
             set { SetProperty(() => StatusAppointments, value); }
         }
 
-        private ObservableCollection<AppointmentStatus> GetStatusCollection(ApplicationContext db)
+        private void SetStatusCollection()
         {
             var collection = db.AppointmentStatus.OrderBy(f => f.Caption).ToObservableCollection();
             foreach (var i in collection)
@@ -372,7 +386,7 @@ namespace Dental.ViewModels
                 }
             }
 
-            return collection;
+            StatusAppointments = collection;
         }
         #endregion
 

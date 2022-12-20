@@ -128,10 +128,8 @@ namespace Dental.ViewModels
 
             var response = ThemedMessageBox.Show(title: "Внимание", text: "Завершить работу с приложением?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
             if (response.ToString() == "No") return;
-            
 
-            //Application.Current.Shutdown();
-            
+            Environment.Exit(0);
         }
 
         public Config Config

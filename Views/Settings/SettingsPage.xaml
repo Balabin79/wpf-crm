@@ -96,7 +96,7 @@
                     <dx:DXTabItem Header="Настройки" >
                         <dxlc:LayoutGroup View="Group" Orientation="Vertical">
 
-                            <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" >
+                            <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" Height="170" >
                                 <dxlc:LayoutGroup.HeaderTemplate>
                                     <DataTemplate >
                                         <TextBlock Text="Обшие настройки" VerticalAlignment="Center" Height="22"/>
