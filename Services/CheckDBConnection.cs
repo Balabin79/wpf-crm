@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Timers;
 
 namespace Dental.Services
 {
@@ -27,17 +28,35 @@ namespace Dental.Services
             {
                 try
                 {
+                    Timer timer = new Timer() { Interval = 10000};
+                    timer.Start();
                     using (var conn = new SQLiteConnection()
                     {
                         ConnectionString = new SQLiteConnectionStringBuilder()
                         {
                             DataSource = new Config().ConnectionString,
-                            Version = 3
+                            Version = 3,
+                            BusyTimeout = 10000,
+                            FailIfMissing = true,
+                         
                         }.ConnectionString
                     })
                     {
+                        try
+                        {
+                            var t = Task.Run(() => conn.Open());
+                            if (!t.Wait(10000))
+                            {
+                                conn.Close();
+                                conn.Dispose();
+                                throw new Exception("исключение по таймауту");
+                            }
+                        }
+                        catch (ObjectDisposedException e)
+                        {
 
-                        conn.Open();
+                        }
+
                         openDbSuccess = true;
                     }
                 }

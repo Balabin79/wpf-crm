@@ -33,7 +33,10 @@ namespace Dental.Models
                 ConnectionString = new SQLiteConnectionStringBuilder()
                 {
                     DataSource = new Config().ConnectionString,
-                    Version = 3
+                    Version = 3,
+                    BusyTimeout = 10000,
+                    FailIfMissing = true,
+                    DefaultTimeout = 10000,
                 }.ConnectionString
             }, true
             ){}
