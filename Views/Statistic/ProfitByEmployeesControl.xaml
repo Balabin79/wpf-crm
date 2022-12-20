@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="Dental.Views.Statistic.ProfitByEmployeesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dental.Views.Statistic"
+             mc:Ignorable="d" 
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+             xmlns:vm ="clr-namespace:Dental.ViewModels.Statistics" 
+             xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <commands:PrintCommand x:Key="Print"/>
+        <vm:ProfitByEmployeesViewModel x:Key="vm"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+        <converter:BirthDateConverter x:Key="birthToDateString" />
+        <ControlTemplate x:Key="popupContentTemplate">
+            <dxg:GridControl x:Name="PART_GridControl" AutoExpandAllGroups="True" >
+
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="FullName" Header="Фамилия Имя Отчество" />
+                    <dxg:GridColumn FieldName="Image" Width="60" FixedWidth="True" Header="Фото">
+                        <dxg:GridColumn.EditSettings>
+                            <dxe:ImageEditSettings ShowMenu="True" />
+                        </dxg:GridColumn.EditSettings>
+                    </dxg:GridColumn>
+                </dxg:GridControl.Columns>
+                <dxg:GridControl.View>
+                    <dxg:TableView 
+                                    ShowGroupedColumns="True"
+                                    AutoWidth="True"
+                                    AllowPerPixelScrolling="True"
+                                    ScrollAnimationDuration="0"
+                                    ShowAutoFilterRow="True"
+                                    ShowTotalSummary="True"
+                                    IsSynchronizedWithCurrentItem="False" />
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <dxlc:LayoutGroup View="Group" Orientation="Vertical" DataContext="{StaticResource vm}">
+        <StackPanel Orientation="Horizontal" Height="23">
+            <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
+                          NullValueButtonPlacement="EditBox"
+                          DisplayFormatString="D" NullText="Дата от"
+                          EditValue="{Binding DateFromSearch, Mode=TwoWay, StringFormat=D,
+                          UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+
+            <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
+                          NullValueButtonPlacement="EditBox"
+                          DisplayFormatString="D" NullText="Дата до"
+                          EditValue="{Binding DateToSearch, Mode=TwoWay, StringFormat=D,
+                          UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+            <dxg:LookUpEdit
+                    Width="200" Margin="5 0 5 0"
+                    EditValue="{Binding EmployeeSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    PopupHeight="500"
+                    PopupWidth="400"
+                    PopupMinHeight="100"
+                    PopupMinWidth="100"
+                    IsPopupAutoWidth="True"
+                    FilterCondition="StartsWith"
+                    FindButtonPlacement="Popup"
+                    NullValueButtonPlacement="EditBox"
+                    FindMode="Always"
+                    PopupContentTemplate="{StaticResource popupContentTemplate}"
+                    ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    AutoPopulateColumns="False"
+                    DisplayMember="FullName"
+                    ValueMember="Id"
+                    NullText="Выберите сотрудника"
+                    ShowSizeGrip="True"
+                    IsTextEditable="False"
+                    ImmediatePopup="True"
+                    AutoComplete="True"
+                    IncrementalFiltering="True">
+                <dxg:LookUpEdit.StyleSettings>
+                    <dxg:SearchLookUpEditStyleSettings />
+                </dxg:LookUpEdit.StyleSettings>
+            </dxg:LookUpEdit>
+            
+            <dx:SimpleButton 
+                Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
+                Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
+                Width="60" HorizontalAlignment="Right"/>
+        </StackPanel>
+        <dxc:ChartControl AnimationMode="OnDataChanged" DataSource="{Binding Data}" >
+            <dxc:ChartControl.Titles>
+                <dxc:Title Content="Распределение доходов по сотрудникам" HorizontalAlignment="Center"/>
+            </dxc:ChartControl.Titles>
+            <dxc:XYDiagram2D>
+                <dxc:BarSideBySideSeries2D DisplayName="Объем продаж" ArgumentDataMember="Period" ValueDataMember="Sum" ColorEach="True" />
+            </dxc:XYDiagram2D>
+        </dxc:ChartControl>
+    </dxlc:LayoutGroup>
+</UserControl>

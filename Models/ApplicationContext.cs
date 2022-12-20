@@ -35,8 +35,7 @@ namespace Dental.Models
                     DataSource = new Config().ConnectionString,
                     Version = 3,
                     BusyTimeout = 10000,
-                    FailIfMissing = true,
-                    DefaultTimeout = 10000,
+                    FailIfMissing = true
                 }.ConnectionString
             }, true
             ){}

@@ -3,14 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      
       mc:Ignorable="d" 
+      xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
       xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
-      xmlns:vm ="clr-namespace:Dental.ViewModels" 
+      xmlns:vm ="clr-namespace:Dental.ViewModels.Statistics" 
       xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
-      xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
       xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
       xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
@@ -18,13 +18,13 @@
       
       xmlns:local="clr-namespace:Dental.Views.Statistic"
       d:DesignHeight="450" d:DesignWidth="800"
-       Title="B6 Sheduler">
+      Title="B6 Sheduler">
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
-                    <vm:SettingsViewModel x:Key="vm"/>
+                    <vm:LineViewModel x:Key="lineVM"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -35,7 +35,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
-    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}" x:Name="Border">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White"  x:Name="Border">
 
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
@@ -67,17 +67,23 @@
 
                 <dx:DXTabControl Margin="3 10 3 3">
                     <dx:DXTabItem Header="Выручка" >
-                        <dxlc:LayoutGroup View="Group" Orientation="Vertical">
+                        <dx:DXTabControl >
+                            <dx:DXTabItem Header="Общий доход" >
+                                <local:LineControl />
+                            </dx:DXTabItem>
 
-                        </dxlc:LayoutGroup>
+                            <dx:DXTabItem Header="По врачам" >
+                                <local:ProfitByEmployeesControl />
+                            </dx:DXTabItem>
+                        </dx:DXTabControl>
                     </dx:DXTabItem>
 
                     <dx:DXTabItem Header="Загруженность" >
-                   
+                        <local:EmployeesWorkloadControl/>
                     </dx:DXTabItem>
 
                     <dx:DXTabItem Header="Рекламные источники" >
-
+                        <local:AdvertisingSourcesControl />
                     </dx:DXTabItem>
                 </dx:DXTabControl>
             </ScrollViewer>
