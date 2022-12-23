@@ -48,8 +48,13 @@
             </dxg:GridControl>
         </ControlTemplate>
     </UserControl.Resources>
-    <dxlc:LayoutGroup View="Group" Orientation="Vertical" DataContext="{StaticResource vm}">
-        <StackPanel Orientation="Horizontal" Height="23">
+
+    <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
             <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата от"
@@ -96,19 +101,32 @@
                     <dxg:SearchLookUpEditStyleSettings />
                 </dxg:LookUpEdit.StyleSettings>
             </dxg:LookUpEdit>
-            
+
             <dx:SimpleButton 
                 Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
                 Width="60" HorizontalAlignment="Right"/>
         </StackPanel>
-        <dxc:ChartControl AnimationMode="OnDataChanged" DataSource="{Binding Data}" >
+        
+        <dxc:ChartControl Grid.Row="1" Margin="0 5 0 0"   
+            AnimationMode="OnDataChanged" DataSource="{Binding Data}" >
             <dxc:ChartControl.Titles>
                 <dxc:Title Content="Распределение доходов по сотрудникам" HorizontalAlignment="Center"/>
             </dxc:ChartControl.Titles>
-            <dxc:XYDiagram2D>
-                <dxc:BarSideBySideSeries2D DisplayName="Объем продаж" ArgumentDataMember="Period" ValueDataMember="Sum" ColorEach="True" />
+            <dxc:XYDiagram2D  >
+                <dxc:BarSideBySideSeries2D 
+                    DisplayName="Объем продаж" ArgumentDataMember="Period" ValueDataMember="Sum" ColorEach="True"  >
+                    <dxc:BarSideBySideSeries2D.PointOptions>
+                        <dxc:PointOptions>
+                            <dxc:PointOptions.ValueNumericOptions>
+                                <dxc:NumericOptions Format="Currency" Precision="2" />
+                            </dxc:PointOptions.ValueNumericOptions>
+                        </dxc:PointOptions>
+                    </dxc:BarSideBySideSeries2D.PointOptions>
+                </dxc:BarSideBySideSeries2D>
             </dxc:XYDiagram2D>
         </dxc:ChartControl>
-    </dxlc:LayoutGroup>
+    </Grid>
+
+    
 </UserControl>

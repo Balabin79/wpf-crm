@@ -48,45 +48,26 @@
                     <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}"  Height="20" Width="20" Margin="5 0 0 0"/>
                     <TextBlock Text="Статистика" FontSize="14" Padding="2 2 5 0" />
                 </StackPanel>
-
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
-
-                    <dxb:ToolBarControl Background="Transparent"
-                                        ShowDragWidget="False" Caption="File" 
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-
-                        <dxb:BarButtonItem Content="Расположение данных" 
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditDataSource.svg}"
-                                           GlyphSize="Small"
-                                           Command="{Binding OpenPathsSettingsFormCommand}"/>
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
 
-                <dx:DXTabControl Margin="3 10 3 3">
-                    <dx:DXTabItem Header="Выручка" >
-                        <dx:DXTabControl >
-                            <dx:DXTabItem Header="Общий доход" >
-                                <local:LineControl />
-                            </dx:DXTabItem>
+                <dx:DXTabControl Margin="5" Grid.Row="1">
+                    <dx:DXTabItem Header="Общий доход" >
+                        <local:LineControl />
+                    </dx:DXTabItem>
 
-                            <dx:DXTabItem Header="По врачам" >
-                                <local:ProfitByEmployeesControl />
-                            </dx:DXTabItem>
-                        </dx:DXTabControl>
+                    <dx:DXTabItem Header="По врачам" >
+                        <local:ProfitByEmployeesControl />
                     </dx:DXTabItem>
 
                     <dx:DXTabItem Header="Загруженность" >
-                        <local:EmployeesWorkloadControl/>
+                        <local:EmployeesWorkloadControl />
                     </dx:DXTabItem>
-
-                    <dx:DXTabItem Header="Рекламные источники" >
-                        <local:AdvertisingSourcesControl />
-                    </dx:DXTabItem>
+                    <!--<dx:DXTabItem Header="Рекламные источники" >
+                         <local:AdvertisingSourcesControl />
+                         </dx:DXTabItem>-->
                 </dx:DXTabControl>
-            </ScrollViewer>
+      
         </Grid>
     </Border>
 </Page>

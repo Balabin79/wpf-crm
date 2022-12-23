@@ -19,11 +19,13 @@ namespace Dental.ViewModels.Statistics
 
             Data =        
                  new ObservableCollection<object> {
-                    new  { Period = "Asia", Sum = (decimal?)5.28},
-                    new { Period = "Australia", Sum = (decimal?)2.27},
-                    new  { Period = "Europe", Sum = (decimal?)3.72},
-                    new  { Period = "North America", Sum = (decimal?)4.18},
-                    new  { Period = "South America", Sum = (decimal?)2.11}
+                    new  { Period = "Антон М.П.", Sum = (decimal?)715000.00},
+                    new { Period = "Иванов И.А.", Sum = (decimal?)602000.00},
+                    new  { Period = "Светлакова А.С.", Sum = (decimal?)631000.00},
+                    new  { Period = "Светлицын И.И.", Sum = (decimal?)690000.00},
+                    new  { Period = "Семушкина И.А.", Sum = (decimal?)210000.00},
+                    new  { Period = "Федотова И.В.", Sum = (decimal?)426000.00},
+                    new  { Period = "Фомин П.А.", Sum = (decimal?)47000.00}
                    };
             
         }
