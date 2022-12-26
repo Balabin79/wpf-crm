@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Dental.ViewModels.Statistics
 {
-    public class EmployeesWorkloadViewModel : ViewModelBase
+    public class PivotViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
 
-        public EmployeesWorkloadViewModel()
+        public PivotViewModel()
         {
             db = new ApplicationContext();
 

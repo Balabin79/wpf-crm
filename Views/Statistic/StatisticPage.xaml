@@ -50,7 +50,6 @@
                 </StackPanel>
             </DockPanel>
 
-
                 <dx:DXTabControl Margin="5" Grid.Row="1">
                     <dx:DXTabItem Header="Общий доход" >
                         <local:LineControl />
@@ -60,8 +59,8 @@
                         <local:ProfitByEmployeesControl />
                     </dx:DXTabItem>
 
-                    <dx:DXTabItem Header="Загруженность" >
-                        <local:EmployeesWorkloadControl />
+                    <dx:DXTabItem Header="Сводная таблица" >
+                        <local:PivotControl />
                     </dx:DXTabItem>
                     <!--<dx:DXTabItem Header="Рекламные источники" >
                          <local:AdvertisingSourcesControl />

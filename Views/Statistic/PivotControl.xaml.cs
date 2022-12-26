@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Dental.Views.Statistic
 {
     /// <summary>
-    /// Логика взаимодействия для EmployeesWorkloadControl.xaml
+    /// Логика взаимодействия для PivotControl.xaml
     /// </summary>
-    public partial class EmployeesWorkloadControl : UserControl
+    public partial class PivotControl : UserControl
     {
-        public EmployeesWorkloadControl()
+        public PivotControl()
         {
             InitializeComponent();
         }

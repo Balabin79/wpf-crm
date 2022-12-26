@@ -29,11 +29,6 @@
 
                 <dxg:GridControl.Columns>
                     <dxg:GridColumn FieldName="FullName" Header="Фамилия Имя Отчество" />
-                    <dxg:GridColumn FieldName="Image" Width="60" FixedWidth="True" Header="Фото">
-                        <dxg:GridColumn.EditSettings>
-                            <dxe:ImageEditSettings ShowMenu="True" />
-                        </dxg:GridColumn.EditSettings>
-                    </dxg:GridColumn>
                 </dxg:GridControl.Columns>
                 <dxg:GridControl.View>
                     <dxg:TableView 
@@ -50,15 +45,45 @@
     </UserControl.Resources>
 
     <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="23"/>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
+            <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
+                                    x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
+                                    BarItemDisplayMode="ContentAndGlyph">
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Все счета" 
+                        Glyph="/Resources/Icons/invoice_yel.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="1"
+                        />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Оплаченные" 
+                        Glyph="/Resources/Icons/invoice_green.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="2" />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Не оплаченные" 
+                        Glyph="/Resources/Icons/invoice_red.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="0" />
+            </dxb:ToolBarControl>
+
             <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата от"
-                          EditValue="{Binding DateFromSearch, Mode=TwoWay, StringFormat=D,
+                          EditValue="{Binding DateFrom, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
@@ -68,65 +93,57 @@
             <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата до"
-                          EditValue="{Binding DateToSearch, Mode=TwoWay, StringFormat=D,
+                          EditValue="{Binding DateTo, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                 </dxe:DateEdit.StyleSettings>
             </dxe:DateEdit>
-            <dxg:LookUpEdit
-                    Width="200" Margin="5 0 5 0"
-                    EditValue="{Binding EmployeeSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    PopupHeight="500"
-                    PopupWidth="400"
-                    PopupMinHeight="100"
-                    PopupMinWidth="100"
-                    IsPopupAutoWidth="True"
-                    FilterCondition="StartsWith"
-                    FindButtonPlacement="Popup"
-                    NullValueButtonPlacement="EditBox"
-                    FindMode="Always"
-                    PopupContentTemplate="{StaticResource popupContentTemplate}"
-                    ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                    AutoPopulateColumns="False"
-                    DisplayMember="FullName"
-                    ValueMember="Id"
-                    NullText="Выберите сотрудника"
-                    ShowSizeGrip="True"
-                    IsTextEditable="False"
-                    ImmediatePopup="True"
-                    AutoComplete="True"
-                    IncrementalFiltering="True">
-                <dxg:LookUpEdit.StyleSettings>
-                    <dxg:SearchLookUpEditStyleSettings />
-                </dxg:LookUpEdit.StyleSettings>
-            </dxg:LookUpEdit>
+
+            <dxe:ComboBoxEdit Width="200" Margin="5 0 5 0"
+                                  NullText="Выберите сотрудника" ShowNullText="True"
+                                  ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  DisplayMember="FullName"
+                                  EditValue="{Binding EmployeesSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                  >
+                <dxe:ComboBoxEdit.StyleSettings>
+                    <dxe:CheckedComboBoxStyleSettings/>
+                </dxe:ComboBoxEdit.StyleSettings>
+
+            </dxe:ComboBoxEdit>
 
             <dx:SimpleButton 
                 Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
                 Width="60" HorizontalAlignment="Right"/>
         </StackPanel>
-        
-        <dxc:ChartControl Grid.Row="1" Margin="0 5 0 0"   
-            AnimationMode="OnDataChanged" DataSource="{Binding Data}" >
-            <dxc:ChartControl.Titles>
-                <dxc:Title Content="Распределение доходов по сотрудникам" HorizontalAlignment="Center"/>
-            </dxc:ChartControl.Titles>
-            <dxc:XYDiagram2D  >
-                <dxc:BarSideBySideSeries2D 
-                    DisplayName="Объем продаж" ArgumentDataMember="Period" ValueDataMember="Sum" ColorEach="True"  >
-                    <dxc:BarSideBySideSeries2D.PointOptions>
-                        <dxc:PointOptions>
-                            <dxc:PointOptions.ValueNumericOptions>
-                                <dxc:NumericOptions Format="Currency" Precision="2" />
-                            </dxc:PointOptions.ValueNumericOptions>
-                        </dxc:PointOptions>
-                    </dxc:BarSideBySideSeries2D.PointOptions>
-                </dxc:BarSideBySideSeries2D>
-            </dxc:XYDiagram2D>
+
+        <dxc:ChartControl Grid.Row="1" Margin="0 5 0 0" AnimationMode="OnDataChanged"   >
+            
+                <dxc:ChartControl.Titles>
+                    <dxc:Title Content="Распределение доходов по сотрудникам" HorizontalAlignment="Center"/>
+                </dxc:ChartControl.Titles>
+            
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D >
+                    <dxc:XYDiagram2D.Series >
+                        <dxc:BarSideBySideSeries2D DataSource="{Binding Data, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   LabelsVisibility="True" CrosshairLabelPattern="{}{V:C2}" 
+                    DisplayName="Объем продаж" ArgumentDataMember="Employee" ValueDataMember="Sum" ColorEach="True" ValueScaleType="Numerical"  >
+           
+                            <dxc:BarSideBySideSeries2D.PointOptions>
+                                <dxc:PointOptions >
+                                    <dxc:PointOptions.ValueNumericOptions>
+                                        <dxc:NumericOptions Format="Currency" />
+                                    </dxc:PointOptions.ValueNumericOptions>
+                      
+                                </dxc:PointOptions>
+                            </dxc:BarSideBySideSeries2D.PointOptions>
+                        </dxc:BarSideBySideSeries2D>
+                    </dxc:XYDiagram2D.Series>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
         </dxc:ChartControl>
     </Grid>
 
-    
 </UserControl>
