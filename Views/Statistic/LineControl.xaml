@@ -19,18 +19,57 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
-        <vm:LineViewModel x:Key="lineVM"/>
+        <vm:LineViewModel x:Key="vm"/>
         <converter:BoolIntConverter x:Key="boolConverter" />
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:BirthDateConverter x:Key="birthToDateString" />
     </UserControl.Resources>
-    <dxlc:LayoutGroup View="Group" Orientation="Vertical" DataContext="{StaticResource lineVM}">
-        <StackPanel Orientation="Horizontal" Height="23">
+
+
+
+
+    <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
+            <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
+                                    x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
+                                    BarItemDisplayMode="ContentAndGlyph">
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Все счета" 
+                        Glyph="/Resources/Icons/invoice_yel.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="1"
+                        />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Оплаченные" 
+                        Glyph="/Resources/Icons/invoice_green.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="2" />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Не оплаченные" 
+                        Glyph="/Resources/Icons/invoice_red.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="0" />
+            </dxb:ToolBarControl>
+
             <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата от"
-                          EditValue="{Binding DateFromSearch, Mode=TwoWay, StringFormat=D,
+                          EditValue="{Binding DateFrom, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
@@ -40,24 +79,69 @@
             <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата до"
-                          EditValue="{Binding DateToSearch, Mode=TwoWay, StringFormat=D,
+                          EditValue="{Binding DateTo, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
                 <dxe:DateEdit.StyleSettings>
                     <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                 </dxe:DateEdit.StyleSettings>
             </dxe:DateEdit>
+
+            <dxe:ComboBoxEdit Width="200" Margin="5 0 5 0"
+                                  NullText="Выберите сотрудника" ShowNullText="True"
+                                  ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  DisplayMember="FullName"
+                                  EditValue="{Binding EmployeesSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                  >
+                <dxe:ComboBoxEdit.StyleSettings>
+                    <dxe:CheckedComboBoxStyleSettings/>
+                </dxe:ComboBoxEdit.StyleSettings>
+
+            </dxe:ComboBoxEdit>
+
             <dx:SimpleButton 
                 Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
                 Width="60" HorizontalAlignment="Right"/>
         </StackPanel>
-        <dxc:ChartControl AnimationMode="OnDataChanged" DataSource="{Binding Data}">
+
+        <dxc:ChartControl AnimationMode="OnDataChanged"  Grid.Row="1" Margin="0 5 0 0" >
             <dxc:ChartControl.Titles>
                 <dxc:Title Content="Общий доход по продажам" HorizontalAlignment="Center"/>
             </dxc:ChartControl.Titles>
-            <dxc:XYDiagram2D>
-                <dxc:LineSeries2D DisplayName="Объем продаж" ArgumentDataMember="Period" ValueDataMember="Sum" />
-            </dxc:XYDiagram2D>
+            <dxc:ChartControl.Legends>
+                <dxc:Legend HorizontalPosition="Center" VerticalPosition="TopOutside" Orientation="Horizontal" x:Name="legend" />
+            </dxc:ChartControl.Legends>
+            <dxc:ChartControl.Diagram>
+                <dxc:XYDiagram2D SeriesItemsSource="{Binding Data, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" x:Name="diagram" >
+
+                    <dxc:XYDiagram2D.SeriesItemTemplate>
+                        <DataTemplate>
+                            <dxc:LineSeries2D  
+                            x:Name="Line" 
+                            DisplayName="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CrosshairContentShowMode="Legend"
+                            
+                            DataSource="{Binding Values, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            LabelsVisibility="True"                                         
+                            CrosshairLabelPattern="{}{V:C2}" 
+                            MarkerVisible="True"
+                            ArgumentDataMember="PeriodName" 
+                            ValueDataMember="Sum" 
+                                                                                        
+                            >
+                                <dxc:LineSeries2D.PointOptions>
+                                    <dxc:PointOptions >
+                                        <dxc:PointOptions.ValueNumericOptions>
+                                            <dxc:NumericOptions Format="Currency"/>
+                                        </dxc:PointOptions.ValueNumericOptions>
+
+                                    </dxc:PointOptions>
+                                </dxc:LineSeries2D.PointOptions>
+                            </dxc:LineSeries2D>
+                        </DataTemplate>
+                    </dxc:XYDiagram2D.SeriesItemTemplate>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl.Diagram>
         </dxc:ChartControl>
-    </dxlc:LayoutGroup>
+    </Grid>
 </UserControl>
