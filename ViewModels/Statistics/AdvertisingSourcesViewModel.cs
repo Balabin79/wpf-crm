@@ -15,20 +15,32 @@ namespace Dental.ViewModels.Statistics
 
         public AdvertisingSourcesViewModel()
         {
-            db = new ApplicationContext();
+            try
+            {
+                db = new ApplicationContext();
+                Adv = db.Invoices.Include("Advertising")?.Select(f => f.Advertising).ToArray();
+                Stat2D = Adv?.GroupBy(f => f?.Name)?.Select(i => new StatByAdv
+                {
+                    // Id = i.Key,
+                    Cnt = i.Count(),
+                    Name = i.Select(f => f?.Name)?.FirstOrDefault()
+                })?.ToList();
+                //Collection = db.UserActions.OrderBy(f => f.CreatedAt).ToArray();
+            }
+            catch
+            {
 
-            Data =        
-                 new ObservableCollection<object> {
-                    new  { Period = "Asia", Sum = (decimal?)5.28},
-                    new { Period = "Australia", Sum = (decimal?)2.27},
-                    new  { Period = "Europe", Sum = (decimal?)3.72},
-                    new  { Period = "North America", Sum = (decimal?)4.18},
-                    new  { Period = "South America", Sum = (decimal?)2.11}
-                   };
-            
+            }
         }
 
-        public ObservableCollection<object> Data { get; private set; }
+        public IEnumerable<Advertising> Adv { get; }
+        public IEnumerable<StatByAdv> Stat2D { get; }
+    }
 
+    public class StatByAdv
+    {
+        //public int Id { get; set; }
+        public int Cnt { get; set; }
+        public string Name { get; set; }
     }
 }

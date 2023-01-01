@@ -21,6 +21,43 @@
         <vm:AdvertisingSourcesViewModel x:Key="vm"/>
     </UserControl.Resources>
     <dxlc:LayoutGroup View="Group" Orientation="Vertical" DataContext="{StaticResource vm}">
-        
+        <dxc:ChartControl Name="chartControl" AnimationMode="OnDataChanged">
+            <dxc:ChartControl.PrintOptions>
+                <dxc:ChartPrintOptions SizeMode="Stretch"/>
+            </dxc:ChartControl.PrintOptions>
+
+            <dxc:SimpleDiagram2D>
+                <dxc:PieSeries2D x:Name="series" 
+                                            
+                                 DisplayName="Источники привлечения" 
+                                 DataSource="{Binding Path=Stat2D}"
+                                 ArgumentDataMember="Name" 
+                                 ValueDataMember="Cnt"
+                                 LabelsVisibility="True" 
+                                 LegendTextPattern="{}{A}: {V}"
+                                 HoleRadiusPercent="50">
+                    <!--region #Model-->
+                    <dxc:PieSeries2D.Model>
+                        <dxc:GlarePie2DModel/>
+                    </dxc:PieSeries2D.Model>
+                    <!--endregion #Model-->
+                    <dxc:PieSeries2D.TotalLabel>
+                        <dxc:PieTotalLabel 
+                                        TextPattern="Всего клиентов:&#x0a;{TV}"/>
+                    </dxc:PieSeries2D.TotalLabel>
+                    <dxc:PieSeries2D.Label>
+                        <dxc:SeriesLabel TextPattern="{}{A}: {VP:P}" 
+                                         dxc:PieSeries.LabelPosition="TwoColumns"/>
+                    </dxc:PieSeries2D.Label>
+                </dxc:PieSeries2D>
+            </dxc:SimpleDiagram2D>
+            <dxc:ChartControl.Legends>
+                <dxc:Legend>
+                    <dxc:Legend.Title>
+                        <dxc:LegendTitle Content="Распределение по источникам привлечения клиентов"/>
+                    </dxc:Legend.Title>
+                </dxc:Legend>
+            </dxc:ChartControl.Legends>
+        </dxc:ChartControl>
     </dxlc:LayoutGroup>
 </UserControl>

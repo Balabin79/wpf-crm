@@ -15,7 +15,7 @@
         d:DesignHeight="450" d:DesignWidth="800"
         x:Name="win"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6Dental"
+        Title="B6 Dental"
 
         >
     <dxmvvm:Interaction.Behaviors>

@@ -101,5 +101,6 @@ namespace Dental.Models
 
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<Branch> Branches { get; set; }
+        public DbSet<Advertising> Advertising { get; set; }
     }
 }

@@ -59,13 +59,10 @@
                         <local:ProfitByEmployeesControl />
                     </dx:DXTabItem>
 
-                    <dx:DXTabItem Header="Сводная таблица" >
-                        <local:PivotControl />
-                    </dx:DXTabItem>
-                    <!--<dx:DXTabItem Header="Рекламные источники" >
-                         <local:AdvertisingSourcesControl />
-                         </dx:DXTabItem>-->
-                </dx:DXTabControl>
+                <dx:DXTabItem Header="Рекламные источники" >
+                    <local:AdvertisingSourcesControl />
+                </dx:DXTabItem>
+            </dx:DXTabControl>
       
         </Grid>
     </Border>

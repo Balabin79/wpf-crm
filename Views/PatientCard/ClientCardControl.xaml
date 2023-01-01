@@ -12,7 +12,6 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="300"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     dx:ThemeManager.ThemeName="Office2019White"

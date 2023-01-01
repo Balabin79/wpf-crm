@@ -9,7 +9,7 @@
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         mc:Ignorable="d"              
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6Dental"
+        Title="B6 Dental"
         Closing="RichEdit_DocumentClosing">
     <Grid>
         <dxp:DocumentPreviewControl Name="preview" />

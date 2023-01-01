@@ -34,6 +34,9 @@ namespace Dental.Models
             set { SetProperty(() => DateTimestamp, value); }
         }
 
+        public int? AdvertisingId { get; set; }
+        public Advertising Advertising { get; set; }
+
         public string Number { get; set; }
         public int? Paid { get; set; }
 
