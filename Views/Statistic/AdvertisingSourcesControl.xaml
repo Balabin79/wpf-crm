@@ -19,9 +19,75 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <vm:AdvertisingSourcesViewModel x:Key="vm"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:DoubleToStringConverter x:Key="DoubleToString"/>
+        <converter:BirthDateConverter x:Key="birthToDateString" />
     </UserControl.Resources>
-    <dxlc:LayoutGroup View="Group" Orientation="Vertical" DataContext="{StaticResource vm}">
-        <dxc:ChartControl Name="chartControl" AnimationMode="OnDataChanged">
+    <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
+            <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
+                                    x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
+                                    BarItemDisplayMode="ContentAndGlyph">
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Все счета" 
+                        Glyph="/Resources/Icons/invoice_yel.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="1"
+                        />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Оплаченные" 
+                        Glyph="/Resources/Icons/invoice_green.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="2" />
+                <dxb:BarButtonItem 
+                        IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Content="Не оплаченные" 
+                        Glyph="/Resources/Icons/invoice_red.png" 
+                        GlyphSize="Custom"
+                        CustomGlyphSize="21,21"    
+                        Command="{Binding SwitchInvoicesSearchModeCommand}"
+                        CommandParameter="0" />
+            </dxb:ToolBarControl>
+
+            <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
+                          NullValueButtonPlacement="EditBox"
+                          DisplayFormatString="D" NullText="Дата от"
+                          EditValue="{Binding DateFrom, Mode=TwoWay, StringFormat=D,
+                          UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+
+            <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
+                          NullValueButtonPlacement="EditBox"
+                          DisplayFormatString="D" NullText="Дата до"
+                          EditValue="{Binding DateTo, Mode=TwoWay, StringFormat=D,
+                          UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
+                <dxe:DateEdit.StyleSettings>
+                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                </dxe:DateEdit.StyleSettings>
+            </dxe:DateEdit>
+
+            <dx:SimpleButton 
+                Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
+                Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
+                Width="60" HorizontalAlignment="Right"/>
+        </StackPanel>
+
+        <dxc:ChartControl Name="chartControl" AnimationMode="OnDataChanged" Grid.Row="1" Margin="0 5 0 0" >
             <dxc:ChartControl.PrintOptions>
                 <dxc:ChartPrintOptions SizeMode="Stretch"/>
             </dxc:ChartControl.PrintOptions>
@@ -34,7 +100,7 @@
                                  ArgumentDataMember="Name" 
                                  ValueDataMember="Cnt"
                                  LabelsVisibility="True" 
-                                 LegendTextPattern="{}{A}: {V}"
+                                 LegendTextPattern="{Binding Path=TextPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  HoleRadiusPercent="50">
                     <!--region #Model-->
                     <dxc:PieSeries2D.Model>
@@ -43,10 +109,10 @@
                     <!--endregion #Model-->
                     <dxc:PieSeries2D.TotalLabel>
                         <dxc:PieTotalLabel 
-                                        TextPattern="Всего клиентов:&#x0a;{TV}"/>
+                                        TextPattern="Всего счетов:&#x0a;{TV}"/>
                     </dxc:PieSeries2D.TotalLabel>
                     <dxc:PieSeries2D.Label>
-                        <dxc:SeriesLabel TextPattern="{}{A}: {VP:P}" 
+                        <dxc:SeriesLabel TextPattern="{Binding Path=TextPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                          dxc:PieSeries.LabelPosition="TwoColumns"/>
                     </dxc:PieSeries2D.Label>
                 </dxc:PieSeries2D>
@@ -59,5 +125,5 @@
                 </dxc:Legend>
             </dxc:ChartControl.Legends>
         </dxc:ChartControl>
-    </dxlc:LayoutGroup>
+    </Grid>
 </UserControl>

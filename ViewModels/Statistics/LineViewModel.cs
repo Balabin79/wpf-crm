@@ -19,52 +19,7 @@ namespace Dental.ViewModels.Statistics
         {
             db = new ApplicationContext();
             Employees = db.Employes.ToObservableCollection();
-            // Search();
-
-            Data = new ObservableCollection<Series>() {
-                new Series
-                {
-                    Name = "Антон М.П.",
-                    Values =   new Collection<Period> {
-                     new  Period { PeriodName = "Май", Sum = (decimal?)75000.00 },
-                     new Period{ PeriodName = "Июнь", Sum = (decimal?)60000.00},
-                     new  Period{ PeriodName = "Июль", Sum = (decimal?)61000.00},
-                     new  Period{ PeriodName = "Август", Sum = (decimal?)69000.00},
-                     new  Period{ PeriodName = "Сентябрь", Sum = (decimal?)20000.00},
-                     new  Period{ PeriodName = "Октябрь", Sum = (decimal?)42000.00},
-                     new  Period{ PeriodName = "Ноябрь", Sum = (decimal?)47000.00}
-                    }
-                },
-
-                new Series
-                {
-                    Name = "Иванов И.А.",
-                    Values =   new Collection<Period> {
-                     new  Period{ PeriodName = "Май", Sum = (decimal?)85000.00},
-                     new Period{ PeriodName = "Июнь", Sum = (decimal?)70000.00},
-                     new  Period{ PeriodName = "Июль", Sum = (decimal?)62000.00},
-                     new  Period{ PeriodName = "Август", Sum = (decimal?)69000.00},
-                     new  Period{ PeriodName = "Сентябрь", Sum = (decimal?)23000.00},
-                     new  Period{ PeriodName = "Октябрь", Sum = (decimal?)47000.00},
-                     new Period { PeriodName = "Ноябрь", Sum = (decimal?)49000.00}
-                    },
-                },
-
-                new Series
-                {
-                    Name = "Светлакова А.С.",
-                    Values =   new Collection<Period> {
-                 new Period { PeriodName = "Май", Sum = (decimal?)70000.00},
-                 new Period{ PeriodName = "Июнь", Sum = (decimal?)71000.00},
-                 new  Period{ PeriodName = "Июль", Sum = (decimal?)76000.00},
-                 new Period { PeriodName = "Август", Sum = (decimal?)77000.00},
-                 new Period { PeriodName = "Сентябрь", Sum = (decimal?)53000.00},
-                 new Period { PeriodName = "Октябрь", Sum = (decimal?)59000.00},
-                 new Period { PeriodName = "Ноябрь", Sum = (decimal?)52000.00}
-                },
-
-            }
-            };
+            Search();
         }
 
         public string DateFrom { get; set; }
@@ -96,72 +51,136 @@ namespace Dental.ViewModels.Statistics
         public void Search()
         {
             try
-            {
-                /* Data = new ObservableCollection<object>();
-                 List<string> where = new List<string>();
-                 long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
-                 long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+            {               
+                var all = db.Invoices.OrderBy(f => f.DateTimestamp).ToArray();
+                if (all == null) return;
 
-                 var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+                Data = new ObservableCollection<Series>();
 
-                 //if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
+                var dateStart = !string.IsNullOrEmpty(DateFrom) ? DateFrom : all.First()?.Date;
+                var dateEnd = !string.IsNullOrEmpty(DateTo) ? DateTo : all.Last()?.Date;
 
-                 if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
-                 {
-                     if (paimentStatus == 1) where.Add("Paid = 1");
-                     if (paimentStatus == 2) where.Add("Paid = 0");
+
+                AllEmployeeProfit = new List<EmployeeProfit>();
+                List<string> where = new List<string>();
+
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
+                {
+                    if (paimentStatus == 1) where.Add("Paid = 1");
+                    if (paimentStatus == 2) where.Add("Paid = 0");
+                }
+
+                DateTime dateTimeFrom = new DateTime(DateTime.Now.Year, 1, 1);
+                DateTime dateTimeTo = DateTime.UtcNow;
+
+                long dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
+                long dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
+
+                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+
+
+                if (dateStart != null && DateTime.TryParse(dateStart?.ToString(), out DateTime from))
+                {
+                    dateFrom = new DateTimeOffset(from).ToUnixTimeSeconds();
+                    dateTimeFrom = from;
+                }
+
+                if (dateEnd != null && DateTime.TryParse(dateEnd?.ToString(), out DateTime to))
+                {
+                    dateTo = new DateTimeOffset(to).ToUnixTimeSeconds();
+                    dateTimeTo = to;
+                }
+
+                string parameters = "WHERE Count is not null and Price is not null and ";
+
+                for (int i = 0; i < where.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        parameters += where[i];
+                        continue;
+                    }
+                    parameters += " AND " + where[i];
                  }
-
-                 if (DateFrom != null && DateTime.TryParse(DateFrom?.ToString(), out DateTime dateTimeFrom))
-                 {
-                     dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
-                 }
-
-                 if (DateTo != null && DateTime.TryParse(DateTo?.ToString(), out DateTime dateTimeTo))
-                 {
-                     dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
-                 }
-
-                 string parameters = "WHERE Count is not null and Price is not null and ";
-                 for (int i = 0; i < where.Count; i++)
-                 {
-                     if (i == 0)
-                     {
-                         parameters += where[i];
-                         continue;
-                     }
-                     parameters += " AND " + where[i];
-                 }
-                 if (where.Count > 0) parameters += " AND ";
+                if (where.Count > 0) parameters += " AND ";
 
                  // если в фильтре EmployeesSearch указаны сотрудники, то используем доп. фильтр, иначе по всей коллекции (Employees)
 
-                 ICollection<Employee> employees;
-                 if (EmployeesSearch?.Count > 0)
-                     employees = EmployeesSearch.OfType<Employee>().ToArray();
-                 else employees = Employees;
+                ICollection<Employee> employees;
+                if (EmployeesSearch?.Count > 0)
+                    employees = EmployeesSearch.OfType<Employee>().ToArray();
+                else employees = Employees;
 
-                 foreach (var i in employees)
-                 {
-                     string cond = parameters;
-                     cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+                foreach (var i in employees)
+                {
+                    string cond = parameters;
+                    cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                     var invoices = db.InvoiceItems.SqlQuery("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
-                         + cond).ToArray();
+                    var invoiceItems = db.InvoiceItems.SqlQuery("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
+                        + cond + " ORDER by DateTimestamp").ToArray();
 
-                     decimal? sum = 0.00M;
-                     foreach (var inv in invoices)
-                     {
-                         sum += inv.Count * inv.Price;
-                     }
-                     Data.Add(new { Employee = i.FullName, Sum = sum });
+                    //заполняем периода от dateTimeFrom до dateTimeTo
+                    var values = new List<Period>();
+                    var iter = dateTimeFrom;
+                    while (iter <= dateTimeTo)
+                    {
+                        values.Add(new Period() { PeriodName = iter.ToString("MMMM yyyy"), Sum = 0 });
 
-                 }*/
+                        iter = new DateTime(iter.Year, iter.Month, 1).AddMonths(1);
+                    }
+
+                    var seria = new Series() { Name = i.FullName, Values = values };
+
+                    foreach (var item in invoiceItems)
+                    {
+                        if (DateTime.TryParse(item.Invoice?.Date, out DateTime dateTime))
+                        {
+                            string periodName = dateTime.ToString("MMMM yyyy");
+                            var period = seria.Values.FirstOrDefault(f => f.PeriodName == periodName);
+
+                            if (period != null)
+                            {
+                                period.Sum += item.Count * item.Price;
+                            }                           
+                        }            
+                    }
+                    Data.Add(seria);                   
+                }
+                //SetDefaultPeriods();
             }
             catch (Exception e)
             {
 
             }
+        }
+
+        private void SetDefaultPeriods()
+        {
+            Data = new ObservableCollection<Series>();
+
+        }
+
+        public List<EmployeeProfit> AllEmployeeProfit
+        {
+            get { return GetProperty(() => AllEmployeeProfit); }
+            set { SetProperty(() => AllEmployeeProfit, value); }
+        }
+    }
+
+    public class EmployeeProfit : ViewModelBase
+    {
+        public string Fio
+        {
+            get { return GetProperty(() => Fio); }
+            set { SetProperty(() => Fio, value); }
+        }
+
+        public decimal? Sum { get; set; } = 0;
+
+        public string Period
+        {
+            get { return GetProperty(() => Period); }
+            set { SetProperty(() => Period, value); }
         }
     }
 
@@ -173,7 +192,7 @@ namespace Dental.ViewModels.Statistics
             set { SetProperty(() => Name, value); }
         }
 
-        public IEnumerable<Period> Values
+        public List<Period> Values
         {
             get { return GetProperty(() => Values); }
             set { SetProperty(() => Values, value); }
@@ -185,5 +204,7 @@ namespace Dental.ViewModels.Statistics
         public string PeriodName { get; set; }
         public decimal? Sum { get; set; }
     }
+
+
 
 }
