@@ -418,13 +418,15 @@ namespace Dental.ViewModels.ClientDir
                     };
                 }
 
-                var vm = new InvoiceVM(Employees)
+                var advertisings = db.Advertising.ToArray();
+                var vm = new InvoiceVM(Employees, advertisings)
                 {
                     Name = invoice.Name,
                     Number = invoice.Number,
                     Date = invoice.Date,
                     DateTimestamp = invoice.DateTimestamp,
                     Employee = Employees.FirstOrDefault(f => f.Id == invoice?.Employee?.Id),
+                    Advertising = advertisings.FirstOrDefault(f => f.Id == invoice.AdvertisingId),
                     Paid = invoice.Paid,
                     Model = invoice
                 };
