@@ -30,11 +30,15 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
-            <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
+        <DockPanel Grid.Row="0" Height="23" VerticalAlignment="Top">
+
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" >
+
+                <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
                                     x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                                     BarItemDisplayMode="ContentAndGlyph">
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Все счета" 
                         Glyph="/Resources/Icons/invoice_yel.png" 
@@ -43,7 +47,7 @@
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="1"
                         />
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Оплаченные" 
                         Glyph="/Resources/Icons/invoice_green.png" 
@@ -51,7 +55,7 @@
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="2" />
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Не оплаченные" 
                         Glyph="/Resources/Icons/invoice_red.png" 
@@ -59,33 +63,39 @@
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="0" />
-            </dxb:ToolBarControl>
+                </dxb:ToolBarControl>
 
-            <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
+                <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата от"
                           EditValue="{Binding DateFrom, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
-                <dxe:DateEdit.StyleSettings>
-                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
-                </dxe:DateEdit.StyleSettings>
-            </dxe:DateEdit>
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
 
-            <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
+                <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата до"
                           EditValue="{Binding DateTo, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
-                <dxe:DateEdit.StyleSettings>
-                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
-                </dxe:DateEdit.StyleSettings>
-            </dxe:DateEdit>
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
 
-            <dx:SimpleButton 
+                <dx:SimpleButton 
                 Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
                 Width="60" HorizontalAlignment="Right"/>
-        </StackPanel>
+
+            </StackPanel>
+
+            <dxe:ToggleSwitch DockPanel.Dock="Right" Margin="0 0 5 0" ToggleSwitchWidth="150" Command="{Binding SwitchCommand}"
+                ContentPlacement="Inside" HorizontalAlignment="Right" CheckedStateContent="Кол-во счетов" UncheckedStateContent="Суммы по счетам" 
+                                  IsChecked="{Binding IsCnt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        </DockPanel>
 
         <dxc:ChartControl Name="chartControl" AnimationMode="OnDataChanged" Grid.Row="1" Margin="0 5 0 0" >
             <dxc:ChartControl.PrintOptions>
@@ -96,11 +106,11 @@
                 <dxc:PieSeries2D x:Name="series" 
                                             
                                  DisplayName="Источники привлечения" 
-                                 DataSource="{Binding Path=Stat2D}"
+                                 DataSource="{Binding Path=Stat2D, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  ArgumentDataMember="Name" 
-                                 ValueDataMember="Cnt"
+                                 ValueDataMember="{Binding Val, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelsVisibility="True" 
-                                 LegendTextPattern="{Binding Path=TextPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LegendTextPattern="{Binding Path=TextPattern, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  HoleRadiusPercent="50">
                     <!--region #Model-->
                     <dxc:PieSeries2D.Model>
@@ -109,10 +119,10 @@
                     <!--endregion #Model-->
                     <dxc:PieSeries2D.TotalLabel>
                         <dxc:PieTotalLabel 
-                                        TextPattern="Всего счетов:&#x0a;{TV}"/>
+                                        TextPattern="{Binding Path=TotalPattern, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </dxc:PieSeries2D.TotalLabel>
                     <dxc:PieSeries2D.Label>
-                        <dxc:SeriesLabel TextPattern="{Binding Path=TextPattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <dxc:SeriesLabel TextPattern="{Binding Path=TextPattern, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                          dxc:PieSeries.LabelPosition="TwoColumns"/>
                     </dxc:PieSeries2D.Label>
                 </dxc:PieSeries2D>

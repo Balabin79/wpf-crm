@@ -9,6 +9,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using Dental.Infrastructures.Logs;
 
 namespace Dental.ViewModels.Statistics
 {
@@ -21,12 +22,42 @@ namespace Dental.ViewModels.Statistics
             try
             {
                 db = new ApplicationContext();
+                IsCnt = true;
+                SetPattern();
+                SetValueDataMember();
+                SetTotalPattern();
                 Search();
             }
             catch
             {
 
             }
+        }
+
+        private void SetPattern() => TextPattern = IsCnt ? "{A}: {VP:P}" : "{A}: {V:C}";
+        private void SetTotalPattern() => TotalPattern = IsCnt ? "Количество счетов: {TV}" : "Сумма по счетам: {TV:C}";
+        private void SetValueDataMember() => Val = IsCnt ? "Cnt" : "Sum";
+
+        [Command]
+        public void Switch()
+        {
+            try
+            {
+                IsCnt = !IsCnt;
+                SetPattern();
+                SetTotalPattern();
+                SetValueDataMember();
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        public bool IsCnt
+        {
+            get { return GetProperty(() => IsCnt); }
+            set { SetProperty(() => IsCnt, value); }
         }
 
         public string DateFrom { get; set; }
@@ -71,24 +102,23 @@ namespace Dental.ViewModels.Statistics
                     dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
                 }
 
-                var query = db.Invoices.Include(f => f.InvoiceItems).Include(f => f.Advertising)
-                    .Where(f => f.DateTimestamp >= dateFrom)
-                    .Where(f => f.DateTimestamp <= dateTo);
 
-                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
-                {
-                    query.Where(f => f.Paid == paimentStatus);
-                }
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) if (paimentStatus == 2) paimentStatus = 0;
 
-                var invoices = query.ToArray();
-                Adv = invoices?.Select(f => f.Advertising).ToArray();
+                var invoices = InvoicesSearchMode != null ?             
+                    db.Invoices.Include(f => f.InvoiceItems).Include(f => f.Advertising)
+                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo && f.Paid == paimentStatus ).ToArray() :
+                     db.Invoices.Include(f => f.InvoiceItems).Include(f => f.Advertising)
+                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo).ToArray(); 
 
-                Stat2D = Adv?.GroupBy(f => f?.Name)?.
+
+                Stat2D = invoices?.GroupBy(f => f?.Advertising?.Name)?.
                     Select(t => new StatByAdv
                     {
-                        // Id = i.Key,
                         Cnt = t.Count(),
-                        Name = t.Select(f => f?.Name)?.FirstOrDefault()
+                        Name = t.Select(f => f?.Advertising?.Name)?.FirstOrDefault(),
+                        Cost = t.Select(f => f?.Advertising?.Cost)?.FirstOrDefault(),
+                        Sum = t.SelectMany(f => f.InvoiceItems.Where(i => i.Price > 0 && i.Count > 0)).Sum(f => f.Price * f.Count)
                     })?.ToList();
             }
             catch (Exception e)
@@ -97,19 +127,46 @@ namespace Dental.ViewModels.Statistics
             }
         }
 
+
         /// <summary>
         /// //
         /// </summary>
-        public IEnumerable<Advertising> Adv { get; set; }
-        public IEnumerable<StatByAdv> Stat2D { get; set; }
-        public string TextPattern { get; set; } = "{A}: {VP:P}";
+        public IEnumerable<Advertising> Adv
+        {
+            get { return GetProperty(() => Adv); }
+            set { SetProperty(() => Adv, value); }
+        }
 
+        public IEnumerable<StatByAdv> Stat2D
+        {
+            get { return GetProperty(() => Stat2D); }
+            set { SetProperty(() => Stat2D, value); }
+        }
+
+        public string TextPattern
+        {
+            get { return GetProperty(() => TextPattern); }
+            set { SetProperty(() => TextPattern, value); }
+        }
+
+        public string Val
+        {
+            get { return GetProperty(() => Val); }
+            set { SetProperty(() => Val, value); }
+        }
+
+        public string TotalPattern
+        {
+            get { return GetProperty(() => TotalPattern); }
+            set { SetProperty(() => TotalPattern, value); }
+        }
     }
 
     public class StatByAdv
     {
         public int Cnt { get; set; }
         public string Name { get; set; }
-        public decimal Sum { get; set; }
+        public decimal? Sum { get; set; }
+        public decimal? Cost { get; set; }
     }
 }
