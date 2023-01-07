@@ -128,7 +128,9 @@
                                 
                                 </StackPanel>
                                 
-                            <dxg:GridControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
+                            <dxg:GridControl
+                                VirtualizingPanel.IsVirtualizing="True"
+                                ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
                                 DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
                                 AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
                                 MaxHeight="1800"

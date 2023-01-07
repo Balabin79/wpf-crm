@@ -6,7 +6,7 @@ using DevExpress.Xpf.Grid;
 //using DevExpress.Xpf.PivotGrid;
 using DevExpress.Xpf.Scheduling;
 using DevExpress.Xpf.Printing;
-
+using DevExpress.Xpf.Charts;
 
 namespace Dental.Infrastructures.Commands
 {
@@ -27,12 +27,12 @@ namespace Dental.Infrastructures.Commands
                     tableView.ShowPrintPreview(tableView);
                 }
 
-                /*if (p is ChartControl chart)
+                if (p is ChartControl chart)
                 {
                     chart.Print();
                 }
 
-                if (p is PivotGridControl pivot)
+                /*if (p is PivotGridControl pivot)
                 {
                     pivot.ShowPrintPreview(pivot);
                 }   */             

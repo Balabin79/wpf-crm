@@ -11,7 +11,8 @@
              xmlns:vm ="clr-namespace:Dental.ViewModels.Statistics" 
              xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
+             xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
+             xmlns:command="clr-namespace:Dental.Infrastructures.Commands" 
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
@@ -34,12 +35,13 @@
             <RowDefinition Height="23"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Height="23" VerticalAlignment="Top">
-            <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
-                                    x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
+
+        <DockPanel Grid.Row="0" Height="23" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                <dxb:ToolBarControl Background="Transparent" Margin="0 -3 0 0"
+                                     ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                                     BarItemDisplayMode="ContentAndGlyph">
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Все счета" 
                         Glyph="/Resources/Icons/invoice_yel.png" 
@@ -48,7 +50,7 @@
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="1"
                         />
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Оплаченные" 
                         Glyph="/Resources/Icons/invoice_green.png" 
@@ -56,7 +58,7 @@
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="2" />
-                <dxb:BarButtonItem 
+                    <dxb:BarButtonItem 
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Не оплаченные" 
                         Glyph="/Resources/Icons/invoice_red.png" 
@@ -64,47 +66,60 @@
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="0" />
-            </dxb:ToolBarControl>
+                </dxb:ToolBarControl>
 
-            <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
+                <dxe:DateEdit Margin="0,0,5,0" Mask="D" MaskType="DateTime" Width="200"
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата от"
                           EditValue="{Binding DateFrom, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
-                <dxe:DateEdit.StyleSettings>
-                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
-                </dxe:DateEdit.StyleSettings>
-            </dxe:DateEdit>
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
 
-            <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
+                <dxe:DateEdit Mask="G" MaskType="DateTime" Width="200" 
                           NullValueButtonPlacement="EditBox"
                           DisplayFormatString="D" NullText="Дата до"
                           EditValue="{Binding DateTo, Mode=TwoWay, StringFormat=D,
                           UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" >
-                <dxe:DateEdit.StyleSettings>
-                    <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
-                </dxe:DateEdit.StyleSettings>
-            </dxe:DateEdit>
+                    <dxe:DateEdit.StyleSettings>
+                        <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                    </dxe:DateEdit.StyleSettings>
+                </dxe:DateEdit>
 
-            <dxe:ComboBoxEdit Width="200" Margin="5 0 5 0"
+                <dxe:ComboBoxEdit Width="200" Margin="5 0 5 0"
                                   NullText="Выберите сотрудника" ShowNullText="True"
                                   ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="FullName"
                                   EditValue="{Binding EmployeesSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
                                   >
-                <dxe:ComboBoxEdit.StyleSettings>
-                    <dxe:CheckedComboBoxStyleSettings/>
-                </dxe:ComboBoxEdit.StyleSettings>
+                    <dxe:ComboBoxEdit.StyleSettings>
+                        <dxe:CheckedComboBoxStyleSettings/>
+                    </dxe:ComboBoxEdit.StyleSettings>
 
-            </dxe:ComboBoxEdit>
+                </dxe:ComboBoxEdit>
 
-            <dx:SimpleButton 
+                <dx:SimpleButton 
                 Command="{Binding SearchCommand}" DockPanel.Dock="Right" 
                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 0" 
                 Width="60" HorizontalAlignment="Right"/>
-        </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
 
-        <dxc:ChartControl AnimationMode="OnDataChanged"  Grid.Row="1" Margin="0 5 0 0" >
+                <dxb:ToolBarControl  ShowDragWidget="False" Caption="File" Background="Transparent"
+                                AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                    <dxb:BarButtonItem 
+                                    Content="Печать"                                                            
+                                    Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
+                                    GlyphSize="Small"
+                                    Command="{StaticResource Print}"
+                        CommandParameter="{Binding ElementName=chartControl}"
+                                    />
+                </dxb:ToolBarControl>
+            </StackPanel>
+        </DockPanel>
+        <dxc:ChartControl AnimationMode="OnDataChanged"  Grid.Row="1" Margin="0 5 0 0" x:Name="chartControl">
             <dxc:ChartControl.Titles>
                 <dxc:Title Content="Общий доход по продажам" HorizontalAlignment="Center"/>
             </dxc:ChartControl.Titles>
