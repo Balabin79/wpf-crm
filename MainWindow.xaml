@@ -101,16 +101,125 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Templates.MainPage" Size="Auto" 
-               Background="#f5f5f5" >
+
+
+
+
+            <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
                         <TextBlock Text="Шаблоны" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
+
+                <dxnav:TileBarItem.FlyoutContentTemplate >
+                    <DataTemplate >
+                        <dxnav:TileBar Background="#FFE8E8E8" Height="90" Padding="5" >
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.LineControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <Image Source="/Resources/Icons/allergy.png" Width="30" Height="30"/>
+                                        <TextBlock Text="Аллергии" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.ProfitByEmployeesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <Image Source="/Resources/Icons/checkup.png" Width="30" Height="30"/>
+                                        <TextBlock Text="Анамнезы" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <Image Source="/Resources/Icons/health-report.png" Width="30" Height="30"/>
+                                        <TextBlock Text="Диагнозы" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <Image Source="/Resources/Icons/syringe.png" Width="30" Height="30"/>
+                                        <TextBlock Text="Лечение" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <TextBlock Text="Жалобы" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <Image Source="/Resources/Icons/diary.png" Width="30" Height="30"/>
+                                        <TextBlock Text="Планы лечения" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <TextBlock Text="Обследование" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <TextBlock Text="Рент. снимки" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+                        </dxnav:TileBar>
+                    </DataTemplate>
+                </dxnav:TileBarItem.FlyoutContentTemplate>
             </dxnav:TileBarItem>
 
+            
+            
+            
+            
             <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Organization" Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
@@ -121,22 +230,70 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
+            <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click">
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
+                        <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+                
+                <dxnav:TileBarItem.FlyoutContentTemplate >
+                    <DataTemplate >
+                        <dxnav:TileBar Background="#FFE8E8E8" Height="90" Padding="5" >
+                            <dxnav:TileBarItem 
+                                DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Click="stat_Click"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.LineControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_LineStacked.svg}" />
+                                        <TextBlock Text="Общий доход" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem 
+                                Click="stat_Click"
+                                DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.ProfitByEmployeesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Spreadsheet/CreateBarChart.svg}" />
+                                        <TextBlock Text="Доход по врачам" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+
+                            <dxnav:TileBarItem
+                                Click="stat_Click"
+                                DataContext="{Binding ElementName=stat, Path=DataContext}"
+                                Command="{Binding NavigateCommand}" 
+                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                 Size="Auto" Background="#f5f5f5">
+                                <ContentControl>
+                                    <StackPanel >
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <TextBlock Text="Рекламные источники" Foreground="#666666" FontWeight="DemiBold"/>
+                                    </StackPanel>
+                                </ContentControl>
+                            </dxnav:TileBarItem>
+                        </dxnav:TileBar>
+                    </DataTemplate>
+                </dxnav:TileBarItem.FlyoutContentTemplate>
+            </dxnav:TileBarItem>
+
+
             <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
                         <TextBlock Text="Настройки" Foreground="#666666" FontWeight="DemiBold"/>
-                    </StackPanel>
-                </ContentControl>
-            </dxnav:TileBarItem>
-
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Statistic.StatisticPage" Size="Auto" 
-               Background="#f5f5f5" >
-                <ContentControl>
-                    <StackPanel >
-                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
-                        <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>

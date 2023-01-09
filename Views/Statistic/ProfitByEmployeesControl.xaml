@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.Statistic.ProfitByEmployeesControl"
+﻿<UserControl x:Class="Dental.Views.Statistic.ProfitByEmployeesControl" 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -44,8 +44,8 @@
             </dxg:GridControl>
         </ControlTemplate>
     </UserControl.Resources>
-
-    <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch">
+    <Border Margin="5" BorderBrush="LightGray" BorderThickness="1" Padding="5">
+    <Grid DataContext="{StaticResource vm}" MaxHeight="1000" VerticalAlignment="Stretch" >
         <Grid.RowDefinitions>
             <RowDefinition Height="23"/>
             <RowDefinition Height="*" />
@@ -164,5 +164,5 @@
             </dxc:ChartControl.Diagram>
         </dxc:ChartControl>
     </Grid>
-
+    </Border>
 </UserControl>

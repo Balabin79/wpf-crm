@@ -2,6 +2,7 @@ using Dental.Models;
 using Dental.Services;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Navigation;
 using System;
 using System.IO;
 using System.Windows;
@@ -91,6 +92,9 @@ namespace Dental
            Application.Current.Shutdown();         
         }
 
-        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e) => Restart();   
+        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e) => Restart();
+
+        private void stat_Click(object sender, EventArgs e) => stat.IsSelected = true;
+        
     }
 }

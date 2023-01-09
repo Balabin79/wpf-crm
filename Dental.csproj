@@ -39,9 +39,11 @@
 
   <ItemGroup>
     <None Remove="Resources\Icons\adv3.png" />
+    <None Remove="Resources\Icons\allergy.png" />
     <None Remove="Resources\Icons\bol.png" />
     <None Remove="Resources\Icons\bold.png" />
     <None Remove="Resources\Icons\brand.png" />
+    <None Remove="Resources\Icons\checkup.png" />
     <None Remove="Resources\Icons\clients3.png" />
     <None Remove="Resources\Icons\Closed_Folder_32.png" />
     <None Remove="Resources\Icons\dd.png" />
@@ -54,6 +56,7 @@
     <None Remove="Resources\Icons\folder_open_gnone_32.png" />
     <None Remove="Resources\Icons\Form.png" />
     <None Remove="Resources\Icons\Formheading.png" />
+    <None Remove="Resources\Icons\health-report.png" />
     <None Remove="Resources\Icons\info4.png" />
     <None Remove="Resources\Icons\info5.png" />
     <None Remove="Resources\Icons\invoice_green.png" />
@@ -114,6 +117,7 @@
     <None Remove="Resources\Icons\svg\user1.svg" />
     <None Remove="Resources\Icons\svg\users.svg" />
     <None Remove="Resources\Icons\svg\vk.svg" />
+    <None Remove="Resources\Icons\syringe.png" />
     <None Remove="Resources\Icons\te.ico" />
     <None Remove="Resources\Icons\te2.ico" />
     <None Remove="Resources\Icons\te3.ico" />
@@ -246,12 +250,15 @@
 
   <ItemGroup>
     <Resource Include="Resources\Icons\adv3.png" />
+    <Resource Include="Resources\Icons\allergy.png" />
+    <Resource Include="Resources\Icons\checkup.png" />
     <Resource Include="Resources\Icons\clients3.png" />
     <Resource Include="Resources\Icons\emp3.png" />
     <Resource Include="Resources\Icons\folder_closed_gnone_32.png" />
     <Resource Include="Resources\Icons\folder_open_gnone_32.png" />
     <Resource Include="Resources\Icons\Form.png" />
     <Resource Include="Resources\Icons\Formheading.png" />
+    <Resource Include="Resources\Icons\health-report.png" />
     <Resource Include="Resources\Icons\info5.png" />
     <Resource Include="Resources\Icons\invoice_green.png" />
     <Resource Include="Resources\Icons\invoice_red.png" />
@@ -295,6 +302,7 @@
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\svg\vk.svg" />
+    <Resource Include="Resources\Icons\syringe.png" />
     <Resource Include="Resources\Icons\te4.ico" />
     <Resource Include="Resources\Icons\te5.ico" />
     <Resource Include="Resources\Icons\teeth\implant.png" />
