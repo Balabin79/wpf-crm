@@ -31,8 +31,8 @@ namespace Dental.Services
         {
             new CheckDBConnection().Run();
             db = new ApplicationContext();
-            CurrentPage = CreatePage(defaultPage);
-            FrameOpacity = 1.1;
+          //  CurrentPage = CreatePage(defaultPage);
+            //FrameOpacity = 1.1;
 
             try
             {

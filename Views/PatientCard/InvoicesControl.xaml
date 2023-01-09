@@ -156,7 +156,7 @@
                                     x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                                     BarItemDisplayMode="ContentAndGlyph">
 
-                    <dxb:BarButtonItem 
+                    <dxb:BarButtonItem Style="{Binding}"
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 0 or InvoicesSearchMode == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Все счета" 
                         Glyph="/Resources/Icons/invoice_yel.png" 
@@ -165,7 +165,7 @@
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="1"
                         />
-                    <dxb:BarButtonItem 
+                    <dxb:BarButtonItem Style="{Binding}"
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Оплаченные" 
                         Glyph="/Resources/Icons/invoice_green.png" 
@@ -173,7 +173,7 @@
                         CustomGlyphSize="21,21"    
                         Command="{Binding SwitchInvoicesSearchModeCommand}"
                         CommandParameter="2" />
-                    <dxb:BarButtonItem 
+                    <dxb:BarButtonItem Style="{Binding}"
                         IsVisible="{DXBinding Expr='InvoicesSearchMode == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         Content="Не оплаченные" 
                         Glyph="/Resources/Icons/invoice_red.png" 

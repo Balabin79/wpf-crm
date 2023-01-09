@@ -5,7 +5,7 @@ namespace Dental.Views.EmployeeDir
     /// <summary>
     /// Логика взаимодействия для Employes.xaml
     /// </summary>
-    public partial class Employes : Page
+    public partial class Employes : UserControl
     {
         public Employes()
         {

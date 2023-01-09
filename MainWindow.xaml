@@ -16,6 +16,9 @@
     xmlns:conv ="clr-namespace:Dental.Infrastructures.Converters" 
     dx:ThemeManager.ThemeName="Office2019White"
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+    xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
     Closing="ThemedWindow_Closing"
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
@@ -42,20 +45,20 @@
         </ResourceDictionary>
     </dx:ThemedWindow.Resources>
 
-    <Grid VerticalAlignment="Stretch" Margin="0,0,0,0">
+    <Grid VerticalAlignment="Stretch" Margin="0,0,0,0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <dxb:ToolBarControl Background="Transparent" 
+        <dxb:ToolBarControl ShowBackground="False"
             Grid.Row="0"  AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
           
             <dxb:BarButtonItem Name="sheduleBtn" Margin="0 2 0 0"
                 IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Расписание сотрудников" 
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Sheduler" >
+                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Sheduler" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -75,7 +78,7 @@
                 GlyphAlignment="Top"
                 IsVisible="{DXBinding Expr='@r(UserSession).ClientsListRead', UpdateSourceTrigger=PropertyChanged}"              
                  ToolTip="Список клиентов" 
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
+                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -93,7 +96,7 @@
             <dxb:BarButtonItem  Name="employeesBtn"
                 IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead',  UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Сотрудники"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
+                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -111,7 +114,7 @@
             <dxb:BarButtonItem  Name="servicesBtn"
                 IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead', UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Прейскурант"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
+                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -129,7 +132,7 @@
             <dxb:BarButtonItem Name="templatesBtnItem"
                 IsVisible="{DXBinding Expr='@r(UserSession).TemplatesRead',  UpdateSourceTrigger=PropertyChanged}"
                  ToolTip="Шаблоны"
-                 Command="{Binding LeftMenuClickCommand}" CommandParameter="Dental.Views.Templates.MainPage" >
+                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Templates.MainPage" >
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
                         <StackPanel>
@@ -147,7 +150,7 @@
             <dxb:BarButtonItem Name="orgBtnItem" 
                 IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Организация"
-                Command="{Binding LeftMenuClickCommand}" 
+                Command="{Binding NavigateCommand}" 
                 CommandParameter="Dental.Views.Organization">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -166,7 +169,7 @@
             <dxb:BarButtonItem Name="settingsBtnItem" 
                 IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Настройки"
-                Command="{Binding LeftMenuClickCommand}" 
+                Command="{Binding NavigateCommand}" 
                 CommandParameter="Dental.Views.Settings.SettingsPage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -185,7 +188,7 @@
             <dxb:BarButtonItem Name="statBtnItem" 
                 IsVisible="{DXBinding Expr='@r(UserSession).StatisticRead', UpdateSourceTrigger=PropertyChanged}"
                 ToolTip="Статистика"
-                Command="{Binding LeftMenuClickCommand}" 
+                Command="{Binding NavigateCommand}" 
                 CommandParameter="Dental.Views.Statistic.StatisticPage">
                 <dxb:BarButtonItem.ContentTemplate>
                     <DataTemplate >
@@ -234,12 +237,28 @@
 
         </dxb:ToolBarControl>
 
-        <Frame  
+
+
+
+        <Grid Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+            <dxwui:NavigationFrame AnimationType="SlideHorizontal" NavigationCacheMode="Required" >
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" />
+                    <dxwuin:FrameNavigationService ShowSplashScreen="True" >
+       
+                    </dxwuin:FrameNavigationService>
+                </dxmvvm:Interaction.Behaviors>
+            </dxwui:NavigationFrame>
+        </Grid>
+
+
+
+        <!--<Frame  
            Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1"            
            HorizontalAlignment="Stretch" 
            NavigationUIVisibility="Hidden" 
            Content="{Binding CurrentPage}" 
-           Opacity="{Binding FrameOpacity}" />
+           Opacity="{Binding FrameOpacity}" />-->
 
     </Grid>
 </dx:ThemedWindow>

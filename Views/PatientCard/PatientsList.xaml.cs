@@ -5,7 +5,7 @@ using DevExpress.Xpf.WindowsUI;
 
 namespace Dental.Views.PatientCard
 {
-    public partial class PatientsList : Page
+    public partial class PatientsList : UserControl
     {
         public PatientsList()
         {

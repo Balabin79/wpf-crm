@@ -39,7 +39,7 @@ namespace Dental
             Login();
             var userSession = (UserSession)Application.Current.Resources["UserSession"];
 
-                var nav = (Navigator)Application.Current.Resources["Router"];
+                //var nav = (Navigator)Application.Current.Resources["Router"];
 
                 statBtnItem.IsVisible = userSession.StatisticRead;
                 sheduleBtn.IsVisible = userSession.SheduleRead;
@@ -50,14 +50,14 @@ namespace Dental
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
                 orgBtnItem.IsVisible = userSession.OrgRead;
 
-                if (userSession.ClientsRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
+                /*if (userSession.ClientsRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
                 if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
                 if (userSession.EmployeesRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
                 if (userSession.PricesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
                 if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
                 if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
                 if (userSession.StatisticRead) { nav.LeftMenuClick("Dental.Views.Statistic.StatisticPage"); return; }
-                if (userSession.OrgRead) { nav.LeftMenuClick("Dental.Views.Dental.Views.Organization"); return; }
+                if (userSession.OrgRead) { nav.LeftMenuClick("Dental.Views.Dental.Views.Organization"); return; }*/
         }
 
         private void Login()
@@ -77,7 +77,7 @@ namespace Dental
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string mes = "Завершить работу с приложением?";
-            if (Navigator.HasUnsavedChanges != null && Navigator.UserSelectedBtnCancel != null && Navigator.HasUnsavedChanges.Invoke()) mes = "Имеются несохраненные изменения. " + mes; 
+          /*  if (Navigator.HasUnsavedChanges != null && Navigator.UserSelectedBtnCancel != null && Navigator.HasUnsavedChanges.Invoke()) mes = "Имеются несохраненные изменения. " + mes; */
 
             var response = ThemedMessageBox.Show(title: "Внимание", text: mes, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 

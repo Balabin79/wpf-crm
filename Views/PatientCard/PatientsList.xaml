@@ -1,4 +1,4 @@
-﻿<Page  x:Class="Dental.Views.PatientCard.PatientsList"
+﻿<UserControl  x:Class="Dental.Views.PatientCard.PatientsList"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -17,9 +17,9 @@
        xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" 
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
        xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
-       Title="Клиенты" Loaded="Page_Loaded">
+       Loaded="Page_Loaded">
 
-    <Page.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
@@ -40,7 +40,7 @@
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Page.Resources>
+    </UserControl.Resources>
 
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
         <Grid DataContext="{StaticResource vm}"
@@ -57,28 +57,31 @@
                                 Source="/Resources/Icons/clients3.png" />
                     <TextBlock Text="Клиенты" FontSize="14" Padding="3 2 5 0" />
                 </StackPanel>
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        <dxb:BarButtonItem Content="Добавить клиента" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
+
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
+                    <dxb:ToolBarControl BarItemHorizontalIndent="5"
+                        ShowDragWidget="False"   ShowBackground="False"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False"  BarItemDisplayMode="ContentAndGlyph">
+                       
+                        <dxb:BarButtonItem Content="Добавить клиента"                                       
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding CreateCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                            />
 
-                        <dxb:BarButtonItem Content="Шаблоны документов" Margin="0 0 5 0"                                        
-                                           GlyphSize="Small"
+                        <dxb:BarButtonItem Content="Шаблоны документов"                                    
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenFormDocumentsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
 
-                        <dxb:BarButtonItem Content="Дополнительные поля" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
+                        <dxb:BarButtonItem Content="Дополнительные поля"                                        
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenFormFieldsCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
 
-                        <dxb:BarButtonItem Content="Рекламные источники" Margin="0 0 5 0" DataContext="{StaticResource adv}"                                        
-                                           GlyphSize="Small"
+                        <dxb:BarButtonItem Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenWindowCommand}" 
                                            >
                             <dxb:BarButtonItem.GlyphTemplate>
@@ -107,13 +110,15 @@
                                     <dxb:ToolBarControl Width="90" ShowDragWidget="False" Caption="File" Background="Transparent"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
-                                        <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+                                        <dxb:BarButtonItem Style="{Binding}"
+                                            Content="Активные" Margin="0 0 5 0"
                                            IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                                        <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                                        <dxb:BarButtonItem Style="{Binding}"
+                                            Content="В архиве" Margin="0 0 5 0"
                                            IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                            GlyphSize="Small"
                                            Command="{Binding ShowArchiveCommand}"
@@ -216,7 +221,7 @@
                                         <dxg:TableView.InputBindings>
                                             <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=CreateCommand}"/>
                                             <KeyBinding Key="Return" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=OpenClientCardCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                         </dxg:TableView.InputBindings>
                                         
                                         <dxmvvm:Interaction.Behaviors>
@@ -243,4 +248,4 @@
             </Border>
         </Grid>
     </Border>
-</Page>
+</UserControl>

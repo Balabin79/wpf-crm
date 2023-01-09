@@ -46,28 +46,31 @@
             </StackPanel>
             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                <dxb:ToolBarControl Background="Transparent"
+                <dxb:ToolBarControl ShowBackground="False" BarItemHorizontalIndent="5"
                             x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                    <dxb:BarButtonItem Content="Добавить услугу" Margin="0 0 5 0"                                         
+                    <dxb:BarButtonItem Style="{Binding}"
+                        Content="Добавить услугу"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
                                            CommandParameter="0" />
 
-                    <dxb:BarButtonItem Content="Добавить группу" Margin="0 0 5 0"                                         
+                    <dxb:BarButtonItem Style="{Binding}"
+                        Content="Добавить группу"                                         
                                            GlyphSize="Small"
                                            Command="{Binding OpenFormCommand}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            CommandParameter="1" />
 
-                    <dxb:BarButtonItem Content="Свернуть/Развернуть" Margin="0 0 5 0"                                         
+                    <dxb:BarButtonItem Style="{Binding}"
+                        Content="Свернуть/Развернуть"                                         
                                            GlyphSize="Small"
                                            Command="{Binding ExpandTreeCommand}"
                                            CommandParameter="{Binding ElementName=view}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/InsertTreeView.svg}"/>
 
-                    <dxb:BarButtonItem Content="Печать"                                          
+                    <dxb:BarButtonItem Content="Печать"      Style="{Binding}"                                    
                                            GlyphSize="Small"
                                            Command="{Binding PrintPriceCommand}"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>

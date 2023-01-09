@@ -169,7 +169,7 @@ namespace Dental.Services
                     }
                 }
             }
-            catch (Exception e)
+            catch 
             {
 
             }

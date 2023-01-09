@@ -18,7 +18,7 @@ namespace Dental.Views
     /// <summary>
     /// Логика взаимодействия для Organization.xaml
     /// </summary>
-    public partial class Organization : Page
+    public partial class Organization : UserControl
     {
         public Organization()
         {

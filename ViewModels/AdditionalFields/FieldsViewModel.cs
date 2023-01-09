@@ -89,7 +89,7 @@ namespace Dental.ViewModels.AdditionalFields
                     default: return new TextEdit() { EditValue = value };
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 return new TextEdit() { EditValue = value };
             }

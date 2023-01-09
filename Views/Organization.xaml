@@ -1,4 +1,4 @@
-﻿<Page x:Class="Dental.Views.Organization"
+﻿<UserControl x:Class="Dental.Views.Organization"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -17,7 +17,7 @@
       dx:ThemeManager.ThemeName="Office2019White"
       xmlns:af ="clr-namespace:Dental.ViewModels.Org" 
       >
-    <Page.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
@@ -33,7 +33,7 @@
                 <ResourceDictionary Source="/Resources/DateField.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Page.Resources>
+    </UserControl.Resources>
 
     <Border BorderBrush="LightGray" 
             BorderThickness="1" 
@@ -57,32 +57,36 @@
                     <TextBlock Text="Реквизиты организации" FontSize="14" Padding="5 5 5 0" />
                 </StackPanel>
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
-                    <dxb:ToolBarControl x:Name="fileToolBar" Background="Transparent"
+                    <dxb:ToolBarControl x:Name="fileToolBar" ShowBackground="False" 
                                         Caption="File" 
                                         ShowDragWidget="False"
                                         BarItemDisplayMode="ContentAndGlyph"
                                         AllowCustomizationMenu="False" 
                                         AllowQuickCustomization="False">
 
-                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <dxb:BarButtonItem Style="{Binding}"
+                            IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <dxb:BarButtonItem Style="{Binding}"
+                            IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
                                            GlyphSize="Small"
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem Content="Сохранить" 
+                        <dxb:BarButtonItem Style="{Binding}"
+                            Content="Сохранить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(OrganizationVM.Name)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"/>
                         <dxb:BarItemLinkSeparator/>
-                        <dxb:BarButtonItem Content="Удалить" 
+                        <dxb:BarButtonItem Style="{Binding}"
+                            Content="Удалить" 
                                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(OrganizationVM.Name) and OrganizationVM.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Small"
@@ -511,4 +515,4 @@
 
         </Grid>
     </Border>
-</Page>
+</UserControl>

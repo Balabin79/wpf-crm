@@ -21,7 +21,7 @@ namespace Dental.Views.ServicePrice
     /// <summary>
     /// Логика взаимодействия для ServicePage.xaml
     /// </summary>
-    public partial class ServicePage : Page
+    public partial class ServicePage : UserControl
     {
         public ServicePage()
         {

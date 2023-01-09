@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Dental.Views
 {
-    public partial class Sheduler : Page
+    public partial class Sheduler : UserControl
     {
         public Sheduler()
         {

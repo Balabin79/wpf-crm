@@ -103,7 +103,7 @@ namespace Dental.Infrastructures.Extensions
 
               
             }
-            catch (Exception e)
+            catch
             {
 
             }

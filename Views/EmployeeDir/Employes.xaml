@@ -1,4 +1,4 @@
-﻿<Page  x:Class="Dental.Views.EmployeeDir.Employes"
+﻿<UserControl  x:Class="Dental.Views.EmployeeDir.Employes"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -14,17 +14,15 @@
        xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands"
        xmlns:services="clr-namespace:Dental.Services"
        mc:Ignorable="d"
-       d:DesignHeight="400"
-       dx:ThemeManager.ThemeName="Office2019White"
+       d:DesignHeight="400" 
        xmlns:vm ="clr-namespace:Dental.ViewModels.EmployeeDir" 
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-       d:DesignWidth="800"
-       Title="Сотрудники"   
+       d:DesignWidth="800"   
        >
 
-    <Page.Resources>
+    <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -187,7 +185,7 @@
 
             </StackPanel>
         </DataTemplate>
-    </Page.Resources>
+    </UserControl.Resources>
 
     <Border
         BorderBrush="LightGray" 
@@ -195,18 +193,7 @@
         Margin="5" 
         dx:ThemeManager.ThemeName="Office2019White" 
         DataContext="{StaticResource vm}">
-        <dx:LoadingDecorator SplashScreenDataContext="Загрузка сотрудников"  BorderEffect="None">
-            <dx:LoadingDecorator.SplashScreenTemplate>
-                <DataTemplate>
-                    <dx:WaitIndicator Content="{Binding}" DeferedVisibility="True">
-                        <dx:WaitIndicator.ContentTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}" />
-                            </DataTemplate>
-                        </dx:WaitIndicator.ContentTemplate>
-                    </dx:WaitIndicator>
-                </DataTemplate>
-            </dx:LoadingDecorator.SplashScreenTemplate>
+
             <Grid x:Name="gridMain" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24"/>
@@ -220,35 +207,39 @@
                                Source="/Resources/Icons/emp3.png" />
                         <TextBlock Text="Сотрудники" FontSize="14" Padding="3 2 5 0"  />
                     </StackPanel>
-                    <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+                
+           
+                        <dxb:ToolBarControl 
+                        ShowDragWidget="False" Caption="File" ShowBackground="False" DockPanel.Dock="Top" HorizontalAlignment="Right"
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False"  BarItemDisplayMode="ContentAndGlyph">
 
-                        <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                            <dxb:BarButtonItem Content="Добавить сотрудника" Margin="0 0 5 0"                                         
-                                           GlyphSize="Small"
-                                           Command="{Binding AddCommand}"
+                            <dxb:BarButtonItem Content="Добавить сотрудника"                                     
+                                           GlyphSize="Small" 
+                                           Command="{Binding AddCommand}" Style="{Binding}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
 
-                            <dxb:BarButtonItem Content="Свернуть/Развернуть"                                        
-                                           GlyphSize="Small"
+
+                            <dxb:BarButtonItem Content="Свернуть/Развернуть"                                   
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding ExpandAllCommand}"
                                            CommandParameter="{Binding ElementName=view}"
                                            Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_DetailViewItems.svg}"/>
 
-                            <dxb:BarButtonItem Content="Активные" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="Активные"  
                                            IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
-                            <dxb:BarButtonItem Content="В архиве" Margin="0 0 5 0"
+                            <dxb:BarButtonItem Content="В архиве" 
                                            IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
+                                           GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
                         </dxb:ToolBarControl>
-                    </dxb:BarContainerControl>
-                </DockPanel>
+            
+ 
+            </DockPanel>
 
 
                 <dxg:GridControl  Grid.Row="2" 
@@ -326,7 +317,7 @@
 
                 </dxg:GridControl>
             </Grid>
-        </dx:LoadingDecorator>
+
     </Border>
 
-</Page>
+</UserControl>

@@ -115,7 +115,7 @@ namespace Dental.ViewModels
 
                 if (p is Window win) win?.Close();             
             }
-            catch (Exception e)
+            catch
             {
 
             }

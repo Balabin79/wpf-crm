@@ -42,6 +42,8 @@ using DevExpress.Xpf.LayoutControl;
 using System.Globalization;
 using System.Windows.Data;
 using Dental.Views.Settings;
+using DevExpress.Mvvm;
+using DevExpress.Xpf.WindowsUI.Navigation;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -66,7 +68,7 @@ namespace Dental.ViewModels.ClientDir
 
                 Init(Model);
             }
-            catch (Exception e)
+            catch
             {
                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -198,13 +200,14 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                var navigator = (Navigator)Application.Current.Resources["Router"];
-
                 if (p is Client model)
                 {
                     Model = model;
                     Init(Model);
-                    if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
+                    if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                          nav?.NavigationService is NavigationServiceBase service &&
+                          service.Current is PatientsList page
+                          ) page.clientCard.tabs.SelectedIndex = 0;
                 }
 
                 if (p is Invoice invoice && invoice.Client != null)
@@ -212,7 +215,11 @@ namespace Dental.ViewModels.ClientDir
                     if (invoice.Client == null) return;
                     Model = invoice.Client;
                     Init(invoice.Client);
-                    if (navigator?.CurrentPage is PatientsList page)
+
+                    if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                     nav?.NavigationService is NavigationServiceBase service &&
+                     service.Current is PatientsList page
+                     )
                     {
                         page.clientCard.tabs.SelectedIndex = 2;
                         if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
@@ -299,9 +306,10 @@ namespace Dental.ViewModels.ClientDir
                     Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
                 }
 
-                var navigator = (Navigator)Application.Current.Resources["Router"];
-
-                if (navigator?.CurrentPage is PatientsList page)
+                if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                     nav?.NavigationService is NavigationServiceBase service &&
+                     service.Current is PatientsList page
+                     )
                 {
                     page.SelectedInvoiceItem();
                 }
@@ -909,7 +917,7 @@ namespace Dental.ViewModels.ClientDir
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке очистить поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -1056,10 +1064,14 @@ namespace Dental.ViewModels.ClientDir
                 Model = new Client();
                 Init(Model);
                 SelectedItem();
-                var navigator = (Navigator)Application.Current.Resources["Router"];
-                if (navigator?.CurrentPage is PatientsList page) page.clientCard.tabs.SelectedIndex = 0;
+
+                if (Application.Current.Resources["Router"] is MainViewModel nav && 
+                    nav?.NavigationService is NavigationServiceBase service && 
+                    service.Current is PatientsList page
+                    ) page.clientCard.tabs.SelectedIndex = 0;                
             }
-            catch { }
+            catch(Exception e) 
+            { }
         }
 
         [Command]
@@ -1100,7 +1112,7 @@ namespace Dental.ViewModels.ClientDir
                     }                                  
                 }
             }
-            catch (Exception e)
+            catch
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных клиента возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -1398,13 +1410,13 @@ namespace Dental.ViewModels.ClientDir
 
         private void SelectedItem()
         {
-            var navigator = (Navigator)Application.Current.Resources["Router"];
-
-            if (navigator?.CurrentPage is PatientsList page)
-            {
-                page.SelectedItem();
-            }
+            if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                     nav?.NavigationService is NavigationServiceBase service &&
+                     service.Current is PatientsList page
+                     ) page.SelectedItem();     
         }
+
+        private INavigationService NavigationService { get { return this.GetService<INavigationService>(); } }
 
         public Config Config
         {

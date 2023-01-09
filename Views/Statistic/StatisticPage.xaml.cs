@@ -18,7 +18,7 @@ namespace Dental.Views.Statistic
     /// <summary>
     /// Логика взаимодействия для StatisticPage.xaml
     /// </summary>
-    public partial class StatisticPage : Page
+    public partial class StatisticPage : UserControl
     {
         public StatisticPage()
         {

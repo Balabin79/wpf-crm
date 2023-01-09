@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 
 namespace Dental.Views.Settings
 {
-    public partial class SettingsPage : Page
+    public partial class SettingsPage : UserControl
     {
         public SettingsPage()
         {
