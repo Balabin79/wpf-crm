@@ -16,7 +16,7 @@ namespace Dental
         public MainWindow()
         {
             try
-            {
+            {              
                 Login();
                 InitializeComponent();
             }
@@ -41,14 +41,14 @@ namespace Dental
 
                 //var nav = (Navigator)Application.Current.Resources["Router"];
 
-                statBtnItem.IsVisible = userSession.StatisticRead;
+                /*statBtnItem.IsVisible = userSession.StatisticRead;
                 sheduleBtn.IsVisible = userSession.SheduleRead;
                 clientsBtn.IsVisible = userSession.ClientsRead;
                 employeesBtn.IsVisible = userSession.EmployeesRead;
                 servicesBtn.IsVisible = userSession.PricesRead;
                 templatesBtnItem.IsVisible = userSession.TemplatesRead;
                 settingsBtnItem.IsVisible = userSession.SettingsRead;
-                orgBtnItem.IsVisible = userSession.OrgRead;
+                orgBtnItem.IsVisible = userSession.OrgRead;*/
 
                 /*if (userSession.ClientsRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
                 if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }

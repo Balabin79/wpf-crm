@@ -19,7 +19,9 @@
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-    Closing="ThemedWindow_Closing"
+                 xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+                 xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+                 Closing="ThemedWindow_Closing"
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"
@@ -52,198 +54,109 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
-        <dxb:ToolBarControl ShowBackground="False"
-            Grid.Row="0"  AllowCustomizationMenu="False" ShowDragWidget="False" AllowQuickCustomization="False">
-          
-            <dxb:BarButtonItem Name="sheduleBtn" Margin="0 2 0 0"
-                IsVisible="{DXBinding Expr='@r(UserSession).SheduleRead', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Расписание сотрудников" 
-                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Sheduler" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage Source="/Resources/Icons/sheduler.png" Height="30" />
-                            <TextBlock   
-                                Text="Расписание"
-                                TextAlignment="Center"
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Sheduler`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Sheduler`  ? `Underline` : `None`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                  
-                              />                            
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
 
-            <dxb:BarButtonItem Name="clientsBtn"
-                GlyphAlignment="Top"
-                IsVisible="{DXBinding Expr='@r(UserSession).ClientsListRead', UpdateSourceTrigger=PropertyChanged}"              
-                 ToolTip="Список клиентов" 
-                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="/Resources/Icons/clients3.png" Height="30" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Клиенты" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.PatientCard.PatientsList`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem  Name="employeesBtn"
-                IsVisible="{DXBinding Expr='@r(UserSession).EmployeesListRead',  UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Сотрудники"
-                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="/Resources/Icons/emp3.png" Height="30" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Сотрудники" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.EmployeeDir.Employes`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />                            
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem  Name="servicesBtn"
-                IsVisible="{DXBinding Expr='@r(UserSession).ServicesRead', UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Прейскурант"
-                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="/Resources/Icons/svg/search-dollar.svg" Height="30"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Прейскурант" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.ServicePrice.ServicePage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />                            
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem Name="templatesBtnItem"
-                IsVisible="{DXBinding Expr='@r(UserSession).TemplatesRead',  UpdateSourceTrigger=PropertyChanged}"
-                 ToolTip="Шаблоны"
-                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Templates.MainPage" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Шаблоны" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Templates.MainPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Templates.MainPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem Name="orgBtnItem" 
-                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="Организация"
-                Command="{Binding NavigateCommand}" 
-                CommandParameter="Dental.Views.Organization">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage Source="/Resources/Icons/org.png" Height="30" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Организация" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Organization`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem Name="settingsBtnItem" 
-                IsVisible="{DXBinding Expr='@r(UserSession).SettingsRead', UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="Настройки"
-                Command="{Binding NavigateCommand}" 
-                CommandParameter="Dental.Views.Settings.SettingsPage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Настройки" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Settings.SettingsPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Settings.SettingsPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem Name="statBtnItem" 
-                IsVisible="{DXBinding Expr='@r(UserSession).StatisticRead', UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="Статистика"
-                Command="{Binding NavigateCommand}" 
-                CommandParameter="Dental.Views.Statistic.StatisticPage">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Статистика" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Statistic.StatisticPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.Statistic.StatisticPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-            <dxb:BarButtonItem 
-                ToolTip="Переключить сеанс"                                     
-                ItemClick="BarButtonItem_ItemClick"
-                IsVisible="{DXBinding Expr='RoleEnabled==true', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/AssignTask.svg}"/>
-                            <TextBlock TextAlignment="Center"  Text="Авторизация" />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-            
-            <dxb:BarButtonItem 
-                ToolTip="Справка"                                     
-                Command="{Binding HelpCommand}" >
-                <dxb:BarButtonItem.ContentTemplate>
-                    <DataTemplate >
-                        <StackPanel>
-                            <dx:DXImage  Source="/Resources/Icons/info5.png" Height="30" />
-                            <TextBlock 
-                                TextAlignment="Center"  Text="Справка" 
-                                FontWeight="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.About.HelpPage`  ? `DemiBold` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                
-                                TextDecorations="{DXBinding Expr='@e(win).DataContext.IsSelected == `Dental.Views.About.HelpPage`  ? `Underline` : `Regular`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       />
-                        </StackPanel>
-                    </DataTemplate>
-                </dxb:BarButtonItem.ContentTemplate>
-            </dxb:BarButtonItem>
-
-        </dxb:ToolBarControl>
+        <dxnav:TileBar Margin="-15 0 0 0" Padding="0" ItemColorMode="Standard"
+            VerticalAlignment="Top" Background="Transparent" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
 
 
+            <dxnav:TileBarItem x:Name="shedulerBtn" Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Sheduler" Size="Auto" 
+               Background="#f5f5f5">
+                <ContentControl>
+                    <StackPanel >
+                        <Image Source="/Resources/Icons/sheduler.png" Width="30" Height="30"/>
+                        <TextBlock Text="Расписание" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
 
+            <dxnav:TileBarItem  x:Name="clientsBtn" 
+                Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.PatientCard.PatientsList" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <Image Source="/Resources/Icons/clients3.png" Width="30" Height="30"/>
+                        <TextBlock Text="Клиенты" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
 
-        <Grid Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" Grid.Column="1">
+            <dxnav:TileBarItem 
+                Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.EmployeeDir.Employes"  Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <Image Source="/Resources/Icons/emp3.png" Width="30" Height="30"/>
+                        <TextBlock Text="Сотрудники" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage Source="/Resources/Icons/svg/search-dollar.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Прайсы" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Templates.MainPage" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
+                        <TextBlock Text="Шаблоны" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Organization" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <Image Source="/Resources/Icons/org.png" Width="30" Height="30"/>
+                        <TextBlock Text="Организация" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
+                        <TextBlock Text="Настройки" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Statistic.StatisticPage" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
+                        <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Command="{Binding HelpCommand}" Size="Auto" 
+               Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage  Source="/Resources/Icons/info5.png" Height="30" />
+                        <TextBlock Text="Помощь" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+        </dxnav:TileBar>
+
+        <Grid Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" >
             <dxwui:NavigationFrame AnimationType="SlideHorizontal" NavigationCacheMode="Required" >
                 <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" />
+                    <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" CommandParameter="{Binding ElementName=clientsBtn}" />
                     <dxwuin:FrameNavigationService ShowSplashScreen="True" >
        
                     </dxwuin:FrameNavigationService>

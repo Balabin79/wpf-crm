@@ -10,6 +10,7 @@ using Dental.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Navigation;
 
 namespace Dental.ViewModels
 {
@@ -20,9 +21,10 @@ namespace Dental.ViewModels
         public MainViewModel() { }
 
         [Command]
-        public void OnViewLoaded()
+        public void OnViewLoaded(object p)
         {
             NavigationService.Navigate("Dental.Views.PatientCard.PatientsList", null, this);
+            if (p is TileBarItem clientsBtn) clientsBtn.IsSelected = true;
         }
 
         [Command]
