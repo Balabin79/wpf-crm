@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:local="clr-namespace:Dental" 
     xmlns:viewModels="clr-namespace:Dental.ViewModels" 
+    xmlns:views="clr-namespace:Dental.Views" 
     xmlns:services="clr-namespace:Dental.Services" 
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
@@ -116,7 +117,7 @@
                 <dxnav:TileBarItem.FlyoutContentTemplate >
                     <DataTemplate >
                         <dxnav:TileBar Background="#FFE8E8E8" Height="90" Padding="5" >
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Allergies" 
                                  Size="Auto" Background="#f5f5f5">
@@ -128,7 +129,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Anamneses" 
                                  Size="Auto" Background="#f5f5f5">
@@ -140,7 +141,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Diagnoses"  
                                  Size="Auto" Background="#f5f5f5">
@@ -152,7 +153,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Diaries"  
                                  Size="Auto" Background="#f5f5f5">
@@ -164,7 +165,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Complaints"  
                                  Size="Auto" Background="#f5f5f5">
@@ -176,7 +177,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.TreatmentPlans"  
                                  Size="Auto" Background="#f5f5f5">
@@ -188,7 +189,7 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
                                 CommandParameter="Dental.Views.Templates.Objectivelies"  
                                  Size="Auto" Background="#f5f5f5">
@@ -200,9 +201,9 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}" Click="temp_Click"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Templates.Anamneses"  
+                                CommandParameter="Dental.Views.Templates.Xray"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
@@ -315,7 +316,16 @@
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" CommandParameter="{Binding ElementName=clientsBtn}" />
                     <dxwuin:FrameNavigationService ShowSplashScreen="True" >
-       
+                        <dxwuin:FrameNavigationService.SplashScreenService>
+                            <dx:DXSplashScreenService SplashScreenStartupLocation="CenterOwner">
+                                    <dx:DXSplashScreenService.ViewTemplate>
+                                        <DataTemplate>
+                                            <views:SplashScreenView/>
+                                        </DataTemplate>
+                                    </dx:DXSplashScreenService.ViewTemplate>
+                                </dx:DXSplashScreenService>
+                 
+                        </dxwuin:FrameNavigationService.SplashScreenService>
                     </dxwuin:FrameNavigationService>
                 </dxmvvm:Interaction.Behaviors>
             </dxwui:NavigationFrame>

@@ -11,14 +11,12 @@
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-        xmlns:model="clr-namespace:Dental.Models.Templates" 
              mc:Ignorable="d" 
         x:Name="win"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <converter:FormTreeMultiBindingConverter x:Key="FormConv" />
-            <model:Allergy x:Key="model" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>

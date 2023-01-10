@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Dental.Services;
@@ -17,7 +18,7 @@ namespace Dental.ViewModels
     public class MainViewModel : ViewModelBase
     {
         public INavigationService NavigationService { get { return this.GetService<INavigationService>(); } }
-
+        protected ISplashScreenService SplashScreenService { get { return this.GetService<ISplashScreenService>(); } }
         public MainViewModel() { }
 
         [Command]
@@ -59,6 +60,5 @@ namespace Dental.ViewModels
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-
     }
 }

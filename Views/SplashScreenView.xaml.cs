@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Templates
+namespace Dental.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainPage.xaml
+    /// Логика взаимодействия для SplashScreenView.xaml
     /// </summary>
-    public partial class MainPage : UserControl
+    public partial class SplashScreenView : UserControl
     {
-        public MainPage()
+        public SplashScreenView()
         {
             InitializeComponent();
         }

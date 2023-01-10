@@ -95,6 +95,8 @@ namespace Dental
         private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e) => Restart();
 
         private void stat_Click(object sender, EventArgs e) => stat.IsSelected = true;
+
+        private void temp_Click(object sender, EventArgs e) => templ.IsSelected = true;
         
     }
 }
