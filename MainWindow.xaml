@@ -105,7 +105,7 @@
 
 
 
-            <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" >
+            <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="templ">
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
@@ -116,9 +116,9 @@
                 <dxnav:TileBarItem.FlyoutContentTemplate >
                     <DataTemplate >
                         <dxnav:TileBar Background="#FFE8E8E8" Height="90" Padding="5" >
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.LineControl" 
+                                CommandParameter="Dental.Views.Templates.Allergies" 
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
@@ -128,9 +128,9 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.ProfitByEmployeesControl" 
+                                CommandParameter="Dental.Views.Templates.Anamneses" 
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
@@ -140,9 +140,9 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.Diagnoses"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
@@ -152,9 +152,9 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.Diaries"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
@@ -164,49 +164,49 @@
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.Complaints"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
-                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <Image Source="/Resources/Icons/free-icon-toothache-5499171.png" Width="30" Height="30"/>
                                         <TextBlock Text="Жалобы" Foreground="#666666" FontWeight="DemiBold"/>
                                     </StackPanel>
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.TreatmentPlans"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
-                                        <Image Source="/Resources/Icons/diary.png" Width="30" Height="30"/>
+                                        <Image Source="/Resources/Icons/dental-clinic.png" Width="32" Height="32"/>
                                         <TextBlock Text="Планы лечения" Foreground="#666666" FontWeight="DemiBold"/>
                                     </StackPanel>
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.Objectivelies"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
-                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <Image Source="/Resources/Icons/free-icon-diagnosis-4030511.png" Width="30" Height="30"/>
                                         <TextBlock Text="Обследование" Foreground="#666666" FontWeight="DemiBold"/>
                                     </StackPanel>
                                 </ContentControl>
                             </dxnav:TileBarItem>
 
-                            <dxnav:TileBarItem DataContext="{Binding ElementName=stat, Path=DataContext}"
+                            <dxnav:TileBarItem DataContext="{Binding ElementName=templ, Path=DataContext}"
                                 Command="{Binding NavigateCommand}" 
-                                CommandParameter="Dental.Views.Statistic.AdvertisingSourcesControl" 
+                                CommandParameter="Dental.Views.Templates.Anamneses"  
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
-                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_Doughnut.svg}" />
+                                        <Image Source="/Resources/Icons/x-ray.png" Width="30" Height="30"/>
                                         <TextBlock Text="Рент. снимки" Foreground="#666666" FontWeight="DemiBold"/>
                                     </StackPanel>
                                 </ContentControl>
