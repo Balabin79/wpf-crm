@@ -48,9 +48,6 @@ namespace Dental.ViewModels
             }
         }
 
-        public bool CanEditable() => ((UserSession)Application.Current.Resources["UserSession"]).SettingsRead;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).SettingsRead;
-
         public Setting Settings
         {
             get { return GetProperty(() => Settings); }

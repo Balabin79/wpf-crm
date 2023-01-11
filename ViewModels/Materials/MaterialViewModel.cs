@@ -43,18 +43,6 @@ namespace Dental.ViewModels.Materials
             }
         }
 
-        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PricesRead;
-        public bool CanExpandTree(object p) => true;
-        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceDeletable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanCancelForm() => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-
-        public bool CanPrintPrice() => true;
-        public bool CanLoadDocForPrint() => true;
-
         public override ObservableCollection<Nomenclature> Collection
         {
             get { return GetProperty(() => Collection); }

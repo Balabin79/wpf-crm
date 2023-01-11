@@ -60,24 +60,6 @@ namespace Dental.ViewModels
             }
         }
 
-        #region Права на выполнение команд
-        public bool CanAppointmentAdded(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
-        public bool CanAppointmentEdited(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
-        public bool CanAppointmentRemoved(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleRead;
-
-        public bool CanOpenWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanCloseWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanAddLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-        public bool CanDeleteLocation(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationDeletable;
-        public bool CanSaveLocation() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleLocationEditable;
-
-        public bool CanOpenWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanCloseWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanAddStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanSaveStatus() => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusEditable;
-        public bool CanDeleteStatus(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SheduleStatusDeletable;
-        #endregion
-
         public void SetLocationAppointments() => LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
 
         [Command]
@@ -449,7 +431,8 @@ namespace Dental.ViewModels
 
         private void SetSelectedEmployees()
         {
-            var userSession = (UserSession)Application.Current.Resources["UserSession"];
+            Doctors.ForEach(f => SelectedDoctors.Add(f));
+           /* var userSession = (UserSession)Application.Current.Resources["UserSession"];
             SelectedDoctors = new List<object>();
             try
             {
@@ -462,7 +445,7 @@ namespace Dental.ViewModels
             catch
             {
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
-            }
+            }*/
         }
 
         public Config Config

@@ -18,7 +18,6 @@ namespace Dental
         {
             try
             {              
-                Login();
                 InitializeComponent();
             }
             catch (FileNotFoundException ex)
@@ -30,49 +29,6 @@ namespace Dental
                 MessageBox.Show(e.Message + " WWW " + e.InnerException.Message);
             }
 
-        }
-
-        private void Restart()
-        {
-            string mes = "Завершить сеанс работы?";
-            var response = ThemedMessageBox.Show(title: "Внимание", text: mes, messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-            if (response.ToString() == "No") return;
-            Login();
-            var userSession = (UserSession)Application.Current.Resources["UserSession"];
-
-                //var nav = (Navigator)Application.Current.Resources["Router"];
-
-                /*statBtnItem.IsVisible = userSession.StatisticRead;
-                sheduleBtn.IsVisible = userSession.SheduleRead;
-                clientsBtn.IsVisible = userSession.ClientsRead;
-                employeesBtn.IsVisible = userSession.EmployeesRead;
-                servicesBtn.IsVisible = userSession.PricesRead;
-                templatesBtnItem.IsVisible = userSession.TemplatesRead;
-                settingsBtnItem.IsVisible = userSession.SettingsRead;
-                orgBtnItem.IsVisible = userSession.OrgRead;*/
-
-                /*if (userSession.ClientsRead) { nav.LeftMenuClick("Dental.Views.PatientCard.PatientsList"); return;  }
-                if (userSession.SheduleRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
-                if (userSession.EmployeesRead) { nav.LeftMenuClick("Dental.Views.Sheduler"); return; }
-                if (userSession.PricesRead) { nav.LeftMenuClick("Dental.Views.ServicePrice.ServicePage"); return; }
-                if (userSession.TemplatesRead) { nav.LeftMenuClick("Dental.Views.Templates.MainPage"); return; }
-                if (userSession.SettingsRead) { nav.LeftMenuClick("Dental.Views.Settings.SettingsPage"); return; }
-                if (userSession.StatisticRead) { nav.LeftMenuClick("Dental.Views.Statistic.StatisticPage"); return; }
-                if (userSession.OrgRead) { nav.LeftMenuClick("Dental.Views.Dental.Views.Organization"); return; }*/
-        }
-
-        private void Login()
-        {
-            try
-            {
-                var login = new Login();
-                login.ShowLogin();
-                Application.Current.Resources["UserSession"] = login.UserSession;
-            }
-            catch (Exception e)
-            {
-
-            }
         }
 
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -91,8 +47,6 @@ namespace Dental
 
            Application.Current.Shutdown();         
         }
-
-        private void BarButtonItem_ItemClick(object sender, ItemClickEventArgs e) => Restart();
 
         private void stat_Click(object sender, EventArgs e) => stat.IsSelected = true;
 

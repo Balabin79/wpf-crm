@@ -76,39 +76,12 @@ namespace Dental.ViewModels.ClientDir
         }
 
         #region Права на выполнение команд
-        public bool CanOpenFormDocuments() => ((UserSession)Application.Current.Resources["UserSession"]).ClientTemplatesEditable;
-        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientDeletable;
-        public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
 
         public bool OpenDirectory() => Model?.Id != 0;
         public bool ExecuteFile() => Model?.Id != 0;
         public bool AttachmentFile() => Model?.Id != 0;
         public bool DeleteFile() => Model?.Id != 0;
         //public bool CanShowArchive() => true;
-
-
-        // Счета
-        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanOpenFormInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanOpenFormInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanEditInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanSaveRowInInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanDeleteInvoiceService(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanStatusChanged(object p) => true;
-
-        // Врачебная
-        public bool CanOpenTreatmentForm(object p) => true;
-        public bool CanDeleteTreatment(object p) => true;
-        public bool CanSaveTreatment(object p) => true;
-        public bool CanOpenFormTemplate(object p) => true;
-        public bool CanAddChecked(object p) => true;
-        public bool CanClear(object p) => true;
-        public bool CanToothMarked(object p) => true;
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 

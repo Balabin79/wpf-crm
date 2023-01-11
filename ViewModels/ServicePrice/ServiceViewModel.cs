@@ -43,18 +43,7 @@ namespace Dental.ViewModels.ServicePrice
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        #region Права на выполнение команд
-        public bool CanSelectItemInServiceField(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PricesRead;
-        public bool CanExpandTree(object p) => true;
-        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceDeletable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanCancelForm() => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanOpenDirByParentForm(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
-        public bool CanPrintPrice() => true;
-        public bool CanLoadDocForPrint() => true;
-        #endregion
+
         public override ObservableCollection<Service> Collection
         {
             get { return GetProperty(() => Collection); }

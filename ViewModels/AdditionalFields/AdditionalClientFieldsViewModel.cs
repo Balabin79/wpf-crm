@@ -29,12 +29,6 @@ namespace Dental.ViewModels.AdditionalFields
             catch { }
         }
 
-        #region Права на выполнение команд
-        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).ClientEditable;
-        #endregion
-
         [Command]
         public void Delete(object p)
         {

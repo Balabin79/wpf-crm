@@ -13,7 +13,6 @@
 
     <Application.Resources>
         <vm:MainViewModel x:Key="Router"/>
-        <serv:UserSession x:Key="UserSession"/>
         <serv:UserApp x:Key="UserApp"/>
         <dxmvvm:OpenFileDialogService x:Key="OpenFileDialogService" />
 
