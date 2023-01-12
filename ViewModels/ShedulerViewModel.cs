@@ -431,6 +431,7 @@ namespace Dental.ViewModels
 
         private void SetSelectedEmployees()
         {
+            SelectedDoctors = new List<object>();
             Doctors.ForEach(f => SelectedDoctors.Add(f));
            /* var userSession = (UserSession)Application.Current.Resources["UserSession"];
             SelectedDoctors = new List<object>();

@@ -33,6 +33,7 @@ namespace Dental.ViewModels.ClientDir
             WhomIssued = client.WhomIssued;
             Image = client.Image;
             Photo = client.Photo;
+            Img = client.Img;
         }
 
         public int Id
@@ -117,6 +118,13 @@ namespace Dental.ViewModels.ClientDir
         public string PassportIssuanceDate { get; set; }
         public string WhomIssued { get; set; }
 
+        public byte[] Img
+        {
+            get { return GetProperty(() => Img); }
+            set { SetProperty(() => Img, value); }
+        }
+
+
         [NotMapped]
         public ImageSource Image
         {
@@ -197,6 +205,7 @@ namespace Dental.ViewModels.ClientDir
             client.WhomIssued = WhomIssued;
             client.Image = Image;
             client.Photo = Photo;
+            client.Img = Img;
             return client;
         }
     }

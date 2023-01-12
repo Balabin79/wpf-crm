@@ -44,10 +44,13 @@ using System.Windows.Data;
 using Dental.Views.Settings;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.WindowsUI.Navigation;
+using System.Reflection;
+using License;
+using IntelliLock.Licensing;
 
 namespace Dental.ViewModels.ClientDir
 {
-    public class ClientsViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
+    public class ClientsViewModel : ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
 
@@ -86,7 +89,7 @@ namespace Dental.ViewModels.ClientDir
 
         #region Загрузка списков клиентов и всех инвойсов 
         public void LoadClients(bool isArhive = false)
-        {
+        {        
             Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
             foreach (var i in Clients) ImgLoading(i);
         }
@@ -112,30 +115,47 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                var config = new Config();
-                var path = "";
-                if (model is Employee) path = Config.PathToEmployeesDirectory;
-
-                if (model is Client) 
-                    path = Config.PathToClientsPhotoDirectory;
-
-                if (Directory.Exists(path))
+                /*
+                if (model.Img == null) return;
+               
+                using (var ms = new MemoryStream(model.Img))
                 {
-                    var file = Directory.GetFiles(path)?.FirstOrDefault(f => f.Contains(model.Guid));
-                    if (file == null) return;
+                    BitmapImage biImg = new BitmapImage();
+                    biImg.BeginInit();
+                    biImg.StreamSource = ms;
+                    biImg.EndInit();
 
-                    using (var stream = new FileStream(file, FileMode.Open))
+
+
+                   // model.Image = new BitmapImage() { StreamSource = ms};
+       
+                    model.Image = biImg;
+                }*/
+                      
+                    var config = new Config();
+                    var path = "";
+                    if (model is Employee) path = Config.PathToEmployeesDirectory;
+
+                    if (model is Client) 
+                        path = Config.PathToClientsPhotoDirectory;
+
+                    if (Directory.Exists(path))
                     {
-                        var img = new BitmapImage();
-                        img.BeginInit();
-                        img.CacheOption = BitmapCacheOption.OnLoad;
-                        img.StreamSource = stream;
-                        img.EndInit();
-                        img.Freeze();
-                        model.Image = img;
+                        var file = Directory.GetFiles(path)?.FirstOrDefault(f => f.Contains(model.Guid));
+                        if (file == null) return;
+
+                        using (var stream = new FileStream(file, FileMode.Open))
+                        {
+                            var img = new BitmapImage();
+                            img.BeginInit();
+                            img.CacheOption = BitmapCacheOption.OnLoad;
+                            img.StreamSource = stream;
+                            img.EndInit();
+                            img.Freeze();
+                            model.Image = img;
+                        }
                     }
                 }
-            }
             catch
             {
 
@@ -992,7 +1012,7 @@ namespace Dental.ViewModels.ClientDir
                     foreach (var filePath in filesNames) Documents.Add(new FileInfo(filePath));
                 }
             }
-            catch
+            catch (Exception e)
             {
 
             }
@@ -1205,6 +1225,18 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
+                /*if (p is ImageEditEx param)
+                {
+                    byte[] imageData;
+                    using (FileStream fs = new FileStream(param.ImagePath, FileMode.Open))
+                    {
+                        imageData = new byte[fs.Length];
+                        fs.Read(imageData, 0, imageData.Length);
+                        Model.Img = imageData;
+                        db.SaveChanges();
+                    }
+                }*/
+
                 if (p is ImageEditEx param)
                 {
                     if (!Directory.Exists(Config.PathToClientsPhotoDirectory)) Directory.CreateDirectory(Config.PathToClientsPhotoDirectory);

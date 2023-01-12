@@ -10,24 +10,59 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Icon="/Resources/Icons/te4.ico" 
-        Title="Лицензия" Height="325" Width="600" ResizeMode="CanMinimize">
+        Title="Лицензия"  Width="800" Height="390" ResizeMode="CanMinimize">
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
         <StackPanel>
-        <dxlc:LayoutItem Label="Текущая лицензия:" LabelPosition="Top" Height="100" Margin="5">
-            <TextBox IsReadOnly="True" 
-                Text="{Binding License, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  />
-        </dxlc:LayoutItem>
-        
-        <dxlc:LayoutItem Label="Введите лицензию:" LabelPosition="Top" Height="100" Margin="5 10 5 5">
-            <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" x:Name="licenseField" 
-                          EditValue="{Binding NewLicense, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-        </dxlc:LayoutItem>
+            
+            <dxlc:LayoutItem Label="Дата окончания пробного периода:" LabelPosition="Top"  Margin="5">
+                <TextBox IsReadOnly="True" 
+                    Text="{Binding TrialDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
+            </dxlc:LayoutItem>
 
-        <StackPanel Height="25" Grid.Row="2" Margin="5 10 5 5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <dxlc:LayoutItem Label="Компания:" LabelPosition="Top"  Margin="5">
+                <TextBox IsReadOnly="True" 
+                    Text="{Binding Company, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
+            </dxlc:LayoutItem>
+           
+            <dxlc:LayoutItem Label="ФИО:" LabelPosition="Top"  Margin="5">
+                <TextBox IsReadOnly="True" 
+                Text="{Binding FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
+            </dxlc:LayoutItem>
+            
+            <dxlc:LayoutItem Label="Дата выдачи:" LabelPosition="Top"  Margin="5">
+                <TextBox IsReadOnly="True" 
+                Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
+            </dxlc:LayoutItem>
+
+            <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <dxlc:LayoutItem Label="Имя компьютера:" LabelPosition="Top"  Margin="5 0 0 0">
+                    <TextBox IsReadOnly="True" x:Name="HardwareID" 
+                Text="{Binding HardwareID, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
+                </dxlc:LayoutItem>
+                <dx:SimpleButton ToolTip="Скопировать в буфер обмена"
+                    Height="22" Content="Скопировать в буфер обмена" VerticalContentAlignment="Center" Width="205" Margin="0 19 5 0"
+                                 Glyph="{Binding Source=/Resources/Icons/svg/database.svg }" GlyphHeight="12"
+                                 Click="CopyToClipboard"/>
+            </dxlc:LayoutGroup>
+
+            <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="5 5 5 0">
+                
+                <dxlc:LayoutItem Label="Введите лицензию:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
+                    <dxe:TextEdit x:Name="pathToLicense"     
+                                Text="{Binding PathToLicense, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                  />
+
+                </dxlc:LayoutItem>
+                <dx:SimpleButton Height="22" Content="Найти" VerticalContentAlignment="Center" Width="80" Margin="0 19 0 0"
+                                 Glyph="{Binding Source=/Resources/Icons/svg/folder.svg }" GlyphHeight="12"
+                                 Click="LoadLicense"/>
+            </dxlc:LayoutGroup>
+
+            <StackPanel Height="25" Grid.Row="2" Margin="5 10 5 5" Orientation="Horizontal" HorizontalAlignment="Right">
             <dx:SimpleButton
                 Content="Сохранить" VerticalContentAlignment="Center" 
-                Command="{Binding SaveLicenseCommand}" CommandParameter="{Binding ElementName=win}" 
-                IsEnabled="{DXBinding Expr='NewLicense != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Command="{Binding LoadLicenseCommand}" CommandParameter="{Binding ElementName=PathToLicense, Path=Text}" 
+                IsEnabled="{DXBinding Expr='pathToLicense != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             <dx:SimpleButton Content="Закрыть" VerticalContentAlignment="Center" Click="Close_Click" Margin="4 0 0 0"/>
         </StackPanel>
     </StackPanel>

@@ -110,9 +110,8 @@ namespace Dental.ViewModels
         public void OpenLicenseForm()
         {
             try
-            {
-                NewLicense = null;
-                new LicenseWindow() { DataContext = this }?.ShowDialog();
+            {              
+                new LicenseWindow() { DataContext = new LicViewModel() }?.ShowDialog();
             }
             catch { }
         }
