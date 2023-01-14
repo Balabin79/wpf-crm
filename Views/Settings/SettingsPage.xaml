@@ -100,23 +100,29 @@
 
                 <dxlc:LayoutGroup View="Group" Orientation="Vertical" Margin="5">
 
+
                     <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" >
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
-                                <TextBlock Text="Настройки доступа к API &quot;B6 Dental&quot;" VerticalAlignment="Center" Height="22"/>
+                                <TextBlock Text="Персональные настройки пользователя" VerticalAlignment="Center" Height="22"/>
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
-                        <dxlc:LayoutItem Label="URL (Сетевой адрес API):" LabelPosition="Top">
-                            <dxe:TextEdit Text="{Binding Settings.UrlApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        </dxlc:LayoutItem>
+                      
                         <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                            <dxe:TextEdit Text="{Binding Settings.LoginApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                            <dxe:TextEdit Text="{Binding Settings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
-                            <dxe:TextEdit Text="{Binding Settings.PasswordApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                        <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" Margin="0 5 0 0">
+                            <dxe:TextEdit Text="{Binding Settings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        </dxlc:LayoutItem>
+
+                        <dxlc:LayoutItem Label="Загружать данные с отбором по профилю пользователя:" LabelPosition="Top" Margin="0 5 0 0"  >
+                            <dxe:CheckEdit             
+                                  EditValue="{Binding Settings.IsSingleProfile, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                             UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
 

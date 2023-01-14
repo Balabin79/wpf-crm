@@ -83,6 +83,7 @@
     <None Remove="Resources\Icons\stamp.png" />
     <None Remove="Resources\Icons\svg\boxes.svg" />
     <None Remove="Resources\Icons\svg\chart-line.svg" />
+    <None Remove="Resources\Icons\svg\clone.svg" />
     <None Remove="Resources\Icons\svg\coins.svg" />
     <None Remove="Resources\Icons\svg\database.svg" />
     <None Remove="Resources\Icons\svg\document.png" />
@@ -293,6 +294,7 @@
     <Resource Include="Resources\Icons\stamp.png" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
+    <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
@@ -403,9 +405,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="dental.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

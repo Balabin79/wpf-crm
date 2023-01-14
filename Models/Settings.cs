@@ -10,11 +10,9 @@ namespace Dental.Models
     {
         public string LoginProdoctorov { get; set; }
         public string PasswordProdoctorov { get; set; }
-        public int? RolesEnabled { get; set; }
-        public int? IsPasswordRequired { get; set; }
 
-        public string UrlApi { get; set; }
-        public string LoginApi { get; set; }
-        public string PasswordApi { get; set; }
+        public int? IsSingleProfile { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -33,21 +33,6 @@ namespace Dental.Services
             db = new ApplicationContext();
           //  CurrentPage = CreatePage(defaultPage);
             //FrameOpacity = 1.1;
-
-            try
-            {
-                RoleEnabled = db.Settings.FirstOrDefault()?.RolesEnabled == 1;
-
-            }
-            catch (SQLiteException e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-            catch (Exception e)
-            {
-                RoleEnabled = false;
-                ThemedMessageBox.Show(title: "Ошибка", text: e.Message, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
         }
 
         #region Общий ф-нал

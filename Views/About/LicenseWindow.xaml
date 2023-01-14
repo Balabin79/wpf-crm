@@ -41,7 +41,7 @@
                 </dxlc:LayoutItem>
                 <dx:SimpleButton ToolTip="Скопировать в буфер обмена"
                     Height="22" Content="Скопировать в буфер обмена" VerticalContentAlignment="Center" Width="205" Margin="0 19 5 0"
-                                 Glyph="{Binding Source=/Resources/Icons/svg/database.svg }" GlyphHeight="12"
+                                 Glyph="{Binding Source=/Resources/Icons/svg/clone.svg }" GlyphHeight="12"
                                  Click="CopyToClipboard"/>
             </dxlc:LayoutGroup>
 

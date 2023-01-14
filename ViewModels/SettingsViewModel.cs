@@ -35,14 +35,14 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 Settings = db.Settings.FirstOrDefault() ?? new Setting();
                 Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
-                Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
+                //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
                 IsReadOnly = true;
 
                 EmployeeWrappers = new List<EmployeeWrapper>();
                 Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
