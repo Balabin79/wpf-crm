@@ -25,6 +25,8 @@ using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
 using Dental.Infrastructures.Converters;
 using Dental.Views.Settings;
+using License;
+using Dental.Views.About;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -99,6 +101,17 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+
                 if (p is Employee model)
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;

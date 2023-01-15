@@ -27,6 +27,8 @@ using Dental.Views.Settings;
 using Dental.Reports;
 using DevExpress.Xpf.Printing;
 using Dental.Infrastructures.Extensions.Notifications;
+using License;
+using Dental.Views.About;
 
 namespace Dental.ViewModels
 {
@@ -67,6 +69,17 @@ namespace Dental.ViewModels
         {
             try
             {
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+
                 var item = Appointments.FirstOrDefault(f => f.Id == 0);
                 if (item == null) return;
 

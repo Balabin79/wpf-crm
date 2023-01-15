@@ -250,8 +250,8 @@
     <Reference Include="DevExpress.XtraScheduler.v20.1.Core">
       
     </Reference>
-    <Reference Include="IntelliLock.Licensing">
-      <HintPath>..\..\..\..\..\ПРОГРАММИРОВАНИЕ\Разработка\лицензирование\IntelliLock.Licensing.dll</HintPath>
+    <Reference Include="License">
+      <HintPath>..\..\..\..\..\ПРОГРАММИРОВАНИЕ\Разработка\лицензирование\License.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />

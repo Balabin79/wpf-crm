@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
-using IntelliLock.Licensing;
+using License;
 
 namespace Dental.ViewModels
 {
@@ -16,7 +17,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                string hardwareId = HardwareID.GetHardwareID(true, true, false, true, true, false); // текущее Hardware ID
+                string hardwareId = Status.HardwareID; // текущее Hardware ID
                 Hardware_ID = hardwareId.Length > 100 ? "Недоступно" : hardwareId;
             }
             catch(Exception e)
@@ -25,44 +26,52 @@ namespace Dental.ViewModels
             }
         }
 
+
         [Command]
         public void Load(object p)
         {
+            //InvalidateLicense();
             string filename = p?.ToString();
             if (string.IsNullOrEmpty(filename)) return;
-            EvaluationMonitor.LoadLicense(filename);
+            LoadLicense(filename);
 
-            bool hardwareIDMatches = (HardwareID.GetHardwareID(true, true, false, true, true, false) == EvaluationMonitor.CurrentLicense.HardwareID);
-            string status = IntelliLock.Licensing.CurrentLicense.License.LicenseStatus.ToString();
-           
+            bool hardwareIDMatches = (Status.HardwareID == Status.License_HardwareID);
+
             if (!hardwareIDMatches)
             {
-                string confirmation_code = License_DeActivator.DeactivateLicense();
                 ThemedMessageBox.Show(title: "Внимание", text: "Некорректный файл лицензии!",
-                  messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                  messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
 
-            if (hardwareIDMatches && status == "1")
+            if (hardwareIDMatches)
             {
                 ThemedMessageBox.Show(title: "Внимание", text: "Спасибо за регистрацию!",
-                  messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                  messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information);
             }
         }
 
+        public void LoadLicense(string filename)
+        {
+            //EvaluationMonitor.LoadLicense(filename);
+            using (var stream = new FileStream(filename, FileMode.Open))
+            {
+                // Create a new instance of memorystream
+                var memoryStream = new MemoryStream();
+
+                // Use the .CopyTo() method and write current filestream to memory stream
+                stream.CopyTo(memoryStream);
+
+                byte[] license = memoryStream.ToArray();
+                Status.LoadLicense(license);
+            }
+
+        }
 
         public bool IsValidLicenseAvailable()
         {
-            return (EvaluationMonitor.CurrentLicense.LicenseStatus == IntelliLock.Licensing.LicenseStatus.Licensed);
+            return Status.Licensed;
         }
 
-        public string GetLicenseStatus() => IntelliLock.Licensing.CurrentLicense.License.LicenseStatus.ToString();
-
-
-
-        public void InvalidateLicense()
-        {
-            string confirmation_code = License_DeActivator.DeactivateLicense();
-        }
 
         public string LicenseStatus
         {

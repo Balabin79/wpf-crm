@@ -45,7 +45,8 @@ using Dental.Views.Settings;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System.Reflection;
-using IntelliLock.Licensing;
+using License;
+using Dental.Views.About;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -220,6 +221,17 @@ namespace Dental.ViewModels.ClientDir
                         }
                     }
                 }
+
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
             }
             catch { }
         }
@@ -387,8 +399,6 @@ namespace Dental.ViewModels.ClientDir
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
                 LoadDocuments();
-
-
             }
             catch (Exception e)
             {

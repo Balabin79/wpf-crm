@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using DevExpress.Mvvm.DataAnnotations;
-using IntelliLock;
-using IntelliLock.Licensing;
+using DevExpress.Xpf.Core;
+using License;
 
 namespace Dental.ViewModels
 {
@@ -16,16 +17,16 @@ namespace Dental.ViewModels
         {
             try
             {
-                LicenseStatus = GetLicenseStatus();
+                //LicenseStatus = GetLicenseStatus();
                 LicenseAvailable = IsValidLicenseAvailable();
                 HardwareIDMatches = CompareHardwareID();
-                LockEnabled = EvaluationMonitor.CurrentLicense.ExpirationDays_Enabled; // включена ли блокировка            
+                LockEnabled = Status.Evaluation_Lock_Enabled; // включена ли блокировка            
 
                 TrialStatus = "Незарегистрированная копия";
 
                 if (LicenseAvailable) // если доступна лицензия
                 {
-                    if (HardwareIDMatches && LicenseStatus == "1")
+                    if (HardwareIDMatches/* && LicenseStatus == "1"*/)
                     {
                         TrialStatus = "Зарегистрированная копия";
                     }
@@ -34,27 +35,25 @@ namespace Dental.ViewModels
                         TrialStatus = "Незарегистрированная копия";
                     }                   
                 } 
-                if (!LicenseAvailable && LicenseStatus == "2") // если триал 
+                if (!LicenseAvailable /*&& LicenseStatus == "2"*/) // если триал 
                 {
-                    ExpirationDays = EvaluationMonitor.CurrentLicense.ExpirationDays; // сколько всего дней отведено на триал
-                    ExpirationDaysCurrent = EvaluationMonitor.CurrentLicense.ExpirationDays_Current; // какой по счету сейчас день триала
+                    ExpirationDays = Status.Evaluation_Time; // сколько всего дней отведено на триал
+                    ExpirationDaysCurrent = Status.Evaluation_Time_Current; // какой по счету сейчас день триала
                     TrialStatus = "Пробный период, осталось дней: " + ExpirationDays;
                 }
 
-                Msg = new IntelliLock.DialogBoxAttribute();
                 /*****/
                 ReadAdditonalLicenseInformation(); // информация о компании, фио, дате выдачи
-                string hardwareId = HardwareID.GetHardwareID(true, true, false, true, true, false); // текущее Hardware ID
+                string hardwareId = Status.HardwareID; // текущее Hardware ID
                 Hardware_ID = hardwareId.Length > 100 ? "Недоступно" : hardwareId;
 
             }
             catch (Exception e)
             {
-
+                
             }
         }
 
-        public DialogBoxAttribute Msg { get; set; }
         public bool LockEnabled { get; set; }
         public bool HardwareIDMatches { get; set; }
         public bool LicenseAvailable { get; set; }
@@ -67,7 +66,7 @@ namespace Dental.ViewModels
         // сравнение текущего Hardware ID и Hardware ID для которого выдана лицензия
         public bool CompareHardwareID()
         {
-            if (HardwareID.GetHardwareID(true, true, false, true, true, false) == EvaluationMonitor.CurrentLicense.HardwareID)
+            if (Status.HardwareID == Status.License_HardwareID)
                 return true;
             else
                 return false;
@@ -95,6 +94,20 @@ namespace Dental.ViewModels
 
                 byte[] license = memoryStream.ToArray();
                 LoadLicense(license);
+
+                bool hardwareIDMatches = (Status.HardwareID == Status.License_HardwareID);
+
+                if (!hardwareIDMatches)
+                {
+                    ThemedMessageBox.Show(title: "Внимание", text: "Некорректный файл лицензии!",
+                      messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                }
+
+                if (hardwareIDMatches)
+                {
+                    ThemedMessageBox.Show(title: "Внимание", text: "Спасибо за регистрацию!",
+                      messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information);
+                }
             }
 
         }
@@ -103,14 +116,14 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (EvaluationMonitor.CurrentLicense.LicenseStatus == IntelliLock.Licensing.LicenseStatus.Licensed)
+                if (Status.Licensed)
                 {
                     /* Read additional license information */
                     //for (int i = 0; i < EvaluationMonitor.CurrentLicense.LicenseInformation.Count; i++)
                    // {
-                    Company = EvaluationMonitor.CurrentLicense.LicenseInformation.GetByIndex(0).ToString();
-                    Date = EvaluationMonitor.CurrentLicense.LicenseInformation.GetByIndex(1).ToString();
-                    FullName = EvaluationMonitor.CurrentLicense.LicenseInformation.GetByIndex(2).ToString();
+                    Company = Status.KeyValueList.GetByIndex(0).ToString();
+                    Date = Status.KeyValueList.GetByIndex(1).ToString();
+                    FullName = Status.KeyValueList.GetByIndex(2).ToString();
                     //}
                 }
             }
@@ -126,31 +139,30 @@ namespace Dental.ViewModels
 
         public bool IsValidLicenseAvailable()
         {
-            return (EvaluationMonitor.CurrentLicense.LicenseStatus == IntelliLock.Licensing.LicenseStatus.Licensed);
+            return Status.Licensed;
         }
 
-        public string GetLicenseStatus() => IntelliLock.Licensing.CurrentLicense.License.LicenseStatus.ToString();
+        //public string GetLicenseStatus() => Status. IntelliLock.Licensing.CurrentLicense.License.LicenseStatus.ToString();
 
         // получение Hardware ID для которого выдана лицензия
         public void CheckHardwareLock()
         {
-            bool lock_enabled = EvaluationMonitor.CurrentLicense.HardwareLock_Enabled;
-
+            bool lock_enabled = Status.Hardware_Lock_Enabled;
             if (lock_enabled)
             {
-                /* Get Hardware ID stored in the license file */
-                LicHardwareId = EvaluationMonitor.CurrentLicense.HardwareID;
+                // Get Hardware ID which is stored inside the license file
+                LicHardwareId = Status.License_HardwareID;
             }
         }
 
         public void InvalidateLicense()
         {
-            string confirmation_code = License_DeActivator.DeactivateLicense();
+            string confirmation_code = Status.InvalidateLicense();
         }
 
         public void LoadLicense(byte[] license)
         {
-            EvaluationMonitor.LoadLicense(license);
+            Status.LoadLicense(license);
         }
 
         public string LicenseStatus
