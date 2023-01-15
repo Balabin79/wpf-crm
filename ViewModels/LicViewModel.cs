@@ -122,7 +122,6 @@ namespace Dental.ViewModels
                     //for (int i = 0; i < EvaluationMonitor.CurrentLicense.LicenseInformation.Count; i++)
                    // {
                     Company = Status.KeyValueList.GetByIndex(0).ToString();
-                    Date = Status.KeyValueList.GetByIndex(1).ToString();
                     FullName = Status.KeyValueList.GetByIndex(2).ToString();
                     //}
                 }
@@ -130,7 +129,6 @@ namespace Dental.ViewModels
             catch
             {
                 Company = "Недоступно";
-                Date = "Недоступно";
                 FullName = "Недоступно";
             }
             /* Check first if a valid license file is found */
@@ -169,12 +167,6 @@ namespace Dental.ViewModels
         {
             get { return GetProperty(() => LicenseStatus); }
             set { SetProperty(() => LicenseStatus, value); }
-        }
-
-        public string Date
-        {
-            get { return GetProperty(() => Date); }
-            set { SetProperty(() => Date, value); }
         }
 
         public string FullName

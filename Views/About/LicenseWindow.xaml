@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Icon="/Resources/Icons/te4.ico" 
-        Title="Лицензия"  Width="800" Height="390" ResizeMode="CanMinimize">
+        Title="Лицензия"  Width="800" Height="340" ResizeMode="CanMinimize">
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
         <StackPanel>
             
@@ -23,15 +23,10 @@
                 <TextBox IsReadOnly="True" 
                     Text="{Binding Company, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
             </dxlc:LayoutItem>
-           
+
             <dxlc:LayoutItem Label="ФИО:" LabelPosition="Top"  Margin="5">
                 <TextBox IsReadOnly="True" 
                 Text="{Binding FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
-            </dxlc:LayoutItem>
-            
-            <dxlc:LayoutItem Label="Дата выдачи лицензии:" LabelPosition="Top"  Margin="5">
-                <TextBox IsReadOnly="True" 
-                Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
             </dxlc:LayoutItem>
 
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
