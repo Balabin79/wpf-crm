@@ -19,9 +19,9 @@ namespace Dental.Views.About
     /// <summary>
     /// Логика взаимодействия для LicenseWindow.xaml
     /// </summary>
-    public partial class LicenseWindow : Window
+    public partial class LicenseExpiredWindow : Window
     {
-        public LicenseWindow()
+        public LicenseExpiredWindow()
         {
             InitializeComponent();
         }

@@ -251,10 +251,7 @@
       
     </Reference>
     <Reference Include="IntelliLock.Licensing">
-      <HintPath>bin\Debug\net472\IntelliLock.Licensing.dll</HintPath>
-    </Reference>
-    <Reference Include="License">
-      <HintPath>bin\Debug\net472\License.dll</HintPath>
+      <HintPath>..\..\..\..\..\ПРОГРАММИРОВАНИЕ\Разработка\лицензирование\IntelliLock.Licensing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
@@ -353,6 +350,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="Views\About\LicenseExpiredWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Invoices\ClientInvoicesControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -425,6 +425,10 @@
 
   <ItemGroup>
     <Page Update="Employes1.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\About\LicenseExpiredWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

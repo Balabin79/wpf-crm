@@ -1,4 +1,4 @@
-﻿<Window x:Class="Dental.Views.About.LicenseWindow"
+﻿<Window x:Class="Dental.Views.About.LicenseExpiredWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,30 +10,9 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Icon="/Resources/Icons/te4.ico" 
-        Title="Лицензия"  Width="800" Height="390" ResizeMode="CanMinimize">
+        Title="Лицензия"  Width="800" Height="190" ResizeMode="CanMinimize">
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
         <StackPanel>
-            
-            <dxlc:LayoutItem Label="Статус регистрации:" LabelPosition="Top"  Margin="5">
-                <TextBox IsReadOnly="True" 
-                    Text="{Binding TrialStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
-            </dxlc:LayoutItem>
-
-            <dxlc:LayoutItem Label="Компания:" LabelPosition="Top"  Margin="5">
-                <TextBox IsReadOnly="True" 
-                    Text="{Binding Company, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
-            </dxlc:LayoutItem>
-           
-            <dxlc:LayoutItem Label="ФИО:" LabelPosition="Top"  Margin="5">
-                <TextBox IsReadOnly="True" 
-                Text="{Binding FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
-            </dxlc:LayoutItem>
-            
-            <dxlc:LayoutItem Label="Дата выдачи лицензии:" LabelPosition="Top"  Margin="5">
-                <TextBox IsReadOnly="True" 
-                Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  />
-            </dxlc:LayoutItem>
-
             <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <dxlc:LayoutItem Label="Имя компьютера:" LabelPosition="Top"  Margin="5 0 0 0">
                     <TextBox IsReadOnly="True" x:Name="HardwareID" 

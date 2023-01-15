@@ -45,7 +45,6 @@ using Dental.Views.Settings;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using System.Reflection;
-using License;
 using IntelliLock.Licensing;
 
 namespace Dental.ViewModels.ClientDir
@@ -388,6 +387,8 @@ namespace Dental.ViewModels.ClientDir
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
                 LoadDocuments();
+
+
             }
             catch (Exception e)
             {

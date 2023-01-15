@@ -6,6 +6,9 @@ using DevExpress.Xpf.Navigation;
 using System;
 using System.IO;
 using System.Windows;
+using IntelliLock.Licensing;
+using Dental.Views.About;
+using Dental.ViewModels;
 
 namespace Dental
 {
@@ -19,10 +22,53 @@ namespace Dental
             try
             {              
                 InitializeComponent();
+                new Action(() =>
+                {
+                    IntelliLock.Licensing.EvaluationMonitor.LicenseCheckFinished += () =>
+                    {
+                        bool licenseAvailable = (EvaluationMonitor.CurrentLicense.LicenseStatus == IntelliLock.Licensing.LicenseStatus.Licensed);
+                        bool hardwareIDMatches = (HardwareID.GetHardwareID(true, true, false, true, true, false) == EvaluationMonitor.CurrentLicense.HardwareID);
+                        string licenseStatus = IntelliLock.Licensing.CurrentLicense.License.LicenseStatus.ToString();
+
+                        if (licenseAvailable) // если доступна лицензия
+                        {
+                            if (!hardwareIDMatches)
+                            {
+                                string confirmation_code = License_DeActivator.DeactivateLicense();
+                                ThemedMessageBox.Show(title: "Внимание", text: "Незарегистрированная копия программы! Для того чтобы продолжить использовать программу, ее необходимо купить.",
+                                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);                              
+
+                                IntelliLock.Licensing.EvaluationMonitor.LicenseExpired += () => 
+                                { 
+                                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                                    Environment.Exit(0);
+                                };
+                            }
+                        }
+
+                        if (!licenseAvailable && licenseStatus == "2") // если триал 
+                        {
+                            int expirationDays = EvaluationMonitor.CurrentLicense.ExpirationDays; // сколько всего дней отведено на триал
+                            int expirationDaysCurrent = EvaluationMonitor.CurrentLicense.ExpirationDays_Current; // какой по счету сейчас день триала
+                            if (expirationDaysCurrent > expirationDays)
+                            {
+                                ThemedMessageBox.Show(title: "Внимание", text: "Пробный период истек! Для того чтобы продолжить использовать программу, ее необходимо купить.",
+                                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                                IntelliLock.Licensing.EvaluationMonitor.LicenseExpired += () =>
+                                {
+                                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                                    Environment.Exit(0);
+                                };
+                            }
+                        }
+                    };
+                }).BeginInvoke(null, null);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message );
+                Environment.Exit(0);
             }
 
         }
