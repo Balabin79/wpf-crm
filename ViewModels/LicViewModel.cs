@@ -39,7 +39,8 @@ namespace Dental.ViewModels
                 {
                     ExpirationDays = Status.Evaluation_Time; // сколько всего дней отведено на триал
                     ExpirationDaysCurrent = Status.Evaluation_Time_Current; // какой по счету сейчас день триала
-                    TrialStatus = "Пробный период, осталось дней: " + ExpirationDays;
+                    int days = ExpirationDays - ExpirationDaysCurrent > 0 ? ExpirationDays - ExpirationDaysCurrent : 0;
+                    TrialStatus = "Пробный период, осталось дней: " + days;
                 }
 
                 /*****/
