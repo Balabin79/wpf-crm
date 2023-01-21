@@ -41,7 +41,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <dx:DXTabControl >
-        <dx:DXTabItem Header="Дневники" >
+        <dx:DXTabItem Header="История лечений" >
             <Grid x:Name="mainGrid">
                 <dxlc:LayoutGroup 
                     Margin="5"
@@ -51,7 +51,7 @@
                     <dxlc:LayoutGroup.HeaderTemplate>
                         <DataTemplate >
                             <DockPanel  HorizontalAlignment="Stretch">
-                                <TextBlock Text="Области лечения" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                <TextBlock Text="Этапы" DockPanel.Dock="Left" VerticalAlignment="Center"/>
 
                                 <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
                                     <dxb:ToolBarControl Background="Transparent"
@@ -64,7 +64,7 @@
                                         <dxb:BarButtonItem 
                                             Command="{Binding ElementName=mainGrid, Path=DataContext.OpenTreatmentFormCommand}" 
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                            Content="Добавить новую область" 
+                                            Content="Добавить новый этап" 
                                             IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false and @e(view).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                             />
 
@@ -113,7 +113,7 @@
                                     <dxb:BarButtonItem 
                                         Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}" 
                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                        Content="Создать новую область"
+                                        Content="Добавить новый этап"
                                         KeyGesture="Ctrl+N"
                                         IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false and @e(view).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                         />
@@ -123,14 +123,14 @@
                                         GlyphAlignment="Left"
                                         Glyph="{dx:DXImage SvgImages/Business Objects/BO_Document.svg}" 
                                         KeyGesture="Ctrl+E"
-                                        Content="Редактировать область" 
+                                        Content="Редактировать этап" 
                                         Command="{Binding ElementName=grid, Path=DataContext.OpenTreatmentFormCommand}"
                                         CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                         IsEnabled="{DXBinding Expr='@e(mainGrid).DataContext.IsReadOnly == false and @e(view).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         />
 
                                     <dxb:BarButtonItem  
-                                        Content="Удалить область"
+                                        Content="Удалить этап"
                                         Command="{Binding ElementName=grid, Path=DataContext.DeleteTreatmentCommand}"
                                         CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                         KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 

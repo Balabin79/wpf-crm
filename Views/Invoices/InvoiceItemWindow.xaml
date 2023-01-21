@@ -16,7 +16,7 @@
         MaxHeight="270"
         Name="Window"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6Dental" 
+        Title="B6 Dental" 
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceItemCommand}" PassEventArgsToCommand="True"/>

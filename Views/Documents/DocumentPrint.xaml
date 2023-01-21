@@ -7,7 +7,7 @@
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing" 
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
-        Title="DocumentPrint" Height="450" Width="800">
+        Title="Печать документа" Height="450" Width="800">
     <Grid>
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
             <dxp:DocumentPreviewControl x:Name="doc"/>

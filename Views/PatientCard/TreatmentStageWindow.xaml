@@ -12,7 +12,7 @@
         Name="Window"
         Height="220"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6Dental" 
+        Title="B6 Dental" 
         >
     <Window.Resources>
         <converter:DateToStringConverter x:Key="DateToString"/>

@@ -19,7 +19,7 @@
         x:Name="win"
        Closing="Window_Closing"
       Icon="/Resources/Icons/te4.ico" 
-      Title="B6Dental" >
+      Title="B6 Dental" >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
     </Window.Resources>

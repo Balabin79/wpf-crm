@@ -12,7 +12,7 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6Dental"
+        Title="B6 Dental"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 

@@ -11,6 +11,6 @@
     xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
     Icon="/Resources/Icons/te4.ico" 
     xmlns:doc ="clr-namespace:Dental.Views.Documents"
-    Title = "B6Dental" >
+    Title = "B6 Dental" >
     <doc:ImportDocumentsControl DataContext="{Binding}"/>
 </Window>
