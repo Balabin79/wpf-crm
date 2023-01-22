@@ -71,7 +71,9 @@
 
 
                     <dxlc:LayoutItem Label="Клиент" Margin="0,10,0,0">
-                        <dxg:LookUpEdit  EditValue="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        <dxg:LookUpEdit  
+                            NullValueButtonPlacement="EditBox"
+                            EditValue="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          SelectedItem="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding Patients}"
                                         DisplayMember="FullName"
@@ -107,6 +109,7 @@
 
                     <dxlc:LayoutItem Label="Место приема">
                         <dxe:ComboBoxEdit 
+                            NullValueButtonPlacement="EditBox"
                             EditValue="{Binding LocationAppointment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                             ItemsSource="{Binding Locations}" 
                             DisplayMember="Name"/>
@@ -114,7 +117,8 @@
 
 
                     <dxlc:LayoutItem Label="Цель визита">
-                        <dxe:PopupBaseEdit                           
+                        <dxe:PopupBaseEdit
+                            NullValueButtonPlacement="EditBox"
                                     x:Name="popup"                                                   
                                     SelectAllOnMouseUp="True"
                                     SelectAllOnGotFocus="True"

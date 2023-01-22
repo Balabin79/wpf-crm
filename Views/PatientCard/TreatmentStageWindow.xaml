@@ -22,7 +22,7 @@
 
     <GroupBox Margin="7" Padding="7" BorderBrush="LightGray" BorderThickness="1">
         <dxlc:LayoutGroup Orientation="Vertical" ItemLabelsAlignment="Local" VerticalAlignment="Top">
-            <TextBlock Text="Новая область" FontSize="15" FontWeight="DemiBold"/>
+            <TextBlock Text="Этап лечения" FontSize="15" FontWeight="DemiBold"/>
             
             <dxlc:LayoutItem Label="Название:"  LabelPosition="Top">
                 <dxe:TextEdit Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />

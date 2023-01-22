@@ -358,6 +358,7 @@ namespace Dental.ViewModels.ClientDir
                 {
                     Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();                  
                 }
+                foreach (var i in Clients) ImgLoading(i);
             }
             catch (Exception e)
             {

@@ -32,7 +32,7 @@
             <TextBlock Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" FontWeight="DemiBold"/>
 
             <dxlc:LayoutItem Label="Список позиций*:"  LabelPosition="Top" IsRequired="True">
-                <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
+                <dxe:PopupBaseEdit x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True" NullValueButtonPlacement="EditBox"                                            
                      EditValue="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                                                                 
                      NullText="Выберите позицию" IsTextEditable="False">

@@ -56,9 +56,10 @@
                         <dxe:TextEdit  Text="{Binding Copy.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" />
                         </dxlc:LayoutItem>
                         
-                    <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
-                        <dxe:PopupBaseEdit x:Name="popup"  SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
+                        <dxe:PopupBaseEdit 
+                            NullValueButtonPlacement="EditBox"
+                            x:Name="popup"  SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
                      EditValue="{Binding Copy.Parent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                                                                 
                      NullText="Выберите шаблон" IsTextEditable="False">
@@ -134,21 +135,7 @@
                                 </dxe:PopupBaseEdit.PopupContentTemplate>
                             </dxe:PopupBaseEdit>
                         </dxlc:LayoutItem>
-                        <dxb:ToolBarControl Background="Transparent"
-                            x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Height="30"  
-                                            Margin="-3 15 -10 0" Width="35" Padding="0"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="Default">
-                            <dxb:BarButtonItem Margin="0" Padding="0"
-                                 Content="Очистить поле" 
-                                 KeyGesture="Delete" 
-                                 GlyphSize="Small" 
-                                 GlyphAlignment="Left" 
-                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Clear.svg}"                                
-                                 Command="{Binding ElementName=popup, Path=DataContext.ClearSelectFieldCommand }"
-                                 IsEnabled="{DXBinding Expr='@e(popup).EditValue != null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                 CommandParameter="{Binding ElementName=popup}"/>
-                        </dxb:ToolBarControl>
-                    </dxlc:LayoutGroup>
+
                 </dxlc:LayoutGroup>
 
                 <StackPanel  Height="25" Grid.Row="2" Margin="0 10 0 0" Orientation="Horizontal" HorizontalAlignment="Right" >

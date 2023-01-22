@@ -12,7 +12,8 @@ namespace Dental.Models
         public string PasswordProdoctorov { get; set; }
 
         public int? IsSingleProfile { get; set; }
-        public string Login { get; set; }
+        public int? EmployeeId { get; set; }
+        public Employee Employee { get; set; }
         public string Password { get; set; }
     }
 }

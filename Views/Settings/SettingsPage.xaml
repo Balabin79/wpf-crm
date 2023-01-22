@@ -108,10 +108,21 @@
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
                       
-                        <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                            <dxe:TextEdit Text="{Binding Settings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <dxlc:LayoutItem Label="Сотрудник:" LabelPosition="Top">
+                            <dxe:ComboBoxEdit 
+                                  NullValueButtonPlacement="EditBox"
+                                  NullText="Выберите сотрудника" ShowNullText="True"
+                                  ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  DisplayMember="FullName"
+                                  EditValue="{Binding Settings.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  >
+                                <dxe:ComboBoxEdit.StyleSettings>
+                                    <dxe:RadioComboBoxStyleSettings/>
+                                </dxe:ComboBoxEdit.StyleSettings>
+                            </dxe:ComboBoxEdit>
                         </dxlc:LayoutItem>
+                        
                         <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" Margin="0 5 0 0">
                             <dxe:TextEdit Text="{Binding Settings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>

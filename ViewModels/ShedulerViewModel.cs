@@ -440,26 +440,24 @@ namespace Dental.ViewModels
             }
         }
 
-        private void LoadClients(ApplicationContext db) => Clients = db.Clients.OrderBy(f => f.LastName).ToObservableCollection();
+        private void LoadClients(ApplicationContext db) => Clients = db.Clients.Where(f => f.IsInArchive != true ).OrderBy(f => f.LastName).ToObservableCollection();
 
         private void SetSelectedEmployees()
         {
             SelectedDoctors = new List<object>();
-            Doctors.ForEach(f => SelectedDoctors.Add(f));
-           /* var userSession = (UserSession)Application.Current.Resources["UserSession"];
-            SelectedDoctors = new List<object>();
             try
             {
-                if (userSession?.Employee != null && userSession?.Employee?.IsDoctor == 1)
+                var settings = db.Settings.Include(f => f.Employee).FirstOrDefault();
+                if (settings?.EmployeeId > 0)
                 {
-                    SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
+                    SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == settings.Employee?.Id));
                 }
                 else Doctors.ForEach(f => SelectedDoctors.Add(f));
             }
             catch
             {
                 Doctors.ForEach(f => SelectedDoctors.Add(f));
-            }*/
+            }
         }
 
         public Config Config

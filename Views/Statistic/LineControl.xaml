@@ -89,6 +89,7 @@
                     </dxe:DateEdit>
 
                     <dxe:ComboBoxEdit Width="200" Margin="5 0 5 0"
+                                  NullValueButtonPlacement="EditBox"
                                   NullText="Выберите сотрудника" ShowNullText="True"
                                   ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="FullName"

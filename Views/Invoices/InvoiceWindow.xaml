@@ -44,7 +44,7 @@
                 </dxe:DateEdit>
             </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Сотрудник:" Name="Employee" LabelPosition="Top" Margin="3 0 0 0" >
-                <dxe:ComboBoxEdit 
+                    <dxe:ComboBoxEdit NullValueButtonPlacement="EditBox"
                                         ItemsSource="{Binding Employees, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Сотрудники" 
                                         IsTextEditable="False"
@@ -64,6 +64,7 @@
 
             <dxlc:LayoutItem Label="Рекламные источники:" Name="Advertisings" LabelPosition="Top" >
                 <dxe:ComboBoxEdit 
+                    NullValueButtonPlacement="EditBox"
                                         ItemsSource="{Binding Advertisings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Рекламные источники" 
                                         IsTextEditable="False"

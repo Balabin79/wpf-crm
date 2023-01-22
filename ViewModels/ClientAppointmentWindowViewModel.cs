@@ -89,9 +89,9 @@ namespace Dental.ViewModels
                 Client newPatient = value;
                 if (patient == newPatient) return;
                 patient = newPatient;
-                CustomFields["ClientInfoId"] = newPatient.Id;
+                CustomFields["ClientInfoId"] = newPatient?.Id;
                 CustomFields["Client"] = newPatient;
-                Subject = newPatient.ToString();
+                Subject = newPatient?.ToString();
             }
         }
 
@@ -112,8 +112,8 @@ namespace Dental.ViewModels
                 Service newService = value;
                 if (service == newService) return;
                 service = newService;
-                Description = newService.FullName;
-                CustomFields["ServiceId"] = newService.Id;
+                Description = newService?.FullName;
+                CustomFields["ServiceId"] = newService?.Id;
             }
         }
 
@@ -134,9 +134,9 @@ namespace Dental.ViewModels
                 LocationAppointment newLocation = value;
                 if (location == newLocation) return;
                 location = newLocation;
-                CustomFields["LocationId"] = newLocation.Id;
-                Location = newLocation.Name;
-                CustomFields["LocationId"] = newLocation.Id;
+                CustomFields["LocationId"] = newLocation?.Id;
+                Location = newLocation?.Name;
+                CustomFields["LocationId"] = newLocation?.Id;
             }
         }
 

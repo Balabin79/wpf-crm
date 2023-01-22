@@ -100,7 +100,8 @@
                     </dxlc:LayoutItem>
 
                     <dxlc:LayoutItem Label="Пол:" LabelPosition="Top" >
-                        <dxe:ComboBoxEdit ItemsSource="{Binding ClientInfoViewModel.GenderList}"                                      
+                        <dxe:ComboBoxEdit NullValueButtonPlacement="EditBox"
+                            ItemsSource="{Binding ClientInfoViewModel.GenderList}"                                      
                                       SelectedItem="{Binding ClientInfoViewModel.Gender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Пол" IsTextEditable="False"
                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

@@ -109,7 +109,8 @@
                                   NullText="Выберите сотрудника" ShowNullText="True"
                                   ItemsSource="{Binding Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="FullName"
-                                  EditValue="{Binding EmployeesSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                 
+                                  EditValue="{Binding EmployeesSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                  NullValueButtonPlacement="EditBox"
                                   >
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:CheckedComboBoxStyleSettings/>

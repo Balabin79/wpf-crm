@@ -68,8 +68,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public ICollection<RoleManagment> Roles { get; set; }
-
         [Command]
         public void Editable() => IsReadOnly = !IsReadOnly;
 
@@ -104,7 +102,6 @@ namespace Dental.ViewModels
             }
             catch { }
         }
-
 
         [Command]
         public void OpenLicenseForm()
