@@ -22,6 +22,8 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Editors;
+using License;
+using Dental.Views.About;
 
 namespace Dental.ViewModels.Org
 {
@@ -78,6 +80,20 @@ namespace Dental.ViewModels.Org
                 model.Okpo = OrganizationVM.Okpo;
 
                 if (model?.Id == 0) db.Organizations.Add(model);
+
+                /************************/
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    Environment.Exit(0);
+                }
+                /************************/
+
                 if (db.SaveChanges() > 0)
                 {
                     OrganizationVM.Id = model.Id;
