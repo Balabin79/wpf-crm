@@ -110,7 +110,17 @@ namespace Dental.ViewModels
                       messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information);
                 }
             }
-
+            try
+            {
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    var file = new FileInfo(filename).Name;
+                    File.Copy(filename, Path.Combine(Environment.CurrentDirectory.ToString(), file), true);
+                }              
+            }
+            catch(Exception e) 
+            {
+            }
         }
 
         public void ReadAdditonalLicenseInformation()
@@ -122,15 +132,14 @@ namespace Dental.ViewModels
                     /* Read additional license information */
                     //for (int i = 0; i < EvaluationMonitor.CurrentLicense.LicenseInformation.Count; i++)
                    // {
-                    Company = Status.KeyValueList.GetByIndex(0).ToString();
-                    FullName = Status.KeyValueList.GetByIndex(2).ToString();
+                    //Company = Status.KeyValueList.GetByIndex(0).ToString();
+                    //FullName = Status.KeyValueList.GetByIndex(2).ToString();
                     //}
                 }
             }
             catch
             {
-                Company = "Недоступно";
-                FullName = "Недоступно";
+
             }
             /* Check first if a valid license file is found */
 
@@ -168,18 +177,6 @@ namespace Dental.ViewModels
         {
             get { return GetProperty(() => LicenseStatus); }
             set { SetProperty(() => LicenseStatus, value); }
-        }
-
-        public string FullName
-        {
-            get { return GetProperty(() => FullName); }
-            set { SetProperty(() => FullName, value); }
-        }
-
-        public string Company
-        {
-            get { return GetProperty(() => Company); }
-            set { SetProperty(() => Company, value); }
         }
 
         public string Hardware_ID

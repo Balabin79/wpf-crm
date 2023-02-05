@@ -71,7 +71,7 @@ namespace Dental.ViewModels.ClientDir
 
                 Init(Model);
             }
-            catch
+            catch (Exception e)
             {
                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -224,12 +224,14 @@ namespace Dental.ViewModels.ClientDir
 
                 if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
                 {
-                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
                 if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
                 {
-                    new LicenseExpiredWindow() { DataContext = new LicExpiredViewModel() }.ShowDialog();
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
             }
@@ -467,6 +469,21 @@ namespace Dental.ViewModels.ClientDir
                         ClientInvoices?.Add(invoice);
                         Invoices?.Add(invoice);
                     }
+
+                    /************************/
+                    if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                    {
+                        ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                        Environment.Exit(0);
+                    }
+                    if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                    {
+                        ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                        Environment.Exit(0);
+                    }
+                    /************************/
 
                     if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                 }
@@ -1092,6 +1109,21 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 ClientInfoViewModel.Copy(Model);
+
+                /************************/
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                /************************/
 
                 if (Model.Id == 0) // новый элемент
                 {

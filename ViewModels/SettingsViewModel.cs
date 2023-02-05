@@ -110,7 +110,8 @@ namespace Dental.ViewModels
             {              
                 new LicenseWindow() { DataContext = new LicViewModel() }?.ShowDialog();
             }
-            catch { }
+            catch (Exception e)
+            { }
         }
 
         [Command]

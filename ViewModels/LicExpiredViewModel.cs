@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using License;
@@ -64,7 +65,17 @@ namespace Dental.ViewModels
                 byte[] license = memoryStream.ToArray();
                 Status.LoadLicense(license);
             }
-
+            try
+            {
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    var file = new FileInfo(filename).Name;
+                    File.Copy(filename, Path.Combine(Environment.CurrentDirectory.ToString(), file), true);
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         public bool IsValidLicenseAvailable()
