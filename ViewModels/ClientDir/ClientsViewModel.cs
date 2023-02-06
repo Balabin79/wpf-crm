@@ -637,12 +637,9 @@ namespace Dental.ViewModels.ClientDir
 
                     if (report?.DataSource is SqlDataSource source)
                     {
-
-                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;
-                        SqlDataSource ds = report.DataSource as SqlDataSource;
-
+                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;               
                         var con = "XpoProvider=SQLite;" + connectionString;
-                        ds.ConnectionParameters = new CustomStringConnectionParameters(con);
+                        source.ConnectionParameters = new CustomStringConnectionParameters(con);
                     }
 
                     PrintHelper.ShowPrintPreview(conv.Page, report);
@@ -1293,11 +1290,14 @@ namespace Dental.ViewModels.ClientDir
                         messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                         if (response.ToString() == "No") return;
+                        File.SetAttributes(oldPhoto, FileAttributes.Normal);
                         File.Delete(oldPhoto);
                     }
 
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
-                    photo.CopyTo(Path.Combine(Config.PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension), true);
+                    string fileFullName = Path.Combine(Config.PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension);
+                    photo.CopyTo(fileFullName, true);
+                    File.SetAttributes(fileFullName, FileAttributes.Normal);
                     new Notification() { Content = "Фото клиента сохраненo!" }.run();
                     var model = Clients.FirstOrDefault(f => f.Guid == param?.ImageGuid);
                     if (model != null)
@@ -1325,7 +1325,11 @@ namespace Dental.ViewModels.ClientDir
 
                     var file = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
-                    if (file != null) File.Delete(file);
+                    if (file != null) 
+                    {
+                        File.SetAttributes(file, FileAttributes.Normal);
+                        File.Delete(file); 
+                    }
                     img?.Clear();
                     var model = Clients.FirstOrDefault(f => f.Guid == img?.ImageGuid);
                     if (model != null)
@@ -1424,7 +1428,10 @@ namespace Dental.ViewModels.ClientDir
 
                 if (PathToUserFiles != null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
 
+
+                
                 File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
+                File.SetAttributes(Path.Combine(PathToUserFiles, file.Name), FileAttributes.Normal);
 
                 FileInfo newFile = new FileInfo(Path.Combine(PathToUserFiles, file.Name));
                 newFile.CreationTime = DateTime.Now;
@@ -1446,6 +1453,7 @@ namespace Dental.ViewModels.ClientDir
                 {
                     var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
+                    File.SetAttributes(file.FullName, FileAttributes.Normal);
                     file.Delete();
                     Files = new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection();
                 }

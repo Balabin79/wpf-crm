@@ -188,11 +188,14 @@ namespace Dental.ViewModels.EmployeeDir
                         messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                         if (response.ToString() == "No") return;
+                        File.SetAttributes(oldPhoto, FileAttributes.Normal);
                         File.Delete(oldPhoto);
                     }
 
                     FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
-                    photo.CopyTo(Path.Combine(Config.PathToEmployeesDirectory, param.ImageGuid + photo.Extension), true);
+                    string fileFullName = Path.Combine(Config.PathToEmployeesDirectory, param.ImageGuid + photo.Extension);
+                    photo.CopyTo(fileFullName, true);
+                    File.SetAttributes(fileFullName, FileAttributes.Normal);
                     new Notification() { Content = "Фото сотрудника сохраненo!" }.run();
                 }
             }
@@ -216,7 +219,11 @@ namespace Dental.ViewModels.EmployeeDir
                     {
                         var file = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
-                        if (file != null) File.Delete(file);
+                        if (file != null) 
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                            File.Delete(file); 
+                        }
                     }
 
                     img?.Clear();

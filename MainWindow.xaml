@@ -312,7 +312,7 @@
         </dxnav:TileBar>
 
         <Grid Name="FramePage" VerticalAlignment="Stretch" Grid.Row="1" >
-            <dxwui:NavigationFrame AnimationType="SlideHorizontal" NavigationCacheMode="Required">
+            <dxwui:NavigationFrame AnimationType="SlideHorizontal" >
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding OnViewLoadedCommand}" CommandParameter="{Binding ElementName=clientsBtn}" />
                     <dxwuin:FrameNavigationService ShowSplashScreen="True" >

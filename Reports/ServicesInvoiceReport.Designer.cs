@@ -97,6 +97,7 @@ namespace Dental.Reports
             this.vendorEmptyCell = new DevExpress.XtraReports.UI.XRTableCell();
             this.vendorWebsite = new DevExpress.XtraReports.UI.XRTableCell();
             this.vendorLogo2 = new DevExpress.XtraReports.UI.XRPictureBox();
+            this.parameter_logo = new DevExpress.XtraReports.Parameters.Parameter();
             this.GroupHeader2 = new DevExpress.XtraReports.UI.GroupHeaderBand();
             this.customerTable = new DevExpress.XtraReports.UI.XRTable();
             this.xrTableRow9 = new DevExpress.XtraReports.UI.XRTableRow();
@@ -135,7 +136,6 @@ namespace Dental.Reports
             this.oddDetailStyle = new DevExpress.XtraReports.UI.XRControlStyle();
             this.formattingRule1 = new DevExpress.XtraReports.UI.FormattingRule();
             this.calculatedField1 = new DevExpress.XtraReports.UI.CalculatedField();
-            this.parameter_logo = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this.detailTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.vendorTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).BeginInit();
@@ -452,6 +452,12 @@ namespace Dental.Reports
             this.vendorLogo2.StylePriority.UseBorderColor = false;
             this.vendorLogo2.StylePriority.UseBorders = false;
             this.vendorLogo2.StylePriority.UsePadding = false;
+            // 
+            // parameter_logo
+            // 
+            this.parameter_logo.Description = "parameter_logo";
+            this.parameter_logo.Name = "parameter_logo";
+            this.parameter_logo.Visible = false;
             // 
             // GroupHeader2
             // 
@@ -980,12 +986,6 @@ namespace Dental.Reports
             this.calculatedField1.DataMember = "Invoices_1";
             this.calculatedField1.Expression = "[Count]*[Price]";
             this.calculatedField1.Name = "calculatedField1";
-            // 
-            // parameter_logo
-            // 
-            this.parameter_logo.Description = "parameter_logo";
-            this.parameter_logo.Name = "parameter_logo";
-            this.parameter_logo.Visible = false;
             // 
             // ServicesInvoiceReport
             // 

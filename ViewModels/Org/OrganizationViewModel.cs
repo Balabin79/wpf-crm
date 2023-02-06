@@ -201,12 +201,15 @@ namespace Dental.ViewModels.Org
                                     messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                                 if (response.ToString() == "No") return;
+                                File.SetAttributes(file, FileAttributes.Normal);
                                 File.Delete(file);
                                 break;
                             }
                         }
                         FileInfo photo = new FileInfo(img.ImagePath);
-                        photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension), true);
+                        string fileFullName = Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension);                           
+                        photo.CopyTo(fileFullName, true);
+                        File.SetAttributes(fileFullName, FileAttributes.Normal);
                         new Notification() { Content = "Логотип сохранен!" }.run();
                         db.SaveChanges();
                     }
@@ -221,12 +224,15 @@ namespace Dental.ViewModels.Org
                                     messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                                 if (response.ToString() == "No") return;
+                                File.SetAttributes(file, FileAttributes.Normal);
                                 File.Delete(file);
                                 break;
                             }
                         }
                         FileInfo photo = new FileInfo(img.ImagePath);
-                        photo.CopyTo(Path.Combine(Config.PathToOrgDirectory, "Stamp" + photo.Extension), true);
+                        string fileFullName = Path.Combine(Config.PathToOrgDirectory, "Stamp" + photo.Extension);
+                        photo.CopyTo(fileFullName, true);
+                        File.SetAttributes(fileFullName, FileAttributes.Normal);
                         new Notification() { Content = "Файл печати сохранен!" }.run();
                     }
                 }
@@ -251,7 +257,11 @@ namespace Dental.ViewModels.Org
                     if (Directory.Exists(Config.PathToOrgDirectory))
                     {
                         var files = Directory.GetFiles(Config.PathToOrgDirectory);
-                        foreach (var file in files) if (file.Contains(img?.Name)) File.Delete(file);
+                        foreach (var file in files) if (file.Contains(img?.Name))
+                        {
+                            File.SetAttributes(file, FileAttributes.Normal);
+                            File.Delete(file); 
+                        }
                     }
                     img.Clear();
                     msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
