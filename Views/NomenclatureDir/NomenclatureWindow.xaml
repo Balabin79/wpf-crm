@@ -60,13 +60,19 @@
                     </dxlc:LayoutGroup>
                     
                         <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
-                            <dxe:PopupBaseEdit 
-                                NullValueButtonPlacement="EditBox"
+                        <dxe:PopupBaseEdit 
+                                NullValueButtonPlacement="None" AllowDefaultButton="False"
                                 x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
                      EditValue="{Binding Path=Copy.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
                                                                 
-                     NullText="Выберите родительскую категорию" IsTextEditable="False">
-                                <dxe:PopupBaseEdit.PopupContentTemplate>
+                     NullText="Выберите родительскую категорию" IsTextEditable="False" >
+                            
+                            <dxe:PopupBaseEdit.Buttons>
+                                <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding ClearSelectFieldCommand}" CommandParameter="{Binding ElementName=popup}"/>
+                                <dxe:ButtonInfo IsDefaultButton="True" GlyphKind="DropDown"/>
+                            </dxe:PopupBaseEdit.Buttons>
+                            
+                            <dxe:PopupBaseEdit.PopupContentTemplate>
                                     <ControlTemplate>
                                         <dxg:TreeListControl  
                                             x:Name="treeControl" 
@@ -74,7 +80,7 @@
                                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  >
                                             <dxg:TreeListControl.View>
-                                                <dxg:TreeListView                                                          
+                                                <dxg:TreeListView                                                        
                                                         x:Name="tree_view"
                                                         KeyFieldName="Id"
                                                         ParentFieldName="ParentId"
@@ -118,7 +124,8 @@
                                                                 </MultiBinding>
                                                             </dxmvvm2:EventToCommand.CommandParameter>
                                                         </dxmvvm2:EventToCommand>
-                                                    </dxmvvm:Interaction.Behaviors>
+
+                                                </dxmvvm:Interaction.Behaviors>
 
                                                     <dxg:TreeListView.NodeImageSelector>
                                                         <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />

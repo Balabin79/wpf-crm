@@ -53,9 +53,18 @@ namespace Dental.ViewModels
         {
             try
             {
-                if (p is PopupBaseEdit popup)  popup.EditValue = null;          
+                if (p is PopupBaseEdit popup)
+                {
+                    if (popup.EditValue is T item)
+                    {
+                        popup.EditValue = null;
+                        Copy.Parent = null;
+                        Copy.ParentId = null;
+                        isSelectedVal = false;
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
 
             }

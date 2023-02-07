@@ -68,12 +68,17 @@
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutItem Label="Родительская категория:"  LabelPosition="Top">
                             <dxe:PopupBaseEdit 
-                                NullValueButtonPlacement="EditBox"
+                                NullValueButtonPlacement="None" AllowDefaultButton="False"
                                 x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True"                                            
-                     EditValue="{Binding Path=Copy.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
-                                                                
+                     EditValue="{Binding Path=Copy.Parent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                                                                                          
                      NullText="Выберите услугу" IsTextEditable="False">
-                                <dxe:PopupBaseEdit.PopupContentTemplate>
+
+                            <dxe:PopupBaseEdit.Buttons>
+                                <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding ClearSelectFieldCommand}" CommandParameter="{Binding ElementName=popup}"/>
+                                <dxe:ButtonInfo IsDefaultButton="True" GlyphKind="DropDown"/>
+                            </dxe:PopupBaseEdit.Buttons>
+                                
+                            <dxe:PopupBaseEdit.PopupContentTemplate>
                                     <ControlTemplate>
                                         <dxg:TreeListControl x:Name="treeControl" 
                                             AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

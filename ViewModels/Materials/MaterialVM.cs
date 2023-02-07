@@ -56,8 +56,17 @@ namespace Dental.ViewModels.Invoices
             set { SetProperty(() => Materials, value); }
         }
 
-        public Nomenclature Parent { get; set; }
-        public int? ParentId { get; set; }
+        public Nomenclature Parent
+        {
+            get { return GetProperty(() => Parent); }
+            set { SetProperty(() => Parent, value); }
+        }
+
+        public int? ParentId
+        {
+            get { return GetProperty(() => ParentId); }
+            set { SetProperty(() => ParentId, value); }
+        }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
