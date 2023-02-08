@@ -40,11 +40,6 @@ namespace Dental.ViewModels.EmployeeDir
                 db = new ApplicationContext();
                 Config = new Config();
                 SetCollection();
-                foreach (var i in Collection)
-                {
-                    ImgLoading(i);
-                    i.IsVisible = false;
-                }
             }
             catch (Exception e)
             {
@@ -252,7 +247,15 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(bool isArhive = false) => Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
+        public void SetCollection(bool isArhive = false) 
+        { 
+            Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
+            foreach (var i in Collection)
+            {
+                ImgLoading(i);
+                i.IsVisible = false;
+            }
+        }
 
         private void ImgLoading(Employee model)
         {

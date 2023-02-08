@@ -416,7 +416,7 @@ namespace Dental.ViewModels
 
         private void LoadEmployees(ApplicationContext db)
         {
-            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0).OrderBy(d => d.LastName).ToObservableCollection();
+            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0 && f.IsInArchive != true).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
                 if (Directory.Exists(PathToEmployeesDirectory))

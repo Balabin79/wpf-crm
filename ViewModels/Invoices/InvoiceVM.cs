@@ -17,7 +17,7 @@ namespace Dental.ViewModels.Invoices
         public InvoiceVM(ICollection<Employee> employees, ICollection<Advertising> advertisings) 
         { 
 
-            Employees = employees;
+            Employees = employees.Where(f => f.IsInArchive != true).ToArray();
             Advertisings = advertisings;
         }           
 
