@@ -6,10 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using DevExpress.Mvvm.Native;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Globalization;
 
 namespace Dental.Services
 {
@@ -31,7 +33,9 @@ namespace Dental.Services
             if (model is Client client)
             {
                 Client = client;
-                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id).Include(f => f.AdditionalField).ToArray();
+                AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id)
+                    .Include(f => f.AdditionalField.TypeValue)                  
+                    .ToArray();
             }
             if (model is Employee employee) Employee = employee;
         }
@@ -84,8 +88,7 @@ namespace Dental.Services
                     case "Org":
                         return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
 
-                    case "ClientAdditionalFields":
-                        return AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
+                    case "ClientAdditionalFields": return GetAdditionalClientValue(propertyName);
 
                     case "CommonFields":
                         return CommonValues?.Where(f => f.SysName == propertyName)?.FirstOrDefault()?.Value ?? "";
@@ -97,6 +100,23 @@ namespace Dental.Services
             {
                 return "";
             }
+        }
+
+        private string GetAdditionalClientValue(string propertyName)
+        {
+            var prop = AdditionalClientValues?.Where(f => f.AdditionalField?.SysName == propertyName)?.FirstOrDefault();
+
+            if (prop?.AdditionalField?.TypeValue?.SysName == "money")
+            {
+                return decimal.TryParse(prop?.Value, out decimal result) ? result.ToString("C2", CultureInfo.CurrentCulture) : prop?.Value;
+            }
+
+            if (prop?.AdditionalField?.TypeValue?.SysName == "date")
+            {
+                return DateTime.TryParse(prop?.Value?.ToString(), out DateTime dateTime) ? dateTime.ToShortDateString() : prop?.Value ?? "";
+            }
+
+            return prop?.Value ?? "";
         }
 
         public void SetEmployee()

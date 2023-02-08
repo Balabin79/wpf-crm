@@ -1,4 +1,5 @@
 ﻿using Dental.Models.Base;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
@@ -72,10 +73,11 @@ namespace Dental.Models
             set { SetProperty(() => Ogrn, value?.Trim()); }
         }
 
+        string _LicenseDate;
         public string LicenseDate
         {
-            get { return GetProperty(() => LicenseDate); }
-            set { SetProperty(() => LicenseDate, value); }
+            get { return DateTime.TryParse(_LicenseDate?.ToString(), out DateTime dateTime) ? dateTime.ToShortDateString() : _LicenseDate; }
+            set { SetValue(ref _LicenseDate, value, changedCallback: () => RaisePropertyChanged(nameof(LicenseDate))); }
         }
 
         public string GeneralDirector

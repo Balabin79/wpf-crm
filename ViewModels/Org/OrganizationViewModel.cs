@@ -237,7 +237,8 @@ namespace Dental.ViewModels.Org
                     }
                 }
             }
-            catch { }
+            catch(Exception e) 
+            { }
         }
 
         [Command]

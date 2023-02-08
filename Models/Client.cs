@@ -16,11 +16,14 @@ namespace Dental.Models
     [Table("ClientInfo")]
     public class Client : AbstractUser, ICloneable
     {
+
+        string _BirthDate;
         public string BirthDate
         {
-            get { return GetProperty(() => BirthDate); }
-            set { SetProperty(() => BirthDate, value); }
+            get { return DateTime.TryParse(_BirthDate?.ToString(), out DateTime dateTime) ? dateTime.ToShortDateString() : _BirthDate; }
+            set { SetValue(ref _BirthDate, value, changedCallback: () => RaisePropertyChanged(nameof(BirthDate))); }
         }
+
 
         public string Gender
         {
@@ -48,7 +51,14 @@ namespace Dental.Models
         public bool? IsInArchive { get; set; } = false;
         public string PassportSeries { get; set; }
         public string PassportNo { get; set; }
-        public string PassportIssuanceDate { get; set; }
+
+        string _PassportIssuanceDate;
+        public string PassportIssuanceDate
+        {
+            get { return DateTime.TryParse(_PassportIssuanceDate?.ToString(), out DateTime dateTime) ? dateTime.ToShortDateString() : _PassportIssuanceDate; }
+            set { SetValue(ref _PassportIssuanceDate, value, changedCallback: () => RaisePropertyChanged(nameof(PassportIssuanceDate))); }
+        }
+
         public string WhomIssued { get; set; }     
 
         public object Clone() => (Client)this.MemberwiseClone();

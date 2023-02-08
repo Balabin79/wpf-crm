@@ -71,19 +71,32 @@ namespace Dental.ViewModels.AdditionalFields
                 {
                     case "string":
                         return new TextEdit() { EditValue = value };
-                    case "money": return new TextEdit() { Mask = "c", MaskType = MaskType.Numeric, MaskCulture = CultureInfo.CurrentCulture, DisplayFormatString = "{}{0:c2}", EditValue = value };
-                    case "int": return new TextEdit() { Mask = "d", MaskType = MaskType.Numeric, EditValue = value };
 
-                    case "float": return new TextEdit() { Mask = "f", MaskType = MaskType.Numeric, EditValue = value };
+                    case "money": 
+                        return new TextEdit() { Mask = "c", MaskType = MaskType.Numeric, 
+                            MaskCulture = CultureInfo.CurrentCulture,
+                            MaskUseAsDisplayFormat = true,
+                            DisplayFormatString = "{}{0:c2}", 
+                            EditValue = decimal.TryParse(value, out decimal val) ? String.Format("{0:c2}", val) : value
+                };
+
+                    case "int": 
+                        return new TextEdit() { Mask = "d", MaskType = MaskType.Numeric, EditValue = value };
+
+                    case "float":
+                        return new TextEdit() { Mask = "f", MaskType = MaskType.Numeric, EditValue = value };
+
                     case "date":
+                        var dt = DateTime.TryParse(value, out DateTime dateTime) ? dateTime.ToShortDateString() : value;
                         return new DateEdit()
                         {
-                            EditValue = value,
-                            Text = value,
+                            EditValue = dt,
+                            Text = dt,
                             Mask = "d",
                             MaskCulture = CultureInfo.CurrentCulture,
-                            DisplayTextConverter = new DateToStringConverter()
+                            MaskType = MaskType.DateTime
                         };
+
                     case "datetime": return new DateEdit() { DisplayTextConverter = new DateToStringConverter(), EditValue = value, Mask = "G", StyleSettings = new DateEditNavigatorWithTimePickerStyleSettings(), MaskCulture = CultureInfo.CurrentCulture, Text = value };
                     case "percent": return new TextEdit() { Mask = "p", MaskType = MaskType.Numeric, EditValue = value };
                     default: return new TextEdit() { EditValue = value };
