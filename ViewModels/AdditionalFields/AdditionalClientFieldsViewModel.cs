@@ -42,6 +42,7 @@ namespace Dental.ViewModels.AdditionalFields
                     {
                         db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id)?.ForEach(f => db.AdditionalClientValue.Remove(f));
                         db.AdditionalClientFields.Remove(model);
+                       
                         if (db.SaveChanges() > 0)
                         {
                             EventFieldChanges?.Invoke();

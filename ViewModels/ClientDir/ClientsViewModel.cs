@@ -1068,7 +1068,11 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        public void UpdateFields() => FieldsViewModel.ClientFieldsLoading(Model);
+        public void UpdateFields() 
+        { 
+            FieldsViewModel.ClientFieldsLoading(Model);
+            AdditionalFieldsVisible = FieldsViewModel?.Fields.Count > 0 ?  Visibility.Visible : Visibility.Collapsed;
+        }
         #endregion
 
         public DocumentsWindow DocumentsWindow { get; set; }

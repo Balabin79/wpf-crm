@@ -134,7 +134,7 @@ namespace Dental.ViewModels.AdditionalFields
             set { SetProperty(() => Fields, value); }
         }
 
-        public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Hidden;
+        public Visibility AdditionalFieldsVisible { get; set; } = Visibility.Collapsed;
 
         public void ChangedReadOnly(bool status)
         {
