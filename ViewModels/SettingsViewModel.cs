@@ -21,10 +21,16 @@ using System.Text;
 using System.IO;
 using System.ComponentModel.DataAnnotations;
 using Dental.Views.Settings;
+using Dental.Infrastructures.Extensions;
+using System.Windows.Media.Imaging;
+using Dental.ViewModels.Org;
+using System.Windows.Media;
+using License;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
-    public class SettingsViewModel : DevExpress.Mvvm.ViewModelBase
+    public class SettingsViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
         private readonly ApplicationContext db;
 
@@ -33,14 +39,17 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                Settings = db.Settings.FirstOrDefault() ?? new Setting();
-                Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection();
+                var model = db.Settings.Include(f => f.ProviderMsg).FirstOrDefault() ?? new Setting();
+                Config = new Config();
+                SettingsVM = new SettingsVM();
+                SettingsVM.Copy(model);
+
+                Providers = db.ProviderMsgs.Include(f => f.Country).ToObservableCollection();
                 //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
-                IsReadOnly = true;
+                IsReadOnly = model?.Id > 0;
+                if (IsReadOnly) ImagesLoading();
 
-                EmployeeWrappers = new List<EmployeeWrapper>();
-                Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
             }
             catch (Exception e)
             {
@@ -48,24 +57,22 @@ namespace Dental.ViewModels
             }
         }
 
-        public Setting Settings
+        public string RemoteIP
         {
-            get { return GetProperty(() => Settings); }
-            set { SetProperty(() => Settings, value); }
+            get { return GetProperty(() => RemoteIP); }
+            set { SetProperty(() => RemoteIP, value); }
         }
 
-        public ICollection<Employee> Employees
+        public SettingsVM SettingsVM
         {
-            get { return GetProperty(() => Employees); }
-            set { SetProperty(() => Employees, value); }
+            get { return GetProperty(() => SettingsVM); }
+            set { SetProperty(() => SettingsVM, value); }
         }
 
-        public ICollection<EmployeeWrapper> EmployeeWrappers { get; set; }
-
-        public bool IsReadOnly
+        public ICollection<ProviderMsg> Providers
         {
-            get { return GetProperty(() => IsReadOnly); }
-            set { SetProperty(() => IsReadOnly, value); }
+            get { return GetProperty(() => Providers); }
+            set { SetProperty(() => Providers, value); }
         }
 
         [Command]
@@ -74,35 +81,182 @@ namespace Dental.ViewModels
         [Command]
         public void Save()
         {
+            try 
+            { 
+
+            var model = db.Settings.FirstOrDefault() ?? new Setting();
+
+            model.OrgName = SettingsVM.OrgName;
+            model.OrgShortName = SettingsVM.OrgShortName;
+            model.OrgAddress = SettingsVM.OrgAddress;
+            model.OrgPhone = SettingsVM.OrgPhone;
+            model.OrgEmail = SettingsVM.OrgEmail;          
+            model.OrgSite = SettingsVM.OrgSite;
+
+            model.LoginProviderMsg = SettingsVM.LoginProviderMsg;
+            model.PasswordProviderMsg = SettingsVM.PasswordProviderMsg;
+            model.ProviderMsgId = SettingsVM.ProviderMsgId;
+            model.ProviderMsg = SettingsVM.ProviderMsg;
+
+            if (model?.Id == 0) db.Settings.Add(model);
+
+            /************************/
+            if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Environment.Exit(0);
+            }
+            if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Environment.Exit(0);
+            }
+            /************************/
+
+            if (db.SaveChanges() > 0)
+            {
+                    SettingsVM.Id = model.Id;
+                new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+            }
+
+        }
+            catch(Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении данных организации!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+}
+
+        #region Свойства
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
+
+        public ImageSource Logo
+        {
+            get { return GetProperty(() => Logo); }
+            set { SetProperty(() => Logo, value); }
+        }
+
+
+        public Config Config
+        {
+            get { return GetProperty(() => Config); }
+            set { SetProperty(() => Config, value); }
+        }
+
+        #endregion
+
+
+
+        #region Управление файлами лого и печати
+
+        public void ImagesLoading()
+        {
             try
             {
-                if (Settings?.Id == 0) db.Settings.Add(Settings);
-                var employeesEdited = Employees.Where(f => db.Entry(f).State == EntityState.Modified).ToList();
-
-                foreach (var i in employeesEdited)
+                var files = new string[] { };
+                if (Directory.Exists(Config.PathToOrgDirectory)) files = Directory.GetFiles(Config.PathToOrgDirectory);
+                for (int i = 0; i < files.Length; i++)
                 {
-                    var wrapper = EmployeeWrappers.FirstOrDefault(f => f.Id == i.Id);
-                    if (wrapper == null || wrapper.Password == i.Password) continue;
-                    if (string.IsNullOrEmpty(i.Password)) { wrapper.Password = null; continue; }
-                    i.Password = BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(i.Password))).Replace("-", string.Empty);
-                }
+                    using (var stream = new FileStream(files[i], FileMode.Open))
+                    {
+                        var img = new BitmapImage();
+                        img.BeginInit();
+                        img.CacheOption = BitmapCacheOption.OnLoad;
+                        img.StreamSource = stream;
+                        img.EndInit();
+                        img.Freeze();
 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Настройки сохранены!" }.run();
+                        if (files[i].Contains("Logo")) Logo = img;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+
+        [Command]
+        public void ImageSave(object p)
+        {
+            try
+            {
+                if (p is ImageEditEx img && img.HasImage)
+                {
+                    if (!Directory.Exists(Config.PathToOrgDirectory)) Directory.CreateDirectory(Config.PathToOrgDirectory);
+                    var files = Directory.GetFiles(Config.PathToOrgDirectory);
+                    if (img.Name == "Logo")
+                    {
+                        foreach (var file in files)
+                        {
+                            if (file.Contains("Logo"))
+                            {
+                                var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить файл логотипа?",
+                                    messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+
+                                if (response.ToString() == "No") return;
+                                File.SetAttributes(file, FileAttributes.Normal);
+                                File.Delete(file);
+                                break;
+                            }
+                        }
+                        FileInfo photo = new FileInfo(img.ImagePath);
+                        string fileFullName = Path.Combine(Config.PathToOrgDirectory, "Logo" + photo.Extension);
+                        photo.CopyTo(fileFullName, true);
+                        File.SetAttributes(fileFullName, FileAttributes.Normal);
+                        new Notification() { Content = "Логотип сохранен!" }.run();
+                        db.SaveChanges();
+                    }
+                }
             }
             catch (Exception e)
             { }
         }
 
         [Command]
-        public void OpenPathsSettingsForm()
+        public void ImageDelete(object p)
         {
             try
             {
-                new PathsSettingsWindow() { DataContext = new PathsSettingsVM() }?.ShowDialog();
+                //string msg = "";
+                if (p is ImageEditEx img)
+                {
+                    //if (img?.Name == "Logo") msg = "Удалить файл логотипа?";
+                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить файл логотипа?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    if (response.ToString() == "No") return;
+
+                    if (Directory.Exists(Config.PathToOrgDirectory))
+                    {
+                        var files = Directory.GetFiles(Config.PathToOrgDirectory);
+                        foreach (var file in files) if (file.Contains(img?.Name))
+                            {
+                                File.SetAttributes(file, FileAttributes.Normal);
+                                File.Delete(file);
+                            }
+                    }
+                    img.Clear();
+                   // msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
+                    db.SaveChanges();
+                    new Notification() { Content = "Файл логотипа удален" }.run();
+                }
             }
-            catch { }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
         }
 
+        #endregion
+
+
+        #region License
         [Command]
         public void OpenLicenseForm()
         {
@@ -150,12 +304,8 @@ namespace Dental.ViewModels
             get { return GetProperty(() => NewLicense); }
             set { SetProperty(() => NewLicense, value?.Trim()); }
         }
-    }
+        #endregion
 
-    public class EmployeeWrapper
-    {
-        public int? Id { get; set; }
-        public string Password { get; set; }
     }
 
 }

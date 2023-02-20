@@ -8,12 +8,20 @@ namespace Dental.Models
     [Table("Settings")]
     public class Setting : AbstractBaseModel
     {
-        public string LoginProdoctorov { get; set; }
-        public string PasswordProdoctorov { get; set; }
+        public string LoginProviderMsg { get; set; }
+        public string PasswordProviderMsg { get; set; }
 
-        public int? IsSingleProfile { get; set; }
-        public int? EmployeeId { get; set; }
-        public Employee Employee { get; set; }
-        public string Password { get; set; }
+        public int? ProviderMsgId { get; set; }
+        public ProviderMsg ProviderMsg { get; set; }
+
+
+        public string OrgName { get; set; }
+        public string OrgShortName { get; set; }
+        public string OrgAddress { get; set; }
+        public string OrgEmail { get; set; }
+        public string OrgPhone { get; set; }
+        public string OrgSite { get; set; }
+
+
     }
 }

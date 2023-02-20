@@ -220,16 +220,7 @@
             
             
             
-            
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Organization" Size="Auto" 
-               Background="#f5f5f5" >
-                <ContentControl>
-                    <StackPanel >
-                        <Image Source="/Resources/Icons/org.png" Width="30" Height="30"/>
-                        <TextBlock Text="Организация" Foreground="#666666" FontWeight="DemiBold"/>
-                    </StackPanel>
-                </ContentControl>
-            </dxnav:TileBarItem>
+           
 
             <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click">
                 <ContentControl>

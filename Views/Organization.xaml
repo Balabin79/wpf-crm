@@ -510,6 +510,7 @@
                             </dxg:GridControl>
                         </ScrollViewer>
                     </dxlc:LayoutGroup>
+                    
                 </Grid>
             </ScrollViewer>
 

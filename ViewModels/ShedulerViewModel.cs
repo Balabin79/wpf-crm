@@ -449,12 +449,13 @@ namespace Dental.ViewModels
             SelectedDoctors = new List<object>();
             try
             {
-                var settings = db.Settings.Include(f => f.Employee).FirstOrDefault();
+                /*var settings = db.Settings.Include(f => f.Employee).FirstOrDefault();
                 if (settings?.EmployeeId > 0)
                 {
                     SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == settings.Employee?.Id));
-                }
-                else Doctors.ForEach(f => SelectedDoctors.Add(f));
+                }*/
+               // else
+                    Doctors.ForEach(f => SelectedDoctors.Add(f));
             }
             catch
             {
