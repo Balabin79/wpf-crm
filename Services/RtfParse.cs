@@ -24,7 +24,7 @@ namespace Dental.Services
             db = new ApplicationContext();
             {
                 CommonValues = db.CommonValues.ToArray();
-                Organization = db.Organizations.FirstOrDefault() ?? new Organization();
+                //Organization = db.Organizations.FirstOrDefault() ?? new Organization();
             }
         }
 
@@ -85,8 +85,8 @@ namespace Dental.Services
                     case "Employee":
                         if (Employee == null && !NotSetEmployee) SetEmployee();
                         return Employee?.GetType()?.GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";
-                    case "Org":
-                        return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
+                    //case "Org":
+                       // return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
 
                     case "ClientAdditionalFields": return GetAdditionalClientValue(propertyName);
 
@@ -140,7 +140,7 @@ namespace Dental.Services
         public Employee Employee { get; set; }
         public object SelectedItem { get; set; }
         private Client Client { get; set; }
-        private Organization Organization { get; set; }
+       // private Organization Organization { get; set; }
 
         private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
 

@@ -23,17 +23,9 @@ namespace Dental.ViewModels.ClientDir
             Gender = client.Gender;
             Phone = client.Phone;
             Address = client.Address;
-            Snils = client.Snils;
             Note = client.Note;
             IsInArchive = client.IsInArchive;
             Email = client.Email;
-            PassportSeries = client.PassportSeries;
-            PassportNo = client.PassportNo;
-            PassportIssuanceDate = client.PassportIssuanceDate;
-            WhomIssued = client.WhomIssued;
-            Image = client.Image;
-            Photo = client.Photo;
-            Img = client.Img;
         }
 
         public int Id
@@ -105,39 +97,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Note, value?.Trim()); }
         }
 
-        [MaxLength(11, ErrorMessage = @"Максимальная длина в поле ""СНИЛС"" не более 11 символов")]
-        public string Snils
-        {
-            get { return GetProperty(() => Snils); }
-            set { SetProperty(() => Snils, value?.Trim()); }
-        }
-
         public bool? IsInArchive { get; set; } = false;
-        public string PassportSeries { get; set; }
-        public string PassportNo { get; set; }
-        public string PassportIssuanceDate { get; set; }
-        public string WhomIssued { get; set; }
-
-        public byte[] Img
-        {
-            get { return GetProperty(() => Img); }
-            set { SetProperty(() => Img, value); }
-        }
-
-
-        [NotMapped]
-        public ImageSource Image
-        {
-            get { return GetProperty(() => Image); }
-            set { SetProperty(() => Image, value); }
-        }
-
-        [NotMapped]
-        public string Photo
-        {
-            get { return GetProperty(() => Photo); }
-            set { SetProperty(() => Photo, value); }
-        }
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
@@ -157,13 +117,8 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(Gender, other.Gender, "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Телефон");
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
-                StringParamsIsEquel(Snils, other.Snils, "СНИЛС");
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
-                StringParamsIsEquel(PassportIssuanceDate, other.PassportIssuanceDate,  "Дата выдачи паспорта");
-                StringParamsIsEquel(WhomIssued, other.WhomIssued, "Кем выдан");
                 StringParamsIsEquel(Email, other.Email, "Email");
-                StringParamsIsEquel(PassportSeries, other.PassportSeries, "Серия паспорта");
-                StringParamsIsEquel(PassportNo, other.PassportNo, "Номер паспорта");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
@@ -187,25 +142,17 @@ namespace Dental.ViewModels.ClientDir
 
         public Client Copy(Client client)
         {
-            //client.Estimates = ;
             client.FirstName = FirstName;
             client.LastName = LastName;
             client.MiddleName = MiddleName;
             client.BirthDate = BirthDate;
             client.Gender = Gender;
-            client.Snils = Snils;
             client.Phone = Phone;
             client.Email = Email;
             client.Address = Address;
             client.Note = Note;
             client.IsInArchive = IsInArchive;
-            client.PassportSeries = PassportSeries;
-            client.PassportNo = PassportNo;
-            client.PassportIssuanceDate = PassportIssuanceDate;
-            client.WhomIssued = WhomIssued;
-            client.Image = Image;
-            client.Photo = Photo;
-            client.Img = Img;
+
             return client;
         }
     }

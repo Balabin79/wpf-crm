@@ -43,7 +43,7 @@
 
             <DockPanel LastChildFill="True">
 
-                    <TextBlock Text="Настройки" FontWeight="DemiBold" FontSize="14" Padding="7 4 5 0" />
+                    <TextBlock Text="Настройки" FontSize="16" Padding="7 4 5 0" />
                
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" Padding="0 2 5 0">

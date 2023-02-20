@@ -66,6 +66,7 @@
     <None Remove="Resources\Icons\invoice_green.png" />
     <None Remove="Resources\Icons\invoice_red.png" />
     <None Remove="Resources\Icons\invoice_yel.png" />
+    <None Remove="Resources\Icons\Large-Tiles.png" />
     <None Remove="Resources\Icons\lifeguard.png" />
     <None Remove="Resources\Icons\Lightning.png" />
     <None Remove="Resources\Icons\logo.ico" />
@@ -81,6 +82,7 @@
     <None Remove="Resources\Icons\sheduler4.png" />
     <None Remove="Resources\Icons\signature.png" />
     <None Remove="Resources\Icons\stamp.png" />
+    <None Remove="Resources\Icons\svg\bars.svg" />
     <None Remove="Resources\Icons\svg\boxes.svg" />
     <None Remove="Resources\Icons\svg\briefcase.svg" />
     <None Remove="Resources\Icons\svg\bullhorn.svg" />
@@ -95,6 +97,7 @@
     <None Remove="Resources\Icons\svg\file-alt.svg" />
     <None Remove="Resources\Icons\svg\file-invoice-dollar.svg" />
     <None Remove="Resources\Icons\svg\file-invoice.svg" />
+    <None Remove="Resources\Icons\svg\file-word.svg" />
     <None Remove="Resources\Icons\svg\file.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\folder.svg" />
@@ -106,6 +109,7 @@
     <None Remove="Resources\Icons\svg\hdd.svg" />
     <None Remove="Resources\Icons\svg\id-badge.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
+    <None Remove="Resources\Icons\svg\list-alt.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
     <None Remove="Resources\Icons\svg\logo.svg" />
     <None Remove="Resources\Icons\svg\logo2.svg" />
@@ -117,14 +121,22 @@
     <None Remove="Resources\Icons\svg\odnoklassniki.svg" />
     <None Remove="Resources\Icons\svg\opened_folder.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
+    <None Remove="Resources\Icons\svg\plus-add.svg" />
+    <None Remove="Resources\Icons\svg\plus.svg" />
     <None Remove="Resources\Icons\svg\podcast.svg" />
+    <None Remove="Resources\Icons\svg\price_tag.svg" />
+    <None Remove="Resources\Icons\svg\price_tag_usd.svg" />
     <None Remove="Resources\Icons\svg\question.svg" />
     <None Remove="Resources\Icons\svg\reg1.svg" />
+    <None Remove="Resources\Icons\svg\sale.svg" />
     <None Remove="Resources\Icons\svg\search-dollar.svg" />
     <None Remove="Resources\Icons\svg\Skype.png" />
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\sms.svg" />
+    <None Remove="Resources\Icons\svg\templates.svg" />
     <None Remove="Resources\Icons\svg\user-cog.svg" />
+    <None Remove="Resources\Icons\svg\user-friends.svg" />
+    <None Remove="Resources\Icons\svg\user-tag.svg" />
     <None Remove="Resources\Icons\svg\user-tie.svg" />
     <None Remove="Resources\Icons\svg\user.svg" />
     <None Remove="Resources\Icons\svg\user1.svg" />
@@ -184,6 +196,7 @@
     <None Remove="Resources\Icons\Template\Report.png" />
     <None Remove="Resources\Icons\Template\save.png" />
     <None Remove="Resources\Icons\Template\user-avatar.png" />
+    <None Remove="Resources\Icons\Three-Tags.png" />
     <None Remove="Resources\Icons\x-ray.png" />
     <None Remove="Resources\Icons\x-ray2.png" />
     <None Remove="Resources\Icons\zzz.png" />
@@ -285,6 +298,7 @@
     <Resource Include="Resources\Icons\invoice_green.png" />
     <Resource Include="Resources\Icons\invoice_red.png" />
     <Resource Include="Resources\Icons\invoice_yel.png" />
+    <Resource Include="Resources\Icons\Large-Tiles.png" />
     <Resource Include="Resources\Icons\Lightning.png" />
     <Resource Include="Resources\Icons\logo.png" />
     <Resource Include="Resources\Icons\logoFile.png" />
@@ -297,6 +311,7 @@
     <Resource Include="Resources\Icons\sheduler4.png" />
     <Resource Include="Resources\Icons\signature.png" />
     <Resource Include="Resources\Icons\stamp.png" />
+    <Resource Include="Resources\Icons\svg\bars.svg" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\briefcase.svg" />
     <Resource Include="Resources\Icons\svg\bullhorn.svg" />
@@ -308,6 +323,7 @@
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice.svg" />
+    <Resource Include="Resources\Icons\svg\file-word.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\folder.svg" />
     <Resource Include="Resources\Icons\svg\globe.svg" />
@@ -318,18 +334,27 @@
     <Resource Include="Resources\Icons\svg\hdd.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
+    <Resource Include="Resources\Icons\svg\list-alt.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\message.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
     <Resource Include="Resources\Icons\svg\mobile.svg" />
     <Resource Include="Resources\Icons\svg\odnoklassniki.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
+    <Resource Include="Resources\Icons\svg\plus-add.svg" />
+    <Resource Include="Resources\Icons\svg\plus.svg" />
     <Resource Include="Resources\Icons\svg\podcast.svg" />
+    <Resource Include="Resources\Icons\svg\price_tag.svg" />
+    <Resource Include="Resources\Icons\svg\price_tag_usd.svg" />
     <Resource Include="Resources\Icons\svg\question.svg" />
     <Resource Include="Resources\Icons\svg\reg1.svg" />
+    <Resource Include="Resources\Icons\svg\sale.svg" />
     <Resource Include="Resources\Icons\svg\search-dollar.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\sms.svg" />
+    <Resource Include="Resources\Icons\svg\templates.svg" />
+    <Resource Include="Resources\Icons\svg\user-friends.svg" />
+    <Resource Include="Resources\Icons\svg\user-tag.svg" />
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\svg\vk.svg" />
@@ -345,6 +370,7 @@
     <Resource Include="Resources\Icons\Template\org.png" />
     <Resource Include="Resources\Icons\Template\save.png" />
     <Resource Include="Resources\Icons\Template\user-avatar.png" />
+    <Resource Include="Resources\Icons\Three-Tags.png" />
     <Resource Include="Resources\Icons\x-ray.png" />
     <Resource Include="Resources\Icons\x-ray2.png" />
     <Resource Include="Resources\Icons\zzz.png" />
@@ -400,6 +426,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\ClientCategoriesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
    
@@ -536,6 +565,10 @@
     </Page>
     <Page Update="Views\Templates\TemplatesWin.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\WindowForms\ClientCategoriesWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\WindowForms\AdvertisingsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

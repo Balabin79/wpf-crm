@@ -50,19 +50,6 @@ namespace Dental.Models
             set { SetProperty(() => Email, value?.Trim()); }
         }
 
-        public byte[] Img
-        {
-            get { return GetProperty(() => Img); }
-            set { SetProperty(() => Img, value); }
-        }
-
-        [NotMapped]
-        public ImageSource Image
-        {
-            get { return GetProperty(() => Image); }
-            set { SetProperty(() => Image, value); }
-        }
-
         [NotMapped]
         public string Photo
         {

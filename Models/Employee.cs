@@ -22,6 +22,13 @@ namespace Dental.Models
         }
 
         [NotMapped]
+        public ImageSource Image
+        {
+            get { return GetProperty(() => Image); }
+            set { SetProperty(() => Image, value); }
+        }
+
+        [NotMapped]
         public string Fio
         {
             get => ToString();

@@ -50,7 +50,7 @@ using Dental.Views.About;
 
 namespace Dental.ViewModels.ClientDir
 {
-    public class ClientsViewModel : ViewModelBase, IImageDeletable, IImageSave
+    public class ClientsViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
 
@@ -91,7 +91,6 @@ namespace Dental.ViewModels.ClientDir
         public void LoadClients(bool isArhive = false)
         {        
             Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
-            foreach (var i in Clients) ImgLoading(i);
         }
 
         public void LoadInvoices()
@@ -104,63 +103,10 @@ namespace Dental.ViewModels.ClientDir
         {
 
             Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
-            foreach (var i in Employees)
-            {
-                ImgLoading(i);
-                i.IsVisible = false;
-            }
+            foreach (var i in Employees) i.IsVisible = false;        
         }
 
-        private void ImgLoading(AbstractUser model)
-        {
-            try
-            {
-                /*
-                if (model.Img == null) return;
-               
-                using (var ms = new MemoryStream(model.Img))
-                {
-                    BitmapImage biImg = new BitmapImage();
-                    biImg.BeginInit();
-                    biImg.StreamSource = ms;
-                    biImg.EndInit();
-
-
-
-                   // model.Image = new BitmapImage() { StreamSource = ms};
        
-                    model.Image = biImg;
-                }*/
-                      
-                    var config = new Config();
-                    var path = "";
-                    if (model is Employee) path = Config.PathToEmployeesDirectory;
-
-                    if (model is Client) 
-                        path = Config.PathToClientsPhotoDirectory;
-
-                    if (Directory.Exists(path))
-                    {
-                        var file = Directory.GetFiles(path)?.FirstOrDefault(f => f.Contains(model.Guid));
-                        if (file == null) return;
-
-                        using (var stream = new FileStream(file, FileMode.Open))
-                        {
-                            var img = new BitmapImage();
-                            img.BeginInit();
-                            img.CacheOption = BitmapCacheOption.OnLoad;
-                            img.StreamSource = stream;
-                            img.EndInit();
-                            img.Freeze();
-                            model.Image = img;
-                        }
-                    }
-                }
-            catch
-            {
-
-            }
-        }
 
         public ObservableCollection<Client> Clients
         {
@@ -360,7 +306,6 @@ namespace Dental.ViewModels.ClientDir
                 {
                     Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();                  
                 }
-                foreach (var i in Clients) ImgLoading(i);
             }
             catch (Exception e)
             {
@@ -1307,7 +1252,7 @@ namespace Dental.ViewModels.ClientDir
                     if (model != null)
                     {
                         model.Photo = param.ImagePath;
-                        if (param.EditValue is ImageSource img) model.Image = img;
+                       // if (param.EditValue is ImageSource img) model.Image = img;
                     }
                 }
             }
@@ -1339,7 +1284,7 @@ namespace Dental.ViewModels.ClientDir
                     if (model != null)
                     {
                         model.Photo = null;
-                        model.Image = null;
+                        //model.Image = null;
                     }
                     new Notification() { Content = "Фото клиента удалено!" }.run();
                 }

@@ -99,7 +99,7 @@ namespace Dental.Models
 
         public DbSet<RoleManagment> RolesManagment { get; set; }
 
-        public DbSet<Organization> Organizations { get; set; }
+        public DbSet<ClientCategory> ClientCategories { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Advertising> Advertising { get; set; }
 

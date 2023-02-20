@@ -31,11 +31,6 @@
                             
                             <dxg:GridControl.Columns>
                                 <dxg:GridColumn FieldName="FullName" Header="Фамилия Имя Отчество" />
-                                <dxg:GridColumn FieldName="Image" Width="60" FixedWidth="True" Header="Фото">
-                                    <dxg:GridColumn.EditSettings>
-                                        <dxe:ImageEditSettings ShowMenu="True" />
-                                    </dxg:GridColumn.EditSettings>
-                                </dxg:GridColumn>
                             </dxg:GridControl.Columns>
                             <dxg:GridControl.View>
                                 <dxg:TableView 

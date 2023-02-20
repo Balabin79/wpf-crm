@@ -26,6 +26,7 @@
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:ClientsViewModel x:Key="vm"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
+                    <adv:ClientCategoryViewModel x:Key="ccv"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
@@ -52,33 +53,46 @@
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                                Source="/Resources/Icons/clients3.png" />
-                    <TextBlock Text="Клиенты" FontSize="14" Padding="3 2 5 0" />
-                </StackPanel>
+
+                    <TextBlock Text="Клиенты" FontSize="16"  Padding="5 2 5 0" />
+                
 
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                     <dxb:ToolBarControl BarItemHorizontalIndent="5"
                         ShowDragWidget="False"   ShowBackground="False"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False"  BarItemDisplayMode="ContentAndGlyph">
-                       
+
                         <dxb:BarButtonItem Content="Добавить клиента"                                       
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding CreateCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"
-                                           />
+                                           >
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem Content="Шаблоны документов"                                    
                                            GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenFormDocumentsCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Customization.svg}"/>
+                                           Command="{Binding OpenFormDocumentsCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/file-word.svg" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem Content="Дополнительные поля"                                        
                                            GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenFormFieldsCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/EditNames.svg}"/>
+                                           Command="{Binding OpenFormFieldsCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/bars.svg" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
                                            GlyphSize="Small" Style="{Binding}"
@@ -86,7 +100,18 @@
                                            >
                             <dxb:BarButtonItem.GlyphTemplate>
                                 <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/adv3.png" />
+                                    <dx:DXImage Source="/Resources/Icons/svg/bullhorn.svg" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
+
+                        <dxb:BarButtonItem Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
+                                           GlyphSize="Small" Style="{Binding}"
+                                           Command="{Binding OpenWClientCategoryWindowCommand}" 
+                                           >
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/user-tag.svg" />
                                 </DataTemplate>
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
@@ -155,39 +180,17 @@
                                         <dxg:GridColumn.CellDisplayTemplate>
                                             <DataTemplate>
                                                 <Border BorderBrush="DimGray" Margin="2">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <ext:ImageEditEx                                            
-                                                            EditValue = "{Binding Row.Image, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
-                                                            IsReadOnly="True" Margin="0 0 5 0" Height="58" Width="58"  >
-                                                            <dxe:ImageEdit.EmptyContentTemplate>
-                                                                <ControlTemplate >
-                                                                    <Image Source="/Resources/Icons/Template/user-avatar.png"/>
-                                                                </ControlTemplate>
-                                                            </dxe:ImageEdit.EmptyContentTemplate>
-                                                        </ext:ImageEditEx>
-                                                        <StackPanel>
-
-                                                        <TextBlock Margin="0 2 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Margin="0 2 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis">
                                                     <Run FontSize="12"
                                                         FontWeight="DemiBold"
                                                         ToolTip="{Binding Row.Address}" 
                                                         Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay}"  />
                                                             </TextBlock>
 
-                                                            <TextBlock Margin="0 2 0 0" 
-                                                               TextWrapping="Wrap" 
-                                                               FontStyle="Italic"
-                                                               Text="{DXBinding Expr='(Row.BirthDate ?? `Дата рождения не заполнена`)', Converter={StaticResource birthToDateString}, Mode=OneWay}"
-                                                               ToolTip="{Binding Row.Address}" />
+                                                           
 
-                                                            <TextBlock Margin="0 2 0 0" 
-                                                               TextWrapping="Wrap" 
-                                                               FontStyle="Italic"
-                                                               ToolTip="{Binding Row.Address}" 
-                                                               TextTrimming="CharacterEllipsis"
-                                                               Text="{DXBinding Expr='(Row.Gender ?? `Пол не заполнен`)', Mode=OneWay}"  />
-
-                                                        </StackPanel>
+                                                   
                                                     </StackPanel>
                                                 </Border>
                                             </DataTemplate>
