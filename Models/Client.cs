@@ -35,6 +35,18 @@ namespace Dental.Models
         public string Note { get; set; }
         public bool? IsInArchive { get; set; } = false;
 
+        public ClientCategory ClientCategory
+        {
+            get { return GetProperty(() => ClientCategory); }
+            set { SetProperty(() => ClientCategory, value); }
+        }
+
+        public int? ClientCategoryId
+        {
+            get { return GetProperty(() => ClientCategoryId); }
+            set { SetProperty(() => ClientCategoryId, value); }
+        }
+
         public object Clone() => (Client)this.MemberwiseClone();
     }
 }

@@ -22,21 +22,28 @@ namespace Dental.ViewModels
 {
     public class ClientAppointmentWindowViewModel : AppointmentWindowViewModel
     {
-        public static ClientAppointmentWindowViewModel Create(AppointmentItem appointmentItem, SchedulerControl scheduler, ObservableCollection<Client> clients, ObservableCollection<Service> services, ObservableCollection<LocationAppointment> locations
+        private readonly ApplicationContext db;
+        public static ClientAppointmentWindowViewModel Create(
+            AppointmentItem appointmentItem, 
+            SchedulerControl scheduler, 
+            ShedulerViewModel vm
             )
         {
-            return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(appointmentItem, scheduler, clients, services, locations));
+            return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(appointmentItem, scheduler, vm));
         }
         
-        protected ClientAppointmentWindowViewModel(AppointmentItem appointmentItem, SchedulerControl scheduler,  ObservableCollection<Client> clients, 
-            ObservableCollection<Service> services,ObservableCollection<LocationAppointment> locations) : base(appointmentItem, scheduler)
+        protected ClientAppointmentWindowViewModel(
+            AppointmentItem appointmentItem,
+            SchedulerControl scheduler,
+            ShedulerViewModel vm
+            ) : base(appointmentItem, scheduler)
         {
-            Patients = clients;
-            Services = services;
-            Locations = locations;
+            Patients = vm.Clients;
+            Services = vm.ClassificatorCategories;
+            Locations = vm.LocationAppointments;
+            db = vm.db;
 
-
-            Patient = clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
+            Patient = vm.Clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
             if (CustomFields["Client"] is Client client)
             {
                 Patient = client;
@@ -139,6 +146,62 @@ namespace Dental.ViewModels
                 CustomFields["LocationId"] = newLocation?.Id;
             }
         }
+
+
+        [Command]
+        public void GenerateInvoice(object p)
+        {
+            try
+            {
+                if (Service == null || Patient == null)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Поля услуга и клиент должны быть заполнены!",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    return;
+                }
+
+                Employee employee = null;
+                if (Resource != null) employee = Resource.SourceObject as Employee;
+
+
+                    var item = new InvoiceItems
+                    {
+                        Count = 1,
+                        Price = Service?.Price,
+                        Name = Service?.Name,
+                        Code = Service?.Code,
+                    };
+
+
+                    var invoice = new Invoice()
+                    {
+                        Client = Patient,
+                        ClientId = Patient?.Id,
+                        Employee = employee,
+                        EmployeeId = employee?.Id,
+                        DateTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds(),
+                        Date = DateTime.Now.ToString(),
+                        Number = int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result) ? string.Format("{0:00000000}", ++result) : "00000001",
+                        Name = "Счет"
+                    };
+                    invoice.InvoiceItems.Add(item);
+
+                    db.Entry(invoice).State = EntityState.Added;
+                    if(db.SaveChanges() > 0)
+                    {
+                        ThemedMessageBox.Show(title: "Внимание", text: "Счет сформирован!",
+                            messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Information);
+                        return;
+                    }
+                
+
+            }
+            catch (Exception e)
+            {
+                new ViewModelLog(e).run();
+            }
+        }
+
 
         /**** File *****/
         protected IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }

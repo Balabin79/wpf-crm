@@ -26,6 +26,8 @@ namespace Dental.ViewModels.ClientDir
             Note = client.Note;
             IsInArchive = client.IsInArchive;
             Email = client.Email;
+            ClientCategory = client.ClientCategory;
+            ClientCategoryId = client.ClientCategoryId;
         }
 
         public int Id
@@ -91,6 +93,13 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Address, value?.Trim()); }
         }
 
+        public ClientCategory ClientCategory
+        {
+            get { return GetProperty(() => ClientCategory); }
+            set { SetProperty(() => ClientCategory, value); }
+        }
+        public int? ClientCategoryId { get; set; }
+        
         public string Note
         {
             get { return GetProperty(() => Note); }
@@ -119,6 +128,7 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
                 StringParamsIsEquel(Note, other.Note,  "Примечание");
                 StringParamsIsEquel(Email, other.Email, "Email");
+                StringParamsIsEquel(ClientCategory?.Guid, other.ClientCategory?.Guid, "Категория клиентов");
 
                 if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
@@ -152,6 +162,8 @@ namespace Dental.ViewModels.ClientDir
             client.Address = Address;
             client.Note = Note;
             client.IsInArchive = IsInArchive;
+            client.ClientCategory = ClientCategory;
+            client.ClientCategoryId = ClientCategoryId;
 
             return client;
         }

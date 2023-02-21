@@ -24,7 +24,7 @@ namespace Dental.Infrastructures.Converters
 
                 return cnt == 0 || price == 0
                     ?
-                    string.Format(CultureInfo.CurrentCulture, "{0:C2}", price)
+                    string.Format(CultureInfo.CurrentCulture, "{0:C2}", 0)
                     :
                     string.Format(CultureInfo.CurrentCulture, "{0:C2}", cnt * price);
             }

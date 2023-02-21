@@ -72,9 +72,6 @@ namespace Dental.Models
         public DbSet<ShedulerStatuses> ShedulerStatuses { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
 
-        public DbSet<UserActions> UserActions { get; set; }
-        public DbSet<Nomenclature> Nomenclature { get; set; }
-
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItems> InvoiceItems { get; set; }
 

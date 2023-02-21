@@ -32,9 +32,9 @@ using Dental.Views.About;
 
 namespace Dental.ViewModels
 {
-    class ShedulerViewModel : ViewModelBase
+    public class ShedulerViewModel : ViewModelBase
     {
-        private readonly ApplicationContext db;
+        public readonly ApplicationContext db;
         public ShedulerViewModel()
         {
             try

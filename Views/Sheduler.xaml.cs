@@ -25,12 +25,11 @@ namespace Dental.Views
         void OnAppointmentWindowShowing(object sender, AppointmentWindowShowingEventArgs e)
         {
             var vm = (ShedulerViewModel)((FrameworkElement)e.Source).DataContext;
+
             e.Window.DataContext = ClientAppointmentWindowViewModel.Create(
                 e.Appointment,
                 this.scheduler,
-                vm.Clients,
-                vm.ClassificatorCategories,
-                vm.LocationAppointments
+                vm
                 );
         }
         void OnDropAppointment(object sender, DropAppointmentEventArgs e)

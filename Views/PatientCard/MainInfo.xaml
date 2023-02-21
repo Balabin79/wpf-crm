@@ -141,9 +141,9 @@
                     <dxe:ComboBoxEdit 
                                   NullValueButtonPlacement="EditBox"
                                   NullText="Выберите категорию" ShowNullText="True"
-                                  ItemsSource="{Binding Providers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding ClientCategories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="Name"
-                                  EditValue="{Binding SettingsVM.ProviderMsg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                  EditValue="{Binding ClientInfoViewModel.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   >
                         <dxe:ComboBoxEdit.StyleSettings>

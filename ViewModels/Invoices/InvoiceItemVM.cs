@@ -16,12 +16,8 @@ namespace Dental.ViewModels.Invoices
         public delegate void SaveCommand(object m);
         public event SaveCommand EventSave;
 
-        public InvoiceItemVM(int type, ApplicationContext db)
-        {
-            if (type == 0) Collection = db.Services.ToArray();
-            else Collection = db.Nomenclature.ToArray();
-            
-        }
+        public InvoiceItemVM(ApplicationContext db) => Collection = db.Services.ToArray();
+
 
         public Invoice Invoice
         {
@@ -46,13 +42,6 @@ namespace Dental.ViewModels.Invoices
         {
             get { return GetProperty(() => Element); }
             set { SetProperty(() => Element, value); }
-        }
-
-
-        public int Type
-        {
-            get { return GetProperty(() => Type); }
-            set { SetProperty(() => Type, value); }
         }
 
         public int Count
@@ -90,11 +79,6 @@ namespace Dental.ViewModels.Invoices
                         if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = service;
                     }
-                    if (parameters.Tree.CurrentItem is Nomenclature item)
-                    {
-                        if (item.IsDir == 1) return;
-                        parameters.Popup.EditValue = item;
-                    }
                     parameters.Popup.ClosePopup();
                 }
             }
@@ -117,19 +101,6 @@ namespace Dental.ViewModels.Invoices
                     item.Price = service?.Price;
                     item.Name = service?.Name;
                     item.Code = service?.Code;
-                    item.ItemId = service?.Id;
-                    item.Item = service;
-                }
-
-                if (SelectedItem is Nomenclature nom)
-                {
-                    Model.Count = Count;
-                    Model.Type = Type;
-                    Model.Price = nom?.Price;
-                    Model.Name = nom?.Name;
-                    Model.Code = nom?.Code;
-                    item.ItemId = nom?.Id;
-                    item.Item = nom;
                 }
 
                 EventSave?.Invoke(item);

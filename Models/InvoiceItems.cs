@@ -22,24 +22,6 @@ namespace Dental.Models
             set { SetProperty(() => Code, value); }
         }
 
-        public int Type
-        {
-            get { return GetProperty(() => Type); }
-            set { SetProperty(() => Type, value); }
-        }
-
-        public IInvoiceItem Item
-        {
-            get { return GetProperty(() => Item); }
-            set { SetProperty(() => Item, value); }
-        }
-
-        public int? ItemId
-        {
-            get { return GetProperty(() => ItemId); }
-            set { SetProperty(() => ItemId, value); }
-        }
-
         public Invoice Invoice { get; set; }
         public int? InvoiceId { get; set; }       
 
@@ -56,5 +38,6 @@ namespace Dental.Models
         }
 
         public override string ToString() => Name + " (" + Code + ")";
+
     }
 }

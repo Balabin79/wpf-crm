@@ -92,6 +92,7 @@
     <None Remove="Resources\Icons\svg\coins.svg" />
     <None Remove="Resources\Icons\svg\database.svg" />
     <None Remove="Resources\Icons\svg\document.png" />
+    <None Remove="Resources\Icons\svg\edit.svg" />
     <None Remove="Resources\Icons\svg\envelope.svg" />
     <None Remove="Resources\Icons\svg\exclamation.svg" />
     <None Remove="Resources\Icons\svg\file-alt.svg" />
@@ -116,10 +117,12 @@
     <None Remove="Resources\Icons\svg\logo3.svg" />
     <None Remove="Resources\Icons\svg\logo33.svg" />
     <None Remove="Resources\Icons\svg\message.svg" />
+    <None Remove="Resources\Icons\svg\minus.svg" />
     <None Remove="Resources\Icons\svg\mobile-alt.svg" />
     <None Remove="Resources\Icons\svg\mobile.svg" />
     <None Remove="Resources\Icons\svg\odnoklassniki.svg" />
     <None Remove="Resources\Icons\svg\opened_folder.svg" />
+    <None Remove="Resources\Icons\svg\pen.svg" />
     <None Remove="Resources\Icons\svg\phone.svg" />
     <None Remove="Resources\Icons\svg\plus-add.svg" />
     <None Remove="Resources\Icons\svg\plus.svg" />
@@ -134,6 +137,8 @@
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\sms.svg" />
     <None Remove="Resources\Icons\svg\templates.svg" />
+    <None Remove="Resources\Icons\svg\times-circle.svg" />
+    <None Remove="Resources\Icons\svg\times.svg" />
     <None Remove="Resources\Icons\svg\user-cog.svg" />
     <None Remove="Resources\Icons\svg\user-friends.svg" />
     <None Remove="Resources\Icons\svg\user-tag.svg" />
@@ -319,6 +324,7 @@
     <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\cogs.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
+    <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
@@ -337,9 +343,11 @@
     <Resource Include="Resources\Icons\svg\list-alt.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
     <Resource Include="Resources\Icons\svg\message.svg" />
+    <Resource Include="Resources\Icons\svg\minus.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
     <Resource Include="Resources\Icons\svg\mobile.svg" />
     <Resource Include="Resources\Icons\svg\odnoklassniki.svg" />
+    <Resource Include="Resources\Icons\svg\pen.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
     <Resource Include="Resources\Icons\svg\plus-add.svg" />
     <Resource Include="Resources\Icons\svg\plus.svg" />
@@ -353,6 +361,8 @@
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\sms.svg" />
     <Resource Include="Resources\Icons\svg\templates.svg" />
+    <Resource Include="Resources\Icons\svg\times-circle.svg" />
+    <Resource Include="Resources\Icons\svg\times.svg" />
     <Resource Include="Resources\Icons\svg\user-friends.svg" />
     <Resource Include="Resources\Icons\svg\user-tag.svg" />
     <Resource Include="Resources\Icons\svg\user1.svg" />
@@ -402,9 +412,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Invoices\InvoiceWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\NomenclatureDir\NomenclatureWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\ChildTeethPage.xaml.cs">
@@ -489,10 +496,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Invoices\InvoiceWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\NomenclatureDir\NomenclatureWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

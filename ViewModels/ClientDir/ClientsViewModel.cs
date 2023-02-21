@@ -70,6 +70,9 @@ namespace Dental.ViewModels.ClientDir
                 Model = new Client();
 
                 Init(Model);
+
+                ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
+                Prices = db.Services.ToArray();
             }
             catch (Exception e)
             {
@@ -131,6 +134,13 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => Employees); }
             set { SetProperty(() => Employees, value); }
         }
+
+        public ObservableCollection<ClientCategory> ClientCategories
+        {
+            get { return GetProperty(() => ClientCategories); }
+            set { SetProperty(() => ClientCategories, value); }
+        }
+
         #endregion
 
         #region Переход из списка инвойсов или списков клиентов (загрузка карты)
@@ -433,7 +443,7 @@ namespace Dental.ViewModels.ClientDir
                     if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
                 }
             }
-            catch
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить счет в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
@@ -472,44 +482,108 @@ namespace Dental.ViewModels.ClientDir
 
         #endregion
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         #region Позиция в смете
+        public object[] Prices { get; set; }
+
+        [Command]
+        public void SelectItemInField(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.CurrentItem is Service service)
+                    {
+                        if (service.IsDir == 1) return;
+                        parameters.Popup.EditValue = service;
+                        if(((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems inv) inv.Price = service.Price;
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        [Command]
+        public void AddInvoiceItem(object p)
+        {
+            try
+            {
+                if (p is Invoice invoice)
+                {
+                    invoice.InvoiceItems.Add(new InvoiceItems() { Invoice = invoice, InvoiceId = invoice?.Id });
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [Command]
         public void OpenFormInvoiceItem(object p)
         {
             try
             {
-                if (p is InvoiceItemCommandParameters parameter)
+                if (p is Invoice invoice)
                 {
-                    var vm = new InvoiceItemVM(parameter.Param, db)
+                    var vm = new InvoiceItemVM(db)
                     {
-                        Invoice = parameter.Invoice,
-                        Type = parameter.Param,
-                        Title = parameter.Param == 0 ? "Услуга" : "Номенклатура",
-                        Model = new InvoiceItems() { Invoice = parameter.Invoice, InvoiceId = parameter.Invoice?.Id },
+                        Invoice = invoice,
+                        Title = "Позиция прайса",
+                        Model = new InvoiceItems() { Invoice = invoice, InvoiceId = invoice?.Id },
                     };
-                    vm.EventSave += SaveInvoiceItem;
+                    //vm.EventSave += SaveInvoiceItem;
                     new InvoiceItemWindow() { DataContext = vm }.Show();
                 }
 
                 if (p is InvoiceItems item)
                 {
-                    IInvoiceItem selected = null;
-                    if (item.Type == 0) selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
-                    else selected = db.Nomenclature.FirstOrDefault(f => f.Id == item.ItemId);
+                   // IInvoiceItem selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
 
-                    var vm = new InvoiceItemVM(item.Type, db)
+                    var vm = new InvoiceItemVM(db)
                     {
                         Invoice = item.Invoice,
-                        Type = item.Type,
                         Count = item.Count,
                         Price = item.Price,
-                        Title = item.Type == 0 ? "Услуга" : "Номенклатура",
-                        SelectedItem = selected,
-                        Element = selected,
+                        Title = "Позиция прайса",
+                        //SelectedItem = selected,
+                        //Element = selected,
                         Model = item
                     };
-                    vm.EventSave += SaveInvoiceItem;
+                   // vm.EventSave += SaveInvoiceItem;
                     new InvoiceItemWindow() { DataContext = vm }.Show();
                 }
             }
@@ -520,14 +594,30 @@ namespace Dental.ViewModels.ClientDir
         }
 
         [Command]
-        public void SaveInvoiceItem(object p)
+        public void SaveInvoiceItems(object p)
         {
             try
             {
-                if (p is InvoiceItems item)
+                if (p is Invoice invoice)
                 {
-                    if (item.Id == 0) { db.Entry(item).State = EntityState.Added; }
-                    db.SaveChanges();
+                    if(invoice.InvoiceItems?.Count > 0)
+                    {
+                        var items = invoice.InvoiceItems;
+
+                        foreach (var i in items.ToList())
+                        {
+                            if (string.IsNullOrEmpty(i.Name)) 
+                            {
+                                db.Entry(i).State = EntityState.Detached;
+                                invoice.InvoiceItems.Remove(i); 
+                                continue; 
+                            }
+                            if (i.Id == 0) { db.Entry(i).State = EntityState.Added; }
+                        }
+                    }
+
+
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
             catch (Exception e)
@@ -541,14 +631,33 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if (p is InvoiceItems item)
+                if (p is InvoiceItems item && item.Id > 0)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить услугу в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                     if (response.ToString() == "No") return;
+
+                    if (item.Invoice?.InvoiceItems?.Count > 0)
+                    {
+                        var items = item.Invoice.InvoiceItems;
+
+                        foreach (var i in items.ToList())
+                        {
+                            if (string.IsNullOrEmpty(i.Name) || i?.Id == 0)
+                            {
+                                db.Entry(i).State = EntityState.Detached;
+                                items.Remove(i);
+                                continue;
+                            }
+                        }
+                        items.Remove(item);
+                    }
+
                     item.Invoice = null;
 
-                    db.InvoiceItems.Remove(item);
-                    db.SaveChanges();
+                    //db.InvoiceItems.Remove(item);
+                    db.Entry(item).State = EntityState.Deleted;
+
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Позиция удалена из счета!" }.run();
                 }
             }
             catch (Exception e)
