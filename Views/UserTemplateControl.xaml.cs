@@ -13,17 +13,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Templates
+namespace Dental.Views
 {
-    public partial class Anamneses : UserControl
+    /// <summary>
+    /// Логика взаимодействия для UserTemplateControl.xaml
+    /// </summary>
+    public partial class UserTemplateControl : UserControl
     {
-        public Anamneses()
+        public UserTemplateControl()
         {
             InitializeComponent();
             var db = new ApplicationContext();
-            DataContext = new TreeBaseViewModel<Anamnes>(db, db?.Anamneses);
+            DataContext = new TreeBaseViewModel<UserTemplate>(db, db?.UserTemplates);
         }
     }
 }

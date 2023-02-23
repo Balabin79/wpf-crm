@@ -7,13 +7,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
-    [Table("Allergies")]
-    public class Allergy : BaseTemplate<Allergy>
+    [Table("UserTemplates")]
+    public class UserTemplate : BaseTemplate<UserTemplate>
     {
-      
+
+        public byte[] Img
+        {
+            get { return GetProperty(() => Img); }
+            set { SetProperty(() => Img, value); }
+        }
+
         public override object Clone()
         {
-            return new Allergy() 
+            return new UserTemplate() 
             {
                 IsDir = IsDir, 
                 Name = Name, 

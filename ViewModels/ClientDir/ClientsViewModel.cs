@@ -767,73 +767,15 @@ namespace Dental.ViewModels.ClientDir
                 {
                     var vm = new SelectTemplateInTreatmentStageVM() { TemplateName = parameters.Name, Model = model, VM = this };
 
-                    switch (parameters.Name)
-                    {
-                        case "Complaint":
-                            vm.Templates = db.Complaints.Select(f => new TreeTemplate()
+   
+                            vm.Templates = db.UserTemplates.Select(f => new TreeTemplate()
                             {
                                 Id = f.Id,
                                 IsDir = f.IsDir,
                                 ParentId = f.ParentId,
                                 Name = f.Name
-                            }).ToArray(); break;
-                        case "Anamnes":
-                            vm.Templates = db.Anamneses.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Objectivly":
-                            vm.Templates = db.Objectively.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "DescriptionXRay":
-                            vm.Templates = db.DescriptionXRay.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Diagnos":
-                            vm.Templates = db.Diagnoses.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Plan":
-                            vm.Templates = db.TreatmentPlans.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Treatment":
-                            vm.Templates = db.Diaries.Select(f => new TreeTemplate() // override on Treatment
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                        case "Allergy":
-                            vm.Templates = db.Allergies.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentId = f.ParentId,
-                                Name = f.Name
-                            }).ToArray(); break;
-                    }
+                            }).ToArray(); 
+                    
                     new SelectValueInTemplateWin() { DataContext = vm }?.ShowDialog();
                 }
             }
@@ -855,13 +797,6 @@ namespace Dental.ViewModels.ClientDir
 
                     switch (vm.TemplateName)
                     {
-                        case "Complaint": ClientStages[idx].Complaints = str.ToString(); break;
-                        case "Anamnes": ClientStages[idx].Anamneses = str.ToString(); break;
-                        case "Objectivly": ClientStages[idx].Objectively = str.ToString(); break;
-                        case "DescriptionXRay": ClientStages[idx].DescriptionXRay = str.ToString(); break;
-                        case "Diagnos": ClientStages[idx].Diagnoses = str.ToString(); break;
-                        case "Plan": ClientStages[idx].Plans = str.ToString(); break;
-                        case "Treatment": ClientStages[idx].Treatments = str.ToString(); break;
                         case "Allergy": ClientStages[idx].Allergies = str.ToString(); break;
                     }
                     win?.Close();
@@ -889,13 +824,6 @@ namespace Dental.ViewModels.ClientDir
 
                         switch (parameters.Name)
                         {
-                            case "Complaint": model.Complaints = null; break;
-                            case "Anamnes": model.Anamneses = null; break;
-                            case "Objectivly": model.Objectively = null; break;
-                            case "DescriptionXRay": model.DescriptionXRay = null; break;
-                            case "Diagnos": model.Diagnoses = null; break;
-                            case "Plan": model.Plans = null; break;
-                            case "Treatment": model.Treatments = null; break;
                             case "Allergy": model.Allergies = null; break;
                             case "Recomendation": model.Recommendations = null; break;
                         }
@@ -1229,94 +1157,6 @@ namespace Dental.ViewModels.ClientDir
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
         #endregion
 
-        #region Управление фото
-
-        [Command]
-        public void ImageSave(object p)
-        {
-            try
-            {
-                /*if (p is ImageEditEx param)
-                {
-                    byte[] imageData;
-                    using (FileStream fs = new FileStream(param.ImagePath, FileMode.Open))
-                    {
-                        imageData = new byte[fs.Length];
-                        fs.Read(imageData, 0, imageData.Length);
-                        Model.Img = imageData;
-                        db.SaveChanges();
-                    }
-                }*/
-
-                if (p is ImageEditEx param)
-                {
-                    if (!Directory.Exists(Config.PathToClientsPhotoDirectory)) Directory.CreateDirectory(Config.PathToClientsPhotoDirectory);
-
-                    var oldPhoto = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(param?.ImageGuid));
-
-                    if (oldPhoto != null && File.Exists(oldPhoto))
-                    {
-                        var response = ThemedMessageBox.Show(title: "Вы уверены?", text: "Заменить текущее фото клиента?",
-                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                        if (response.ToString() == "No") return;
-                        File.SetAttributes(oldPhoto, FileAttributes.Normal);
-                        File.Delete(oldPhoto);
-                    }
-
-                    FileInfo photo = new FileInfo(Path.Combine(param.ImagePath));
-                    string fileFullName = Path.Combine(Config.PathToClientsPhotoDirectory, param.ImageGuid + photo.Extension);
-                    photo.CopyTo(fileFullName, true);
-                    File.SetAttributes(fileFullName, FileAttributes.Normal);
-                    new Notification() { Content = "Фото клиента сохраненo!" }.run();
-                    var model = Clients.FirstOrDefault(f => f.Guid == param?.ImageGuid);
-                    if (model != null)
-                    {
-                        model.Photo = param.ImagePath;
-                       // if (param.EditValue is ImageSource img) model.Image = img;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
-        public void ImageDelete(object p)
-        {
-            try
-            {
-                if (p is ImageEditEx img)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить фото клиента?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                    if (response.ToString() == "No") return;
-
-                    var file = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
-
-                    if (file != null) 
-                    {
-                        File.SetAttributes(file, FileAttributes.Normal);
-                        File.Delete(file); 
-                    }
-                    img?.Clear();
-                    var model = Clients.FirstOrDefault(f => f.Guid == img?.ImageGuid);
-                    if (model != null)
-                    {
-                        model.Photo = null;
-                        //model.Image = null;
-                    }
-                    new Notification() { Content = "Фото клиента удалено!" }.run();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
-        #endregion
 
         #region команды, связанных с прикреплением файлов        
         public string PathToUserFiles

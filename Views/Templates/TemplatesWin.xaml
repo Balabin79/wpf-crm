@@ -18,7 +18,6 @@
     <Window.Resources>
         <ResourceDictionary>
             <converter:FormTreeMultiBindingConverter x:Key="FormConv" />
-            <model:Allergy x:Key="model" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>

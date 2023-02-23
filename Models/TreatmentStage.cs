@@ -15,54 +15,13 @@ namespace Dental.Models
 
         public string Teeth { get; set; }
 
-        public string Diagnoses
-        {
-            get { return GetProperty(() => Diagnoses); }
-            set { SetProperty(() => Diagnoses, value); }
-        }
-
-        public string Complaints
-        {
-            get { return GetProperty(() => Complaints); }
-            set { SetProperty(() => Complaints, value); }
-        }
-
-        public string Objectively
-        {
-            get { return GetProperty(() => Objectively); }
-            set { SetProperty(() => Objectively, value); }
-        }        
-        
-        public string DescriptionXRay
-        {
-            get { return GetProperty(() => DescriptionXRay); }
-            set { SetProperty(() => DescriptionXRay, value); }
-        }        
-        
-        public string Anamneses
-        {
-            get { return GetProperty(() => Anamneses); }
-            set { SetProperty(() => Anamneses, value); }
-        }        
-        
-        public string Plans
-        {
-            get { return GetProperty(() => Plans); }
-            set { SetProperty(() => Plans, value); }
-        }        
-        
+     
         public string Allergies
         {
             get { return GetProperty(() => Allergies); }
             set { SetProperty(() => Allergies, value); }
         }        
-        
-        public string Treatments
-        {
-            get { return GetProperty(() => Treatments); }
-            set { SetProperty(() => Treatments, value); }
-        }
-          
+              
         public string Recommendations
         {
             get { return GetProperty(() => Recommendations); }

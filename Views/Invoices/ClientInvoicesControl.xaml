@@ -99,7 +99,15 @@
                                     MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                                 <dxg:GridControl.Columns>
-                                    <dxg:GridColumn Header="Наименование" Width="9*" MinWidth="300" FieldName="Name" x:Name="ServiceField">
+                                    <dxg:GridColumn  Width="9*" MinWidth="300" FieldName="Name" x:Name="ServiceField">
+                                        <dxg:GridColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal"  >
+                                                    <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
+                                                    <TextBlock Text="Наименование" Margin="3 0 0 0" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.HeaderTemplate>
                                         <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock 
@@ -394,7 +402,7 @@
                                 />
                             <dxb:BarButtonItem 
                                     Content="Сохранить"                                                            
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
                                     Command="{Binding ElementName=grid, Path=DataContext.SaveInvoiceCommand}"
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
@@ -512,21 +520,24 @@
                 <dxg:GridColumn.HeaderTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal"  >
-                            <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
+                            <svgc:SvgViewbox Source="/Resources/Icons/svg/sort.svg" Height="9"  />
                             <TextBlock Text="Номер" Margin="3 0 0 0" />
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0 3 0 0"  Text="{ DXBinding Expr='`№ `+ Row.Number', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                        </StackPanel>
+                        <TextBlock Margin="0 3 0 0"  Text="{ DXBinding Expr='`№ `+ Row.Number', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
-                        <dxe:TextEdit Margin="0 3 0 0"  EditValue="{ Binding Row.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                        <dxe:TextEdit
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0 3 0 0"  
+                            HorizontalAlignment="Stretch"
+                            EditValue="{ Binding Row.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                            TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellEditTemplate>
             </dxg:GridColumn>
@@ -541,11 +552,14 @@
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
-                        <dxe:DateEdit Margin="0,0,8,0" Mask="D" MaskType="DateTime" 
-                                      DisplayFormatString="D"  x:Name="DateEdit"
-                                      EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D,
+                        <dxe:DateEdit
+                            HorizontalAlignment="Stretch"
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Margin="0,0,8,0" Mask="D" MaskType="DateTime" 
+                            DisplayFormatString="D"  x:Name="DateEdit"
+                            EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D,
                                                      UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            >
                             </dxe:DateEdit>
                     </DataTemplate>
                 </dxg:GridColumn.CellEditTemplate>
@@ -562,19 +576,20 @@
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
                         <dxe:ComboBoxEdit
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Stretch"
                             NullValueButtonPlacement="EditBox"
-                                        ItemsSource="{Binding ElementName=grid, Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Сотрудники" 
-                                        IsTextEditable="False"
-                                        DisplayMember="Fio"
-                                        IncrementalFiltering="True"
-                                        IncrementalSearch="True"
-                                        IsCaseSensitiveFilter="False"
-                                        ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding Row.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
-                                <dxe:ComboBoxEdit.StyleSettings>
+                            ItemsSource="{Binding ElementName=grid, Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                            NullText="Сотрудники" 
+                            IsTextEditable="False"
+                            DisplayMember="Fio"
+                            IncrementalFiltering="True"
+                            IncrementalSearch="True"
+                            IsCaseSensitiveFilter="False"
+                            ValidateOnTextInput="False"
+                            SelectedItem ="{Binding Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                            EditValue ="{Binding Row.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            <dxe:ComboBoxEdit.StyleSettings>
                                     <dxe:RadioComboBoxStyleSettings />
                                 </dxe:ComboBoxEdit.StyleSettings>
                             </dxe:ComboBoxEdit>
@@ -592,6 +607,7 @@
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
                         <dxe:CheckEdit
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             HorizontalAlignment="Center"
                             EditValue="{Binding Row.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                     </DataTemplate>
@@ -601,14 +617,15 @@
             <dxg:GridColumn FieldName="Advertising"  Header="Реклама"  Width="1*" HorizontalHeaderContentAlignment="Center">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
+                        <TextBlock 
+                            HorizontalAlignment="Center"
                             Margin="0 3 0 0"  Text="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
                         <dxe:ComboBoxEdit 
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Stretch"
                                 NullValueButtonPlacement="EditBox"
                                         ItemsSource="{Binding  ElementName=grid, Path=DataContext.Advertisings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Рекламные источники" 
@@ -619,7 +636,8 @@
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
                                         SelectedItem ="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                                        EditValue ="{Binding Row.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                 <dxe:RadioComboBoxStyleSettings />
                             </dxe:ComboBoxEdit.StyleSettings>

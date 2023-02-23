@@ -100,6 +100,8 @@
     <None Remove="Resources\Icons\svg\file-invoice.svg" />
     <None Remove="Resources\Icons\svg\file-word.svg" />
     <None Remove="Resources\Icons\svg\file.svg" />
+    <None Remove="Resources\Icons\svg\file_tree.svg" />
+    <None Remove="Resources\Icons\svg\folder-open.svg" />
     <None Remove="Resources\Icons\svg\folder.png" />
     <None Remove="Resources\Icons\svg\folder.svg" />
     <None Remove="Resources\Icons\svg\globe.svg" />
@@ -109,6 +111,8 @@
     <None Remove="Resources\Icons\svg\google_mail.svg" />
     <None Remove="Resources\Icons\svg\hdd.svg" />
     <None Remove="Resources\Icons\svg\id-badge.svg" />
+    <None Remove="Resources\Icons\svg\image.svg" />
+    <None Remove="Resources\Icons\svg\images.svg" />
     <None Remove="Resources\Icons\svg\info.svg" />
     <None Remove="Resources\Icons\svg\list-alt.svg" />
     <None Remove="Resources\Icons\svg\list.svg" />
@@ -136,6 +140,8 @@
     <None Remove="Resources\Icons\svg\Skype.png" />
     <None Remove="Resources\Icons\svg\skype.svg" />
     <None Remove="Resources\Icons\svg\sms.svg" />
+    <None Remove="Resources\Icons\svg\sort-numeric-down.svg" />
+    <None Remove="Resources\Icons\svg\sort.svg" />
     <None Remove="Resources\Icons\svg\templates.svg" />
     <None Remove="Resources\Icons\svg\times-circle.svg" />
     <None Remove="Resources\Icons\svg\times.svg" />
@@ -331,6 +337,8 @@
     <Resource Include="Resources\Icons\svg\file-invoice.svg" />
     <Resource Include="Resources\Icons\svg\file-word.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
+    <Resource Include="Resources\Icons\svg\file_tree.svg" />
+    <Resource Include="Resources\Icons\svg\folder-open.svg" />
     <Resource Include="Resources\Icons\svg\folder.svg" />
     <Resource Include="Resources\Icons\svg\globe.svg" />
     <Resource Include="Resources\Icons\svg\gmail-mail.svg" />
@@ -339,6 +347,8 @@
     <Resource Include="Resources\Icons\svg\google_mail.svg" />
     <Resource Include="Resources\Icons\svg\hdd.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
+    <Resource Include="Resources\Icons\svg\image.svg" />
+    <Resource Include="Resources\Icons\svg\images.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
     <Resource Include="Resources\Icons\svg\list-alt.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
@@ -360,6 +370,8 @@
     <Resource Include="Resources\Icons\svg\search-dollar.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\sms.svg" />
+    <Resource Include="Resources\Icons\svg\sort-numeric-down.svg" />
+    <Resource Include="Resources\Icons\svg\sort.svg" />
     <Resource Include="Resources\Icons\svg\templates.svg" />
     <Resource Include="Resources\Icons\svg\times-circle.svg" />
     <Resource Include="Resources\Icons\svg\times.svg" />
@@ -519,41 +531,6 @@
     <Page Update="Views\PatientCard\PatientsList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Xray.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Objectivelies.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\TreatmentPlans.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Complaints.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Diaries.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Diagnoses.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Anamneses.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\Allergies.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Templates\TemplatesWin.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\WindowForms\ClientCategoriesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

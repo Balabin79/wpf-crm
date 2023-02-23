@@ -82,14 +82,7 @@ namespace Dental.Models
 
         public DbSet<IndividualPrice> IndividualPrice { get; set; }
 
-        public DbSet<Diagnos> Diagnoses { get; set; }
-        public DbSet<Diary> Diaries { get; set; }
-        public DbSet<Allergy> Allergies { get; set; }
-        public DbSet<TreatmentPlan> TreatmentPlans { get; set; }
-        public DbSet<Anamnes> Anamneses { get; set; }
-        public DbSet<Complaint> Complaints { get; set; }
-        public DbSet<DescriptionXRay> DescriptionXRay { get; set; }
-        public DbSet<Objectively> Objectively { get; set; }
+        public DbSet<UserTemplate> UserTemplates { get; set; }
 
         public DbSet<TreatmentStage> TreatmentStage { get; set; }
         public DbSet<Setting> Settings { get; set; }

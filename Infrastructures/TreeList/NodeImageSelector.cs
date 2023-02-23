@@ -8,6 +8,9 @@ using DevExpress.Xpf.Grid;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Dental.Models.Base;
+using SharpVectors;
+using DevExpress.Utils.Svg;
+using DevExpress.Xpf.Core.Native;
 
 namespace Dental.Infrastructures.TreeList
 {
@@ -17,12 +20,17 @@ namespace Dental.Infrastructures.TreeList
         public ImageSource Closed { get; set; } 
         public ImageSource File { get; set; } 
 
-        public override System.Windows.Media.ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
+
+        public override ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
         {
 
-            Open = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_open_gnone_32.png"));
-            Closed = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_closed_gnone_32.png"));
-            File = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/RichEdit/PenColor_32x32.png"));
+            // Open = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_open_gnone_32.png"));
+            // Closed = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/folder_closed_gnone_32.png"));
+            //File = new BitmapImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/Images/RichEdit/PenColor_32x32.png"));
+            Open = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/folder-open.svg"));
+            Closed = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/folder.svg"));
+            File = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/file.svg"));
+                
 
 
             var template = rowData.Row as ITree;
