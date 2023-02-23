@@ -6,7 +6,6 @@ using System;
 using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
-using Dental.ViewModels.Invoices;
 using Dental.ViewModels.AdditionalFields;
 
 namespace Dental.Views.PatientCard

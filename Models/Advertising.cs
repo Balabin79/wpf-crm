@@ -49,8 +49,6 @@ namespace Dental.Models
                 SetProperty(() => DateTo, value);
             }
         }
-        private string dateTo;
-        
 
         public decimal? Cost { get; set; }
 
@@ -58,5 +56,7 @@ namespace Dental.Models
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
+        public override string ToString() => Name;
+
     }
 }

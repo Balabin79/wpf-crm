@@ -16,12 +16,6 @@ namespace Dental.Models
             InvoiceItems = new ObservableCollection<InvoiceItems>();
         }
 
-        public string Name
-        {
-            get { return GetProperty(() => Name); }
-            set { SetProperty(() => Name, value); }
-        }
-
         public string Date
         {
             get { return GetProperty(() => Date); }
@@ -38,7 +32,7 @@ namespace Dental.Models
         public Advertising Advertising { get; set; }
 
         public string Number { get; set; }
-        public int? Paid { get; set; }
+        public int? Paid { get; set; } = 0;
 
         [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
         public Client Client

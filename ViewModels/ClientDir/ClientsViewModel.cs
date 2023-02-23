@@ -21,7 +21,6 @@ using Dental.ViewModels.AdditionalFields;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Extensions.Notifications;
-using Dental.ViewModels.Invoices;
 using Dental.Models.Base;
 using Dental.Infrastructures.Extensions;
 using DevExpress.Xpf.Editors;
@@ -61,7 +60,6 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-
                 db = new ApplicationContext();
                 Config = new Config();
                 LoadClients();
@@ -73,6 +71,7 @@ namespace Dental.ViewModels.ClientDir
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
                 Prices = db.Services.ToArray();
+                Advertisings = db.Advertising.ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -104,12 +103,9 @@ namespace Dental.ViewModels.ClientDir
 
         public void LoadEmployees()
         {
-
             Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Employees) i.IsVisible = false;        
         }
-
-       
 
         public ObservableCollection<Client> Clients
         {
@@ -140,10 +136,18 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => ClientCategories); }
             set { SetProperty(() => ClientCategories, value); }
         }
+                
+        public ObservableCollection<Advertising> Advertisings
+        {
+            get { return GetProperty(() => Advertisings); }
+            set { SetProperty(() => Advertisings, value); }
+        }
 
         #endregion
 
         #region Переход из списка инвойсов или списков клиентов (загрузка карты)
+
+
         [Command]
         public void Load(object p)
         {
@@ -265,7 +269,7 @@ namespace Dental.ViewModels.ClientDir
                 //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
                 if (!string.IsNullOrEmpty(InvoiceNameSearch?.ToString()))
                 {
-                    Invoices = Invoices.Where(f => f.Name.ToLower().Contains(InvoiceNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
+                    Invoices = Invoices.Where(f => f.Number.Contains(InvoiceNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
                 }
 
                 if (Application.Current.Resources["Router"] is MainViewModel nav &&
@@ -334,6 +338,7 @@ namespace Dental.ViewModels.ClientDir
                 IsReadOnly = model?.Id != 0;
 
                 // загружаем инвойсы и дневники отдельного клиента
+
                 ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
                 // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
                 ShowPaid = null;
@@ -369,79 +374,76 @@ namespace Dental.ViewModels.ClientDir
         #region Работа с разделом карты "Счета"
         #region Счета
         [Command]
-        public void OpenFormInvoice(object p)
+        public void AddInvoice(object p)
         {
             try
             {
-                Invoice invoice;
-
-                if (p is Invoice inv) invoice = inv;
-                else
+                if (p is Client client)
                 {
                     var date = DateTime.Now;
-                    invoice = new Invoice()
+                    ClientInvoices.Add(new Invoice
                     {
                         Number = NewInvoiceNumberGenerate(),
                         Date = date.ToString(),
                         DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                        Paid = 0
-                    };
+                        Client = client,
+                        ClientId = client?.Id
+                    });
                 }
-
-                var advertisings = db.Advertising.ToArray();
-                var vm = new InvoiceVM(Employees, advertisings)
-                {
-                    Name = invoice.Name,
-                    Number = invoice.Number,
-                    Date = invoice.Date,
-                    DateTimestamp = invoice.DateTimestamp,
-                    Employee = Employees.FirstOrDefault(f => f.Id == invoice?.Employee?.Id),
-                    Advertising = advertisings.FirstOrDefault(f => f.Id == invoice.AdvertisingId),
-                    Paid = invoice.Paid,
-                    Model = invoice
-                };
-                vm.EventSave += SaveInvoice;
-                new InvoiceWindow() { DataContext = vm }.Show();
             }
-            catch
+            catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму счета!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+
             }
         }
 
-        public void SaveInvoice(object p)
-        {
+        [Command]
+        public void SaveInvoice()
+        {    
             try
             {
-                if (p is Invoice invoice)
+                #region Lic
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
                 {
-                    invoice.Client = Model;
-                    invoice.ClientId = Model.Id;
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                #endregion
 
+                foreach(var invoice in ClientInvoices.ToList())
+                {
                     if (invoice.Id == 0)
                     {
                         db.Entry(invoice).State = EntityState.Added;
-                        ClientInvoices?.Add(invoice);
                         Invoices?.Add(invoice);
                     }
 
-                    /************************/
-                    if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                    if (invoice.InvoiceItems?.Count > 0)
                     {
-                        ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                        Environment.Exit(0);
-                    }
-                    if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
-                    {
-                        ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                        Environment.Exit(0);
-                    }
-                    /************************/
+                        var items = invoice.InvoiceItems;
 
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет сохранен в базу данных!" }.run();
+                        foreach (var i in items.ToList())
+                        {
+                            if (string.IsNullOrEmpty(i.Name))
+                            {
+                                i.Invoice = null;
+                                db.Entry(i).State = EntityState.Detached;
+                                invoice.InvoiceItems.Remove(i);
+                                continue;
+                            }
+                            if (i.Id == 0) { db.Entry(i).State = EntityState.Added; }
+                        }
+                    }
                 }
+
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
@@ -456,20 +458,32 @@ namespace Dental.ViewModels.ClientDir
             {
                 if (p is Invoice invoice)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
+                    if (invoice.Id > 0)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return;
 
-                    db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                    db.Entry(invoice).State = EntityState.Deleted;
+                        invoice.InvoiceItems = null;
+                        db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.Entry(invoice).State = EntityState.Deleted;
 
+                    }
+                    else 
+                    {
+                        db.Entry(invoice).State = EntityState.Detached;
+                    }
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "Счет удален из базы данных!" }.run();
+                    }
+
+                    // удаляем из списков в карте и в общем списке счетов
                     // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    var inv = Invoices.FirstOrDefault(f => f.Id == invoice.Id);
+                    var inv = Invoices.FirstOrDefault(f => f.Guid == invoice.Guid);
                     if (inv != null) Invoices.Remove(inv);
 
-                    var clientInv = ClientInvoices.FirstOrDefault(f => f.Id == invoice.Id);
+                    var clientInv = ClientInvoices.FirstOrDefault(f => f.Guid == invoice.Guid);
                     if (clientInv != null) ClientInvoices.Remove(clientInv);
-
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Счет удален из базы данных!" }.run();
                 }
             }
             catch
@@ -478,22 +492,17 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        private string NewInvoiceNumberGenerate() => int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int result) ? string.Format("{0:00000000}", ++result) : "00000001";
-
+        private string NewInvoiceNumberGenerate()
+        {
+            if (int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int invoicesNumber) &&
+                int.TryParse(ClientInvoices.LastOrDefault()?.Number, out int clientInvoicesNumber))
+            {
+                if (clientInvoicesNumber > invoicesNumber) return string.Format("{0:00000000}", ++clientInvoicesNumber);
+                return string.Format("{0:00000000}", ++invoicesNumber);
+            }
+            return "00000001";
+        }
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         #region Позиция в смете
         public object[] Prices { get; set; }
@@ -509,7 +518,11 @@ namespace Dental.ViewModels.ClientDir
                     {
                         if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = service;
-                        if(((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems inv) inv.Price = service.Price;
+                        if (((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems item) 
+                        {
+                            item.Price = service.Price;
+                            item.Code = service.Code;
+                        }
                     }
                     parameters.Popup.ClosePopup();
                 }
@@ -536,128 +549,27 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        [Command]
-        public void OpenFormInvoiceItem(object p)
-        {
-            try
-            {
-                if (p is Invoice invoice)
-                {
-                    var vm = new InvoiceItemVM(db)
-                    {
-                        Invoice = invoice,
-                        Title = "Позиция прайса",
-                        Model = new InvoiceItems() { Invoice = invoice, InvoiceId = invoice?.Id },
-                    };
-                    //vm.EventSave += SaveInvoiceItem;
-                    new InvoiceItemWindow() { DataContext = vm }.Show();
-                }
-
-                if (p is InvoiceItems item)
-                {
-                   // IInvoiceItem selected = db.Services.FirstOrDefault(f => f.Id == item.ItemId);
-
-                    var vm = new InvoiceItemVM(db)
-                    {
-                        Invoice = item.Invoice,
-                        Count = item.Count,
-                        Price = item.Price,
-                        Title = "Позиция прайса",
-                        //SelectedItem = selected,
-                        //Element = selected,
-                        Model = item
-                    };
-                   // vm.EventSave += SaveInvoiceItem;
-                    new InvoiceItemWindow() { DataContext = vm }.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму добавления услуги!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void SaveInvoiceItems(object p)
-        {
-            try
-            {
-                if (p is Invoice invoice)
-                {
-                    if(invoice.InvoiceItems?.Count > 0)
-                    {
-                        var items = invoice.InvoiceItems;
-
-                        foreach (var i in items.ToList())
-                        {
-                            if (string.IsNullOrEmpty(i.Name)) 
-                            {
-                                db.Entry(i).State = EntityState.Detached;
-                                invoice.InvoiceItems.Remove(i); 
-                                continue; 
-                            }
-                            if (i.Id == 0) { db.Entry(i).State = EntityState.Added; }
-                        }
-                    }
-
-
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                }
-            }
-            catch (Exception e)
-            {
-                (new ViewModelLog(e)).run();
-            }
-        }
-
         [Command]
         public void DeleteInvoiceItem(object p)
         {
             try
             {
-                if (p is InvoiceItems item && item.Id > 0)
+                if (p is InvoiceItems item)
                 {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-
-                    if (item.Invoice?.InvoiceItems?.Count > 0)
+                    var items = item.Invoice.InvoiceItems;
+                    if (item.Id > 0)
                     {
-                        var items = item.Invoice.InvoiceItems;
-
-                        foreach (var i in items.ToList())
-                        {
-                            if (string.IsNullOrEmpty(i.Name) || i?.Id == 0)
-                            {
-                                db.Entry(i).State = EntityState.Detached;
-                                items.Remove(i);
-                                continue;
-                            }
-                        }
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return;
+                        item.Invoice = null;
+                        db.Entry(item).State = EntityState.Deleted;
                         items.Remove(item);
+                        db.SaveChanges();
+                        new Notification() { Content = "Позиция удалена из счета!" }.run();
+                        return;
                     }
-
-                    item.Invoice = null;
-
-                    //db.InvoiceItems.Remove(item);
-                    db.Entry(item).State = EntityState.Deleted;
-
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Позиция удалена из счета!" }.run();
+                    db.Entry(item).State = EntityState.Detached;
+                    items.Remove(item);
                 }
             }
             catch (Exception e)

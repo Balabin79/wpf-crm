@@ -9,7 +9,6 @@
     xmlns:commands="clr-namespace:Dental.Infrastructures.Commands" 
     xmlns:services="clr-namespace:Dental.Services" 
     dx:ThemeManager.ThemeName="Office2019White"
-    xmlns:vm ="clr-namespace:Dental.ViewModels.Invoices"
     xmlns:local ="clr-namespace:Dental.Views.PatientCard"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
@@ -143,7 +142,7 @@
                 </dxe:DateEdit>
             </StackPanel>
             <DockPanel>
-                <dxe:ButtonEdit Width="172"  AllowDefaultButton="false" Margin="0 5 0 5" NullText="Название счета" DockPanel.Dock="Left"
+                <dxe:ButtonEdit Width="172" Mask="d" MaskType="Numeric" AllowDefaultButton="false" Margin="0 5 0 5" NullText="Номер счета" DockPanel.Dock="Left"
                                 EditValue="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
                 
 
@@ -198,25 +197,7 @@
                 <dxg:GridColumn FieldName="Name" Header="Название" Width="2*" UnboundType="String" ReadOnly="True" >
                     <dxg:GridColumn.CellDisplayTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock TextWrapping="Wrap" Text="{DXBinding Expr='Row.Name  + ` (№` + Row.Number + `)` ?? `Название не заполнено` + ` (№` + Row.Number + `)`'}" Margin="3 0 0 0" FontWeight="DemiBold"/>
-                                <TextBlock Margin="3 0 0 0">
-                                    <Run Text="Дата счета: " FontWeight="DemiBold" Foreground="DarkGreen"/>
-                                    <Run Text="{DXBinding Expr='Row.Date ?? `не установлена`', Mode=OneWay}" Foreground="DarkGreen"/>
-                                    <TextBlock.ToolTip>
-                                        <StackPanel>
-                                            <TextBlock>
-                                                <Run Text="Клиент: " FontWeight="DemiBold"/>
-                                                <Run Text="{DXBinding Expr='Row.Client.FullName ?? `не установлен`', Mode=OneWay}"/>
-                                            </TextBlock>
-                                            <TextBlock>
-                                                <Run Text="Сотрудник: " FontWeight="DemiBold"/>
-                                                <Run Text="{DXBinding Expr='Row.Employee.FullName ?? `не установлен`', Mode=OneWay}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
-                            </StackPanel>
+                            <TextBlock TextWrapping="Wrap" Text="{DXBinding Expr='`№ ` + Row.Number  + ` - ` + Row.Client.FullName + ` (от ` + Row.Date + `)`'}" Margin="3 5 0 5" FontWeight="DemiBold"/>
                         </DataTemplate>
                     </dxg:GridColumn.CellDisplayTemplate>
                 </dxg:GridColumn>

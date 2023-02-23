@@ -15,7 +15,6 @@ using Dental.Views.WindowForms;
 using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Views.ServicePrice;
-using Dental.ViewModels.Invoices;
 using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;

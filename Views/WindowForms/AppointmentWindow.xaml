@@ -49,14 +49,6 @@
             <dxb:BarButtonItem x:Name="toolbar_barItemSave" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Actions_Save}}" />
             <dxb:BarButtonItem x:Name="barItemSaveAndClose" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Actions_SaveAndClose}}" />
             <dxb:BarButtonItem x:Name="barItemDelete" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Actions_Delete}}" />
-            <dxb:BarCheckItem 
-                ToolTip="Сформировать счет"
-                x:Name="barItemInvoice" 
-                Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}" 
-                GlyphSize="Large" 
-                Command="{Binding GenerateInvoiceCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                IsEnabled="{DXBinding Expr='Patient!=null and Service!=null'}"
-                              />
             <dxb:BarCheckItem x:Name="barItemRecurrence" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Recurrence}}" />
             <dxb:BarEditItem x:Name="barItemReminder" Style="{DynamicResource {dxscht:AppointmentWindowCommandBarThemeKey ResourceKey=Items_Options_Reminder}}" />
             

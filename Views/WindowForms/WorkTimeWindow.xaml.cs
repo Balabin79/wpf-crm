@@ -1,5 +1,4 @@
-﻿using Dental.ViewModels.Invoices;
-using System;
+﻿using System;
 using System.Windows;
 
 namespace Dental.Views.WindowForms
