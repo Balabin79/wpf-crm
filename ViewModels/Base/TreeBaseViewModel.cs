@@ -18,6 +18,7 @@ using Dental.Models.Base;
 using System.Collections.ObjectModel;
 using Dental.Infrastructures.Collection;
 using Dental.Views.ServicePrice;
+using Dental.Infrastructures.Extensions.Notifications;
 
 namespace Dental.ViewModels.Base
 {
@@ -32,148 +33,21 @@ namespace Dental.ViewModels.Base
         }
         
         [Command]
-        public void OpenForm(object p)
+        public void Add(object p)
         {
             try
             {
-                T model = null;
-                if (int.TryParse(p?.ToString(), out int result))
+                if (p is CommandParameters parameters)
                 {
-                    model = (T)Activator.CreateInstance(typeof(T));
-                    model.IsDir = result;
-                }
-                if (p is T par) model = par;
-
-                if (model == null) return;
-
-                var vm = new TreeWrapperViewModel<T>()
-                {
-                    Model = model,
-                    Copy = (T)model.Clone(),
-                    Collection = GetDirs(model)
-                };
-                vm.EventSave += Save;
-
-                var win = GetWindow();
-                win.DataContext = vm;
-                win?.Show();                         
-            }
-            catch (Exception e)
-            {
-                ThemedMessageBox.Show(
-                    title: "Ошибка", 
-                    text: "При попытке открытия формы произошла ошибка!", 
-                    messageBoxButtons: MessageBoxButton.OK, 
-                    icon: MessageBoxImage.Error
-                );
-            }
-        }
-
-        [Command]
-        public void OpenByParentForm(object p)
-        {
-            try
-            {
-                if (p is T copy)
-                {
-                    var model = (T)Activator.CreateInstance(typeof(T));
-                    model.IsDir = 0;
-                    if (copy?.IsDir == 0)
+                    if (parameters.Row is T row && int.TryParse(parameters.Type.ToString(), out int result))
                     {
-                        model.Parent = copy.Parent;
-                        model.ParentId = copy.ParentId;
-                    }
-                    if(copy?.IsDir == 1 && model.ParentId != copy.Id)
-                    {
-                        model.ParentId = copy.Id;
-                        model.Parent = (T)copy;
-                    }
+                        var model = (T)Activator.CreateInstance(typeof(T));
+                        model.IsDir = result;
+                        model.ParentId = row?.Id;
+                        model.Parent = row;
+                        db.Entry(model).State = EntityState.Added;
+                        db.SaveChanges();
 
-                    var vm = new TreeWrapperViewModel<T>()
-                    {
-                        Model = model,
-                        Copy = (T)model.Clone(),
-                        Collection = GetDirs(model)
-                    };
-                    vm.EventSave += Save;
-
-                    var win = GetWindow();
-                    win.DataContext = vm;
-                    win?.Show();
-                }
-
-            }
-            catch
-            {
-                ThemedMessageBox.Show(
-                    title: "Ошибка", 
-                    text: "При попытке открытия формы произошла ошибка!", 
-                    messageBoxButtons: MessageBoxButton.OK, 
-                    icon: MessageBoxImage.Error
-               );
-            }
-        }
-
-        [Command]
-        public void OpenDirByParentForm(object p)
-        {
-            try
-            {
-                if (p is T copy)
-                {
-                    var model = (T)Activator.CreateInstance(typeof(T));
-                    model.IsDir = 1;
-                    if (copy?.IsDir == 1 && model.ParentId != copy.Id)
-                    {
-                        model.ParentId = copy.Id;
-                        model.Parent = copy;
-                    }
-
-                    if (copy?.IsDir == 0)
-                    {
-                        model.Parent = copy.Parent;
-                        model.ParentId = copy.ParentId;
-                    }
-
-                    var vm = new TreeWrapperViewModel<T>()
-                    {
-                        Model = model,
-                        Copy = (T)model.Clone(),
-                        Collection = GetDirs(model)
-                    };
-                    vm.EventSave += Save;
-
-                    var win = GetWindow();
-                    win.DataContext = vm;
-                    win?.Show();
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(
-                    title: "Ошибка",
-                    text: "При попытке открытия формы произошла ошибка!",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error
-               );
-            }
-        }
-
-        public void Save(T model, bool isSelectedVal = false)
-        {
-            try
-            {
-                if (model.Id == 0)
-                {
-                    db.Entry(model).State = EntityState.Added;
-                    if (db.SaveChanges() > 0) Collection.Add(model);
-                }
-                else
-                {
-                    db.Entry(model).State = EntityState.Modified;
-                    if (db.SaveChanges() > 0 && isSelectedVal)
-                    {
-                        Collection.Remove(Collection.FirstOrDefault(f => f.Id == model.Id));
                         Collection.Add(model);
                     }
                 }
@@ -182,7 +56,25 @@ namespace Dental.ViewModels.Base
             {
                 ThemedMessageBox.Show(
                     title: "Ошибка",
-                    text: "При попытке сохранения данных в бд произошла ошибка!",
+                    text: "При добавлении элемента произошла ошибка!",
+                    messageBoxButtons: MessageBoxButton.OK,
+                    icon: MessageBoxImage.Error
+                );
+            }
+        }
+
+        [Command]
+        public void Save()
+        {
+            try
+            {
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения в прайсе сохранены в базу данных!" }.run();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(
+                    title: "Ошибка",
+                    text: "При попытке сохранения в базу данных произошла ошибка!",
                     messageBoxButtons: MessageBoxButton.OK,
                     icon: MessageBoxImage.Error
                 );

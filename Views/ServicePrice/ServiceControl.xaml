@@ -28,6 +28,7 @@
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
+                    <converter:BoolIntConverter x:Key="boolToInt"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -92,7 +93,7 @@
                             SearchPanelAllowFilter="True"
                             AllowResizing="True"
                             BestFitModeOnSourceChange="VisibleRows"            
-                            NavigationStyle="Row"
+                            NavigationStyle="Cell"
                             AllowScrollToFocusedRow="True" 
                             VerticalScrollbarVisibility="Auto"
                             AllowPrintColumnHeaderImage="True" 
@@ -109,6 +110,7 @@
                             FilterMode="Extended"    
                             ImmediateUpdateRowPosition="True"
                             ShowVerticalLines="False"
+                            AllowEditing="True"
                             >
                     <dxg:TreeListView.InputBindings>
 
@@ -139,9 +141,6 @@
                         <KeyBinding Key="W"  Modifiers="Ctrl"
                                         Command="{Binding ElementName=win, Path=DataContext.OpenDirByParentFormCommand}"
                                         CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
-                        <MouseBinding Gesture="LeftDoubleClick"      
-                                        Command="{Binding ElementName=win, Path=DataContext.OpenFormCommand}"
-                                        CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
 
                     </dxg:TreeListView.InputBindings>
 
@@ -228,7 +227,28 @@
                     <dxe:TextEditSettings TextWrapping="Wrap"/>
                 </dxg:GridColumn.EditSettings>
             </dxg:GridColumn>
-            <dxg:GridColumn FieldName="Price" 
+
+            <dxg:GridColumn FieldName="IsVisible"  Header="Доступно"  Width="1*" HorizontalHeaderContentAlignment="Center">
+                <dxg:GridColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxe:CheckEdit
+                            Visibility="{DXBinding Expr='Row.IsDir == 1 ? `Visible` : `Collapsed`'}"
+                            HorizontalAlignment="Center"
+                            EditValue="{Binding Row.IsVisible, Mode=OneWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </DataTemplate>
+                </dxg:GridColumn.CellTemplate>
+                <dxg:GridColumn.CellEditTemplate>
+                    <DataTemplate>
+                        <dxe:CheckEdit
+                            Visibility="{DXBinding Expr='Row.IsDir == 1 ? `Visible` : `Collapsed`'}"
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            EditValue="{Binding Row.IsVisible, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </DataTemplate>
+                </dxg:GridColumn.CellEditTemplate>
+            </dxg:GridColumn>
+
+            <dxg:GridColumn FieldName="Price"  MinWidth="150"
                                  PrintCellStyle="{StaticResource ResourceKey=PriceTextEditColumnPrintingStyle}"
                                  PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintColumnHeaderStyle}"
                                  Header="Цена"                               
@@ -246,7 +266,7 @@
                 </dxg:GridColumn.CellTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn Width="auto" AllowPrinting="False">
+            <dxg:GridColumn Width="40" AllowPrinting="False">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >

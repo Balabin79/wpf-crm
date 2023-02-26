@@ -31,6 +31,18 @@ namespace Dental.Models
             set { SetProperty(() => Price, value); }
         }
 
+        public int? IsShowInMenu
+        {
+            get { return GetProperty(() => IsShowInMenu); }
+            set { SetProperty(() => IsShowInMenu, value); }
+        }
+
+        public int? Sort
+        {
+            get { return GetProperty(() => Sort); }
+            set { SetProperty(() => Sort, value); }
+        }
+
         public override object Clone()
         {
             return new Service()

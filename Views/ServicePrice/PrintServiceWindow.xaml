@@ -6,7 +6,7 @@
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6 Dental">
+        Title="B6 CRM">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Loaded" Command="{Binding LoadDocForPrintCommand}" PassEventArgsToCommand="True"/>
     </dxmvvm:Interaction.Behaviors>

@@ -64,7 +64,7 @@
                Background="#f5f5f5">
                 <ContentControl>
                     <StackPanel >
-                        <Image Source="/Resources/Icons/sheduler.png" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/main/calendar-alt.svg" Width="30" Height="30" />
                         <TextBlock Text="Расписание" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -75,7 +75,7 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <Image Source="/Resources/Icons/clients3.png" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/main/user-group.svg" Width="30" Height="30"/>
                         <TextBlock Text="Клиенты" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -86,7 +86,7 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <Image Source="/Resources/Icons/emp3.png" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/main/address-card.svg" Width="30" Height="30"/>
                         <TextBlock Text="Сотрудники" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -96,7 +96,7 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/svg/search-dollar.svg" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/main/cart.svg" Width="30" Height="30"/>
                         <TextBlock Text="Прайсы" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -109,8 +109,8 @@
             <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.UserTemplateControl"  Size="Auto" Background="#f5f5f5" x:Name="templ">
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage  Source="{dx:DXImage SvgImages/Outlook Inspired/Paste.svg}"/>
-                        <TextBlock Text="Шаблоны" Foreground="#666666" FontWeight="DemiBold"/>
+                        <dx:DXImage  Source="/Resources/Icons/main/document2.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Документы" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>
@@ -123,7 +123,7 @@
             <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click">
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
+                        <dx:DXImage Source="/Resources/Icons/main/chart-bar.svg" Width="30" Height="30"/>
                         <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -139,7 +139,7 @@
                                  Size="Auto" Background="#f5f5f5">
                                 <ContentControl>
                                     <StackPanel >
-                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/ChartType_LineStacked.svg}" />
+                                        <dx:DXImage Source="{dx:DXImage SvgImages/Chart/Chart.svg}" />
                                         <TextBlock Text="Общий доход" Foreground="#666666" FontWeight="DemiBold"/>
                                     </StackPanel>
                                 </ContentControl>
@@ -182,7 +182,7 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="{dx:DXImage SvgImages/XAF/ModelEditor_Settings.svg}" />
+                        <dx:DXImage Source="/Resources/Icons/main/gear.svg" Width="30" Height="30"/>
                         <TextBlock Text="Настройки" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -192,8 +192,8 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage  Source="/Resources/Icons/info5.png" Height="30" />
-                        <TextBlock Text="Помощь" Foreground="#666666" FontWeight="DemiBold"/>
+                        <dx:DXImage Source="/Resources/Icons/main/question-circle2.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Справка" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>

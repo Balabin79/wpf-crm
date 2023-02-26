@@ -9,7 +9,6 @@ namespace Dental.Models.Templates
 {
     public abstract class BaseTemplate<T> : AbstractBaseModel, IDataErrorInfo, ITree, IModel, ICloneable
     {
-        [Required(ErrorMessage = @"Поле ""Наименование"" обязательно для заполнения")]
         [Display(Name = "Название")]
         [Clonable]
         public string Name

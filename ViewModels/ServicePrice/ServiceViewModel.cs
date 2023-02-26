@@ -52,22 +52,28 @@ namespace Dental.ViewModels.ServicePrice
         protected override Window GetWindow() => new ServiceWindow();
 
         #region Печать
+        private object Param { get; set; }
+
         [Command]
-        public void PrintPrice()
+        public void PrintPrice(object p)
         {
+            Param = p;
             PrintServiceWindow = new PrintServiceWindow() { DataContext = this };
             PrintServiceWindow.Show();
+            
         }
 
         [Command]
         public void LoadDocForPrint()
-        {
+        {            
             // Create a link and assign a data source to it.
             // Assign your data templates to different report areas.
             CollectionViewLink link = new CollectionViewLink();
             CollectionViewSource Source = new CollectionViewSource();
 
-            SetSourceCollectttion();
+            if (int.TryParse(Param?.ToString(), out int result)) SetSourceCollectttion(result);         
+            else SetSourceCollectttion();
+
             Source.Source = SourceCollection;
 
             Source.GroupDescriptions.Add(new PropertyGroupDescription("ParentName"));
@@ -86,8 +92,17 @@ namespace Dental.ViewModels.ServicePrice
 
         public ICollection<PrintService> SourceCollection { get; set; } = new List<PrintService>();
 
-        private void SetSourceCollectttion() => Context?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).ForEach(f => f.ForEach(
+        private void SetSourceCollectttion(int? parentId = null)
+        {
+            SourceCollection = new List<PrintService>();
+
+            var condition = parentId == null ? Context : Context?.Where(f => f.ParentId == parentId);
+
+            condition?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).
+                ForEach(f => f.Where(d => d.IsDir != 1).
+                ForEach(
                 i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
+        }
 
 
         protected override ObservableCollection<Service> GetCollection() => Context?.OrderBy(f => f.IsDir == 0).ThenBy(f => f.Name).Include(f => f.Parent).ToObservableCollection();

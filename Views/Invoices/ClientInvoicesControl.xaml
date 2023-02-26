@@ -19,7 +19,6 @@
              d:DesignHeight="400"
              dx:ThemeManager.ThemeName="Office2019White"
              d:DesignWidth="800"
-
              xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
              xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              x:Name="UTreatmentPlan">
