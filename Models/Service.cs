@@ -31,16 +31,23 @@ namespace Dental.Models
             set { SetProperty(() => Price, value); }
         }
 
-        public int? IsShowInMenu
+        public bool? IsHidden
         {
-            get { return GetProperty(() => IsShowInMenu); }
-            set { SetProperty(() => IsShowInMenu, value); }
+            get { return GetProperty(() => IsHidden); }
+            set { SetProperty(() => IsHidden, value); }
         }
 
         public int? Sort
         {
             get { return GetProperty(() => Sort); }
             set { SetProperty(() => Sort, value); }
+        }
+
+        [NotMapped]
+        public bool Print
+        {
+            get { return GetProperty(() => Print); }
+            set { SetProperty(() => Print, value); }
         }
 
         public override object Clone()
@@ -53,7 +60,10 @@ namespace Dental.Models
                 ParentID = ParentID,
                 UpdatedAt = UpdatedAt,
                 Code = Code,
-                Price = Price
+                Price = Price,
+                IsHidden = IsHidden,
+                Sort = Sort,
+                Print = Print
             };
         }
     }

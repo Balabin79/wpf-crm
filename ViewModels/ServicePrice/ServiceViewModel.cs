@@ -23,6 +23,7 @@ using DevExpress.Mvvm;
 using Dental.ViewModels.Base;
 using Dental.Views.Settings;
 using DevExpress.DataAccess.Sql;
+using System.Threading.Tasks;
 
 namespace Dental.ViewModels.ServicePrice
 {
@@ -46,15 +47,12 @@ namespace Dental.ViewModels.ServicePrice
         protected override Window GetWindow() => new ServiceWindow();
 
         #region Печать
-        private object Param { get; set; }
 
         [Command]
-        public void PrintPrice(object p)
+        public void PrintPrice()
         {
-            Param = p;
             PrintServiceWindow = new PrintServiceWindow() { DataContext = this };
-            PrintServiceWindow.Show();
-            
+            PrintServiceWindow.Show();    
         }
 
         [Command]
@@ -64,9 +62,8 @@ namespace Dental.ViewModels.ServicePrice
             // Assign your data templates to different report areas.
             CollectionViewLink link = new CollectionViewLink();
             CollectionViewSource Source = new CollectionViewSource();
-
-            if (int.TryParse(Param?.ToString(), out int result)) SetSourceCollectttion(result);         
-            else SetSourceCollectttion();
+        
+            SetSourceCollectttion();
 
             Source.Source = SourceCollection;
 
@@ -86,11 +83,12 @@ namespace Dental.ViewModels.ServicePrice
 
         public ICollection<PrintService> SourceCollection { get; set; } = new List<PrintService>();
 
-        private void SetSourceCollectttion(int? parentId = null)
+        private void SetSourceCollectttion()
         {
             SourceCollection = new List<PrintService>();
+            var markedItems = GetMarkedItems();
 
-            var condition = parentId == null ? Context : Context?.Where(f => f.ParentID == parentId);
+            var condition = markedItems?.Count > 0 ? Context?.Where(f => markedItems.Contains(f.ParentID)) : Context;
 
             condition?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).
                 ForEach(f => f.Where(d => d.IsDir != 1).
@@ -102,7 +100,44 @@ namespace Dental.ViewModels.ServicePrice
         protected override ObservableCollection<Service> GetCollection() => Context?.OrderBy(f => f.IsDir == 0).ThenBy(f => f.Name).Include(f => f.Parent).ToObservableCollection();
 
         public PrintServiceWindow PrintServiceWindow { get; set; }
+
+        private ICollection<int?> GetMarkedItems() => Collection?.Where(f => f.IsDir == 1 && f.Print)?.Select(f => f.Id)?.OfType<int?>().ToList();
         #endregion
+
+        [AsyncCommand]
+        public async Task CheckedIsHidden(object p)
+        {
+            try
+            {
+                if (p is Service model)
+                {
+                    await SetState(model, model.IsHidden);           
+                }
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        private async Task SetState(Service model, bool? isHidden)
+        {
+            if (model?.IsDir == 1)
+            {
+                var nodes = Context.Where(f => f.ParentID == model.Id).ToArray();
+                foreach (var node in nodes)
+                {
+                    if (node.IsDir == 1) 
+                    {
+                        node.IsHidden = isHidden;
+                        await SetState(node, isHidden); 
+                    }
+                    node.IsHidden = isHidden;
+                }
+            }
+        }
+
+
     }
 
     public class PrintService

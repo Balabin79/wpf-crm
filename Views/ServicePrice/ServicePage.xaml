@@ -101,11 +101,13 @@
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
-            <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch" 
+            <dxg:GridControl 
+                Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
+                SelectionMode="Row"
                  ItemsSource="{Binding Path=Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
                 <dxg:GridControl.View>
-                    <dxg:TreeListView  
+                    <dxg:TreeListView 
                         AllowDragDrop="True"
                         AutoExpandOnDrag="True"
                         DragRecordOver="OnDragRecordOver"
@@ -120,6 +122,7 @@
                             AllowResizing="True"
                             BestFitModeOnSourceChange="VisibleRows"            
                             NavigationStyle="Cell"
+                        AllowEditing="True"
                             AllowScrollToFocusedRow="True" 
                             VerticalScrollbarVisibility="Auto"
                             AllowPrintColumnHeaderImage="True" 
@@ -321,22 +324,29 @@
                     </dxg:GridColumn.CellEditTemplate>
                 </dxg:GridColumn>
 
-                <dxg:GridColumn FieldName="IsShowInMenu"  Header="В меню"  Width="50" MinWidth="50" HorizontalHeaderContentAlignment="Center">
+                <dxg:GridColumn 
+                                Header="Скрыть"  Width="50" MinWidth="50" HorizontalHeaderContentAlignment="Center">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxe:CheckEdit
-                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentId == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="False"
                             HorizontalAlignment="Center"
-                            EditValue="{Binding Row.IsShowInMenu, Mode=OneWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged}" />
+                            EditValue="{Binding Row.IsHidden, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </dxg:GridColumn.CellTemplate>
-                    <dxg:GridColumn.CellEditTemplate>
+                    <dxg:GridColumn.CellEditTemplate >
                         <DataTemplate>
-                            <dxe:CheckEdit
-                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentId == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            <dxe:CheckEdit x:Name="PART_Editor"
+                                IsThreeState="False"
+                                Command="{Binding ElementName=grid, Path=DataContext.CheckedIsHiddenCommand, UpdateSourceTrigger=PropertyChanged}"
+                                CommandParameter="{Binding Row, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"           
+                            IsEnabled="{DXBinding Expr='Row.IsDir == 1 and Row.ParentID == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            HorizontalAlignment="Center"
-                            EditValue="{Binding Row.IsShowInMenu, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged}" />
+                            HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                            EditValue="{Binding Row.IsHidden, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
+           
+                            </dxe:CheckEdit>
+
                         </DataTemplate>
                     </dxg:GridColumn.CellEditTemplate>
                 </dxg:GridColumn>
@@ -345,7 +355,7 @@
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock
-                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentId == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentID == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             HorizontalAlignment="Center"
                             Text="{Binding Row.Sort, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
@@ -353,7 +363,7 @@
                     <dxg:GridColumn.CellEditTemplate>
                         <DataTemplate>
                             <dxe:TextEdit Mask="d" MaskType="Numeric" HorizontalContentAlignment="Center"
-                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentId == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Visibility="{DXBinding Expr='Row.IsDir == 1 and Row.ParentID == null ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             HorizontalAlignment="Stretch"
                             EditValue="{Binding Row.Sort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -361,8 +371,27 @@
                     </dxg:GridColumn.CellEditTemplate>
                 </dxg:GridColumn>
 
+                <dxg:GridColumn FieldName="Print"  Header="Печать"  Width="50" MinWidth="50" HorizontalHeaderContentAlignment="Center">
+                    <dxg:GridColumn.CellTemplate>
+                        <DataTemplate>
+                            <dxe:CheckEdit
+                            Visibility="{DXBinding Expr='Row.IsDir == 1 ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            EditValue="{Binding Row.Print, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </dxg:GridColumn.CellTemplate>
+                    <dxg:GridColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <dxe:CheckEdit
+                            Visibility="{DXBinding Expr='Row.IsDir == 1? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            EditValue="{Binding Row.Print, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </dxg:GridColumn.CellEditTemplate>
+                </dxg:GridColumn>
 
-                <dxg:GridColumn Width="120" MinWidth="120" AllowPrinting="False">
+                <dxg:GridColumn Width="90" MinWidth="90" AllowPrinting="False">
                     <dxg:GridColumn.CellTemplate>
                         <DataTemplate>
                             <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
@@ -404,24 +433,9 @@
                                             </DataTemplate>
                                         </dxb:BarButtonItem.GlyphTemplate>
                                     </dxb:BarButtonItem>
-                                    
-                                    <dxb:BarItemSeparator/>
-
-                                    <dxb:BarButtonItem 
-                                        IsVisible="{DXBinding Expr='Row.IsDir == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Content="Печать"                                                            
-                                           GlyphSize="Small"
-                                           Command="{Binding ElementName=grid,  Path=DataContext.PrintPriceCommand}"
-                                           CommandParameter="{Binding Row.Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <dxb:BarButtonItem.GlyphTemplate>
-                                            <DataTemplate>
-                                                <dx:DXImage Source="/Resources/Icons/svg/print.svg" />
-                                            </DataTemplate>
-                                        </dxb:BarButtonItem.GlyphTemplate>
-                                    </dxb:BarButtonItem>
 
                                     <dxb:BarItemSeparator/>
-                                    
+
                                     <dxb:BarButtonItem  
                                                DataContext="{Binding ElementName=grid, Path=DataContext}"
                                                Content="Удалить" 

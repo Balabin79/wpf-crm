@@ -45,7 +45,7 @@ namespace Dental.ViewModels
 
                 SetLocationAppointments();
                 SetStatusCollection();
-                ClassificatorCategories = db.Services.ToObservableCollection();
+                ClassificatorCategories = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToObservableCollection();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();

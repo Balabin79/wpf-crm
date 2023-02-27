@@ -15,7 +15,6 @@ namespace Dental.Models
             set { SetValue(ref _BirthDate, value, changedCallback: () => RaisePropertyChanged(nameof(BirthDate))); }
         }
 
-
         public string Gender
         {
             get { return GetProperty(() => Gender); }

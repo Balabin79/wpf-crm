@@ -70,7 +70,7 @@ namespace Dental.ViewModels.ClientDir
                 Init(Model);
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
-                Prices = db.Services.ToArray();
+                Prices = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToArray();
                 Advertisings = db.Advertising.ToObservableCollection();
             }
             catch (Exception e)
