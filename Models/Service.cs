@@ -50,7 +50,7 @@ namespace Dental.Models
                 IsDir = IsDir,
                 Name = Name,
                 Parent = Parent,
-                ParentId = ParentId,
+                ParentID = ParentID,
                 UpdatedAt = UpdatedAt,
                 Code = Code,
                 Price = Price

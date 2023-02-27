@@ -43,7 +43,7 @@ namespace Dental.ViewModels.Base
                     {
                         var model = (T)Activator.CreateInstance(typeof(T));
                         model.IsDir = result;
-                        model.ParentId = row?.Id;
+                        model.ParentID = row?.Id;
                         model.Parent = row;
                         db.Entry(model).State = EntityState.Added;
                         db.SaveChanges();
@@ -68,13 +68,49 @@ namespace Dental.ViewModels.Base
         {
             try
             {
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения в прайсе сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
             {
                 ThemedMessageBox.Show(
                     title: "Ошибка",
                     text: "При попытке сохранения в базу данных произошла ошибка!",
+                    messageBoxButtons: MessageBoxButton.OK,
+                    icon: MessageBoxImage.Error
+                );
+            }
+        }
+
+        [Command]
+        public void Move(object p)
+        {
+            try
+            {
+                if (p is RoutedEventArgs args && p is DropRecordEventArgs target)
+                {
+                   /* object data = target.Data.GetData(typeof(RecordDragDropData));
+                    foreach (T model in ((RecordDragDropData)data).Records)
+                    {
+                        //model.Parent = (T)target.TargetRecord;
+                        model.ParentID = ((T)target.TargetRecord).ParentID;
+                    }*/
+
+
+
+
+                    //var parent = target.TargetRecord as T;
+                    //model.Parent = parent;
+                    //model.ParentId = parent?.Id;
+                    //args.Handled = true;                                   
+                }
+                //if (db.SaveChanges() > 0) new Notification() { Content = "Изменения  сохранены в базу данных!" }.run();
+                //Collection = GetCollection();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(
+                    title: "Ошибка",
+                    text: "При попытке перемещения элемента и его сохранения в базу данных произошла ошибка!",
                     messageBoxButtons: MessageBoxButton.OK,
                     icon: MessageBoxImage.Error
                 );
@@ -115,7 +151,7 @@ namespace Dental.ViewModels.Base
         {
             if (model?.IsDir == 1)
             {
-                var nodes = Context.Where(f => f.ParentId == model.Id).ToArray();
+                var nodes = Context.Where(f => f.ParentID == model.Id).ToArray();
                 foreach (var node in nodes)
                 {
                     if (node.IsDir == 1) await Delete(node);

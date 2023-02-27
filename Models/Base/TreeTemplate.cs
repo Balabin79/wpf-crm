@@ -11,7 +11,7 @@ namespace Dental.Models.Base
         public int Id { get; set; }
         public bool IsChecked { get; set; } = false;
         public int? IsDir { get; set; }
-        public int? ParentId { get; set; }
+        public int? ParentID { get; set; }
         public string Name { get; set; }
 
         public int? CreatedAt { get; set; }

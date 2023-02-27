@@ -772,7 +772,7 @@ namespace Dental.ViewModels.ClientDir
                             {
                                 Id = f.Id,
                                 IsDir = f.IsDir,
-                                ParentId = f.ParentId,
+                                ParentID = f.ParentID,
                                 Name = f.Name
                             }).ToArray(); 
                     

@@ -43,12 +43,6 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
-        public override ObservableCollection<Service> Collection
-        {
-            get { return GetProperty(() => Collection); }
-            set { SetProperty(() => Collection, value); }
-        }
-
         protected override Window GetWindow() => new ServiceWindow();
 
         #region Печать
@@ -96,7 +90,7 @@ namespace Dental.ViewModels.ServicePrice
         {
             SourceCollection = new List<PrintService>();
 
-            var condition = parentId == null ? Context : Context?.Where(f => f.ParentId == parentId);
+            var condition = parentId == null ? Context : Context?.Where(f => f.ParentID == parentId);
 
             condition?.GroupBy(f => f.Parent)?.Where(f => f.Key != null).
                 ForEach(f => f.Where(d => d.IsDir != 1).

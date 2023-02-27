@@ -36,7 +36,7 @@ namespace Dental.ViewModels
                         //if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = item;
                         Copy.Parent = item;
-                        Copy.ParentId = item.Id;
+                        Copy.ParentID = item.Id;
                         isSelectedVal = true;
                     }
                     parameters.Popup.ClosePopup();
@@ -59,7 +59,7 @@ namespace Dental.ViewModels
                     {
                         popup.EditValue = null;
                         Copy.Parent = null;
-                        Copy.ParentId = null;
+                        Copy.ParentID = null;
                         isSelectedVal = false;
                     }
                 }

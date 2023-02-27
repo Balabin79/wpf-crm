@@ -16,6 +16,7 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
+      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
       xmlns:local="clr-namespace:Dental.Views.ServicePrice"
       d:DesignHeight="450" d:DesignWidth="800"                 
       x:Name="win" dx:ThemeManager.ThemeName="Office2019White">
@@ -101,13 +102,16 @@
                 </dxb:BarContainerControl>
             </DockPanel>
             <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch" 
-                 ItemsSource="{Binding Path=Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
+                 ItemsSource="{Binding Path=Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
                          >
                 <dxg:GridControl.View>
                     <dxg:TreeListView  
+                        AllowDragDrop="True"
+                        AutoExpandOnDrag="True"
+                        DragRecordOver="OnDragRecordOver"
                             x:Name="view"
                             KeyFieldName="Id"
-                            ParentFieldName="ParentId"
+                            ParentFieldName="ParentID"
                             TreeDerivationMode="Selfreference" 
                             ShowTotalSummary="False" 
                             UseLegacyFilterPanel="True"
@@ -133,6 +137,9 @@
                             ImmediateUpdateRowPosition="True"
                             ShowVerticalLines="False"
                             >
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="DropRecord" Command="{Binding MoveCommand}" PassEventArgsToCommand="True"/>
+                        </dxmvvm:Interaction.Behaviors>
                         <dxg:TreeListView.InputBindings>
 
                             <KeyBinding Key="Delete" 

@@ -24,7 +24,7 @@ namespace Dental.Models.Templates
                 IsDir = IsDir, 
                 Name = Name, 
                 Parent = Parent, 
-                ParentId = ParentId,
+                ParentID = ParentID,
                 UpdatedAt = UpdatedAt 
             };
         }

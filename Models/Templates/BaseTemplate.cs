@@ -4,6 +4,7 @@ using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models.Templates
 {
@@ -32,10 +33,10 @@ namespace Dental.Models.Templates
         }
 
         [Clonable]
-        public int? ParentId
+        public int? ParentID
         {
-            get { return GetProperty(() => ParentId); }
-            set { SetProperty(() => ParentId, value); }
+            get { return GetProperty(() => ParentID); }
+            set { SetProperty(() => ParentID, value); }
         }
 
         public string Error { get => string.Empty; }

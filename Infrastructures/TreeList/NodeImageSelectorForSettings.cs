@@ -16,7 +16,7 @@ namespace Dental.Infrastructures.TreeList
         public ImageSource Page { get; set; }
         public ImageSource PageCommand { get; set; } 
 
-        public override System.Windows.Media.ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
+        public override ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
         {
             Page = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Formheading.png"));
             PageCommand = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Lightning.png"));

@@ -1,6 +1,7 @@
 ﻿using Dental.Models;
 using Dental.ViewModels.Base;
 using Dental.ViewModels.ServicePrice;
+using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,18 @@ namespace Dental.Views.ServicePrice
             InitializeComponent();
             var db = new ApplicationContext();
             DataContext = new ServiceViewModel(db, db?.Services);
+        }
+
+        void OnDragRecordOver(object sender, DragRecordOverEventArgs e)
+        {
+            if (e.TargetRecord is Service model && model.IsDir == 0)
+            {
+                //e.DropPosition = e.DropPositionRelativeCoefficient > 0.5 ? DropPosition.After : DropPosition.Before;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+                //e.
+                return;
+            }
         }
     }
 }

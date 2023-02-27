@@ -85,7 +85,7 @@
                 <dxg:TreeListView  
                             x:Name="view"
                             KeyFieldName="Id"
-                            ParentFieldName="ParentId"
+                            ParentFieldName="ParentID"
                             TreeDerivationMode="Selfreference" 
                             ShowTotalSummary="False" 
                             UseLegacyFilterPanel="True"

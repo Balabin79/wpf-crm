@@ -134,7 +134,7 @@
                                                                     <dxg:TreeListView                                                          
                                                                             x:Name="tree_view"
                                                                             KeyFieldName="Id"
-                                                                            ParentFieldName="ParentId"
+                                                                            ParentFieldName="ParentID"
                                                                             TreeDerivationMode="Selfreference" 
                                                                             ShowTotalSummary="False" 
                                                                             PrintNodeImages="True"

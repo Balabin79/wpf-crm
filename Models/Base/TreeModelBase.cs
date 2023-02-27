@@ -9,8 +9,8 @@ namespace Dental.Models.Base
 {
     abstract class TreeModelBase : AbstractBaseModel, ITree, IModel, IDataErrorInfo
     {
-        [Column("ParentId")]
-        public int? ParentId { get; set; }
+        [Column("ParentID")]
+        public int? ParentID { get; set; }
 
         [Required]
         [Column("Name")]
