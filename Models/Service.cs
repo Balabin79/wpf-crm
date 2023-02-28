@@ -13,6 +13,8 @@ namespace Dental.Models
     [Table("Services")]
     public class Service : BaseTemplate<Service>, IInvoiceItem
     {
+        public Service() => IsHidden = false;
+
        [Display(Name = "Код")]
         [Clonable]
         public string Code

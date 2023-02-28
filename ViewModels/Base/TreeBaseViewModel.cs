@@ -43,8 +43,8 @@ namespace Dental.ViewModels.Base
                     {
                         var model = (T)Activator.CreateInstance(typeof(T));
                         model.IsDir = result;
-                        model.ParentID = row?.Id;
-                        model.Parent = row;
+                        model.ParentID = row?.Id == 0 ? null : row?.Id;
+                        model.Parent = row?.Id == 0 ? null : row;                     
                         db.Entry(model).State = EntityState.Added;
                         db.SaveChanges();
 
@@ -127,14 +127,14 @@ namespace Dental.ViewModels.Base
                     if (model.IsDir == 0)
                     {
                         db.Entry(model).State = EntityState.Deleted;
-                        db.SaveChanges();
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Позиция удалена из базы данных!" }.run();
                         Collection.Remove(model);
                     }
                     else
                     {
                         DelItems = new List<T>();
                         await Delete(model);
-                        db.SaveChanges();                       
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Директория удалена из базы данных!" }.run();
                         DelItems?.ForEach(f => Collection.Remove(f));
                     }
                 }

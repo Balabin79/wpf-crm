@@ -36,6 +36,7 @@ namespace Dental.ViewModels.ServicePrice
                 db = ctx;
                 Context = context;
                 Collection = GetCollection();
+                IsReadOnly = Collection?.Count > 0;
             }
             catch
             {
@@ -44,7 +45,14 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
-        protected override Window GetWindow() => new ServiceWindow();
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
+        }
+
+        [Command]
+        public void Editable() => IsReadOnly = !IsReadOnly;
 
         #region Печать
 
