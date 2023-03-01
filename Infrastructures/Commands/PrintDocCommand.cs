@@ -33,11 +33,7 @@ namespace Dental.Infrastructures.Commands
                     PathToFile = param1.File.FullName;
                     Model = param1.Model;
                 }
-                if (p is InvoiceCommandParameters invoice)
-                {
-                    PathToFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), InvoicesDocumentsViewModel.FILES, invoice.FilePath);
-                    Model = invoice.Model;
-                }
+
 
                 if (p is DocParams param)
                 {

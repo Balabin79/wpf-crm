@@ -13,7 +13,6 @@
 
     <Application.Resources>
         <vm:MainViewModel x:Key="Router"/>
-        <serv:UserApp x:Key="UserApp"/>
         <dxmvvm:OpenFileDialogService x:Key="OpenFileDialogService" />
 
         <dxmvvm:DispatcherService x:Key="BackgroundDispatcherService" DispatcherPriority="Background" />
