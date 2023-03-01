@@ -79,12 +79,6 @@ namespace Dental.Models
         public DbSet<TemplateType> TemplateType { get; set; }
         public DbSet<CommonValue> CommonValues { get; set; }
         public DbSet<AdditionalClientValue> AdditionalClientValue { get; set; }
-
-        public DbSet<IndividualPrice> IndividualPrice { get; set; }
-
-        public DbSet<UserTemplate> UserTemplates { get; set; }
-
-        public DbSet<TreatmentStage> TreatmentStage { get; set; }
         public DbSet<Setting> Settings { get; set; }
 
         public DbSet<RoleManagment> RolesManagment { get; set; }
@@ -92,8 +86,5 @@ namespace Dental.Models
         public DbSet<ClientCategory> ClientCategories { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Advertising> Advertising { get; set; }
-
-        public DbSet<ProviderMsg> ProviderMsgs { get; set; }
-        public DbSet<Country> Countries { get; set; }
     }
 }

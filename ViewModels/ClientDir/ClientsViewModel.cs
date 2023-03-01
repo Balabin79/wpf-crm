@@ -19,14 +19,10 @@ using Dental.Services.Files;
 using Dental.Views.AdditionalFields;
 using Dental.ViewModels.AdditionalFields;
 using System.IO;
-using System.Windows.Media.Imaging;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models.Base;
-using Dental.Infrastructures.Extensions;
 using DevExpress.Xpf.Editors;
 using System.Diagnostics;
-using System.Windows.Media;
-using Dental.Views.Invoices;
 using Dental.Infrastructures.Converters;
 using Dental.Reports;
 using DevExpress.Xpf.Printing;
@@ -36,16 +32,9 @@ using DevExpress.DataAccess.ConnectionParameters;
 using System.Text.Json;
 using DevExpress.Xpf.Grid;
 using System.Text;
-using System.Windows.Controls;
-using DevExpress.Xpf.LayoutControl;
-using System.Globalization;
-using System.Windows.Data;
-using Dental.Views.Settings;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.WindowsUI.Navigation;
-using System.Reflection;
 using License;
-using Dental.Views.About;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -343,9 +332,6 @@ namespace Dental.ViewModels.ClientDir
                 // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
                 ShowPaid = null;
 
-                // Устанавливаем Планы лечения для вкладки "Врачебная" и зубную карту
-                SetClientStages(model);
-                SetTeeth(model);
 
                 // загружаем встречи для вкладки "Посещения"
                 Appointments = db.Appointments.Where(f => f.ClientInfoId == model.Id).Include(f => f.Employee).Include(f => f.Service).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Appointments>();
@@ -648,239 +634,6 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => ShowPaid, value); }
         }
         #endregion
-
-        #endregion
-
-        #region Работа с разделом карты "Врачебная"
-        //Свойства
-        public ObservableCollection<TreatmentStage> ClientStages
-        {
-            get { return GetProperty(() => ClientStages); }
-            set { SetProperty(() => ClientStages, value); }
-        }
-        public PatientTeeth Teeth
-        {
-            get { return GetProperty(() => Teeth); }
-            set { SetProperty(() => Teeth, value); }
-        }
-        public ChildTeeth ChildTeeth
-        {
-            get { return GetProperty(() => ChildTeeth); }
-            set { SetProperty(() => ChildTeeth, value); }
-        }
-
-        public void SetTeeth(Client client)
-        {
-            try
-            {
-                if (client?.Id != 0 && client.Teeth?.Length > 100) Teeth = JsonSerializer.Deserialize<PatientTeeth>(client.Teeth);
-                else Teeth = new PatientTeeth();
-
-                if (client?.Id != 0 && client.ChildTeeth?.Length > 100) ChildTeeth = JsonSerializer.Deserialize<ChildTeeth>(client.ChildTeeth);
-                else ChildTeeth = new ChildTeeth();
-            }
-            catch
-            {
-                Teeth = new PatientTeeth();
-                ChildTeeth = new ChildTeeth();
-            }
-        }
-
-        private void SetClientStages(Client client) => ClientStages = client?.Id == 0 ? new ObservableCollection<TreatmentStage>() : db.TreatmentStage.Where(f => f.ClientId == client.Id).Include(f => f.Client).ToObservableCollection();
-
-        [Command]
-        public void OpenTreatmentForm(object p)
-        {
-            try
-            {
-                if (p is TreatmentStage model)
-                {
-                    var vm = new TreatmentStageVM() { Date = model?.Date, Name = model?.Name, Model = model };
-                    vm.EventSave += SaveTreatment;
-                    new TreatmentStageWindow() { DataContext = vm }.Show();
-                }
-                else
-                {
-                    var vm = new TreatmentStageVM() { Model = new TreatmentStage() { Client = Model, ClientId = Model.Id } };
-                    vm.EventSave += SaveTreatment;
-                    new TreatmentStageWindow() { DataContext = vm }?.Show();
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void SaveTreatment(object p)
-        {
-            try
-            {
-                if (p is TreatmentStage model)
-                {
-                    if (model?.Date == null) model.Date = DateTime.Now.ToShortDateString();
-                    if (string.IsNullOrEmpty(model?.Name)) model.Date = "Без названия";
-                    if (model?.Id == 0)
-                    {
-                        db?.TreatmentStage.Add(model);
-                        ClientStages?.Add(model);
-                    }
-                }
-                if (db.SaveChanges() > 0) new Notification() { Content = "Сохранено в базу данных!" }.run();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void DeleteTreatment(object p)
-        {
-            try
-            {
-                if (p is TreatmentStage model)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить область?",
-                        messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                    if (response.ToString() == "No") return;
-
-                    db.TreatmentStage.Remove(model);
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Удалено из базы данных!" }.run();
-                    ClientStages.Remove(model);
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления области!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void OpenFormTemplate(object p)
-        {
-            if (p is TreatmentParameters parameters)
-            {
-                if (parameters.Model is TreatmentStage model)
-                {
-                    var vm = new SelectTemplateInTreatmentStageVM() { TemplateName = parameters.Name, Model = model, VM = this };
-
-   
-                            vm.Templates = db.UserTemplates.Select(f => new TreeTemplate()
-                            {
-                                Id = f.Id,
-                                IsDir = f.IsDir,
-                                ParentID = f.ParentID,
-                                Name = f.Name
-                            }).ToArray(); 
-                    
-                    new SelectValueInTemplateWin() { DataContext = vm }?.ShowDialog();
-                }
-            }
-        }
-
-        [Command]
-        public void AddChecked(object p)
-        {
-            try
-            {
-                if (p is SelectValueInTemplateWin win && win.view is TreeListView tree && tree.DataContext is SelectTemplateInTreatmentStageVM vm)
-                {
-                    var values = vm.Templates.Where(f => f.IsChecked == true).ToArray();
-                    var str = new StringBuilder();
-                    values.ForEach(f => str.Append(f.Name + "\n"));
-
-                    int idx = ClientStages.IndexOf(f => f.Guid == vm.Model?.Guid);
-                    if (idx < 0) return;
-
-                    switch (vm.TemplateName)
-                    {
-                        case "Allergy": ClientStages[idx].Allergies = str.ToString(); break;
-                    }
-                    win?.Close();
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке добавить значение в поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void Clear(object p)
-        {
-            try
-            {
-                if (p is TreatmentParameters parameters)
-                {
-                    if (parameters.Model is TreatmentStage model)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание", text: "Очистить поле?",
-                            messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                        if (response.ToString() == "No") return;
-
-                        switch (parameters.Name)
-                        {
-                            case "Allergy": model.Allergies = null; break;
-                            case "Recomendation": model.Recommendations = null; break;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке очистить поле!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        [Command]
-        public void ToothMarked(object p)
-        {
-            try
-            {
-                if (p is ToothCommandParameters param)
-                {
-                    switch (param.Diagnos)
-                    {
-                        case "Healthy": param.Tooth.ToothImagePath = TeethImages.ImgPathGreen; param.Tooth.Abbr = "З"; break;
-                        case "Missing": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "О"; break;
-                        case "Impacted": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "НП"; break;
-                        case "Radiks": param.Tooth.ToothImagePath = TeethImages.ImgPathGray; param.Tooth.Abbr = "КН"; break;
-                        case "Caries": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "К"; break;
-                        case "Pulpit": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "П"; break;
-                        case "Gangrene": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Г"; break;
-                        case "Granuloma": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Гр"; break;
-                        case "Deletable": param.Tooth.ToothImagePath = TeethImages.ImgPathRed; param.Tooth.Abbr = "Э"; break;
-                        case "MetalCrown": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "КМ"; break;
-                        case "Bridge": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "М"; break;
-                        case "Rp": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПР"; break;
-                        case "Seal": param.Tooth.ToothImagePath = TeethImages.ImgPathYellow; param.Tooth.Abbr = "ПЛ"; break;
-                        case "Imp": param.Tooth.ToothImagePath = TeethImages.ImgPathImp; param.Tooth.Abbr = "Имп"; break;
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        public void SaveTeeth(Client client)
-        {
-            try
-            {
-                client.Teeth = JsonSerializer.Serialize(Teeth);
-                client.ChildTeeth = JsonSerializer.Serialize(ChildTeeth);
-            }
-            catch
-            {
-                client.Teeth = null;
-                client.ChildTeeth = null;
-            }
-        }
         #endregion
 
         #region Работа с разделом карты "Дополнительные поля"
@@ -1034,7 +787,6 @@ namespace Dental.ViewModels.ClientDir
                 }
                 else
                 { // редактирование су-щего эл-та
-                    SaveTeeth(Model);
                     FieldsViewModel?.Save(Model);
                     if (db.SaveChanges() > 0) {
                         LoadClients((bool)Model.IsInArchive);
@@ -1079,9 +831,6 @@ namespace Dental.ViewModels.ClientDir
                     if (item != null) Clients.Remove(item);
 
                     db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    db.SaveChanges();
-
-                    db.TreatmentStage.Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                     db.SaveChanges();
                 
                 // удаляем фото 

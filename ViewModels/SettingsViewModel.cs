@@ -39,12 +39,11 @@ namespace Dental.ViewModels
             try
             {
                 db = new ApplicationContext();
-                var model = db.Settings.Include(f => f.ProviderMsg).FirstOrDefault() ?? new Setting();
+                var model = db.Settings.FirstOrDefault() ?? new Setting();
                 Config = new Config();
                 SettingsVM = new SettingsVM();
                 SettingsVM.Copy(model);
 
-                Providers = db.ProviderMsgs.Include(f => f.Country).ToObservableCollection();
                 //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
                 IsReadOnly = model?.Id > 0;
@@ -69,12 +68,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => SettingsVM, value); }
         }
 
-        public ICollection<ProviderMsg> Providers
-        {
-            get { return GetProperty(() => Providers); }
-            set { SetProperty(() => Providers, value); }
-        }
-
         [Command]
         public void Editable() => IsReadOnly = !IsReadOnly;
 
@@ -92,11 +85,6 @@ namespace Dental.ViewModels
             model.OrgPhone = SettingsVM.OrgPhone;
             model.OrgEmail = SettingsVM.OrgEmail;          
             model.OrgSite = SettingsVM.OrgSite;
-
-            model.LoginProviderMsg = SettingsVM.LoginProviderMsg;
-            model.PasswordProviderMsg = SettingsVM.PasswordProviderMsg;
-            model.ProviderMsgId = SettingsVM.ProviderMsgId;
-            model.ProviderMsg = SettingsVM.ProviderMsg;
 
             if (model?.Id == 0) db.Settings.Add(model);
 

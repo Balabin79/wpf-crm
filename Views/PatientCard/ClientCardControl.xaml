@@ -124,8 +124,8 @@
                             <add:ClientControl x:Name="Fields" DataContext="{Binding FieldsViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Врачебная" >
-                            <tp:MedicalTab x:Name="Medical" DataContext="{Binding }"/>
+                        <dx:DXTabItem Header="Планы услуг" >
+
                         </dx:DXTabItem>
 
                     </dx:DXTabControl>

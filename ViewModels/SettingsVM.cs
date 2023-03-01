@@ -62,30 +62,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => OrgSite, value?.Trim()); }
         }
 
-        public string LoginProviderMsg
-        {
-            get { return GetProperty(() => LoginProviderMsg); }
-            set { SetProperty(() => LoginProviderMsg, value?.Trim()); }
-        }
-        public string PasswordProviderMsg
-        {
-            get { return GetProperty(() => PasswordProviderMsg); }
-            set { SetProperty(() => PasswordProviderMsg, value?.Trim()); }
-        }
-
-        public int? ProviderMsgId
-        {
-            get { return GetProperty(() => ProviderMsgId); }
-            set { SetProperty(() => ProviderMsgId, value); }
-        }
-
-        public ProviderMsg ProviderMsg
-        {
-            get { return GetProperty(() => ProviderMsg); }
-            set { SetProperty(() => ProviderMsg, value); }
-        }
-
-
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -98,10 +74,6 @@ namespace Dental.ViewModels
             OrgPhone = model.OrgPhone;
             OrgEmail = model.OrgEmail;
             OrgSite = model.OrgSite;
-            LoginProviderMsg = model.LoginProviderMsg;
-            PasswordProviderMsg = model.PasswordProviderMsg;
-            ProviderMsgId = model.ProviderMsgId;
-            ProviderMsg = model.ProviderMsg;
         }
     }
 }

@@ -27,9 +27,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
-                    <commands:ExportWordCommand x:Key="Word"/>
-                    <commands:ExportPdfCommand x:Key="Pdf"/>
-                    <commands:ExportExcelCommand x:Key="Excel"/>
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />

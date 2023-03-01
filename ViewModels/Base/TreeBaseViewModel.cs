@@ -1,6 +1,5 @@
 ﻿using Dental.Infrastructures.Converters;
 using Dental.Models.Templates;
-using Dental.Views.Templates;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -197,7 +196,6 @@ namespace Dental.ViewModels.Base
 
         protected virtual ObservableCollection<T> GetCollection() => Context?.Include(f => f.Parent).OrderByDescending(f => f.IsDir).OrderBy(f => f.Name).ToObservableCollection();
 
-        protected virtual Window GetWindow() => new TemplateWin();
 
 
     }

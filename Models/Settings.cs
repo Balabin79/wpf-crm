@@ -8,13 +8,6 @@ namespace Dental.Models
     [Table("Settings")]
     public class Setting : AbstractBaseModel
     {
-        public string LoginProviderMsg { get; set; }
-        public string PasswordProviderMsg { get; set; }
-
-        public int? ProviderMsgId { get; set; }
-        public ProviderMsg ProviderMsg { get; set; }
-
-
         public string OrgName { get; set; }
         public string OrgShortName { get; set; }
         public string OrgAddress { get; set; }
