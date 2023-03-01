@@ -1,12 +1,8 @@
 using Dental.Infrastructures.Attributes;
 using Dental.Models.Base;
 using Dental.Models.Templates;
-using DevExpress.Mvvm;
-using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {

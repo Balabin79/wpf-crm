@@ -1,12 +1,8 @@
-using Dental.Infrastructures.Attributes;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
-using DevExpress.Xpf.Core;
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Windows;
 
 namespace Dental.Models
 {

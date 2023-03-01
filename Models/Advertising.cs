@@ -1,4 +1,3 @@
-using Dental.Infrastructures.Attributes;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;

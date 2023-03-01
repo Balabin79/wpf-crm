@@ -3,24 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Dental.Models.Base;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Dental.Models.Templates;
-using System.Configuration;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Common;
 using Dental.Services;
-using System;
-using System.IO;
 using System.Data.SQLite;
-using System.Data.Entity.Infrastructure;
-using System.Data.SQLite.EF6;
-using System.Data.Entity.Core.Common;
-using System.Data.SqlClient;
-using DevExpress.Xpf.Core;
-using System.Windows;
-using Dental.Views.Settings;
-using Dental.ViewModels;
+
 
 namespace Dental.Models
 {

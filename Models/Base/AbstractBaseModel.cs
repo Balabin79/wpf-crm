@@ -2,13 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using Dental.Services;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Dental.Infrastructures.Logs;
 using DevExpress.Mvvm;
 using Dental.Infrastructures.Attributes;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Dental.Models.Base
 {

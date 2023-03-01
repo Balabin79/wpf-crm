@@ -1,13 +1,8 @@
 using DevExpress.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Dental.Models.Base;
 using System.Windows.Media;
-using System.Globalization;
-using System.Text.Json.Serialization;
 
 namespace Dental.Models
 {
