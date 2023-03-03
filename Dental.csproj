@@ -15,6 +15,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\svg\document-edit.svg" />
+    <None Remove="Resources\Icons\svg\download.svg" />
+    <None Remove="Resources\Icons\svg\edit-r.svg" />
+    <None Remove="Resources\Icons\svg\folder-f.svg" />
+    <None Remove="Resources\Icons\svg\icon_download.svg" />
+    <None Remove="Resources\Icons\svg\telegram-plane.svg" />
+    <None Remove="Resources\Icons\svg\telegram.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="te4.ico" />
   </ItemGroup>
 
@@ -126,6 +136,9 @@
     <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\cogs.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
+    <Resource Include="Resources\Icons\svg\document-edit.svg" />
+    <Resource Include="Resources\Icons\svg\download.svg" />
+    <Resource Include="Resources\Icons\svg\edit-r.svg" />
     <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
@@ -136,6 +149,7 @@
     <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\file_tree.svg" />
     <Resource Include="Resources\Icons\svg\folder-a.svg" />
+    <Resource Include="Resources\Icons\svg\folder-f.svg" />
     <Resource Include="Resources\Icons\svg\folder-open.svg" />
     <Resource Include="Resources\Icons\svg\folder-plus.svg" />
     <Resource Include="Resources\Icons\svg\folder.svg" />
@@ -145,6 +159,7 @@
     <Resource Include="Resources\Icons\svg\google_icon.svg" />
     <Resource Include="Resources\Icons\svg\google_mail.svg" />
     <Resource Include="Resources\Icons\svg\hdd.svg" />
+    <Resource Include="Resources\Icons\svg\icon_download.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-add_alt.svg" />
@@ -177,6 +192,8 @@
     <Resource Include="Resources\Icons\svg\sms.svg" />
     <Resource Include="Resources\Icons\svg\sort-numeric-down.svg" />
     <Resource Include="Resources\Icons\svg\sort.svg" />
+    <Resource Include="Resources\Icons\svg\telegram-plane.svg" />
+    <Resource Include="Resources\Icons\svg\telegram.svg" />
     <Resource Include="Resources\Icons\svg\templates.svg" />
     <Resource Include="Resources\Icons\svg\times-circle.svg" />
     <Resource Include="Resources\Icons\svg\times.svg" />
@@ -217,9 +234,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Sheduler.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\Documents\DocumentsControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
@@ -265,9 +279,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Documents\DocumentsWindow.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
     <Page Update="Views\Invoices\ClientInvoicesControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -277,10 +288,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Sheduler.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Documents\DocumentsControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

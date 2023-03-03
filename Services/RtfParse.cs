@@ -24,20 +24,26 @@ namespace Dental.Services
             db = new ApplicationContext();
             {
                 CommonValues = db.CommonValues.ToArray();
-                //Organization = db.Organizations.FirstOrDefault() ?? new Organization();
+                Org = db.Settings.Select(f => new Org {
+                    OrgAddress = f.OrgAddress,
+                    OrgEmail = f.OrgEmail,
+                    OrgName = f.OrgName,
+                    OrgPhone = f.OrgPhone,
+                    OrgShortName = f.OrgShortName,
+                    OrgSite = f.OrgSite
+                }).FirstOrDefault() ?? new Org();
             }
         }
 
-        public RtfParse(string txt, object model) : this(txt)
+        public RtfParse(string txt, Client client, Employee employee = null) : this(txt)
         {
-            if (model is Client client)
-            {
-                Client = client;
+            Client = client;
+            Employee = employee;
+
+            if (Client != null) 
                 AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id)
-                    .Include(f => f.AdditionalField.TypeValue)                  
-                    .ToArray();
-            }
-            if (model is Employee employee) Employee = employee;
+                    .Include(f => f.AdditionalField.TypeValue).ToArray();
+          
         }
 
         public string Run()
@@ -81,12 +87,11 @@ namespace Dental.Services
                 {
                     //case "Client": return ((Client)Model)?.GetType().GetProperty(propertyName)?.GetValue(Model)?.ToString() ?? "";
                     case "Client":
-                        return Client.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
+                        return Client?.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
                     case "Employee":
-                        if (Employee == null && !NotSetEmployee) SetEmployee();
                         return Employee?.GetType()?.GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";
-                    //case "Org":
-                       // return Organization.GetType().GetProperty(propertyName)?.GetValue(Organization)?.ToString() ?? "";
+                    case "Org": 
+                        return Org.GetType().GetProperty(propertyName)?.GetValue(Org)?.ToString() ?? "";
 
                     case "ClientAdditionalFields": return GetAdditionalClientValue(propertyName);
 
@@ -140,7 +145,7 @@ namespace Dental.Services
         public Employee Employee { get; set; }
         public object SelectedItem { get; set; }
         private Client Client { get; set; }
-       // private Organization Organization { get; set; }
+        private Org Org { get; set; }
 
         private ICollection<AdditionalClientValue> AdditionalClientValues { get; set; }
 
@@ -161,6 +166,15 @@ namespace Dental.Services
             if (NotSetEmployee) Employee = null;
             if (p is Window win) win?.Close();
         }
+    }
 
+    public class Org
+    {
+        public string OrgAddress { get; set;}
+        public string OrgEmail { get; set;}
+        public string OrgName { get; set;}
+        public string OrgPhone { get; set;}
+        public string OrgShortName { get; set;}
+        public string OrgSite { get; set;}
     }
 }

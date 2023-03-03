@@ -74,16 +74,6 @@
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Шаблоны документов"                                    
-                                           GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenFormDocumentsCommand}">
-                            <dxb:BarButtonItem.GlyphTemplate>
-                                <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/svg/file-word.svg" />
-                                </DataTemplate>
-                            </dxb:BarButtonItem.GlyphTemplate>
-                        </dxb:BarButtonItem>
-
                         <dxb:BarButtonItem Content="Дополнительные поля"                                        
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenFormFieldsCommand}">

@@ -13,11 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Documents
+namespace Dental.Views
 {
-    public partial class ImportDocumentsControl : UserControl
+    /// <summary>
+    /// Логика взаимодействия для DocumentsControl.xaml
+    /// </summary>
+    public partial class DocumentsControl : UserControl
     {
-        public ImportDocumentsControl()
+        public DocumentsControl()
         {
             InitializeComponent();
         }

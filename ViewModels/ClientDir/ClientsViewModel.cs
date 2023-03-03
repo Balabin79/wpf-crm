@@ -40,7 +40,7 @@ namespace Dental.ViewModels.ClientDir
 {
     public class ClientsViewModel : ViewModelBase
     {
-        private readonly PostgresContext db;
+        private readonly ApplicationContext db;
 
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
@@ -49,10 +49,10 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                db = new PostgresContext();
+                db = new ApplicationContext();
                 Config = new Config();
                 LoadClients();
-                /*LoadInvoices();
+                LoadInvoices();
                 LoadEmployees();
                 Model = new Client();
 
@@ -60,7 +60,7 @@ namespace Dental.ViewModels.ClientDir
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
                 Prices = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToArray();
-                Advertisings = db.Advertising.ToObservableCollection();*/
+                Advertisings = db.Advertising.ToObservableCollection();
             }
             catch (Exception e)
             {
@@ -336,10 +336,7 @@ namespace Dental.ViewModels.ClientDir
                 // загружаем встречи для вкладки "Посещения"
                 Appointments = db.Appointments.Where(f => f.ClientInfoId == model.Id).Include(f => f.Employee).Include(f => f.Service).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Appointments>();
 
-                // вкладка "Документы"
-                Document = new ClientsDocumentsViewModel();
-
-               // FieldsViewModel = new FieldsViewModel(model, db);
+                FieldsViewModel = new FieldsViewModel(model, db);
                 EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
 
                 FieldsViewModel.IsReadOnly = true;
@@ -347,7 +344,6 @@ namespace Dental.ViewModels.ClientDir
                 SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
-                LoadDocuments();
             }
             catch (Exception e)
             {
@@ -644,70 +640,16 @@ namespace Dental.ViewModels.ClientDir
         }
         #endregion
 
-        #region Документы
-        [Command]
-        public void OpenFormDocuments()
-        {
-            try
-            {
-                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == DocumentsWindow?.ToString()).FirstOrDefault();
-                if (wnd != null)
-                {
-                    wnd.Activate();
-                    return;
-                }
-
-                var vm = new ClientsDocumentsViewModel();
-                vm.EventUpdateDocuments += LoadDocuments;
-                DocumentsWindow = new DocumentsWindow() { DataContext = vm };
-                DocumentsWindow.Show();
-            }
-            catch
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            }
-        }
-
-        public void LoadDocuments()
-        {
-            try
-            {
-                Documents = new ObservableCollection<FileInfo>();
-                if (Directory.Exists(Config.PathToClientsDocumentsDirectory))
-                {
-                    IEnumerable<string> filesNames = new List<string>();
-                    string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
-                    foreach (var format in formats)
-                    {
-                        var collection = Directory.EnumerateFiles(Config.PathToClientsDocumentsDirectory, format).ToList();
-                        if (collection.Count > 0) filesNames = filesNames.Union(collection);
-                    }
-                    foreach (var filePath in filesNames) Documents.Add(new FileInfo(filePath));
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
-
-        }
-
-        public ObservableCollection<FileInfo> Documents
-        {
-            get { return GetProperty(() => Documents); }
-            set { SetProperty(() => Documents, value); }
-        }
-        #endregion
-
+   
         #region Раздел карты "Дополнительные поля"
         [Command]
         public void OpenFormFields()
         {
             try
             {
-               // var vm = new AdditionalClientFieldsViewModel(db);
-                //vm.EventFieldChanges += UpdateFields;
-                //new ClientFieldsWindow() { DataContext = vm }?.Show();
+                var vm = new AdditionalClientFieldsViewModel(db);
+                vm.EventFieldChanges += UpdateFields;
+                new ClientFieldsWindow() { DataContext = vm }?.Show();
             }
             catch (Exception e)
             {
@@ -722,7 +664,6 @@ namespace Dental.ViewModels.ClientDir
         }
         #endregion
 
-        public DocumentsWindow DocumentsWindow { get; set; }
 
         #region Карта клиента
 
@@ -877,12 +818,6 @@ namespace Dental.ViewModels.ClientDir
         {
             get { return GetProperty(() => ClientInfoViewModel); }
             set { SetProperty(() => ClientInfoViewModel, value); }
-        }
-
-        public ClientsDocumentsViewModel Document
-        {
-            get { return GetProperty(() => Document); }
-            set { SetProperty(() => Document, value); }
         }
 
         public bool IsReadOnly
