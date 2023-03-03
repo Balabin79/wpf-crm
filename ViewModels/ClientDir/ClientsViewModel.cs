@@ -40,7 +40,7 @@ namespace Dental.ViewModels.ClientDir
 {
     public class ClientsViewModel : ViewModelBase
     {
-        private readonly ApplicationContext db;
+        private readonly PostgresContext db;
 
         public delegate void ChangeReadOnly(bool status);
         public event ChangeReadOnly EventChangeReadOnly;
@@ -49,10 +49,10 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                db = new ApplicationContext();
+                db = new PostgresContext();
                 Config = new Config();
                 LoadClients();
-                LoadInvoices();
+                /*LoadInvoices();
                 LoadEmployees();
                 Model = new Client();
 
@@ -60,7 +60,7 @@ namespace Dental.ViewModels.ClientDir
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
                 Prices = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToArray();
-                Advertisings = db.Advertising.ToObservableCollection();
+                Advertisings = db.Advertising.ToObservableCollection();*/
             }
             catch (Exception e)
             {
@@ -339,7 +339,7 @@ namespace Dental.ViewModels.ClientDir
                 // вкладка "Документы"
                 Document = new ClientsDocumentsViewModel();
 
-                FieldsViewModel = new FieldsViewModel(model, db);
+               // FieldsViewModel = new FieldsViewModel(model, db);
                 EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
 
                 FieldsViewModel.IsReadOnly = true;
@@ -705,9 +705,9 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                var vm = new AdditionalClientFieldsViewModel(db);
-                vm.EventFieldChanges += UpdateFields;
-                new ClientFieldsWindow() { DataContext = vm }?.Show();
+               // var vm = new AdditionalClientFieldsViewModel(db);
+                //vm.EventFieldChanges += UpdateFields;
+                //new ClientFieldsWindow() { DataContext = vm }?.Show();
             }
             catch (Exception e)
             {
