@@ -13,6 +13,7 @@ using Dental.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
 using Dental.Views.Settings;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels.Org
 {
@@ -23,7 +24,7 @@ namespace Dental.ViewModels.Org
         {
             try
             {
-                db = new ApplicationContext();
+                db = new ConnectToDb().Context;
                 CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
 
             }

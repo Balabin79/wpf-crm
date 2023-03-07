@@ -82,7 +82,6 @@ namespace Dental.ViewModels
             OrgPhone = model.OrgPhone;
             OrgEmail = model.OrgEmail;
             OrgSite = model.OrgSite;
-            DbType = model.DbType;
         }
     }
 }

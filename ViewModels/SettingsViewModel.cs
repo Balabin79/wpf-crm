@@ -27,6 +27,7 @@ using Dental.ViewModels.Org;
 using System.Windows.Media;
 using License;
 using Dental.Models.Base;
+using System.Text.RegularExpressions;
 
 namespace Dental.ViewModels
 {
@@ -38,21 +39,50 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ApplicationContext();
+                db = new ConnectToDb().Context;
                 var model = db.Settings.FirstOrDefault() ?? new Setting();
                 Config = new Config();
                 SettingsVM = new SettingsVM();
                 SettingsVM.Copy(model);
 
+                PostgresConnect = new PostgresConnect();
                 //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
                 IsReadOnly = model?.Id > 0;
                 if (IsReadOnly) ImagesLoading();
 
+
+                if (File.Exists(Config.PathToConfig))
+                {
+                    var json = File.ReadAllText(Config.PathToConfig).Trim();
+                    if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb config)
+                    {
+                        SettingsVM.DbType = config.Db;
+                        if (SettingsVM.DbType == 1)
+                        {
+                            try 
+                            {
+                                var str = config.ConnectionString;
+                                
+                                str.Substring(str.IndexOf("Server"), "Server".Length);
+                                ///PostgresConnect.Server = 
+                            }
+                            catch 
+                            {
+                                PostgresConnect.Server = null;
+                                PostgresConnect.Port = 0;
+                                PostgresConnect.Database = null;
+                                PostgresConnect.UserName = null;
+                                PostgresConnect.Password = null;
+                            }
+                        }
+                    }
+                }
+
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                /*ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);*/
             }
         }
 
@@ -74,48 +104,91 @@ namespace Dental.ViewModels
         [Command]
         public void Save()
         {
-            try 
-            { 
-
-            var model = db.Settings.FirstOrDefault() ?? new Setting();
-
-            model.OrgName = SettingsVM.OrgName;
-            model.OrgShortName = SettingsVM.OrgShortName;
-            model.OrgAddress = SettingsVM.OrgAddress;
-            model.OrgPhone = SettingsVM.OrgPhone;
-            model.OrgEmail = SettingsVM.OrgEmail;          
-            model.OrgSite = SettingsVM.OrgSite;
-
-            if (model?.Id == 0) db.Settings.Add(model);
-
-            /************************/
-            if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+            try
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                Environment.Exit(0);
-            }
-            if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                Environment.Exit(0);
-            }
-            /************************/
+                var model = db.Settings.FirstOrDefault() ?? new Setting();
 
-            if (db.SaveChanges() > 0)
-            {
-                    SettingsVM.Id = model.Id;
-                new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-            }
+                model.OrgName = SettingsVM.OrgName;
+                model.OrgShortName = SettingsVM.OrgShortName;
+                model.OrgAddress = SettingsVM.OrgAddress;
+                model.OrgPhone = SettingsVM.OrgPhone;
+                model.OrgEmail = SettingsVM.OrgEmail;
+                model.OrgSite = SettingsVM.OrgSite;
+                if (model?.Id == 0) db.Settings.Add(model);
 
-        }
-            catch(Exception e)
+                ConfigHandler();
+
+                /************************/
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                /************************/
+                bool dbChanges = db.SaveChanges() > 0;
+                if (dbChanges) SettingsVM.Id = model.Id;
+
+                if (dbChanges || IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                
+                IsConfigChanged = false;             
+            }
+            catch (Exception e)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении данных организации!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
-}
+        }
+        private bool IsConfigChanged { get; set; } = false;
+
+        private void ConfigHandler()
+        {
+            if (SettingsVM.DbType == null) return;
+
+            // сравниваем значения из формы с теми что из файла, если изменились, то изменяем флаг оповещения
+            if (File.Exists(Config.PathToConfig))
+            {
+                var json = File.ReadAllText(Config.PathToConfig).Trim();
+
+                if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb file)
+                {
+                    // значения не поменялись
+                    if (SettingsVM.DbType == file.Db && Config.ConnectionString == file.ConnectionString) return;                  
+                }
+            }
+            ConfigWrite();
+        }
+
+        private void ConfigWrite()
+        {
+            var connect = new StoreConnectToDb();
+            if (SettingsVM.DbType == 0)
+            {
+                connect.Db = 0;
+                connect.ConnectionString = Config.PathToDbDefault;
+            }
+
+            if (SettingsVM.DbType == 1)
+            {
+                connect.Db = 1;
+                connect.ConnectionString = $"Server={PostgresConnect.Server ?? ""};port={PostgresConnect.Port};Database={PostgresConnect.Database ?? ""};User Id={PostgresConnect.UserName ?? ""};Password={PostgresConnect.Password ?? ""};";
+            }
+
+            var config = JsonSerializer.Serialize(connect);
+
+            if (File.Exists(Config.PathToConfig)) File.Delete(Config.PathToConfig);
+            File.WriteAllText(Config.PathToConfig, config);
+
+            Config.ConnectionString = connect.ConnectionString ?? Config.PathToDbDefault;
+            Config.DbType = connect.Db;
+            IsConfigChanged = true;
+        }
 
         #region Свойства
         public bool IsReadOnly
@@ -230,7 +303,7 @@ namespace Dental.ViewModels
                             }
                     }
                     img.Clear();
-                   // msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
+                    // msg = img?.Name == "Logo" ? "Файл логотипа удален" : "Файл печати удален";
                     db.SaveChanges();
                     new Notification() { Content = "Файл логотипа удален" }.run();
                 }
@@ -249,7 +322,7 @@ namespace Dental.ViewModels
         public void OpenLicenseForm()
         {
             try
-            {              
+            {
                 new LicenseWindow() { DataContext = new LicViewModel() }?.ShowDialog();
             }
             catch (Exception e)

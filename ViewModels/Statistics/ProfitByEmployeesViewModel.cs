@@ -1,4 +1,6 @@
 ﻿using Dental.Models;
+using Dental.Models.Base;
+using Dental.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
@@ -18,7 +20,7 @@ namespace Dental.ViewModels.Statistics
 
         public ProfitByEmployeesViewModel()
         {
-            db = new ApplicationContext();
+            db = new ConnectToDb().Context;
             Employees = db.Employes.ToObservableCollection();
             Search();
         }

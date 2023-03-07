@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Globalization;
+using Dental.Models.Base;
 
 namespace Dental.Services
 {
@@ -21,7 +22,7 @@ namespace Dental.Services
         public RtfParse(string txt)
         {
             RtfText = txt;
-            db = new ApplicationContext();
+            db = new ConnectToDb().Context;
             {
                 CommonValues = db.CommonValues.ToArray();
                 Org = db.Settings.Select(f => new Org {

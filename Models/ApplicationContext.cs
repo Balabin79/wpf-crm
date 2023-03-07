@@ -12,18 +12,8 @@ namespace Dental.Models
     public class ApplicationContext : DbContext
     {
 
-        public ApplicationContext() : base(
-            new SQLiteConnection()
-            {
-                ConnectionString = new SQLiteConnectionStringBuilder()
-                {
-                    DataSource = new Config().ConnectionString,
-                    Version = 3,
-                    BusyTimeout = 10000,
-                    FailIfMissing = true
-                }.ConnectionString
-            }, true
-            ){}
+        public ApplicationContext(string connectionString) : base(connectionString) { }
+        public ApplicationContext(SQLiteConnection sQLiteConnection, bool flag) : base(sQLiteConnection, flag) { }
 
         public override int SaveChanges()
         {

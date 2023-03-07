@@ -1,4 +1,6 @@
 ﻿using Dental.Models;
+using Dental.Models.Base;
+using Dental.Services;
 using Dental.ViewModels.Base;
 using Dental.ViewModels.ServicePrice;
 using DevExpress.Xpf.Core;
@@ -27,7 +29,7 @@ namespace Dental.Views.ServicePrice
         public ServicePage()
         {
             InitializeComponent();
-            var db = new ApplicationContext();
+            var db = new ConnectToDb().Context;
             DataContext = new ServiceViewModel(db, db?.Services);
         }
 

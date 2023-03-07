@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
 using DevExpress.Mvvm.Native;
+using Dental.Models.Base;
+using System.Data.Entity;
+using Dental.Models;
 
 namespace Dental.Services
 {
@@ -22,16 +25,16 @@ namespace Dental.Services
                 PathToProgram = defaultPath;
 
                 // открываем файл и пытаемся прочесть содержимое json
-                    if (File.Exists(PathToConfig))
+                if (File.Exists(PathToConfig))
+                {
+                    var json = File.ReadAllText(PathToConfig).Trim();
+                    if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb config)
                     {
-                        var json = File.ReadAllText(PathToConfig).Trim();
-                        if (json.Length > 10 && JsonSerializer.Deserialize(json, new UserConfig().GetType()) is UserConfig config)
-                        {
-                            DBName = config.DBName ?? defaultDBName;
-                            ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
-                            PathToProgram = config.PathToProgram ?? defaultPath;
-                        }
+                        ConnectionString = config.ConnectionString;
+                        DbType = config.Db;
+                        PathToProgram = defaultPath;
                     }
+                }
                 PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
                 PathToOrgDirectory = Path.Combine(PathToProgram, "Organization");
                 PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
@@ -44,17 +47,20 @@ namespace Dental.Services
                 DBName = defaultDBName;
                 ConnectionString = Path.Combine(defaultPath, DBName);
                 PathToProgram = defaultPath;
+                DbType = (int)DbList.SQLite;
             }
         }
+
         public string ConnectionString;
         public string DBName;
         public string PathToProgram;
+        public int DbType;
 
         // эти пути всегда статичны       
-        public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Dental");
-        public static string defaultDBName = "dental.db";
+        public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Crm");
+        public static string defaultDBName = "B6Crm.db";
         public static string PathToDbDefault = Path.Combine(defaultPath, defaultDBName);
-        public static string PathToConfig = Path.Combine(defaultPath, "dental.conf");
+        public static string PathToConfig = Path.Combine(defaultPath, "B6Crm.conf");
 
 
         // эти пути задаются динамически
@@ -74,6 +80,8 @@ namespace Dental.Services
             foreach (var i in files) if (i.Contains("Logo")) logo = i;
       
             return Path.Combine(PathToOrgDirectory, logo);
-        }      
+        }
+
+        public enum DbList { SQLite = 0, PostgreSQL = 1 }
     }
 }

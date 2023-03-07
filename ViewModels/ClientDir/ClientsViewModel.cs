@@ -49,8 +49,9 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                db = new ApplicationContext();
-                Config = new Config();
+                var conn = new ConnectToDb();
+                db = conn.Context;
+                Config = conn.Config;
                 LoadClients();
                 LoadInvoices();
                 LoadEmployees();
@@ -585,9 +586,10 @@ namespace Dental.ViewModels.ClientDir
 
                     if (report?.DataSource is SqlDataSource source)
                     {
-                        string connectionString = new ApplicationContext().Database.Connection.ConnectionString;               
-                        var con = "XpoProvider=SQLite;" + connectionString;
-                        source.ConnectionParameters = new CustomStringConnectionParameters(con);
+                        string connectionString = db.Database.Connection.ConnectionString;
+                        var provider = "XpoProvider=SQLite;";
+                        if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
+                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
                     }
 
                     PrintHelper.ShowPrintPreview(conv.Page, report);

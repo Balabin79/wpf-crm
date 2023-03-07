@@ -24,11 +24,7 @@
         <commands:PrintCommand x:Key="Print"/>
     </Window.Resources>
 
-    <Border
-        BorderBrush="LightGray" 
-        BorderThickness="1" 
-        Margin="5" 
-        dx:ThemeManager.ThemeName="Office2019White">
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" >
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>

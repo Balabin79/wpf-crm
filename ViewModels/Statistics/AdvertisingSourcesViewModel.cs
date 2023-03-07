@@ -10,6 +10,8 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using Dental.Infrastructures.Logs;
+using Dental.Services;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels.Statistics
 {
@@ -21,7 +23,7 @@ namespace Dental.ViewModels.Statistics
         {
             try
             {
-                db = new ApplicationContext();
+                db = new ConnectToDb().Context;
                 IsCnt = true;
                 SetPattern();
                 SetValueDataMember();

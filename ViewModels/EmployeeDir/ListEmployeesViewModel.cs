@@ -36,8 +36,9 @@ namespace Dental.ViewModels.EmployeeDir
         {
             try
             {
-                db = new ApplicationContext();
-                Config = new Config();
+                var conn = new ConnectToDb();
+                db = conn.Context;
+                Config = conn.Config;
                 SetCollection();
             }
             catch (Exception e)

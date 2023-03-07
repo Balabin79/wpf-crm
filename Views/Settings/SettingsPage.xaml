@@ -118,25 +118,27 @@
                         <dxlc:LayoutGroup Orientation="Horizontal">
                             <dxlc:LayoutItem  Label="Название базы данных:" LabelPosition="Top" >
                                 <dxe:ToggleSwitch x:Name="dbType" ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="PostgreSQL" UncheckedStateContent="SQLite" 
-                                  IsChecked="{Binding SettingsVM.DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                   IsChecked="{Binding SettingsVM.DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
                         </dxlc:LayoutGroup>
 
                         <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
 
-                            <dxlc:LayoutItem Label="Сервер:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
+                            <dxlc:LayoutItem Label="Сервер (хост):" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
                                 <dxe:TextEdit 
-                                Text="{Binding PostgresConnect.Server, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                    Text="{Binding PostgresConnect.Server, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50">
                                 <dxe:TextEdit  
                                 MaskType="Numeric" Mask="d"
                                 Text="{Binding PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  
+                                IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
                             
@@ -145,7 +147,8 @@
                         <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                             <dxe:TextEdit 
                                 Text="{Binding PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                         </dxlc:LayoutItem>
 
@@ -153,16 +156,18 @@
 
                             <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                                 <dxe:TextEdit 
-                                Text="{Binding PostgresConnect.UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                    Text="{Binding PostgresConnect.UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                                 <dxe:TextEdit  
-                                Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                    Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
 
                         </dxlc:LayoutGroup>

@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services
+namespace Dental.Models.Base
 {
     [Serializable]
-    public class UserConfig
+    public class StoreConnectToDb
     {
-        public string DBName { get; set; }
         public string ConnectionString { get; set; }
-        public string PathToProgram { get; set; }
+        public int Db { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using System.Diagnostics;
 using Dental.Views.WindowForms;
 using Dental.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
+using Dental.Models.Base;
 
 namespace Dental.ViewModels
 {
@@ -28,8 +29,9 @@ namespace Dental.ViewModels
 
         public DocumentsViewModel()
         {
-            db = new ApplicationContext();
-            Config = new Config();
+            var conn = new ConnectToDb();
+            db = conn.Context;
+            Config = conn.Config;
             PathToDir = Config.PathToDocumentsDirectory;
             IsReadOnly = true;
 

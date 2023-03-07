@@ -2,6 +2,8 @@
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
+using Dental.Models.Base;
+using Dental.Services;
 using Dental.Views.WindowForms;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -25,7 +27,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ApplicationContext();
+                db = new ConnectToDb().Context;
                 SetCollection();
             }
             catch

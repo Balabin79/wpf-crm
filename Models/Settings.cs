@@ -12,12 +12,6 @@ namespace Dental.Models
         public string OrgEmail { get; set; }
         public string OrgPhone { get; set; }
         public string OrgSite { get; set; }
-
-        public int? DbType { get; set; } = (int)DbList.SQLite;
-
-        [NotMapped]
-        public PostgresConnect PostgresConnect { get; set; }
     }
-
-    public enum DbList { SQLite = 0, PostgreSQL = 1 }
+ 
 }
