@@ -16,7 +16,6 @@ using System.Windows.Media;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Scheduling;
-using Dental.Views.EmployeeDir;
 using Dental.ViewModels.EmployeeDir;
 using Dental.Services;
 using Dental.Views.PatientCard;

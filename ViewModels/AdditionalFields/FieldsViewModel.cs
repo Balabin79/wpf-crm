@@ -32,7 +32,7 @@ namespace Dental.ViewModels.AdditionalFields
         public void ClientFieldsLoading(Client client)
         {
             Fields = new ObservableCollection<LayoutItem>();
-            var AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).ToArray();
+            var AdditionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).OrderBy(f => f.Sort).ToArray();
             if (AdditionalClientFields.Count() == 0) return;
 
             // загружаем значения полей

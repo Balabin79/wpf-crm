@@ -17,7 +17,7 @@
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         Icon="/Resources/Icons/te4.ico" 
-        Title="B6 Dental"
+        Title="B6 CRM"
         >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>
@@ -36,20 +36,21 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0"
-                                Source="/Resources/Icons/adv3.png"/>
-                    <TextBlock Text="Рекламные источники" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
+                <TextBlock Text="Рекламные источники" FontSize="16" Padding="5 3 5 5" />
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
-                    <dxb:ToolBarControl Background="Transparent"
+                    <dxb:ToolBarControl Background="Transparent" Padding="5 3 5 5"
                         x:Name="fileToolBar" ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                         <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
-                                           Command="{Binding AddCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                                           Command="{Binding AddCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
                         <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
                                            GlyphSize="Small"
                                            Command="{Binding SaveCommand}"
@@ -59,7 +60,7 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" Margin="0 5 0 0">
                 <dxg:GridControl  AutoGenerateColumns="None" 
                                   MaxHeight="2000" 
                                   Name="grid"  
@@ -81,27 +82,33 @@
                     VerticalScrollbarVisibility="Auto"
                     AllowPrintColumnHeaderImage="True"
                     ShowGroupPanel="False">
-                            <dxg:TableView.InputBindings>
-                                <KeyBinding Key="Delete"        
-                                Command="{Binding ElementName=fileToolBar, Path=DataContext.DeleteCommand}"
-                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
-                                <KeyBinding Key="N" Modifiers="Ctrl" 
-                                            Command="{Binding ElementName=fileToolBar, Path=DataContext.AddCommand}"/>
-                                <KeyBinding Key="S" Modifiers="Ctrl" 
-                                            Command="{Binding ElementName=fileToolBar, Path=DataContext.SaveCommand}"/>
-                            </dxg:TableView.InputBindings>
-
-
                             <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}"
-                                            Name="addRow" KeyGesture="Ctrl+N" Content="Создать"  Command="{Binding ElementName=fileToolBar, Path=DataContext.AddCommand}"/>
+                                <dxb:BarButtonItem  
+                                    GlyphSize="Small" GlyphAlignment="Left" 
+                                            Name="addRow" KeyGesture="Ctrl+N" Content="Добавить"  
+                                    Command="{Binding ElementName=fileToolBar, Path=DataContext.AddCommand}">
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                             Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding ElementName=fileToolBar, Path=DataContext.SaveCommand}" />
 
-                                <dxb:BarButtonItem Name="deleteRow" Content="Удалить" Command="{Binding ElementName=fileToolBar, Path=DataContext.DeleteCommand}" 
+                                <dxb:BarButtonItem 
+                                    Name="deleteRow" 
+                                    IsEnabled="{DXBinding Expr='@e(grid).CurrentItem.Id > 0'}"
+                                    Content="Удалить" Command="{Binding ElementName=fileToolBar, Path=DataContext.DeleteCommand}" 
                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
-                                           KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
+                                           KeyGesture="Ctrl+Delete" GlyphSize="Small" GlyphAlignment="Left" >
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
                     </dxg:GridControl.View>
@@ -214,7 +221,13 @@
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=gridMainClientGroups, Path=DataContext.DeleteCommand}" 
                                            IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}"
-                                           CommandParameter="{Binding ElementName=view, Path=FocusedRow}"/>
+                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                            <dxb:BarButtonItem.GlyphTemplate>
+                                                <DataTemplate>
+                                                    <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />
+                                                </DataTemplate>
+                                            </dxb:BarButtonItem.GlyphTemplate>
+                                        </dxb:BarButtonItem>
 
                                     </dxb:ToolBarControl>
                                 </dxb:BarContainerControl>

@@ -62,6 +62,14 @@ namespace Dental.ViewModels
             set { SetProperty(() => OrgSite, value?.Trim()); }
         }
 
+        public int? DbType
+        {
+            get { return GetProperty(() => DbType); }
+            set { SetProperty(() => DbType, value); }
+        }
+
+
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
@@ -74,6 +82,7 @@ namespace Dental.ViewModels
             OrgPhone = model.OrgPhone;
             OrgEmail = model.OrgEmail;
             OrgSite = model.OrgSite;
+            DbType = model.DbType;
         }
     }
 }

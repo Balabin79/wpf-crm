@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.AdditionalFields
+namespace Dental.Views
 {
     /// <summary>
-    /// Логика взаимодействия для AdditionalFieldsPage.xaml
+    /// Логика взаимодействия для Staff.xaml
     /// </summary>
-    public partial class AdditionalFieldsPage : Page
+    public partial class Staff : UserControl
     {
-        public AdditionalFieldsPage()
+        public Staff()
         {
             InitializeComponent();
         }

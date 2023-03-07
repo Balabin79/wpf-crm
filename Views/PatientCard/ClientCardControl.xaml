@@ -43,7 +43,7 @@
 
             <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0" Source="{dx:DXImage SvgImages/Business Objects/BO_Customer.svg}"/>
+                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0" Source="/Resources/Icons/svg/user2.svg"/>
                     <TextBlock Text="{DXBinding Expr='ClientInfoViewModel.LastName + ` ` + ClientInfoViewModel.FirstName + ` ` + ClientInfoViewModel.MiddleName'}" FontSize="14" Padding="2 5 5 0" />
                 </StackPanel>
 

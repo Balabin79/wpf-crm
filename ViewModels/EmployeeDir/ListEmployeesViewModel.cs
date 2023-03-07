@@ -12,7 +12,6 @@ using System.Windows.Input;
 using Dental.Services;
 using System.Collections.Generic;
 using Dental.Infrastructures.Logs;
-using Dental.Views.EmployeeDir;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;

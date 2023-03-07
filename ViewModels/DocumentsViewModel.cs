@@ -30,7 +30,7 @@ namespace Dental.ViewModels
         {
             db = new ApplicationContext();
             Config = new Config();
-            PathToDir = Config.PathToClientsDocumentsDirectory;
+            PathToDir = Config.PathToDocumentsDirectory;
             IsReadOnly = true;
 
             Clients = db.Clients.Where(f => f.IsInArchive == false).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
@@ -79,13 +79,13 @@ namespace Dental.ViewModels
             try
             {
                 Documents = new ObservableCollection<FileInfo>();
-                if (Directory.Exists(Config.PathToClientsDocumentsDirectory))
+                if (Directory.Exists(Config.PathToDocumentsDirectory))
                 {
                     IEnumerable<string> filesNames = new List<string>();
                     string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
                     foreach (var format in formats)
                     {
-                        var collection = Directory.EnumerateFiles(Config.PathToClientsDocumentsDirectory, format).ToList();
+                        var collection = Directory.EnumerateFiles(Config.PathToDocumentsDirectory, format).ToList();
                         if (collection.Count > 0) filesNames = filesNames.Union(collection);
                     }
                     foreach (var filePath in filesNames) Documents.Add(new FileInfo(filePath));

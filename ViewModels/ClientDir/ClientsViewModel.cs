@@ -774,12 +774,6 @@ namespace Dental.ViewModels.ClientDir
                     db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                     db.SaveChanges();
                 
-                // удаляем фото 
-                if (Directory.Exists(Config.PathToClientsPhotoDirectory))
-                {
-                    var photo = Directory.GetFiles(Config.PathToClientsPhotoDirectory).FirstOrDefault(f => f.Contains(Model?.Guid));
-                    if (photo != null && File.Exists(photo)) File.Delete(photo);
-                }
 
                 // удаляем файлы 
                 if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);

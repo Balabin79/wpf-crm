@@ -56,10 +56,10 @@ namespace Dental.ViewModels
             }
         }
 
-        public string RemoteIP
+        public PostgresConnect PostgresConnect
         {
-            get { return GetProperty(() => RemoteIP); }
-            set { SetProperty(() => RemoteIP, value); }
+            get { return GetProperty(() => PostgresConnect); }
+            set { SetProperty(() => PostgresConnect, value); }
         }
 
         public SettingsVM SettingsVM
@@ -142,7 +142,7 @@ namespace Dental.ViewModels
 
 
 
-        #region Управление файлами лого и печати
+        #region Управление файлами лого
 
         public void ImagesLoading()
         {

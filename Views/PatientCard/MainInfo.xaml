@@ -160,7 +160,6 @@
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
                 
-
             </dxlc:LayoutGroup>
 
             <dxlc:LayoutGroup  
@@ -182,12 +181,17 @@
                                     ShowDragWidget="False" BarItemDisplayMode="ContentAndGlyph" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False">
                                     <dxb:BarButtonItem
                                            Content="Директория" 
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_FolderClose.svg}"
                                            GlyphSize="Small" 
                                            DataContext="{Binding ElementName=layoutGroup1}"
                                            Command="{Binding Path=DataContext.OpenDirectoryCommand}"
                                            IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                        />
+                                        >
+                                        <dxb:BarButtonItem.GlyphTemplate>
+                                            <DataTemplate>
+                                                <dx:DXImage Source="/Resources/Icons/svg/folder-a.svg" />
+                                            </DataTemplate>
+                                        </dxb:BarButtonItem.GlyphTemplate>
+                                    </dxb:BarButtonItem>
 
                                     <dxb:BarButtonItem 
                                         DataContext="{Binding ElementName=layoutGroup1}"

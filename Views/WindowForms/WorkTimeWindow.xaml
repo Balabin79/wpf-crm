@@ -14,7 +14,7 @@
         MaxHeight="230"
         Width="600"
         Icon="/Resources/Icons/te4.ico" 
-        Title="Рабочее время" 
+        Title="B6 CRM" 
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceCommand}" PassEventArgsToCommand="True"/>

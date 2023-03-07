@@ -55,15 +55,25 @@
 
                         <dxb:BarButtonItem Style="{Binding}"
                             Content="Лицензия" 
-                                           Glyph="{dx:DXImage SvgImages/XAF/ModelEditor_KeyProperty.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding OpenLicenseFormCommand}"/>
+                                           Command="{Binding OpenLicenseFormCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/lock.svg" Height="15" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
                         <dxb:BarItemLinkSeparator/>
                         <dxb:BarButtonItem Style="{Binding}"
                             Content="О программе"  
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/About.svg}"
                                            GlyphSize="Small"
-                                           Command="{Binding OpenAboutFormCommand}"/>
+                                           Command="{Binding OpenAboutFormCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/information.svg" Height="15"/>
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
                         <dxb:BarItemLinkSeparator/>
 
                         <dxb:BarButtonItem Style="{Binding}"
@@ -91,7 +101,7 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1"  Grid.RowSpan="2">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1"  Grid.RowSpan="2" Margin="0 2 0 0">
 
 
                 <dxlc:LayoutGroup View="Group" Orientation="Vertical" Margin="5">
@@ -100,22 +110,61 @@
                             <DataTemplate >
                                 <StackPanel Orientation="Horizontal">
                                     <dx:DXImage Source="/Resources/Icons/svg/database.svg"  Height="12" Width="12" Margin="0 -5 3 0"/>
-                                    <TextBlock Text="Расположение базы данных" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
+                                    <TextBlock Text="Настройка базы данных" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
-
+                        
+                        <dxlc:LayoutGroup Orientation="Horizontal">
+                            <dxlc:LayoutItem  Label="Название базы данных:" LabelPosition="Top" >
+                                <dxe:ToggleSwitch x:Name="dbType" ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="PostgreSQL" UncheckedStateContent="SQLite" 
+                                  IsChecked="{Binding SettingsVM.DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
 
                         <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
 
-                            <dxlc:LayoutItem Label="Сетевой адрес (IP) базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
-                                <dxe:TextEdit x:Name="pathToDb" 
-                                              MaskType="Simple" Mask="###.###.###.###"
-                                Text="{Binding RemoteIP, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                EditValue="{Binding RemoteIP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-
+                            <dxlc:LayoutItem Label="Сервер:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
+                                <dxe:TextEdit 
+                                Text="{Binding PostgresConnect.Server, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
+
+                            <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50">
+                                <dxe:TextEdit  
+                                MaskType="Numeric" Mask="d"
+                                Text="{Binding PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </dxlc:LayoutItem>
+                            
+                        </dxlc:LayoutGroup>
+
+                        <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                            <dxe:TextEdit 
+                                Text="{Binding PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
+
+                        <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                            <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                                <dxe:TextEdit 
+                                Text="{Binding PostgresConnect.UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </dxlc:LayoutItem>
+
+                            <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                                <dxe:TextEdit  
+                                Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                            </dxlc:LayoutItem>
+
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
 
@@ -123,7 +172,7 @@
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
                                 <StackPanel Orientation="Horizontal">
-                                    <dx:DXImage Source="/Resources/Icons/svg/sms.svg"  Height="14" Margin="0 -4 3 0"/>
+                                    <dx:DXImage Source="/Resources/Icons/svg/telegram-plane.svg"  Height="16" Margin="0 -4 3 0"/>
                                     <TextBlock Text="Настройки сервиса рассылки сообщений" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -280,8 +329,13 @@
                                                             AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                                             <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"                                         
                                                                GlyphSize="Small"
-                                                               Command="{Binding Source={StaticResource af}, Path=AddCommand}"
-                                                               Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Add.svg}"/>
+                                                               Command="{Binding Source={StaticResource af}, Path=AddCommand}">
+                                                <dxb:BarButtonItem.GlyphTemplate>
+                                                    <DataTemplate>
+                                                        <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
+                                                    </DataTemplate>
+                                                </dxb:BarButtonItem.GlyphTemplate>
+                                            </dxb:BarButtonItem>
                                             <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
                                                                GlyphSize="Small"
                                                                Command="{Binding Source={StaticResource af}, Path=SaveCommand}"
@@ -317,22 +371,17 @@
                                         AllowPrintColumnHeaderImage="True"
                                         ShowGroupPanel="False"
                                         >
-                                        <dxg:TableView.InputBindings>
-                                            <KeyBinding Key="Delete"        
-                                                        Command="{Binding DeleteCommand}"
-                                                        CommandParameter="{Binding ElementName=gridAd, Path=DataContext.CurrentItem}" />
-
-                                            <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
-
-                                            <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}"/>
-
-                                        </dxg:TableView.InputBindings>
-
 
                                         <dxg:TableView.RowCellMenuCustomizations>
                                             <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                                                KeyGesture="Ctrl+N" Content="Создать"  
-                                                                Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}"/>
+                                                                KeyGesture="Ctrl+N" Content="Добавить"  
+                                                                Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}">
+                                                <dxb:BarButtonItem.GlyphTemplate>
+                                                    <DataTemplate>
+                                                        <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
+                                                    </DataTemplate>
+                                                </dxb:BarButtonItem.GlyphTemplate>
+                                            </dxb:BarButtonItem>
 
                                             <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
                                                                Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
@@ -340,9 +389,16 @@
                                                                Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}" />
 
                                             <dxb:BarButtonItem  Content="Удалить" 
+                                                                IsEnabled="{DXBinding Expr='@e(gridAd).CurrentItem.Id > 0'}"
                                                                 Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
                                                                 CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"
-                                                                KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}" />
+                                                                KeyGesture="Ctrl+Delete" GlyphSize="Small" GlyphAlignment="Left">
+                                                <dxb:BarButtonItem.GlyphTemplate>
+                                                    <DataTemplate>
+                                                        <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />
+                                                    </DataTemplate>
+                                                </dxb:BarButtonItem.GlyphTemplate>
+                                            </dxb:BarButtonItem>
                                         </dxg:TableView.RowCellMenuCustomizations>
                                     </dxg:TableView>
                                 </dxg:GridControl.View>
@@ -410,7 +466,13 @@
                                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                         GlyphSize="Small"
                                                         Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
-                                                        CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"/>
+                                                        CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}">
+                                                        <dxb:BarButtonItem.GlyphTemplate>
+                                                            <DataTemplate>
+                                                                <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />
+                                                            </DataTemplate>
+                                                        </dxb:BarButtonItem.GlyphTemplate>
+                                                    </dxb:BarButtonItem>
 
                                                 </dxb:ToolBarControl>
                                             </dxb:BarContainerControl>

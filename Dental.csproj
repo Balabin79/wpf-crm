@@ -15,13 +15,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\svg\chart-bar.svg" />
+    <None Remove="Resources\Icons\svg\chart-line2.svg" />
+    <None Remove="Resources\Icons\svg\chart-line3.svg" />
+    <None Remove="Resources\Icons\svg\chart-pie.svg" />
+    <None Remove="Resources\Icons\svg\chart-pie3.svg" />
+    <None Remove="Resources\Icons\svg\chart-pie4.svg" />
+    <None Remove="Resources\Icons\svg\chart-pipe.svg" />
+    <None Remove="Resources\Icons\svg\chart-pipe3.svg" />
     <None Remove="Resources\Icons\svg\document-edit.svg" />
     <None Remove="Resources\Icons\svg\download.svg" />
     <None Remove="Resources\Icons\svg\edit-r.svg" />
     <None Remove="Resources\Icons\svg\folder-f.svg" />
     <None Remove="Resources\Icons\svg\icon_download.svg" />
+    <None Remove="Resources\Icons\svg\icon_info.svg" />
+    <None Remove="Resources\Icons\svg\icon_key.svg" />
+    <None Remove="Resources\Icons\svg\icon_key_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
+    <None Remove="Resources\Icons\svg\information.svg" />
+    <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\telegram-plane.svg" />
     <None Remove="Resources\Icons\svg\telegram.svg" />
+    <None Remove="Resources\Icons\svg\user-circle.svg" />
+    <None Remove="Resources\Icons\svg\user.svg" />
+    <None Remove="Resources\Icons\svg\user2.svg" />
+    <None Remove="Resources\Icons\svg\window-maximize.svg" />
+    <None Remove="Resources\Icons\svg\window-restore.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -132,7 +151,15 @@
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\briefcase.svg" />
     <Resource Include="Resources\Icons\svg\bullhorn.svg" />
+    <Resource Include="Resources\Icons\svg\chart-bar.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
+    <Resource Include="Resources\Icons\svg\chart-line2.svg" />
+    <Resource Include="Resources\Icons\svg\chart-line3.svg" />
+    <Resource Include="Resources\Icons\svg\chart-pie.svg" />
+    <Resource Include="Resources\Icons\svg\chart-pie3.svg" />
+    <Resource Include="Resources\Icons\svg\chart-pie4.svg" />
+    <Resource Include="Resources\Icons\svg\chart-pipe.svg" />
+    <Resource Include="Resources\Icons\svg\chart-pipe3.svg" />
     <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\cogs.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
@@ -164,12 +191,24 @@
     <Resource Include="Resources\Icons\svg\icon_flowchart_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-add_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-open_alt.svg" />
+    <Resource Include="Resources\Icons\svg\icon_info.svg" />
+    <Resource Include="Resources\Icons\svg\icon_key.svg" />
+    <Resource Include="Resources\Icons\svg\icon_key_alt.svg">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icons\svg\icon_lock_alt.svg">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\image.svg" />
     <Resource Include="Resources\Icons\svg\images.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
+    <Resource Include="Resources\Icons\svg\information.svg" />
     <Resource Include="Resources\Icons\svg\list-alt.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />
+    <Resource Include="Resources\Icons\svg\lock.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Icons\svg\message.svg" />
     <Resource Include="Resources\Icons\svg\minus.svg" />
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
@@ -199,11 +238,16 @@
     <Resource Include="Resources\Icons\svg\times.svg" />
     <Resource Include="Resources\Icons\svg\trash-alt.svg" />
     <Resource Include="Resources\Icons\svg\trash.svg" />
+    <Resource Include="Resources\Icons\svg\user-circle.svg" />
     <Resource Include="Resources\Icons\svg\user-friends.svg" />
     <Resource Include="Resources\Icons\svg\user-tag.svg" />
+    <Resource Include="Resources\Icons\svg\user.svg" />
     <Resource Include="Resources\Icons\svg\user1.svg" />
+    <Resource Include="Resources\Icons\svg\user2.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
     <Resource Include="Resources\Icons\svg\vk.svg" />
+    <Resource Include="Resources\Icons\svg\window-maximize.svg" />
+    <Resource Include="Resources\Icons\svg\window-restore.svg" />
     <Resource Include="Resources\Icons\te4.ico" />
     <Resource Include="Resources\Icons\te5.ico" />
     <Resource Include="Resources\Icons\Template\avatar.png" />

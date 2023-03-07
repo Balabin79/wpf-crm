@@ -135,10 +135,10 @@
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
-            <dxg:GridControl 
+            <dxg:GridControl Margin="0 2 0 0"
                 Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                 SelectionMode="Row"
-                 ItemsSource="{Binding Path=Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2"
+                 ItemsSource="{Binding Path=Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                          >
                 <dxg:GridControl.View>
                     <dxg:TreeListView 

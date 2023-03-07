@@ -30,6 +30,12 @@ namespace Dental.Models
         }
         public int? TypeValueId { get; set; }
 
+        public int? Sort
+        {
+            get { return GetProperty(() => Sort); }
+            set { SetProperty(() => Sort, value); }
+        }
+
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
