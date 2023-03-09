@@ -20,7 +20,7 @@ namespace Dental.Infrastructures.Converters
             {
                 return new CommandParameters()
                 {
-                    Row = Values[0],
+                    Row = Values[0] is Type type ? Activator.CreateInstance(type) : Values[0],
                     Type = int.TryParse(Values[1].ToString(), out int result) ? result : 0
                 };
             } 

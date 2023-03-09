@@ -106,8 +106,7 @@ namespace Dental.ViewModels.Statistics
                     string cond = parameters;
                     cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                    var invoices = db.InvoiceItems.FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
-                        + cond).ToList();
+                    var invoices = db.InvoiceItems.FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId " + cond).ToList();
 
                     decimal? sum = 0.00M;
                     foreach(var inv in invoices)

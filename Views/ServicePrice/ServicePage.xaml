@@ -32,7 +32,6 @@
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                     <converter:BoolIntConverter x:Key="boolToInt"/>
                     <converter:MultiBindingToObjectConverter x:Key="multiToObject"/>
-                    <model:Service x:Key="model" x:Name="model" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -57,7 +56,7 @@
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
 
                         <dxb:BarButtonItem Style="{Binding}" 
-                                           DataContext="{StaticResource model}" x:Name="addBtn"
+                                           DataContext="{x:Type model:Service}" x:Name="addBtn"
                         Content="Добавить позицию"                                         
                                            GlyphSize="Small"
                                            IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
@@ -76,7 +75,7 @@
                         </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem 
-                            Style="{Binding}" DataContext="{StaticResource model}"
+                            Style="{Binding}" 
                             Content="Добавить группу"  
                             IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                            GlyphSize="Small"
@@ -183,7 +182,6 @@
                         <dxg:TreeListView.RowCellMenuCustomizations>
 
                             <dxb:BarButtonItem 
-                                DataContext="{StaticResource model}" 
                                 IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 Content="Добавить позицию" 
                                 KeyGesture="Ctrl+N"
@@ -204,7 +202,6 @@
                             </dxb:BarButtonItem>
 
                             <dxb:BarButtonItem 
-                                DataContext="{StaticResource model}" 
                                 IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 Content="Добавить группу" 
                                 KeyGesture="Ctrl+G"
