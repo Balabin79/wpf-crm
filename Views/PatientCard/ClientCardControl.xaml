@@ -120,8 +120,8 @@
                             <add:ClientControl x:Name="Fields" DataContext="{Binding FieldsViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </dx:DXTabItem>
 
-                        <dx:DXTabItem Header="Планы услуг" >
-
+                        <dx:DXTabItem Header="Планы работ" DataContext="{Binding}"  x:Name="Plans">
+                            <tp:PlanControl/>
                         </dx:DXTabItem>
 
                     </dx:DXTabControl>

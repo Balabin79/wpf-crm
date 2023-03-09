@@ -66,5 +66,9 @@ namespace Dental.Models
         public DbSet<ClientCategory> ClientCategories { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Advertising> Advertising { get; set; }
+
+        public DbSet<Plan> Plans { get; set; }
+        public DbSet<PlanStatus> PlanStatuses { get; set; }
+        public DbSet<PlanItem> PlanItems { get; set; }
     }
 }
