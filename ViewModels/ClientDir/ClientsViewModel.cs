@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Dental.Infrastructures.Logs;
 using Dental.Views.PatientCard;
 using Dental.Views.WindowForms;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
@@ -255,7 +255,7 @@ namespace Dental.ViewModels.ClientDir
 
                 //SqlParameter param = SqlParameter("@name", "%Samsung%");
                 //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
-                Invoices = db.Invoices.SqlQuery("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                Invoices = db.Invoices.FromSqlRaw("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
                 //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
                 if (!string.IsNullOrEmpty(InvoiceNameSearch?.ToString()))
                 {
@@ -586,7 +586,7 @@ namespace Dental.ViewModels.ClientDir
 
                     if (report?.DataSource is SqlDataSource source)
                     {
-                        string connectionString = db.Database.Connection.ConnectionString;
+                        string connectionString = db.Database.GetConnectionString();
                         var provider = "XpoProvider=SQLite;";
                         if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
                         source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);

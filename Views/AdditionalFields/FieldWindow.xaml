@@ -16,8 +16,8 @@
         ResizeMode="CanMinimize"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
-        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v20.1" 
-        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v20.1" 
+        xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v21.2" 
+        xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" >
 

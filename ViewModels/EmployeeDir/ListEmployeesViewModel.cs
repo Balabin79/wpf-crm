@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using Dental.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Windows.Media.Imaging;
 using System.IO;

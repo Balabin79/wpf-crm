@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using Dental.Models;
 using DevExpress.Xpf.Grid;

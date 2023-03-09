@@ -224,7 +224,7 @@
                                 <dxlc:LayoutItem  Label="Название:" 
                                                       LabelPosition="Top"  
                                                       HorizontalAlignment="Stretch">
-                                    <dxe:TextEdit Name="Name" 
+                                    <dxe:TextEdit
                                                       Text="{Binding SettingsVM.OrgName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                                                       IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 </dxlc:LayoutItem>

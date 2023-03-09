@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Views.ServicePrice
 {
@@ -29,8 +30,14 @@ namespace Dental.Views.ServicePrice
         public ServicePage()
         {
             InitializeComponent();
-            var db = new ConnectToDb().Context;
-            DataContext = new ServiceViewModel(db, db?.Services);
+            try
+            {
+                var db = new ConnectToDb().Context;
+                DataContext = new ServiceViewModel(db, db?.Services);
+            }
+            catch(Exception ex) 
+            { }
+
         }
 
         void OnDragRecordOver(object sender, DragRecordOverEventArgs e)

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;

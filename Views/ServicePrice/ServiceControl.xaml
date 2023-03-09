@@ -211,7 +211,7 @@
             </dxg:GridControl.View>
 
             <dxg:GridColumn FieldName="FullName" 
-                                Header="Наименование" x:Name="Name" MinWidth="200" Width="8*"
+                                Header="Наименование" MinWidth="200" Width="8*"
                                 PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}"
                                 >

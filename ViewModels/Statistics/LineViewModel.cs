@@ -4,6 +4,7 @@ using Dental.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -118,8 +119,10 @@ namespace Dental.ViewModels.Statistics
                     string cond = parameters;
                     cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                    var invoiceItems = db.InvoiceItems.SqlQuery("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
-                        + cond + " ORDER by DateTimestamp").ToArray();
+                    var invoiceItems = db.InvoiceItems
+                        .FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
+                        + cond + " ORDER by DateTimestamp").Include(f => f.Invoice)
+                        .ToArray();
 
                     //заполняем периода от dateTimeFrom до dateTimeTo
                     var values = new List<Period>();

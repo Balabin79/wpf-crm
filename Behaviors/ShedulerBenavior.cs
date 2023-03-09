@@ -125,8 +125,8 @@ namespace Dental.Behaviors
             public static readonly DependencyProperty ModeProperty;
             static BarEditItem_WorkTimeEditBehavior()
             {
-                DependencyPropertyRegistrator<BarEditItem_WorkTimeEditBehavior>.New()
-                    .Register(x => x.Mode, out ModeProperty, EditMode.Start);
+               /* DependencyPropertyRegistrator<BarEditItem_WorkTimeEditBehavior>.New()
+                    .Register(x => x.Mode, out ModeProperty, EditMode.Start);*/
             }
             public EditMode Mode { get { return (EditMode)GetValue(ModeProperty); } set { SetValue(ModeProperty, value); } }
 
@@ -263,8 +263,8 @@ namespace Dental.Behaviors
             public static readonly DependencyProperty ReportTemplateProperty;
             static BarSubItem_ReportTemplate()
             {
-                DependencyPropertyRegistrator<BarSubItem_ReportTemplate>.New()
-                    .Register(x => x.ReportTemplate, out ReportTemplateProperty, ReportTemplate.DailyStyle);
+               /* DependencyPropertyRegistrator<BarSubItem_ReportTemplate>.New()
+                    .Register(x => x.ReportTemplate, out ReportTemplateProperty, ReportTemplate.DailyStyle);*/
             }
             public ReportTemplate ReportTemplate { get { return (ReportTemplate)GetValue(ReportTemplateProperty); } set { SetValue(ReportTemplateProperty, value); } }
 

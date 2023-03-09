@@ -9,9 +9,9 @@ using System.Data.SQLite;
 
 namespace Dental.Models
 {
-    [DbConfigurationType(typeof(NpgSqlConfiguration))]
-    public class PostgresContext : ApplicationContext
+    //[DbConfigurationType(typeof(NpgSqlConfiguration))]
+    public class PostgresContext //: ApplicationContext
     {
-        public PostgresContext(string conn) : base(conn){}
+       // public PostgresContext(string conn) : base(conn){}
     }
 }

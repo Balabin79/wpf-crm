@@ -336,18 +336,24 @@
                         TimeScale="00:10:00"
                         ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
                         ResourceHeaderContentTemplate="{StaticResource resourceHeaderContentTemplate}"/>
+                        
                         <dxsch:TimelineView
                         x:Name="timelineView"
+                            ViewMode="Standard"
+                            SnapToCellsMode="Never"
+                            ShowAppointmentInterval="False"
+                            AppointmentMinHeight="36"
+                            AppointmentMinWidth="40"
+                            ResourceMinHeight="44"
+                            ResourceMaxHeight="116"
                         ResourceHeaderStyle="{StaticResource ResourceHeader.Style}"
                         NavigationButtonsVisibility="Never"
                         ResourcesPerPage="5">
-                            <dxsch:TimelineView.TimeScales>
-                                <dxsch:TimeScaleDay />
-                                <dxsch:TimeScaleWorkHour />
-                            </dxsch:TimelineView.TimeScales>
+             
                         </dxsch:TimelineView>
-                        
-                        <dxsch:SchedulerControl.DataSource>
+                    <dxsch:AgendaView x:Name="agendaView"/>
+                    <dxsch:ListView x:Name="listView"/>
+                    <dxsch:SchedulerControl.DataSource>
                             <dxsch:DataSource ResourcesSource="{Binding Doctors}" 
                                               AppointmentsSource="{Binding Appointments }" 
                                           AppointmentStatusesSource="{Binding StatusAppointments}">

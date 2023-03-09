@@ -4,6 +4,7 @@ using Dental.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -105,7 +106,7 @@ namespace Dental.ViewModels.Statistics
                     string cond = parameters;
                     cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                    var invoices = db.InvoiceItems.SqlQuery("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
+                    var invoices = db.InvoiceItems.FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
                         + cond).ToArray();
 
                     decimal? sum = 0.00M;

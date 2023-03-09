@@ -16,9 +16,9 @@
       xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
       xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
-      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
       xmlns:local="clr-namespace:Dental.Views.ServicePrice"
-      xmlns:model="clr-namespace:Dental.Models"
+      xmlns:model="clr-namespace:Dental.Models" 
+     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       d:DesignHeight="450" d:DesignWidth="800"                 
       x:Name="win" dx:ThemeManager.ThemeName="Office2019White">
     <UserControl.Resources>
@@ -32,12 +32,14 @@
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                     <converter:BoolIntConverter x:Key="boolToInt"/>
                     <converter:MultiBindingToObjectConverter x:Key="multiToObject"/>
-                    <model:Service x:Key="model" x:Name="model"/>
+                    <model:Service x:Key="model" x:Name="model" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+
+
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
@@ -53,8 +55,9 @@
                     <dxb:ToolBarControl ShowBackground="False" BarItemHorizontalIndent="5"
                              ShowDragWidget="False" Caption="File" 
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                        
-                        <dxb:BarButtonItem Style="{Binding}" DataContext="{StaticResource model}" x:Name="addBtn"
+
+                        <dxb:BarButtonItem Style="{Binding}" 
+                                           DataContext="{StaticResource model}" x:Name="addBtn"
                         Content="Добавить позицию"                                         
                                            GlyphSize="Small"
                                            IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
@@ -169,15 +172,14 @@
                             PrintAllNodes="False"
                             ShowNodeImages="True"
                             NodeImageSize="15,15"
-                            ExpandNodesOnFiltering="True"
-                            FilterMode="Extended"    
+                            ExpandNodesOnFiltering="True"   
                             ImmediateUpdateRowPosition="True"
                             ShowVerticalLines="False"
                             >
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand EventName="DropRecord" Command="{Binding MoveCommand}" PassEventArgsToCommand="True"/>
                         </dxmvvm:Interaction.Behaviors>
-                        
+
                         <dxg:TreeListView.RowCellMenuCustomizations>
 
                             <dxb:BarButtonItem 
@@ -245,7 +247,7 @@
                 </dxg:GridControl.View>
 
                 <dxg:GridColumn FieldName="FullName" AllowEditing="True"
-                                Header="Наименование" x:Name="Name" MinWidth="200" Width="6*"
+                                Header="Наименование" MinWidth="200" Width="6*"
                                 PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
                                 PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}"
                                 ReadOnly="{DXBinding Expr='@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
@@ -346,7 +348,7 @@
                             IsReadOnly="{DXBinding Expr='@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                             HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                             EditValue="{Binding Row.IsHidden, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
-           
+
                             </dxe:CheckEdit>
 
                         </DataTemplate>
@@ -464,6 +466,10 @@
             </dxg:GridControl>
         </Grid>
     </Border>
+
+
+
+
 
 
 </UserControl>

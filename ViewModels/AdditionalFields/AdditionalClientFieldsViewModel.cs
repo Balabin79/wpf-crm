@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.ObjectModel;
 using Dental.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System.Windows;
