@@ -24,7 +24,7 @@ namespace Dental.ViewModels.Org
         {
             try
             {
-                db = new ConnectToDb().Context;
+                db = new ApplicationContext();
                 CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
 
             }

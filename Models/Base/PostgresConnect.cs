@@ -11,10 +11,10 @@ namespace Dental.Models.Base
 {
     public class PostgresConnect : ViewModelBase, IDataErrorInfo
     {
-        public string Server
+        public string Host
         {
-            get { return GetProperty(() => Server); }
-            set { SetProperty(() => Server, value?.Trim()); }
+            get { return GetProperty(() => Host); }
+            set { SetProperty(() => Host, value?.Trim()); }
         }
 
         public int Port
@@ -29,10 +29,10 @@ namespace Dental.Models.Base
             set { SetProperty(() => Database, value?.Trim()); }
         }
 
-        public string UserName
+        public string Username
         {
-            get { return GetProperty(() => UserName); }
-            set { SetProperty(() => UserName, value?.Trim()); }
+            get { return GetProperty(() => Username); }
+            set { SetProperty(() => Username, value?.Trim()); }
         }
 
         public string Password

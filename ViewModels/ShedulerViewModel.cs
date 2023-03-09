@@ -38,9 +38,8 @@ namespace Dental.ViewModels
         {
             try
             {
-                var conn = new ConnectToDb();
-                db = conn.Context;
-                Config = conn.Config;
+                db = new ApplicationContext();
+                Config = db.Config;
                 PathToEmployeesDirectory = Config.PathToEmployeesDirectory;
 
                 SetLocationAppointments();

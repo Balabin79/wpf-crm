@@ -2,35 +2,27 @@
 using System.Threading.Tasks;
 using System.Linq;
 using Dental.Models.Base;
-using Dental.Services;
-//using System.Data.SQLite;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Forms;
+using Dental.Services;
 
 namespace Dental.Models
 {
     public class ApplicationContext : DbContext
     {
-        private readonly int typeDb;
-        private readonly string conn;
-        public ApplicationContext(string connection, int type = 0) 
-        { typeDb = type; conn = connection;
-            Database.EnsureCreated();
-        }
-        //public ApplicationContext(DbContextOptions<ApplicationContext> options): base(options) { }
-       // public ApplicationContext(string connectionString) : base(connectionString) { }
-        //public ApplicationContext(SqliteConnection sQLiteConnection) : base(sQLiteConnection) { }
+        public ApplicationContext() => Config = new Config();
+     
+        public Config Config { get; private set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (typeDb == 0 ) optionsBuilder.UseSqlite(@"Data Source=" + conn);
-            if (typeDb == 1 ) optionsBuilder.UseNpgsql(@"Host=localhost;Port=5433;Database=B6Crm2;Username=postgres;Password=657913;");
+            if (Config.DbType == 0 ) optionsBuilder.UseSqlite(@"Data Source=" + Config.ConnectionString);
+            if (Config.DbType == 1 ) optionsBuilder.UseNpgsql(Config.ConnectionString);
         }
 
         public override int SaveChanges()
         {
-
             AddTimestamps();
             return base.SaveChanges();
         }

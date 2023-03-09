@@ -39,7 +39,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ConnectToDb().Context;
+                db = new ApplicationContext();
                 var model = db.Settings.FirstOrDefault() ?? new Setting();
                 Config = new Config();
                 SettingsVM = new SettingsVM();
@@ -69,10 +69,10 @@ namespace Dental.ViewModels
                             }
                             catch 
                             {
-                                PostgresConnect.Server = null;
+                                PostgresConnect.Host = null;
                                 PostgresConnect.Port = 0;
                                 PostgresConnect.Database = null;
-                                PostgresConnect.UserName = null;
+                                PostgresConnect.Username = null;
                                 PostgresConnect.Password = null;
                             }
                         }
@@ -177,7 +177,7 @@ namespace Dental.ViewModels
             if (SettingsVM.DbType == 1)
             {
                 connect.Db = 1;
-                connect.ConnectionString = $"Server={PostgresConnect.Server ?? ""};port={PostgresConnect.Port};Database={PostgresConnect.Database ?? ""};User Id={PostgresConnect.UserName ?? ""};Password={PostgresConnect.Password ?? ""};";
+                connect.ConnectionString = $"Host={PostgresConnect.Host ?? ""};Port={PostgresConnect.Port};Database={PostgresConnect.Database ?? ""};Username={PostgresConnect.Username ?? ""};Password={PostgresConnect.Password ?? ""};";
             }
 
             var config = JsonSerializer.Serialize(connect);

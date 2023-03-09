@@ -21,7 +21,7 @@ namespace Dental.ViewModels.Statistics
 
         public ProfitByEmployeesViewModel()
         {
-            db = new ConnectToDb().Context;
+            db = new ApplicationContext();
             Employees = db.Employes.ToObservableCollection();
             Search();
         }
@@ -107,7 +107,7 @@ namespace Dental.ViewModels.Statistics
                     cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
                     var invoices = db.InvoiceItems.FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
-                        + cond).ToArray();
+                        + cond).ToList();
 
                     decimal? sum = 0.00M;
                     foreach(var inv in invoices)

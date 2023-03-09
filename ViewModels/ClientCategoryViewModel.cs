@@ -27,7 +27,7 @@ namespace Dental.ViewModels
         {
             try
             {
-                db = new ConnectToDb().Context;
+                db = new ApplicationContext();
                 SetCollection();
             }
             catch

@@ -23,7 +23,7 @@ namespace Dental.ViewModels.Statistics
         {
             try
             {
-                db = new ConnectToDb().Context;
+                db = new ApplicationContext();
                 IsCnt = true;
                 SetPattern();
                 SetValueDataMember();

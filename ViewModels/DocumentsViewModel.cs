@@ -29,9 +29,8 @@ namespace Dental.ViewModels
 
         public DocumentsViewModel()
         {
-            var conn = new ConnectToDb();
-            db = conn.Context;
-            Config = conn.Config;
+            db = new ApplicationContext();
+            Config = db.Config;
             PathToDir = Config.PathToDocumentsDirectory;
             IsReadOnly = true;
 

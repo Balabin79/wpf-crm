@@ -28,7 +28,7 @@ namespace Dental.Views.ServicePrice
         public ServiceControl()
         {
             InitializeComponent();
-            var db = new ConnectToDb().Context;
+            var db = new ApplicationContext();
             DataContext = new ServiceViewModel(db, db?.Services);
         }
     }

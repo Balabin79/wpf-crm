@@ -20,7 +20,7 @@ namespace Dental.ViewModels.Statistics
 
         public LineViewModel()
         {
-            db = new ConnectToDb().Context;
+            db = new ApplicationContext();
             Employees = db.Employes.ToObservableCollection();
             Search();
         }
@@ -122,7 +122,7 @@ namespace Dental.ViewModels.Statistics
                     var invoiceItems = db.InvoiceItems
                         .FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId "
                         + cond + " ORDER by DateTimestamp").Include(f => f.Invoice)
-                        .ToArray();
+                        .ToList();
 
                     //заполняем периода от dateTimeFrom до dateTimeTo
                     var values = new List<Period>();

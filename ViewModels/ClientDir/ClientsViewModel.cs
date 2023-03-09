@@ -49,9 +49,8 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                var conn = new ConnectToDb();
-                db = conn.Context;
-                Config = conn.Config;
+                db = new ApplicationContext();
+                Config = db.Config;
                 LoadClients();
                 LoadInvoices();
                 LoadEmployees();

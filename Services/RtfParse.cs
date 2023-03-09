@@ -22,7 +22,7 @@ namespace Dental.Services
         public RtfParse(string txt)
         {
             RtfText = txt;
-            db = new ConnectToDb().Context;
+            db = new ApplicationContext();
             {
                 CommonValues = db.CommonValues.ToArray();
                 Org = db.Settings.Select(f => new Org {
