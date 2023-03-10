@@ -26,8 +26,7 @@ namespace Dental.Views.PatientCard
     {
         public PlanControl()
         {
-            InitializeComponent();
-            if (DataContext is ClientsViewModel client) DataContext = new PlanViewModel(client);                    
+            InitializeComponent();                   
         }
 
         private void CustomSummary(object sender, DevExpress.Data.CustomSummaryEventArgs e)

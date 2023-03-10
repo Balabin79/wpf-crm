@@ -24,6 +24,10 @@
     <None Remove="Resources\Icons\svg\document-edit.svg" />
     <None Remove="Resources\Icons\svg\download.svg" />
     <None Remove="Resources\Icons\svg\edit-r.svg" />
+    <None Remove="Resources\Icons\svg\file-export.svg" />
+    <None Remove="Resources\Icons\svg\file-import.svg" />
+    <None Remove="Resources\Icons\svg\file-powerpoint.svg" />
+    <None Remove="Resources\Icons\svg\file-upload.svg" />
     <None Remove="Resources\Icons\svg\folder-f.svg" />
     <None Remove="Resources\Icons\svg\icon_download.svg" />
     <None Remove="Resources\Icons\svg\icon_info.svg" />
@@ -128,9 +132,13 @@
     <Resource Include="Resources\Icons\svg\edit.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
+    <Resource Include="Resources\Icons\svg\file-export.svg" />
+    <Resource Include="Resources\Icons\svg\file-import.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice-dollar.svg" />
     <Resource Include="Resources\Icons\svg\file-invoice.svg" />
     <Resource Include="Resources\Icons\svg\file-medical.svg" />
+    <Resource Include="Resources\Icons\svg\file-powerpoint.svg" />
+    <Resource Include="Resources\Icons\svg\file-upload.svg" />
     <Resource Include="Resources\Icons\svg\file-word.svg" />
     <Resource Include="Resources\Icons\svg\file.svg" />
     <Resource Include="Resources\Icons\svg\file_tree.svg" />

@@ -60,7 +60,8 @@ namespace Dental.ViewModels.ClientDir
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
                 Prices = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToArray();
-                Advertisings = db.Advertising.ToObservableCollection();
+                Advertisings = db.Advertising.ToObservableCollection();               
+                PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
             }
             catch (Exception e)
             {
@@ -87,13 +88,27 @@ namespace Dental.ViewModels.ClientDir
         public void LoadInvoices()
         {
             // общие инвойсы
-            Invoices = db.Invoices?.Include(f => f.Employee).Include(f => f.Client).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
+            Invoices = db.Invoices?.
+                Include(f => f.Employee).
+                Include(f => f.Client).
+                Include(f => f.InvoiceItems).
+                OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
 
         public void LoadEmployees()
         {
             Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Employees) i.IsVisible = false;        
+        }
+
+        public void LoadPlans()
+        {
+            Plans = db.Plans?.Where(f => f.ClientId == Model.Id)?.
+                Include(f => f.Employee).
+                Include(f => f.Client).
+                Include(f => f.PlanStatus).
+                Include(f => f.PlanItems).
+                OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Plan>();
         }
 
         public ObservableCollection<Client> Clients
@@ -132,6 +147,12 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Advertisings, value); }
         }
 
+        public ObservableCollection<Plan> Plans
+        {
+            get { return GetProperty(() => Plans); }
+            set { SetProperty(() => Plans, value); }
+        }
+
         #endregion
 
         #region Переход из списка инвойсов или списков клиентов (загрузка карты)
@@ -163,7 +184,7 @@ namespace Dental.ViewModels.ClientDir
                      service.Current is PatientsList page
                      )
                     {
-                        page.clientCard.tabs.SelectedIndex = 2;
+                        page.clientCard.tabs.SelectedIndex = 1;
                         if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
                         {
                             page.clientCard.Invoices.grid.SelectedItem = invoice;
@@ -344,6 +365,8 @@ namespace Dental.ViewModels.ClientDir
                 SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
+
+                LoadPlans();
             }
             catch (Exception e)
             {
@@ -363,20 +386,26 @@ namespace Dental.ViewModels.ClientDir
                 if (p is Client client)
                 {
                     var date = DateTime.Now;
-                    ClientInvoices.Add(new Invoice
+                    var model = new Invoice
                     {
                         Number = NewInvoiceNumberGenerate(),
                         Date = date.ToString(),
                         DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
                         Client = client,
                         ClientId = client?.Id
-                    });
+                    };
+
+                    db.Invoices.Add(model);
+                    if (db.SaveChanges() > 0) 
+                    {
+                        ClientInvoices.Add(model);
+                        LoadInvoices();
+                        if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    }
                 }
             }
             catch (Exception e)
-            {
-
-            }
+            {}
         }
 
         [Command]
@@ -398,32 +427,6 @@ namespace Dental.ViewModels.ClientDir
                     Environment.Exit(0);
                 }
                 #endregion
-
-                foreach(var invoice in ClientInvoices.ToList())
-                {
-                    if (invoice.Id == 0)
-                    {
-                        db.Entry(invoice).State = EntityState.Added;
-                        Invoices?.Add(invoice);
-                    }
-
-                    if (invoice.InvoiceItems?.Count > 0)
-                    {
-                        var items = invoice.InvoiceItems;
-
-                        foreach (var i in items.ToList())
-                        {
-                            if (string.IsNullOrEmpty(i.Name))
-                            {
-                                i.Invoice = null;
-                                db.Entry(i).State = EntityState.Detached;
-                                invoice.InvoiceItems.Remove(i);
-                                continue;
-                            }
-                            if (i.Id == 0) { db.Entry(i).State = EntityState.Added; }
-                        }
-                    }
-                }
 
                 if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
@@ -969,5 +972,224 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => Config); }
             set { SetProperty(() => Config, value); }
         }
+
+
+        #region Планы клиента
+        public ICollection<PlanStatus> PlanStatuses { get; private set; }
+
+        #region Планы работ
+        [Command]
+        public void AddPlan(object p)
+        {
+            try
+            {
+                if (p is Client client)
+                {
+                    var date = DateTime.Now;
+                    PlanStatus status = db.PlanStatuses.FirstOrDefault(s => s.Id == 5);
+
+                    var model = new Plan
+                    {
+                        Date = date.ToString(),
+                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                        Client = client,
+                        ClientId = client?.Id,
+                        PlanStatus = status,
+                        PlanStatusId = status?.Id
+                    };
+
+                    db.Add(model);
+                    Plans.Add(model);
+                }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Добавлен новый план в базу данных!" }.run();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        [Command]
+        public void SavePlan()
+        {
+            try
+            {
+                #region Lic
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                #endregion
+
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить план в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        [Command]
+        public void DeletePlan(object p)
+        {
+            try
+            {
+                if (p is Plan plan)
+                {
+                    if (plan.Id > 0)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return;
+
+                        plan.PlanItems = null;
+                        db.PlanItems.Where(f => f.PlanId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.Entry(plan).State = EntityState.Deleted;
+
+                    }
+                    else
+                    {
+                        db.Entry(plan).State = EntityState.Detached;
+                    }
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "План удален из базы данных!" }.run();
+                    }
+
+                    // удаляем из списков в карте и в общем списке счетов
+                    // может не оказаться этого эл-та в списке, например, он в другом статусе
+                    var inv = Plans.FirstOrDefault(f => f.Guid == plan.Guid);
+                    if (inv != null) Plans.Remove(inv);
+                }
+            }
+            catch(Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удалить план из базы данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            }
+        }
+
+        #endregion
+
+        #region Позиция в плане
+
+        [Command]
+        public void SelectPlanItemInField(object p)
+        {
+            try
+            {
+                if (p is FindCommandParameters parameters)
+                {
+                    if (parameters.Tree.CurrentItem is Service service)
+                    {
+                        if (service.IsDir == 1) return;
+                        parameters.Popup.EditValue = service;
+                        if (((GridCellData)parameters.Popup.DataContext).Row is PlanItem item)
+                        {
+                            item.Price = service.Price;
+                            item.Code = service.Code;
+                        }
+                    }
+                    parameters.Popup.ClosePopup();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        [Command]
+        public void AddPlanItem(object p)
+        {
+            try
+            {
+                if (p is Plan plan)
+                {
+                    plan.PlanItems.Add(new PlanItem() { Plan = plan, PlanId = plan?.Id });
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        [Command]
+        public void DeletePlanItem(object p)
+        {
+            try
+            {
+                if (p is PlanItem item)
+                {
+                    var items = item.Plan.PlanItems;
+                    if (item.Id > 0)
+                    {
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
+                        if (response.ToString() == "No") return;
+                        item.Plan = null;
+                        db.Entry(item).State = EntityState.Deleted;
+                        items.Remove(item);
+                        db.SaveChanges();
+                        new Notification() { Content = "Позиция удалена из плана!" }.run();
+                        return;
+                    }
+                    db.Entry(item).State = EntityState.Detached;
+                    items.Remove(item);
+                }
+            }
+            catch (Exception e)
+            {
+                (new ViewModelLog(e)).run();
+            }
+        }
+        #endregion
+
+        #region Печать плана
+        [Command]
+        public void PrintPlan(object p)
+        {
+            /* try
+             {
+                 if (p is PageIntCommandParameters conv)
+                 {
+                     ServicesInvoiceReport report = new ServicesInvoiceReport();
+                     var parameter = new Parameter()
+                     {
+                         Name = "Id",
+                         Description = "Id:",
+                         Type = typeof(int),
+                         Value = conv.Param,
+                         Visible = false
+                     };
+                     report.RequestParameters = false;
+                     report.Parameters.Add(parameter);
+                     report.FilterString = "[Id] = [Parameters.Id]";
+                     report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+
+                     if (report?.DataSource is SqlDataSource source)
+                     {
+                         string connectionString = db.Database.GetConnectionString();
+                         var provider = "XpoProvider=SQLite;";
+                         if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
+                         source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
+                     }
+
+                     PrintHelper.ShowPrintPreview(conv.Page, report);
+                 }
+             }
+             catch
+             {
+                 ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+             }*/
+        }
+        #endregion
+        #endregion
     }
 }

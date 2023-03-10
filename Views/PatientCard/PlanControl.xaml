@@ -58,7 +58,7 @@
                                     Content="Добавить"                                                           
                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    Command="{Binding ElementName=view, Path=DataContext.AddPlanItemCommand}"
                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
                                             <dxb:BarButtonItem.GlyphTemplate>
                                                 <DataTemplate>
@@ -73,7 +73,7 @@
                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=grid, Path=DataContext.PrintCommand}"
+                                    Command="{Binding ElementName=grid, Path=DataContext.PrintPlanCommand}"
                                     >
                                             <dxb:BarButtonItem.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource multiPageInt}" >
@@ -154,7 +154,7 @@
                                                                         <dxmvvm:Interaction.Behaviors>
                                                                             <dxmvvm2:EventToCommand EventName="MouseDoubleClick"
                                                                                                         
-                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectItemInFieldCommand }">
+                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectPlanItemInFieldCommand }">
                                                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                                                         <Binding ElementName="grid"/>
@@ -164,7 +164,7 @@
                                                                             </dxmvvm2:EventToCommand>
 
                                                                             <dxmvvm2:EventToCommand EventName="MouseDown" 
-                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectItemInFieldCommand }">
+                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectPlanItemInFieldCommand }">
                                                                                 <dxmvvm2:EventToCommand.CommandParameter>
                                                                                     <MultiBinding Converter="{StaticResource multiConv}">
                                                                                         <Binding ElementName="grid"/>
@@ -269,8 +269,8 @@
                                                         <dxb:BarButtonItem Content="Удалить" 
                                                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                                GlyphSize="Small"
-                                                                               Command="{Binding ElementName=view, Path=DataContext.DeleteItemCommand}" 
-                                                                               CommandParameter="{Binding RowData.Row, Mode=TwoWay}">
+                                                                               Command="{Binding ElementName=view, Path=DataContext.DeletePlanItemCommand}" 
+                                                                               CommandParameter="{Binding RowData.Row, Mode=OneWay}">
                                                             <dxb:BarButtonItem.GlyphTemplate>
                                                                 <DataTemplate>
                                                                     <dx:DXImage Source="/Resources/Icons/svg/times.svg" />
@@ -304,7 +304,7 @@
                                                     GlyphSize="Small" 
                                                     GlyphAlignment="Left"
                                                     KeyGesture="Ctrl+N"
-                                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                                    Command="{Binding ElementName=view, Path=DataContext.AddPlanItemCommand}"
                                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Content="Добавить позицию" 
                                                     CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem.Plan }">
@@ -321,7 +321,7 @@
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     KeyGesture="Delete"     
-                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteItemCommand}"
+                                                    Command="{Binding ElementName=view, Path=DataContext.DeletePlanItemCommand}"
                                                     CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"/>
                                         </dxg:TableView.RowCellMenuCustomizations>
 
@@ -370,46 +370,24 @@
                             Background="Transparent">
 
                             <dxb:BarButtonItem 
-                                Command="{Binding ElementName=grid, Path=DataContext.AddCommand}" 
+                                Command="{Binding ElementName=grid, Path=DataContext.AddPlanCommand}" 
                                 CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
                                 Content="Создать план" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                />
+                                >
+                                <dxb:BarButtonItem.GlyphTemplate>
+                                    <DataTemplate>
+                                        <dx:DXImage Source="/Resources/Icons/svg/file-invoice.svg" Height="15"/>
+                                    </DataTemplate>
+                                </dxb:BarButtonItem.GlyphTemplate>
+                            </dxb:BarButtonItem>
                             <dxb:BarButtonItem 
                                     Content="Сохранить"                                                            
                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=grid, Path=DataContext.SaveCommand}"
+                                    Command="{Binding ElementName=grid, Path=DataContext.SavePlanCommand}"
                                     Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
-
-                            <dxb:BarButtonItem 
-                                Content="Все счета"
-                                IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="1"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
-
-                            <dxb:BarButtonItem 
-                                Content="Оплаченные" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="0"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
-
-                            <dxb:BarButtonItem 
-                                Content="Не оплаченные"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="-1"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
-
+                     
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
                 </DockPanel>
@@ -436,17 +414,22 @@
                     <dxg:TableView.RowCellMenuCustomizations >
 
                         <dxb:BarButtonItem 
-                            Command="{Binding ElementName=grid, Path=DataContext.AddCommand}" 
+                            Command="{Binding ElementName=grid, Path=DataContext.AddPlanCommand}" 
                             CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
                             Content="Создать план" 
                             KeyGesture="Ctrl+N"
                             IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                            />
+                            >
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/file-invoice.svg" Height="15" />
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
 
                         <dxb:BarButtonItem  
-                            Content="Удалить счет"
-                            Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}"
+                            Content="Удалить план"
+                            Command="{Binding ElementName=grid, Path=DataContext.DeletePlanCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
@@ -457,7 +440,7 @@
                             IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                             KeyGesture="Ctrl+P" GlyphSize="Small" GlyphAlignment="Left" 
-                            Command="{Binding ElementName=grid, Path=DataContext.PrintCommand}"
+                            Command="{Binding ElementName=grid, Path=DataContext.PrintPlanCommand}"
                             >
                             <dxb:BarButtonItem.CommandParameter>
                                 <MultiBinding Converter="{StaticResource multiPageInt}" >
@@ -476,13 +459,13 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal"  >
                             <svgc:SvgViewbox Source="/Resources/Icons/svg/list.svg" Height="9"  />
-                            <TextBlock Text="Номер" Margin="3 0 0 0" />
+                            <TextBlock Text="Название" Margin="3 0 0 0" />
                         </StackPanel>
                     </DataTemplate>
                 </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="0 3 0 0"  Text="{ DXBinding Expr='`№ `+ Row.Name', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                        <TextBlock Margin="0 3 0 0"  Text="{ DXBinding Expr='Row.Name', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>
@@ -556,7 +539,7 @@
                     <DataTemplate>
                         <TextBlock 
                             HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.PlanStatuses, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                            Margin="0 3 0 0"  Text="{Binding Row.PlanStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>
@@ -564,16 +547,16 @@
                         <dxe:ComboBoxEdit 
                             HorizontalAlignment="Stretch"
                                 NullValueButtonPlacement="EditBox"
-                                        ItemsSource="{Binding  ElementName=grid, Path=DataContext.PlanStatuses, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Рекламные источники" 
+                                        ItemsSource="{Binding  ElementName=grid, Path=DataContext.PlanStatuses, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        NullText="Статус" 
                                         IsTextEditable="False"
                                         DisplayMember="Name"
                                         IncrementalFiltering="True"
                                         IncrementalSearch="True"
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding Row.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                        SelectedItem ="{Binding Row.PlanStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        EditValue ="{Binding Row.PlanStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                 <dxe:RadioComboBoxStyleSettings />
@@ -596,7 +579,7 @@
                         <dxe:ComboBoxEdit 
                             HorizontalAlignment="Stretch"
                                 NullValueButtonPlacement="EditBox"
-                                        ItemsSource="{Binding  ElementName=grid, Path=DataContext.Advertisings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        ItemsSource="{Binding  ElementName=grid, Path=DataContext.Advertisings, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         NullText="Рекламные источники" 
                                         IsTextEditable="False"
                                         DisplayMember="Name"
@@ -615,7 +598,7 @@
                 </dxg:GridColumn.CellEditTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn Width="20">
+            <dxg:GridColumn Width="20" MinWidth="30">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
                         <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right"  Margin="0 0 5 0" >
@@ -627,7 +610,7 @@
                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
-                                                   Command="{Binding ElementName=view, Path=DataContext.DeleteCommand}" 
+                                                   Command="{Binding ElementName=view, Path=DataContext.DeletePlanCommand}" 
                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>

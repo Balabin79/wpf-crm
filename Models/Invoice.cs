@@ -34,7 +34,6 @@ namespace Dental.Models
         public string Number { get; set; }
         public int? Paid { get; set; } = 0;
 
-        [Required(ErrorMessage = @"Поле ""Клиент"" обязательно для заполнения")]
         public Client Client
         {
             get { return GetProperty(() => Client); }
