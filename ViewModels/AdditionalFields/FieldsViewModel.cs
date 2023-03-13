@@ -8,7 +8,7 @@ using DevExpress.Xpf.Editors;
 using System.Windows;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Dental.Infrastructures.Converters;
 using System.Windows.Data;

@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Windows.Data;

@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using System.Windows.Data;
 

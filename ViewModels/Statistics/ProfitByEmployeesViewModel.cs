@@ -58,19 +58,17 @@ namespace Dental.ViewModels.Statistics
             try
             {
                 Data = new ObservableCollection<object>();
-                List<string> where = new List<string>();
                 long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
                 long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+                int? paid = null;
 
                 var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
 
-                //if (int.TryParse(EmployeeSearch?.ToString(), out int employeeId) && employeeId != 0) where.Add("EmployeeId=" + employeeId.ToString());
-
-                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) 
                 {
-                    if (paimentStatus == 1) where.Add("Paid = 1");
-                    if (paimentStatus == 2) where.Add("Paid = 0");
-                }
+                   if (paimentStatus == 1) paid = 1; 
+                   if (paimentStatus == 2) paid = 0; 
+                }         
 
                 if (DateFrom != null && DateTime.TryParse(DateFrom?.ToString(), out DateTime dateTimeFrom))
                 {
@@ -82,18 +80,6 @@ namespace Dental.ViewModels.Statistics
                     dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
                 }
 
-                string parameters = "WHERE Count is not null and Price is not null and ";
-                for (int i = 0; i < where.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        parameters += where[i];
-                        continue;
-                    }
-                    parameters += " AND " + where[i];
-                }
-                if (where.Count > 0) parameters += " AND ";
-
                 // если в фильтре EmployeesSearch указаны сотрудники, то используем доп. фильтр, иначе по всей коллекции (Employees)
 
                 ICollection<Employee> employees;
@@ -103,10 +89,19 @@ namespace Dental.ViewModels.Statistics
 
                 foreach (var i in employees)
                 {
-                    string cond = parameters;
-                    cond += " EmployeeId = " + i?.Id + " AND DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                    var invoices = db.InvoiceItems.FromSqlRaw("SELECT * FROM InvoiceItems left join Invoices on Invoices.Id = InvoiceItems.InvoiceId " + cond).ToList();
+                    var where = (paid == null) ?
+                        db.InvoiceItems
+                        .Where(f => f.Count != 0 && f.Price != null && f.Invoice.DateTimestamp >= dateFrom && f.Invoice.DateTimestamp <= dateTo && f.Invoice.EmployeeId == i.Id)
+                        .Include(f => f.Invoice) :
+
+                        db.InvoiceItems
+                        .Where(f => f.Count != 0 && f.Price != null && f.Invoice.Paid == paid && f.Invoice.DateTimestamp >= dateFrom && f.Invoice.DateTimestamp <= dateTo && f.Invoice.EmployeeId == i.Id)
+                        .Include(f => f.Invoice);
+
+
+                   var invoices = where.ToList();
+                        
 
                     decimal? sum = 0.00M;
                     foreach(var inv in invoices)

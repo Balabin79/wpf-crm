@@ -9,7 +9,7 @@ using System.Windows;
 using System.Text.Json;
 using DevExpress.Mvvm.Native;
 using Dental.Models.Base;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using Dental.Models;
 
 namespace Dental.Services

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Dental.Infrastructures.Logs;
 using Dental.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
