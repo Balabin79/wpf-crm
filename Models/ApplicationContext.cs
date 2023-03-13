@@ -13,12 +13,13 @@ namespace Dental.Models
     {
         public ApplicationContext() => Config = new Config();
      
-        public Config Config { get; private set; }
+        public Config Config { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (Config.DbType == 0 ) optionsBuilder.UseSqlite(@"Data Source=" + Config.ConnectionString);
             if (Config.DbType == 1 ) optionsBuilder.UseNpgsql(Config.ConnectionString);
+            //Database.EnsureCreated();
         }
 
         public override int SaveChanges()

@@ -33,24 +33,15 @@ namespace Dental.ViewModels
 {
     public class SettingsViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
-        private readonly ApplicationContext db;
+        private ApplicationContext db;
 
         public SettingsViewModel()
         {
             try
             {
                 db = new ApplicationContext();
-                var model = db.Settings.FirstOrDefault() ?? new Setting();
                 Config = new Config();
-                SettingsVM = new SettingsVM();
-                SettingsVM.Copy(model);
-
-                PostgresConnect = new PostgresConnect();
-                //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
-
-                IsReadOnly = model?.Id > 0;
-                if (IsReadOnly) ImagesLoading();
-
+                SettingsVM = new SettingsVM();              
 
                 if (File.Exists(Config.PathToConfig))
                 {
@@ -58,38 +49,23 @@ namespace Dental.ViewModels
                     if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb config)
                     {
                         SettingsVM.DbType = config.Db;
-                        if (SettingsVM.DbType == 1)
-                        {
-                            try 
-                            {
-                                var str = config.ConnectionString;
-                                
-                                str.Substring(str.IndexOf("Server"), "Server".Length);
-                                ///PostgresConnect.Server = 
-                            }
-                            catch 
-                            {
-                                PostgresConnect.Host = null;
-                                PostgresConnect.Port = 0;
-                                PostgresConnect.Database = null;
-                                PostgresConnect.Username = null;
-                                PostgresConnect.Password = null;
-                            }
-                        }
+                        SettingsVM.PostgresConnect = config.PostgresConnect;
                     }
                 }
 
+                if (SettingsVM.PostgresConnect == null) SettingsVM.PostgresConnect = new PostgresConnect();
+
+                var model = db.Settings.FirstOrDefault() ?? new Setting();                        
+                SettingsVM.Copy(model);          
+                //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
+
+                IsReadOnly = model?.Id > 0;
+                if (IsReadOnly) ImagesLoading();
             }
             catch (Exception e)
             {
                 /*ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);*/
             }
-        }
-
-        public PostgresConnect PostgresConnect
-        {
-            get { return GetProperty(() => PostgresConnect); }
-            set { SetProperty(() => PostgresConnect, value); }
         }
 
         public SettingsVM SettingsVM
@@ -100,6 +76,95 @@ namespace Dental.ViewModels
 
         [Command]
         public void Editable() => IsReadOnly = !IsReadOnly;
+
+        private bool IsConfigChanged { get; set; } = false;
+
+        [Command]
+        public void SaveConfig()
+        {
+            // возможно изменили настройки подключения, пробуем коннектиться, если сбой, то выходим
+            Setting model;
+            StoreConnectToDb connect = new StoreConnectToDb();
+            try
+            {
+                // пытаемся применить новые параметры подключения
+                if (SettingsVM.DbType == null || SettingsVM.DbType == 0)
+                {
+                    Config.DbType = 0;
+                    Config.ConnectionString = Config.PathToDbDefault;
+                    SettingsVM.PostgresConnect = null;
+                }
+                else
+                {
+                    Config.DbType = 1;
+                    Config.ConnectionString = $"Host={SettingsVM.PostgresConnect?.Host ?? ""};Port={SettingsVM.PostgresConnect?.Port};Database={SettingsVM.PostgresConnect?.Database ?? ""};Username={SettingsVM.PostgresConnect?.Username ?? ""};Password={SettingsVM.PostgresConnect?.Password ?? ""};";
+                }
+                db = new ApplicationContext();
+                db.Config = Config;
+
+                // eсли подключение не упало, то сохраняем настройки подключения
+                model = db.Settings.FirstOrDefault() ?? new Setting();               
+                ConfigHandler();
+
+                if (IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+
+                IsConfigChanged = false;
+            }
+            catch (Exception e)
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Сбой при подключении к базе данных, попробуйте изменить параметры подключения!",
+                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return;
+            }
+        }
+
+        private void ConfigHandler()
+        {
+            // сравниваем значения из формы с теми что из файла, если изменились, то изменяем флаг оповещения
+            if (File.Exists(Config.PathToConfig))
+            {
+                var json = File.ReadAllText(Config.PathToConfig).Trim();
+
+                if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb file)
+                {
+                    // значения не поменялись
+                    if (
+                        SettingsVM.DbType == file.Db
+                        && Config.ConnectionString == file.ConnectionString
+                        && SettingsVM.PostgresConnect?.Database == file.PostgresConnect?.Database
+                        && SettingsVM.PostgresConnect?.Password == file.PostgresConnect?.Password
+                        && SettingsVM.PostgresConnect?.Username == file.PostgresConnect?.Username
+                        && SettingsVM.PostgresConnect?.Port == file.PostgresConnect?.Port
+                        && SettingsVM.PostgresConnect?.Host == file.PostgresConnect?.Host
+                        ) return;
+                }
+            }
+
+            var connect = new StoreConnectToDb();
+            if (SettingsVM.DbType == 0)
+            {
+                connect.Db = 0;
+                connect.ConnectionString = Config.PathToDbDefault;
+                SettingsVM.PostgresConnect = null;
+            }
+
+            if (SettingsVM.DbType == 1)
+            {
+                connect.Db = 1;
+                connect.ConnectionString = $"Host={SettingsVM.PostgresConnect?.Host ?? ""};Port={SettingsVM.PostgresConnect?.Port};Database={SettingsVM.PostgresConnect?.Database ?? ""};Username={SettingsVM.PostgresConnect?.Username ?? ""};Password={SettingsVM.PostgresConnect?.Password ?? ""};";
+
+                connect.PostgresConnect = SettingsVM.PostgresConnect;
+            }
+
+            var config = JsonSerializer.Serialize(connect);
+
+            if (File.Exists(Config.PathToConfig)) File.Delete(Config.PathToConfig);
+            File.WriteAllText(Config.PathToConfig, config);
+
+            Config.ConnectionString = connect.ConnectionString ?? Config.PathToDbDefault;
+            Config.DbType = connect.Db;
+            IsConfigChanged = true;
+        }
 
         [Command]
         public void Save()
@@ -114,11 +179,9 @@ namespace Dental.ViewModels
                 model.OrgPhone = SettingsVM.OrgPhone;
                 model.OrgEmail = SettingsVM.OrgEmail;
                 model.OrgSite = SettingsVM.OrgSite;
-                if (model?.Id == 0) db.Settings.Add(model);
+                if (model?.Id == 0) db.Settings.Add(model);              
 
-                ConfigHandler();
-
-                /************************/
+                #region лицензия 
                 if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
@@ -131,65 +194,21 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                /************************/
-                bool dbChanges = db.SaveChanges() > 0;
-                if (dbChanges) SettingsVM.Id = model.Id;
+                #endregion
 
-                if (dbChanges || IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                
-                IsConfigChanged = false;             
+                if (db.SaveChanges() > 0)
+                {
+                    SettingsVM.Id = model.Id;
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                }           
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении данных организации!",
+                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении настроек!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-        private bool IsConfigChanged { get; set; } = false;
-
-        private void ConfigHandler()
-        {
-            if (SettingsVM.DbType == null) return;
-
-            // сравниваем значения из формы с теми что из файла, если изменились, то изменяем флаг оповещения
-            if (File.Exists(Config.PathToConfig))
-            {
-                var json = File.ReadAllText(Config.PathToConfig).Trim();
-
-                if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb file)
-                {
-                    // значения не поменялись
-                    if (SettingsVM.DbType == file.Db && Config.ConnectionString == file.ConnectionString) return;                  
-                }
-            }
-            ConfigWrite();
-        }
-
-        private void ConfigWrite()
-        {
-            var connect = new StoreConnectToDb();
-            if (SettingsVM.DbType == 0)
-            {
-                connect.Db = 0;
-                connect.ConnectionString = Config.PathToDbDefault;
-            }
-
-            if (SettingsVM.DbType == 1)
-            {
-                connect.Db = 1;
-                connect.ConnectionString = $"Host={PostgresConnect.Host ?? ""};Port={PostgresConnect.Port};Database={PostgresConnect.Database ?? ""};Username={PostgresConnect.Username ?? ""};Password={PostgresConnect.Password ?? ""};";
-            }
-
-            var config = JsonSerializer.Serialize(connect);
-
-            if (File.Exists(Config.PathToConfig)) File.Delete(Config.PathToConfig);
-            File.WriteAllText(Config.PathToConfig, config);
-
-            Config.ConnectionString = connect.ConnectionString ?? Config.PathToDbDefault;
-            Config.DbType = connect.Db;
-            IsConfigChanged = true;
-        }
-
+   
         #region Свойства
         public bool IsReadOnly
         {

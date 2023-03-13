@@ -1,4 +1,5 @@
 ﻿using Dental.Models;
+using Dental.Models.Base;
 using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Id, value); }
         }
 
-        [Required]
         [MaxLength(255)]
         [Display(Name = "Наименование")]
         public string OrgName
@@ -66,6 +66,12 @@ namespace Dental.ViewModels
         {
             get { return GetProperty(() => DbType); }
             set { SetProperty(() => DbType, value); }
+        }
+
+        public PostgresConnect PostgresConnect
+        {
+            get { return GetProperty(() => PostgresConnect); }
+            set { SetProperty(() => PostgresConnect, value); }
         }
 
 

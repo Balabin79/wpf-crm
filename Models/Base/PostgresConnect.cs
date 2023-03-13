@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace Dental.Models.Base
 {
-    public class PostgresConnect : ViewModelBase, IDataErrorInfo
+    [Serializable]
+    public class PostgresConnect : ViewModelBase
     {
         public string Host
         {
@@ -40,8 +41,5 @@ namespace Dental.Models.Base
             get { return GetProperty(() => Password); }
             set { SetProperty(() => Password, value?.Trim()); }
         }
-
-    public string Error { get => string.Empty; }
-    public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
-}
+    }
 }

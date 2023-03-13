@@ -11,5 +11,6 @@ namespace Dental.Models.Base
     {
         public string ConnectionString { get; set; }
         public int Db { get; set; }
+        public PostgresConnect PostgresConnect { get; set; }
     }
 }

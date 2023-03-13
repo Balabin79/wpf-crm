@@ -43,8 +43,8 @@
 
             <DockPanel LastChildFill="True">
 
-                    <TextBlock Text="Настройки" FontSize="16" Padding="7 4 5 0" />
-               
+                <TextBlock Text="Настройки" FontSize="16" Padding="7 4 5 0" />
+
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" Padding="0 2 5 0">
 
@@ -101,53 +101,80 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1"  Grid.RowSpan="2" Margin="0 2 0 0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,32,0,-30">
 
 
                 <dxlc:LayoutGroup View="Group" Orientation="Vertical" Margin="5">
                     <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" >
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
-                                <StackPanel Orientation="Horizontal">
-                                    <dx:DXImage Source="/Resources/Icons/svg/database.svg"  Height="12" Width="12" Margin="0 -5 3 0"/>
-                                    <TextBlock Text="Настройка базы данных" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
-                                </StackPanel>
+                                <DockPanel HorizontalAlignment="Stretch">
+                                    
+                                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                        <dx:DXImage Source="/Resources/Icons/svg/database.svg"  Height="12" Width="12" Margin="0 -1 3 0"/>
+                                        <TextBlock Text="Настройка базы данных" VerticalAlignment="Center" Height="22" Margin="0 3 0 0"/>
+                                    </StackPanel>
+                                    
+                                    
+                                    <dxb:ToolBarControl DockPanel.Dock="Right"
+                                        HorizontalContentAlignment="Right"
+                                        HorizontalAlignment="Right"
+                                        ShowBackground="False" 
+                                        ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                                        <dxb:BarButtonItem 
+                                            Style="{Binding}"
+                                            DataContext="{Binding ElementName=gridMainClientGroups, Path=DataContext}"
+                            Content="Сохранить настройки подключения к базе данных"                                         
+                                           GlyphSize="Small"
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                           Command="{Binding SaveConfigCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                            <dxb:BarButtonItem.GlyphTemplate>
+                                                <DataTemplate>
+                                                    <dx:DXImage Source="/Resources/Icons/svg/hdd.svg" />
+                                                </DataTemplate>
+                                            </dxb:BarButtonItem.GlyphTemplate>
+                                        </dxb:BarButtonItem>
+
+                                    </dxb:ToolBarControl>
+                                </DockPanel>
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
-                        
+
                         <dxlc:LayoutGroup Orientation="Horizontal">
                             <dxlc:LayoutItem  Label="Название базы данных:" LabelPosition="Top" >
                                 <dxe:ToggleSwitch x:Name="dbType" ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="PostgreSQL" UncheckedStateContent="SQLite" 
                                    IsChecked="{Binding SettingsVM.DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
+
                         </dxlc:LayoutGroup>
 
                         <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
 
                             <dxlc:LayoutItem Label="Сервер (хост):" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
                                 <dxe:TextEdit 
-                                    Text="{Binding PostgresConnect.Server, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding PostgresConnect.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Text="{Binding SettingsVM.PostgresConnect.Host, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding SettingsVM.PostgresConnect.Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                     IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50">
                                 <dxe:TextEdit  
-                                MaskType="Numeric" Mask="d"
-                                Text="{Binding PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  
+                                MaskType="Numeric" Mask="d" 
+                                Text="{Binding SettingsVM.PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding SettingsVM.PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  
                                 IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
-                            
+
                         </dxlc:LayoutGroup>
 
                         <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                             <dxe:TextEdit 
-                                Text="{Binding PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                Text="{Binding SettingsVM.PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding SettingsVM.PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                 IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                 IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                         </dxlc:LayoutItem>
@@ -156,16 +183,16 @@
 
                             <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                                 <dxe:TextEdit 
-                                    Text="{Binding PostgresConnect.UserName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding PostgresConnect.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Text="{Binding SettingsVM.PostgresConnect.Username, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding SettingsVM.PostgresConnect.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                     IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch" >
                                 <dxe:TextEdit  
-                                    Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                    Text="{Binding SettingsVM.PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding SettingsVM.PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                     IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                     IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                             </dxlc:LayoutItem>
@@ -173,7 +200,9 @@
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
 
-                    <dxlc:LayoutGroup View="GroupBox" Orientation="Horizontal" ItemLabelsAlignment="Local" >
+                    <dxlc:LayoutGroup View="GroupBox" Orientation="Horizontal"                                   
+                                      HorizontalAlignment="Stretch" 
+                                      ItemLabelsAlignment="Local" >
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
                                 <StackPanel Orientation="Horizontal">
@@ -183,30 +212,6 @@
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
 
-                        <dxlc:LayoutItem Label="Сервис:" LabelPosition="Top" Margin="0 0 5 0">
-                            <dxe:ComboBoxEdit 
-                                  NullValueButtonPlacement="EditBox"
-                                  NullText="Выберите сервис" ShowNullText="True"
-                                  ItemsSource="{Binding Providers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                  DisplayMember="Name"
-                                  EditValue="{Binding SettingsVM.ProviderMsg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  >
-                                <dxe:ComboBoxEdit.StyleSettings>
-                                    <dxe:RadioComboBoxStyleSettings/>
-                                </dxe:ComboBoxEdit.StyleSettings>
-                            </dxe:ComboBoxEdit>
-                        </dxlc:LayoutItem>
-
-                        <dxlc:LayoutItem Label="Логин:" LabelPosition="Top" Margin="0 0 5 0">
-                            <dxe:TextEdit Text="{Binding SettingsVM.LoginProviderMsg, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                            <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
-                            <dxe:TextEdit Text="{Binding SettingsVM.PasswordProviderMsg, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                            </dxlc:LayoutItem>
-                        
                     </dxlc:LayoutGroup>
 
                     <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 5 0 5">
@@ -313,7 +318,7 @@
                                                 </dxe:ImageEdit.EmptyContentTemplate>
                                             </ext:ImageEditEx>
                                         </Decorator>
-                                        
+
                                     </StackPanel>
                                 </dxlc:LayoutItem>
                             </dxlc:LayoutGroup>

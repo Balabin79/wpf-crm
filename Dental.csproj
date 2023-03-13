@@ -36,6 +36,7 @@
     <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
+    <None Remove="Resources\Icons\svg\stack.svg" />
     <None Remove="Resources\Icons\svg\telegram-plane.svg" />
     <None Remove="Resources\Icons\svg\telegram.svg" />
     <None Remove="Resources\Icons\svg\user-circle.svg" />
@@ -199,6 +200,7 @@
     <Resource Include="Resources\Icons\svg\sms.svg" />
     <Resource Include="Resources\Icons\svg\sort-numeric-down.svg" />
     <Resource Include="Resources\Icons\svg\sort.svg" />
+    <Resource Include="Resources\Icons\svg\stack.svg" />
     <Resource Include="Resources\Icons\svg\telegram-plane.svg" />
     <Resource Include="Resources\Icons\svg\telegram.svg" />
     <Resource Include="Resources\Icons\svg\templates.svg" />
