@@ -117,7 +117,7 @@ namespace Dental.ViewModels.Statistics
 
                 }
             }
-            catch
+            catch (Exception e)
             {
 
             }

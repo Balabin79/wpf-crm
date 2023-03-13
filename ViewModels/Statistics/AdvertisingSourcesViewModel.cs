@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Threading.Tasks;
 using Dental.Infrastructures.Logs;
@@ -108,9 +108,9 @@ namespace Dental.ViewModels.Statistics
                 if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) if (paimentStatus == 2) paimentStatus = 0;
 
                 var invoices = InvoicesSearchMode != null ?             
-                    db.Invoices.Include(f => f.InvoiceItems).Include(f => f.Advertising)
+                    db.Invoices.Include(f => f.Advertising).Include(f => f.InvoiceItems)
                        .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo && f.Paid == paimentStatus ).ToArray() :
-                     db.Invoices.Include(f => f.InvoiceItems).Include(f => f.Advertising)
+                     db.Invoices.Include(f => f.Advertising).Include(f => f.InvoiceItems)
                        .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo).ToArray(); 
 
 

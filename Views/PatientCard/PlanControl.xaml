@@ -20,7 +20,7 @@
              dx:ThemeManager.ThemeName="Office2019White"
              d:DesignWidth="800"
              xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2" 
-             xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"
              x:Name="UTreatmentPlan">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -197,6 +197,55 @@
                                             </DataTemplate>
                                         </dxg:GridColumn.CellEditTemplate>
                                     </dxg:GridColumn>
+
+
+                                    <dxg:GridColumn  Width="5*" MinWidth="200" FieldName="Appointment" x:Name="visit">
+                                        <dxg:GridColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock 
+                                                        Margin="3 0 0 0" TextWrapping="Wrap" 
+                                                        Text="{DXBinding '!string.IsNullOrEmpty(Row.Name) ? (Row.Name)   : `` ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellTemplate>
+                                        <dxg:GridColumn.CellEditTemplate>
+                                            <DataTemplate>
+                                                <dxe:PopupBaseEdit 
+                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True" 
+                                                        NullValueButtonPlacement="EditBox"                                            
+                                                        EditValue="{Binding Path=Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
+                                                        NullText="Выберите позицию" IsTextEditable="False">
+                                                    <dxe:PopupBaseEdit.PopupContentTemplate>
+                                                        <ControlTemplate>
+                                                            <dxsch:SchedulerControl MaxHeight="1800" MaxWidth="1800" ShowBorder="True" GroupType="Resource" >
+                                                                <dxsch:DayView ShowWorkTimeOnly="True" ShowAllDayArea="False" ResourcesPerPage="3" />
+                                                                <dxsch:SchedulerControl.DataSource>
+                                                                    <dxsch:DataSource AppointmentsSource="{Binding Appointments}"
+                                              ResourcesSource="{Binding Employees}"
+                                              AppointmentLabelsSource="{Binding AppointmentTypes}">
+                                                                        <dxsch:DataSource.ResourceMappings>
+                                                                            <dxsch:ResourceMappings Caption="FullName" Id="EmployeeID">
+                                                                                <dxsch:CustomFieldMapping Mapping="Title" />
+                                                                            </dxsch:ResourceMappings>
+                                                                        </dxsch:DataSource.ResourceMappings>
+                                                                        <dxsch:DataSource.AppointmentMappings>
+                                                                            <dxsch:AppointmentMappings Id="Id" Start="Start" End="End" Subject="Subject" Description="Description" LabelId="LabelId" ResourceId="OwnerId" AllDay="AllDay" />
+                                                                        </dxsch:DataSource.AppointmentMappings>
+                                                                        <dxsch:DataSource.AppointmentLabelMappings>
+                                                                            <dxsch:AppointmentLabelMappings Caption="Caption" Id="Priority" />
+                                                                        </dxsch:DataSource.AppointmentLabelMappings>
+                                                                    </dxsch:DataSource>
+                                                                </dxsch:SchedulerControl.DataSource>
+                                                            </dxsch:SchedulerControl>
+                                                        </ControlTemplate>
+                                                    </dxe:PopupBaseEdit.PopupContentTemplate>
+                                                </dxe:PopupBaseEdit>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellEditTemplate>
+                                    </dxg:GridColumn>
+                                    
+                                    
+                                    
 
                                     <dxg:GridColumn Header="Кол-во" HorizontalHeaderContentAlignment="Center" FieldName="Count" Width="1*">
                                         <dxg:GridColumn.CellTemplate>
@@ -503,37 +552,6 @@
                 </dxg:GridColumn.CellEditTemplate>
             </dxg:GridColumn>
 
-            <dxg:GridColumn FieldName="Employee"  Header="Сотрудник"  MinWidth="100" Width="3*" HorizontalHeaderContentAlignment="Center">
-                <dxg:GridColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock 
-                            HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.Employee.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                    </DataTemplate>
-                </dxg:GridColumn.CellTemplate>
-                <dxg:GridColumn.CellEditTemplate>
-                    <DataTemplate>
-                        <dxe:ComboBoxEdit
-                            HorizontalAlignment="Stretch"
-                            NullValueButtonPlacement="EditBox"
-                            ItemsSource="{Binding ElementName=grid, Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                            NullText="Сотрудники" 
-                            IsTextEditable="False"
-                            DisplayMember="Fio"
-                            IncrementalFiltering="True"
-                            IncrementalSearch="True"
-                            IsCaseSensitiveFilter="False"
-                            ValidateOnTextInput="False"
-                            SelectedItem ="{Binding Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                            EditValue ="{Binding Row.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                            <dxe:ComboBoxEdit.StyleSettings>
-                                <dxe:RadioComboBoxStyleSettings />
-                            </dxe:ComboBoxEdit.StyleSettings>
-                        </dxe:ComboBoxEdit>
-                    </DataTemplate>
-                </dxg:GridColumn.CellEditTemplate>
-            </dxg:GridColumn>
             <dxg:GridColumn FieldName="PlanStatuses"  Header="Статус"  Width="1*" HorizontalHeaderContentAlignment="Center">
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
@@ -557,38 +575,6 @@
                                         ValidateOnTextInput="False"
                                         SelectedItem ="{Binding Row.PlanStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                         EditValue ="{Binding Row.PlanStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                            <dxe:ComboBoxEdit.StyleSettings>
-                                <dxe:RadioComboBoxStyleSettings />
-                            </dxe:ComboBoxEdit.StyleSettings>
-                        </dxe:ComboBoxEdit>
-                    </DataTemplate>
-                </dxg:GridColumn.CellEditTemplate>
-            </dxg:GridColumn>
-
-            <dxg:GridColumn FieldName="Advertising"  Header="Реклама"  Width="1*" HorizontalHeaderContentAlignment="Center">
-                <dxg:GridColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock 
-                            HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                    </DataTemplate>
-                </dxg:GridColumn.CellTemplate>
-                <dxg:GridColumn.CellEditTemplate>
-                    <DataTemplate>
-                        <dxe:ComboBoxEdit 
-                            HorizontalAlignment="Stretch"
-                                NullValueButtonPlacement="EditBox"
-                                        ItemsSource="{Binding  ElementName=grid, Path=DataContext.Advertisings, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                        NullText="Рекламные источники" 
-                                        IsTextEditable="False"
-                                        DisplayMember="Name"
-                                        IncrementalFiltering="True"
-                                        IncrementalSearch="True"
-                                        IsCaseSensitiveFilter="False"
-                                        ValidateOnTextInput="False"
-                                        SelectedItem ="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                        EditValue ="{Binding Row.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                 <dxe:RadioComboBoxStyleSettings />

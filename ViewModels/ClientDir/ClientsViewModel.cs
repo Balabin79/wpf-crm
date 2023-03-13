@@ -104,7 +104,6 @@ namespace Dental.ViewModels.ClientDir
         public void LoadPlans()
         {
             Plans = db.Plans?.Where(f => f.ClientId == Model.Id)?.
-                Include(f => f.Employee).
                 Include(f => f.Client).
                 Include(f => f.PlanStatus).
                 Include(f => f.PlanItems).

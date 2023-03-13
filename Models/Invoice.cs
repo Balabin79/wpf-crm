@@ -28,8 +28,16 @@ namespace Dental.Models
             set { SetProperty(() => DateTimestamp, value); }
         }
 
-        public int? AdvertisingId { get; set; }
-        public Advertising Advertising { get; set; }
+        public int? AdvertisingId
+        {
+            get { return GetProperty(() => AdvertisingId); }
+            set { SetProperty(() => AdvertisingId, value); }
+        }
+        public Advertising Advertising
+        {
+            get { return GetProperty(() => Advertising); }
+            set { SetProperty(() => Advertising, value); }
+        }
 
         public string Number { get; set; }
         public int? Paid { get; set; } = 0;

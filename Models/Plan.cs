@@ -28,9 +28,6 @@ namespace Dental.Models
             set { SetProperty(() => DateTimestamp, value); }
         }
 
-        public int? AdvertisingId { get; set; }
-        public Advertising Advertising { get; set; }
-
         public int? PlanStatusId { get; set; }
         public PlanStatus PlanStatus { get; set; }
 
@@ -45,31 +42,10 @@ namespace Dental.Models
         }
         public int? ClientId { get; set; }
 
-        public Employee Employee
-        {
-            get { return GetProperty(() => Employee); }
-            set { SetProperty(() => Employee, value); }
-        }
-        public int? EmployeeId { get; set; }
-
         public ObservableCollection<PlanItem> PlanItems
         {
             get { return GetProperty(() => PlanItems); }
             set { SetProperty(() => PlanItems, value); }
-        }
-
-        public Discount Discount
-        {
-            get { return GetProperty(() => Discount); }
-            set { SetProperty(() => Discount, value); }
-        }
-
-        public int? DiscountId { get; set; }
-
-        public decimal? DiscountSum
-        {
-            get { return GetProperty(() => DiscountSum); }
-            set { SetProperty(() => DiscountSum, value); }
         }
 
         public string Error { get => string.Empty; }

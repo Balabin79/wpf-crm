@@ -123,9 +123,9 @@
                     <dxc:PieSeries2D x:Name="series" 
                                             
                                  DisplayName="Источники привлечения" 
-                                 DataSource="{Binding Path=Stat2D, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 DataSource="{Binding Path=Stat2D, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  ArgumentDataMember="Name" 
-                                 ValueDataMember="{Binding Val, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ValueDataMember="{Binding Val, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelsVisibility="True" 
                                  LegendTextPattern="{Binding Path=TextPattern, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                  HoleRadiusPercent="50">
