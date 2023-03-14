@@ -1219,15 +1219,14 @@ namespace Dental.ViewModels.ClientDir
 
         #endregion
 
-        #region Печать плана
         [Command]
         public void PrintPlan(object p)
         {
-            /* try
+             try
              {
                  if (p is PageIntCommandParameters conv)
                  {
-                     ServicesInvoiceReport report = new ServicesInvoiceReport();
+                     Report2 report = new Report2();
                      var parameter = new Parameter()
                      {
                          Name = "Id",
@@ -1239,7 +1238,7 @@ namespace Dental.ViewModels.ClientDir
                      report.RequestParameters = false;
                      report.Parameters.Add(parameter);
                      report.FilterString = "[Id] = [Parameters.Id]";
-                     report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+                     //report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
 
                      if (report?.DataSource is SqlDataSource source)
                      {
@@ -1255,9 +1254,8 @@ namespace Dental.ViewModels.ClientDir
              catch
              {
                  ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
-             }*/
+             }
         }
-        #endregion
         #endregion
     }
 }

@@ -13,6 +13,10 @@
     </DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Reports\Report1.cs" />
+    <Compile Remove="Reports\Report1.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Resources\Icons\svg\chart-bar.svg" />
     <None Remove="Resources\Icons\svg\chart-line2.svg" />
     <None Remove="Resources\Icons\svg\chart-line3.svg" />

@@ -252,7 +252,7 @@ namespace Dental.Reports
             this.productDescription.StylePriority.UseFont = false;
             this.productDescription.StylePriority.UseForeColor = false;
             this.productDescription.StylePriority.UsePadding = false;
-            this.productDescription.Weight = 1.2379358448500371D;
+            this.productDescription.Weight = 1.237935844850037D;
             // 
             // detailTableCell1
             // 
@@ -838,13 +838,14 @@ namespace Dental.Reports
             // 
             // sqlDataSource1
             // 
-            this.sqlDataSource1.ConnectionName = "dental 1";
+            this.sqlDataSource1.ConnectionName = "B6Crm";
             this.sqlDataSource1.Name = "sqlDataSource1";
             customSqlQuery1.Name = "Invoices_1";
             queryParameter1.Name = "Параметр1";
             queryParameter1.Type = typeof(int);
             queryParameter1.ValueInfo = "0";
-            customSqlQuery1.Parameters.Add(queryParameter1);
+            customSqlQuery1.Parameters.AddRange(new DevExpress.DataAccess.Sql.QueryParameter[] {
+            queryParameter1});
             customSqlQuery1.Sql = resources.GetString("customSqlQuery1.Sql");
             customSqlQuery2.Name = "Organizations";
             customSqlQuery2.Sql = resources.GetString("customSqlQuery2.Sql");
@@ -908,7 +909,7 @@ namespace Dental.Reports
             this.baseControlStyle,
             this.evenDetailStyle,
             this.oddDetailStyle});
-            this.Version = "20.1";
+            this.Version = "21.2";
             ((System.ComponentModel.ISupportInitialize)(this.detailTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.vendorTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).EndInit();
