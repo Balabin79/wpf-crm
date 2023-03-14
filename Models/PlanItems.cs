@@ -7,6 +7,8 @@ namespace Dental.Models
     [Table("PlanItems")]
     public class PlanItem : AbstractBaseModel
     {
+        public PlanItem() => IsInInvoice = false;
+
         public string Name
         {
             get { return GetProperty(() => Name); }
@@ -27,6 +29,20 @@ namespace Dental.Models
             get { return GetProperty(() => Count); }
             set { SetProperty(() => Count, value); }
         }
+
+        public string VisitDate
+        {
+            get { return GetProperty(() => VisitDate); }
+            set { SetProperty(() => VisitDate, value); }
+        }
+
+        public bool? IsInInvoice
+        {
+            get { return GetProperty(() => IsInInvoice); }
+            set { SetProperty(() => IsInInvoice, value); }
+        }
+
+        public int? IsMovedToInvoice { get; set; } = 0;
 
         public decimal? Price
         {

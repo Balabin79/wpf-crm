@@ -13,6 +13,7 @@
              xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
              xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
              xmlns:vm="clr-namespace:Dental.ViewModels"
+             xmlns:views="clr-namespace:Dental.Views"
              xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d"
@@ -20,14 +21,15 @@
              dx:ThemeManager.ThemeName="Office2019White"
              d:DesignWidth="800"
              xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2" 
-             xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"
+             xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:dxsch="http://schemas.devexpress.com/winfx/2008/xaml/scheduling"
              x:Name="UTreatmentPlan">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
-                    <converter:DateToStringConverter x:Key="DateToString"/>
+                    <converter:LongDateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
@@ -68,6 +70,23 @@
                                         </dxb:BarButtonItem>
 
                                         <dxb:BarItemSeparator/>
+
+                                        <dxb:BarButtonItem 
+                                    Content="Переместить в счет"                                                           
+                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    GlyphSize="Small"
+                                    Command="{Binding ElementName=view, Path=DataContext.MovedToInvoiceCommand, UpdateSourceTrigger=PropertyChanged}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem, UpdateSourceTrigger=PropertyChanged}"
+                                            
+                                            >
+                                            <dxb:BarButtonItem.GlyphTemplate>
+                                                <DataTemplate>
+                                                    <dx:DXImage Source="/Resources/Icons/svg/file-import.svg" />
+                                                </DataTemplate>
+                                            </dxb:BarButtonItem.GlyphTemplate>
+                                        </dxb:BarButtonItem>
+                                        
+                                        
                                         <dxb:BarButtonItem 
                                     Content="Печать"                                                            
                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -199,55 +218,68 @@
                                     </dxg:GridColumn>
 
 
-                                    <dxg:GridColumn  Width="5*" MinWidth="200" FieldName="Appointment" x:Name="visit">
-                                        <dxg:GridColumn.CellTemplate>
+                                    <dxg:GridColumn  Header="Время визита" MinWidth="80" MaxWidth="175" FieldName="Appointment"
+                                                     HorizontalHeaderContentAlignment="Center">
+                                        <dxg:GridColumn.CellDisplayTemplate>
                                             <DataTemplate>
-                                                <TextBlock 
-                                                        Margin="3 0 0 0" TextWrapping="Wrap" 
-                                                        Text="{DXBinding '!string.IsNullOrEmpty(Row.Name) ? (Row.Name)   : `` ', Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                                <Grid Width="175" MaxWidth="175">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="25"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Width="150" 
+                                                             Text="{Binding Row.VisitDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </Grid>
                                             </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn.CellDisplayTemplate>
+
                                         <dxg:GridColumn.CellEditTemplate>
                                             <DataTemplate>
-                                                <dxe:PopupBaseEdit 
-                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                        x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True" 
-                                                        NullValueButtonPlacement="EditBox"                                            
-                                                        EditValue="{Binding Path=Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
-                                                        NullText="Выберите позицию" IsTextEditable="False">
-                                                    <dxe:PopupBaseEdit.PopupContentTemplate>
-                                                        <ControlTemplate>
-                                                            <dxsch:SchedulerControl MaxHeight="1800" MaxWidth="1800" ShowBorder="True" GroupType="Resource" >
-                                                                <dxsch:DayView ShowWorkTimeOnly="True" ShowAllDayArea="False" ResourcesPerPage="3" />
-                                                                <dxsch:SchedulerControl.DataSource>
-                                                                    <dxsch:DataSource AppointmentsSource="{Binding Appointments}"
-                                              ResourcesSource="{Binding Employees}"
-                                              AppointmentLabelsSource="{Binding AppointmentTypes}">
-                                                                        <dxsch:DataSource.ResourceMappings>
-                                                                            <dxsch:ResourceMappings Caption="FullName" Id="EmployeeID">
-                                                                                <dxsch:CustomFieldMapping Mapping="Title" />
-                                                                            </dxsch:ResourceMappings>
-                                                                        </dxsch:DataSource.ResourceMappings>
-                                                                        <dxsch:DataSource.AppointmentMappings>
-                                                                            <dxsch:AppointmentMappings Id="Id" Start="Start" End="End" Subject="Subject" Description="Description" LabelId="LabelId" ResourceId="OwnerId" AllDay="AllDay" />
-                                                                        </dxsch:DataSource.AppointmentMappings>
-                                                                        <dxsch:DataSource.AppointmentLabelMappings>
-                                                                            <dxsch:AppointmentLabelMappings Caption="Caption" Id="Priority" />
-                                                                        </dxsch:DataSource.AppointmentLabelMappings>
-                                                                    </dxsch:DataSource>
-                                                                </dxsch:SchedulerControl.DataSource>
-                                                            </dxsch:SchedulerControl>
-                                                        </ControlTemplate>
-                                                    </dxe:PopupBaseEdit.PopupContentTemplate>
-                                                </dxe:PopupBaseEdit>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="25"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <dxe:DateEdit NullValueButtonPlacement="EditBox"
+                                                         MaskType="DateTime" Mask="f" Grid.Column="0" ShowBorder="False"
+                            
+                                      EditValue="{Binding Row.VisitDate, Mode=TwoWay, StringFormat=D,
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ValidatesOnDataErrors=True}" 
+                                      IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  >
+                                  
+                                                            <dxe:DateEdit.StyleSettings>
+                                                                <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                                                            </dxe:DateEdit.StyleSettings>
+                                                        </dxe:DateEdit>
+
+                                                    <dxb:ToolBarControl Width="25"
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        BarItemDisplayMode="Default" ShowDragWidget="False" 
+                                                        Caption="File" Background="Transparent"
+                                                        AllowCustomizationMenu="False" AllowQuickCustomization="False">
+
+                                                        <dxb:BarButtonItem 
+                                                                Margin="2 0 0 0"                                      
+                                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    GlyphSize="Small"
+                                    Command="{Binding ElementName=view, Path=DataContext.ShedulerOpeningCommand}"
+                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                                            <dxb:BarButtonItem.GlyphTemplate>
+                                                                <DataTemplate>
+                                                                    <dx:DXImage Source="/Resources/Icons/main/calendar-alt.svg" />
+                                                                </DataTemplate>
+                                                            </dxb:BarButtonItem.GlyphTemplate>
+                                                        </dxb:BarButtonItem>
+                                                    </dxb:ToolBarControl>
+                                                </Grid>
                                             </DataTemplate>
                                         </dxg:GridColumn.CellEditTemplate>
                                     </dxg:GridColumn>
                                     
-                                    
-                                    
-
-                                    <dxg:GridColumn Header="Кол-во" HorizontalHeaderContentAlignment="Center" FieldName="Count" Width="1*">
+                                                                      
+                                    <dxg:GridColumn Header="Кол-во" MinWidth="50" HorizontalHeaderContentAlignment="Center" FieldName="Count" Width="1*">
                                         <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock 
@@ -265,7 +297,7 @@
                                         </dxg:GridColumn.CellEditTemplate>
                                     </dxg:GridColumn>
 
-                                    <dxg:GridColumn HorizontalHeaderContentAlignment="Center" FieldName="Price" Header="Стоимость" Width="1*" DataContext="{Binding ElementName=ServiceField}">
+                                    <dxg:GridColumn MinWidth="60" HorizontalHeaderContentAlignment="Center" FieldName="Price" Header="Стоимость" Width="1*" DataContext="{Binding ElementName=ServiceField}">
                                         <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock  
@@ -287,7 +319,7 @@
                                         </dxg:GridColumn.CellEditTemplate>
                                     </dxg:GridColumn>
 
-                                    <dxg:GridColumn HorizontalHeaderContentAlignment="Right" Header="Всего"  Width="1*" >
+                                    <dxg:GridColumn MinWidth="60" HorizontalHeaderContentAlignment="Right" Header="Всего"  Width="1*" >
                                         <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Margin="0 0 3 0" 
@@ -306,15 +338,39 @@
                                         </dxg:GridColumn.CellTemplate>
                                     </dxg:GridColumn>
 
-                                    <dxg:GridColumn Width="auto" AllowPrinting="False">
+                                    <dxg:GridColumn Header="В счете"  Width="40" MinWidth="40" HorizontalHeaderContentAlignment="Center">
+                                        <dxg:GridColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <dxe:CheckEdit
+                                                    IsEnabled="False"
+                                                    HorizontalAlignment="Center"
+                                                    EditValue="{Binding Row.IsInInvoice, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                    IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellTemplate>
+                                        <dxg:GridColumn.CellEditTemplate >
+                                            <DataTemplate>
+                                                <dxe:CheckEdit
+                                                    IsThreeState="False" 
+                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and Row.IsMovedToInvoice != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                    IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                    HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                                                    EditValue="{Binding Row.IsInInvoice, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
+                                                </dxe:CheckEdit>
+
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellEditTemplate>
+                                    </dxg:GridColumn>
+
+                                    
+                                    <dxg:GridColumn Width="auto" AllowPrinting="False" >
                                         <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
-                                                    <dxb:ToolBarControl 
+                                                    <dxb:ToolBarControl Width="30"
                                                             Caption="File" ShowDragWidget="False" AllowCustomizationMenu="False" 
                                                             AllowQuickCustomization="False"
                                                             Background="Transparent">
-
                                                         <dxb:BarButtonItem Content="Удалить" 
                                                                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                                                GlyphSize="Small"
@@ -363,7 +419,6 @@
                                                     </DataTemplate>
                                                 </dxb:BarButtonItem.GlyphTemplate>
                                             </dxb:BarButtonItem>
-
 
                                             <dxb:BarButtonItem 
                                                     Content="Удалить" 
@@ -542,11 +597,14 @@
                         <dxe:DateEdit
                             HorizontalAlignment="Stretch"
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0,0,8,0" Mask="D" MaskType="DateTime" 
+                            Margin="0,0,8,0" Mask="f" MaskType="DateTime" 
                             DisplayFormatString="D"  x:Name="DateEdit"
                             EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D,
-                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" 
+                                                     UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ValidatesOnDataErrors=True}" 
                             >
+                            <dxe:DateEdit.StyleSettings>
+                                <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                            </dxe:DateEdit.StyleSettings>
                         </dxe:DateEdit>
                     </DataTemplate>
                 </dxg:GridColumn.CellEditTemplate>

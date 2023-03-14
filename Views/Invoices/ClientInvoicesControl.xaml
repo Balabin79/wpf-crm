@@ -37,7 +37,7 @@
                     <converter:RowTotalConverter x:Key="rowTotal" />
                     <converter:DocumentMultiBindingConverter x:Key="multi" />
                     <converter:DateToStringConverter x:Key="dateToString" />
-                    <converter:BirthDateConverter x:Key="birthToDateString" />
+                    <converter:LongDateToStringConverter x:Key="birthToDateString" />
                     <converter:FloatToStringConverter x:Key="FloatToString"/>
                     <converter:BoolIntConverter x:Key="boolToInt"/>
 
@@ -551,12 +551,15 @@
                         <dxe:DateEdit
                             HorizontalAlignment="Stretch"
                             IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            Margin="0,0,8,0" Mask="D" MaskType="DateTime" 
+                            Margin="0,0,8,0" Mask="f" MaskType="DateTime" 
                             DisplayFormatString="D"  x:Name="DateEdit"
                             EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D,
                                                      UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" 
                             >
-                            </dxe:DateEdit>
+                            <dxe:DateEdit.StyleSettings>
+                                <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+                            </dxe:DateEdit.StyleSettings>
+                        </dxe:DateEdit>
                     </DataTemplate>
                 </dxg:GridColumn.CellEditTemplate>
             </dxg:GridColumn>

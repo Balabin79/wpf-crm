@@ -1148,6 +1148,75 @@ namespace Dental.ViewModels.ClientDir
                 (new ViewModelLog(e)).run();
             }
         }
+
+        [Command]
+        public void ShedulerOpeningCommand(object p)
+        {
+            try 
+            {
+                new ShedulerWindow().ShowDialog();
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        [Command]
+        public void MovedToInvoiceCommand(object p)
+        {
+            try
+            {
+                if (p is Plan plan)
+                {
+                    List<PlanItem> items = new List<PlanItem>();
+
+                    foreach (var item in plan.PlanItems)
+                    {
+                        if(item.IsInInvoice == true && item.IsMovedToInvoice != 1)
+                        {
+                            item.IsMovedToInvoice = 1;
+                            items.Add(item);
+                        }
+                    }
+
+                    if (items.Count > 0)
+                    {
+                        var date = DateTime.Now;
+                        var invoice = new Invoice
+                        {
+                            Number = NewInvoiceNumberGenerate(),
+                            Date = date.ToString(),
+                            DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                            Client = Model,
+                            ClientId = Model?.Id
+                        };
+
+                        items.ForEach(f => invoice.InvoiceItems.Add( new InvoiceItems() 
+                        { 
+                            Code = f.Code,
+                            Count = f.Count,
+                            Price = f.Price,
+                            Name = f.Name,
+                            Invoice = invoice
+                        }));
+
+                        db.Invoices.Add(invoice);
+                        if (db.SaveChanges() > 0)
+                        {
+                            ClientInvoices.Add(invoice);
+                            LoadInvoices();
+                            new Notification() { Content = $"Сформирован новый счет №{invoice.Number}" }.run();
+                        }
+                    }                      
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         #endregion
 
         #region Печать плана
