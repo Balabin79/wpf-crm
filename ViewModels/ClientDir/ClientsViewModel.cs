@@ -7,6 +7,7 @@ using Dental.Infrastructures.Logs;
 using Dental.Views.PatientCard;
 using Dental.Views.WindowForms;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using DevExpress.Mvvm.Native;
 using Dental.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
@@ -35,6 +36,10 @@ using System.Text;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using License;
+using System.Windows.Data;
+using Microsoft.VisualBasic;
+using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
+
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -54,6 +59,7 @@ namespace Dental.ViewModels.ClientDir
                 LoadClients();
                 LoadInvoices();
                 LoadEmployees();
+                LoadPrintConditions();
                 Model = new Client();
 
                 Init(Model);
@@ -155,7 +161,6 @@ namespace Dental.ViewModels.ClientDir
         #endregion
 
         #region Переход из списка инвойсов или списков клиентов (загрузка карты)
-
 
         [Command]
         public void Load(object p)
@@ -1257,5 +1262,113 @@ namespace Dental.ViewModels.ClientDir
              }
         }
         #endregion
+
+        #region Печать
+        internal ObservableCollection<PrintCondition> PrintConditions
+        {
+            get { return GetProperty(() => PrintConditions); }
+            set { SetProperty(() => PrintConditions, value); }
+        }
+
+        public ObservableCollection<object> PrintConditionsSelected { get; set; } = new ObservableCollection<object>();
+
+        private void LoadPrintConditions()
+        {
+            PrintConditions = new ObservableCollection<PrintCondition>()
+            {
+                new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}
+            };
+            db.ClientCategories?.ToArray()?.ForEach(f => PrintConditions.Add(
+                new PrintCondition() { Name = f.Name, Id = f.Id, Type = f.GetType() }
+                ));
+        }
+
+        [Command]
+        public void PrintClients()
+        {
+            PrintClientsWindow = new PrintClientsWindow() { DataContext = this };
+            PrintClientsWindow.Show();
+        }
+
+        [Command]
+        public void LoadDocForPrint()
+        {
+            try
+            {
+                // Create a link and assign a data source to it.
+                // Assign your data templates to different report areas.
+                CollectionViewLink link = new CollectionViewLink();
+                CollectionViewSource Source = new CollectionViewSource();
+
+                SetSourceCollectttion();
+
+                Source.Source = SourceCollection;
+
+                Source.GroupDescriptions.Add(new PropertyGroupDescription("ClientCategory.Name"));
+
+                link.CollectionView = Source.View;
+                link.GroupInfos.Add(new GroupInfo((DataTemplate)PrintClientsWindow.Resources["CategoryTemplate"]));
+                link.DetailTemplate = (DataTemplate)PrintClientsWindow.Resources["ProductTemplate"];
+
+                // Associate the link with the Document Preview control.
+                PrintClientsWindow.preview.DocumentSource = link;
+
+                // Generate the report document 
+                // and show pages as soon as they are created.
+                link.CreateDocument(true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
+
+        private void SetSourceCollectttion()
+        {
+            try
+            {
+                SourceCollection = new List<Client>();
+                var ctx = db.Clients;
+
+                var marked = PrintConditionsSelected?.OfType<PrintCondition>()?.ToArray();
+                
+                if (marked.FirstOrDefault(f => f.Id == -2) != null)  ctx.Where(f => f.IsInArchive == true);
+
+                var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
+                if (cat.Length > 0) ctx.Where(f => cat.Contains(f.ClientCategoryId));
+
+                 var clients = ctx?.
+                    Include(f => f.ClientCategory).
+                    OrderBy(f => f.ClientCategoryId).
+                    ThenBy(f => f.LastName).
+                    //GroupBy(f => f.ClientCategoryId).
+                    ToArray();
+
+                SourceCollection = clients;
+
+                //var markedItems = Clients?.Where(f => f.Print)?.Select(f => f.Id)?.OfType<int?>().ToList();
+
+                //var condition = markedItems?.Count > 0 ? clients?.Where(f => markedItems.Contains(f.Id)) : clients;
+
+              /*  condition?.ToList()
+                    ?.GroupBy(f => f.Parent)?.Where(f => f.Key != null)
+                    .ForEach(f => f.Where(d => d.IsDir != 1)
+                    .ForEach(
+                    i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));*/
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
+        public PrintClientsWindow PrintClientsWindow { get; set; }
+
+        #endregion
     }
+
 }

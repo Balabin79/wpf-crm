@@ -229,28 +229,28 @@ namespace Dental.ViewModels
             }
         }
 
-        private DocumentFormat GetDocumentFormat(string fileName)
+        private DevExpress.XtraRichEdit.DocumentFormat GetDocumentFormat(string fileName)
         {
             try
             {
                 string ext = new FileInfo(fileName).Extension.ToString().Replace(".", "").ToLower();
                 switch (ext)
                 {
-                    case "rtf": return DocumentFormat.Rtf;
-                    case "doc": return DocumentFormat.Doc;
-                    case "docx": return DocumentFormat.Doc;
-                    case "html": return DocumentFormat.Html;
-                    case "htm": return DocumentFormat.Html;
-                    case "mht": return DocumentFormat.Mht;
-                    case "epub": return DocumentFormat.ePub;
-                    case "txt": return DocumentFormat.PlainText;
-                    case "odt": return DocumentFormat.OpenDocument;
-                    default: return DocumentFormat.PlainText;
+                    case "rtf": return DevExpress.XtraRichEdit.DocumentFormat.Rtf;
+                    case "doc": return DevExpress.XtraRichEdit.DocumentFormat.Doc;
+                    case "docx": return DevExpress.XtraRichEdit.DocumentFormat.Doc;
+                    case "html": return DevExpress.XtraRichEdit.DocumentFormat.Html;
+                    case "htm": return DevExpress.XtraRichEdit.DocumentFormat.Html;
+                    case "mht": return DevExpress.XtraRichEdit.DocumentFormat.Mht;
+                    case "epub": return DevExpress.XtraRichEdit.DocumentFormat.ePub;
+                    case "txt": return DevExpress.XtraRichEdit.DocumentFormat.PlainText;
+                    case "odt": return DevExpress.XtraRichEdit.DocumentFormat.OpenDocument;
+                    default: return DevExpress.XtraRichEdit.DocumentFormat.PlainText;
                 }
             }
             catch
             {
-                return DocumentFormat.PlainText;
+                return DevExpress.XtraRichEdit.DocumentFormat.PlainText;
             }
         }
 

@@ -273,7 +273,8 @@
                         PrintAutoCardWidth="True"
                         UseLegacyFilterPanel="False" 
                         AllowEditing="True" 
-                            CardLayout="Rows">
+                            CardLayout="Rows"                      
+                        >
 
                         <dxg:CardView.RowCellMenuCustomizations>
                             <dxb:BarButtonItem IsVisible="{DXBinding Expr='RowData.Row.IsVisible', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 

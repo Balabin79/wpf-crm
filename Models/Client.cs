@@ -42,6 +42,13 @@ namespace Dental.Models
             set { SetProperty(() => ClientCategoryId, value); }
         }
 
+        [NotMapped]
+        public bool Print
+        {
+            get { return GetProperty(() => Print); }
+            set { SetProperty(() => Print, value); }
+        }
+
         public object Clone() => (Client)this.MemberwiseClone();
     }
 }

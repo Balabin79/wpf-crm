@@ -27,6 +27,7 @@
                     <vm:ClientsViewModel x:Key="vm"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
+                    <services:Export x:Key="export"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
@@ -105,6 +106,21 @@
                                 </DataTemplate>
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
+                        <dxb:BarItemSeparator/>
+
+   
+                                <dxb:BarButtonItem 
+                                    Style="{Binding}"
+                                    Command="{Binding Source={StaticResource vm}, Path=PrintClientsCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    GlyphSize="Small"
+                                    Content="В CSV">
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/user-tag.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
+           
 
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
@@ -148,7 +164,7 @@
                                 
                                 </StackPanel>
                                 
-                            <dxg:GridControl
+                            <dxg:GridControl 
                                 VirtualizingPanel.IsVirtualizing="True"
                                 ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
                                 DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
@@ -193,7 +209,7 @@
                                     <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
                                 </dxg:GridControl.TotalSummary>
                                 <dxg:GridControl.View>
-                                    <dxg:TableView       
+                                    <dxg:TableView                                       
                                         ShowVerticalLines="False"
                                         ShowColumnHeaders="False"
                                         ShowGroupPanel="False"
@@ -209,7 +225,7 @@
                                         HighlightItemOnHover="True"
                                         SearchColumns="LastName"
                                         SearchPanelHorizontalAlignment="Stretch"
-                                        SearchPanelNullText="Фамилия клиента"
+                                        SearchPanelNullText="Фамилия клиента"                                       
                                         >
                                         <dxg:TableView.InputBindings>
                                             <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=CreateCommand}"/>
