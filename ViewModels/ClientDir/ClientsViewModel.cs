@@ -39,7 +39,7 @@ using License;
 using System.Windows.Data;
 using Microsoft.VisualBasic;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
-
+using System.Linq.Expressions;
 
 namespace Dental.ViewModels.ClientDir
 {
@@ -1264,13 +1264,13 @@ namespace Dental.ViewModels.ClientDir
         #endregion
 
         #region Печать
-        internal ObservableCollection<PrintCondition> PrintConditions
+        public ObservableCollection<PrintCondition> PrintConditions
         {
             get { return GetProperty(() => PrintConditions); }
             set { SetProperty(() => PrintConditions, value); }
         }
 
-        public ObservableCollection<object> PrintConditionsSelected { get; set; } = new ObservableCollection<object>();
+        public object PrintConditionsSelected { get; set; }
 
         private void LoadPrintConditions()
         {
@@ -1325,6 +1325,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
+        
 
         private void SetSourceCollectttion()
         {
@@ -1332,32 +1333,38 @@ namespace Dental.ViewModels.ClientDir
             {
                 SourceCollection = new List<Client>();
                 var ctx = db.Clients;
+                var where = "";
 
-                var marked = PrintConditionsSelected?.OfType<PrintCondition>()?.ToArray();
-                
-                if (marked.FirstOrDefault(f => f.Id == -2) != null)  ctx.Where(f => f.IsInArchive == true);
+                if (PrintConditionsSelected is List<object> collection)
+                {
+                    var marked = collection.OfType<PrintCondition>().ToArray();
 
-                var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
-                if (cat.Length > 0) ctx.Where(f => cat.Contains(f.ClientCategoryId));
+                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
+                        //ctx.Where(f => f.IsInArchive == true);
 
-                 var clients = ctx?.
-                    Include(f => f.ClientCategory).
-                    OrderBy(f => f.ClientCategoryId).
-                    ThenBy(f => f.LastName).
-                    //GroupBy(f => f.ClientCategoryId).
-                    ToArray();
+                    var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
 
-                SourceCollection = clients;
+                    if (cat.Length > 0)
+                    {
+                        where += (!string.IsNullOrEmpty(where)) ?  " OR" : " WHERE";
+                        where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
+                    }
+                }
 
-                //var markedItems = Clients?.Where(f => f.Print)?.Select(f => f.Id)?.OfType<int?>().ToList();
-
-                //var condition = markedItems?.Count > 0 ? clients?.Where(f => markedItems.Contains(f.Id)) : clients;
-
-              /*  condition?.ToList()
-                    ?.GroupBy(f => f.Parent)?.Where(f => f.Key != null)
-                    .ForEach(f => f.Where(d => d.IsDir != 1)
-                    .ForEach(
-                    i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));*/
+                if (!string.IsNullOrEmpty(where))
+                {
+                    SourceCollection = db.Clients.FromSqlRaw("SELECT * FROM ClientInfo" + where).
+                       Include(f => f.ClientCategory).
+                       OrderBy(f => f.ClientCategoryId).
+                       ThenBy(f => f.LastName).
+                       ToArray();
+                    return;
+                }
+                SourceCollection = db.Clients.
+                   Include(f => f.ClientCategory).
+                   OrderBy(f => f.ClientCategoryId).
+                   ThenBy(f => f.LastName).
+                   ToArray();
             }
             catch (Exception ex)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dental.Reports
 {
-    internal class PrintCondition
+    public class PrintCondition
     {
         public string Name { get; set; }
         public int Id { get; set; }
