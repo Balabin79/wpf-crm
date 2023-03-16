@@ -12,6 +12,7 @@
        xmlns:vm ="clr-namespace:Dental.ViewModels.ClientDir"
        xmlns:adv ="clr-namespace:Dental.ViewModels"
        xmlns:local ="clr-namespace:Dental.Views.PatientCard"
+       xmlns:model ="clr-namespace:Dental.Models"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
        xmlns:ext="clr-namespace:Dental.Infrastructures.Extensions" 
@@ -27,7 +28,7 @@
                     <vm:ClientsViewModel x:Key="vm"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
-                    <services:Export x:Key="export"/>
+                    <services:ImportData x:Key="import"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
@@ -134,9 +135,10 @@
                         <dxb:BarItemSeparator/>
 
    
-                                <dxb:BarButtonItem 
-                                    Style="{Binding}"
-                                    Command="{Binding Source={StaticResource vm}, Path=PrintClientsCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding Source={x:Type model:Client }}"
                                     GlyphSize="Small"
                                     Content="Импорт">
                                     <dxb:BarButtonItem.GlyphTemplate>
