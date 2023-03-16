@@ -47,7 +47,7 @@
             </Grid.RowDefinitions>
             <DockPanel LastChildFill="True">
 
-                <TextBlock Text="Прайсы" FontSize="16" Padding="5 2 5 0" />
+                <TextBlock Text="Прайсы" FontSize="16" Padding="7 2 5 0" />
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
 
@@ -129,7 +129,7 @@
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Печать"      
+                        <dxb:BarButtonItem Content="Печать" Margin="0 0 5 0"  
                                            Style="{Binding}"                                    
                                            GlyphSize="Small"
                                            Command="{Binding PrintPriceCommand}"
@@ -137,7 +137,7 @@
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
             </DockPanel>
-            <dxg:GridControl Margin="0 2 0 0"
+            <dxg:GridControl Margin="5"
                 Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
                 SelectionMode="Row"
                  ItemsSource="{Binding Path=Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 

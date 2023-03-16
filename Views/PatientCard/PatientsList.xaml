@@ -93,37 +93,44 @@
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Дополнительные поля"                                        
+
+                        <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/pencil-ruler.svg" >
+                            <dxb:BarSubItem.Items>
+
+                                <dxb:BarButtonItem Content="Дополнительные поля"                                        
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenFormFieldsCommand}">
-                            <dxb:BarButtonItem.GlyphTemplate>
-                                <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/svg/bars.svg" />
-                                </DataTemplate>
-                            </dxb:BarButtonItem.GlyphTemplate>
-                        </dxb:BarButtonItem>
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/bars.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
+                                <dxb:BarButtonItem Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenWindowCommand}" 
                                            >
-                            <dxb:BarButtonItem.GlyphTemplate>
-                                <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/svg/bullhorn.svg" />
-                                </DataTemplate>
-                            </dxb:BarButtonItem.GlyphTemplate>
-                        </dxb:BarButtonItem>
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/bullhorn.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
 
-                        <dxb:BarButtonItem Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
+                                <dxb:BarButtonItem Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding OpenWClientCategoryWindowCommand}" 
                                            >
-                            <dxb:BarButtonItem.GlyphTemplate>
-                                <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/svg/user-tag.svg" />
-                                </DataTemplate>
-                            </dxb:BarButtonItem.GlyphTemplate>
-                        </dxb:BarButtonItem>
+                                    <dxb:BarButtonItem.GlyphTemplate>
+                                        <DataTemplate>
+                                            <dx:DXImage Source="/Resources/Icons/svg/user-tag.svg" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.GlyphTemplate>
+                                </dxb:BarButtonItem>
+                            </dxb:BarSubItem.Items>
+                        </dxb:BarSubItem>
+
                         <dxb:BarItemSeparator/>
 
    

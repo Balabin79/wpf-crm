@@ -126,13 +126,9 @@
                                             Content="Сохранить настройки подключения к базе данных"                                         
                                            GlyphSize="Small"
                                            IsEnabled="{DXBinding Expr='!IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                                           Command="{Binding SaveConfigCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                            <dxb:BarButtonItem.GlyphTemplate>
-                                                <DataTemplate>
-                                                    <dx:DXImage Source="/Resources/Icons/svg/hdd.svg" />
-                                                </DataTemplate>
-                                            </dxb:BarButtonItem.GlyphTemplate>
-                                        </dxb:BarButtonItem>
+                                           Command="{Binding SaveConfigCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                            Glyph="/Resources/Icons/svg/network-wired.svg"/>
+
 
                                     </dxb:ToolBarControl>
                                 </DockPanel>
