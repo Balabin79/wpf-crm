@@ -1371,8 +1371,6 @@ namespace Dental.ViewModels.ClientDir
 
             }
         }
-
-
         public PrintClientsWindow PrintClientsWindow { get; set; }
 
         #endregion

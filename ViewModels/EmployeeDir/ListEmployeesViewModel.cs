@@ -26,6 +26,12 @@ using Dental.Infrastructures.Converters;
 using Dental.Views.Settings;
 using License;
 using Dental.Views.About;
+using Dental.Reports;
+using Dental.Views.PatientCard;
+using DevExpress.Xpf.Printing;
+using System.Windows.Data;
+using Dental.Views.WindowsForms;
+using System.ComponentModel;
 
 namespace Dental.ViewModels.EmployeeDir
 {
@@ -39,6 +45,7 @@ namespace Dental.ViewModels.EmployeeDir
                 db = new ApplicationContext();
                 Config = db.Config;
                 SetCollection();
+                LoadPrintConditions();
             }
             catch (Exception e)
             {
@@ -286,5 +293,114 @@ namespace Dental.ViewModels.EmployeeDir
             get { return GetProperty(() => Config); }
             set { SetProperty(() => Config, value); }
         }
+
+
+        #region Печать
+        public ObservableCollection<PrintCondition> PrintConditions
+        {
+            get { return GetProperty(() => PrintConditions); }
+            set { SetProperty(() => PrintConditions, value); }
+        }
+
+        public object PrintConditionsSelected { get; set; }
+
+        private void LoadPrintConditions()
+        {
+            PrintConditions = new ObservableCollection<PrintCondition>()
+            {
+                new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}
+            };
+            /*db.ClientCategories?.ToArray()?.ForEach(f => PrintConditions.Add(
+                new PrintCondition() { Name = f.Name, Id = f.Id, Type = f.GetType() }
+                ));*/
+        }
+
+        [Command]
+        public void PrintStaff()
+        {
+            PrintStaffWindow = new PrintStaffWindow() { DataContext = this };
+            PrintStaffWindow.Show();
+        }
+
+        [Command]
+        public void LoadDocForPrint()
+        {
+            try
+            {
+                // Create a link and assign a data source to it.
+                // Assign your data templates to different report areas.
+                CollectionViewLink link = new CollectionViewLink();
+                CollectionViewSource Source = new CollectionViewSource();
+
+                SetSourceCollectttion();
+
+                Source.Source = SourceCollection;
+                
+                Source.GroupDescriptions.Add(new PropertyGroupDescription("Сотрудники"));
+
+                link.CollectionView = Source.View;
+                link.GroupInfos.Add(new GroupInfo((DataTemplate)PrintStaffWindow.Resources["CategoryTemplate"]));
+                link.DetailTemplate = (DataTemplate)PrintStaffWindow.Resources["ProductTemplate"];
+
+                // Associate the link with the Document Preview control.
+                PrintStaffWindow.preview.DocumentSource = link;
+
+                // Generate the report document 
+                // and show pages as soon as they are created.
+                link.CreateDocument(true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        public ICollection<Employee> SourceCollection { get; set; } = new List<Employee>();
+
+
+        private void SetSourceCollectttion()
+        {
+            try
+            {
+                SourceCollection = new List<Employee>();
+                var ctx = db.Employes;
+                var where = "";
+
+                if (PrintConditionsSelected is List<object> collection)
+                {
+                    var marked = collection.OfType<PrintCondition>().ToArray();
+
+                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
+                    //ctx.Where(f => f.IsInArchive == true);
+
+                   /* var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
+
+                    if (cat.Length > 0)
+                    {
+                        where += (!string.IsNullOrEmpty(where)) ? " OR" : " WHERE";
+                        where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
+                    }*/
+                }
+
+                if (!string.IsNullOrEmpty(where))
+                {
+                    SourceCollection = db.Employes.FromSqlRaw("SELECT * FROM Employees" + where).
+                       OrderBy(f => f.LastName).
+                       ToArray();
+                    return;
+                }
+                SourceCollection = db.Employes.
+                   OrderBy(f => f.LastName).
+                   ToArray();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public PrintStaffWindow PrintStaffWindow { get; set; }
+
+        #endregion
     }
 }

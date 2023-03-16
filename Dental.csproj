@@ -273,6 +273,9 @@
     <Compile Update="Views\WindowForms\AdvertisingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\WindowForms\PrintStaffWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\WindowForms\WorkTimeWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

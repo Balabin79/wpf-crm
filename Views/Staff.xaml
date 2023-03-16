@@ -191,12 +191,33 @@
 
         <Grid x:Name="gridMain" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="26"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True" Grid.Row="0">
-                <TextBlock Text="Сотрудники" FontSize="16" Padding="5 3 5 5"  />
+                <StackPanel Orientation="Horizontal">
+                    <dxe:ComboBoxEdit Width="200" Margin="5 2 5 0"
+                                  NullText="Фильтры печати" ShowNullText="True"
+                                  ItemsSource="{Binding PrintConditions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  DisplayMember="Name"
+                                  EditValue="{Binding PrintConditionsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                  NullValueButtonPlacement="EditBox"
+                                  >
+                        <dxe:ComboBoxEdit.StyleSettings>
+                            <dxe:CheckedComboBoxStyleSettings/>
+                        </dxe:ComboBoxEdit.StyleSettings>
+
+                    </dxe:ComboBoxEdit>
+
+                    <dx:SimpleButton 
+                Command="{Binding PrintStaffCommand}" DockPanel.Dock="Right" 
+                Height="24" Content="Печать" VerticalContentAlignment="Center" Margin="0 2 0 0"  Padding="1"
+                Width="80" HorizontalAlignment="Right" Glyph="/Resources/Icons/svg/printer.svg" GlyphHeight="14">
+
+                    </dx:SimpleButton>
+                </StackPanel>
+
 
                 <dxb:ToolBarControl Padding="5 3 5 5"
                         ShowDragWidget="False" Caption="File" ShowBackground="False" DockPanel.Dock="Top" HorizontalAlignment="Right"

@@ -55,7 +55,6 @@
 
             <DockPanel LastChildFill="True" Grid.Row="0">
 
-        
                 <StackPanel Orientation="Horizontal">
                     <dxe:ComboBoxEdit Width="200" Margin="5 2 5 0"
                                   NullText="Фильтры печати" ShowNullText="True"
@@ -77,8 +76,6 @@
 
                     </dx:SimpleButton>
                 </StackPanel>
-                
-
 
                 <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right" >
                     <dxb:ToolBarControl BarItemHorizontalIndent="5"
@@ -134,10 +131,10 @@
                                     Style="{Binding}"
                                     Command="{Binding Source={StaticResource vm}, Path=PrintClientsCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
-                                    Content="В CSV">
+                                    Content="Импорт">
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>
-                                            <dx:DXImage Source="/Resources/Icons/svg/user-tag.svg" />
+                                            <dx:DXImage Source="/Resources/Icons/svg/file-import.svg" />
                                         </DataTemplate>
                                     </dxb:BarButtonItem.GlyphTemplate>
                                 </dxb:BarButtonItem>
