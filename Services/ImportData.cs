@@ -96,8 +96,10 @@ namespace Dental.Services
                     using (var reader = new StreamReader(filePath))
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                        if (type == typeof(Client)) i = LoadClients(csv);
-                        if (type == typeof(Employee)) i = LoadStaff(csv);
+                        if (type == typeof(Client)) 
+                            i = LoadClients(csv);
+                        if (type == typeof(Employee)) 
+                            i = LoadStaff(csv);
 
                         if (db.SaveChanges() > 0)
                         {
