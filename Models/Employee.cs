@@ -9,6 +9,8 @@ namespace Dental.Models
     [Table("Employees")]
     public class Employee : AbstractUser, IDataErrorInfo, ICloneable
     {
+        public Employee() => IsNotify = false;
+
         [NotMapped]
         public bool IsVisible
         {
@@ -48,6 +50,12 @@ namespace Dental.Models
         {
             get { return GetProperty(() => Password); }
             set { SetProperty(() => Password, value); }
+        }
+
+        public bool? IsNotify
+        {
+            get { return GetProperty(() => IsNotify); }
+            set { SetProperty(() => IsNotify, value); }
         }
 
         public string Telegram

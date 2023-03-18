@@ -62,12 +62,6 @@
                                        CommandParameter="{Binding RowData.Row}"
                                        Command="{Binding Source={StaticResource vm}, Path=EditableCommand, Mode=OneWay}"/>
 
-                    <dxb:BarButtonItem  Content="Сохранить"                                   
-                                        IsEnabled="{DXBinding Expr='RowData.Row.IsVisible and !string.IsNullOrEmpty(RowData.Row.LastName) and !string.IsNullOrEmpty(RowData.Row.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
-                                        Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                        GlyphSize="Small"
-                                        CommandParameter="{Binding RowData.Row}"
-                                        Command="{Binding Source={StaticResource vm}, Path=SaveCommand, Mode=OneWay}"/>
                     <dxb:BarItemLinkSeparator/>
                     <dxb:BarButtonItem  Content="Удалить" 
                                         IsEnabled="{DXBinding Expr='RowData.Row.IsVisible and RowData.Row.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -83,11 +77,11 @@
 
         <DataTemplate x:Key="readonlyCardTemplate" >
             <StackPanel Orientation="Vertical" >
-                <DockPanel HorizontalAlignment="Left" x:Name="info" Width="360" MaxWidth="360">
+                <DockPanel HorizontalAlignment="Left" x:Name="info" Width="380" MaxWidth="380">
 
                     <extens:ImageEditEx DataContext="{StaticResource vm}" x:Name="img"
                             DockPanel.Dock="Left"
-                                        
+                            VerticalAlignment="Top"         
                             OpenFileDialogFilter="Image files (*.BMP, *.JPG, *.GIF, *.PNG, *.JPEG)|*.bmp; *.jpg;* *jpeg, *.gif; *.png;" 
                                    Stretch="UniformToFill"
                                    Background="White"
@@ -114,8 +108,8 @@
                         </dxmvvm:Interaction.Behaviors>
                     </extens:ImageEditEx>
 
-                    <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical"  DockPanel.Dock="Right" Margin="10 5 0 5" Padding="0">
-                        <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutControl VerticalAlignment="Stretch" Orientation="Vertical"  DockPanel.Dock="Right" Margin="8 0 0 5" Padding="0">
+                        <dxlc:LayoutGroup Orientation="Vertical" Margin="0 -3 0 0">
                             <dxlc:LayoutItem Label="Фамилия" AddColonToLabel="True">
                                 <dxe:TextEdit ShowBorder="False"  
                                                 EditValue="{Binding Path=Row.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" 
@@ -155,32 +149,53 @@
                                     Glyph="/Resources/Icons/svg/envelope.svg"  />
                                 </dxe:ButtonEdit>
                             </dxlc:LayoutItem>
+                           
+                            <dxlc:LayoutItem Label="Telegram" AddColonToLabel="True">
+                                <dxe:ButtonEdit IsTextEditable="True" ShowBorder="False"
+                                            AllowDefaultButton="False"
+                                            MaskUseAsDisplayFormat="True"
+                                            EditValue="{Binding Path=Row.Telegram, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                    <dxe:ImageButtonInfo
+                                    Glyph="/Resources/Icons/svg/telegram-plane.svg" />
+                                </dxe:ButtonEdit>
+                            </dxlc:LayoutItem>
+
                             <dxlc:LayoutItem Label="Должность:"  LabelPosition="Left" >
                                 <dxe:TextEdit  Padding="0" Margin="0"  ShowBorder="False"                                             
                                                 EditValue="{Binding Row.Post, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                                 IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                />
                             </dxlc:LayoutItem>
-
-                            <dxlc:LayoutGroup Orientation="Horizontal">
-                                <dxlc:LayoutItem Label="В архиве: "
-                                            LabelPosition="Left" >
-                                    <dxe:CheckEdit         
-                                                EditValue="{Binding Row.IsInArchive, Mode=TwoWay,                                            
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                                </dxlc:LayoutItem>
-                                <dxlc:LayoutItem Label="В расписании: "
-                                            LabelPosition="Left" >
-                                    <dxe:CheckEdit         
-                                                EditValue="{Binding Row.IsInSheduler, Mode=TwoWay,                                              
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-                                </dxlc:LayoutItem>
-                            </dxlc:LayoutGroup>
+                            
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutControl>
                 </DockPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <dxlc:LayoutItem Label="В расписании: " LabelPosition="Left" Grid.Column="0">
+                        <dxe:CheckEdit EditValue="{Binding Row.IsInSheduler, Mode=TwoWay,                                              
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Telegram уведомления: " LabelPosition="Left" Grid.Column="1" HorizontalAlignment="Right">
+                        <dxe:CheckEdit EditValue="{Binding Row.IsNotify, Mode=TwoWay,                                            
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="В архиве: " LabelPosition="Left" Grid.Column="2" HorizontalAlignment="Right">
+                        <dxe:CheckEdit EditValue="{Binding Row.IsInArchive, Mode=TwoWay,                                            
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                    </dxlc:LayoutItem>
+                </Grid>
 
             </StackPanel>
         </DataTemplate>
@@ -237,6 +252,12 @@
                         </dxb:BarButtonItem.GlyphTemplate>
                     </dxb:BarButtonItem>
 
+                    <dxb:BarButtonItem  Content="Сохранить" Style="{Binding}"                               
+                                        Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                        GlyphSize="Small"
+                                        CommandParameter="{Binding RowData.Row}"
+                                        Command="{Binding Source={StaticResource vm}, Path=SaveCommand, Mode=OneWay}"/>
+                    <dxb:BarItemSeparator/>
 
                     <dxb:BarButtonItem Content="Свернуть/Развернуть" Margin="0 0 5 0"                                
                                            GlyphSize="Small" Style="{Binding}"

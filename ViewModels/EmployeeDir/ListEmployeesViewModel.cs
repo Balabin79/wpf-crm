@@ -115,13 +115,16 @@ namespace Dental.ViewModels.EmployeeDir
                     Environment.Exit(0);
                 }
 
-                if (p is Employee model)
+                Collection?.Where(f => f.Id == 0).ForEach(f => db.Entry(f).State = EntityState.Added);
+                if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
+
+                /*if (p is Employee model)
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;
                     if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
-                }
+                }*/
             }
-            catch
+            catch(Exception ex)
             {
                 ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных сотрудника возникла ошибка!",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);

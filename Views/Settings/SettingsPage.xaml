@@ -101,7 +101,7 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Margin="0,5,0,-5" >
 
                 <dxlc:LayoutGroup View="Group" Orientation="Vertical" Margin="5">
                     <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 0 0 5" >
@@ -194,18 +194,28 @@
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
 
-                    <dxlc:LayoutGroup View="GroupBox" Orientation="Horizontal"                                   
+                    <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical"                                   
                                       HorizontalAlignment="Stretch" 
                                       ItemLabelsAlignment="Local" >
                         <dxlc:LayoutGroup.HeaderTemplate>
                             <DataTemplate >
                                 <StackPanel Orientation="Horizontal">
                                     <dx:DXImage Source="/Resources/Icons/svg/telegram-plane.svg"  Height="16" Margin="0 -4 3 0"/>
-                                    <TextBlock Text="Настройки сервиса рассылки сообщений" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
+                                    <TextBlock Text="Настройка телеграм - оповещений" VerticalAlignment="Center" Height="22" Margin="0 2 0 0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </dxlc:LayoutGroup.HeaderTemplate>
+                        <dxlc:LayoutItem  Label="Токен чата:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                            <dxe:TextEdit
+                                                      Text="{Binding SettingsVM.TelegramToken, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
 
+                        <dxlc:LayoutItem Label="Уведомлять сотрудников в телеграм-чате: " LabelPosition="Left" Grid.Column="0">
+                            <dxe:CheckEdit EditValue="{Binding SettingsVM.IsNotifyByTelegram, Mode=TwoWay,                                              
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                        </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
 
                     <dxlc:LayoutGroup View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" Margin="0 5 0 5">
@@ -225,7 +235,7 @@
                                                       HorizontalAlignment="Stretch">
                                     <dxe:TextEdit
                                                       Text="{Binding SettingsVM.OrgName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>
 
                                 <dxlc:LayoutItem  Label="Сокращенное наименование:" 
@@ -233,7 +243,7 @@
                                                       HorizontalAlignment="Stretch">
                                     <dxe:TextEdit Name="ShortName" 
                                                       Text="{Binding SettingsVM.OrgShortName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>
 
                                 <dxlc:LayoutItem  Label="Адрес:" 
@@ -241,7 +251,7 @@
                                                       HorizontalAlignment="Stretch">
                                     <dxe:MemoEdit Name="Address" ShowIcon="False" PrintTextWrapping="Wrap" TextWrapping="Wrap" ShowText="True"
                                                       Text="{Binding SettingsVM.OrgAddress, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>
 
                             </dxlc:LayoutGroup>
@@ -257,7 +267,7 @@
                                                         Mask="(999) 000-0000"
                                                         MaskUseAsDisplayFormat="True"
                                                         EditValue="{Binding Path=SettingsVM.OrgPhone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                         <dxe:ImageButtonInfo Glyph="/Resources/Icons/svg/phone.svg" Margin="0 0 5 0"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>
@@ -270,7 +280,7 @@
                                                         MaskType="RegEx"
                                                         Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
                                                         EditValue="{Binding Path=SettingsVM.OrgEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                         ValidateOnTextInput="True">
                                         <dxe:ImageButtonInfo
                                                 Glyph="/Resources/Icons/svg/envelope.svg" Margin="0 0 5 0" />
@@ -283,7 +293,7 @@
                                     <dxe:ButtonEdit IsTextEditable="True"
                                                         AllowDefaultButton="False"                                    
                                                         EditValue="{Binding Path=SettingsVM.OrgSite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                        IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                         <dxe:ImageButtonInfo Glyph="/Resources/Icons/svg/globe.svg" Margin="0 0 5 0"/>
                                     </dxe:ButtonEdit>
                                 </dxlc:LayoutItem>

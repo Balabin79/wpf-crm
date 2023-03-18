@@ -1,4 +1,5 @@
 using Dental.Models.Base;
+using DevExpress.CodeParser;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dental.Models
@@ -12,6 +13,9 @@ namespace Dental.Models
         public string OrgEmail { get; set; }
         public string OrgPhone { get; set; }
         public string OrgSite { get; set; }
+
+        public string TelegramToken { get; set; }
+        public bool? IsNotifyByTelegram { get; set; }    
     }
  
 }

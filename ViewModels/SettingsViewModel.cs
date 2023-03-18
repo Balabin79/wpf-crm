@@ -179,6 +179,8 @@ namespace Dental.ViewModels
                 model.OrgPhone = SettingsVM.OrgPhone;
                 model.OrgEmail = SettingsVM.OrgEmail;
                 model.OrgSite = SettingsVM.OrgSite;
+                model.TelegramToken = SettingsVM.TelegramToken;
+                model.IsNotifyByTelegram = SettingsVM.IsNotifyByTelegram;
                 if (model?.Id == 0) db.Settings.Add(model);              
 
                 #region лицензия 

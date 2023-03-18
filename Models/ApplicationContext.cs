@@ -71,5 +71,7 @@ namespace Dental.Models
         public DbSet<Plan> Plans { get; set; }
         public DbSet<PlanStatus> PlanStatuses { get; set; }
         public DbSet<PlanItem> PlanItems { get; set; }
+
+        public DbSet<TelegramNotification> TelegramNotifications { get; set; }
     }
 }
