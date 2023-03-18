@@ -76,7 +76,7 @@ namespace Dental.Services
             {
                 var filePath = string.Empty;
                 var fileName = string.Empty;
-
+                int i = 0;
                 if(p is Type type)
                 {
                     using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
@@ -96,27 +96,10 @@ namespace Dental.Services
                     using (var reader = new StreamReader(filePath))
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                        var records = csv.GetRecords<ClientExport>();
-                        int i = 0;
-                        foreach (var item in records)
-                        {
-                            var model = new Client()
-                            {
-                                LastName = item.LastName,
-                                FirstName = item.FirstName,
-                                MiddleName = item.MiddleName,
-                                BirthDate = item.BirthDate,
-                                Gender = item.Gender,
-                                Email = item.Email,
-                                Phone = item.Phone,
-                                Address = item.Address,
-                                ClientCategoryId = item.ClientCategoryId,
-                                IsInArchive = item.IsArhive == "да" ? true : false
-                            };
-                            db.Clients.Add(model);
-                            i++;
-                        }
-                        if(db.SaveChanges() > 0)
+                        if (type == typeof(Client)) i = LoadClients(csv);
+                        if (type == typeof(Employee)) i = LoadStaff(csv);
+
+                        if (db.SaveChanges() > 0)
                         {
                             new Notification() { Content = $"Список успешно импортирован в базу данных! Добавлено {i} записей" }.run();
                         }
@@ -128,8 +111,55 @@ namespace Dental.Services
                 ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импортировать данные!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }
         }
-    }
 
+        private int LoadClients(CsvReader csv)
+        {
+            var records = csv.GetRecords<ClientExport>();
+            int i = 0;
+            foreach (var item in records)
+            {
+                var model = new Client()
+                {
+                    LastName = item.LastName,
+                    FirstName = item.FirstName,
+                    MiddleName = item.MiddleName,
+                    BirthDate = item.BirthDate,
+                    Gender = item.Gender,
+                    Email = item.Email,
+                    Phone = item.Phone,
+                    Address = item.Address,
+                    ClientCategoryId = item.ClientCategoryId,
+                    IsInArchive = item.IsArhive == "да" ? true : false
+                };
+                db.Clients.Add(model);
+                i++;
+            }
+            return i;
+        }
+
+        private int LoadStaff(CsvReader csv)
+        {
+            var records = csv.GetRecords<EmployeeExport>();
+            int i = 0;
+            foreach (var item in records)
+            {
+                var model = new Employee()
+                {
+                    LastName = item.LastName,
+                    FirstName = item.FirstName,
+                    MiddleName = item.MiddleName,
+                    Email = item.Email,
+                    Phone = item.Phone,
+                    Telegram = item.Telegram,
+                    Post = item.Post,
+                    IsInArchive = item.IsArhive == "да" ? true : false
+                };
+                db.Employes.Add(model);
+                i++;
+            }
+            return i;
+        }
+    }
 
     internal class ClientExport
     {
@@ -143,6 +173,18 @@ namespace Dental.Services
         public string Email { get; set; }
         public int? ClientCategoryId { get; set; }
         public string ClientCategoryName { get; set; }
+        public string IsArhive { get; set; }
+    }
+
+    internal class EmployeeExport
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Telegram { get; set; }
+        public string Post { get; set; }
         public string IsArhive { get; set; }
     }
 }

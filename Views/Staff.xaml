@@ -17,7 +17,9 @@
        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
-    xmlns:com="clr-namespace:Dental.Infrastructures.Commands">
+    xmlns:com="clr-namespace:Dental.Infrastructures.Commands"
+             xmlns:services="clr-namespace:Dental.Services" 
+             xmlns:model ="clr-namespace:Dental.Models">
     <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="DateToString"/>
@@ -25,7 +27,8 @@
         <converter:MultiBindingImageEditExEmployeeConverter x:Key="multiImg" />
         <converter:BoolIntConverter x:Key="boolConverter" />
         <vm:ListEmployeesViewModel x:Key="vm"/>
-
+        <services:ImportData x:Key="import"/>
+        
         <DataTemplate x:Key="HeaderCardTemplate">
             <DockPanel>
                 <TextBlock 
@@ -258,6 +261,23 @@
                                            GlyphSize="Small" Style="{Binding}"
                                            Command="{Binding ShowArchiveCommand}"
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
+
+                    <dxb:BarItemSeparator/>
+
+
+                    <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding Source={x:Type model:Employee }}"
+                                    GlyphSize="Small"
+                                    Content="Импорт">
+                        <dxb:BarButtonItem.GlyphTemplate>
+                            <DataTemplate>
+                                <dx:DXImage Source="/Resources/Icons/svg/file-import.svg" />
+                            </DataTemplate>
+                        </dxb:BarButtonItem.GlyphTemplate>
+                    </dxb:BarButtonItem>
+
                 </dxb:ToolBarControl>
 
             </DockPanel>
