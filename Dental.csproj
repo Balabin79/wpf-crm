@@ -17,6 +17,11 @@
     <Compile Remove="Reports\Report1.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\Icons\svg\archive.svg" />
+    <None Remove="Resources\Icons\svg\bars2.svg" />
+    <None Remove="Resources\Icons\svg\blackboard_graph.svg" />
+    <None Remove="Resources\Icons\svg\browser.svg" />
+    <None Remove="Resources\Icons\svg\calendar.svg" />
     <None Remove="Resources\Icons\svg\chart-bar.svg" />
     <None Remove="Resources\Icons\svg\chart-line2.svg" />
     <None Remove="Resources\Icons\svg\chart-line3.svg" />
@@ -25,25 +30,40 @@
     <None Remove="Resources\Icons\svg\chart-pie4.svg" />
     <None Remove="Resources\Icons\svg\chart-pipe.svg" />
     <None Remove="Resources\Icons\svg\chart-pipe3.svg" />
+    <None Remove="Resources\Icons\svg\customizable.svg" />
     <None Remove="Resources\Icons\svg\document-edit.svg" />
     <None Remove="Resources\Icons\svg\download.svg" />
     <None Remove="Resources\Icons\svg\edit-r.svg" />
+    <None Remove="Resources\Icons\svg\energy.svg" />
+    <None Remove="Resources\Icons\svg\eye.svg" />
     <None Remove="Resources\Icons\svg\file-export.svg" />
     <None Remove="Resources\Icons\svg\file-import.svg" />
     <None Remove="Resources\Icons\svg\file-powerpoint.svg" />
     <None Remove="Resources\Icons\svg\file-upload.svg" />
     <None Remove="Resources\Icons\svg\folder-f.svg" />
+    <None Remove="Resources\Icons\svg\graph-bar.svg" />
+    <None Remove="Resources\Icons\svg\graph-line.svg" />
+    <None Remove="Resources\Icons\svg\graph-pie.svg" />
+    <None Remove="Resources\Icons\svg\graph.svg" />
+    <None Remove="Resources\Icons\svg\graph_rising.svg" />
+    <None Remove="Resources\Icons\svg\icon_calendar.svg" />
     <None Remove="Resources\Icons\svg\icon_download.svg" />
     <None Remove="Resources\Icons\svg\icon_info.svg" />
     <None Remove="Resources\Icons\svg\icon_key.svg" />
     <None Remove="Resources\Icons\svg\icon_key_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_tools.svg" />
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
     <None Remove="Resources\Icons\svg\pencil-ruler.svg" />
+    <None Remove="Resources\Icons\svg\preview.svg" />
+    <None Remove="Resources\Icons\svg\question2.svg" />
+    <None Remove="Resources\Icons\svg\question_2.svg" />
     <None Remove="Resources\Icons\svg\server.svg" />
+    <None Remove="Resources\Icons\svg\settings.svg" />
     <None Remove="Resources\Icons\svg\stack.svg" />
+    <None Remove="Resources\Icons\svg\statistics.svg" />
     <None Remove="Resources\Icons\svg\teeth-open.svg" />
     <None Remove="Resources\Icons\svg\teeth.svg" />
     <None Remove="Resources\Icons\svg\telegram-plane.svg" />
@@ -51,6 +71,7 @@
     <None Remove="Resources\Icons\svg\th-large.svg" />
     <None Remove="Resources\Icons\svg\th-list.svg" />
     <None Remove="Resources\Icons\svg\th.svg" />
+    <None Remove="Resources\Icons\svg\theater-masks.svg" />
     <None Remove="Resources\Icons\svg\tools.svg" />
     <None Remove="Resources\Icons\svg\tooth.svg" />
     <None Remove="Resources\Icons\svg\user-circle.svg" />
@@ -126,10 +147,15 @@
     <Resource Include="Resources\Icons\Page.png" />
     <Resource Include="Resources\Icons\service2.png" />
     <Resource Include="Resources\Icons\sheduler.png" />
+    <Resource Include="Resources\Icons\svg\archive.svg" />
     <Resource Include="Resources\Icons\svg\bars.svg" />
+    <Resource Include="Resources\Icons\svg\bars2.svg" />
+    <Resource Include="Resources\Icons\svg\blackboard_graph.svg" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\briefcase.svg" />
+    <Resource Include="Resources\Icons\svg\browser.svg" />
     <Resource Include="Resources\Icons\svg\bullhorn.svg" />
+    <Resource Include="Resources\Icons\svg\calendar.svg" />
     <Resource Include="Resources\Icons\svg\chart-bar.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
     <Resource Include="Resources\Icons\svg\chart-line2.svg" />
@@ -141,12 +167,15 @@
     <Resource Include="Resources\Icons\svg\chart-pipe3.svg" />
     <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\cogs.svg" />
+    <Resource Include="Resources\Icons\svg\customizable.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
     <Resource Include="Resources\Icons\svg\document-edit.svg" />
     <Resource Include="Resources\Icons\svg\download.svg" />
     <Resource Include="Resources\Icons\svg\edit-r.svg" />
     <Resource Include="Resources\Icons\svg\edit.svg" />
+    <Resource Include="Resources\Icons\svg\energy.svg" />
     <Resource Include="Resources\Icons\svg\envelope.svg" />
+    <Resource Include="Resources\Icons\svg\eye.svg" />
     <Resource Include="Resources\Icons\svg\file-alt.svg" />
     <Resource Include="Resources\Icons\svg\file-export.svg" />
     <Resource Include="Resources\Icons\svg\file-import.svg" />
@@ -168,7 +197,13 @@
     <Resource Include="Resources\Icons\svg\google.svg" />
     <Resource Include="Resources\Icons\svg\google_icon.svg" />
     <Resource Include="Resources\Icons\svg\google_mail.svg" />
+    <Resource Include="Resources\Icons\svg\graph-bar.svg" />
+    <Resource Include="Resources\Icons\svg\graph-line.svg" />
+    <Resource Include="Resources\Icons\svg\graph-pie.svg" />
+    <Resource Include="Resources\Icons\svg\graph.svg" />
+    <Resource Include="Resources\Icons\svg\graph_rising.svg" />
     <Resource Include="Resources\Icons\svg\hdd.svg" />
+    <Resource Include="Resources\Icons\svg\icon_calendar.svg" />
     <Resource Include="Resources\Icons\svg\icon_download.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart_alt.svg" />
@@ -184,6 +219,7 @@
       <CopyToOutputDirectory>
       </CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\svg\icon_tools.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\image.svg" />
     <Resource Include="Resources\Icons\svg\images.svg" />
@@ -206,20 +242,24 @@
     <Resource Include="Resources\Icons\svg\plus-add.svg" />
     <Resource Include="Resources\Icons\svg\plus.svg" />
     <Resource Include="Resources\Icons\svg\podcast.svg" />
+    <Resource Include="Resources\Icons\svg\preview.svg" />
     <Resource Include="Resources\Icons\svg\price_tag.svg" />
     <Resource Include="Resources\Icons\svg\price_tag_usd.svg" />
     <Resource Include="Resources\Icons\svg\print.svg" />
     <Resource Include="Resources\Icons\svg\printer.svg" />
     <Resource Include="Resources\Icons\svg\question.svg" />
+    <Resource Include="Resources\Icons\svg\question_2.svg" />
     <Resource Include="Resources\Icons\svg\reg1.svg" />
     <Resource Include="Resources\Icons\svg\sale.svg" />
     <Resource Include="Resources\Icons\svg\search-dollar.svg" />
     <Resource Include="Resources\Icons\svg\server.svg" />
+    <Resource Include="Resources\Icons\svg\settings.svg" />
     <Resource Include="Resources\Icons\svg\skype.svg" />
     <Resource Include="Resources\Icons\svg\sms.svg" />
     <Resource Include="Resources\Icons\svg\sort-numeric-down.svg" />
     <Resource Include="Resources\Icons\svg\sort.svg" />
     <Resource Include="Resources\Icons\svg\stack.svg" />
+    <Resource Include="Resources\Icons\svg\statistics.svg" />
     <Resource Include="Resources\Icons\svg\teeth-open.svg" />
     <Resource Include="Resources\Icons\svg\teeth.svg" />
     <Resource Include="Resources\Icons\svg\telegram-plane.svg" />
@@ -228,6 +268,7 @@
     <Resource Include="Resources\Icons\svg\th-large.svg" />
     <Resource Include="Resources\Icons\svg\th-list.svg" />
     <Resource Include="Resources\Icons\svg\th.svg" />
+    <Resource Include="Resources\Icons\svg\theater-masks.svg" />
     <Resource Include="Resources\Icons\svg\times-circle.svg" />
     <Resource Include="Resources\Icons\svg\times.svg" />
     <Resource Include="Resources\Icons\svg\tools.svg" />

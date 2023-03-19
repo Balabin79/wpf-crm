@@ -64,7 +64,7 @@
                Background="#f5f5f5">
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/main/calendar-alt.svg" Width="30" Height="30" />
+                        <dx:DXImage Source="/Resources/Icons/svg/calendar.svg" Width="30" Height="30" />
                         <TextBlock Text="Расписание" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -105,7 +105,7 @@
             <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.DocumentsControl"  Size="Auto" Background="#f5f5f5" x:Name="templ">
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage  Source="/Resources/Icons/main/document2.svg" Width="30" Height="30"/>
+                        <dx:DXImage  Source="/Resources/Icons/svg/archive.svg" Width="30" Height="30"/>
                         <TextBlock Text="Документы" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -114,7 +114,7 @@
             <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/main/chart-bar.svg" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/svg/graph_rising.svg" Width="30" Height="30"/>
                         <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
@@ -129,7 +129,7 @@
                                  Size="Auto" Background="#f5f5f5">
                                     <ContentControl>
                                         <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/chart-line.svg" Width="30" Height="30"/>
+                                            <dx:DXImage Source="/Resources/Icons/svg/graph-line.svg" Width="30" Height="30"/>
                                             <TextBlock Text="Общий доход" Foreground="#666666" FontWeight="DemiBold"/>
                                         </StackPanel>
                                     </ContentControl>
@@ -143,7 +143,7 @@
                                  Size="Auto" Background="#f5f5f5">
                                     <ContentControl>
                                         <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/chart-bar.svg" Width="30" Height="30"/>
+                                            <dx:DXImage Source="/Resources/Icons/svg/graph-bar.svg" Width="30" Height="30"/>
                                             <TextBlock Text="Доход по врачам" Foreground="#666666" FontWeight="DemiBold"/>
                                         </StackPanel>
                                     </ContentControl>
@@ -157,7 +157,7 @@
                                  Size="Auto" Background="#f5f5f5">
                                     <ContentControl>
                                         <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/chart-pie4.svg" Width="30" Height="30"/>
+                                            <dx:DXImage Source="/Resources/Icons/svg/graph-pie.svg" Width="30" Height="30"/>
                                             <TextBlock Text="Рекламные источники" Foreground="#666666" FontWeight="DemiBold"/>
                                         </StackPanel>
                                     </ContentControl>
@@ -173,17 +173,35 @@
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/main/gear.svg" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/svg/settings.svg" Width="30" Height="30"/>
                         <TextBlock Text="Настройки" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>
 
+
+            <dxnav:TileBarItem 
+                Command="{Binding NavigateCommand}" 
+                CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" Background="#f5f5f5" >
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage Source="/Resources/Icons/svg/user.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Авторизация" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+                
+                
+               
+
+
+
+
             <dxnav:TileBarItem Command="{Binding HelpCommand}" Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/main/question-circle2.svg" Width="30" Height="30"/>
+                        <dx:DXImage Source="/Resources/Icons/svg/question_2.svg" Width="30" Height="30"/>
                         <TextBlock Text="Справка" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>

@@ -8,6 +8,8 @@ using DevExpress.Xpf.Grid;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Dental.Models.Base;
+using DevExpress.Xpf.Core.Native;
+using System.Drawing;
 
 namespace Dental.Infrastructures.TreeList
 {
@@ -18,8 +20,8 @@ namespace Dental.Infrastructures.TreeList
 
         public override ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
         {
-            Page = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Formheading.png"));
-            PageCommand = new BitmapImage(new Uri("pack://application:,,,/Resources/Icons/Lightning.png"));
+            Page = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/browser.svg"));
+            PageCommand = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/preview.svg"));
 
             if (rowData.Row is ICategoryTree model)
             {
