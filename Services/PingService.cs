@@ -25,6 +25,7 @@ namespace Dental.Services
             }
             catch (Exception e)
             {
+                Log.ErrorHandler(e);
                 return false;
             }
         }

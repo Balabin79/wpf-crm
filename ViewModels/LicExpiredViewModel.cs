@@ -21,7 +21,7 @@ namespace Dental.ViewModels
                 string hardwareId = Status.HardwareID; // текущее Hardware ID
                 Hardware_ID = hardwareId.Length > 100 ? "Недоступно" : hardwareId;
             }
-            catch(Exception e)
+            catch
             {
 
             }
@@ -73,7 +73,7 @@ namespace Dental.ViewModels
                     File.Copy(filename, Path.Combine(Environment.CurrentDirectory.ToString(), file), true);
                 }
             }
-            catch (Exception e)
+            catch
             {
             }
         }

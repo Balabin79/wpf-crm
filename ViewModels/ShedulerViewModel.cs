@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
@@ -54,10 +53,9 @@ namespace Dental.ViewModels
                 SetSelectedEmployees();
                 SetWorkTime();
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!", true);
             }
         }
 
@@ -98,7 +96,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -111,7 +109,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -124,7 +122,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -147,7 +145,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -163,7 +161,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -190,7 +188,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -212,7 +210,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                new ViewModelLog(e).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -248,7 +246,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -264,7 +262,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -291,7 +289,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -302,7 +300,6 @@ namespace Dental.ViewModels
             {
                 if (p is AppointmentStatus model)
                 {
-                    int cnt = 0;
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
@@ -320,7 +317,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -344,7 +341,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -386,8 +383,9 @@ namespace Dental.ViewModels
                         i.Brush = new SolidColorBrush(colorName);
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.ErrorHandler(e);
                     i.Brush = null;
                 }
             }

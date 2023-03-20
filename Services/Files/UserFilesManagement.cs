@@ -1,5 +1,4 @@
-﻿using Dental.Infrastructures.Logs;
-using DevExpress.Mvvm.DataAnnotations;
+﻿using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System;

@@ -71,8 +71,9 @@ namespace Dental.Services
                 }
                 return RtfText;
             }
-            catch
+            catch(Exception e)
             {
+                Log.ErrorHandler(e);
                 return RtfText;
             }
         }
@@ -104,6 +105,7 @@ namespace Dental.Services
             }
             catch (Exception e)
             {
+                Log.ErrorHandler(e);
                 return "";
             }
         }
@@ -132,10 +134,7 @@ namespace Dental.Services
                 Employees = db.Employes.ToArray();
                 new SelectEmployee() { DataContext = this }?.ShowDialog();
             }
-            catch
-            {
-
-            }
+            catch(Exception e) { Log.ErrorHandler(e);}
         }
 
         public Employee[] Employees { get; set; }

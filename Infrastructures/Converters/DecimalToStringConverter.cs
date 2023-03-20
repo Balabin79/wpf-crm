@@ -1,5 +1,4 @@
-﻿using Dental.Infrastructures.Logs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -20,9 +19,8 @@ namespace Dental.Infrastructures.Converters
                 if (decimal.TryParse((string)value, out decimal result)) 
                     return result;
                 return 0.00;
-            } catch(Exception e)
+            } catch
             {
-                new ConvertorLog(e).run();
                 return 0.00;
             }
 

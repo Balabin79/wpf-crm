@@ -1,5 +1,6 @@
 ﻿using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models;
+using Dental.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -28,10 +29,11 @@ namespace Dental.ViewModels
                 WorkTimeFrom = workTime.Substring(0, workTime.IndexOf('-'));
                 WorkTimeTo = workTime.Substring(workTime.IndexOf('-') + 1);
             }
-            catch
+            catch(Exception e)
             {
                 WorkTimeFrom = "09:00:00";
                 WorkTimeTo = "18:00:00";
+                Log.ErrorHandler(e);
             }
         }
         
@@ -70,7 +72,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранении настроек рабочего времени в базу данных произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При попытке сохранении настроек рабочего времени в базу данных произошла ошибка!", true);
             }
             finally { if (p is Window win) win?.Close(); }
         }

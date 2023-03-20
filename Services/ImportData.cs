@@ -65,7 +65,7 @@ namespace Dental.Services
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Dental.Services
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импортировать данные!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке импортировать данные!", true);
             }
         }
 

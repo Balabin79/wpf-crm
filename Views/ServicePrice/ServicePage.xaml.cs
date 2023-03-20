@@ -35,8 +35,10 @@ namespace Dental.Views.ServicePrice
                 var db = new ApplicationContext();
                 DataContext = new ServiceViewModel(db, db?.Services);
             }
-            catch(Exception ex) 
-            { }
+            catch(Exception e) 
+            {
+                Log.ErrorHandler(e);
+            }
 
         }
 

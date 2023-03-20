@@ -42,12 +42,13 @@ namespace Dental.Services
                 PathToFilesDirectory = Path.Combine(PathToProgram, "Files");
                 PathToProgramDirectory = PathToProgram;
             }
-            catch
+            catch(Exception e)
             {
                 DBName = defaultDBName;
                 ConnectionString = Path.Combine(defaultPath, DBName);
                 PathToProgram = defaultPath;
                 DbType = (int)DbList.SQLite;
+                Log.ErrorHandler(e);
             }
         }
 

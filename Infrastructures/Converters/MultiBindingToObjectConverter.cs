@@ -24,7 +24,7 @@ namespace Dental.Infrastructures.Converters
                     Type = int.TryParse(Values[1].ToString(), out int result) ? result : 0
                 };
             } 
-            catch (Exception e)
+            catch
             {
                 return null;
             }

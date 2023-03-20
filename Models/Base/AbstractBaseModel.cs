@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using Dental.Services;
-using Dental.Infrastructures.Logs;
 using DevExpress.Mvvm;
 using Dental.Infrastructures.Attributes;
 
@@ -22,7 +21,7 @@ namespace Dental.Models.Base
                 }
             } catch(Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Dental.Infrastructures.Collection;
 using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Models.Base;
 using Dental.Services;
@@ -30,10 +29,9 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 SetCollection();
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Рекламные источники\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Рекламные источники\"!", true);
             }
         }
 
@@ -51,7 +49,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -78,7 +76,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -106,7 +104,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 

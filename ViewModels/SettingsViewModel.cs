@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
@@ -71,7 +70,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                /*ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Настройки\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);*/
+                Log.ErrorHandler(e);
             }
         }
 
@@ -129,8 +128,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Сбой при подключении к базе данных, попробуйте изменить параметры подключения!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Сбой при подключении к базе данных, попробуйте изменить параметры подключения!", true);
                 return;
             }
         }
@@ -235,8 +233,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при сохранении настроек!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при сохранении настроек!", true);
             }
         }
    
@@ -286,7 +283,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -324,7 +321,9 @@ namespace Dental.ViewModels
                 }
             }
             catch (Exception e)
-            { }
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         [Command]
@@ -356,7 +355,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -371,7 +370,9 @@ namespace Dental.ViewModels
                 new LicenseWindow() { DataContext = new LicViewModel() }?.ShowDialog();
             }
             catch (Exception e)
-            { }
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         [Command]
@@ -381,9 +382,9 @@ namespace Dental.ViewModels
             {
                 new InfoWindow()?.ShowDialog();
             }
-            catch
+            catch(Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 

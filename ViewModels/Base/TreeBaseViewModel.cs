@@ -59,12 +59,7 @@ namespace Dental.ViewModels.Base
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(
-                    title: "Ошибка",
-                    text: "При добавлении элемента произошла ошибка!",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error
-                );
+                Log.ErrorHandler(e, "При добавлении элемента произошла ошибка!", true);
             }
         }
 
@@ -77,12 +72,7 @@ namespace Dental.ViewModels.Base
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(
-                    title: "Ошибка",
-                    text: "При попытке сохранения в базу данных произошла ошибка!",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error
-                );
+                Log.ErrorHandler(e, "При попытке сохранения в базу данных произошла ошибка!", true);
             }
         }
 
@@ -113,12 +103,7 @@ namespace Dental.ViewModels.Base
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(
-                    title: "Ошибка",
-                    text: "При попытке перемещения элемента и его сохранения в базу данных произошла ошибка!",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error
-                );
+                Log.ErrorHandler(e, "При попытке перемещения элемента и его сохранения в базу данных произошла ошибка!", true);
             }
         }
 
@@ -146,7 +131,7 @@ namespace Dental.ViewModels.Base
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При попытке удаления произошла ошибка!", true);
             }
         }
 
@@ -187,7 +172,10 @@ namespace Dental.ViewModels.Base
                     return;
                 }
             }
-            catch { }
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         public virtual ObservableCollection<T> Collection

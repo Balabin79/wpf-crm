@@ -1,12 +1,10 @@
 ﻿using System;
 using Dental.Infrastructures.Commands.Base;
-using Dental.Infrastructures.Logs;
-//using DevExpress.Xpf.Charts;
 using DevExpress.Xpf.Grid;
-//using DevExpress.Xpf.PivotGrid;
 using DevExpress.Xpf.Scheduling;
 using DevExpress.Xpf.Printing;
 using DevExpress.Xpf.Charts;
+using Dental.Services;
 
 namespace Dental.Infrastructures.Commands
 {
@@ -41,7 +39,7 @@ namespace Dental.Infrastructures.Commands
 
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
     }

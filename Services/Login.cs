@@ -30,6 +30,7 @@ namespace Dental.Services
                 }
                 catch (Exception e)
                 {
+                    Log.ErrorHandler(e);
                     IsRoleAccessEnabled = false;
                     IsPasswordRequired = false;
                 }
@@ -176,7 +177,7 @@ namespace Dental.Services
                 }
                 catch (Exception e)
                 {
-
+                    Log.ErrorHandler(e);
                 }
             }
             // SetUserSession();
@@ -241,10 +242,7 @@ namespace Dental.Services
             {
                 return Employee?.Password == BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(Password))).Replace("-", string.Empty);
             }
-            catch
-            {
-                return false;
-            }
+            catch(Exception e) { Log.ErrorHandler(e); return false; }
         }
 
         /*******************************************/

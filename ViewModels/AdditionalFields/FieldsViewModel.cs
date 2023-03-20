@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Dental.Infrastructures.Converters;
 using System.Windows.Data;
+using Dental.Services;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -26,7 +27,10 @@ namespace Dental.ViewModels.AdditionalFields
                 ClientFieldsLoading(client);
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
             }
-            catch {}
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         public void ClientFieldsLoading(Client client)
@@ -102,8 +106,9 @@ namespace Dental.ViewModels.AdditionalFields
                     default: return new TextEdit() { EditValue = value };
                 }
             }
-            catch 
+            catch(Exception e)
             {
+                Log.ErrorHandler(e);
                 return new TextEdit() { EditValue = value };
             }
 
@@ -125,7 +130,10 @@ namespace Dental.ViewModels.AdditionalFields
                     if (value != null) value.Value = val;
                 }
             }
-            catch{}
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         public ObservableCollection<LayoutItem> Fields

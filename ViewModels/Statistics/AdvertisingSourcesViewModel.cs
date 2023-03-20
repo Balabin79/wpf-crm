@@ -9,7 +9,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Threading.Tasks;
-using Dental.Infrastructures.Logs;
 using Dental.Services;
 using Dental.Models.Base;
 
@@ -30,9 +29,9 @@ namespace Dental.ViewModels.Statistics
                 SetTotalPattern();
                 Search();
             }
-            catch
+            catch(Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -52,7 +51,7 @@ namespace Dental.ViewModels.Statistics
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -125,7 +124,7 @@ namespace Dental.ViewModels.Statistics
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 

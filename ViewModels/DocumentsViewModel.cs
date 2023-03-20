@@ -99,7 +99,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
 
         }
@@ -132,9 +132,9 @@ namespace Dental.ViewModels
                     DocWindow.Show();
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при открытии формы документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при открытии формы документа!", true);
             }
         }
 
@@ -155,9 +155,9 @@ namespace Dental.ViewModels
                     //EventUpdateDocuments?.Invoke();
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удаления документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке удаления документа!", true);
             }
         }
 
@@ -201,7 +201,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке импорта документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке импорта документа!", true);
             }
         }
 
@@ -227,9 +227,9 @@ namespace Dental.ViewModels
                     DocWindow.Show();
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть форму документа!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке открыть форму документа!", true);
             }
         }
 
@@ -252,8 +252,9 @@ namespace Dental.ViewModels
                     default: return DevExpress.XtraRichEdit.DocumentFormat.PlainText;
                 }
             }
-            catch
+            catch(Exception e)
             {
+                Log.ErrorHandler(e);
                 return DevExpress.XtraRichEdit.DocumentFormat.PlainText;
             }
         }

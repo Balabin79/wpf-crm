@@ -9,6 +9,7 @@ using System.Windows;
 using DevExpress.Mvvm.DataAnnotations;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Services;
+using System;
 
 namespace Dental.ViewModels.AdditionalFields
 {
@@ -26,7 +27,10 @@ namespace Dental.ViewModels.AdditionalFields
                 SetCollection();
                 Templates = db.TemplateType.ToArray();
             }
-            catch { }
+            catch(Exception e) 
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         [Command]
@@ -56,9 +60,9 @@ namespace Dental.ViewModels.AdditionalFields
                     Collection?.Remove(model);
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При попытке удаления произошла ошибка!", true);
             }
         }
 
@@ -91,9 +95,9 @@ namespace Dental.ViewModels.AdditionalFields
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке сохранения изменений в базу данных, произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При попытке сохранения изменений в базу данных, произошла ошибка!", true);
             }
         }
 

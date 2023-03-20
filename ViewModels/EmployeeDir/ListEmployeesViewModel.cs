@@ -11,7 +11,6 @@ using System.Windows;
 using System.Windows.Input;
 using Dental.Services;
 using System.Collections.Generic;
-using Dental.Infrastructures.Logs;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
@@ -49,8 +48,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Список сотрудников\"!", true);
             }
         }
 
@@ -85,7 +83,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -99,7 +97,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -133,10 +131,9 @@ namespace Dental.ViewModels.EmployeeDir
                     if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
                 }*/
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных сотрудника возникла ошибка!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При сохранении данных сотрудника возникла ошибка!", true);
             }
         }
 
@@ -178,7 +175,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При удалении анкеты сотрудника произошла ошибка, перейдите в раздел \"Сотрудники\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При удалении анкеты сотрудника произошла ошибка, перейдите в раздел \"Сотрудники\"!", true);
             }
         }
 
@@ -214,7 +211,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -246,7 +243,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -297,7 +294,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -362,9 +359,9 @@ namespace Dental.ViewModels.EmployeeDir
                 // and show pages as soon as they are created.
                 link.CreateDocument(true);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
 
         }
@@ -407,9 +404,9 @@ namespace Dental.ViewModels.EmployeeDir
                    OrderBy(f => f.LastName).
                    ToArray();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
         public PrintStaffWindow PrintStaffWindow { get; set; }

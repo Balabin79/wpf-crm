@@ -26,7 +26,7 @@ namespace Dental.Infrastructures.Converters
                     IsDir = int.TryParse(Values[1].ToString(), out int res) == true ? res : 0
                 };
             } 
-            catch (Exception e)
+            catch
             {
                 return new FormTreeParameters();
             }

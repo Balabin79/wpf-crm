@@ -1,5 +1,4 @@
-﻿using Dental.Infrastructures.Logs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -20,9 +19,8 @@ namespace Dental.Infrastructures.Converters
                 if (DateTime.TryParse(value?.ToString(), out DateTime result)) 
                     return result.ToShortDateString();
                 return DateTime.Now.ToShortDateString();
-            } catch(Exception e)
+            } catch
             {
-                new ConvertorLog(e).run();
                 return DateTime.Now.ToShortDateString();
             }
 

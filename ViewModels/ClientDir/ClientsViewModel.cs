@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Infrastructures.Logs;
 using Dental.Views.PatientCard;
 using Dental.Views.WindowForms;
 using Microsoft.EntityFrameworkCore;
@@ -71,8 +70,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-               ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка подключения к базе данных при попытке загрузить список клиентов!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка подключения к базе данных при попытке загрузить список клиентов!", true);
             }
         }
 
@@ -235,7 +233,10 @@ namespace Dental.ViewModels.ClientDir
                     Environment.Exit(0);
                 }
             }
-            catch { }
+            catch (Exception e)
+            { 
+                Log.ErrorHandler(e); 
+            }
         }
         #endregion
 
@@ -322,7 +323,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -337,7 +338,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -363,7 +364,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -400,7 +401,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -435,7 +436,9 @@ namespace Dental.ViewModels.ClientDir
                 }
             }
             catch (Exception e)
-            {}
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         [Command]
@@ -462,7 +465,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить счет в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить счет в базе данных!", true);
             }
         }
 
@@ -501,9 +504,9 @@ namespace Dental.ViewModels.ClientDir
                     if (clientInv != null) ClientInvoices.Remove(clientInv);
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удалить счет из базы данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке удалить счет из базы данных!", true);
             }
         }
 
@@ -542,9 +545,9 @@ namespace Dental.ViewModels.ClientDir
                     parameters.Popup.ClosePopup();
                 }
             }
-            catch
+            catch(Exception e) 
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -560,7 +563,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch(Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -589,7 +592,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -627,9 +630,9 @@ namespace Dental.ViewModels.ClientDir
                     PrintHelper.ShowPrintPreview(conv.Page, report);
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
             }
         }
         #endregion
@@ -655,7 +658,10 @@ namespace Dental.ViewModels.ClientDir
                     return;
                 }
             }
-            catch { }
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         public int? ShowPaid
@@ -687,7 +693,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Дополнительные поля\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" возникла ошибка!", true);
             }
         }
 
@@ -716,7 +722,9 @@ namespace Dental.ViewModels.ClientDir
                     ) page.clientCard.tabs.SelectedIndex = 0;                
             }
             catch(Exception e) 
-            { }
+            {
+                Log.ErrorHandler(e);
+            }
         }
 
         [Command]
@@ -771,10 +779,9 @@ namespace Dental.ViewModels.ClientDir
                     }                                  
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При сохранении данных клиента возникла ошибка!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При сохранении данных клиента возникла ошибка!", true);
             }
         }
 
@@ -819,7 +826,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При удалении карты клиента произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При удалении карты клиента произошла ошибка!", true);
             }
         }
 
@@ -892,10 +899,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка",
-                    text: "Невозможно открыть содержащую файл директорию!",
-                    messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e, "Невозможно открыть содержащую файл директорию!", true);
             }
         }
 
@@ -908,10 +912,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка",
-                   text: "Невозможно выполнить загрузку файла!",
-                   messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e, "Невозможно выполнить загрузку файла!", true);                 
             }
         }
 
@@ -962,7 +963,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -982,7 +983,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -1035,7 +1036,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1062,8 +1063,8 @@ namespace Dental.ViewModels.ClientDir
                 if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке сохранить план в базе данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            {               
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить план в базе данных!", true);
             }
         }
 
@@ -1100,8 +1101,8 @@ namespace Dental.ViewModels.ClientDir
                 }
             }
             catch(Exception e)
-            {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке удалить план из базы данных!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            {              
+                Log.ErrorHandler(e, "Ошибка при попытке удалить план из базы данных!", true);
             }
         }
 
@@ -1131,7 +1132,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1147,7 +1148,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1176,7 +1177,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1189,7 +1190,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1244,7 +1245,7 @@ namespace Dental.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -1282,9 +1283,9 @@ namespace Dental.ViewModels.ClientDir
                      PrintHelper.ShowPrintPreview(conv.Page, report);
                  }
              }
-             catch
-             {
-                 ThemedMessageBox.Show(title: "Ошибка!", text: "Ошибка при загрузке счета на печать!", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Error);
+             catch(Exception e)
+             {               
+                Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
              }
         }
         #endregion
@@ -1343,9 +1344,9 @@ namespace Dental.ViewModels.ClientDir
                 // and show pages as soon as they are created.
                 link.CreateDocument(true);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
 
         }
@@ -1392,9 +1393,9 @@ namespace Dental.ViewModels.ClientDir
                    ThenBy(f => f.LastName).
                    ToArray();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
         public PrintClientsWindow PrintClientsWindow { get; set; }

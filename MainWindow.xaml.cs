@@ -33,8 +33,7 @@ namespace Dental
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message );
-               
+                Log.ErrorHandler(e);
             }
         }
 
@@ -73,7 +72,7 @@ namespace Dental
             }
             catch(Exception e) 
             {
-                
+                Log.ErrorHandler(e);
             }
         }
 
@@ -100,7 +99,7 @@ namespace Dental
             }
             catch (Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
@@ -38,10 +37,9 @@ namespace Dental.ViewModels.ServicePrice
                 Collection = GetCollection();
                 IsReadOnly = Collection?.Count > 0;
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"!", true);
             }
         }
 
@@ -94,9 +92,9 @@ namespace Dental.ViewModels.ServicePrice
                 // and show pages as soon as they are created.
                 link.CreateDocument(true);
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
 
         }
@@ -117,9 +115,9 @@ namespace Dental.ViewModels.ServicePrice
                     ForEach(
                     i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-
+                Log.ErrorHandler(e);
             }
         }
 
@@ -143,7 +141,7 @@ namespace Dental.ViewModels.ServicePrice
             }
             catch (Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При попытке удаления произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "При попытке удаления произошла ошибка!", true);
             }
         }
 

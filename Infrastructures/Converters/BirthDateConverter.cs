@@ -1,5 +1,4 @@
-﻿using Dental.Infrastructures.Logs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -22,15 +21,13 @@ namespace Dental.Infrastructures.Converters
                     return result.ToString("D");
                 return value.ToString();
             }
-            catch (Exception e)
+            catch
             {
-                new ConvertorLog(e).run();
                 return "Дата не заполнена";
             }
 
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value?.ToString() ?? "";
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Dental.Infrastructures.Converters;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Dental.Models.Base;
 using DevExpress.Mvvm;
@@ -17,6 +16,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using System.Windows.Data;
+using Dental.Services;
 
 namespace Dental.ViewModels
 {
@@ -75,7 +75,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
-                new ViewModelLog(e).run();
+                Log.ErrorHandler(e);
             }
         }
 

@@ -37,8 +37,7 @@ namespace Dental.ViewModels
             }
             catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Раздел не найден!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Раздел не найден!", true);
             }
         }
 
@@ -55,9 +54,9 @@ namespace Dental.ViewModels
                 }
                 Process.Start(path);
             }
-            catch
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Ошибка при попытке открыть файл справки!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Ошибка при попытке открыть файл справки!", true);
             }
         }
     }

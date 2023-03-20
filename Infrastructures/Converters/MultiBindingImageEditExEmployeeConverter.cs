@@ -20,7 +20,6 @@ namespace Dental.Infrastructures.Converters
         {
             try
             {
-                int? p = null;
                 return new ImageEditExCommandParameters()
                 {
                     ImgEdit =  Values[0] as ImageEditEx,

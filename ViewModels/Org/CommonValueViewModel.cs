@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Infrastructures.Logs;
 using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
@@ -28,10 +27,9 @@ namespace Dental.ViewModels.Org
                 CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
 
             }
-            catch 
+            catch(Exception e)
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!", true);
             }
         }
 
@@ -58,7 +56,7 @@ namespace Dental.ViewModels.Org
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
@@ -86,7 +84,7 @@ namespace Dental.ViewModels.Org
             }
             catch (Exception e)
             {
-                (new ViewModelLog(e)).run();
+                Log.ErrorHandler(e);
             }
         }
 
