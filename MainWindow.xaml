@@ -81,7 +81,7 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem 
+            <dxnav:TileBarItem Name="employeesBtn"
                 Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Staff"  Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
@@ -92,7 +92,8 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" Size="Auto" 
+            <dxnav:TileBarItem Name="pricesBtn"
+                Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.ServicePrice.ServicePage" Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
@@ -102,7 +103,8 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.DocumentsControl"  Size="Auto" Background="#f5f5f5" x:Name="templ">
+            <dxnav:TileBarItem Name="documentsBtn"
+                Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.DocumentsControl"  Size="Auto" Background="#f5f5f5">
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage  Source="/Resources/Icons/svg/archive.svg" Width="30" Height="30"/>
@@ -111,7 +113,8 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem  Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click" >
+            <dxnav:TileBarItem  
+                Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click" >
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage Source="/Resources/Icons/svg/graph_rising.svg" Width="30" Height="30"/>
@@ -169,7 +172,8 @@
             </dxnav:TileBarItem>
 
 
-            <dxnav:TileBarItem Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" 
+            <dxnav:TileBarItem Name="settingsBtn"
+                Command="{Binding NavigateCommand}" CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" 
                Background="#f5f5f5" >
                 <ContentControl>
                     <StackPanel >
@@ -180,9 +184,8 @@
             </dxnav:TileBarItem>
 
 
-            <dxnav:TileBarItem 
-                Command="{Binding NavigateCommand}" 
-                CommandParameter="Dental.Views.Settings.SettingsPage" Size="Auto" Background="#f5f5f5" >
+            <dxnav:TileBarItem Name="authBtn" Size="Auto" Background="#f5f5f5"
+                Click="AuthBtn_Click" >
                 <ContentControl>
                     <StackPanel >
                         <dx:DXImage Source="/Resources/Icons/svg/user.svg" Width="30" Height="30"/>
@@ -190,12 +193,7 @@
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>
-                
-                
-               
-
-
-
+                      
 
             <dxnav:TileBarItem Command="{Binding HelpCommand}" Size="Auto" 
                Background="#f5f5f5" >

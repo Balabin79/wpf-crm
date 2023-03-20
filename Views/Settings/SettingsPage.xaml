@@ -215,7 +215,7 @@
                                     <dxe:CheckEdit 
                                         Checked="RolesEnabled_Checked"
                                         Unchecked="RolesEnabled_Unchecked"
-                                        EditValue="{Binding SettingsVM.RolesEnabled, Mode=TwoWay,                                              
+                                        EditValue="{Binding SettingsVM.RolesEnabled, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>
@@ -224,7 +224,8 @@
                                     <dxe:CheckEdit
                                         Checked="IsPasswordRequired_Checked"
                                         Unchecked="IsPasswordRequired_Unchecked"
-                                        Name="passEnanled" EditValue="{Binding SettingsVM.IsPasswordRequired, Mode=TwoWay,                                              
+                                        Name="passEnanled" 
+                                        EditValue="{Binding SettingsVM.IsPasswordRequired, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>

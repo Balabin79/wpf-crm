@@ -128,35 +128,48 @@ namespace Dental.Services
                         {
                             switch (role?.PageName)
                             {
-                                case "ClientsRead": UserSession.ClientsRead = HasAccess(role); break;
-                                case "ClientEditable": UserSession.ClientEditable = HasAccess(role); break;
-                                case "ClientDeletable": UserSession.ClientDeletable = HasAccess(role); break;
-                                case "ClientTemplatesEditable": UserSession.ClientTemplatesEditable = HasAccess(role); break;
-                                case "ClientAddFieldsEditable": UserSession.ClientEditable = HasAccess(role); break;
+                                case "ShowSheduler": UserSession.ShowSheduler = HasAccess(role); break;
+                                case "AppointmentEditable": UserSession.AppointmentEditable = HasAccess(role); break;
+                                case "AppointmentDeletable": UserSession.AppointmentDeletable = HasAccess(role); break;
+                                case "PrintSheduler": UserSession.PrintSheduler = HasAccess(role); break;
+                                case "ShedulerStatusEditable": UserSession.ShedulerStatusEditable = HasAccess(role); break;
+                                case "ShedulerLocationEditable": UserSession.ShedulerLocationEditable = HasAccess(role); break;
+                                case "ShedulerWorkTimeEditable": UserSession.ShedulerWorkTimeEditable = HasAccess(role); break;
 
-                                case "EmployeesRead": UserSession.EmployeesRead = HasAccess(role); break;
+                                case "ShowClients": UserSession.ShowClients = HasAccess(role); break;
+                                case "ClientsEditable": UserSession.ClientsEditable = HasAccess(role); break;
+                                case "ClientsDelitable": UserSession.ClientsDelitable = HasAccess(role); break;
+                                case "InvoiceEditable": UserSession.InvoiceEditable = HasAccess(role); break;
+                                case "InvoiceDelitable": UserSession.InvoiceDelitable = HasAccess(role); break;
+                                case "PrintInvoice": UserSession.PrintInvoice = HasAccess(role); break;
+                                case "PlanEditable": UserSession.PlanEditable = HasAccess(role); break;
+                                case "PlanDelitable": UserSession.PlanDelitable = HasAccess(role); break;
+                                case "PrintPlan": UserSession.PrintPlan = HasAccess(role); break;
+                                case "ClientsImport": UserSession.ClientsImport = HasAccess(role); break;
+                                case "PrintClients": UserSession.PrintClients = HasAccess(role); break;
+                                case "ClientsAddFieldsEditable": UserSession.ClientsAddFieldsEditable = HasAccess(role); break;
+                                case "ClientsCategoryEditable": UserSession.ClientsCategoryEditable = HasAccess(role); break;
+                                case "ClientsAdvertisingEditable": UserSession.ClientsAdvertisingEditable = HasAccess(role); break;
+
+                                case "ShowEmployees": UserSession.ShowEmployees = HasAccess(role); break;
                                 case "EmployeeEditable": UserSession.EmployeeEditable = HasAccess(role); break;
-                                case "EmployeeDeletable": UserSession.EmployeeDeletable = HasAccess(role); break;
+                                case "EmployeeDelitable": UserSession.EmployeeDelitable = HasAccess(role); break;
+                                case "PrintEmployees": UserSession.PrintEmployees = HasAccess(role); break;
+                                case "EmployeeImport": UserSession.EmployeeImport = HasAccess(role); break;
 
-                                case "SheduleRead": UserSession.SheduleRead = HasAccess(role); break;
-                                case "SheduleStatusEditable": UserSession.SheduleStatusEditable = HasAccess(role); break;
-                                case "SheduleStatusDeletable": UserSession.SheduleStatusDeletable = HasAccess(role); break;
-                                case "SheduleLocationEditable": UserSession.SheduleLocationEditable = HasAccess(role); break;
-                                case "SheduleLocationDeletable": UserSession.SheduleLocationDeletable = HasAccess(role); break;
-
-                                case "PricesRead": UserSession.PricesRead = HasAccess(role); break;
+                                case "ShowPrices": UserSession.ShowPrices = HasAccess(role); break;
                                 case "PriceEditable": UserSession.PriceEditable = HasAccess(role); break;
-                                case "PriceDeletable": UserSession.PriceDeletable = HasAccess(role); break;
+                                case "PriceDelitable": UserSession.PriceDelitable = HasAccess(role); break;
+                                case "PrintPrices": UserSession.PrintPrices = HasAccess(role); break;
 
-                                case "TemplatesRead": UserSession.TemplatesRead = HasAccess(role); break;
-                                case "TemplateEditable": UserSession.TemplateEditable = HasAccess(role); break;
-                                case "TemplateDeletable": UserSession.TemplateDeletable = HasAccess(role); break;
+                                case "ShowDocuments": UserSession.ShowDocuments = HasAccess(role); break;
+                                case "DocumentImport": UserSession.DocumentImport = HasAccess(role); break;
+                                case "DocumentEditable": UserSession.DocumentEditable = HasAccess(role); break;
+                                case "DocumentDelitable": UserSession.DocumentDelitable = HasAccess(role); break;
+                                case "PrintDocument": UserSession.PrintDocument = HasAccess(role); break;
 
-                                case "SettingsRead": UserSession.SettingsRead = HasAccess(role); break;
-
-                                case "OrgRead": UserSession.OrgRead = HasAccess(role); break;
-                                case "OrgEditable": UserSession.OrgEditable = HasAccess(role); break;
-                                case "OrgDeletable": UserSession.OrgDeletable = HasAccess(role); break;
+                                case "ShowStatistics": UserSession.ShowStatistics = HasAccess(role); break;
+                                case "ShowSettings": UserSession.ShowSettings = HasAccess(role); break;
                             }
                         }
                     }
@@ -173,34 +186,48 @@ namespace Dental.Services
 
         private void SetUserSessionForAdmin()
         {
-            UserSession.ClientsRead = true;
-            UserSession.ClientEditable = true;
-            UserSession.ClientDeletable = true;
-            UserSession.ClientTemplatesEditable = true;
+            UserSession.ShowSheduler = true;
+            UserSession.AppointmentEditable = true;
+            UserSession.AppointmentDeletable = true;
+            UserSession.PrintSheduler = true;
+            UserSession.ShedulerStatusEditable = true;
+            UserSession.ShedulerLocationEditable = true;
+            UserSession.ShedulerWorkTimeEditable = true;
 
-            UserSession.EmployeesRead = true;
+            UserSession.ShowClients = true;
+            UserSession.ClientsEditable = true;
+            UserSession.ClientsDelitable = true;
+            UserSession.InvoiceEditable = true;
+            UserSession.InvoiceDelitable = true;
+            UserSession.PrintInvoice = true;
+            UserSession.PlanEditable = true;
+            UserSession.PlanDelitable = true;
+            UserSession.PrintPlan = true;
+            UserSession.ClientsImport = true;
+            UserSession.PrintClients = true;
+            UserSession.ClientsAddFieldsEditable = true;
+            UserSession.ClientsCategoryEditable = true;
+            UserSession.ClientsAdvertisingEditable = true;
+
+            UserSession.ShowEmployees = true;
             UserSession.EmployeeEditable = true;
-            UserSession.EmployeeDeletable = true;
+            UserSession.EmployeeDelitable = true;
+            UserSession.PrintEmployees = true;
+            UserSession.EmployeeImport = true;
 
-            UserSession.SheduleRead = true;
-            UserSession.SheduleStatusEditable = true;
-            UserSession.SheduleStatusDeletable = true;
-            UserSession.SheduleLocationEditable = true;
-            UserSession.SheduleLocationDeletable = true;
-
-            UserSession.PricesRead = true;
+            UserSession.ShowPrices = true;
             UserSession.PriceEditable = true;
-            UserSession.PriceDeletable = true;
+            UserSession.PriceDelitable = true;
+            UserSession.PrintPrices = true;
 
-            UserSession.TemplatesRead = true;
-            UserSession.TemplateEditable = true;
-            UserSession.TemplateDeletable = true;
+            UserSession.ShowDocuments = true;
+            UserSession.DocumentImport = true;
+            UserSession.DocumentEditable = true;
+            UserSession.DocumentDelitable = true;
+            UserSession.PrintDocument = true;
 
-            UserSession.SettingsRead = true;
-
-            UserSession.OrgRead = true;
-            UserSession.OrgEditable = true;
-            UserSession.OrgDeletable = true;
+            UserSession.ShowStatistics = true;
+            UserSession.ShowSettings = true;      
         }
 
         public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);

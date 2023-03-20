@@ -54,6 +54,15 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+        public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeDelitable;
+        public bool CanImageSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+        public bool CanImageDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).EmployeeEditable;
+
+        public bool CanPrintStaff() => ((UserSession)Application.Current.Resources["UserSession"]).PrintEmployees;
+        public bool CanLoadDocForPrint() => ((UserSession)Application.Current.Resources["UserSession"]).PrintEmployees;
+
         [Command]
         public void Editable(object p)
         {
@@ -209,6 +218,7 @@ namespace Dental.ViewModels.EmployeeDir
             }
         }
 
+        [Command]
         public void ImageDelete(object p)
         {
             try

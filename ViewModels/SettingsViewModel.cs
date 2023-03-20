@@ -198,6 +198,8 @@ namespace Dental.ViewModels
                 model.OrgSite = SettingsVM.OrgSite;
                 model.TelegramToken = SettingsVM.TelegramToken;
                 model.IsNotifyByTelegram = SettingsVM.IsNotifyByTelegram;
+                model.IsPasswordRequired = SettingsVM.IsPasswordRequired;
+                model.RolesEnabled = SettingsVM.RolesEnabled;
                 if (model?.Id == 0) db.Settings.Add(model);              
 
                 #region лицензия 
@@ -245,13 +247,11 @@ namespace Dental.ViewModels
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-
         public ImageSource Logo
         {
             get { return GetProperty(() => Logo); }
             set { SetProperty(() => Logo, value); }
         }
-
 
         public Config Config
         {
@@ -260,8 +260,6 @@ namespace Dental.ViewModels
         }
 
         #endregion
-
-
 
         #region Управление файлами лого
 
@@ -364,7 +362,6 @@ namespace Dental.ViewModels
 
         #endregion
 
-
         #region License
         [Command]
         public void OpenLicenseForm()
@@ -414,7 +411,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => NewLicense, value?.Trim()); }
         }
         #endregion
-
     }
 
     public class EmployeeWrapper

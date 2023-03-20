@@ -37,6 +37,8 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanOpenWClientCategoryWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsCategoryEditable;
+
         [Command]
         public void OpenWClientCategoryWindow()
         {

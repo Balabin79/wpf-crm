@@ -63,6 +63,15 @@ namespace Dental.ViewModels
 
         public void SetLocationAppointments() => LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
 
+        public bool CanAppointmentAdded(object p) => ((UserSession)Application.Current.Resources["UserSession"]).AppointmentEditable;
+        public bool CanAppointmentEdited(object p) => ((UserSession)Application.Current.Resources["UserSession"]).AppointmentEditable;
+        public bool CanAppointmentRemoved(object p) => ((UserSession)Application.Current.Resources["UserSession"]).AppointmentDeletable;
+
+        public bool CanOpenWindowLocation() => ((UserSession)Application.Current.Resources["UserSession"]).ShedulerLocationEditable;
+        public bool CanOpenWindowStatus() => ((UserSession)Application.Current.Resources["UserSession"]).ShedulerStatusEditable;
+        public bool CanOpenWorkTime() => ((UserSession)Application.Current.Resources["UserSession"]).ShedulerWorkTimeEditable;
+        public bool CanPrint(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintSheduler;
+
         [Command]
         public void AppointmentAdded(object p)
         {
@@ -314,6 +323,7 @@ namespace Dental.ViewModels
                 (new ViewModelLog(e)).run();
             }
         }
+        #endregion
 
         [Command]
         public void Print(object p)
@@ -384,7 +394,7 @@ namespace Dental.ViewModels
 
             StatusAppointments = collection;
         }
-        #endregion
+        
 
         public ObservableCollection<Service> ClassificatorCategories
         {
@@ -448,13 +458,12 @@ namespace Dental.ViewModels
             SelectedDoctors = new List<object>();
             try
             {
-                /*var settings = db.Settings.Include(f => f.Employee).FirstOrDefault();
-                if (settings?.EmployeeId > 0)
+                if (Application.Current.Resources["UserSession"] is UserSession userSession)
                 {
-                    SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == settings.Employee?.Id));
-                }*/
-               // else
-                    Doctors.ForEach(f => SelectedDoctors.Add(f));
+                    SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
+                    return;
+                }
+                Doctors.ForEach(f => SelectedDoctors.Add(f));
             }
             catch
             {

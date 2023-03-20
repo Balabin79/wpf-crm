@@ -10,69 +10,81 @@ namespace Dental.Services
             set { SetProperty(() => Employee, value); }
         }
 
-        public bool ClientsRead
+        public bool ShowSheduler
         {
-            get { return GetProperty(() => ClientsRead); }
-            set { SetProperty(() => ClientsRead, value); }
+            get { return GetProperty(() => ShowSheduler); }
+            set { SetProperty(() => ShowSheduler, value); }
         }
 
-        public bool EmployeesRead
+        public bool ShowClients
         {
-            get { return GetProperty(() => EmployeesRead); }
-            set { SetProperty(() => EmployeesRead, value); }
+            get { return GetProperty(() => ShowClients); }
+            set { SetProperty(() => ShowClients, value); }
         }
 
-        public bool SheduleRead
+        public bool ShowEmployees
         {
-            get { return GetProperty(() => SheduleRead); }
-            set { SetProperty(() => SheduleRead, value); }
+            get { return GetProperty(() => ShowEmployees); }
+            set { SetProperty(() => ShowEmployees, value); }
         }
 
-        public bool PricesRead
+        public bool ShowPrices
         {
-            get { return GetProperty(() => PricesRead); }
-            set { SetProperty(() => PricesRead, value); }
+            get { return GetProperty(() => ShowPrices); }
+            set { SetProperty(() => ShowPrices, value); }
         }
 
-        public bool TemplatesRead
+        public bool ShowDocuments
         {
-            get { return GetProperty(() => TemplatesRead); }
-            set { SetProperty(() => TemplatesRead, value); }
+            get { return GetProperty(() => ShowDocuments); }
+            set { SetProperty(() => ShowDocuments, value); }
         }
 
-        public bool SettingsRead
+        public bool ShowStatistics
         {
-            get { return GetProperty(() => SettingsRead); }
-            set { SetProperty(() => SettingsRead, value); }
+            get { return GetProperty(() => ShowStatistics); }
+            set { SetProperty(() => ShowStatistics, value); }
         }
 
-        public bool OrgRead
+        public bool ShowSettings
         {
-            get { return GetProperty(() => OrgRead); }
-            set { SetProperty(() => OrgRead, value); }
+            get { return GetProperty(() => ShowSettings); }
+            set { SetProperty(() => ShowSettings, value); }
         }
 
+        public bool AppointmentEditable { get; set; } = false;
+        public bool AppointmentDeletable { get; set; } = false;
+        public bool PrintSheduler { get; set; } = false;
+        public bool ShedulerStatusEditable { get; set; } = false;
+        public bool ShedulerLocationEditable { get; set; } = false;
+        public bool ShedulerWorkTimeEditable { get; set; } = false;
 
-        public bool ClientEditable { get; set; } = false;
-        public bool ClientDeletable { get; set; } = false;
-        public bool ClientTemplatesEditable { get; set; } = false;
+        public bool ClientsEditable { get; set; } = false;
+        public bool ClientsDelitable { get; set; } = false;
+        public bool InvoiceEditable { get; set; } = false;
+        public bool InvoiceDelitable { get; set; } = false;
+        public bool PrintInvoice { get; set; } = false;
+        public bool PlanEditable { get; set; } = false;
+        public bool PlanDelitable { get; set; } = false;
+        public bool PrintPlan { get; set; } = false;
+        public bool ClientsImport { get; set; } = false;
+        public bool PrintClients { get; set; } = false;
+        public bool ClientsAddFieldsEditable { get; set; } = false;
+        public bool ClientsCategoryEditable { get; set; } = false;
+        public bool ClientsAdvertisingEditable { get; set; } = false;
 
         public bool EmployeeEditable { get; set; } = false;
-        public bool EmployeeDeletable { get; set; } = false;
-
-        public bool SheduleStatusEditable { get; set; } = false;
-        public bool SheduleStatusDeletable { get; set; } = false;
-        public bool SheduleLocationEditable { get; set; } = false;
-        public bool SheduleLocationDeletable { get; set; } = false;
+        public bool EmployeeDelitable { get; set; } = false;
+        public bool PrintEmployees { get; set; } = false;
+        public bool EmployeeImport { get; set; } = false;
 
         public bool PriceEditable { get; set; } = false;
-        public bool PriceDeletable { get; set; } = false;
+        public bool PriceDelitable { get; set; } = false;
+        public bool PrintPrices { get; set; } = false;
 
-
-        public bool TemplateEditable { get; set; } = false;
-        public bool TemplateDeletable { get; set; } = false;
-
-        public bool OrgEditable { get; set; } = false;
-        public bool OrgDeletable { get; set; } = false;
+        public bool DocumentEditable { get; set; } = false;
+        public bool DocumentDelitable { get; set; } = false;
+        public bool DocumentImport { get; set; } = false;
+        public bool PrintDocument { get; set; } = false;
     }
 }

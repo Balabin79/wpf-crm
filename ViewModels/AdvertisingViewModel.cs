@@ -37,6 +37,8 @@ namespace Dental.ViewModels
             }
         }
 
+        public bool CanOpenWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;
+
         [Command]
         public void OpenWindow()
         {

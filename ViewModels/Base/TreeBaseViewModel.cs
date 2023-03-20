@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using Dental.Infrastructures.Collection;
 using Dental.Views.ServicePrice;
 using Dental.Infrastructures.Extensions.Notifications;
+using Dental.Services;
 
 namespace Dental.ViewModels.Base
 {
@@ -30,7 +31,12 @@ namespace Dental.ViewModels.Base
             Context = context;
             Collection = GetCollection();
         }
-        
+
+        public bool CanAdd(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
+        public bool CanMove(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PriceDelitable;
+
         [Command]
         public void Add(object p)
         {

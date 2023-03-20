@@ -45,6 +45,10 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
+        public bool CanPrintPrice() => ((UserSession)Application.Current.Resources["UserSession"]).PrintPrices;
+        public bool CanLoadDocForPrint() => ((UserSession)Application.Current.Resources["UserSession"]).PrintPrices;
+
+
         public bool IsReadOnly
         {
             get { return GetProperty(() => IsReadOnly); }
@@ -159,7 +163,6 @@ namespace Dental.ViewModels.ServicePrice
                 }
             }
         }
-
 
     }
 

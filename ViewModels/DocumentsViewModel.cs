@@ -42,6 +42,11 @@ namespace Dental.ViewModels
             LoadDocuments();            
         }
 
+        public bool CanOpenFormDocEdit(object p) => ((UserSession)Application.Current.Resources["UserSession"]).DocumentEditable;
+        public bool CanDeleteDoc(object p) => ((UserSession)Application.Current.Resources["UserSession"]).DocumentDelitable;
+        public bool CanPrint(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintDocument;
+        public bool CanImportDoc() => ((UserSession)Application.Current.Resources["UserSession"]).DocumentImport;
+
         [Command]
         public void Editable() => IsReadOnly = !IsReadOnly;
 
@@ -113,7 +118,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => Config, value); }
         }
         #endregion
-
 
         [Command]
         public void OpenFormDocEdit(object p)
@@ -283,39 +287,6 @@ namespace Dental.ViewModels
         public Employee EmployeeSearch { get; set; }
         public Client ClientSearch { get; set; }
         #endregion
-
-
-
-
-
-
-        /*  public ObservableCollection<FileInfo> GetFiles()
-          {
-              try
-              {
-                  Files = new ObservableCollection<FileInfo>();
-                  if (!Directory.Exists(PathToDir))
-                  {
-                      Directory.CreateDirectory(PathToDir);
-
-                  }
-                  Files = new ObservableCollection<FileInfo>();
-                  IEnumerable<string> filesNames = new List<string>();
-                  string[] formats = new string[] { "*.docx", "*.doc", "*.rtf", "*.odt", "*.epub", "*.txt", "*.html", "*.htm", "*.mht", "*.xml" };
-                  foreach (var format in formats)
-                  {
-                      var collection = Directory.EnumerateFiles(PathToDir, format).ToList();
-                      if (collection.Count > 0) filesNames = filesNames.Union(collection);
-                  }
-                  foreach (var filePath in filesNames) Files.Add(new FileInfo(filePath));
-                  return Files;
-              }
-              catch
-              {
-                  return Files;
-              }
-
-          }*/
 
         public ObservableCollection<Client> Clients
         {

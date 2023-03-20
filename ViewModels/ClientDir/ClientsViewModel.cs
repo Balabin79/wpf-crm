@@ -81,8 +81,34 @@ namespace Dental.ViewModels.ClientDir
         public bool OpenDirectory() => Model?.Id != 0;
         public bool ExecuteFile() => Model?.Id != 0;
         public bool AttachmentFile() => Model?.Id != 0;
-        public bool DeleteFile() => Model?.Id != 0;
-        //public bool CanShowArchive() => true;
+        public bool DeleteFile() => Model?.Id != 0 && ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+
+        public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsDelitable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+
+        public bool CanAddInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDelitable;
+        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+
+        public bool CanAddInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanDeleteInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanPrintInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintInvoice;
+
+        public bool CanAddPlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanSavePlan() => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanDeletePlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanDelitable;
+
+        public bool CanAddPlanItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanDeletePlanItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanMovedToInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanPrintPlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintPlan;
+
+        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAddFieldsEditable;
+        public bool CanPrintClients() => ((UserSession)Application.Current.Resources["UserSession"]).PrintClients;
+
+        public bool CanAttachmentFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 
@@ -1155,7 +1181,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         [Command]
-        public void ShedulerOpeningCommand(object p)
+        public void ShedulerOpening(object p)
         {
             try 
             {
@@ -1168,7 +1194,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         [Command]
-        public void MovedToInvoiceCommand(object p)
+        public void MovedToInvoice(object p)
         {
             try
             {

@@ -25,6 +25,8 @@ namespace Dental.Services
 
         public ImportData() => db = new ApplicationContext();
 
+        public bool CanImport(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsImport;
+
         [Command]
         public void FromCsv(object p)
         {
@@ -66,8 +68,6 @@ namespace Dental.Services
 
             }
         }
-
-
 
         [Command]
         public void Import(object p)
