@@ -386,7 +386,8 @@
 
                                             <dxb:ToolBarControl x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
                                                             AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
-                                                <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"                                         
+                                                <dxb:BarButtonItem Content="Добавить" Margin="0 0 5 0"
+                                                               IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                                GlyphSize="Small"
                                                                Command="{Binding Source={StaticResource af}, Path=AddCommand}">
                                                     <dxb:BarButtonItem.GlyphTemplate>
@@ -395,7 +396,9 @@
                                                         </DataTemplate>
                                                     </dxb:BarButtonItem.GlyphTemplate>
                                                 </dxb:BarButtonItem>
-                                                <dxb:BarButtonItem Content="Сохранить" Margin="0 0 5 0"                                         
+                                                <dxb:BarButtonItem 
+                                                    Content="Сохранить" Margin="0 0 5 0"
+                                                    IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"               
                                                                GlyphSize="Small"
                                                                Command="{Binding Source={StaticResource af}, Path=SaveCommand}"
                                                                Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
@@ -433,7 +436,8 @@
 
                                             <dxg:TableView.RowCellMenuCustomizations>
                                                 <dxb:BarButtonItem  GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
-                                                                KeyGesture="Ctrl+N" Content="Добавить"  
+                                                                KeyGesture="Ctrl+N" Content="Добавить"
+                                                                 IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 Command="{Binding ElementName=gridAd, Path=DataContext.AddCommand}">
                                                     <dxb:BarButtonItem.GlyphTemplate>
                                                         <DataTemplate>
@@ -442,14 +446,17 @@
                                                     </dxb:BarButtonItem.GlyphTemplate>
                                                 </dxb:BarButtonItem>
 
-                                                <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" 
+                                                <dxb:BarButtonItem 
+                                                    GlyphSize="Small" GlyphAlignment="Left"
+                                                    IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                                Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
                                                                KeyGesture="Ctrl+S" Content="Сохранить"  
                                                                Command="{Binding ElementName=gridAd, Path=DataContext.SaveCommand}" />
 
-                                                <dxb:BarButtonItem  Content="Удалить" 
-                                                                IsEnabled="{DXBinding Expr='@e(gridAd).CurrentItem.Id > 0'}"
-                                                                Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
+                                                <dxb:BarButtonItem  
+                                                    Content="Удалить" 
+                                                    IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true and @e(gridAd).CurrentItem.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Command="{Binding ElementName=viewAd, Path=DataContext.DeleteCommand}" 
                                                                 CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}"
                                                                 KeyGesture="Ctrl+Delete" GlyphSize="Small" GlyphAlignment="Left">
                                                     <dxb:BarButtonItem.GlyphTemplate>
@@ -521,7 +528,7 @@
 
                                                         <dxb:BarButtonItem         
                                                         Content="Удалить" 
-                                                        IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}"
+                                                        IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true and Row.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                         GlyphSize="Small"
                                                         Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
@@ -594,8 +601,8 @@
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"         
                                                 EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                                           />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
@@ -603,7 +610,7 @@
                                             <dxe:CheckEdit HorizontalAlignment="Center"         
                                                 EditValue="{Binding RowData.Row.IsDoctor, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -613,8 +620,7 @@
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"          
                                                 EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
@@ -622,7 +628,7 @@
                                             <dxe:CheckEdit HorizontalAlignment="Center"          
                                                 EditValue="{Binding RowData.Row.IsReception, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -632,8 +638,7 @@
                                         <DataTemplate>
                                             <dxe:CheckEdit   HorizontalAlignment="Center"        
                                                 EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
                                     <dxg:GridColumn.CellEditTemplate>
@@ -641,7 +646,7 @@
                                             <dxe:CheckEdit  HorizontalAlignment="Center"        
                                                 EditValue="{Binding RowData.Row.IsAdmin, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>
@@ -656,7 +661,7 @@
                                         <DataTemplate>
                                             <dxe:TextEdit 
                                                 Text="{Binding Path=RowData.Row.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                       
-                                                IsReadOnly="{Binding ElementName=gridAd, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                         </DataTemplate>
                                     </dxg:GridColumn.CellEditTemplate>
                                 </dxg:GridColumn>

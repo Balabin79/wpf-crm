@@ -135,7 +135,10 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-       
+
+                    <dxg:GridColumn Width="30" MaxWidth="30" Header="Id" FieldName="Id" ReadOnly="True" 
+                                    HorizontalHeaderContentAlignment="Right"
+                                    />
                     <dxg:GridColumn Width="auto">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
