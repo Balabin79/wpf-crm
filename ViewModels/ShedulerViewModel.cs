@@ -52,12 +52,16 @@ namespace Dental.ViewModels
                 LoadClients(db);
                 SetSelectedEmployees();
                 SetWorkTime();
+
+                NotificationEvent = db.NotificationEvents?.FirstOrDefault(f => f.Name == "Sheduler") ?? null;
             }
             catch(Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!", true);
             }
         }
+
+        private NotificationEvent NotificationEvent { get; set; }
 
         public void SetLocationAppointments() => LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
 
@@ -93,6 +97,8 @@ namespace Dental.ViewModels
 
                 db.Entry(item).State = EntityState.Added;
                 db.SaveChanges();
+
+                AddNotification($"Вам назначена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
             }
             catch (Exception e)
             {
@@ -100,12 +106,21 @@ namespace Dental.ViewModels
             }
         }
 
+        private void AddNotification(string msg) => TelegramNotificationsQueueService.AddToQueue( 
+            new TelegramNotification() {Msg = msg, ChatId = NotificationEvent.ChatId });
+        
+
         [Command]
         public void AppointmentEdited(object p)
         {
             try
             {
-                db.SaveChanges();
+                if (p is AppointmentEditedEventArgs e && e.Appointments.Count > 0)
+                {
+                    var item = e.Appointments[0].SourceObject as Appointments; 
+                    db.SaveChanges();
+                    AddNotification($"Изменения по встрече с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
+                }
             }
             catch (Exception e)
             {
@@ -118,7 +133,12 @@ namespace Dental.ViewModels
         {
             try
             {
-                db.SaveChanges();
+                if (p is AppointmentRemovedEventArgs e && e.Appointments.Count > 0)
+                {
+                    var item = e.Appointments[0].SourceObject as Appointments;
+                    db.SaveChanges();
+                    AddNotification($"Отменена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
+                }
             }
             catch (Exception e)
             {
@@ -458,6 +478,11 @@ namespace Dental.ViewModels
             {
                 if (Application.Current.Resources["UserSession"] is UserSession userSession)
                 {
+                    if (userSession.Employee == null)
+                    {
+                        Doctors.ForEach(f => SelectedDoctors.Add(f));
+                        return;
+                    }
                     SelectedDoctors.Add(Doctors.FirstOrDefault(f => f.Id == userSession.Employee?.Id));
                     return;
                 }
