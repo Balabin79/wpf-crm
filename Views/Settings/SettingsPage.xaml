@@ -738,7 +738,6 @@
                                             <dxe:CheckEdit  HorizontalAlignment="Center"      
                                                 EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                  Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
@@ -747,7 +746,7 @@
                                             <dxe:CheckEdit HorizontalAlignment="Center"       
                                                 EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
 
 
@@ -762,7 +761,6 @@
                                             <dxe:CheckEdit  HorizontalAlignment="Center"      
                                                 EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                  Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
@@ -771,7 +769,7 @@
                                             <dxe:CheckEdit HorizontalAlignment="Center"       
                                                 EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                            Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
 
 
@@ -783,10 +781,10 @@
                                 <dxg:GridColumn FieldName="AdminAccess" Header="&quot;Админ&quot;"  Width="1*"  HorizontalHeaderContentAlignment="Center">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
-                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                            <dxe:CheckEdit  HorizontalAlignment="Center" IsReadOnly="True"     
                                                 EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsReadOnly="{Binding ElementName=gridRoleSettings, Path=DataContext.IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                  
                                                  Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
                                         </DataTemplate>
                                     </dxg:GridColumn.CellTemplate>
