@@ -6,7 +6,30 @@ namespace Dental.Models
     [Table("NotificationEvents")]
     public class NotificationEvent : AbstractBaseModel
     {
-        public string Name { get; set; }
-        public string ChatId { get; set; }
+        public NotificationEvent() => IsNotify = false;
+
+        public string EventName
+        {
+            get { return GetProperty(() => EventName); }
+            set { SetProperty(() => EventName, value); }
+        }
+
+        public string TelegramToken
+        {
+            get { return GetProperty(() => TelegramToken); }
+            set { SetProperty(() => TelegramToken, value); }
+        }
+
+        public bool? IsNotify
+        {
+            get { return GetProperty(() => IsNotify); }
+            set { SetProperty(() => IsNotify, value); }
+        }
+
+        public string Name
+        {
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value); }
+        }
     }
 }

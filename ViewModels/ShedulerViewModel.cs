@@ -53,7 +53,7 @@ namespace Dental.ViewModels
                 SetSelectedEmployees();
                 SetWorkTime();
 
-                NotificationEvent = db.NotificationEvents?.FirstOrDefault(f => f.Name == "Sheduler") ?? null;
+                NotificationEvents = db.NotificationEvents?.ToArray();
             }
             catch(Exception e)
             {
@@ -61,7 +61,7 @@ namespace Dental.ViewModels
             }
         }
 
-        private NotificationEvent NotificationEvent { get; set; }
+        private NotificationEvent[] NotificationEvents { get; set; }
 
         public void SetLocationAppointments() => LocationAppointments = db.LocationAppointment.OrderBy(f => f.Name).ToObservableCollection();
 
@@ -98,7 +98,15 @@ namespace Dental.ViewModels
                 db.Entry(item).State = EntityState.Added;
                 db.SaveChanges();
 
-                AddNotification($"Вам назначена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
+                if (item?.Employee?.IsNotify == true)
+                {
+                    var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentAdd");
+                    if (eventName == null || eventName.IsNotify != true) return;
+                        AddNotification(
+                            $"Вам назначена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram
+                            );
+                }
+                    
             }
             catch (Exception e)
             {
@@ -106,8 +114,16 @@ namespace Dental.ViewModels
             }
         }
 
-        private void AddNotification(string msg) => TelegramNotificationsQueueService.AddToQueue( 
-            new TelegramNotification() {Msg = msg, ChatId = NotificationEvent.ChatId });
+        private void AddNotification(string msg, NotificationEvent notificationEvent, string chatId)
+        {
+            TelegramNotificationsQueueService.AddToQueue(new TelegramNotification() 
+            { 
+                Msg = msg, 
+                NotificationEvent = notificationEvent,
+                NotificationEventId = notificationEvent?.Id,
+                ChatId = chatId 
+            }, db);
+        }
         
 
         [Command]
@@ -119,7 +135,13 @@ namespace Dental.ViewModels
                 {
                     var item = e.Appointments[0].SourceObject as Appointments; 
                     db.SaveChanges();
-                    AddNotification($"Изменения по встрече с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
+                    if (item?.Employee?.IsNotify == true)
+                    {
+                        var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentEdit");
+                        if (eventName == null || eventName.IsNotify != true) return;
+
+                        AddNotification($"Изменения по встрече с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram);
+                    }                        
                 }
             }
             catch (Exception e)
@@ -136,8 +158,15 @@ namespace Dental.ViewModels
                 if (p is AppointmentRemovedEventArgs e && e.Appointments.Count > 0)
                 {
                     var item = e.Appointments[0].SourceObject as Appointments;
+                    if(item != null) db.Remove(item);
                     db.SaveChanges();
-                    AddNotification($"Отменена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};");
+                    if (item?.Employee?.IsNotify == true)
+                    {
+                        var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentRemove");
+                        if (eventName == null || eventName.IsNotify != true) return;
+
+                        AddNotification($"Отменена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram);
+                    }
                 }
             }
             catch (Exception e)

@@ -9,13 +9,18 @@ namespace Dental.Services
 {
     internal static class TelegramNotificationsQueueService
     {
-        public static void AddToQueue(TelegramNotification notification)
+        public static void AddToQueue(TelegramNotification notification, ApplicationContext db)
         {
-            using(var db = new ApplicationContext())
-            {
-                db.TelegramNotifications.Add(notification);
-                db.SaveChanges();
-            }
+                try
+                {
+                    db.TelegramNotifications.Add(notification);
+                    db.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    Log.ErrorHandler(e);
+                }
+            
         }
     }
 }
