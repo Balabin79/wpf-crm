@@ -12,5 +12,6 @@ namespace Dental.Models
         public int? NotificationEventId { get; set; }
 
         public string Msg { get; set; }
+        public string DateRelevance { get; set; }
     }
 }

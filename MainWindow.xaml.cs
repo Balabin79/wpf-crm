@@ -12,6 +12,8 @@ using License;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.POCO;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace Dental
 {
@@ -26,8 +28,14 @@ namespace Dental
             {
                 var login = new Login();
                 login.ShowLogin();
+
                 Application.Current.Resources["UserSession"] = login.UserSession;
-                
+
+                //инициализация рассылки сообщений 
+                // создаем таймер на 5 мин.
+                Timer timer = new Timer() { Interval = 300000, Enabled = true, AutoReset = true };
+                timer.Elapsed += OnTimedEvent;
+
                 InitializeComponent();
                 SetPageVisibility();
             }
@@ -35,6 +43,11 @@ namespace Dental
             {
                 Log.ErrorHandler(e);
             }
+        }
+
+        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            TelegramNotificationsSenderService.Send();
         }
 
         private void ThemedWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

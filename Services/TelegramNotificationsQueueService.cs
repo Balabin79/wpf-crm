@@ -11,15 +11,22 @@ namespace Dental.Services
     {
         public static void AddToQueue(TelegramNotification notification, ApplicationContext db)
         {
-                try
-                {
-                    db.TelegramNotifications.Add(notification);
-                    db.SaveChanges();
+            try
+            {
+                // если есть сеть, то сразу отправить, если нет, то записать в бд
+                if (PingService.IsNetworkAvailable()) 
+                { 
+                    TelegramNotificationsSenderService.Send(notification);
+                    return;
                 }
-                catch(Exception e)
-                {
-                    Log.ErrorHandler(e);
-                }
+
+                db.TelegramNotifications.Add(notification);
+                db.SaveChanges();                
+            }
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
             
         }
     }

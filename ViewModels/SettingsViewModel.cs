@@ -67,6 +67,8 @@ namespace Dental.ViewModels
                 Employees.ForEach(f => EmployeeWrappers.Add(new EmployeeWrapper { Id = f.Id, Password = f.Password }));
 
                 Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
+
+                NotificationEvents = db.NotificationEvents?.ToArray();
             }
             catch (Exception e)
             {
@@ -83,6 +85,8 @@ namespace Dental.ViewModels
         public ICollection<EmployeeWrapper> EmployeeWrappers { get; set; }
 
         public ICollection<RoleManagment> Roles { get; set; }
+
+        public ICollection<NotificationEvent> NotificationEvents { get; set; }
 
         public SettingsVM SettingsVM
         {

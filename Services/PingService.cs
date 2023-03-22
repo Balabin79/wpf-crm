@@ -9,8 +9,8 @@ namespace Dental.Services
 {
     public class PingService
     {
-        private readonly string host = "google.com";
-        public bool IsNetworkAvailable()
+        private static readonly string host = "google.com";
+        public static bool IsNetworkAvailable()
         {
             try
             {
@@ -19,13 +19,12 @@ namespace Dental.Services
                 options.DontFragment = true;
                 string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
                 byte[] buffer = Encoding.ASCII.GetBytes(data);
-                int timeout = 120;
+                int timeout = 1000;
                 PingReply reply = pingSender.Send(host, timeout, buffer, options);
                 return reply.Status == IPStatus.Success;
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e);
                 return false;
             }
         }

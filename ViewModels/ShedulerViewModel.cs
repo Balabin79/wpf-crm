@@ -102,8 +102,9 @@ namespace Dental.ViewModels
                 {
                     var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentAdd");
                     if (eventName == null || eventName.IsNotify != true) return;
-                        AddNotification(
-                            $"Вам назначена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram
+                        AddNotification($@"Вам назначена встреча с {item.PatientName ?? "Неизвестно"};
+Место встречи: {item.LocationName ?? "Неизвестно"}, в {item.Date}. 
+Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date
                             );
                 }
                     
@@ -114,14 +115,15 @@ namespace Dental.ViewModels
             }
         }
 
-        private void AddNotification(string msg, NotificationEvent notificationEvent, string chatId)
+        private void AddNotification(string msg, NotificationEvent notificationEvent, string chatId, DateTime dateRelevance)
         {
             TelegramNotificationsQueueService.AddToQueue(new TelegramNotification() 
             { 
                 Msg = msg, 
                 NotificationEvent = notificationEvent,
                 NotificationEventId = notificationEvent?.Id,
-                ChatId = chatId 
+                ChatId = chatId,
+                DateRelevance = dateRelevance.ToString()
             }, db);
         }
         
@@ -140,7 +142,9 @@ namespace Dental.ViewModels
                         var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentEdit");
                         if (eventName == null || eventName.IsNotify != true) return;
 
-                        AddNotification($"Изменения по встрече с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram);
+                        AddNotification($@"Изменения по встрече с {item.PatientName ?? "Неизвестно"};
+Место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. 
+Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date);
                     }                        
                 }
             }
@@ -165,7 +169,9 @@ namespace Dental.ViewModels
                         var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentRemove");
                         if (eventName == null || eventName.IsNotify != true) return;
 
-                        AddNotification($"Отменена встреча с {item.PatientName ?? "Неизвестно"}, место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram);
+                        AddNotification($@"Отменена встреча с {item.PatientName ?? "Неизвестно"};
+Место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}.
+Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date);
                     }
                 }
             }
