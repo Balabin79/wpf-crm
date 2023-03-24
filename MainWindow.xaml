@@ -26,8 +26,8 @@
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"
-    Icon="/Resources/Icons/te4.ico" 
-    Title="B6 Crm">
+    Icon="{x:Static services:ParamsApp.Icon}" 
+    Title="{x:Static services:ParamsApp.Title}">
     <dx:ThemedWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

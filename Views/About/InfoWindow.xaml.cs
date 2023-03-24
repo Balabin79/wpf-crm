@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Navigation;
+using DevExpress.Xpf.Core;
 
 namespace Dental.Views.About
 {
@@ -22,6 +25,22 @@ namespace Dental.Views.About
         public InfoWindow()
         {
             InitializeComponent();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            //Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            //e.Handled = true;
+            try
+            {
+                if (sender.GetType() != typeof(Hyperlink)) return;
+                string link = ((Hyperlink)sender).NavigateUri.ToString();
+                Process.Start(link);
+            }
+            catch
+            {
+                ThemedMessageBox.Show(title: "Ошибка", text: "Не удалось запустить браузер по умолчанию!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Exclamation);
+            }
         }
     }
 }

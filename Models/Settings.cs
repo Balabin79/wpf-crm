@@ -14,9 +14,6 @@ namespace Dental.Models
         public string OrgPhone { get; set; }
         public string OrgSite { get; set; }
 
-        public string TelegramToken { get; set; }
-        public bool? IsNotifyByTelegram { get; set; }
-
         public int? RolesEnabled { get; set; } = 0;
         public int? IsPasswordRequired { get; set; } = 0;   
     }

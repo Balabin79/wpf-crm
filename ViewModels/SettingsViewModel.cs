@@ -132,6 +132,7 @@ namespace Dental.ViewModels
             }
             catch (Exception e)
             {
+
                 Log.ErrorHandler(e, "Сбой при подключении к базе данных, попробуйте изменить параметры подключения!", true);
                 return;
             }
@@ -198,8 +199,6 @@ namespace Dental.ViewModels
                 model.OrgPhone = SettingsVM.OrgPhone;
                 model.OrgEmail = SettingsVM.OrgEmail;
                 model.OrgSite = SettingsVM.OrgSite;
-                model.TelegramToken = SettingsVM.TelegramToken;
-                model.IsNotifyByTelegram = SettingsVM.IsNotifyByTelegram;
                 model.IsPasswordRequired = SettingsVM.IsPasswordRequired;
                 model.RolesEnabled = SettingsVM.RolesEnabled;
                 if (model?.Id == 0) db.Settings.Add(model);              

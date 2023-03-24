@@ -310,10 +310,10 @@
                                         <dxg:GridColumn FieldName="TelegramToken" Header="Telegram token" Width="3*" HorizontalHeaderContentAlignment="Center">
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock
+                                                    <dxe:TextEdit
                                                         HorizontalAlignment="Stretch"
-                                                        IsEnabled="{DXBinding Expr='@e(viewTelegram)DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                        Text="{Binding Path=RowData.Row.TelegramToken, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                                        IsReadOnly="{DXBinding Expr='@e(viewTelegram).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                        Text="{Binding Path=RowData.Row.TelegramToken, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                             <dxg:GridColumn.CellEditTemplate>

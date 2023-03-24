@@ -74,18 +74,6 @@ namespace Dental.ViewModels
             set { SetProperty(() => PostgresConnect, value); }
         }
 
-        public string TelegramToken
-        {
-            get { return GetProperty(() => TelegramToken); }
-            set { SetProperty(() => TelegramToken, value?.Trim()); }
-        }
-
-        public bool? IsNotifyByTelegram
-        {
-            get { return GetProperty(() => IsNotifyByTelegram); }
-            set { SetProperty(() => IsNotifyByTelegram, value); }
-        }
-
         public int? RolesEnabled
         {
             get { return GetProperty(() => RolesEnabled); }
@@ -110,8 +98,6 @@ namespace Dental.ViewModels
             OrgPhone = model.OrgPhone;
             OrgEmail = model.OrgEmail;
             OrgSite = model.OrgSite;
-            TelegramToken = model.TelegramToken;
-            IsNotifyByTelegram = model.IsNotifyByTelegram;
             RolesEnabled = model.RolesEnabled;
             IsPasswordRequired = model.IsPasswordRequired;
         }

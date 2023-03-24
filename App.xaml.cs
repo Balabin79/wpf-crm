@@ -28,8 +28,8 @@ namespace Dental
                         IsIndeterminate = true,
                         Logo = null,//new System.Uri("pack://application:,,,/Resources/Icons/zzz.png", UriKind.RelativeOrAbsolute),
                         Status = "Запуск...",
-                        Title = "B6 Crm",
-                        Subtitle = "Автоматизация бизнеса"
+                        Title = "B6 CRM",
+                        Subtitle = "Автоматизация процессов взаимодействия с клиентами"
                     }
                     ).ShowOnStartup();
             }
