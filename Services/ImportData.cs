@@ -1,6 +1,7 @@
 ﻿using CsvHelper;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models;
+using Dental.ViewModels;
 using DevExpress.CodeParser;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -77,6 +78,7 @@ namespace Dental.Services
                 var filePath = string.Empty;
                 var fileName = string.Empty;
                 int i = 0;
+                string page = "";
                 if(p is Type type)
                 {
                     using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
@@ -96,14 +98,27 @@ namespace Dental.Services
                     using (var reader = new StreamReader(filePath))
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                        if (type == typeof(Client)) 
+                        if (type == typeof(Client))
+                        {
                             i = LoadClients(csv);
-                        if (type == typeof(Employee)) 
+                            page = "Dental.Views.PatientCard.PatientsList";
+                        } 
+                            
+                        if (type == typeof(Employee))
+                        {
                             i = LoadStaff(csv);
+                            page = "Dental.Views.Staff";
+                        }                           
 
                         if (db.SaveChanges() > 0)
                         {
                             new Notification() { Content = $"Список успешно импортирован в базу данных! Добавлено {i} записей" }.run();
+
+                            if (Application.Current?.Resources["Router"] is MainViewModel vm)
+                            {
+                                vm?.NavigationService?.Navigate(page, null);
+                            }
+                            
                         }
                     }
                 }
@@ -135,7 +150,7 @@ namespace Dental.Services
                 };
                 db.Clients.Add(model);
                 i++;
-            }
+            }       
             return i;
         }
 

@@ -19,12 +19,13 @@ namespace Dental.ViewModels
     {
         public INavigationService NavigationService { get { return this.GetService<INavigationService>(); } }
         protected ISplashScreenService SplashScreenService { get { return this.GetService<ISplashScreenService>(); } }
+        
         public MainViewModel() { }
 
         [Command]
         public void OnViewLoaded(object p)
         {
-            NavigationService.Navigate("Dental.Views.PatientCard.PatientsList", null, this);
+            NavigationService?.Navigate("Dental.Views.PatientCard.PatientsList", null, this);
             if (p is TileBarItem clientsBtn) clientsBtn.IsSelected = true;
         }
 

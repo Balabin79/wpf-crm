@@ -121,39 +121,37 @@
     <value>17, 17</value>
   </metadata>
   <data name="customSqlQuery1.Sql" xml:space="preserve">
-    <value>select [Invoices].[Number], [Invoices].[Date],
-       [Invoices].[Total],
-       [Invoices].[Paid],
-       [Invoices].[ClientId], [Invoices].[Id],
-       [ClientInfo].[FirstName],
-       [ClientInfo].[LastName],
-       [ClientInfo].[MiddleName],
-       [ClientInfo].[BirthDate],
-       [ClientInfo].[Phone],
-       [ClientInfo].[Address],
-       [ClientInfo].[Note],
-       [ClientInfo].[Email],
-	 [ClientInfo].[Gender],
-       [InvoiceItems].[Name],
-       [InvoiceItems].[Code],
-       [InvoiceItems].[Count],
-       [InvoiceItems].[Price]
-  from [Invoices] [Invoices]
-  inner join [ClientInfo] [ClientInfo]
-       on ([ClientInfo].[Id] = [Invoices].[ClientId])
-  inner join [InvoiceItems] [InvoiceItems]
-       on ([InvoiceItems].[InvoiceId] = [Invoices].[Id])</value>
+    <value>select "Invoices"."Number", "Invoices"."Date",
+       "Invoices"."Paid",
+       "Invoices"."ClientId", "Invoices"."Id",
+       "ClientInfo"."FirstName",
+       "ClientInfo"."LastName",
+       "ClientInfo"."MiddleName",
+       "ClientInfo"."BirthDate",
+       "ClientInfo"."Phone",
+       "ClientInfo"."Address",
+       "ClientInfo"."Note",
+       "ClientInfo"."Email",
+	 "ClientInfo"."Gender",
+       "InvoiceItems"."Name",
+       "InvoiceItems"."Code",
+       "InvoiceItems"."Count",
+       "InvoiceItems"."Price" from "Invoices" 
+  inner join "ClientInfo" 
+       on ("ClientInfo"."Id" = "Invoices"."ClientId")
+  inner join "InvoiceItems" 
+       on ("InvoiceItems"."InvoiceId" = "Invoices"."Id");</value>
   </data>
   <data name="customSqlQuery2.Sql" xml:space="preserve">
-    <value>select [Settings].[OrgName],
-       [Settings].[OrgShortName],
-       [Settings].[OrgAddress],
-       [Settings].[OrgSite],
-       [Settings].[OrgEmail],
-       [Settings].[OrgPhone]
-  from [Settings] [Settings]</value>
+    <value>select "Settings"."OrgName",
+       "Settings"."OrgShortName",
+       "Settings"."OrgAddress",
+       "Settings"."OrgSite",
+       "Settings"."OrgEmail",
+       "Settings"."OrgPhone"
+  from "Settings" "Settings"</value>
   </data>
   <data name="sqlDataSource1.ResultSchemaSerializable" xml:space="preserve">
-    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ikludm9pY2VzXzEiPjxGaWVsZCBOYW1lPSJOdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUb3RhbCIgVHlwZT0iRG91YmxlIiAvPjxGaWVsZCBOYW1lPSJQYWlkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQ2xpZW50SWQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkZpcnN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMYXN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJNaWRkbGVOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkJpcnRoRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5vdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR2VuZGVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb3VudCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IlByaWNlIiBUeXBlPSJEb3VibGUiIC8+PC9WaWV3PjxWaWV3IE5hbWU9Ik9yZ2FuaXphdGlvbnMiPjxGaWVsZCBOYW1lPSJPcmdOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZ1Nob3J0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmdBZGRyZXNzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZ1NpdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JnRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JnUGhvbmUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
+    <value>PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9Ikludm9pY2VzXzEiPjxGaWVsZCBOYW1lPSJOdW1iZXIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQYWlkIiBUeXBlPSJJbnQ2NCIgLz48RmllbGQgTmFtZT0iQ2xpZW50SWQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJJZCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IkZpcnN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJMYXN0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJNaWRkbGVOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkJpcnRoRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJQaG9uZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJBZGRyZXNzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5vdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iR2VuZGVyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5hbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQ29kZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDb3VudCIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IlByaWNlIiBUeXBlPSJEb3VibGUiIC8+PC9WaWV3PjxWaWV3IE5hbWU9Ik9yZ2FuaXphdGlvbnMiPjxGaWVsZCBOYW1lPSJPcmdOYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZ1Nob3J0TmFtZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJPcmdBZGRyZXNzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik9yZ1NpdGUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JnRW1haWwiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iT3JnUGhvbmUiIFR5cGU9IlN0cmluZyIgLz48L1ZpZXc+PC9EYXRhU2V0Pg==</value>
   </data>
 </root>

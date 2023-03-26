@@ -594,7 +594,11 @@ namespace Dental.ViewModels.ClientDir
                     {
                         string connectionString = db.Database.GetConnectionString();
                         var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
+                        if (Config.DbType == 1) 
+                        {
+                           // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
+                            provider = "XpoProvider=Postgres;"; 
+                        }
                         source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
                     }
 
