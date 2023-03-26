@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:Dental.Views.About"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"      
-        Icon="/Resources/Icons/te4.ico" 
-        Title="О программе" Height="460" Width="320" Background="#F5F6F7">
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}" 
+        Height="460" Width="320" Background="#F5F6F7">
     
     <StackPanel VerticalAlignment="Stretch">
         <Image Height="80" Width="80" Margin="0 40 0 0" HorizontalAlignment="Center">

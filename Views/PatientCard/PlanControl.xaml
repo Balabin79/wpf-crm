@@ -355,7 +355,7 @@
                                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and Row.IsMovedToInvoice != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                     IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                     HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                                                    EditValue="{Binding Row.IsInInvoice, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
+                                                    EditValue="{Binding Row.IsInInvoice, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolToInt}}" >
                                                 </dxe:CheckEdit>
 
                                             </DataTemplate>
@@ -485,13 +485,7 @@
                                     </DataTemplate>
                                 </dxb:BarButtonItem.GlyphTemplate>
                             </dxb:BarButtonItem>
-                            <dxb:BarButtonItem 
-                                    Content="Сохранить"                                                            
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    GlyphSize="Small"
-                                    Command="{Binding ElementName=grid, Path=DataContext.SavePlanCommand}"
-                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
-                     
+
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>
                 </DockPanel>

@@ -43,7 +43,7 @@ namespace Dental.ViewModels
 
                 SetLocationAppointments();
                 SetStatusCollection();
-                ClassificatorCategories = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToObservableCollection();
+                ClassificatorCategories = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToObservableCollection();
 
                 Appointments = db.Appointments.Include(f => f.Service).Include(f => f.Employee).Include(f => f.ClientInfo).Include(f => f.Location)
                     .Where(f => !string.IsNullOrEmpty(f.StartTime)).OrderBy(f => f.CreatedAt).ToObservableCollection();
@@ -98,10 +98,10 @@ namespace Dental.ViewModels
                 db.Entry(item).State = EntityState.Added;
                 db.SaveChanges();
 
-                if (item?.Employee?.IsNotify == true)
+                if (item?.Employee?.IsNotify == 1)
                 {
                     var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentAdd");
-                    if (eventName == null || eventName.IsNotify != true) return;
+                    if (eventName == null || eventName.IsNotify != 1) return;
                         AddNotification($@"Вам назначена встреча с {item.PatientName ?? "Неизвестно"};
 Место встречи: {item.LocationName ?? "Неизвестно"}, в {item.Date}. 
 Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date
@@ -137,10 +137,10 @@ namespace Dental.ViewModels
                 {
                     var item = e.Appointments[0].SourceObject as Appointments; 
                     db.SaveChanges();
-                    if (item?.Employee?.IsNotify == true)
+                    if (item?.Employee?.IsNotify == 1)
                     {
                         var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentEdit");
-                        if (eventName == null || eventName.IsNotify != true) return;
+                        if (eventName == null || eventName.IsNotify != 1) return;
 
                         AddNotification($@"Изменения по встрече с {item.PatientName ?? "Неизвестно"};
 Место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. 
@@ -164,10 +164,10 @@ namespace Dental.ViewModels
                     var item = e.Appointments[0].SourceObject as Appointments;
                     if(item != null) db.Remove(item);
                     db.SaveChanges();
-                    if (item?.Employee?.IsNotify == true)
+                    if (item?.Employee?.IsNotify == 1)
                     {
                         var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentRemove");
-                        if (eventName == null || eventName.IsNotify != true) return;
+                        if (eventName == null || eventName.IsNotify != 1) return;
 
                         AddNotification($@"Отменена встреча с {item.PatientName ?? "Неизвестно"};
 Место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}.
@@ -478,7 +478,7 @@ namespace Dental.ViewModels
 
         private void LoadEmployees(ApplicationContext db)
         {
-            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0 && f.IsInArchive != true).OrderBy(d => d.LastName).ToObservableCollection();
+            Doctors = db.Employes.Where(f => f.IsInSheduler != null && f.IsInSheduler > 0 && f.IsInArchive != 1).OrderBy(d => d.LastName).ToObservableCollection();
             foreach (var i in Doctors)
             {
                 if (Directory.Exists(PathToEmployeesDirectory))
@@ -504,7 +504,7 @@ namespace Dental.ViewModels
             }
         }
 
-        private void LoadClients(ApplicationContext db) => Clients = db.Clients.Where(f => f.IsInArchive != true ).OrderBy(f => f.LastName).ToObservableCollection();
+        private void LoadClients(ApplicationContext db) => Clients = db.Clients.Where(f => f.IsInArchive != 1 ).OrderBy(f => f.LastName).ToObservableCollection();
 
         private void SetSelectedEmployees()
         {

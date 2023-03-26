@@ -54,7 +54,7 @@ namespace Dental.Services
                     Email = f.Email,
                     ClientCategoryId = f.ClientCategoryId,
                     ClientCategoryName = f.ClientCategory?.Name,
-                    IsArhive = f.IsInArchive == true ? "да" : "нет"
+                    IsArhive = f.IsInArchive == 1 ? "да" : "нет"
                 }));
 
                 using (var writer = new StreamWriter(filePath))
@@ -131,7 +131,7 @@ namespace Dental.Services
                     Phone = item.Phone,
                     Address = item.Address,
                     ClientCategoryId = item.ClientCategoryId,
-                    IsInArchive = item.IsArhive == "да" ? true : false
+                    IsInArchive = item.IsArhive == "да" ? 1 : 0
                 };
                 db.Clients.Add(model);
                 i++;
@@ -154,7 +154,7 @@ namespace Dental.Services
                     Phone = item.Phone,
                     Telegram = item.Telegram,
                     Post = item.Post,
-                    IsInArchive = item.IsArhive == "да" ? true : false
+                    IsInArchive = item.IsArhive == "да" ? 1 : 0
                 };
                 db.Employes.Add(model);
                 i++;

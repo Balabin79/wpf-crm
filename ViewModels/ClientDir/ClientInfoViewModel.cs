@@ -106,7 +106,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => Note, value?.Trim()); }
         }
 
-        public bool? IsInArchive { get; set; } = false;
+        public int? IsInArchive { get; set; } = 0;
 
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }

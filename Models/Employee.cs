@@ -9,7 +9,7 @@ namespace Dental.Models
     [Table("Employees")]
     public class Employee : AbstractUser, IDataErrorInfo, ICloneable
     {
-        public Employee() => IsNotify = false;
+        public Employee() => IsNotify = 0;
 
         [NotMapped]
         public bool IsVisible
@@ -40,7 +40,7 @@ namespace Dental.Models
         }
 
         public int? IsInSheduler { get; set; } = 1;
-        public bool? IsInArchive { get; set; } = false;
+        public int? IsInArchive { get; set; } = 0;
 
         public int? IsAdmin { get; set; } = 0;
         public int? IsDoctor { get; set; } = 1;
@@ -52,7 +52,7 @@ namespace Dental.Models
             set { SetProperty(() => Password, value); }
         }
 
-        public bool? IsNotify
+        public int? IsNotify
         {
             get { return GetProperty(() => IsNotify); }
             set { SetProperty(() => IsNotify, value); }

@@ -5,8 +5,9 @@
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v21.2" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2"
-        Icon="/Resources/Icons/te4.ico" 
-        Title="B6 CRM">
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}">
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Loaded" Command="{Binding LoadDocForPrintCommand}" PassEventArgsToCommand="True"/>
     </dxmvvm:Interaction.Behaviors>

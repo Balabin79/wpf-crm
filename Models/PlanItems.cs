@@ -7,7 +7,7 @@ namespace Dental.Models
     [Table("PlanItems")]
     public class PlanItem : AbstractBaseModel
     {
-        public PlanItem() => IsInInvoice = false;
+        public PlanItem() => IsInInvoice = 0;
 
         public string Name
         {
@@ -36,7 +36,7 @@ namespace Dental.Models
             set { SetProperty(() => VisitDate, value); }
         }
 
-        public bool? IsInInvoice
+        public int? IsInInvoice
         {
             get { return GetProperty(() => IsInInvoice); }
             set { SetProperty(() => IsInInvoice, value); }

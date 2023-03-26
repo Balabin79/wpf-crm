@@ -142,8 +142,7 @@
                                                                             AllowResizing="True"
                                                                             VerticalScrollbarVisibility="Auto"
                                                                             AllowPrintColumnHeaderImage="True"                                                 
-                                                                            ExpandNodesOnFiltering="True"
-                                                                            FilterMode="Extended"    
+                                                                            ExpandNodesOnFiltering="True"   
                                                                             ImmediateUpdateRowPosition="True"
                                                                             VerticalAlignment="Stretch"                                                                                                                 
                                                                             AllowPerPixelScrolling="True"
@@ -396,12 +395,6 @@
                                 Content="Создать счет" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                 />
-                            <dxb:BarButtonItem 
-                                    Content="Сохранить"                                                            
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    GlyphSize="Small"
-                                    Command="{Binding ElementName=grid, Path=DataContext.SaveInvoiceCommand}"
-                                    Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
 
                             <dxb:BarButtonItem 
                                 Content="Все счета"

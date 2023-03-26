@@ -64,7 +64,7 @@ namespace Dental.ViewModels.ClientDir
                 Init(Model);
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
-                Prices = db.Services.Where(f => f.IsHidden != true)?.OrderBy(f => f.Sort).ToArray();
+                Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
                 Advertisings = db.Advertising.ToObservableCollection();               
                 PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
             }
@@ -87,7 +87,6 @@ namespace Dental.ViewModels.ClientDir
 
         public bool CanAddInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDelitable;
-        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
 
         public bool CanAddInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDeleteInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
@@ -110,7 +109,7 @@ namespace Dental.ViewModels.ClientDir
         #endregion
 
         #region Загрузка списков клиентов и всех инвойсов 
-        public void LoadClients(bool isArhive = false)
+        public void LoadClients(int? isArhive = 0)
         {        
             Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
         }
@@ -355,7 +354,7 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                Clients = db.Clients.Where(f => f.IsInArchive == IsArchiveList).OrderBy(f => f.LastName).ToObservableCollection();
+                Clients = db.Clients.Where(f => f.IsInArchive == (IsArchiveList ? 1 : 0)).OrderBy(f => f.LastName).ToObservableCollection();
 
                 if (!string.IsNullOrEmpty(LastNameSearch?.ToString()))
                 {
@@ -438,34 +437,6 @@ namespace Dental.ViewModels.ClientDir
             catch (Exception e)
             {
                 Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void SaveInvoice()
-        {    
-            try
-            {
-                #region Lic
-                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                #endregion
-
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при попытке сохранить счет в базе данных!", true);
             }
         }
 
@@ -760,7 +731,7 @@ namespace Dental.ViewModels.ClientDir
                 {
                     db.Clients.Add(Model);
                     // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                    if (IsArchiveList == Model.IsInArchive) Clients?.Insert(0, Model);
+                    if (IsArchiveList == (Model.IsInArchive == 1)) Clients?.Insert(0, Model);
                     db.SaveChanges();
                     EventChangeReadOnly?.Invoke(false); // разблокировать дополнительные поля
                                                         //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
@@ -772,16 +743,16 @@ namespace Dental.ViewModels.ClientDir
                 { // редактирование су-щего эл-та
                     FieldsViewModel?.Save(Model);
                     if (db.SaveChanges() > 0) {
-                        LoadClients((bool)Model.IsInArchive);
-                        IsArchiveList = (bool)Model.IsInArchive;
+                        LoadClients(Model.IsInArchive);
+                        IsArchiveList = Model.IsInArchive == 1;
                         SelectedItem();
-                        new Notification() { Content = "Отредактированные данные клиента сохранены в базу данных!" }.run(); 
+                        new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run(); 
                     }                                  
                 }
             }
             catch(Exception e)
             {
-                Log.ErrorHandler(e, "При сохранении данных клиента возникла ошибка!", true);
+                Log.ErrorHandler(e, "При сохранении данных возникла ошибка!", true);
             }
         }
 
@@ -1205,7 +1176,7 @@ namespace Dental.ViewModels.ClientDir
 
                     foreach (var item in plan.PlanItems)
                     {
-                        if(item.IsInInvoice == true && item.IsMovedToInvoice != 1)
+                        if(item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
                         {
                             item.IsMovedToInvoice = 1;
                             items.Add(item);

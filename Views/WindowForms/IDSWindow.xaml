@@ -7,9 +7,10 @@
         xmlns:local="clr-namespace:Dental.Views.WindowForms" 
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
-        mc:Ignorable="d"              
-        Icon="/Resources/Icons/te4.ico" 
-        Title="B6 Dental"
+        mc:Ignorable="d" 
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"
         Closing="RichEdit_DocumentClosing">
     <Grid>
         <dxp:DocumentPreviewControl Name="preview" />

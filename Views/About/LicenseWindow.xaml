@@ -9,8 +9,10 @@
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Icon="/Resources/Icons/te4.ico" 
-        Title="Лицензия"  Width="800" Height="235" ResizeMode="CanMinimize">
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"  
+        Width="800" Height="235" ResizeMode="CanMinimize">
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
         <StackPanel>
 

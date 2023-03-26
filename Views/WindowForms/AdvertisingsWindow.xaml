@@ -16,8 +16,9 @@
         xmlns:commands="clr-namespace:Dental.Infrastructures.Commands"
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-        Icon="/Resources/Icons/te4.ico" 
-        Title="B6 CRM"
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"
         >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>

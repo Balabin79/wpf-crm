@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dental.Views.WindowForms"
         xmlns:views="clr-namespace:Dental.Views"
-        Topmost="True"
-        Icon="/Resources/Icons/te4.ico" 
-        WindowStartupLocation="CenterOwner"
-        
+        Topmost="True" 
+        WindowStartupLocation="CenterOwner"  
         mc:Ignorable="d"
-        Title="B6 Crm" >
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}" >
     <views:Sheduler Grid.Column="1"/>
 </Window>

@@ -28,7 +28,7 @@ namespace Dental.Models
         }
 
         public string Note { get; set; }
-        public bool? IsInArchive { get; set; } = false;
+        public int? IsInArchive { get; set; } = 0;
 
         public ClientCategory ClientCategory
         {

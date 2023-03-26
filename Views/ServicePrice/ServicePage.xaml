@@ -344,7 +344,7 @@
                                 CommandParameter="{Binding Row, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"           
                             IsReadOnly="{DXBinding Expr='@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                             HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                            EditValue="{Binding Row.IsHidden, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" >
+                            EditValue="{Binding Row.IsHidden, Mode=TwoWay, Converter={StaticResource boolConverter},  UpdateSourceTrigger=PropertyChanged}" >
 
                             </dxe:CheckEdit>
 

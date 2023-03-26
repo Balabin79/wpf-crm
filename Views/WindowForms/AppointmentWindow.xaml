@@ -16,9 +16,10 @@
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
         xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
         xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
-        Icon="/Resources/Icons/te4.ico" 
         xmlns:dxdialogs="http://schemas.devexpress.com/winfx/2008/xaml/dialogs"
-        Title="B6 CRM"
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"
                  >
     <dx:ThemedWindow.Resources>
         <converter:MultiBindingConverter x:Key="multiConv" />

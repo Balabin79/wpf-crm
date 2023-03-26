@@ -179,19 +179,19 @@
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                     <dxlc:LayoutItem Label="В расписании: " LabelPosition="Left" Grid.Column="0">
-                        <dxe:CheckEdit EditValue="{Binding Row.IsInSheduler, Mode=TwoWay,                                              
+                        <dxe:CheckEdit EditValue="{Binding Row.IsInSheduler, Mode=TwoWay, Converter={StaticResource boolConverter},                                              
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                     </dxlc:LayoutItem>
 
                     <dxlc:LayoutItem Label="Telegram уведомления: " LabelPosition="Left" Grid.Column="1" HorizontalAlignment="Right">
-                        <dxe:CheckEdit EditValue="{Binding Row.IsNotify, Mode=TwoWay,                                            
+                        <dxe:CheckEdit EditValue="{Binding Row.IsNotify, Mode=TwoWay, Converter={StaticResource boolConverter},                                            
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                     </dxlc:LayoutItem>
 
                     <dxlc:LayoutItem Label="В архиве: " LabelPosition="Left" Grid.Column="2" HorizontalAlignment="Right">
-                        <dxe:CheckEdit EditValue="{Binding Row.IsInArchive, Mode=TwoWay,                                            
+                        <dxe:CheckEdit EditValue="{Binding Row.IsInArchive, Mode=TwoWay, Converter={StaticResource boolConverter},                                           
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                                 IsReadOnly="{DXBinding Expr='Row.Id != 0 and !Row.IsVisible', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                     </dxlc:LayoutItem>

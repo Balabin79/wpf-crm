@@ -93,7 +93,7 @@ namespace Dental.ViewModels.EmployeeDir
             try
             {
                 IsArchiveList = !IsArchiveList;
-                SetCollection(IsArchiveList);
+                SetCollection(IsArchiveList ? 1 : 0);
             }
             catch (Exception e)
             {
@@ -124,7 +124,7 @@ namespace Dental.ViewModels.EmployeeDir
 
                 Collection?.Where(f => f.Id == 0).ForEach(f => db.Entry(f).State = EntityState.Added);
                 if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
-
+                SetCollection(IsArchiveList ? 1 : 0);
                 /*if (p is Employee model)
                 {
                     if (model.Id == 0) db.Entry(model).State = EntityState.Added;
@@ -261,7 +261,7 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(bool isArhive = false) 
+        public void SetCollection(int isArhive = 0) 
         { 
             Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Collection)

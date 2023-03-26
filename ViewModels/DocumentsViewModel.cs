@@ -34,9 +34,9 @@ namespace Dental.ViewModels
             PathToDir = Config.PathToDocumentsDirectory;
             IsReadOnly = true;
 
-            Clients = db.Clients.Where(f => f.IsInArchive == false).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
+            Clients = db.Clients.Where(f => f.IsInArchive != 1).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
 
-            Employees = db.Employes.Where(f => f.IsInArchive == false).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
+            Employees = db.Employes.Where(f => f.IsInArchive != 1).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
 
             //foreach (var i in Employees) i.IsVisible = false;
             LoadDocuments();            

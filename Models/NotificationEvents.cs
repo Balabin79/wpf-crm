@@ -6,7 +6,7 @@ namespace Dental.Models
     [Table("NotificationEvents")]
     public class NotificationEvent : AbstractBaseModel
     {
-        public NotificationEvent() => IsNotify = false;
+        public NotificationEvent() => IsNotify = 0;
 
         public string EventName
         {
@@ -20,7 +20,7 @@ namespace Dental.Models
             set { SetProperty(() => TelegramToken, value); }
         }
 
-        public bool? IsNotify
+        public int? IsNotify
         {
             get { return GetProperty(() => IsNotify); }
             set { SetProperty(() => IsNotify, value); }

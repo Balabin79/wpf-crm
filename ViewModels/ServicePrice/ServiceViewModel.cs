@@ -145,7 +145,7 @@ namespace Dental.ViewModels.ServicePrice
             }
         }
 
-        private async Task SetState(Service model, bool? isHidden)
+        private async Task SetState(Service model, int? isHidden)
         {
             if (model?.IsDir == 1)
             {

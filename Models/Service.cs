@@ -9,7 +9,7 @@ namespace Dental.Models
     [Table("Services")]
     public class Service : BaseTemplate<Service>, IInvoiceItem
     {
-        public Service() => IsHidden = false;
+        public Service() => IsHidden = 0;
 
        [Display(Name = "Код")]
         [Clonable]
@@ -29,7 +29,7 @@ namespace Dental.Models
             set { SetProperty(() => Price, value); }
         }
 
-        public bool? IsHidden
+        public int? IsHidden
         {
             get { return GetProperty(() => IsHidden); }
             set { SetProperty(() => IsHidden, value); }

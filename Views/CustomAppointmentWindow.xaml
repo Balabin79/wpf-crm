@@ -14,7 +14,10 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     Style="{DynamicResource {dxscht:AppointmentWindowThemeKey ResourceKey=ThemedWindow}}"
-    x:Name="window">
+    x:Name="window"
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}">
     
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:CurrentWindowService ClosingCommand="{Binding WindowClosingCommand}"/>

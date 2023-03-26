@@ -14,7 +14,9 @@
         Width="400" Height="200" MaxHeight="200" MaxWidth="400"
         d:DesignHeight="450" d:DesignWidth="800"
         x:Name="win"
-
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"
         >
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:CurrentWindowService ClosingCommand="{Binding CloseFormCommand}"/>

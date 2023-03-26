@@ -301,7 +301,7 @@
                                                 <DataTemplate>
                                                     <dxe:CheckEdit
                                                         HorizontalAlignment="Center"
-                                                        EditValue="{Binding Path=RowData.Row.IsNotify, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        EditValue="{Binding Path=RowData.Row.IsNotify, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolConverter}}" 
                                                         IsReadOnly="{DXBinding Expr='@e(viewTelegram).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellEditTemplate>

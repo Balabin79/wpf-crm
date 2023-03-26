@@ -11,15 +11,16 @@
         xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib" 
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         mc:Ignorable="d"
-        Icon="/Resources/Icons/te4.ico" 
-        Title="B6 Dental"
         ResizeMode="CanMinimize"
         HorizontalAlignment="Center"
         WindowStartupLocation="CenterScreen"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v21.2" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2" 
         xmlns:dxmvvm2="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" >
+        xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList" 
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}">
 
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm1:EventToCommand EventName="Closing" Command="{Binding CancelFormInvoiceItemCommand}" PassEventArgsToCommand="True"/>

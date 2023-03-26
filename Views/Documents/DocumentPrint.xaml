@@ -7,7 +7,10 @@
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing" 
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         mc:Ignorable="d"
-        Title="Печать документа" Height="450" Width="800">
+        xmlns:services="clr-namespace:Dental.Services"
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}" 
+        Height="450" Width="800">
     <Grid>
         <dx:LoadingDecorator SplashScreenDataContext="Загрузка документа" >
             <dxp:DocumentPreviewControl x:Name="doc"/>
