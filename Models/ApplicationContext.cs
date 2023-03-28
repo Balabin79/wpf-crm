@@ -17,7 +17,13 @@ namespace Dental.Models
             Config = new Config();
             Database.EnsureCreated();
         }
-     
+
+        public ApplicationContext(Config config)
+        {
+            Config = config; ;
+            Database.EnsureCreated();
+        }
+
         public Config Config { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

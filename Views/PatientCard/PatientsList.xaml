@@ -134,20 +134,16 @@
 
                         <dxb:BarItemSeparator/>
 
-   
+
                         <dxb:BarButtonItem 
                             Style="{Binding}"
                             Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             CommandParameter="{Binding Source={x:Type model:Client }}"
-                                    GlyphSize="Small"
-                                    Content="Импорт">
-                                    <dxb:BarButtonItem.GlyphTemplate>
-                                        <DataTemplate>
-                                            <dx:DXImage Source="/Resources/Icons/svg/file-import.svg" />
-                                        </DataTemplate>
-                                    </dxb:BarButtonItem.GlyphTemplate>
-                                </dxb:BarButtonItem>
-           
+                            GlyphSize="Small"
+                            Content="Импорт"
+                            Glyph="/Resources/Icons/svg/file-import.svg"/>
+
+
 
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>

@@ -18,6 +18,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Resources\Icons\svg\archive.svg" />
+    <None Remove="Resources\Icons\svg\arrow-down.svg" />
+    <None Remove="Resources\Icons\svg\arrow-up.svg" />
     <None Remove="Resources\Icons\svg\bars2.svg" />
     <None Remove="Resources\Icons\svg\blackboard_graph.svg" />
     <None Remove="Resources\Icons\svg\browser.svg" />
@@ -48,11 +50,14 @@
     <None Remove="Resources\Icons\svg\graph_rising.svg" />
     <None Remove="Resources\Icons\svg\icon_calendar.svg" />
     <None Remove="Resources\Icons\svg\icon_download.svg" />
+    <None Remove="Resources\Icons\svg\icon_drawer.svg" />
+    <None Remove="Resources\Icons\svg\icon_drawer_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_info.svg" />
     <None Remove="Resources\Icons\svg\icon_key.svg" />
     <None Remove="Resources\Icons\svg\icon_key_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_tools.svg" />
+    <None Remove="Resources\Icons\svg\icon_upload.svg" />
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
@@ -148,6 +153,8 @@
     <Resource Include="Resources\Icons\service2.png" />
     <Resource Include="Resources\Icons\sheduler.png" />
     <Resource Include="Resources\Icons\svg\archive.svg" />
+    <Resource Include="Resources\Icons\svg\arrow-down.svg" />
+    <Resource Include="Resources\Icons\svg\arrow-up.svg" />
     <Resource Include="Resources\Icons\svg\bars.svg" />
     <Resource Include="Resources\Icons\svg\bars2.svg" />
     <Resource Include="Resources\Icons\svg\blackboard_graph.svg" />
@@ -205,6 +212,8 @@
     <Resource Include="Resources\Icons\svg\hdd.svg" />
     <Resource Include="Resources\Icons\svg\icon_calendar.svg" />
     <Resource Include="Resources\Icons\svg\icon_download.svg" />
+    <Resource Include="Resources\Icons\svg\icon_drawer.svg" />
+    <Resource Include="Resources\Icons\svg\icon_drawer_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart.svg" />
     <Resource Include="Resources\Icons\svg\icon_flowchart_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-add_alt.svg" />
@@ -220,6 +229,7 @@
       </CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Icons\svg\icon_tools.svg" />
+    <Resource Include="Resources\Icons\svg\icon_upload.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\image.svg" />
     <Resource Include="Resources\Icons\svg\images.svg" />

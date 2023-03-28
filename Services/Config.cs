@@ -35,6 +35,7 @@ namespace Dental.Services
                         PathToProgram = defaultPath;
                     }
                 }
+                
                 PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
                 PathToOrgDirectory = Path.Combine(PathToProgram, "Organization");
                 PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
