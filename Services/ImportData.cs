@@ -1,32 +1,24 @@
 ﻿using CsvHelper;
+using Dental.Infrastructures.Converters;
 using Dental.Infrastructures.Extensions.Notifications;
 using Dental.Models;
 using Dental.ViewModels;
-using DevExpress.CodeParser;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
-using DevExpress.Xpf.Core;
-using DevExpress.Xpf.Grid;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using Telegram.Bot.Types;
 
 namespace Dental.Services
 {
     internal class ImportData : ViewModelBase
     {
-        private readonly ApplicationContext db;
-        private IEnumerable<object> records;
+        private ApplicationContext db;
 
         public ImportData() => db = new ApplicationContext();
 
@@ -37,12 +29,15 @@ namespace Dental.Services
         {
             try
             {
-                var filePath = string.Empty;
-                var fileName = string.Empty;
-                int i = 0;
-                string page = "";
-                if(p is Type type)
+                if (p is ExportDataCommandParameters parameters)
                 {
+                    if (parameters.Type == null || parameters.Context == null) return;
+                    var filePath = string.Empty;
+                    var fileName = string.Empty;
+                    int i = 0;
+                    string page = "";
+                    db = parameters.Context;
+
                     using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog())
                     {
                         openFileDialog.InitialDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
@@ -51,7 +46,7 @@ namespace Dental.Services
                         openFileDialog.FilterIndex = 2;
                         openFileDialog.RestoreDirectory = true;
 
-                        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) filePath = openFileDialog.FileName;                        
+                        if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) filePath = openFileDialog.FileName;
                         openFileDialog.Dispose();
                     }
                     if (string.IsNullOrEmpty(filePath)) return;
@@ -60,19 +55,19 @@ namespace Dental.Services
                     using (var reader = new StreamReader(filePath))
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                        if (type == typeof(Client))
+                        if (parameters.Type == typeof(Client))
                         {
                             i = LoadClients(csv);
                             page = "Dental.Views.PatientCard.PatientsList";
-                        } 
-                            
-                        if (type == typeof(Employee))
+                        }
+
+                        if (parameters.Type == typeof(Employee))
                         {
                             i = LoadStaff(csv);
                             page = "Dental.Views.Staff";
                         }
 
-                        if (type == typeof(Service))
+                        if (parameters.Type == typeof(Service))
                         {
                             i = LoadPrice(csv);
                             page = "Dental.Views.ServicePrice.ServicePage";
@@ -86,7 +81,6 @@ namespace Dental.Services
                             {
                                 vm?.NavigationService?.Navigate(page, null);
                             }
-                            
                         }
                     }
                 }
@@ -95,38 +89,98 @@ namespace Dental.Services
             {
                 Log.ErrorHandler(e, "Ошибка при попытке импортировать данные!", true);
             }
-        }       
+        }
 
         [Command]
         public void Export(object p)
         {
-            try 
+            try
             {
-                string fileName = "";
-                
-                if (p is Type type && type != null)
+                if (p is ExportDataCommandParameters parameters)
                 {
-                    if (type == typeof(Employee))
+                    if (parameters.Type == null || parameters.Context == null) return;
+
+                    db = parameters.Context;
+
+                    if (parameters.Type == typeof(Employee))
                     {
-                        fileName = "staff.csv";
-                        records = db.Employes.OrderBy(f => f.LastName).ToList();
-                    }
-                    if (type == typeof(Client))
-                    {
-                        fileName = "clients.csv";
-                        records = db.Clients.Include(f => f.ClientCategory).OrderBy(f => f.ClientCategoryId).ThenBy(f => f.LastName).ToList();
-                    }
-                    if (type == typeof(Service))
-                    {
-                        fileName = "prices.csv";
-                        records = db.Services.OrderBy(f => f.ParentID).ThenBy(f => f.Name).ToList();
+                        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "staff.csv");
+                        using (var writer = new StreamWriter(filePath))
+                        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                        {
+                            var records = db.Employes.OrderBy(f => f.LastName).ToList();
+                            csv.WriteHeader<EmployeeExport>();
+                            csv.NextRecord();
+                            foreach (var record in records)
+                            {
+                                csv.WriteRecord(new EmployeeExport()
+                                {
+                                    Id = record.Id,
+                                    LastName = record.LastName,
+                                    FirstName = record.FirstName,
+                                    MiddleName = record.MiddleName,
+                                    Phone = record.Phone,
+                                    Email = record.Email,
+                                    Telegram = record.Telegram,
+                                    Post = record.Post,
+                                    IsArchive = record.IsInArchive
+                                });
+                            }
+                            Notify(filePath);
+                        }
                     }
 
-                    Unload(fileName);
+                    if (parameters.Type == typeof(Client))
+                    {
+                        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "clients.csv");
+                        using (var writer = new StreamWriter(filePath))
+                        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                        {
+                            var records = db.Clients.Include(f => f.ClientCategory).OrderBy(f => f.ClientCategoryId).ThenBy(f => f.LastName).ToList();
+                            csv.WriteHeader<ClientExport>();
+                            csv.NextRecord();
+                            foreach (var record in records)
+                            {
+                                csv.WriteRecord(new ClientExport()
+                                {
+                                    Id = record.Id,
+                                    LastName = record.LastName,
+                                    FirstName = record.FirstName,
+                                    MiddleName = record.MiddleName,
+                                    BirthDate = record.BirthDate,
+                                    Gender = record.Gender,
+                                    Address = record.Address,
+                                    Phone = record.Phone,
+                                    Email = record.Email,
+                                    ClientCategoryId = record.ClientCategoryId,
+                                    ClientCategoryName = record.ClientCategory?.Name,
+                                    IsArchive = record.IsInArchive
+                                });
+                            }
+                            Notify(filePath);
+                        }
+                    }
+
+                    if (parameters.Type == typeof(Service))
+                    {
+                        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "prices.csv");
+                        using (var writer = new StreamWriter(filePath))
+                        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                        {
+                            var records = db.Services.OrderBy(f => f.ParentID).ThenBy(f => f.Name).ToList();
+                            csv.WriteHeader<PriceExport>();
+                            csv.NextRecord();
+                            foreach (var record in records)
+                            {
+                                csv.WriteRecord(new PriceExport() { Id = record.Id, Name = record.Name, Code = record.Code, Price = record.Price, IsDir = record.IsDir, ParentID = record.ParentID });
+                                csv.NextRecord();
+                            }
+                        }
+                        Notify(filePath);
+                    }
                 }
-
-            } 
-            catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при попытке экспортировать данные!", true);
             }
@@ -135,12 +189,13 @@ namespace Dental.Services
         #region Загрузка данных
         private int LoadClients(CsvReader csv)
         {
-            var records = csv.GetRecords<ClientExport>();
+            var records = csv.GetRecords<ClientExport>()?.OrderBy(f => f.Id);
             int i = 0;
             foreach (var item in records)
             {
                 var model = new Client()
                 {
+                    Id = item.Id,
                     LastName = item.LastName,
                     FirstName = item.FirstName,
                     MiddleName = item.MiddleName,
@@ -149,29 +204,32 @@ namespace Dental.Services
                     Email = item.Email,
                     Phone = item.Phone,
                     Address = item.Address,
-                    ClientCategoryId = item.ClientCategoryId
+                    ClientCategoryId = item.ClientCategoryId,
+                    IsInArchive = item.IsArchive
                 };
                 db.Clients.Add(model);
                 i++;
-            }       
+            }
             return i;
         }
 
         private int LoadStaff(CsvReader csv)
         {
-            var records = csv.GetRecords<EmployeeExport>();
+            var records = csv.GetRecords<EmployeeExport>()?.OrderBy(f => f.Id);
             int i = 0;
             foreach (var item in records)
             {
                 var model = new Employee()
                 {
+                    Id = item.Id,
                     LastName = item.LastName,
                     FirstName = item.FirstName,
                     MiddleName = item.MiddleName,
                     Email = item.Email,
                     Phone = item.Phone,
                     Telegram = item.Telegram,
-                    Post = item.Post
+                    Post = item.Post,
+                    IsInArchive = item.IsArchive
                 };
                 db.Employes.Add(model);
                 i++;
@@ -181,15 +239,16 @@ namespace Dental.Services
 
         private int LoadPrice(CsvReader csv)
         {
-            var records = csv.GetRecords<PriceExport>();
+            var records = csv.GetRecords<PriceExport>()?.OrderBy(f => f.Id);
             int i = 0;
             foreach (var item in records)
             {
                 var model = new Service()
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     Code = item.Code,
-                    Price  = item.Price,
+                    Price = item.Price,
                     IsDir = item.IsDir,
                     ParentID = item.ParentID
                 };
@@ -200,34 +259,12 @@ namespace Dental.Services
         }
         #endregion
 
-        #region Выгрузка данных
-        private void Unload(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName)) return;
-            string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), fileName);
-            using (var writer = new StreamWriter(filePath))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
-                if (records is List<Employee> employees) csv.WriteRecords(employees);
-                if (records is List<Client> clients) csv.WriteRecords(clients);
-                if (records is List<Service> prices)
-                {
-                    csv.WriteHeader<PriceExport>();
-                    csv.NextRecord();
-                    foreach (var record in prices)
-                    {
-                        csv.WriteRecord(new PriceExport() { Id = record.Id, Name = record.Name, Code = record.Code, Price = record.Price, IsDir = record.IsDir, ParentID = record.ParentID});
-                        csv.NextRecord();
-                    }
-                }                  
-            }
-            new Notification() { Content = $"Список успешно выгружен в файл {filePath}" }.run();
-        }
-        #endregion
+        private void Notify(string filePath) => new Notification() { Content = $"Список успешно выгружен в файл {filePath}" }.run();
     }
 
     internal class ClientExport
     {
+        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -238,10 +275,12 @@ namespace Dental.Services
         public string Email { get; set; }
         public int? ClientCategoryId { get; set; }
         public string ClientCategoryName { get; set; }
+        public int? IsArchive { get; set; }
     }
 
     internal class EmployeeExport
     {
+        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -249,6 +288,7 @@ namespace Dental.Services
         public string Email { get; set; }
         public string Telegram { get; set; }
         public string Post { get; set; }
+        public int? IsArchive { get; set; }
     }
 
     internal class PriceExport

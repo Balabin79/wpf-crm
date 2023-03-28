@@ -39,7 +39,6 @@ namespace Dental.Views.ServicePrice
             {
                 Log.ErrorHandler(e);
             }
-
         }
 
         void OnDragRecordOver(object sender, DragRecordOverEventArgs e)

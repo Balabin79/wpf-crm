@@ -42,6 +42,7 @@ namespace Dental.ViewModels.EmployeeDir
             try
             {
                 db = new ApplicationContext();
+                Db = db;
                 Config = db.Config;
                 SetCollection();
                 LoadPrintConditions();
@@ -60,6 +61,9 @@ namespace Dental.ViewModels.EmployeeDir
 
         public bool CanPrintStaff() => ((UserSession)Application.Current.Resources["UserSession"]).PrintEmployees;
         public bool CanLoadDocForPrint() => ((UserSession)Application.Current.Resources["UserSession"]).PrintEmployees;
+
+        //это поле для привязки (используется в команде импорта данных)
+        public ApplicationContext Db { get; set; }
 
         [Command]
         public void Editable(object p)

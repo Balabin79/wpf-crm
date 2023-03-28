@@ -30,6 +30,7 @@
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
                     <services:ImportData x:Key="import"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
+                    <converter:ExportDataConverter x:Key="exportConv"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
                 <ResourceDictionary>
@@ -135,13 +136,39 @@
                         <dxb:BarItemSeparator/>
 
 
-                        <dxb:BarButtonItem 
+                        <dxb:BarSubItem 
+                            Content="Данные" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_drawer.svg" 
+                            IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"            >
+                            <dxb:BarSubItem.Items>
+                                <dxb:BarButtonItem 
                             Style="{Binding}"
                             Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            CommandParameter="{Binding Source={x:Type model:Client }}"
                             GlyphSize="Small"
-                            Content="Импорт"
-                            Glyph="/Resources/Icons/svg/file-import.svg"/>
+                            Content="Загрузить из csv"
+                            Glyph="/Resources/Icons/svg/icon_download.svg">
+                                    <dxb:BarButtonItem.CommandParameter >
+                                        <MultiBinding Converter="{StaticResource exportConv}">
+                                            <Binding Source="{x:Type model:Client}" />
+                                            <Binding Source="{StaticResource vm}" Path="Db"/>
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+
+                                <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Command="{Binding Source={StaticResource import}, Path=ExportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            GlyphSize="Small"
+                            Content="Выгрузить в csv"
+                            Glyph="/Resources/Icons/svg/icon_upload.svg">
+                                    <dxb:BarButtonItem.CommandParameter >
+                                        <MultiBinding Converter="{StaticResource exportConv}">
+                                            <Binding Source="{x:Type model:Client}" />
+                                            <Binding Source="{StaticResource vm}" Path="Db"/>
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
+                            </dxb:BarSubItem.Items>
+                        </dxb:BarSubItem>
 
 
 

@@ -54,6 +54,7 @@ namespace Dental.ViewModels.ClientDir
             try
             {
                 db = new ApplicationContext();
+                Db = db;
                 Config = db.Config;
                 LoadClients();
                 LoadInvoices();
@@ -107,6 +108,9 @@ namespace Dental.ViewModels.ClientDir
         public bool CanAttachmentFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         #endregion
+
+        //это поле для привязки (используется в команде импорта данных)
+        public ApplicationContext Db { get; set; }
 
         #region Загрузка списков клиентов и всех инвойсов 
         public void LoadClients(int? isArhive = 0)

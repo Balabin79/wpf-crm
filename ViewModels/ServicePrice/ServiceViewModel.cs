@@ -33,6 +33,7 @@ namespace Dental.ViewModels.ServicePrice
             try
             {
                 db = ctx;
+                Db = ctx;
                 Context = context;
                 Collection = GetCollection();
                 IsReadOnly = Collection?.Count > 0;
@@ -46,6 +47,8 @@ namespace Dental.ViewModels.ServicePrice
         public bool CanPrintPrice() => ((UserSession)Application.Current.Resources["UserSession"]).PrintPrices;
         public bool CanLoadDocForPrint() => ((UserSession)Application.Current.Resources["UserSession"]).PrintPrices;
 
+        //это поле для привязки (используется в команде импорта данных)
+        public ApplicationContext Db { get; set; }
 
         public bool IsReadOnly
         {

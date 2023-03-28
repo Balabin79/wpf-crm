@@ -18,7 +18,7 @@
       xmlns:SystemGlobalization="clr-namespace:System.Globalization;assembly=mscorlib"
       xmlns:local="clr-namespace:Dental.Views.ServicePrice"
       xmlns:model="clr-namespace:Dental.Models" 
-             xmlns:services="clr-namespace:Dental.Services"
+      xmlns:services="clr-namespace:Dental.Services"
      xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
       d:DesignHeight="450" d:DesignWidth="800"                 
       x:Name="win" dx:ThemeManager.ThemeName="Office2019White">
@@ -33,6 +33,7 @@
                     <converter:StringToDecimalConverter x:Key="strToDecimalConverter" />
                     <converter:BoolIntConverter x:Key="boolToInt"/>
                     <converter:MultiBindingToObjectConverter x:Key="multiToObject"/>
+                    <converter:ExportDataConverter x:Key="exportConv"/>
                     <services:ImportData x:Key="import"/>
                 </ResourceDictionary>
                 <ResourceDictionary Source="/Views/PrintFields.xaml"/>
@@ -137,23 +138,37 @@
                                            Command="{Binding PrintPriceCommand}"
                                            Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}"/>
 
-                        <dxb:BarSubItem Content="Данные" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_drawer.svg" >
+                        <dxb:BarSubItem 
+                            Content="Данные" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_drawer.svg" 
+                            IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"            >
                             <dxb:BarSubItem.Items>
-                        <dxb:BarButtonItem 
+                                <dxb:BarButtonItem 
                             Style="{Binding}"
                             Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            CommandParameter="{Binding Source={x:Type model:Service }}"
                             GlyphSize="Small"
-                            Content="Импорт"
-                            Glyph="/Resources/Icons/svg/icon_download.svg"/>
+                            Content="Загрузить из csv"
+                            Glyph="/Resources/Icons/svg/icon_download.svg">
+                                    <dxb:BarButtonItem.CommandParameter >
+                                        <MultiBinding Converter="{StaticResource exportConv}">
+                                            <Binding Source="{x:Type model:Service}" />
+                                            <Binding ElementName="gridMain" Path="DataContext.Db"/>
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem 
                             Style="{Binding}"
-                            Command="{Binding Source={StaticResource import}, Path=ExportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            CommandParameter="{Binding Source={x:Type model:Service }}"
+                            Command="{Binding Source={StaticResource import}, Path=ExportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
                             GlyphSize="Small"
-                            Content="Экспорт"
-                            Glyph="/Resources/Icons/svg/icon_upload.svg"/>
+                            Content="Выгрузить в csv"
+                            Glyph="/Resources/Icons/svg/icon_upload.svg">
+                                    <dxb:BarButtonItem.CommandParameter >
+                                        <MultiBinding Converter="{StaticResource exportConv}">
+                                            <Binding Source="{x:Type model:Service}" />
+                                            <Binding ElementName="gridMain" Path="DataContext.Db"/>
+                                        </MultiBinding>
+                                    </dxb:BarButtonItem.CommandParameter>
+                                </dxb:BarButtonItem>
                             </dxb:BarSubItem.Items>
                         </dxb:BarSubItem>
                     </dxb:ToolBarControl>

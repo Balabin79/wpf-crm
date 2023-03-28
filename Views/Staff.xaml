@@ -26,6 +26,7 @@
         <converter:DoubleToStringConverter x:Key="DoubleToString"/>
         <converter:MultiBindingImageEditExEmployeeConverter x:Key="multiImg" />
         <converter:BoolIntConverter x:Key="boolConverter" />
+        <converter:ExportDataConverter x:Key="exportConv"/>
         <vm:ListEmployeesViewModel x:Key="vm"/>
         <services:ImportData x:Key="import"/>
         
@@ -286,18 +287,39 @@
                     <dxb:BarItemSeparator/>
 
 
-                    <dxb:BarButtonItem Margin="0 0 5 0"
+                    <dxb:BarSubItem Margin="0 0 5 0"
+                            Content="Данные" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_drawer.svg" 
+                            IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"            >
+                        <dxb:BarSubItem.Items>
+                            <dxb:BarButtonItem 
                             Style="{Binding}"
                             Command="{Binding Source={StaticResource import}, Path=ImportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            CommandParameter="{Binding Source={x:Type model:Employee }}"
-                                    GlyphSize="Small"
-                                    Content="Импорт">
-                        <dxb:BarButtonItem.GlyphTemplate>
-                            <DataTemplate>
-                                <dx:DXImage Source="/Resources/Icons/svg/file-import.svg" />
-                            </DataTemplate>
-                        </dxb:BarButtonItem.GlyphTemplate>
-                    </dxb:BarButtonItem>
+                            GlyphSize="Small"
+                            Content="Загрузить из csv"
+                            Glyph="/Resources/Icons/svg/icon_download.svg">
+                                <dxb:BarButtonItem.CommandParameter >
+                                    <MultiBinding Converter="{StaticResource exportConv}">
+                                        <Binding Source="{x:Type model:Employee}" />
+                                        <Binding ElementName="gridMain" Path="DataContext.Db"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+
+                            <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Command="{Binding Source={StaticResource import}, Path=ExportCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            GlyphSize="Small"
+                            Content="Выгрузить в csv"
+                            Glyph="/Resources/Icons/svg/icon_upload.svg">
+                                <dxb:BarButtonItem.CommandParameter >
+                                    <MultiBinding Converter="{StaticResource exportConv}">
+                                        <Binding Source="{x:Type model:Employee}" />
+                                        <Binding ElementName="gridMain" Path="DataContext.Db"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+                        </dxb:BarSubItem.Items>
+                    </dxb:BarSubItem>
 
                 </dxb:ToolBarControl>
 
