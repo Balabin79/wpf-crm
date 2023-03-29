@@ -115,7 +115,6 @@ namespace Dental.Services
                             {
                                 csv.WriteRecord(new EmployeeExport()
                                 {
-                                    Id = record.Id,
                                     LastName = record.LastName,
                                     FirstName = record.FirstName,
                                     MiddleName = record.MiddleName,
@@ -143,7 +142,6 @@ namespace Dental.Services
                             {
                                 csv.WriteRecord(new ClientExport()
                                 {
-                                    Id = record.Id,
                                     LastName = record.LastName,
                                     FirstName = record.FirstName,
                                     MiddleName = record.MiddleName,
@@ -189,13 +187,12 @@ namespace Dental.Services
         #region Загрузка данных
         private int LoadClients(CsvReader csv)
         {
-            var records = csv.GetRecords<ClientExport>()?.OrderBy(f => f.Id);
+            var records = csv.GetRecords<ClientExport>()?.OrderBy(f => f.LastName);
             int i = 0;
             foreach (var item in records)
             {
                 var model = new Client()
                 {
-                    Id = item.Id,
                     LastName = item.LastName,
                     FirstName = item.FirstName,
                     MiddleName = item.MiddleName,
@@ -215,13 +212,12 @@ namespace Dental.Services
 
         private int LoadStaff(CsvReader csv)
         {
-            var records = csv.GetRecords<EmployeeExport>()?.OrderBy(f => f.Id);
+            var records = csv.GetRecords<EmployeeExport>()?.OrderBy(f => f.LastName);
             int i = 0;
             foreach (var item in records)
             {
                 var model = new Employee()
                 {
-                    Id = item.Id,
                     LastName = item.LastName,
                     FirstName = item.FirstName,
                     MiddleName = item.MiddleName,
@@ -264,7 +260,6 @@ namespace Dental.Services
 
     internal class ClientExport
     {
-        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -280,7 +275,6 @@ namespace Dental.Services
 
     internal class EmployeeExport
     {
-        public int Id { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
