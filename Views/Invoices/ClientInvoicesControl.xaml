@@ -230,7 +230,7 @@
                                         </dxg:GridColumn.CellTemplate>
                                         <dxg:GridColumn.CellEditTemplate>
                                             <DataTemplate>
-                                                <dxe:TextEdit HorizontalAlignment="Center"
+                                                <dxe:TextEdit HorizontalAlignment="Stretch"
                                                         Mask="c2" MaskType="Numeric" HorizontalContentAlignment="Center"
                                                         IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         EditValue="{Binding Path=Row.Price, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />

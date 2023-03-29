@@ -628,7 +628,127 @@
 
                     </dx:DXTabItem>
 
+                    <dx:DXTabItem Header="Настройка ролей" >
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
+                            <dxg:GridControl  AutoGenerateColumns="None" 
+                                  MaxHeight="2000" 
+                                  Name="gridRoleSettings"  
+                                  ItemsSource="{Binding Roles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  Margin="2">
 
+                                <dxg:GridControl.View>
+                                    <dxg:TreeListView                                
+                            x:Name="view"
+                            KeyFieldName="Id"
+                            ParentFieldName="ParentId"
+                            TreeDerivationMode="Selfreference" 
+                            ShowTotalSummary="False" 
+                            UseLegacyFilterPanel="True"
+                            ShowSearchPanelMode="Always"
+                            SearchPanelAllowFilter="True"
+                            AllowResizing="True"
+                            BestFitModeOnSourceChange="VisibleRows"            
+                            NavigationStyle="Cell"
+                            AllowScrollToFocusedRow="True" 
+                            VerticalScrollbarVisibility="Auto"
+                            AllowPrintColumnHeaderImage="True" 
+                            PrintNodeImages="False"
+                            PrintExpandButtons="False"
+                            PrintFixedTotalSummary="False"
+                            PrintNodeFooters="False"
+                            PrintRootIndent="False"
+                            PrintTotalSummary="False"
+                            PrintAllNodes="False"
+                            ShowNodeImages="True"
+                            NodeImageSize="15,15"
+                            ExpandNodesOnFiltering="True"   
+                            ImmediateUpdateRowPosition="True"
+                            ShowVerticalLines="False"
+                            >
+                                        <dxg:TreeListView.NodeImageSelector>
+                                            <tree:NodeImageSelectorForSettings  />
+                                        </dxg:TreeListView.NodeImageSelector>
+                                    </dxg:TreeListView>
+                                </dxg:GridControl.View>
+
+                                <dxg:GridColumn FieldName="PageTitle" Header="Раздел"  MinWidth="200" Width="5*">
+                                    <dxg:GridColumn.HeaderTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
+                                                <TextBlock Text="Раздел" Margin="3 0 0 0"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </dxg:GridColumn.HeaderTemplate>
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=RowData.Row.PageTitle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 3 0 0" />
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+
+
+                                <dxg:GridColumn FieldName="DoctorAccess" Header="&quot;Сотрудник&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
+
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                    <dxg:GridColumn.CellEditTemplate>
+                                        <DataTemplate>
+                                            <dxe:CheckEdit HorizontalAlignment="Center"       
+                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
+
+
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellEditTemplate>
+                                </dxg:GridColumn>
+
+                                <dxg:GridColumn FieldName="ReceptionAccess" Header="&quot;Ресепшен&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
+
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
+                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                    <dxg:GridColumn.CellEditTemplate>
+                                        <DataTemplate>
+                                            <dxe:CheckEdit HorizontalAlignment="Center"       
+                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
+
+
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellEditTemplate>
+                                </dxg:GridColumn>
+
+
+                                <dxg:GridColumn FieldName="AdminAccess" Header="&quot;Админ&quot;"  Width="1*"  HorizontalHeaderContentAlignment="Center">
+                                    <dxg:GridColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <dxe:CheckEdit  HorizontalAlignment="Center" IsReadOnly="True"     
+                                                EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
+                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                  
+                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
+                                        </DataTemplate>
+                                    </dxg:GridColumn.CellTemplate>
+                                </dxg:GridColumn>
+                            </dxg:GridControl>
+                        </ScrollViewer>
+                    </dx:DXTabItem>
 
 
                     <dx:DXTabItem Header="Ролевой доступ" >
@@ -672,7 +792,7 @@
                                     </dxg:GridColumn.CellTemplate>
                                 </dxg:GridColumn>
 
-                                <dxg:GridColumn FieldName="IsDoctor" Header="&quot;Врач&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
+                                <dxg:GridColumn FieldName="IsDoctor" Header="&quot;Сотрудник&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
                                     <dxg:GridColumn.CellTemplate>
                                         <DataTemplate>
                                             <dxe:CheckEdit HorizontalAlignment="Center"         
@@ -745,129 +865,6 @@
                         </ScrollViewer>
                     </dx:DXTabItem>
 
-
-
-                    <dx:DXTabItem Header="Настройка ролей" >
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1">
-                            <dxg:GridControl  AutoGenerateColumns="None" 
-                                  MaxHeight="2000" 
-                                  Name="gridRoleSettings"  
-                                  ItemsSource="{Binding Roles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Margin="2">
-
-                                <dxg:GridControl.View>
-                                    <dxg:TreeListView                                
-                            x:Name="view"
-                            KeyFieldName="Id"
-                            ParentFieldName="ParentId"
-                            TreeDerivationMode="Selfreference" 
-                            ShowTotalSummary="False" 
-                            UseLegacyFilterPanel="True"
-                            ShowSearchPanelMode="Always"
-                            SearchPanelAllowFilter="True"
-                            AllowResizing="True"
-                            BestFitModeOnSourceChange="VisibleRows"            
-                            NavigationStyle="Cell"
-                            AllowScrollToFocusedRow="True" 
-                            VerticalScrollbarVisibility="Auto"
-                            AllowPrintColumnHeaderImage="True" 
-                            PrintNodeImages="False"
-                            PrintExpandButtons="False"
-                            PrintFixedTotalSummary="False"
-                            PrintNodeFooters="False"
-                            PrintRootIndent="False"
-                            PrintTotalSummary="False"
-                            PrintAllNodes="False"
-                            ShowNodeImages="True"
-                            NodeImageSize="15,15"
-                            ExpandNodesOnFiltering="True"   
-                            ImmediateUpdateRowPosition="True"
-                            ShowVerticalLines="False"
-                            >
-                                        <dxg:TreeListView.NodeImageSelector>
-                                            <tree:NodeImageSelectorForSettings  />
-                                        </dxg:TreeListView.NodeImageSelector>
-                                    </dxg:TreeListView>
-                                </dxg:GridControl.View>
-
-                                <dxg:GridColumn FieldName="PageTitle" Header="Раздел"  MinWidth="200" Width="5*">
-                                    <dxg:GridColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <svgc:SvgViewbox Source="pack://application:,,,/Resources/Icons/svg/list.svg" Height="9"/>
-                                                <TextBlock Text="Раздел" Margin="3 0 0 0"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </dxg:GridColumn.HeaderTemplate>
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=RowData.Row.PageTitle, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 3 0 0" />
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                </dxg:GridColumn>
-
-
-                                <dxg:GridColumn FieldName="DoctorAccess" Header="&quot;Врач&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
-
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
-                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                    <dxg:GridColumn.CellEditTemplate>
-                                        <DataTemplate>
-                                            <dxe:CheckEdit HorizontalAlignment="Center"       
-                                                EditValue="{Binding RowData.Row.DoctorAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
-
-
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellEditTemplate>
-                                </dxg:GridColumn>
-
-                                <dxg:GridColumn FieldName="ReceptionAccess" Header="&quot;Ресепшен&quot;"  Width="1*" HorizontalHeaderContentAlignment="Center">
-
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dxe:CheckEdit  HorizontalAlignment="Center"      
-                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                    <dxg:GridColumn.CellEditTemplate>
-                                        <DataTemplate>
-                                            <dxe:CheckEdit HorizontalAlignment="Center"       
-                                                EditValue="{Binding RowData.Row.ReceptionAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                IsEnabled="{DXBinding Expr='@e(Border).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                           Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}"/>
-
-
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellEditTemplate>
-                                </dxg:GridColumn>
-
-
-                                <dxg:GridColumn FieldName="AdminAccess" Header="&quot;Админ&quot;"  Width="1*"  HorizontalHeaderContentAlignment="Center">
-                                    <dxg:GridColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <dxe:CheckEdit  HorizontalAlignment="Center" IsReadOnly="True"     
-                                                EditValue="{Binding RowData.Row.AdminAccess, Mode=TwoWay, Converter={StaticResource boolConverter},                                             
-                                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                  
-                                                 Visibility="{DXBinding Expr='RowData.Row.IsCategory == 1 ? `Collapsed` : `Visible`'}" />
-                                        </DataTemplate>
-                                    </dxg:GridColumn.CellTemplate>
-                                </dxg:GridColumn>
-                            </dxg:GridControl>
-                        </ScrollViewer>
-                    </dx:DXTabItem>
                 </dx:DXTabControl>
             </ScrollViewer>
         </Grid>
