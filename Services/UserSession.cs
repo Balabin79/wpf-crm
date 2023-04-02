@@ -86,5 +86,8 @@ namespace Dental.Services
         public bool DocumentDelitable { get; set; } = false;
         public bool DocumentImport { get; set; } = false;
         public bool PrintDocument { get; set; } = false;
+
+        public bool ImportData { get; set; } = false;
+        public bool ExportData { get; set; } = false;
     }
 }

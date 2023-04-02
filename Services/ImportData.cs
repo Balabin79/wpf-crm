@@ -22,7 +22,8 @@ namespace Dental.Services
 
         public ImportData() => db = new ApplicationContext();
 
-        public bool CanImport(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsImport;
+        public bool CanImport(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ImportData;
+        public bool CanExport(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ExportData;
 
         [Command]
         public void Import(object p)

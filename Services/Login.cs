@@ -171,6 +171,9 @@ namespace Dental.Services
 
                                 case "ShowStatistics": UserSession.ShowStatistics = HasAccess(role); break;
                                 case "ShowSettings": UserSession.ShowSettings = HasAccess(role); break;
+
+                                case "LoadPrices": UserSession.ImportData = HasAccess(role); break;
+                                case "UnloadPrices": UserSession.ExportData = HasAccess(role); break;
                             }
                         }
                     }
@@ -229,6 +232,8 @@ namespace Dental.Services
 
             UserSession.ShowStatistics = true;
             UserSession.ShowSettings = true;      
+            UserSession.ImportData = true;      
+            UserSession.ExportData = true;      
         }
 
         public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);
