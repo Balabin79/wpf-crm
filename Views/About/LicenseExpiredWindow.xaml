@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         xmlns:services="clr-namespace:Dental.Services"
         Icon="{x:Static services:ParamsApp.Icon}" 
-        Title="{x:Static services:ParamsApp.Title}" 
+        Title="Лицензия" 
         Width="800" Height="190" ResizeMode="CanMinimize">
     <Border BorderThickness="1" BorderBrush="LightGray" Margin="5">
         <StackPanel>
