@@ -208,7 +208,16 @@ namespace Dental.ViewModels
         [Command]
         public void OpenDirDoc()
         {
-            if (Directory.Exists(PathToDir)) Process.Start(PathToDir);
+            if (Directory.Exists(PathToDir)) 
+            {
+                var proc = new Process();
+                proc.StartInfo = new ProcessStartInfo(PathToDir)
+                {
+                    UseShellExecute = true
+                };
+                proc.Start();
+            }
+            //Process.Start(PathToDir);
         }
 
         [Command]

@@ -77,10 +77,8 @@ namespace Dental.ViewModels.ClientDir
 
         #region Права на выполнение команд
 
-        public bool OpenDirectory() => Model?.Id != 0;
-        public bool ExecuteFile() => Model?.Id != 0;
-        public bool AttachmentFile() => Model?.Id != 0;
-        public bool DeleteFile() => Model?.Id != 0 && ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+        public bool CanOpenDirectory(object p) => Model?.Id != 0;
+        public bool CanExecuteFile(object p) => Model?.Id != 0;
 
         public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsDelitable;
@@ -874,7 +872,17 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if (PathToUserFiles != null && Directory.Exists(PathToUserFiles)) Process.Start(PathToUserFiles);
+                if (PathToUserFiles != null && Directory.Exists(PathToUserFiles))
+                {
+                    var proc = new Process();
+                    proc.StartInfo = new ProcessStartInfo(PathToUserFiles)
+                    {
+                        UseShellExecute = true
+                    };
+                    proc.Start();
+                }
+                    
+                    //Process.Start(PathToUserFiles);
             }
             catch (Exception e)
             {
@@ -887,7 +895,16 @@ namespace Dental.ViewModels.ClientDir
         {
             try
             {
-                if (p is FileInfo file) Process.Start(file.FullName);
+                if (p is FileInfo file)
+                {
+                    var proc = new Process();
+                    proc.StartInfo = new ProcessStartInfo(file.FullName)
+                    {
+                        UseShellExecute = true
+                    };
+                    proc.Start();
+                }
+                    //Process.Start(file.FullName);
             }
             catch (Exception e)
             {

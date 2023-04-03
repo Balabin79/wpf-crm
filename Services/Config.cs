@@ -33,12 +33,16 @@ namespace Dental.Services
                         ConnectionString = config.ConnectionString;
                         DbType = config.Db;
                         PathToProgram = defaultPath;
+                        if (DbType ==1)
+                        {
+                            PathToProgram = Path.Combine("\\\\", config.PostgresConnect?.Host, "B6 Software", "B6 CRM");
+                        }
                     }
                 }
                 
                 PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
                 PathToOrgDirectory = Path.Combine(PathToProgram, "Organization");
-                PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
+                //PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
                 PathToDocumentsDirectory = Path.Combine(PathToProgram, "Documents");
                 PathToFilesDirectory = Path.Combine(PathToProgram, "Files");
                 PathToProgramDirectory = PathToProgram;
@@ -59,7 +63,7 @@ namespace Dental.Services
         public int DbType;
 
         // эти пути всегда статичны       
-        public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "Crm");
+        public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "B6 CRM");
         public static string defaultDBName = "B6Crm.db";
         public static string PathToDbDefault = Path.Combine(defaultPath, defaultDBName);
         public static string PathToConfig = Path.Combine(defaultPath, "B6Crm.conf");
@@ -68,7 +72,7 @@ namespace Dental.Services
         // эти пути задаются динамически
         public string PathToEmployeesDirectory;
         public string PathToOrgDirectory;
-        public string PathToClientsDirectory;
+       // public string PathToClientsDirectory;
         public string PathToDocumentsDirectory;
         public string PathToFilesDirectory;    
         public string PathToProgramDirectory;
