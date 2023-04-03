@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class ColorConverter : IValueConverter
     {

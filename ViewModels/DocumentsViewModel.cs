@@ -1,7 +1,7 @@
-﻿using Dental.Models;
-using Dental.Services;
-using Dental.Services.Files;
-using Dental.Views.Documents;
+﻿using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Services.Files;
+using B6CRM.Views.Documents;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -16,12 +16,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using DevExpress.Mvvm.Native;
 using System.Diagnostics;
-using Dental.Views.WindowForms;
-using Dental.Infrastructures.Converters;
+using B6CRM.Views.WindowForms;
+using B6CRM.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class DocumentsViewModel : ViewModelBase
     {

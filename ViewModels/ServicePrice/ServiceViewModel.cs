@@ -2,29 +2,29 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
+using B6CRM.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Xpf.Grid;
-using Dental.Views.WindowForms;
-using Dental.Services;
+using B6CRM.Views.WindowForms;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.Views.ServicePrice;
-using Dental.Infrastructures.Converters;
+using B6CRM.Views.ServicePrice;
+using B6CRM.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 using DevExpress.Mvvm;
-using Dental.ViewModels.Base;
-using Dental.Views.Settings;
+using B6CRM.Views.Settings;
 using DevExpress.DataAccess.Sql;
 using System.Threading.Tasks;
+using B6CRM.Models;
+using B6CRM.ViewModels.Base;
+using B6CRM.Services;
 
-namespace Dental.ViewModels.ServicePrice
+namespace B6CRM.ViewModels.ServicePrice
 {
     public class ServiceViewModel : TreeBaseViewModel<Service>
     {
@@ -38,7 +38,7 @@ namespace Dental.ViewModels.ServicePrice
                 Collection = GetCollection();
                 IsReadOnly = Collection?.Count > 0;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Прайс услуг\"!", true);
             }
@@ -65,7 +65,7 @@ namespace Dental.ViewModels.ServicePrice
         public void PrintPrice()
         {
             PrintServiceWindow = new PrintServiceWindow() { DataContext = this };
-            PrintServiceWindow.Show();    
+            PrintServiceWindow.Show();
         }
 
         [Command]
@@ -95,7 +95,7 @@ namespace Dental.ViewModels.ServicePrice
                 // and show pages as soon as they are created.
                 link.CreateDocument(true);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -118,7 +118,7 @@ namespace Dental.ViewModels.ServicePrice
                     ForEach(
                     i => SourceCollection?.Add(new PrintService() { ParentName = f.Key.Name, ServiceName = i.Name, Price = i.Price })));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -139,7 +139,7 @@ namespace Dental.ViewModels.ServicePrice
             {
                 if (p is Service model)
                 {
-                    await SetState(model, model.IsHidden);           
+                    await SetState(model, model.IsHidden);
                 }
             }
             catch (Exception e)
@@ -155,10 +155,10 @@ namespace Dental.ViewModels.ServicePrice
                 var nodes = Context.Where(f => f.ParentID == model.Id).ToArray();
                 foreach (var node in nodes)
                 {
-                    if (node.IsDir == 1) 
+                    if (node.IsDir == 1)
                     {
                         node.IsHidden = isHidden;
-                        await SetState(node, isHidden); 
+                        await SetState(node, isHidden);
                     }
                     node.IsHidden = isHidden;
                 }

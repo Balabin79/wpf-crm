@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace B6_CRM.Properties {
+namespace B6CRM.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

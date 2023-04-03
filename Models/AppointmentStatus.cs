@@ -1,4 +1,4 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("AppointmentsStatuses")]
     public class AppointmentStatus : AbstractBaseModel, IDataErrorInfo
@@ -14,7 +14,7 @@ namespace Dental.Models
         [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
-        public string Caption 
+        public string Caption
         {
             get { return GetProperty(() => Caption); }
             set { SetProperty(() => Caption, value?.Trim()); }
@@ -27,7 +27,7 @@ namespace Dental.Models
         }
 
         [NotMapped]
-        public SolidColorBrush Brush 
+        public SolidColorBrush Brush
         {
             get { return GetProperty(() => Brush); }
             set { SetProperty(() => Brush, value); }
@@ -36,7 +36,7 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
 
@@ -44,9 +44,9 @@ namespace Dental.Models
         {
             if (other is AppointmentStatus clone)
             {
-                if (object.ReferenceEquals(this, clone)) return true;
-                if (StringParamsIsEquel(this.Caption, clone.Caption) && 
-                    StringParamsIsEquel(this.Guid, clone.Guid))  return true;
+                if (ReferenceEquals(this, clone)) return true;
+                if (StringParamsIsEquel(Caption, clone.Caption) &&
+                    StringParamsIsEquel(Guid, clone.Guid)) return true;
             }
             return false;
         }

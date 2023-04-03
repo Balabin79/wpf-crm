@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("ClientInfo")]
     public class Client : AbstractUser, ICloneable
@@ -49,6 +49,6 @@ namespace Dental.Models
             set { SetProperty(() => Print, value); }
         }
 
-        public object Clone() => (Client)this.MemberwiseClone();
+        public object Clone() => (Client)MemberwiseClone();
     }
 }

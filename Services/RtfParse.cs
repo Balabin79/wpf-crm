@@ -1,5 +1,4 @@
-﻿using Dental.Models;
-using Dental.Views.WindowForms;
+﻿using B6CRM.Views.WindowForms;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using System;
@@ -12,9 +11,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Globalization;
-using Dental.Models.Base;
+using B6CRM.Models.Base;
+using B6CRM.Models;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class RtfParse : DevExpress.Mvvm.ViewModelBase
     {
@@ -25,7 +25,8 @@ namespace Dental.Services
             db = new ApplicationContext();
             {
                 CommonValues = db.CommonValues.ToArray();
-                Org = db.Settings.Select(f => new Org {
+                Org = db.Settings.Select(f => new Org
+                {
                     OrgAddress = f.OrgAddress,
                     OrgEmail = f.OrgEmail,
                     OrgName = f.OrgName,
@@ -41,10 +42,10 @@ namespace Dental.Services
             Client = client;
             Employee = employee;
 
-            if (Client != null) 
+            if (Client != null)
                 AdditionalClientValues = db.AdditionalClientValue.Where(f => f.ClientId == client.Id)
                     .Include(f => f.AdditionalField.TypeValue).ToArray();
-          
+
         }
 
         public string Run()
@@ -71,7 +72,7 @@ namespace Dental.Services
                 }
                 return RtfText;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
                 return RtfText;
@@ -92,7 +93,7 @@ namespace Dental.Services
                         return Client?.GetType().GetProperty(propertyName)?.GetValue(Client)?.ToString() ?? "";
                     case "Employee":
                         return Employee?.GetType()?.GetProperty(propertyName)?.GetValue(Employee)?.ToString() ?? "";
-                    case "Org": 
+                    case "Org":
                         return Org.GetType().GetProperty(propertyName)?.GetValue(Org)?.ToString() ?? "";
 
                     case "ClientAdditionalFields": return GetAdditionalClientValue(propertyName);
@@ -134,7 +135,7 @@ namespace Dental.Services
                 Employees = db.Employes.ToArray();
                 new SelectEmployee() { DataContext = this }?.ShowDialog();
             }
-            catch(Exception e) { Log.ErrorHandler(e);}
+            catch (Exception e) { Log.ErrorHandler(e); }
         }
 
         public Employee[] Employees { get; set; }
@@ -170,11 +171,11 @@ namespace Dental.Services
 
     public class Org
     {
-        public string OrgAddress { get; set;}
-        public string OrgEmail { get; set;}
-        public string OrgName { get; set;}
-        public string OrgPhone { get; set;}
-        public string OrgShortName { get; set;}
-        public string OrgSite { get; set;}
+        public string OrgAddress { get; set; }
+        public string OrgEmail { get; set; }
+        public string OrgName { get; set; }
+        public string OrgPhone { get; set; }
+        public string OrgShortName { get; set; }
+        public string OrgSite { get; set; }
     }
 }

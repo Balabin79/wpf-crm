@@ -1,17 +1,17 @@
-using Dental.Infrastructures.Attributes;
-using Dental.Models.Base;
-using Dental.Models.Templates;
+using B6CRM.Models.Base;
+using B6CRM.Models.Templates;
+using B6CRM.Infrastructures.Attributes;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Services")]
     public class Service : BaseTemplate<Service>, IInvoiceItem
     {
         public Service() => IsHidden = 0;
 
-       [Display(Name = "Код")]
+        [Display(Name = "Код")]
         [Clonable]
         public string Code
         {

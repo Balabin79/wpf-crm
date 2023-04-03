@@ -1,5 +1,4 @@
-﻿
-namespace Dental.Interfaces
+﻿namespace B6CRM.Interfaces
 {
     interface ITreeViewCollection : ICollection
     {

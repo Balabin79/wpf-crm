@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Settings
+namespace B6CRM.Views.Settings
 {
     /// <summary>
     /// Логика взаимодействия для PathsSettings.xaml

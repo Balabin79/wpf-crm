@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Dental.Models.Base
+namespace B6CRM.Models.Base
 {
     abstract class TreeModelBase : AbstractBaseModel, ITree, IModel, IDataErrorInfo
     {
@@ -31,11 +31,13 @@ namespace Dental.Models.Base
         public int? IsDelete { get; set; }
 
         [NotMapped]
-        public bool IsExpanded { 
-            get {
+        public bool IsExpanded
+        {
+            get
+            {
                 if (Id == 1) { _isExpanded = true; }
                 return _isExpanded;
-            } 
+            }
 
             //set => Set(ref _isExpanded, value);
         }

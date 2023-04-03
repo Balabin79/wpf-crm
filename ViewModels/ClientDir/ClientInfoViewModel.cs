@@ -1,5 +1,4 @@
 ﻿using System;
-using Dental.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using DevExpress.Mvvm;
@@ -7,8 +6,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
+using B6CRM.Models;
 
-namespace Dental.ViewModels.ClientDir
+namespace B6CRM.ViewModels.ClientDir
 {
     public class ClientInfoViewModel : ViewModelBase, IDataErrorInfo
     {
@@ -99,7 +99,7 @@ namespace Dental.ViewModels.ClientDir
             set { SetProperty(() => ClientCategory, value); }
         }
         public int? ClientCategoryId { get; set; }
-        
+
         public string Note
         {
             get { return GetProperty(() => Note); }
@@ -117,7 +117,7 @@ namespace Dental.ViewModels.ClientDir
         {
             if (FieldsChanges != null) FieldsChanges = CreateFieldsChanges();
 
-            if (other is Client clone && !object.ReferenceEquals(this, clone))
+            if (other is Client clone && !ReferenceEquals(this, clone))
             {
                 StringParamsIsEquel(FirstName, other.FirstName, "Имя");
                 StringParamsIsEquel(LastName, other.LastName, "Фамилия");
@@ -126,13 +126,13 @@ namespace Dental.ViewModels.ClientDir
                 StringParamsIsEquel(Gender, other.Gender, "Пол");
                 StringParamsIsEquel(Phone, other.Phone, "Телефон");
                 StringParamsIsEquel(Address, other.Address, "Адрес проживания");
-                StringParamsIsEquel(Note, other.Note,  "Примечание");
+                StringParamsIsEquel(Note, other.Note, "Примечание");
                 StringParamsIsEquel(Email, other.Email, "Email");
                 StringParamsIsEquel(ClientCategory?.Guid, other.ClientCategory?.Guid, "Категория клиентов");
 
-                if (this.IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
+                if (IsInArchive != other.IsInArchive) FieldsChanges.Add("Перемещена в архив");
             }
-            return FieldsChanges.Count == 0 ;
+            return FieldsChanges.Count == 0;
         }
 
         private void StringParamsIsEquel(string param1, string param2, string fieldName)

@@ -1,11 +1,11 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("ShedulerStatuses")]
     public class ShedulerStatuses : AbstractBaseModel, IDataErrorInfo
@@ -15,7 +15,7 @@ namespace Dental.Models
         public string Caption
         {
             get => caption;
-            set => caption = value?.Trim(); 
+            set => caption = value?.Trim();
         }
         private string caption;
 
@@ -29,7 +29,7 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
 
@@ -37,11 +37,11 @@ namespace Dental.Models
         {
             if (other is ShedulerStatuses clone)
             {
-                if (object.ReferenceEquals(this, clone)) return true;
+                if (ReferenceEquals(this, clone)) return true;
                 if (
-                    StringParamsIsEquel(this.Caption, clone.Caption) &&
-                    StringParamsIsEquel(this.Brush, clone.Brush) &&
-                    StringParamsIsEquel(this.Guid, clone.Guid)
+                    StringParamsIsEquel(Caption, clone.Caption) &&
+                    StringParamsIsEquel(Brush, clone.Brush) &&
+                    StringParamsIsEquel(Guid, clone.Guid)
                 ) return true;
             }
             return false;

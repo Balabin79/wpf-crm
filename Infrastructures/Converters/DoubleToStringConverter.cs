@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class DoubleToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-       {
+        {
             try
             {
                 if (string.IsNullOrEmpty(value?.ToString())) return null;
-                if (double.TryParse((string)value, out double result)) 
+                if (double.TryParse((string)value, out double result))
                     return result;
                 return 0;
-            } catch
+            }
+            catch
             {
                 return 0;
             }
@@ -29,7 +30,7 @@ namespace Dental.Infrastructures.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var str = value?.ToString();
-            return  (str != null)  ? str : "";
+            return str != null ? str : "";
         }
     }
 }

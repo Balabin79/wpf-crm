@@ -1,6 +1,6 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
-using Dental.Services;
+﻿using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.ViewModels.Statistics
+namespace B6CRM.ViewModels.Statistics
 {
     public class ProfitByEmployeesViewModel : ViewModelBase
     {
@@ -64,11 +64,11 @@ namespace Dental.ViewModels.Statistics
 
                 var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
 
-                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) 
+                if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus))
                 {
-                   if (paimentStatus == 1) paid = 1; 
-                   if (paimentStatus == 2) paid = 0; 
-                }         
+                    if (paimentStatus == 1) paid = 1;
+                    if (paimentStatus == 2) paid = 0;
+                }
 
                 if (DateFrom != null && DateTime.TryParse(DateFrom?.ToString(), out DateTime dateTimeFrom))
                 {
@@ -83,14 +83,14 @@ namespace Dental.ViewModels.Statistics
                 // если в фильтре EmployeesSearch указаны сотрудники, то используем доп. фильтр, иначе по всей коллекции (Employees)
 
                 ICollection<Employee> employees;
-                if (EmployeesSearch?.Count > 0) 
-                    employees = EmployeesSearch.OfType<Employee>().ToArray(); 
+                if (EmployeesSearch?.Count > 0)
+                    employees = EmployeesSearch.OfType<Employee>().ToArray();
                 else employees = Employees;
 
                 foreach (var i in employees)
                 {
 
-                    var where = (paid == null) ?
+                    var where = paid == null ?
                         db.InvoiceItems
                         .Where(f => f.Count != 0 && f.Price != null && f.Invoice.DateTimestamp >= dateFrom && f.Invoice.DateTimestamp <= dateTo && f.Invoice.EmployeeId == i.Id)
                         .Include(f => f.Invoice) :
@@ -100,11 +100,11 @@ namespace Dental.ViewModels.Statistics
                         .Include(f => f.Invoice);
 
 
-                   var invoices = where.ToList();
-                        
+                    var invoices = where.ToList();
+
 
                     decimal? sum = 0.00M;
-                    foreach(var inv in invoices)
+                    foreach (var inv in invoices)
                     {
                         sum += inv.Count * inv.Price;
                     }

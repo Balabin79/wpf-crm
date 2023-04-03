@@ -1,5 +1,4 @@
-﻿using Dental.Models;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using System;
@@ -9,10 +8,11 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Threading.Tasks;
-using Dental.Services;
-using Dental.Models.Base;
+using B6CRM.Models.Base;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.ViewModels.Statistics
+namespace B6CRM.ViewModels.Statistics
 {
     public class AdvertisingSourcesViewModel : ViewModelBase
     {
@@ -29,7 +29,7 @@ namespace Dental.ViewModels.Statistics
                 SetTotalPattern();
                 Search();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -106,11 +106,11 @@ namespace Dental.ViewModels.Statistics
 
                 if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) if (paimentStatus == 2) paimentStatus = 0;
 
-                var invoices = InvoicesSearchMode != null ?             
+                var invoices = InvoicesSearchMode != null ?
                     db.Invoices.Include(f => f.Advertising).Include(f => f.InvoiceItems)
-                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo && f.Paid == paimentStatus ).ToArray() :
+                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo && f.Paid == paimentStatus).ToArray() :
                      db.Invoices.Include(f => f.Advertising).Include(f => f.InvoiceItems)
-                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo).ToArray(); 
+                       .Where(f => f.DateTimestamp >= dateFrom && f.DateTimestamp <= dateTo).ToArray();
 
 
                 Stat2D = invoices?.GroupBy(f => f?.Advertising?.Name)?.

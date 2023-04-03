@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Enums
+namespace B6CRM.Enums
 {
-    enum TypeItem 
+    enum TypeItem
     {
         File = 0,
-        Directory = 1      
+        Directory = 1
     }
 }

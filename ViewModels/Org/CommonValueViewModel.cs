@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
+using B6CRM.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
-using Dental.Views.Settings;
-using Dental.Models.Base;
+using B6CRM.Views.Settings;
+using B6CRM.Models.Base;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.ViewModels.Org
+namespace B6CRM.ViewModels.Org
 {
     public class CommonValueViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -27,7 +27,7 @@ namespace Dental.ViewModels.Org
                 CommonValues = db.CommonValues.ToObservableCollection() ?? new ObservableCollection<CommonValue>();
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Дополнительные значения\"!", true);
             }

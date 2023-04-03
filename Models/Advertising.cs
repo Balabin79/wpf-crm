@@ -1,4 +1,4 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using System;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Advertising")]
     public class Advertising : AbstractBaseModel, IDataErrorInfo
@@ -16,7 +16,7 @@ namespace Dental.Models
         public string Name { get; set; }
 
 
-        public string DateFrom 
+        public string DateFrom
         {
             get { return GetProperty(() => DateFrom); }
             //set { SetProperty(() => DateFrom, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(value ?? "").Trim()); }
@@ -34,7 +34,7 @@ namespace Dental.Models
         }
 
 
-        public string DateTo 
+        public string DateTo
         {
             get { return GetProperty(() => DateTo); }
             set

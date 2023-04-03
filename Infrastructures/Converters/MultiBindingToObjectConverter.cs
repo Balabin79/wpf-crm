@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class MultiBindingToObjectConverter : IMultiValueConverter
@@ -23,14 +23,14 @@ namespace Dental.Infrastructures.Converters
                     Row = Values[0] is Type type ? Activator.CreateInstance(type) : Values[0],
                     Type = int.TryParse(Values[1].ToString(), out int result) ? result : 0
                 };
-            } 
+            }
             catch
             {
                 return null;
             }
 
         }
-        
+
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

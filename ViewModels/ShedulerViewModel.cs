@@ -2,33 +2,33 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
+using B6CRM.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
-using Dental.Views.WindowForms;
+using B6CRM.Views.WindowForms;
 using System.Windows.Media;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Scheduling;
-using Dental.ViewModels.EmployeeDir;
-using Dental.Services;
-using Dental.Views.PatientCard;
-using Dental.ViewModels.ClientDir;
-using Dental.Models.Base;
+using B6CRM.ViewModels.EmployeeDir;
+using B6CRM.Views.PatientCard;
+using B6CRM.ViewModels.ClientDir;
+using B6CRM.Models.Base;
 using System.Windows.Data;
-using Dental.Views.Settings;
-using Dental.Reports;
+using B6CRM.Views.Settings;
+using B6CRM.Reports;
 using DevExpress.Xpf.Printing;
-using Dental.Infrastructures.Extensions.Notifications;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using License;
-using Dental.Views.About;
+using B6CRM.Views.About;
+using B6CRM.Services;
+using B6CRM.Models;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class ShedulerViewModel : ViewModelBase
     {
@@ -55,7 +55,7 @@ namespace Dental.ViewModels
 
                 NotificationEvents = db.NotificationEvents?.ToArray();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Расписание\"!", true);
             }
@@ -85,7 +85,7 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -102,12 +102,12 @@ namespace Dental.ViewModels
                 {
                     var eventName = NotificationEvents?.FirstOrDefault(f => f.EventName == "AppointmentAdd");
                     if (eventName == null || eventName.IsNotify != 1) return;
-                        AddNotification($@"Вам назначена встреча с {item.PatientName ?? "Неизвестно"};
+                    AddNotification($@"Вам назначена встреча с {item.PatientName ?? "Неизвестно"};
 Место встречи: {item.LocationName ?? "Неизвестно"}, в {item.Date}. 
 Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date
-                            );
+                        );
                 }
-                    
+
             }
             catch (Exception e)
             {
@@ -117,16 +117,16 @@ namespace Dental.ViewModels
 
         private void AddNotification(string msg, NotificationEvent notificationEvent, string chatId, DateTime dateRelevance)
         {
-            TelegramNotificationsQueueService.AddToQueue(new TelegramNotification() 
-            { 
-                Msg = msg, 
+            TelegramNotificationsQueueService.AddToQueue(new TelegramNotification()
+            {
+                Msg = msg,
                 NotificationEvent = notificationEvent,
                 NotificationEventId = notificationEvent?.Id,
                 ChatId = chatId,
                 DateRelevance = dateRelevance.ToString()
             }, db);
         }
-        
+
 
         [Command]
         public void AppointmentEdited(object p)
@@ -135,7 +135,7 @@ namespace Dental.ViewModels
             {
                 if (p is AppointmentEditedEventArgs e && e.Appointments.Count > 0)
                 {
-                    var item = e.Appointments[0].SourceObject as Appointments; 
+                    var item = e.Appointments[0].SourceObject as Appointments;
                     db.SaveChanges();
                     if (item?.Employee?.IsNotify == 1)
                     {
@@ -145,7 +145,7 @@ namespace Dental.ViewModels
                         AddNotification($@"Изменения по встрече с {item.PatientName ?? "Неизвестно"};
 Место встречи: {item.LocationName ?? "Неизвестно"} в {item.Date}. 
 Дополнительная информация: {item.Description ?? "Неизвестно"};", eventName, item.Employee?.Telegram, item.Date);
-                    }                        
+                    }
                 }
             }
             catch (Exception e)
@@ -162,7 +162,7 @@ namespace Dental.ViewModels
                 if (p is AppointmentRemovedEventArgs e && e.Appointments.Count > 0)
                 {
                     var item = e.Appointments[0].SourceObject as Appointments;
-                    if(item != null) db.Remove(item);
+                    if (item != null) db.Remove(item);
                     db.SaveChanges();
                     if (item?.Employee?.IsNotify == 1)
                     {
@@ -336,8 +336,8 @@ namespace Dental.ViewModels
 
                 }
 
-                if (db.SaveChanges() > 0) 
-                { 
+                if (db.SaveChanges() > 0)
+                {
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     SetStatusCollection();
                 }
@@ -362,8 +362,8 @@ namespace Dental.ViewModels
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
-                    
-                    if(db.SaveChanges() > 0)
+
+                    if (db.SaveChanges() > 0)
                     {
                         new Notification() { Content = "Статус удален из базы данных!" }.run();
                         SetStatusCollection();
@@ -389,7 +389,7 @@ namespace Dental.ViewModels
                     //TimeSpanRange timeSpanRange = scheduler.;
                     scheduler.SchedulerPrintAdapter.DateTimeRange = dateTimeRange;
                     scheduler.SelectedInterval = dateTimeRange;
-                    
+
                     scheduler.SchedulerPrintAdapter.AssignToReport(report);
                     PrintHelper.ShowPrintPreview(scheduler, report);
                 }
@@ -401,11 +401,11 @@ namespace Dental.ViewModels
         }
 
         [Command]
-        public void OpenWorkTime() 
+        public void OpenWorkTime()
         {
             var vm = new WorkTimeVM(db);
             vm.SetWokTimeEvent += SetWorkTime;
-            new WorkTimeWindow() { DataContext = vm }.Show(); 
+            new WorkTimeWindow() { DataContext = vm }.Show();
         }
 
         public void SetWorkTime() => WorkTime = db.Branches.FirstOrDefault()?.WorkTime ?? WorkTimeVM.workTimeDefault;
@@ -438,7 +438,7 @@ namespace Dental.ViewModels
                         i.Brush = new SolidColorBrush(colorName);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.ErrorHandler(e);
                     i.Brush = null;
@@ -447,7 +447,7 @@ namespace Dental.ViewModels
 
             StatusAppointments = collection;
         }
-        
+
 
         public ObservableCollection<Service> ClassificatorCategories
         {
@@ -504,7 +504,7 @@ namespace Dental.ViewModels
             }
         }
 
-        private void LoadClients(ApplicationContext db) => Clients = db.Clients.Where(f => f.IsInArchive != 1 ).OrderBy(f => f.LastName).ToObservableCollection();
+        private void LoadClients(ApplicationContext db) => Clients = db.Clients.Where(f => f.IsInArchive != 1).OrderBy(f => f.LastName).ToObservableCollection();
 
         private void SetSelectedEmployees()
         {

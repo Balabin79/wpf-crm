@@ -1,4 +1,4 @@
-using Dental.Services;
+using B6CRM.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
@@ -9,7 +9,7 @@ using System.IO.IsolatedStorage;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-namespace Dental
+namespace B6CRM
 {
     /// <summary>
     /// Interaction logic for App.xaml

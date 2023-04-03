@@ -1,6 +1,6 @@
-﻿using Dental.Models;
+﻿using B6CRM.Models;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class UserSession : DevExpress.Mvvm.ViewModelBase
     {

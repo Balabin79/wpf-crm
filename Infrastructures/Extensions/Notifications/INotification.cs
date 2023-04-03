@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace Dental.Infrastructures.Extensions.Notifications
+namespace B6CRM.Infrastructures.Extensions.Notifications
 {
     interface INotification
     {

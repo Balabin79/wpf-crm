@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Settings
+namespace B6CRM.Views.Settings
 {
     public partial class SettingsPage : UserControl
     {

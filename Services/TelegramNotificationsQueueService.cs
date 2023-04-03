@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dental.Models;
+using B6CRM.Models;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     internal static class TelegramNotificationsQueueService
     {
@@ -14,20 +14,20 @@ namespace Dental.Services
             try
             {
                 // если есть сеть, то сразу отправить, если нет, то записать в бд
-                if (PingService.IsNetworkAvailable()) 
-                { 
+                if (PingService.IsNetworkAvailable())
+                {
                     TelegramNotificationsSenderService.Send(notification);
                     return;
                 }
 
                 db.TelegramNotifications.Add(notification);
-                db.SaveChanges();                
+                db.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
-            
+
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class RowTotalConverter : IMultiValueConverter
     {
@@ -35,7 +35,7 @@ namespace Dental.Infrastructures.Converters
 
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class DateToStringShortDateConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-       {
+        {
             try
             {
                 if (string.IsNullOrEmpty(value?.ToString())) return null;
-                if (DateTime.TryParse(value?.ToString(), out DateTime result)) 
+                if (DateTime.TryParse(value?.ToString(), out DateTime result))
                     return result.ToShortDateString();
                 return DateTime.Now.ToShortDateString();
-            } catch
+            }
+            catch
             {
                 return DateTime.Now.ToShortDateString();
             }

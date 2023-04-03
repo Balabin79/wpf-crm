@@ -1,8 +1,8 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("InvoiceItems")]
     public class InvoiceItems : AbstractBaseModel
@@ -20,9 +20,9 @@ namespace Dental.Models
         }
 
         public Invoice Invoice { get; set; }
-        public int? InvoiceId { get; set; }       
+        public int? InvoiceId { get; set; }
 
-        public int Count 
+        public int Count
         {
             get { return GetProperty(() => Count); }
             set { SetProperty(() => Count, value); }

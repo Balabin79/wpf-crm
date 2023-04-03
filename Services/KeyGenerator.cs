@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class KeyGenerator
     {
@@ -40,7 +40,7 @@ namespace Dental.Services
             StringBuilder result = new StringBuilder(size);
             foreach (byte b in data)
             {
-                result.Append(chars[b % (chars.Length)]);
+                result.Append(chars[b % chars.Length]);
             }
             return result.ToString();
         }

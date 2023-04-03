@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Dental.Views.WindowForms
+namespace B6CRM.Views.WindowForms
 {
     public partial class WorkTimeWindow : Window
     {

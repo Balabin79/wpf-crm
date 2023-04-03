@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <StartupObject>Dental.App</StartupObject>
+    <StartupObject>B6CRM.App</StartupObject>
     <UserSecretsId>d4ef489f-d1b0-465b-aad3-292f5b9de869</UserSecretsId>
     <ApplicationIcon>te4.ico</ApplicationIcon>
   </PropertyGroup>

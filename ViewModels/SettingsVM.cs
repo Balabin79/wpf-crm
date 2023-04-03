@@ -1,10 +1,10 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
+﻿using B6CRM.Models;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class SettingsVM : ViewModelBase, IDataErrorInfo
     {

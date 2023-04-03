@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dental.Models.Settings
+namespace B6CRM.Models.Settings
 {
     [Serializable]
     public class RolesEnabled

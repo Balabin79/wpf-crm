@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Text.Json;
 using DevExpress.Mvvm.Native;
-using Dental.Models.Base;
 using Microsoft.EntityFrameworkCore;
-using Dental.Models;
+using B6CRM.Models;
+using B6CRM.Models.Base;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class Config
     {
@@ -33,13 +33,13 @@ namespace Dental.Services
                         ConnectionString = config.ConnectionString;
                         DbType = config.Db;
                         PathToProgram = defaultPath;
-                        if (DbType ==1)
+                        if (DbType == 1)
                         {
                             PathToProgram = Path.Combine("\\\\", config.PostgresConnect?.Host, "B6 Software", "B6 CRM");
                         }
                     }
                 }
-                
+
                 PathToEmployeesDirectory = Path.Combine(PathToProgram, "Employees");
                 PathToOrgDirectory = Path.Combine(PathToProgram, "Organization");
                 //PathToClientsDirectory = Path.Combine(PathToProgram, "Clients");
@@ -47,7 +47,7 @@ namespace Dental.Services
                 PathToFilesDirectory = Path.Combine(PathToProgram, "Files");
                 PathToProgramDirectory = PathToProgram;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 DBName = defaultDBName;
                 ConnectionString = Path.Combine(defaultPath, DBName);
@@ -72,19 +72,19 @@ namespace Dental.Services
         // эти пути задаются динамически
         public string PathToEmployeesDirectory;
         public string PathToOrgDirectory;
-       // public string PathToClientsDirectory;
+        // public string PathToClientsDirectory;
         public string PathToDocumentsDirectory;
-        public string PathToFilesDirectory;    
+        public string PathToFilesDirectory;
         public string PathToProgramDirectory;
 
-        public string GetPathToLogo() 
+        public string GetPathToLogo()
         {
             var logo = "";
             var files = new string[] { };
             if (Directory.Exists(PathToOrgDirectory)) files = Directory.GetFiles(PathToOrgDirectory);
 
             foreach (var i in files) if (i.Contains("Logo")) logo = i;
-      
+
             return Path.Combine(PathToOrgDirectory, logo);
         }
 

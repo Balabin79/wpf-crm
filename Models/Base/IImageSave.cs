@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Models.Base
+namespace B6CRM.Models.Base
 {
     public interface IImageSave
     {

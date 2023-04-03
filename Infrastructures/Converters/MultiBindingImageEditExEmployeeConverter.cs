@@ -1,5 +1,5 @@
-﻿using Dental.Infrastructures.Extensions;
-using Dental.Models;
+﻿using B6CRM.Infrastructures.Extensions;
+using B6CRM.Models;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Grid;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class MultiBindingImageEditExEmployeeConverter : IMultiValueConverter
@@ -22,17 +22,17 @@ namespace Dental.Infrastructures.Converters
             {
                 return new ImageEditExCommandParameters()
                 {
-                    ImgEdit =  Values[0] as ImageEditEx,
+                    ImgEdit = Values[0] as ImageEditEx,
                     Employee = Values[1] as Employee
                 };
-            } 
+            }
             catch
             {
                 return new object();
             }
         }
-        
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -40,7 +40,7 @@ namespace Dental.Infrastructures.Converters
 
     public class ImageEditExCommandParameters
     {
-        public ImageEditEx ImgEdit{ get; set; }
+        public ImageEditEx ImgEdit { get; set; }
         public Employee Employee { get; set; }
     }
 }

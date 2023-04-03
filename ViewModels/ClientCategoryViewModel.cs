@@ -1,9 +1,7 @@
-﻿using Dental.Infrastructures.Collection;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Models;
-using Dental.Models.Base;
-using Dental.Services;
-using Dental.Views.WindowForms;
+﻿using B6CRM.Infrastructures.Collection;
+using B6CRM.Infrastructures.Extensions.Notifications;
+using B6CRM.Models.Base;
+using B6CRM.Views.WindowForms;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
@@ -16,8 +14,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     class ClientCategoryViewModel : ViewModelBase
     {
@@ -29,7 +29,7 @@ namespace Dental.ViewModels
                 db = new ApplicationContext();
                 SetCollection();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Категории клиентов\"!", true);
             }

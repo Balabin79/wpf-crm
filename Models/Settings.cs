@@ -1,8 +1,8 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.CodeParser;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Settings")]
     public class Setting : AbstractBaseModel
@@ -15,7 +15,7 @@ namespace Dental.Models
         public string OrgSite { get; set; }
 
         public int? RolesEnabled { get; set; } = 0;
-        public int? IsPasswordRequired { get; set; } = 0;   
+        public int? IsPasswordRequired { get; set; } = 0;
     }
- 
+
 }

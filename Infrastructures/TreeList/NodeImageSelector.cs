@@ -7,18 +7,18 @@ using System.Windows.Media;
 using DevExpress.Xpf.Grid;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Dental.Models.Base;
 using SharpVectors;
 using DevExpress.Utils.Svg;
 using DevExpress.Xpf.Core.Native;
+using B6CRM.Models.Base;
 
-namespace Dental.Infrastructures.TreeList
+namespace B6CRM.Infrastructures.TreeList
 {
     public class NodeImageSelector : TreeListNodeImageSelector
     {
         public ImageSource Open { get; set; }
-        public ImageSource Closed { get; set; } 
-        public ImageSource File { get; set; } 
+        public ImageSource Closed { get; set; }
+        public ImageSource File { get; set; }
 
 
         public override ImageSource Select(DevExpress.Xpf.Grid.TreeList.TreeListRowData rowData)
@@ -30,7 +30,7 @@ namespace Dental.Infrastructures.TreeList
             Open = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/folder-open.svg"));
             Closed = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/folder.svg"));
             File = WpfSvgRenderer.CreateImageSource(new Uri("pack://application:,,,/Resources/Icons/svg/file.svg"));
-                
+
 
 
             var template = rowData.Row as ITree;

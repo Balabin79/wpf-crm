@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.Statistic
+namespace B6CRM.Views.Statistic
 {
     /// <summary>
     /// Логика взаимодействия для ProfitByEmployeesControl.xaml

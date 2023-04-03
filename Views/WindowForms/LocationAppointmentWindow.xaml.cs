@@ -1,4 +1,5 @@
-﻿using Dental.Models;
+﻿using B6CRM.Models;
+using B6CRM.ViewModels;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Concurrent;
@@ -6,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace Dental.Views.WindowForms
+namespace B6CRM.Views.WindowForms
 {
     public partial class LocationAppointmentWindow : Window
     {
@@ -20,7 +21,7 @@ namespace Dental.Views.WindowForms
             try
             {
                 
-                if (((ViewModels.ShedulerViewModel)((FrameworkElement)sender).DataContext).LocationAppointments is ObservableCollection<LocationAppointment> collection)
+                if (((ShedulerViewModel)((FrameworkElement)sender).DataContext).LocationAppointments is ObservableCollection<LocationAppointment> collection)
                 {
                     bool isHaveUnsavedChange = false;
                     if (collection?.Count > 0)

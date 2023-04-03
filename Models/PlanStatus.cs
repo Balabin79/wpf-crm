@@ -1,4 +1,4 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using System;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("PlanStatuses")]
     public class PlanStatus : AbstractBaseModel, IDataErrorInfo

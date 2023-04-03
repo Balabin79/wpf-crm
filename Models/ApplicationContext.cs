@@ -1,19 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
-using Dental.Models.Base;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Forms;
-using Dental.Services;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Presentation;
+using B6CRM.Models.Base;
+using B6CRM.Services;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() { 
+        public ApplicationContext()
+        {
             Config = new Config();
             Database.EnsureCreated();
         }
@@ -28,8 +29,8 @@ namespace Dental.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (Config.DbType == 0 ) optionsBuilder.UseSqlite(@"Data Source=" + Config.ConnectionString);
-            if (Config.DbType == 1 ) optionsBuilder.UseNpgsql(Config.ConnectionString);
+            if (Config.DbType == 0) optionsBuilder.UseSqlite(@"Data Source=" + Config.ConnectionString);
+            if (Config.DbType == 1) optionsBuilder.UseNpgsql(Config.ConnectionString);
             //Database.EnsureCreated();
         }
 
@@ -165,10 +166,10 @@ namespace Dental.Models
             modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 43, Guid = "BiGLr7B4fEm8z3iQJ136", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSettings", PageTitle = "Отображать в меню \"Настройки\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 43 });
 
             modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 44, Guid = "BiGLr7B4fEm8z3iQJ137", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintClients", PageTitle = "Печать списка клиентов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 44 });
-            
+
             modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 45, Guid = "BiGLr7B4fEm8z3iQJ138", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ImportData", PageTitle = "Импорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 45 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 46, Guid = "BiGLr7B4fEm8z3iQJ139", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ExportData", PageTitle = "Экспорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 46 });            
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 46, Guid = "BiGLr7B4fEm8z3iQJ139", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ExportData", PageTitle = "Экспорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 46 });
             #endregion
 
             #region NotificationEvent seeding
@@ -221,7 +222,7 @@ namespace Dental.Models
 
             #region Services seeding
             modelBuilder.Entity<Service>().HasData(new Service { Id = 1, Guid = "gCrPxVN8H8LtQRUrgSzD", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Услуги", ParentID = null, IsDir = 1, IsHidden = 0 });
-            
+
             modelBuilder.Entity<Service>().HasData(new Service { Id = 2, Guid = "I2WZnYUvs1VVVtdBVUzu", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Первичный/Повторный прием", ParentID = 1, IsDir = 1, IsHidden = 0 });
 
             modelBuilder.Entity<Service>().HasData(new Service { Id = 4, Guid = "NiHheTpwMmSxnTDIKOT2", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Прием (осмотр, консультация) врача-стоматолога повторный", ParentID = 2, IsDir = 0, Code = "В01.065.008", Price = 300, IsHidden = 0 });
@@ -234,12 +235,12 @@ namespace Dental.Models
             modelBuilder.Entity<Service>().HasData(new Service { Id = 7, Guid = "sqCB9LhDHRXNxqgq2w3y", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Материалы", IsDir = 1, IsHidden = 0, Sort = 2 });
 
             modelBuilder.Entity<Service>().HasData(new Service { Id = 8, Guid = "yf36A8CxbW0tZ3HwsqY3", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Перевязочный материал", ParentID = 7, IsDir = 1, IsHidden = 0 });
-            
+
             modelBuilder.Entity<Service>().HasData(new Service { Id = 9, Guid = "hwXfWzV5hY4fNxQx0ViN", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A123456", Price = 50, ParentID = 8, Name = "Бинт", IsDir = 0, IsHidden = 0 });
 
-            modelBuilder.Entity<Service>().HasData(new Service { Id = 10, Guid = "08hPzUGFIZTMt6B1hzfR", CreatedAt = 1649579905, UpdatedAt = 1649579905,  Name = "Хирургическая стоматология и имплантология", ParentID = 1, IsDir = 1, IsHidden = 0 });
+            modelBuilder.Entity<Service>().HasData(new Service { Id = 10, Guid = "08hPzUGFIZTMt6B1hzfR", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Хирургическая стоматология и имплантология", ParentID = 1, IsDir = 1, IsHidden = 0 });
 
-            modelBuilder.Entity<Service>().HasData(new Service { Id = 11, Guid = "DUu7uohDX6xGpILJ3y1y", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001",  Price = 500, ParentID = 10, Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", IsDir = 0, IsHidden = 0 });
+            modelBuilder.Entity<Service>().HasData(new Service { Id = 11, Guid = "DUu7uohDX6xGpILJ3y1y", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Price = 500, ParentID = 10, Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", IsDir = 0, IsHidden = 0 });
 
             modelBuilder.Entity<Service>().HasData(new Service { Id = 12, Guid = "cuzdxHL7IqJEo1oJd41x", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A16.07.001", Price = 1000, ParentID = 10, Name = "Удаление зуба", IsDir = 0, IsHidden = 0 });
 
@@ -282,8 +283,8 @@ namespace Dental.Models
             #endregion
 
             #region PlanItems seeding
-            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 1, Guid = "1ZBGDukMywHRpCfCKcQn", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", Count = 1, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 500 });   
-            
+            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 1, Guid = "1ZBGDukMywHRpCfCKcQn", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", Count = 1, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 500 });
+
             modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 2, Guid = "CBOZoMwf1JEH3bdGkLxd", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A16.07.001", Name = "Удаление зуба", Count = 2, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 1000 });
             #endregion
         }

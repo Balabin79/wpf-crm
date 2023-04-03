@@ -1,6 +1,6 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
-using Dental.Services;
+﻿using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.ViewModels.Statistics
+namespace B6CRM.ViewModels.Statistics
 {
     public class LineViewModel : ViewModelBase
     {
@@ -54,7 +54,7 @@ namespace Dental.ViewModels.Statistics
         public void Search()
         {
             try
-            {               
+            {
                 var all = db.Invoices.OrderBy(f => f.DateTimestamp).ToArray();
                 if (all == null) return;
 
@@ -104,10 +104,10 @@ namespace Dental.ViewModels.Statistics
                         continue;
                     }
                     parameters += " AND " + where[i];
-                 }
+                }
                 if (where.Count > 0) parameters += " AND ";
 
-                 // если в фильтре EmployeesSearch указаны сотрудники, то используем доп. фильтр, иначе по всей коллекции (Employees)
+                // если в фильтре EmployeesSearch указаны сотрудники, то используем доп. фильтр, иначе по всей коллекции (Employees)
 
                 ICollection<Employee> employees;
                 if (EmployeesSearch?.Count > 0)
@@ -146,10 +146,10 @@ namespace Dental.ViewModels.Statistics
                             if (period != null)
                             {
                                 period.Sum += item.Count * item.Price;
-                            }                           
-                        }            
+                            }
+                        }
                     }
-                    Data.Add(seria);                   
+                    Data.Add(seria);
                 }
                 //SetDefaultPeriods();
             }
@@ -193,7 +193,7 @@ namespace Dental.ViewModels.Statistics
     {
         public string Name
         {
-            get { return GetProperty(() =>Name); }
+            get { return GetProperty(() => Name); }
             set { SetProperty(() => Name, value); }
         }
 

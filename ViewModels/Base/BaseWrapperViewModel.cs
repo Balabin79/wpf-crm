@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels.Base
 {
     public class BaseWrapperViewModel<T> : ViewModelBase
     {

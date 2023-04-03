@@ -1,5 +1,4 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
+﻿using B6CRM.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +9,12 @@ using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using Dental.Infrastructures.Converters;
+using B6CRM.Infrastructures.Converters;
 using System.Windows.Data;
-using Dental.Services;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.ViewModels.AdditionalFields
+namespace B6CRM.ViewModels.AdditionalFields
 {
     public class FieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -27,7 +27,7 @@ namespace Dental.ViewModels.AdditionalFields
                 ClientFieldsLoading(client);
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -40,7 +40,7 @@ namespace Dental.ViewModels.AdditionalFields
             if (AdditionalClientFields.Count() == 0) return;
 
             // загружаем значения полей
-            var AdditionalClientValues = (client != null) ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
+            var AdditionalClientValues = client != null ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
 
             foreach (var i in AdditionalClientFields)
             {
@@ -76,15 +76,18 @@ namespace Dental.ViewModels.AdditionalFields
                     case "string":
                         return new TextEdit() { EditValue = value };
 
-                    case "money": 
-                        return new TextEdit() { Mask = "c", MaskType = MaskType.Numeric, 
+                    case "money":
+                        return new TextEdit()
+                        {
+                            Mask = "c",
+                            MaskType = MaskType.Numeric,
                             MaskCulture = CultureInfo.CurrentCulture,
                             MaskUseAsDisplayFormat = true,
-                            DisplayFormatString = "{}{0:c2}", 
-                            EditValue = decimal.TryParse(value, out decimal val) ? String.Format("{0:c2}", val) : value
-                };
+                            DisplayFormatString = "{}{0:c2}",
+                            EditValue = decimal.TryParse(value, out decimal val) ? string.Format("{0:c2}", val) : value
+                        };
 
-                    case "int": 
+                    case "int":
                         return new TextEdit() { Mask = "d", MaskType = MaskType.Numeric, EditValue = value };
 
                     case "float":
@@ -106,7 +109,7 @@ namespace Dental.ViewModels.AdditionalFields
                     default: return new TextEdit() { EditValue = value };
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
                 return new TextEdit() { EditValue = value };
@@ -130,7 +133,7 @@ namespace Dental.ViewModels.AdditionalFields
                     if (value != null) value.Value = val;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }

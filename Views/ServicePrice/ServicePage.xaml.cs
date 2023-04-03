@@ -1,8 +1,6 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
-using Dental.Services;
-using Dental.ViewModels.Base;
-using Dental.ViewModels.ServicePrice;
+﻿using B6CRM.Models.Base;
+using B6CRM.ViewModels.Base;
+using B6CRM.ViewModels.ServicePrice;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
@@ -19,8 +17,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.EntityFrameworkCore;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.Views.ServicePrice
+namespace B6CRM.Views.ServicePrice
 {
     /// <summary>
     /// Логика взаимодействия для ServicePage.xaml

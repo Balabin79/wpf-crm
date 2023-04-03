@@ -1,6 +1,4 @@
-﻿using Dental.Infrastructures.Converters;
-using Dental.Models;
-using Dental.Models.Base;
+﻿using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.POCO;
@@ -16,22 +14,24 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using System.Windows.Data;
-using Dental.Services;
+using B6CRM.Models;
+using B6CRM.Infrastructures.Converters;
+using B6CRM.Services;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class ClientAppointmentWindowViewModel : AppointmentWindowViewModel
     {
         private readonly ApplicationContext db;
         public static ClientAppointmentWindowViewModel Create(
-            AppointmentItem appointmentItem, 
-            SchedulerControl scheduler, 
+            AppointmentItem appointmentItem,
+            SchedulerControl scheduler,
             ShedulerViewModel vm
             )
         {
             return ViewModelSource.Create(() => new ClientAppointmentWindowViewModel(appointmentItem, scheduler, vm));
         }
-        
+
         protected ClientAppointmentWindowViewModel(
             AppointmentItem appointmentItem,
             SchedulerControl scheduler,
@@ -43,7 +43,7 @@ namespace Dental.ViewModels
             Locations = vm.LocationAppointments;
             db = vm.db;
 
-            Patient = vm.Clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"])); 
+            Patient = vm.Clients?.FirstOrDefault(x => x.Id.Equals(CustomFields["ClientInfoId"]));
             if (CustomFields["Client"] is Client client)
             {
                 Patient = client;
@@ -67,7 +67,7 @@ namespace Dental.ViewModels
                     {
                         if (classificator.IsDir == 1) return;
                         parameters.Popup.EditValue = classificator;
-                        this.Appointment.Description = classificator.FullName;
+                        Appointment.Description = classificator.FullName;
                     }
                     parameters.Popup.ClosePopup();
 
@@ -79,8 +79,9 @@ namespace Dental.ViewModels
             }
         }
 
-       
-        public ObservableCollection<Client> Patients {
+
+        public ObservableCollection<Client> Patients
+        {
             get => patients;
             set => patients = value;
         }
@@ -148,7 +149,7 @@ namespace Dental.ViewModels
         }
 
         /**** File *****/
-        protected IOpenFileDialogService OpenFileDialogService { get { return this.GetService<IOpenFileDialogService>(); } }
+        protected IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
 
     }
 }

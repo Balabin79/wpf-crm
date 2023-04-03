@@ -10,18 +10,20 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class ImageToStringConverter : IValueConverter
     {
 
         public object Convert(
             object value, Type targetType, object parameter, CultureInfo culture)
-        { try
+        {
+            try
             {
                 if (string.IsNullOrEmpty(value.ToString())) return "";
                 return value.ToString();
-            } catch
+            }
+            catch
             {
                 return null;
             }
@@ -35,7 +37,8 @@ namespace Dental.Infrastructures.Converters
             {
                 if (string.IsNullOrEmpty(value.ToString())) return null;
                 return new ImageSourceConverter().ConvertFromString(value.ToString()) as ImageSource;
-            } catch
+            }
+            catch
             {
                 return null;
             }

@@ -3,32 +3,32 @@ using System.Text.Json;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
+using B6CRM.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Collections.Generic;
-using Dental.Models.Settings;
-using Dental.Views.About;
+using B6CRM.Models.Settings;
+using B6CRM.Views.About;
 using System.Security.Cryptography;
 using System.Text;
 using System.IO;
 using System.ComponentModel.DataAnnotations;
-using Dental.Views.Settings;
-using Dental.Infrastructures.Extensions;
+using B6CRM.Views.Settings;
 using System.Windows.Media.Imaging;
-using Dental.ViewModels.Org;
+using B6CRM.ViewModels.Org;
 using System.Windows.Media;
 using License;
-using Dental.Models.Base;
 using System.Text.RegularExpressions;
+using B6CRM.Models;
+using B6CRM.Infrastructures.Extensions;
+using B6CRM.Models.Base;
+using B6CRM.Services;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class SettingsViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
@@ -40,7 +40,7 @@ namespace Dental.ViewModels
             {
                 db = new ApplicationContext();
                 Config = new Config();
-                SettingsVM = new SettingsVM();              
+                SettingsVM = new SettingsVM();
 
                 if (File.Exists(Config.PathToConfig))
                 {
@@ -54,8 +54,8 @@ namespace Dental.ViewModels
 
                 if (SettingsVM.PostgresConnect == null) SettingsVM.PostgresConnect = new PostgresConnect();
 
-                var model = db.Settings.FirstOrDefault() ?? new Setting();                        
-                SettingsVM.Copy(model);          
+                var model = db.Settings.FirstOrDefault() ?? new Setting();
+                SettingsVM.Copy(model);
                 //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
                 IsReadOnly = model?.Id > 0;
@@ -123,7 +123,7 @@ namespace Dental.ViewModels
                 db.Config = Config;
 
                 // eсли подключение не упало, то сохраняем настройки подключения
-                model = db.Settings.FirstOrDefault() ?? new Setting();               
+                model = db.Settings.FirstOrDefault() ?? new Setting();
                 ConfigHandler();
 
                 if (IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
@@ -201,7 +201,7 @@ namespace Dental.ViewModels
                 model.OrgSite = SettingsVM.OrgSite;
                 model.IsPasswordRequired = SettingsVM.IsPasswordRequired;
                 model.RolesEnabled = SettingsVM.RolesEnabled;
-                if (model?.Id == 0) db.Settings.Add(model);              
+                if (model?.Id == 0) db.Settings.Add(model);
 
                 #region лицензия 
                 if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
@@ -210,7 +210,7 @@ namespace Dental.ViewModels
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -232,14 +232,14 @@ namespace Dental.ViewModels
                 {
                     SettingsVM.Id = model.Id;
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                }           
+                }
             }
             catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при сохранении настроек!", true);
             }
         }
-   
+
         #region Свойства
         public bool IsReadOnly
         {
@@ -385,7 +385,7 @@ namespace Dental.ViewModels
             {
                 new InfoWindow()?.ShowDialog();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }

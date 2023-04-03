@@ -1,5 +1,5 @@
 ﻿<UserControl 
-    x:Class="Dental.Views.PatientCard.Services"
+    x:Class="B6CRM.Views.PatientCard.Services"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -11,8 +11,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters"
-    xmlns:tree="clr-namespace:Dental.Infrastructures.TreeList"
+    xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"
+    xmlns:tree="clr-namespace:B6CRM.Infrastructures.TreeList"
     mc:Ignorable="d"
     d:DesignHeight="400"
     dx:ThemeManager.ThemeName="Office2019White"

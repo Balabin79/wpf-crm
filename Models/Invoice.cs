@@ -1,4 +1,4 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.Collections.ObjectModel;
@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Invoices")]
     public class Invoice : AbstractBaseModel, IDataErrorInfo
@@ -79,7 +79,7 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
 
@@ -87,12 +87,12 @@ namespace Dental.Models
         {
             if (other is Invoice model)
             {
-                if (object.ReferenceEquals(this, model)) return true;
+                if (ReferenceEquals(this, model)) return true;
                 if (
-                    StringParamsIsEquel(Number, model.Number) && 
+                    StringParamsIsEquel(Number, model.Number) &&
                     StringParamsIsEquel(Date, model.Date) &&
-                    StringParamsIsEquel(Client?.Guid, model.Client?.Guid) && 
-                    this.Paid == model.Paid
+                    StringParamsIsEquel(Client?.Guid, model.Client?.Guid) &&
+                    Paid == model.Paid
                     ) return true;
             }
             return false;

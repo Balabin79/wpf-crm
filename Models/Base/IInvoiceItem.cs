@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Models.Base
+namespace B6CRM.Models.Base
 {
     public interface IInvoiceItem
     {
-        int Id{ get; set; }
+        int Id { get; set; }
         string Name { get; set; }
         string Code { get; set; }
     }

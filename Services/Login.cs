@@ -1,5 +1,4 @@
-﻿using Dental.Models;
-using Dental.Views;
+﻿using B6CRM.Views;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -12,8 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Security.Cryptography;
+using B6CRM.Models;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class Login : ViewModelBase
     {
@@ -83,7 +83,7 @@ namespace Dental.Services
                     args.Cancel = true;
                     return;
                 }
-                else App.Current.Shutdown();
+                else Application.Current.Shutdown();
             }
         }
 
@@ -231,12 +231,12 @@ namespace Dental.Services
             UserSession.PrintDocument = true;
 
             UserSession.ShowStatistics = true;
-            UserSession.ShowSettings = true;      
-            UserSession.ImportData = true;      
-            UserSession.ExportData = true;      
+            UserSession.ShowSettings = true;
+            UserSession.ImportData = true;
+            UserSession.ExportData = true;
         }
 
-        public bool HasAccess(RoleManagment role) => (Employee?.IsDoctor == 1 && role.DoctorAccess == 1) || (Employee?.IsReception == 1 && role.ReceptionAccess == 1);
+        public bool HasAccess(RoleManagment role) => Employee?.IsDoctor == 1 && role.DoctorAccess == 1 || Employee?.IsReception == 1 && role.ReceptionAccess == 1;
 
 
         /*  Password */
@@ -247,7 +247,7 @@ namespace Dental.Services
             {
                 return Employee?.Password == BitConverter.ToString(MD5.Create().ComputeHash(new UTF8Encoding().GetBytes(Password))).Replace("-", string.Empty);
             }
-            catch(Exception e) { Log.ErrorHandler(e); return false; }
+            catch (Exception e) { Log.ErrorHandler(e); return false; }
         }
 
         /*******************************************/

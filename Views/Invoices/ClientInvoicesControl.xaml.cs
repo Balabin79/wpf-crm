@@ -1,8 +1,8 @@
-﻿using Dental.Models;
+﻿using B6CRM.Models;
 using DevExpress.Xpf.Grid;
 using System.Windows.Controls;
 
-namespace Dental.Views.Invoices
+namespace B6CRM.Views.Invoices
 {
 
     public partial class ClientInvoicesControl : UserControl

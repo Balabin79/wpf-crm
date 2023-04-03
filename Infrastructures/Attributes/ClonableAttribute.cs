@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Infrastructures.Attributes
+namespace B6CRM.Infrastructures.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class ClonableAttribute : Attribute{}
+    public class ClonableAttribute : Attribute { }
 }

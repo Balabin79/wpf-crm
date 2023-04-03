@@ -9,8 +9,8 @@
     xmlns:dxschcore="http://schemas.devexpress.com/winfx/2008/xaml/scheduling/core"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:local="clr-namespace:Dental.Views"
-    xmlns:behav="clr-namespace:Dental.Behaviors"
+    xmlns:local="clr-namespace:B6CRM.Views"
+    xmlns:behav="clr-namespace:B6CRM.Behaviors"
     xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"   
                     >
 

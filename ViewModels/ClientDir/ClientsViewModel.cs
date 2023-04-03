@@ -3,28 +3,25 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using Dental.Views.PatientCard;
-using Dental.Views.WindowForms;
+using B6CRM.Views.PatientCard;
+using B6CRM.Views.WindowForms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using DevExpress.Mvvm.Native;
-using Dental.Infrastructures.Collection;
+using B6CRM.Infrastructures.Collection;
 using DevExpress.Xpf.Core;
 using System.Windows;
-using Dental.Services;
-using Dental.Models;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.Views.Documents;
-using Dental.Services.Files;
-using Dental.Views.AdditionalFields;
-using Dental.ViewModels.AdditionalFields;
+using B6CRM.Views.Documents;
+using B6CRM.Services.Files;
+using B6CRM.Views.AdditionalFields;
+using B6CRM.ViewModels.AdditionalFields;
 using System.IO;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Models.Base;
+using B6CRM.Infrastructures.Extensions.Notifications;
+using B6CRM.Models.Base;
 using DevExpress.Xpf.Editors;
 using System.Diagnostics;
-using Dental.Infrastructures.Converters;
-using Dental.Reports;
+using B6CRM.Reports;
 using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.Parameters;
 using DevExpress.DataAccess.Sql;
@@ -39,8 +36,11 @@ using System.Windows.Data;
 using Microsoft.VisualBasic;
 using GroupInfo = DevExpress.Xpf.Printing.GroupInfo;
 using System.Linq.Expressions;
+using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Infrastructures.Converters;
 
-namespace Dental.ViewModels.ClientDir
+namespace B6CRM.ViewModels.ClientDir
 {
     public class ClientsViewModel : ViewModelBase
     {
@@ -66,7 +66,7 @@ namespace Dental.ViewModels.ClientDir
 
                 ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
                 Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
-                Advertisings = db.Advertising.ToObservableCollection();               
+                Advertisings = db.Advertising.ToObservableCollection();
                 PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
             }
             catch (Exception e)
@@ -112,7 +112,7 @@ namespace Dental.ViewModels.ClientDir
 
         #region Загрузка списков клиентов и всех инвойсов 
         public void LoadClients(int? isArhive = 0)
-        {        
+        {
             Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
         }
 
@@ -129,7 +129,7 @@ namespace Dental.ViewModels.ClientDir
         public void LoadEmployees()
         {
             Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
-            foreach (var i in Employees) i.IsVisible = false;        
+            foreach (var i in Employees) i.IsVisible = false;
         }
 
         public void LoadPlans()
@@ -170,7 +170,7 @@ namespace Dental.ViewModels.ClientDir
             get { return GetProperty(() => ClientCategories); }
             set { SetProperty(() => ClientCategories, value); }
         }
-                
+
         public ObservableCollection<Advertising> Advertisings
         {
             get { return GetProperty(() => Advertisings); }
@@ -227,7 +227,7 @@ namespace Dental.ViewModels.ClientDir
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -235,8 +235,8 @@ namespace Dental.ViewModels.ClientDir
                 }
             }
             catch (Exception e)
-            { 
-                Log.ErrorHandler(e); 
+            {
+                Log.ErrorHandler(e);
             }
         }
         #endregion
@@ -360,7 +360,7 @@ namespace Dental.ViewModels.ClientDir
 
                 if (!string.IsNullOrEmpty(LastNameSearch?.ToString()))
                 {
-                    Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();                  
+                    Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();
                 }
             }
             catch (Exception e)
@@ -428,7 +428,7 @@ namespace Dental.ViewModels.ClientDir
                     };
 
                     db.Invoices.Add(model);
-                    if (db.SaveChanges() > 0) 
+                    if (db.SaveChanges() > 0)
                     {
                         ClientInvoices.Add(model);
                         LoadInvoices();
@@ -459,7 +459,7 @@ namespace Dental.ViewModels.ClientDir
                         db.Entry(invoice).State = EntityState.Deleted;
 
                     }
-                    else 
+                    else
                     {
                         db.Entry(invoice).State = EntityState.Detached;
                     }
@@ -477,7 +477,7 @@ namespace Dental.ViewModels.ClientDir
                     if (clientInv != null) ClientInvoices.Remove(clientInv);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при попытке удалить счет из базы данных!", true);
             }
@@ -509,7 +509,7 @@ namespace Dental.ViewModels.ClientDir
                     {
                         if (service.IsDir == 1) return;
                         parameters.Popup.EditValue = service;
-                        if (((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems item) 
+                        if (((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems item)
                         {
                             item.Price = service.Price;
                             item.Code = service.Code;
@@ -518,7 +518,7 @@ namespace Dental.ViewModels.ClientDir
                     parameters.Popup.ClosePopup();
                 }
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -534,7 +534,7 @@ namespace Dental.ViewModels.ClientDir
                     invoice.InvoiceItems.Add(new InvoiceItems() { Invoice = invoice, InvoiceId = invoice?.Id });
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -596,10 +596,10 @@ namespace Dental.ViewModels.ClientDir
                     {
                         string connectionString = db.Database.GetConnectionString();
                         var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1) 
+                        if (Config.DbType == 1)
                         {
-                           // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
-                            provider = "XpoProvider=Postgres;"; 
+                            // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
+                            provider = "XpoProvider=Postgres;";
                         }
                         source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
                     }
@@ -607,7 +607,7 @@ namespace Dental.ViewModels.ClientDir
                     PrintHelper.ShowPrintPreview(conv.Page, report);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
             }
@@ -635,7 +635,7 @@ namespace Dental.ViewModels.ClientDir
                     return;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -657,7 +657,7 @@ namespace Dental.ViewModels.ClientDir
         }
         #endregion
 
-   
+
         #region Раздел карты "Дополнительные поля"
         [Command]
         public void OpenFormFields()
@@ -674,10 +674,10 @@ namespace Dental.ViewModels.ClientDir
             }
         }
 
-        public void UpdateFields() 
-        { 
+        public void UpdateFields()
+        {
             FieldsViewModel.ClientFieldsLoading(Model);
-            AdditionalFieldsVisible = FieldsViewModel?.Fields.Count > 0 ?  Visibility.Visible : Visibility.Collapsed;
+            AdditionalFieldsVisible = FieldsViewModel?.Fields.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
         #endregion
 
@@ -693,12 +693,12 @@ namespace Dental.ViewModels.ClientDir
                 Init(Model);
                 SelectedItem();
 
-                if (Application.Current.Resources["Router"] is MainViewModel nav && 
-                    nav?.NavigationService is NavigationServiceBase service && 
+                if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                    nav?.NavigationService is NavigationServiceBase service &&
                     service.Current is PatientsList page
-                    ) page.clientCard.tabs.SelectedIndex = 0;                
+                    ) page.clientCard.tabs.SelectedIndex = 0;
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -725,7 +725,7 @@ namespace Dental.ViewModels.ClientDir
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -748,15 +748,16 @@ namespace Dental.ViewModels.ClientDir
                 else
                 { // редактирование су-щего эл-та
                     FieldsViewModel?.Save(Model);
-                    if (db.SaveChanges() > 0) {
+                    if (db.SaveChanges() > 0)
+                    {
                         LoadClients(Model.IsInArchive);
                         IsArchiveList = Model.IsInArchive == 1;
                         SelectedItem();
-                        new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run(); 
-                    }                                  
+                        new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
+                    }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "При сохранении данных возникла ошибка!", true);
             }
@@ -775,23 +776,23 @@ namespace Dental.ViewModels.ClientDir
                 new UserFilesManagement(Model.Guid).DeleteDirectory();
                 var id = Model?.Id;
 
-                    //удалить также в расписании и в счетах
-                    db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                //удалить также в расписании и в счетах
+                db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                    db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                    db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
-                    db.Entry(Model).State = EntityState.Deleted;
-                    if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
+                db.Entry(Model).State = EntityState.Deleted;
+                if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
-                    // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                    var item = Clients.FirstOrDefault(f => f.Guid == Model.Guid);
-                    if (item != null) Clients.Remove(item);
+                // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
+                var item = Clients.FirstOrDefault(f => f.Guid == Model.Guid);
+                if (item != null) Clients.Remove(item);
 
-                    db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                    db.SaveChanges();
-                
+                db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.SaveChanges();
+
 
                 // удаляем файлы 
                 if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);
@@ -881,8 +882,8 @@ namespace Dental.ViewModels.ClientDir
                     };
                     proc.Start();
                 }
-                    
-                    //Process.Start(PathToUserFiles);
+
+                //Process.Start(PathToUserFiles);
             }
             catch (Exception e)
             {
@@ -904,11 +905,11 @@ namespace Dental.ViewModels.ClientDir
                     };
                     proc.Start();
                 }
-                    //Process.Start(file.FullName);
+                //Process.Start(file.FullName);
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "Невозможно выполнить загрузку файла!", true);                 
+                Log.ErrorHandler(e, "Невозможно выполнить загрузку файла!", true);
             }
         }
 
@@ -948,7 +949,7 @@ namespace Dental.ViewModels.ClientDir
                 if (PathToUserFiles != null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
 
 
-                
+
                 File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
                 File.SetAttributes(Path.Combine(PathToUserFiles, file.Name), FileAttributes.Normal);
 
@@ -989,10 +990,10 @@ namespace Dental.ViewModels.ClientDir
             if (Application.Current.Resources["Router"] is MainViewModel nav &&
                      nav?.NavigationService is NavigationServiceBase service &&
                      service.Current is PatientsList page
-                     ) page.SelectedItem();     
+                     ) page.SelectedItem();
         }
 
-        private INavigationService NavigationService { get { return this.GetService<INavigationService>(); } }
+        private INavigationService NavigationService { get { return GetService<INavigationService>(); } }
 
         public Config Config
         {
@@ -1048,7 +1049,7 @@ namespace Dental.ViewModels.ClientDir
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -1059,7 +1060,7 @@ namespace Dental.ViewModels.ClientDir
                 if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch (Exception e)
-            {               
+            {
                 Log.ErrorHandler(e, "Ошибка при попытке сохранить план в базе данных!", true);
             }
         }
@@ -1096,8 +1097,8 @@ namespace Dental.ViewModels.ClientDir
                     if (inv != null) Plans.Remove(inv);
                 }
             }
-            catch(Exception e)
-            {              
+            catch (Exception e)
+            {
                 Log.ErrorHandler(e, "Ошибка при попытке удалить план из базы данных!", true);
             }
         }
@@ -1180,7 +1181,7 @@ namespace Dental.ViewModels.ClientDir
         [Command]
         public void ShedulerOpening(object p)
         {
-            try 
+            try
             {
                 new ShedulerWindow().ShowDialog();
             }
@@ -1201,7 +1202,7 @@ namespace Dental.ViewModels.ClientDir
 
                     foreach (var item in plan.PlanItems)
                     {
-                        if(item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
+                        if (item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
                         {
                             item.IsMovedToInvoice = 1;
                             items.Add(item);
@@ -1220,8 +1221,8 @@ namespace Dental.ViewModels.ClientDir
                             ClientId = Model?.Id
                         };
 
-                        items.ForEach(f => invoice.InvoiceItems.Add( new InvoiceItems() 
-                        { 
+                        items.ForEach(f => invoice.InvoiceItems.Add(new InvoiceItems()
+                        {
                             Code = f.Code,
                             Count = f.Count,
                             Price = f.Price,
@@ -1236,7 +1237,7 @@ namespace Dental.ViewModels.ClientDir
                             LoadInvoices();
                             new Notification() { Content = $"Сформирован новый счет №{invoice.Number}" }.run();
                         }
-                    }                      
+                    }
                 }
             }
             catch (Exception e)
@@ -1250,39 +1251,39 @@ namespace Dental.ViewModels.ClientDir
         [Command]
         public void PrintPlan(object p)
         {
-             try
-             {
-                 if (p is PageIntCommandParameters conv)
-                 {
-                     Report2 report = new Report2();
-                     var parameter = new Parameter()
-                     {
-                         Name = "Id",
-                         Description = "Id:",
-                         Type = typeof(int),
-                         Value = conv.Param,
-                         Visible = false
-                     };
-                     report.RequestParameters = false;
-                     report.Parameters.Add(parameter);
-                     report.FilterString = "[Id] = [Parameters.Id]";
-                     //report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+            try
+            {
+                if (p is PageIntCommandParameters conv)
+                {
+                    Report2 report = new Report2();
+                    var parameter = new Parameter()
+                    {
+                        Name = "Id",
+                        Description = "Id:",
+                        Type = typeof(int),
+                        Value = conv.Param,
+                        Visible = false
+                    };
+                    report.RequestParameters = false;
+                    report.Parameters.Add(parameter);
+                    report.FilterString = "[Id] = [Parameters.Id]";
+                    //report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
 
-                     if (report?.DataSource is SqlDataSource source)
-                     {
-                         string connectionString = db.Database.GetConnectionString();
-                         var provider = "XpoProvider=SQLite;";
-                         if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
-                         source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
-                     }
+                    if (report?.DataSource is SqlDataSource source)
+                    {
+                        string connectionString = db.Database.GetConnectionString();
+                        var provider = "XpoProvider=SQLite;";
+                        if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
+                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
+                    }
 
-                     PrintHelper.ShowPrintPreview(conv.Page, report);
-                 }
-             }
-             catch(Exception e)
-             {               
+                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                }
+            }
+            catch (Exception e)
+            {
                 Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
-             }
+            }
         }
         #endregion
 
@@ -1348,7 +1349,7 @@ namespace Dental.ViewModels.ClientDir
         }
 
         public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
-        
+
 
         private void SetSourceCollectttion()
         {
@@ -1363,13 +1364,13 @@ namespace Dental.ViewModels.ClientDir
                     var marked = collection.OfType<PrintCondition>().ToArray();
 
                     if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
-                        //ctx.Where(f => f.IsInArchive == true);
+                    //ctx.Where(f => f.IsInArchive == true);
 
                     var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
 
                     if (cat.Length > 0)
                     {
-                        where += (!string.IsNullOrEmpty(where)) ?  " OR" : " WHERE";
+                        where += !string.IsNullOrEmpty(where) ? " OR" : " WHERE";
                         where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
                     }
                 }

@@ -1,6 +1,6 @@
-﻿using Dental.Models;
-using Dental.ViewModels;
-using Dental.ViewModels.ClientDir;
+﻿using B6CRM.Models;
+using B6CRM.ViewModels;
+using B6CRM.ViewModels.ClientDir;
 using DevExpress.Xpf.Grid;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     /// <summary>
     /// Логика взаимодействия для PlanControl.xaml

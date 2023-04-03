@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-using Dental.Services;
 using DevExpress.Mvvm;
-using Dental.Infrastructures.Attributes;
+using B6CRM.Infrastructures.Attributes;
+using B6CRM.Services;
 
-namespace Dental.Models.Base
+namespace B6CRM.Models.Base
 {
     abstract public class AbstractBaseModel : BindableBase, IModel
     {
@@ -19,7 +19,8 @@ namespace Dental.Models.Base
                     SetUpdatedAt();
                     SetGuid();
                 }
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -43,7 +44,7 @@ namespace Dental.Models.Base
         public int? CreatedAt { get; set; }
 
         [Clonable]
-        public int? UpdatedAt 
+        public int? UpdatedAt
         {
             get { return GetProperty(() => UpdatedAt); }
             set { SetProperty(() => UpdatedAt, value); }

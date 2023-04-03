@@ -1,7 +1,7 @@
 using System.Windows.Controls;
 using DevExpress.Xpf.WindowsUI;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     public partial class MainInfo : UserControl
     {

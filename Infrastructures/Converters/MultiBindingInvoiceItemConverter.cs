@@ -1,4 +1,4 @@
-﻿using Dental.Models;
+﻿using B6CRM.Models;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Grid;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class MultiBindingInvoiceItemConverter : IMultiValueConverter
@@ -30,15 +30,15 @@ namespace Dental.Infrastructures.Converters
                     Invoice = invoice,
                     Param = p
                 };
-            } 
+            }
             catch
             {
                 return new object();
             }
 
         }
-        
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,6 @@
-﻿using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Models;
-using Dental.Services;
+﻿using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class WorkTimeVM : ViewModelBase
     {
@@ -20,8 +20,8 @@ namespace Dental.ViewModels
         public event SetWorkTime SetWokTimeEvent;
         public readonly static string workTimeDefault = "09:00:00-18:00:00";
 
-        public WorkTimeVM(ApplicationContext ctx) 
-        { 
+        public WorkTimeVM(ApplicationContext ctx)
+        {
             db = ctx;
             var workTime = db.Branches.FirstOrDefault()?.WorkTime ?? workTimeDefault;
             try
@@ -29,14 +29,14 @@ namespace Dental.ViewModels
                 WorkTimeFrom = workTime.Substring(0, workTime.IndexOf('-'));
                 WorkTimeTo = workTime.Substring(workTime.IndexOf('-') + 1);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 WorkTimeFrom = "09:00:00";
                 WorkTimeTo = "18:00:00";
                 Log.ErrorHandler(e);
             }
         }
-        
+
 
         public string WorkTimeFrom
         {
@@ -64,7 +64,7 @@ namespace Dental.ViewModels
 
                 if (branch?.Id == 0) db.Branches.Add(branch);
 
-                if (db.SaveChanges() > 0) 
+                if (db.SaveChanges() > 0)
                 {
                     new Notification() { Content = "Настройки рабочего времени сохранены!" }.run();
                     SetWokTimeEvent?.Invoke();

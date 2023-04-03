@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views
+namespace B6CRM.Views
 {
     /// <summary>
     /// Логика взаимодействия для LoginWin.xaml

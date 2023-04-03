@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public static class ParamsApp
     {

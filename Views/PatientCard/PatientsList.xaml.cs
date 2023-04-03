@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Windows.Controls;
-using Dental.ViewModels.ClientDir;
+using B6CRM.ViewModels.ClientDir;
 using DevExpress.Xpf.WindowsUI;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     public partial class PatientsList : UserControl
     {

@@ -1,11 +1,11 @@
-﻿<Window x:Class="Dental.Views.PatientCard.PrintClientWindow"
+﻿<Window x:Class="B6CRM.Views.PatientCard.PrintClientWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
         xmlns:dxmvvm="clr-namespace:DevExpress.Mvvm.UI.Interactivity;assembly=DevExpress.Xpf.Core.v21.2" 
         xmlns:dxmvvm1="clr-namespace:DevExpress.Mvvm.UI;assembly=DevExpress.Xpf.Core.v21.2"
-        xmlns:services="clr-namespace:Dental.Services"
+        xmlns:services="clr-namespace:B6CRM.Services"
         Icon="{x:Static services:ParamsApp.Icon}" 
         Title="{x:Static services:ParamsApp.Title}">
     <dxmvvm:Interaction.Behaviors>

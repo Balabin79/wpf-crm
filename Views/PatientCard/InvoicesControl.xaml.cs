@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     /// <summary>
     /// Логика взаимодействия для InvoicesControl.xaml

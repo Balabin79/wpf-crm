@@ -1,12 +1,12 @@
-﻿using Dental.Enums;
+﻿using B6CRM.Enums;
 using DevExpress.Xpf.Core;
 using System;
 using System.Windows;
 
-namespace Dental.Infrastructures.Collection
+namespace B6CRM.Infrastructures.Collection
 {
     class ConfirDeleteInCollection
-    {              
+    {
         public bool run(int? category)
         {
             try
@@ -44,13 +44,13 @@ namespace Dental.Infrastructures.Collection
                 return false;
 
             }
-            catch 
+            catch
             {
                 return false;
                 // записать в текстовой лог в каком месте возникла ошибка (название класса и строка) и e.Message
             }
         }
 
-       
+
     }
 }

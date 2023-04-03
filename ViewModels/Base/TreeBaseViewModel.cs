@@ -1,6 +1,4 @@
-﻿using Dental.Infrastructures.Converters;
-using Dental.Models.Templates;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using System;
@@ -11,22 +9,24 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
-using Dental.Models;
 using DevExpress.Xpf.Grid;
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using System.Collections.ObjectModel;
-using Dental.Infrastructures.Collection;
-using Dental.Views.ServicePrice;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services;
+using B6CRM.Infrastructures.Collection;
+using B6CRM.Views.ServicePrice;
+using B6CRM.Infrastructures.Extensions.Notifications;
+using B6CRM.Infrastructures.Converters;
+using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Models.Templates;
 
-namespace Dental.ViewModels.Base
+namespace B6CRM.ViewModels.Base
 {
     public class TreeBaseViewModel<T> : ViewModelBase where T : BaseTemplate<T>
     {
         protected ApplicationContext db;
         public TreeBaseViewModel(ApplicationContext ctx, DbSet<T> context)
-        { 
+        {
             db = ctx;
             Context = context;
             Collection = GetCollection();
@@ -49,7 +49,7 @@ namespace Dental.ViewModels.Base
                         var model = (T)Activator.CreateInstance(typeof(T));
                         model.IsDir = result;
                         model.ParentID = row?.Id == 0 ? null : row?.Id;
-                        model.Parent = row?.Id == 0 ? null : row;                     
+                        model.Parent = row?.Id == 0 ? null : row;
                         db.Entry(model).State = EntityState.Added;
                         db.SaveChanges();
 
@@ -83,12 +83,12 @@ namespace Dental.ViewModels.Base
             {
                 if (p is RoutedEventArgs args && p is DropRecordEventArgs target)
                 {
-                   /* object data = target.Data.GetData(typeof(RecordDragDropData));
-                    foreach (T model in ((RecordDragDropData)data).Records)
-                    {
-                        //model.Parent = (T)target.TargetRecord;
-                        model.ParentID = ((T)target.TargetRecord).ParentID;
-                    }*/
+                    /* object data = target.Data.GetData(typeof(RecordDragDropData));
+                     foreach (T model in ((RecordDragDropData)data).Records)
+                     {
+                         //model.Parent = (T)target.TargetRecord;
+                         model.ParentID = ((T)target.TargetRecord).ParentID;
+                     }*/
 
 
 
@@ -172,7 +172,7 @@ namespace Dental.ViewModels.Base
                     return;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }

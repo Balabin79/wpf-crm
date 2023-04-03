@@ -1,21 +1,21 @@
-using Dental.Models;
-using Dental.Services;
+using B6CRM.Models;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Navigation;
 using System;
 using System.IO;
 using System.Windows;
-using Dental.Views.About;
-using Dental.ViewModels;
+using B6CRM.Views.About;
 using License;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.POCO;
 using System.Threading.Tasks;
 using System.Timers;
+using B6CRM.Services;
+using B6CRM.ViewModels;
 
-namespace Dental
+namespace B6CRM
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -81,7 +81,7 @@ namespace Dental
                 SetPageVisibility();
 
                 if (DataContext is MainViewModel vm)
-                    vm?.NavigationService?.Navigate("Dental.Views.PatientCard.PatientsList", null, this);
+                    vm?.NavigationService?.Navigate("B6CRM.Views.PatientCard.PatientsList", null, this);
             }
             catch(Exception e) 
             {

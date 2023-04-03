@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Resources;
 
-namespace Dental.Infrastructures.Extensions.Notifications
+namespace B6CRM.Infrastructures.Extensions.Notifications
 {
     public class Notification : AbstractNotification
     {

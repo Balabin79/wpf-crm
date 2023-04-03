@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using DevExpress.XtraReports.UI;
 
-namespace Dental.Reports
+namespace B6CRM.Reports
 {
 	public partial class Report2 : DevExpress.XtraReports.UI.XtraReport
 	{	

@@ -1,7 +1,7 @@
-﻿using Dental.Models;
-using Dental.Models.Base;
-using Dental.Services;
-using Dental.ViewModels.ServicePrice;
+﻿using B6CRM.Models;
+using B6CRM.Models.Base;
+using B6CRM.Services;
+using B6CRM.ViewModels.ServicePrice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dental.Views.ServicePrice
+namespace B6CRM.Views.ServicePrice
 {
     /// <summary>
     /// Логика взаимодействия для ServiceControl.xaml

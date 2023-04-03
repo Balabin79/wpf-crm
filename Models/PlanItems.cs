@@ -1,8 +1,8 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("PlanItems")]
     public class PlanItem : AbstractBaseModel
@@ -22,9 +22,9 @@ namespace Dental.Models
         }
 
         public Plan Plan { get; set; }
-        public int? PlanId { get; set; }       
+        public int? PlanId { get; set; }
 
-        public int Count 
+        public int Count
         {
             get { return GetProperty(() => Count); }
             set { SetProperty(() => Count, value); }

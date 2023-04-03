@@ -1,28 +1,28 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Appointments")]
     public class Appointments : AbstractBaseModel, IDataErrorInfo
     {
         public string PatientName { get; set; }
         public string Description { get; set; }
-        public DateTime Date 
+        public DateTime Date
         {
-            get 
+            get
             {
-                if (DateTime.TryParse(StartTime, out DateTime result)) 
+                if (DateTime.TryParse(StartTime, out DateTime result))
                     return result;
                 return new DateTime();
             }
         }
 
-        public string StartTime { get; set; } 
-        public string EndTime { get; set; } 
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public int AppointmentType { get; set; }
         public string RecurrenceInfo { get; set; }
         public string ReminderInfo { get; set; }

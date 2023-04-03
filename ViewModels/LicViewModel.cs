@@ -9,7 +9,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using License;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class LicViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -33,8 +33,8 @@ namespace Dental.ViewModels
                     if (!HardwareIDMatches)
                     {
                         TrialStatus = "Незарегистрированная копия";
-                    }                   
-                } 
+                    }
+                }
                 if (!LicenseAvailable /*&& LicenseStatus == "2"*/) // если триал 
                 {
                     ExpirationDays = Status.Evaluation_Time; // сколько всего дней отведено на триал
@@ -51,7 +51,7 @@ namespace Dental.ViewModels
             }
             catch
             {
-                
+
             }
         }
 
@@ -96,7 +96,7 @@ namespace Dental.ViewModels
                 byte[] license = memoryStream.ToArray();
                 LoadLicense(license);
 
-                bool hardwareIDMatches = (Status.HardwareID == Status.License_HardwareID);
+                bool hardwareIDMatches = Status.HardwareID == Status.License_HardwareID;
 
                 if (!hardwareIDMatches)
                 {
@@ -116,7 +116,7 @@ namespace Dental.ViewModels
                 {
                     var file = new FileInfo(filename).Name;
                     File.Copy(filename, Path.Combine(Environment.CurrentDirectory.ToString(), file), true);
-                }              
+                }
             }
             catch
             {
@@ -131,7 +131,7 @@ namespace Dental.ViewModels
                 {
                     /* Read additional license information */
                     //for (int i = 0; i < EvaluationMonitor.CurrentLicense.LicenseInformation.Count; i++)
-                   // {
+                    // {
                     //Company = Status.KeyValueList.GetByIndex(0).ToString();
                     //FullName = Status.KeyValueList.GetByIndex(2).ToString();
                     //}

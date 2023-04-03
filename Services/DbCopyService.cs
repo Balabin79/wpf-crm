@@ -1,4 +1,4 @@
-﻿using Dental.Models;
+﻿using B6CRM.Models;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using System;
@@ -8,14 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     internal class DbCopyService : ViewModelBase
     {
         private ApplicationContext SQLiteContext { get; set; }
         private ApplicationContext PostgreSQLContext { get; set; }
 
-        internal DbCopyService(ApplicationContext db) 
+        internal DbCopyService(ApplicationContext db)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace Dental.Services
                     throw new Exception("Для копирования данных, необходимо установить PostgreSQL в качестве ведущей базы данных!");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, e.Message, true);
             }
@@ -35,7 +35,7 @@ namespace Dental.Services
         [Command]
         public void DataCopyFromSQLiteToPostgreSQL()
         {
-            
+
         }
 
         [Command]

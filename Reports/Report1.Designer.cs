@@ -1,4 +1,4 @@
-﻿namespace Dental.Reports
+﻿namespace B6CRM.Reports
 {
 	partial class Report1
 	{

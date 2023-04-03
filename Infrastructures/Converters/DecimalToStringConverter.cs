@@ -7,25 +7,26 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
     public class DecimalToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-       {
+        {
             try
             {
                 if (string.IsNullOrEmpty(value?.ToString())) return null;
-                if (decimal.TryParse((string)value, out decimal result)) 
+                if (decimal.TryParse((string)value, out decimal result))
                     return result;
                 return 0.00;
-            } catch
+            }
+            catch
             {
                 return 0.00;
             }
 
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value?.ToString() ?? "0.00";        
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value?.ToString() ?? "0.00";
     }
 }

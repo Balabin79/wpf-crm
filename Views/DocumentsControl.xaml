@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dental.Views.DocumentsControl"
+﻿<UserControl x:Class="B6CRM.Views.DocumentsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -9,10 +9,10 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
     dx:ThemeManager.ThemeName="Office2019White"
-    xmlns:vm ="clr-namespace:Dental.ViewModels" 
-    xmlns:commands ="clr-namespace:Dental.Infrastructures.Commands" 
-    xmlns:converter="clr-namespace:Dental.Infrastructures.Converters" 
-    xmlns:com="clr-namespace:Dental.Infrastructures.Commands" >
+    xmlns:vm ="clr-namespace:B6CRM.ViewModels" 
+    xmlns:commands ="clr-namespace:B6CRM.Infrastructures.Commands" 
+    xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters" 
+    xmlns:com="clr-namespace:B6CRM.Infrastructures.Commands" >
     <UserControl.Resources>
         <vm:DocumentsViewModel x:Key="vm"/>
         <converter:DateToStringConverter x:Key="dateToString" />

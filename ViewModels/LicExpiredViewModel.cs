@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Dental.Services;
+using B6CRM.Services;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using License;
 
-namespace Dental.ViewModels
+namespace B6CRM.ViewModels
 {
     public class LicExpiredViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -36,7 +36,7 @@ namespace Dental.ViewModels
             if (string.IsNullOrEmpty(filename)) return;
             LoadLicense(filename);
 
-            bool hardwareIDMatches = (Status.HardwareID == Status.License_HardwareID);
+            bool hardwareIDMatches = Status.HardwareID == Status.License_HardwareID;
 
             if (!hardwareIDMatches)
             {

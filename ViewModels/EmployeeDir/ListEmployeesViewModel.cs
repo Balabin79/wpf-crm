@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Windows.Media.Imaging;
@@ -9,30 +8,31 @@ using System.IO;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using System.Windows.Input;
-using Dental.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.Views.Documents;
-using Dental.Services.Files;
-using Dental.Views.AdditionalFields;
-using Dental.ViewModels.AdditionalFields;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Models.Base;
-using Dental.Infrastructures.Extensions;
-using Dental.Infrastructures.Converters;
-using Dental.Views.Settings;
+using B6CRM.Views.Documents;
+using B6CRM.Services.Files;
+using B6CRM.Views.AdditionalFields;
+using B6CRM.ViewModels.AdditionalFields;
+using B6CRM.Infrastructures.Extensions.Notifications;
+using B6CRM.Infrastructures.Converters;
+using B6CRM.Views.Settings;
 using License;
-using Dental.Views.About;
-using Dental.Reports;
-using Dental.Views.PatientCard;
+using B6CRM.Views.About;
+using B6CRM.Views.PatientCard;
 using DevExpress.Xpf.Printing;
 using System.Windows.Data;
-using Dental.Views.WindowsForms;
+using B6CRM.Views.WindowsForms;
 using System.ComponentModel;
+using B6CRM.Models;
+using B6CRM.Services;
+using B6CRM.Infrastructures.Extensions;
+using B6CRM.Models.Base;
+using B6CRM.Reports;
 
-namespace Dental.ViewModels.EmployeeDir
+namespace B6CRM.ViewModels.EmployeeDir
 {
     public class ListEmployeesViewModel : DevExpress.Mvvm.ViewModelBase, IImageDeletable, IImageSave
     {
@@ -119,7 +119,7 @@ namespace Dental.ViewModels.EmployeeDir
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                     Environment.Exit(0);
                 }
-                if (!Status.Licensed && (Status.Evaluation_Time_Current > Status.Evaluation_Time))
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
                 {
                     ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
                         messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -135,7 +135,7 @@ namespace Dental.ViewModels.EmployeeDir
                     if (db.SaveChanges() > 0) new Notification() { Content = "Записано в базу данных!" }.run();
                 }*/
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "При сохранении данных сотрудника возникла ошибка!", true);
             }
@@ -234,10 +234,10 @@ namespace Dental.ViewModels.EmployeeDir
                     {
                         var file = Directory.GetFiles(Config.PathToEmployeesDirectory).FirstOrDefault(f => f.Contains(img?.ImageGuid));
 
-                        if (file != null) 
+                        if (file != null)
                         {
                             File.SetAttributes(file, FileAttributes.Normal);
-                            File.Delete(file); 
+                            File.Delete(file);
                         }
                     }
 
@@ -265,8 +265,8 @@ namespace Dental.ViewModels.EmployeeDir
             set { SetProperty(() => IsArchiveList, value); }
         }
 
-        public void SetCollection(int isArhive = 0) 
-        { 
+        public void SetCollection(int isArhive = 0)
+        {
             Collection = db.Employes.OrderBy(d => d.LastName).Where(f => f.IsInArchive == isArhive).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Collection)
             {
@@ -349,7 +349,7 @@ namespace Dental.ViewModels.EmployeeDir
                 SetSourceCollectttion();
 
                 Source.Source = SourceCollection;
-                
+
                 Source.GroupDescriptions.Add(new PropertyGroupDescription("Сотрудники"));
 
                 link.CollectionView = Source.View;
@@ -388,13 +388,13 @@ namespace Dental.ViewModels.EmployeeDir
                     if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
                     //ctx.Where(f => f.IsInArchive == true);
 
-                   /* var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
+                    /* var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
 
-                    if (cat.Length > 0)
-                    {
-                        where += (!string.IsNullOrEmpty(where)) ? " OR" : " WHERE";
-                        where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
-                    }*/
+                     if (cat.Length > 0)
+                     {
+                         where += (!string.IsNullOrEmpty(where)) ? " OR" : " WHERE";
+                         where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
+                     }*/
                 }
 
                 if (!string.IsNullOrEmpty(where))

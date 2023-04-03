@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class MultiBindingConverter : IMultiValueConverter
@@ -23,15 +23,15 @@ namespace Dental.Infrastructures.Converters
                     Tree = (TreeListControl)(System.Windows.FrameworkElement)Values[0],
                     Popup = (PopupBaseEdit)(System.Windows.FrameworkElement)Values[1]
                 };
-            } 
+            }
             catch
             {
                 return new object();
             }
 
         }
-        
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

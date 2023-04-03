@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     public class PingService
     {

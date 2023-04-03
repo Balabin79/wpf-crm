@@ -1,8 +1,8 @@
-using Dental.Models.Base;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using B6CRM.Models.Base;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     public abstract class AbstractUser : AbstractBaseModel
     {
@@ -29,13 +29,15 @@ namespace Dental.Models
         public string FullName { get => ToString(); }
 
         [NotMapped]
-        public string ShortName {
-            get {
-                String str = LastName;
+        public string ShortName
+        {
+            get
+            {
+                string str = LastName;
                 if (!string.IsNullOrEmpty(FirstName)) str += " " + FirstName?.Substring(0, 1)?.ToUpper() + ".";
                 if (!string.IsNullOrEmpty(MiddleName)) str += MiddleName?.Substring(0, 1)?.ToUpper() + ".";
                 return str;
-            } 
+            }
         }
 
         public string Phone
@@ -49,7 +51,7 @@ namespace Dental.Models
             get { return GetProperty(() => Email); }
             set { SetProperty(() => Email, value?.Trim()); }
         }
-      
+
         public override string ToString() => (LastName + " " + FirstName + " " + MiddleName).Trim(' ');
     }
 }

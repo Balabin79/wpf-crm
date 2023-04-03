@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using DevExpress.Xpf.Core;
 using System.Windows;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
-    public static class Log 
+    public static class Log
     {
         public static void ErrorHandler(
-            Exception e, 
-            string publicError = "Произошла ошибка!", 
-            bool showMsg = false, 
+            Exception e,
+            string publicError = "Произошла ошибка!",
+            bool showMsg = false,
             bool isRedirectOnSettings = false
             )
         {
@@ -24,7 +24,7 @@ namespace Dental.Services
 
                 string path = Path.Combine(Config.defaultPath, "log.txt");
                 string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";
-                File.AppendAllText(path, msg);           
+                File.AppendAllText(path, msg);
             }
             catch { }
         }

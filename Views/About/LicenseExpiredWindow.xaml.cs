@@ -1,4 +1,4 @@
-﻿using Dental.Infrastructures.Extensions.Notifications;
+﻿using B6CRM.Infrastructures.Extensions.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.About
+namespace B6CRM.Views.About
 {
     /// <summary>
     /// Логика взаимодействия для LicenseWindow.xaml

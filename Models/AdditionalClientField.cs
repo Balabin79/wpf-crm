@@ -1,16 +1,16 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("AdditionalClientFields")]
     public class AdditionalClientField : AbstractBaseModel, IDataErrorInfo
     {
         [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
-        public string Label 
+        public string Label
         {
             get { return GetProperty(() => Label); }
             set { SetProperty(() => Label, value?.Trim()); }
@@ -39,6 +39,6 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
     }
 }

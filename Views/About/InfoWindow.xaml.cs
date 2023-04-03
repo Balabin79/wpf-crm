@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Navigation;
 using DevExpress.Xpf.Core;
 
-namespace Dental.Views.About
+namespace B6CRM.Views.About
 {
     /// <summary>
     /// Логика взаимодействия для InfoWindow.xaml

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class MultiBindingPageIntConverter : IMultiValueConverter
@@ -21,19 +21,19 @@ namespace Dental.Infrastructures.Converters
                 int? p = null;
                 if (int.TryParse(Values[1].ToString(), out int result)) p = result;
                 return new PageIntCommandParameters()
-                {                    
+                {
                     Page = (UserControl)(System.Windows.FrameworkElement)Values[0],
                     Param = p
                 };
-            } 
+            }
             catch
             {
                 return new object();
             }
 
         }
-        
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -41,7 +41,7 @@ namespace Dental.Infrastructures.Converters
 
     public class PageIntCommandParameters
     {
-        public UserControl Page{ get; set; }
+        public UserControl Page { get; set; }
         public int? Param { get; set; }
     }
 }

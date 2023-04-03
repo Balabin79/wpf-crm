@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Dental.Interfaces.Template
+namespace B6CRM.Interfaces.Template
 {
     interface ICollectionCommand
     {

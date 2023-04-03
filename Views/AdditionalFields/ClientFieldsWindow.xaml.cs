@@ -1,4 +1,4 @@
-﻿using Dental.ViewModels.AdditionalFields;
+﻿using B6CRM.ViewModels.AdditionalFields;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.AdditionalFields
+namespace B6CRM.Views.AdditionalFields
 {
     /// <summary>
     /// Логика взаимодействия для ClientFieldsWindow.xaml

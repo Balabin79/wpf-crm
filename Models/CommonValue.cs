@@ -1,11 +1,11 @@
-using Dental.Models.Base;
+using B6CRM.Models.Base;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("CommonValues")]
     public class CommonValue : AbstractBaseModel, IDataErrorInfo
@@ -35,9 +35,9 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public override string ToString() => Name;      
+        public override string ToString() => Name;
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
 
@@ -45,8 +45,8 @@ namespace Dental.Models
         {
             if (other is CommonValue clone)
             {
-                if (object.ReferenceEquals(this, clone)) return true;
-                if (StringParamsIsEquel(this.Name, clone.Name) && StringParamsIsEquel(this.Guid, clone.Guid)) return true;
+                if (ReferenceEquals(this, clone)) return true;
+                if (StringParamsIsEquel(Name, clone.Name) && StringParamsIsEquel(Guid, clone.Guid)) return true;
             }
             return false;
         }

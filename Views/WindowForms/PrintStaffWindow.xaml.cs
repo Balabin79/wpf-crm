@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Dental.Views.WindowsForms
+namespace B6CRM.Views.WindowsForms
 {
     /// <summary>
     /// Логика взаимодействия для PrintStaffWindow.xaml

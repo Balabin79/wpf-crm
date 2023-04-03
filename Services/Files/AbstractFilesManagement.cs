@@ -8,12 +8,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
-namespace Dental.Services.Files
+namespace B6CRM.Services.Files
 {
     public abstract class AbstractFilesManagement : DevExpress.Mvvm.ViewModelBase
     {
-        public AbstractFilesManagement(string path) 
-        { 
+        public AbstractFilesManagement(string path)
+        {
             PathTo = path;
             Files = GetFiles().ToObservableCollection();
         }
@@ -26,8 +26,8 @@ namespace Dental.Services.Files
             }
             catch
             {
-                return new FileInfo[]{};
-            }          
+                return new FileInfo[] { };
+            }
         }
 
         virtual public DirectoryInfo CreateDirectory()
@@ -135,9 +135,9 @@ namespace Dental.Services.Files
         }
 
 
-        virtual public void DeleteDirectory() 
-        { 
-            if (Directory.Exists(PathTo)) Directory.Delete(PathTo, true); 
+        virtual public void DeleteDirectory()
+        {
+            if (Directory.Exists(PathTo)) Directory.Delete(PathTo, true);
         }
 
         virtual public void RemoveFile(FileInfo file) => file.Delete();

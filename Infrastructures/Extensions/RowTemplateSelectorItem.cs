@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Dental.Infrastructures.Extensions
+namespace B6CRM.Infrastructures.Extensions
 {
     class RowTemplateSelectorItem : DependencyObject
     {

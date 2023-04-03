@@ -1,5 +1,5 @@
 ﻿
-namespace Dental.Reports
+namespace B6CRM.Reports
 {
     partial class XtraSchedulerReport1
     {

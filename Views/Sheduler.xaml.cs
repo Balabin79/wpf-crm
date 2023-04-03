@@ -1,5 +1,3 @@
-using Dental.Models;
-using Dental.ViewModels;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Scheduling;
 using System.Linq;
@@ -12,8 +10,10 @@ using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.DataAnnotations;
 using System.Windows.Data;
 using System.IO;
+using B6CRM.ViewModels;
+using B6CRM.Models;
 
-namespace Dental.Views
+namespace B6CRM.Views
 {
     public partial class Sheduler : UserControl
     {

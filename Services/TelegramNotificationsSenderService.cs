@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dental.Models;
 using Telegram.Bot.Types;
 using Telegram.Bot;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
+using B6CRM.Models;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     internal static class TelegramNotificationsSenderService
     {
@@ -26,15 +26,15 @@ namespace Dental.Services
                 foreach (var msg in msgs)
                 {
                     var result = await SendMsg(msg);
-                    if(result) db.TelegramNotifications.Remove(msg);
+                    if (result) db.TelegramNotifications.Remove(msg);
                 }
                 db.SaveChanges();
             }
-            catch(Exception e)
-            { 
+            catch (Exception e)
+            {
                 Log.ErrorHandler(e);
                 db.SaveChanges();
-            }           
+            }
         }
 
         public static async void Send(TelegramNotification telegramNotification) => await SendMsg(telegramNotification);
@@ -45,7 +45,7 @@ namespace Dental.Services
             {
                 //проверяем актуальность сообщения (для них установлено значение DateRelevance)
                 // если сообщение устарело, то просто удаляем
-                if (!DateTime.TryParse(telegramNotification.DateRelevance, out DateTime dateRelevance) || dateRelevance < DateTime.Now) 
+                if (!DateTime.TryParse(telegramNotification.DateRelevance, out DateTime dateRelevance) || dateRelevance < DateTime.Now)
                 {
                     return true;
                 }

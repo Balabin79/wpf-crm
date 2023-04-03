@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
-using Dental.Models;
 using Microsoft.EntityFrameworkCore;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System.Windows;
 using DevExpress.Mvvm.DataAnnotations;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Services;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using System;
+using B6CRM.Models;
+using B6CRM.Services;
 
-namespace Dental.ViewModels.AdditionalFields
+namespace B6CRM.ViewModels.AdditionalFields
 {
     public class AdditionalClientFieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
@@ -27,7 +27,7 @@ namespace Dental.ViewModels.AdditionalFields
                 SetCollection();
                 Templates = db.TemplateType.ToArray();
             }
-            catch(Exception e) 
+            catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
@@ -46,7 +46,7 @@ namespace Dental.ViewModels.AdditionalFields
                     {
                         db.AdditionalClientValue.Where(f => f.AdditionalFieldId == model.Id)?.ForEach(f => db.AdditionalClientValue.Remove(f));
                         db.AdditionalClientFields.Remove(model);
-                       
+
                         if (db.SaveChanges() > 0)
                         {
                             EventFieldChanges?.Invoke();
@@ -60,7 +60,7 @@ namespace Dental.ViewModels.AdditionalFields
                     Collection?.Remove(model);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "При попытке удаления произошла ошибка!", true);
             }
@@ -95,7 +95,7 @@ namespace Dental.ViewModels.AdditionalFields
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "При попытке сохранения изменений в базу данных, произошла ошибка!", true);
             }

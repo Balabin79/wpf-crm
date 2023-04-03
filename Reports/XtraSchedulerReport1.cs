@@ -1,7 +1,7 @@
 ﻿using System;
 using DevExpress.XtraScheduler.Reporting;
 
-namespace Dental.Reports
+namespace B6CRM.Reports
 {
     public partial class XtraSchedulerReport1 : XtraSchedulerReport
     {

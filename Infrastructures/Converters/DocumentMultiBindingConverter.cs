@@ -1,5 +1,5 @@
-﻿using Dental.Models;
-using Dental.Services.Files;
+﻿using B6CRM.Models;
+using B6CRM.Services.Files;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.Grid;
 using System;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Dental.Infrastructures.Converters
+namespace B6CRM.Infrastructures.Converters
 {
 
     public class DocumentMultiBindingConverter : IMultiValueConverter

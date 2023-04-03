@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     /// <summary>
     /// Логика взаимодействия для PrintClientWindow.xaml

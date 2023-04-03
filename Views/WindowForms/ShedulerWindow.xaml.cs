@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Dental.Views.WindowForms
+namespace B6CRM.Views.WindowForms
 {
     /// <summary>
     /// Логика взаимодействия для ShedulerWindow.xaml

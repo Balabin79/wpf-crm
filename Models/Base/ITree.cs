@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Models.Base
+namespace B6CRM.Models.Base
 {
     public interface ITree
     {
         int? IsDir { get; set; }
-        int? ParentID { get; set; }             
+        int? ParentID { get; set; }
         string Name { get; set; }
     }
 }

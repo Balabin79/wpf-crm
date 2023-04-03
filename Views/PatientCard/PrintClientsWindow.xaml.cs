@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Dental.Views.PatientCard
+namespace B6CRM.Views.PatientCard
 {
     /// <summary>
     /// Логика взаимодействия для PrintClientsWindow.xaml

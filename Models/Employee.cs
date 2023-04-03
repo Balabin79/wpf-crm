@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Windows.Media;
 
-namespace Dental.Models
+namespace B6CRM.Models
 {
     [Table("Employees")]
     public class Employee : AbstractUser, IDataErrorInfo, ICloneable
@@ -67,7 +67,7 @@ namespace Dental.Models
         public string Error { get => string.Empty; }
         public string this[string columnName] { get => IDataErrorInfoHelper.GetErrorText(this, columnName); }
 
-        public object Clone() => this.MemberwiseClone();
+        public object Clone() => MemberwiseClone();
 
         public override int GetHashCode() => Guid.GetHashCode();
     }

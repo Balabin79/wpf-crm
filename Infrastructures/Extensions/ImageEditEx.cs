@@ -1,5 +1,5 @@
-﻿using Dental.Models.Base;
-using Dental.ViewModels;
+﻿using B6CRM.Models.Base;
+using B6CRM.ViewModels;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using Microsoft.Win32;
@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Dental.Infrastructures.Extensions
+namespace B6CRM.Infrastructures.Extensions
 {
     public class ImageEditEx : ImageEdit
     {
@@ -67,8 +67,8 @@ namespace Dental.Infrastructures.Extensions
                     if (stream is FileStream)
                     {
                         ImagePath = ((FileStream)stream).Name;
-                        Source = new BitmapImage(new Uri(ImagePath));                       
-                    }                                           
+                        Source = new BitmapImage(new Uri(ImagePath));
+                    }
                     var ms = new MemoryStream(stream.GetDataFromStream());
                     return ImageHelper.CreateImageFromStream(ms);
                 }
@@ -80,16 +80,16 @@ namespace Dental.Infrastructures.Extensions
         {
             try
             {
-                
+
                 Type ownerType = typeof(ImageEditEx);
 
                 CommandManager.RegisterClassCommandBinding(
-                    ownerType, 
-                    new CommandBinding(ApplicationCommands.Delete, 
-                    (d, e) => 
+                    ownerType,
+                    new CommandBinding(ApplicationCommands.Delete,
+                    (d, e) =>
                         {
                             ((IImageDeletable)((FrameworkElement)d).DataContext).ImageDelete(d);
-                        }, 
+                        },
                     (d, e) => ((ImageEditEx)d).CanDelete(d, e)));
 
                 CommandManager.RegisterClassCommandBinding(
@@ -101,7 +101,7 @@ namespace Dental.Infrastructures.Extensions
                     },
                     (d, e) => ((ImageEditEx)d).CanSave(d, e)));
 
-              
+
             }
             catch
             {

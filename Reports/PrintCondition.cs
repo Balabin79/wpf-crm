@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dental.Reports
+namespace B6CRM.Reports
 {
     public class PrintCondition
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Dental.Infrastructures.Commands.Base
+namespace B6CRM.Infrastructures.Commands.Base
 {
     internal abstract class CommandBase : ICommand
     {

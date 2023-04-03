@@ -1,4 +1,5 @@
-﻿using DevExpress.Mvvm.DataAnnotations;
+﻿using B6CRM.Services;
+using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using System;
@@ -7,11 +8,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
-namespace Dental.Services.Files
+namespace B6CRM.Services.Files
 {
     class UserFilesManagement : AbstractFilesManagement
     {
-        public UserFilesManagement(string Guid) : base(Path.Combine(new Config().PathToFilesDirectory, Guid)){}
+        public UserFilesManagement(string Guid) : base(Path.Combine(new Config().PathToFilesDirectory, Guid)) { }
 
     }
 }

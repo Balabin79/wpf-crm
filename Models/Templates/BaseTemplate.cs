@@ -1,11 +1,11 @@
-﻿using Dental.Infrastructures.Attributes;
-using Dental.Models.Base;
+﻿using B6CRM.Models.Base;
+using B6CRM.Infrastructures.Attributes;
 using DevExpress.Mvvm;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dental.Models.Templates
+namespace B6CRM.Models.Templates
 {
     public abstract class BaseTemplate<T> : AbstractBaseModel, IDataErrorInfo, ITree, IModel, ICloneable
     {

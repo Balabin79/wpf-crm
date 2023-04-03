@@ -1,8 +1,8 @@
-﻿using CsvHelper;
-using Dental.Infrastructures.Converters;
-using Dental.Infrastructures.Extensions.Notifications;
-using Dental.Models;
-using Dental.ViewModels;
+﻿using B6CRM.Infrastructures.Converters;
+using B6CRM.Models;
+using B6CRM.ViewModels;
+using CsvHelper;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
-namespace Dental.Services
+namespace B6CRM.Services
 {
     internal class ImportData : ViewModelBase
     {
@@ -59,19 +59,19 @@ namespace Dental.Services
                         if (parameters.Type == typeof(Client))
                         {
                             i = LoadClients(csv);
-                            page = "Dental.Views.PatientCard.PatientsList";
+                            page = "B6CRM.Views.PatientCard.PatientsList";
                         }
 
                         if (parameters.Type == typeof(Employee))
                         {
                             i = LoadStaff(csv);
-                            page = "Dental.Views.Staff";
+                            page = "B6CRM.Views.Staff";
                         }
 
                         if (parameters.Type == typeof(Service))
                         {
                             i = LoadPrice(csv);
-                            page = "Dental.Views.ServicePrice.ServicePage";
+                            page = "B6CRM.Views.ServicePrice.ServicePage";
                         }
 
                         if (db.SaveChanges() > 0)
