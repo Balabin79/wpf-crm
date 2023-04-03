@@ -16,7 +16,7 @@ namespace B6CRM.Infrastructures.Extensions.Notifications
 
         public virtual StreamResourceInfo Sound
         {
-            get => Application.GetResourceStream(new Uri(@"pack://application:,,,/Dental;component/Resources/Sounds/Notifications/success.wav"));
+            get => Application.GetResourceStream(new Uri(@"pack://application:,,,/B6CRM;component/Resources/Sounds/Notifications/success.wav"));
         }
 
         public INotificationService NotificationService

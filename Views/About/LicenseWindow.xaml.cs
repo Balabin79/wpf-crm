@@ -30,7 +30,7 @@ namespace B6CRM.Views.About
         private void LoadLicense(object sender, RoutedEventArgs e)
         {
             var fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Файл лицензии(dental.license) |*.license";
+            fileDialog.Filter = "Файл лицензии(B6CRM.license) |*.license";
             var result = fileDialog.ShowDialog();
             // Retrieve the specified file name using the FileName property, e.g.:
             // Process save file dialog results

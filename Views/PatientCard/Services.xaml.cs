@@ -10,8 +10,7 @@ namespace B6CRM.Views.PatientCard
     {
         public Services()
         {
-            InitializeComponent(); 
-         
+            InitializeComponent();          
         }
     }
 }

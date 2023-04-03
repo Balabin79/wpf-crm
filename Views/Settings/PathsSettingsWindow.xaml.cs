@@ -32,7 +32,7 @@ namespace B6CRM.Views.Settings
         private void selectDbPath(object sender, RoutedEventArgs e)
         {
             var fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Файл базы данных SQLite3(dental.db) |*.db";
+            fileDialog.Filter = "Файл базы данных SQLite3(B6CRM.db) |*.db";
             var result = fileDialog.ShowDialog();
             // Retrieve the specified file name using the FileName property, e.g.:
             // Process save file dialog results
