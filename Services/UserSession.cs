@@ -88,6 +88,6 @@ namespace B6CRM.Services
         public bool PrintDocument { get; set; } = false;
 
         public bool ImportData { get; set; } = false;
-        public bool ExportData { get; set; } = false;
+        public bool ExportData { get; set; } = false;     
     }
 }

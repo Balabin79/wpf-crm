@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using B6CRM.Services;
 using B6CRM.ViewModels;
+using Npgsql;
+using B6CRM.Models.Base;
+using System.Web.Services.Description;
 
 namespace B6CRM
 {
@@ -25,24 +28,35 @@ namespace B6CRM
         public MainWindow()
         {
             try
-            {
-                var login = new Login();
-                login.ShowLogin();
-
-                Application.Current.Resources["UserSession"] = login.UserSession;
-
+            {          
+                InitializeComponent();
                 //инициализация рассылки сообщений 
                 // создаем таймер на 5 мин.
                 Timer timer = new Timer() { Interval = 300000, Enabled = true, AutoReset = true };
                 timer.Elapsed += OnTimedEvent;
 
-                InitializeComponent();
+                var vm = (MainViewModel)Application.Current.Resources["Router"];
+
+                // проверяем соединение
+                using (var db = new ApplicationContext())
+                {
+                    if (!CheckNetworkConnect.IsConnectSuccess(db?.Config?.Host, (db?.Config?.Port ?? 5432), 7))
+                    {
+                        NavigationFrame.Source = "B6CRM.Views.FailDBConnect";
+                        return;
+                    }
+                }
+
+                new UserSessionLoading().Run();                
+                vm.UserSessionLoaded = true;
+
                 SetPageVisibility();
+                vm?.Navigate("B6CRM.Views.PatientCard.PatientsList");
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e);
-            }
+                Log.ErrorHandler(e);                   
+            }     
         }
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)

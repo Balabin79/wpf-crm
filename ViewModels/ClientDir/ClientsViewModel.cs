@@ -768,7 +768,7 @@ namespace B6CRM.ViewModels.ClientDir
         {
             try
             {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены счета, записи в расписании и все файлы прикрепленные к карте клиента!",
+                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены счета, планы работ, записи в расписании и все файлы прикрепленные к карте клиента!",
                 messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
 
                 if (response.ToString() == "No") return;
@@ -776,10 +776,12 @@ namespace B6CRM.ViewModels.ClientDir
                 new UserFilesManagement(Model.Guid).DeleteDirectory();
                 var id = Model?.Id;
 
-                //удалить также в расписании и в счетах
+                //удалить также в расписании, в планах и в счетах
                 db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
                 db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+
+                db.Plans.Include(f => f.PlanItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
                 db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
@@ -791,6 +793,7 @@ namespace B6CRM.ViewModels.ClientDir
                 if (item != null) Clients.Remove(item);
 
                 db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
+                db.PlanItems.Where(f => f.PlanId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
 
 

@@ -50,7 +50,7 @@ namespace B6CRM.Services
                     return true;
                 }
 
-                var botClient = new TelegramBotClient(telegramNotification?.NotificationEvent?.TelegramToken);
+                var botClient = new TelegramBotClient(telegramNotification?.NotificationEvent?.TelegramBot?.Token);
                 using CancellationTokenSource cts = new();
 
                 var message = await botClient.SendTextMessageAsync(

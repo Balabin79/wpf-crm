@@ -8,6 +8,13 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml.Presentation;
 using B6CRM.Models.Base;
 using B6CRM.Services;
+using System;
+using Npgsql;
+using B6CRM.Views.WindowForms;
+using DevExpress.Xpf.Core;
+using System.Windows;
+using B6CRM.ViewModels;
+using DevExpress.Data.Browsing;
 
 namespace B6CRM.Models
 {
@@ -15,8 +22,12 @@ namespace B6CRM.Models
     {
         public ApplicationContext()
         {
-            Config = new Config();
-            Database.EnsureCreated();
+            try
+            {
+                Config = new Config();
+                Database.EnsureCreated();
+            }
+            catch{}
         }
 
         public ApplicationContext(Config config)
@@ -173,11 +184,11 @@ namespace B6CRM.Models
             #endregion
 
             #region NotificationEvent seeding
-            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 1, Guid = "v2GoZDjzAvMEfLtUo856", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentAdd", TelegramToken = "", Name = "Добавление встречи в расписание", IsNotify = 1 });
+            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 1, Guid = "v2GoZDjzAvMEfLtUo856", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentAdd", Name = "Добавление встречи в расписание", IsNotify = 1 });
 
-            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 2, Guid = "v2GoZDjzAvMEfLtUo878", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentEdit", TelegramToken = "", Name = "Редактирование встречи в расписании", IsNotify = 1 });
+            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 2, Guid = "v2GoZDjzAvMEfLtUo878", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentEdit", Name = "Редактирование встречи в расписании", IsNotify = 1 });
 
-            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 3, Guid = "v2GoZDjzAvMEfLtUo885", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentRemove", TelegramToken = "", Name = "Удаление встречи из расписания", IsNotify = 1 });
+            modelBuilder.Entity<NotificationEvent>().HasData(new NotificationEvent { Id = 3, Guid = "v2GoZDjzAvMEfLtUo885", CreatedAt = 1649579905, UpdatedAt = 1649579905, EventName = "AppointmentRemove", Name = "Удаление встречи из расписания", IsNotify = 1 });
             #endregion
 
             #region Advertising seeding
@@ -319,5 +330,6 @@ namespace B6CRM.Models
 
         public DbSet<TelegramNotification> TelegramNotifications { get; set; }
         public DbSet<NotificationEvent> NotificationEvents { get; set; }
+        public DbSet<TelegramBot> TelegramBots { get; set; }
     }
 }

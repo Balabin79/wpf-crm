@@ -1,0 +1,110 @@
+﻿<Window x:Class="B6CRM.Views.WindowForms.DBConnectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+        xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"
+        mc:Ignorable="d"
+        Height="300"
+        MinWidth="500"
+        HorizontalAlignment="Center"
+        WindowStartupLocation="CenterScreen"
+        xmlns:commands="clr-namespace:B6CRM.Infrastructures.Commands"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:services="clr-namespace:B6CRM.Services"
+              xmlns:vm ="clr-namespace:B6CRM.ViewModels" 
+      xmlns:service="clr-namespace:B6CRM.Services" 
+      xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+        Icon="{x:Static services:ParamsApp.Icon}" 
+        Title="{x:Static services:ParamsApp.Title}"
+        >
+    <Window.Resources>
+        <commands:PrintCommand x:Key="Print"/>
+        <converter:DateToStringConverter x:Key="DateToString"/>
+        <converter:FloatToStringConverter x:Key="FloatToString"/>
+        <converter:BoolIntConverter x:Key="boolConverter" />
+    </Window.Resources>
+
+    <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White">
+
+        <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <DockPanel LastChildFill="True">
+                <TextBlock Text="Настройка баз данных" FontSize="16" Padding="5 3 5 5" />
+     
+                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
+
+                    <dxb:ToolBarControl Background="Transparent" Padding="5 3 0 5"
+                        ShowDragWidget="False" Caption="File" 
+                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+
+                        <dxb:BarButtonItem Content="Сохранить"                                          
+                                           GlyphSize="Small"
+                                           Command="{Binding SaveConfigCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"/>
+                    </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Grid.Row="1" Margin="5 10 5 5">
+                <dxlc:LayoutGroup Orientation="Vertical">
+
+                    <dxlc:LayoutGroup Orientation="Horizontal">
+                        <dxlc:LayoutItem  Label="Название базы данных:" LabelPosition="Top" >
+                            <dxe:ToggleSwitch x:Name="dbType" ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="PostgreSQL" UncheckedStateContent="SQLite" 
+                                   IsChecked="{Binding DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutGroup>
+                    
+                    <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch" >
+
+                    <dxlc:LayoutItem Label="Сервер (хост):" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
+                        <dxe:TextEdit
+                                    Text="{Binding PostgresConnect.Host, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50">
+                        <dxe:TextEdit  
+                                MaskType="Numeric" Mask="d" 
+                                Text="{Binding PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                </dxlc:LayoutGroup>
+
+                <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                    <dxe:TextEdit 
+                                Text="{Binding PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                </dxlc:LayoutItem>
+
+                <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                    <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                        <dxe:TextEdit 
+                                    Text="{Binding PostgresConnect.Username, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </dxlc:LayoutItem>
+
+                    <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch">
+                        <dxe:TextEdit  
+                                    Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    </dxlc:LayoutItem>
+
+                </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
+
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

@@ -62,18 +62,6 @@ namespace B6CRM.ViewModels
             set { SetProperty(() => OrgSite, value?.Trim()); }
         }
 
-        public int? DbType
-        {
-            get { return GetProperty(() => DbType); }
-            set { SetProperty(() => DbType, value); }
-        }
-
-        public PostgresConnect PostgresConnect
-        {
-            get { return GetProperty(() => PostgresConnect); }
-            set { SetProperty(() => PostgresConnect, value); }
-        }
-
         public int? RolesEnabled
         {
             get { return GetProperty(() => RolesEnabled); }

@@ -33,6 +33,7 @@
     <None Remove="Resources\Icons\svg\chart-pipe.svg" />
     <None Remove="Resources\Icons\svg\chart-pipe3.svg" />
     <None Remove="Resources\Icons\svg\customizable.svg" />
+    <None Remove="Resources\Icons\svg\direction.svg" />
     <None Remove="Resources\Icons\svg\document-edit.svg" />
     <None Remove="Resources\Icons\svg\download.svg" />
     <None Remove="Resources\Icons\svg\edit-r.svg" />
@@ -73,6 +74,8 @@
     <None Remove="Resources\Icons\svg\teeth.svg" />
     <None Remove="Resources\Icons\svg\telegram-plane.svg" />
     <None Remove="Resources\Icons\svg\telegram.svg" />
+    <None Remove="Resources\Icons\svg\telegram2.svg" />
+    <None Remove="Resources\Icons\svg\telegram4.svg" />
     <None Remove="Resources\Icons\svg\th-large.svg" />
     <None Remove="Resources\Icons\svg\th-list.svg" />
     <None Remove="Resources\Icons\svg\th.svg" />
@@ -176,6 +179,7 @@
     <Resource Include="Resources\Icons\svg\cogs.svg" />
     <Resource Include="Resources\Icons\svg\customizable.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
+    <Resource Include="Resources\Icons\svg\direction.svg" />
     <Resource Include="Resources\Icons\svg\document-edit.svg" />
     <Resource Include="Resources\Icons\svg\download.svg" />
     <Resource Include="Resources\Icons\svg\edit-r.svg" />
@@ -274,6 +278,8 @@
     <Resource Include="Resources\Icons\svg\teeth.svg" />
     <Resource Include="Resources\Icons\svg\telegram-plane.svg" />
     <Resource Include="Resources\Icons\svg\telegram.svg" />
+    <Resource Include="Resources\Icons\svg\telegram2.svg" />
+    <Resource Include="Resources\Icons\svg\telegram4.svg" />
     <Resource Include="Resources\Icons\svg\templates.svg" />
     <Resource Include="Resources\Icons\svg\th-large.svg" />
     <Resource Include="Resources\Icons\svg\th-list.svg" />
@@ -344,6 +350,12 @@
     <Compile Update="Views\WindowForms\AdvertisingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\WindowForms\DBConnectWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\WindowForms\TelegramBotsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\WindowForms\PrintStaffWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -406,6 +418,12 @@
     <Page Update="Views\WindowForms\AdvertisingsWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\WindowForms\DBConnectWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\WindowForms\TelegramBotsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\WindowForms\WorkTimeWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

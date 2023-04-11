@@ -7,6 +7,7 @@
       xmlns:tree="clr-namespace:B6CRM.Infrastructures.TreeList" 
       xmlns:vm ="clr-namespace:B6CRM.ViewModels" 
       xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters" 
+      xmlns:service="clr-namespace:B6CRM.Services" 
       xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
       xmlns:commands ="clr-namespace:B6CRM.Infrastructures.Commands" 
       xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
@@ -23,6 +24,7 @@
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:SettingsViewModel x:Key="vm"/>
+                    <service:DBConnectSettings x:Key="conn"/>
                     <converter:BoolIntConverter x:Key="boolConverter" />
                     <converter:DateToStringConverter x:Key="DateToString"/>
                     <converter:DoubleToStringConverter x:Key="DoubleToString"/>
@@ -70,6 +72,17 @@
                             <dxb:BarButtonItem.GlyphTemplate>
                                 <DataTemplate>
                                     <dx:DXImage Source="/Resources/Icons/svg/information.svg" Height="15"/>
+                                </DataTemplate>
+                            </dxb:BarButtonItem.GlyphTemplate>
+                        </dxb:BarButtonItem>
+                        <dxb:BarItemLinkSeparator/>
+                        <dxb:BarButtonItem Style="{Binding}"
+                            Content="Телеграм-боты" 
+                                           GlyphSize="Small"
+                                           Command="{Binding OpenTelegramBotsWindowCommand}">
+                            <dxb:BarButtonItem.GlyphTemplate>
+                                <DataTemplate>
+                                    <dx:DXImage Source="/Resources/Icons/svg/direction.svg" />
                                 </DataTemplate>
                             </dxb:BarButtonItem.GlyphTemplate>
                         </dxb:BarButtonItem>
@@ -122,10 +135,10 @@
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
                                                 <dxb:BarButtonItem 
                                             Style="{Binding}"
-                                            DataContext="{Binding ElementName=gridMainClientGroups, Path=DataContext}"
+                                            DataContext="{StaticResource conn}"
                                             Content="Сохранить настройки подключения к базе данных"                                         
                                            GlyphSize="Small"
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                           IsEnabled="{DXBinding '@e(gridMainClientGroups).DataContext.IsReadOnly != true', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                                            Command="{Binding SaveConfigCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                             Glyph="/Resources/Icons/svg/network-wired.svg"/>
 
@@ -135,60 +148,68 @@
                                     </DataTemplate>
                                 </dxlc:LayoutGroup.HeaderTemplate>
 
-                                <dxlc:LayoutGroup Orientation="Horizontal">
+                                <dxlc:LayoutGroup Orientation="Horizontal"  DataContext="{StaticResource conn}">
                                     <dxlc:LayoutItem  Label="Название базы данных:" LabelPosition="Top" >
                                         <dxe:ToggleSwitch x:Name="dbType" ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="PostgreSQL" UncheckedStateContent="SQLite" 
-                                   IsChecked="{Binding SettingsVM.DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                   IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                   IsChecked="{Binding DbType, Converter={StaticResource boolConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                   IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </dxlc:LayoutItem>
-
+                                    <dxlc:LayoutItem 
+                                        Label="Таймаут при попытке подключения к базе данных (в сек.):" 
+                                        HorizontalAlignment="Right" LabelPosition="Top" >
+                                        <dxe:TextEdit  Width="50" HorizontalAlignment="Right"
+                                            MaskType="Numeric" Mask="d" 
+                                            Text="{Binding Timeout, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                            IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                            EditValue="{Binding Timeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutItem>
                                 </dxlc:LayoutGroup>
 
-                                <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch"  DataContext="{StaticResource conn}">
 
                                     <dxlc:LayoutItem Label="Сервер (хост):" LabelPosition="Top" HorizontalAlignment="Stretch" Width="auto">
-                                        <dxe:TextEdit 
-                                    Text="{Binding SettingsVM.PostgresConnect.Host, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding SettingsVM.PostgresConnect.Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                        <dxe:TextEdit
+                                    Text="{Binding PostgresConnect.Host, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    IsEnabled="{DXBinding 'DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </dxlc:LayoutItem>
 
-                                    <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50">
+                                    <dxlc:LayoutItem Label="Порт:" LabelPosition="Top" HorizontalAlignment="Stretch" Width="50"  DataContext="{StaticResource conn}">
                                         <dxe:TextEdit  
                                 MaskType="Numeric" Mask="d" 
-                                Text="{Binding SettingsVM.PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding SettingsVM.PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  
-                                IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                Text="{Binding PostgresConnect.Port, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"  
+                                IsEnabled="{DXBinding 'DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </dxlc:LayoutItem>
 
                                 </dxlc:LayoutGroup>
 
-                                <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                                <dxlc:LayoutItem Label="Имя базы данных:" LabelPosition="Top" HorizontalAlignment="Stretch"  DataContext="{StaticResource conn}">
                                     <dxe:TextEdit 
-                                Text="{Binding SettingsVM.PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                EditValue="{Binding SettingsVM.PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                Text="{Binding PostgresConnect.Database, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                EditValue="{Binding PostgresConnect.Database, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                IsEnabled="{DXBinding 'DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                 </dxlc:LayoutItem>
 
                                 <dxlc:LayoutGroup Orientation="Horizontal" HorizontalAlignment="Stretch">
 
-                                    <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                                    <dxlc:LayoutItem Label="Пользователь:" LabelPosition="Top" HorizontalAlignment="Stretch"  DataContext="{StaticResource conn}">
                                         <dxe:TextEdit 
-                                    Text="{Binding SettingsVM.PostgresConnect.Username, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding SettingsVM.PostgresConnect.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                    Text="{Binding PostgresConnect.Username, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    IsEnabled="{DXBinding Expr='DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </dxlc:LayoutItem>
 
-                                    <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch" >
+                                    <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" HorizontalAlignment="Stretch"  DataContext="{StaticResource conn}">
                                         <dxe:TextEdit  
-                                    Text="{Binding SettingsVM.PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    EditValue="{Binding SettingsVM.PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                    IsEnabled="{DXBinding Expr='SettingsVM.DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                    IsReadOnly="{DXBinding Expr='IsReadOnly or SettingsVM.DbType != 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
+                                    Text="{Binding PostgresConnect.Password, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    EditValue="{Binding PostgresConnect.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                    IsEnabled="{DXBinding Expr='DbType == 1', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                    IsReadOnly="{Binding Source={StaticResource vm}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
                                     </dxlc:LayoutItem>
 
                                 </dxlc:LayoutGroup>
@@ -307,21 +328,30 @@
                                             </dxg:GridColumn.CellEditTemplate>
                                         </dxg:GridColumn>
 
-                                        <dxg:GridColumn FieldName="TelegramToken" Header="Telegram token" Width="3*" HorizontalHeaderContentAlignment="Center">
+                                        <dxg:GridColumn FieldName="TelegramBot.Description" Header="Telegram - бот" Width="3*" HorizontalHeaderContentAlignment="Center">
                                             <dxg:GridColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <dxe:TextEdit
+                                                        ShowBorder="False"
                                                         HorizontalAlignment="Stretch"
                                                         IsReadOnly="{DXBinding Expr='@e(viewTelegram).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                        Text="{Binding Path=RowData.Row.TelegramToken, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                        Text="{Binding Path=RowData.Row.TelegramBot.Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellTemplate>
                                             <dxg:GridColumn.CellEditTemplate>
                                                 <DataTemplate>
-                                                    <dxe:TextEdit
-                                                        HorizontalAlignment="Stretch"
-                                                        IsReadOnly="{DXBinding Expr='@e(viewTelegram).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                        Text="{Binding Path=RowData.Row.TelegramToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                                    <dxe:ComboBoxEdit 
+                                                        NullValueButtonPlacement="EditBox"
+                                                        ShowBorder="False"              
+                                                        ItemsSource="{Binding ElementName=viewTelegram, Path=DataContext.TelegramBots, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                      
+                                                        SelectedItem="{Binding RowData.Row.TelegramBot, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                        DisplayMember="Description"
+                                                                      NullText="Telegram - бот" IsTextEditable="False"
+                                                        IsReadOnly="{DXBinding Expr='@e(viewTelegram).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                        <dxe:ComboBoxEdit.StyleSettings>
+                                                            <dxe:RadioComboBoxStyleSettings />
+                                                        </dxe:ComboBoxEdit.StyleSettings>
+                                                    </dxe:ComboBoxEdit>
                                                 </DataTemplate>
                                             </dxg:GridColumn.CellEditTemplate>
                                         </dxg:GridColumn>

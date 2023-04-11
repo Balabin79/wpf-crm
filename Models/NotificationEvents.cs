@@ -14,10 +14,16 @@ namespace B6CRM.Models
             set { SetProperty(() => EventName, value); }
         }
 
-        public string TelegramToken
+        public int? TelegramBotId
         {
-            get { return GetProperty(() => TelegramToken); }
-            set { SetProperty(() => TelegramToken, value); }
+            get { return GetProperty(() => TelegramBotId); }
+            set { SetProperty(() => TelegramBotId, value); }
+        }
+
+        public TelegramBot TelegramBot
+        {
+            get { return GetProperty(() => TelegramBot); }
+            set { SetProperty(() => TelegramBot, value); }
         }
 
         public int? IsNotify

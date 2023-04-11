@@ -27,6 +27,8 @@ using B6CRM.Models;
 using B6CRM.Infrastructures.Extensions;
 using B6CRM.Models.Base;
 using B6CRM.Services;
+using B6CRM.Views.WindowForms;
+using Npgsql;
 
 namespace B6CRM.ViewModels
 {
@@ -42,18 +44,6 @@ namespace B6CRM.ViewModels
                 Config = new Config();
                 SettingsVM = new SettingsVM();
 
-                if (File.Exists(Config.PathToConfig))
-                {
-                    var json = File.ReadAllText(Config.PathToConfig).Trim();
-                    if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb config)
-                    {
-                        SettingsVM.DbType = config.Db;
-                        SettingsVM.PostgresConnect = config.PostgresConnect;
-                    }
-                }
-
-                if (SettingsVM.PostgresConnect == null) SettingsVM.PostgresConnect = new PostgresConnect();
-
                 var model = db.Settings.FirstOrDefault() ?? new Setting();
                 SettingsVM.Copy(model);
                 //Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
@@ -68,8 +58,10 @@ namespace B6CRM.ViewModels
 
                 Roles = db.RolesManagment.OrderBy(f => f.Num).ToArray();
 
-                NotificationEvents = db.NotificationEvents?.ToArray();
-            }
+                NotificationEvents = db.NotificationEvents?.Include(f => f.TelegramBot)?.ToArray();
+
+                SetTelegramBots();
+            }           
             catch (Exception e)
             {
                 Log.ErrorHandler(e);
@@ -92,99 +84,10 @@ namespace B6CRM.ViewModels
         {
             get { return GetProperty(() => SettingsVM); }
             set { SetProperty(() => SettingsVM, value); }
-        }
+        }        
 
         [Command]
         public void Editable() => IsReadOnly = !IsReadOnly;
-
-        private bool IsConfigChanged { get; set; } = false;
-
-        [Command]
-        public void SaveConfig()
-        {
-            // возможно изменили настройки подключения, пробуем коннектиться, если сбой, то выходим
-            Setting model;
-            StoreConnectToDb connect = new StoreConnectToDb();
-            try
-            {
-                // пытаемся применить новые параметры подключения
-                if (SettingsVM.DbType == null || SettingsVM.DbType == 0)
-                {
-                    Config.DbType = 0;
-                    Config.ConnectionString = Config.PathToDbDefault;
-                    SettingsVM.PostgresConnect = null;
-                }
-                else
-                {
-                    Config.DbType = 1;
-                    Config.ConnectionString = $"Host={SettingsVM.PostgresConnect?.Host ?? ""};Port={SettingsVM.PostgresConnect?.Port};Database={SettingsVM.PostgresConnect?.Database ?? ""};Username={SettingsVM.PostgresConnect?.Username ?? ""};Password={SettingsVM.PostgresConnect?.Password ?? ""};";
-                }
-                db = new ApplicationContext();
-                db.Config = Config;
-
-                // eсли подключение не упало, то сохраняем настройки подключения
-                model = db.Settings.FirstOrDefault() ?? new Setting();
-                ConfigHandler();
-
-                if (IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-
-                IsConfigChanged = false;
-            }
-            catch (Exception e)
-            {
-
-                Log.ErrorHandler(e, "Сбой при подключении к базе данных, попробуйте изменить параметры подключения!", true);
-                return;
-            }
-        }
-
-        private void ConfigHandler()
-        {
-            // сравниваем значения из формы с теми что из файла, если изменились, то изменяем флаг оповещения
-            if (File.Exists(Config.PathToConfig))
-            {
-                var json = File.ReadAllText(Config.PathToConfig).Trim();
-
-                if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb file)
-                {
-                    // значения не поменялись
-                    if (
-                        SettingsVM.DbType == file.Db
-                        && Config.ConnectionString == file.ConnectionString
-                        && SettingsVM.PostgresConnect?.Database == file.PostgresConnect?.Database
-                        && SettingsVM.PostgresConnect?.Password == file.PostgresConnect?.Password
-                        && SettingsVM.PostgresConnect?.Username == file.PostgresConnect?.Username
-                        && SettingsVM.PostgresConnect?.Port == file.PostgresConnect?.Port
-                        && SettingsVM.PostgresConnect?.Host == file.PostgresConnect?.Host
-                        ) return;
-                }
-            }
-
-            var connect = new StoreConnectToDb();
-            if (SettingsVM.DbType == 0)
-            {
-                connect.Db = 0;
-                connect.ConnectionString = Config.PathToDbDefault;
-                SettingsVM.PostgresConnect = null;
-            }
-
-            if (SettingsVM.DbType == 1)
-            {
-                connect.Db = 1;
-                connect.ConnectionString = $"Host={SettingsVM.PostgresConnect?.Host ?? ""};Port={SettingsVM.PostgresConnect?.Port};Database={SettingsVM.PostgresConnect?.Database ?? ""};Username={SettingsVM.PostgresConnect?.Username ?? ""};Password={SettingsVM.PostgresConnect?.Password ?? ""};";
-
-                connect.PostgresConnect = SettingsVM.PostgresConnect;
-            }
-
-            var config = JsonSerializer.Serialize(connect);
-
-            if (File.Exists(Config.PathToConfig)) File.Delete(Config.PathToConfig);
-            File.WriteAllText(Config.PathToConfig, config);
-
-            Config.ConnectionString = connect.ConnectionString ?? Config.PathToDbDefault;
-            Config.DbType = connect.Db;
-            IsConfigChanged = true;
-        }
 
         [Command]
         public void Save()
@@ -414,6 +317,101 @@ namespace B6CRM.ViewModels
             get { return GetProperty(() => NewLicense); }
             set { SetProperty(() => NewLicense, value?.Trim()); }
         }
+        #endregion
+
+        #region TelegramBots
+        public ObservableCollection<TelegramBot> TelegramBots
+        {
+            get { return GetProperty(() => TelegramBots); }
+            set { SetProperty(() => TelegramBots, value); }
+        }
+
+        [Command]
+        public void OpenTelegramBotsWindow()
+        {
+            try
+            {
+                db.TelegramBots.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
+
+                Window wnd = Application.Current.Windows.OfType<Window>().Where(w => w.ToString() == TelegramBotsWindow?.ToString()).FirstOrDefault();
+                if (wnd != null)
+                {
+                    wnd.Activate();
+                    return;
+                }
+                TelegramBotsWindow = new TelegramBotsWindow() { DataContext = this };
+                TelegramBotsWindow.Show();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
+        }
+
+        [Command]
+        public void AddTelegramBot()
+        {
+            try
+            {
+                TelegramBots.Add(new TelegramBot());
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
+        }
+
+        [Command]
+        public void DeleteTelegramBot(object p)
+        {
+            try
+            {
+                if (p is TelegramBot model)
+                {
+                    if (model.Id != 0)
+                    {
+                        if (!new ConfirDeleteInCollection().run(0)) return;
+                        db.Entry(model).State = EntityState.Deleted;
+                    }
+                    else db.Entry(model).State = EntityState.Detached;
+                    if (db.SaveChanges() > 0)
+                    {
+                        new Notification() { Content = "Телеграм-бот удален из базы данных!" }.run();
+                        SetTelegramBots();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
+        }
+
+        [Command]
+        public void SaveTelegramBot()
+        {
+            try
+            {
+                foreach (var item in TelegramBots)
+                {
+                    if (string.IsNullOrEmpty(item.Token)) continue;
+                    if (item.Id == 0) db.Entry(item).State = EntityState.Added;
+                }
+                if (db.SaveChanges() > 0)
+                {
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    SetTelegramBots();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
+        }
+
+        public void SetTelegramBots() => TelegramBots = db.TelegramBots.ToObservableCollection();
+
+        public TelegramBotsWindow TelegramBotsWindow { get; set; }
         #endregion
     }
 

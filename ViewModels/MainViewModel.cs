@@ -7,26 +7,36 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using B6CRM.Models;
 using B6CRM.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Navigation;
+using Npgsql;
 
 namespace B6CRM.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private ApplicationContext db;
         public INavigationService NavigationService { get { return GetService<INavigationService>(); } }
         protected ISplashScreenService SplashScreenService { get { return GetService<ISplashScreenService>(); } }
 
-        public MainViewModel() { }
+        public MainViewModel() => db = new ApplicationContext();
 
         [Command]
         public void OnViewLoaded(object p)
         {
-            NavigationService?.Navigate("B6CRM.Views.PatientCard.PatientsList", null, this);
-            if (p is TileBarItem clientsBtn) clientsBtn.IsSelected = true;
+            try
+            {
+                NavigationService?.Navigate("B6CRM.Views.PatientCard.PatientsList", null, this);
+                if (p is TileBarItem clientsBtn) clientsBtn.IsSelected = true;
+            }
+            catch(Exception e)
+            {
+                HandleConnectError(e);
+            }          
         }
 
         [Command]
@@ -34,11 +44,17 @@ namespace B6CRM.ViewModels
         {
             try
             {
-                NavigationService.Navigate(p.ToString(), null, this);
+                if (!UserSessionLoaded)
+                {
+                    new UserSessionLoading().Run();
+                    UserSessionLoaded = true;
+                }
+                NavigationService?.Navigate(p.ToString(), null, this);
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "Раздел не найден!", true);
+                HandleConnectError(e);
+               // Log.ErrorHandler(e, "Раздел не найден!", true);
             }
         }
 
@@ -47,7 +63,7 @@ namespace B6CRM.ViewModels
         {
             try
             {
-                var path = Path.Combine(new Config().PathToProgramDirectory, "B6Crm.chm");
+                var path = Path.Combine(Config.defaultPath, "B6Crm.chm");
 
                 if (!File.Exists(path))
                 {
@@ -58,7 +74,7 @@ namespace B6CRM.ViewModels
                 var proc = new Process();
                 proc.StartInfo = new ProcessStartInfo(path)
                 {
-                    UseShellExecute = true
+                    UseShellExecute = true, CreateNoWindow = false
                 };
                 proc.Start();
             }
@@ -67,5 +83,16 @@ namespace B6CRM.ViewModels
                 Log.ErrorHandler(e, "Ошибка при попытке открыть файл справки!", true);
             }
         }
+
+        private void HandleConnectError(Exception e)
+        {
+            if (e is NpgsqlException || e.InnerException is NpgsqlException)
+            {
+                NavigationService?.Navigate("B6CRM.Views.FailDBConnect");
+            }
+        }
+
+        /* флаг удачной загрузки сессий */
+        public bool UserSessionLoaded { get; set; } = false;
     }
 }

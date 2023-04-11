@@ -36,6 +36,12 @@ namespace B6CRM.Services
                         if (DbType == 1)
                         {
                             PathToProgram = Path.Combine("\\\\", config.PostgresConnect?.Host, "B6 Software", "B6 CRM");
+
+                            Host = config.PostgresConnect?.Host;
+                            Port = config.PostgresConnect?.Port;
+                            DatabaseName = config.PostgresConnect?.Database;
+                            UserName = config.PostgresConnect?.Username;
+                            Password = config.PostgresConnect?.Password;
                         }
                     }
                 }
@@ -61,6 +67,12 @@ namespace B6CRM.Services
         public string DBName;
         public string PathToProgram;
         public int DbType;
+
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string DatabaseName { get; set; }
+        public string Host { get; set; }
+        public int? Port { get; set; }
 
         // эти пути всегда статичны       
         public static string defaultPath = Path.Combine(Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)).FullName, "B6 Software", "B6 CRM");

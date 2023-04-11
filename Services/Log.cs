@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DevExpress.Xpf.Core;
 using System.Windows;
+using Npgsql;
+using B6CRM.Views.WindowForms;
+using B6CRM.ViewModels;
 
 namespace B6CRM.Services
 {
@@ -15,18 +18,15 @@ namespace B6CRM.Services
             Exception e,
             string publicError = "Произошла ошибка!",
             bool showMsg = false,
-            bool isRedirectOnSettings = false
+            bool isRedirect = false,
+            string page = ""
             )
-        {
-            try
-            {
-                if (showMsg) ThemedMessageBox.Show(title: "Ошибка", text: publicError, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+        {   
+            if (showMsg) ThemedMessageBox.Show(title: "Ошибка", text: publicError, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
 
-                string path = Path.Combine(Config.defaultPath, "log.txt");
-                string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";
-                File.AppendAllText(path, msg);
-            }
-            catch { }
+            string path = Path.Combine(Config.defaultPath, "log.txt");
+            string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";
+            File.AppendAllText(path, msg);
         }
     }
 }

@@ -19,22 +19,13 @@ namespace B6CRM.Services
     {
         public Login()
         {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                try
-                {
-                    Setting = db.Settings.FirstOrDefault();
-                    IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
-                    IsPasswordRequired = Setting?.IsPasswordRequired == 1;
-                    Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
-                }
-                catch (Exception e)
-                {
-                    Log.ErrorHandler(e);
-                    IsRoleAccessEnabled = false;
-                    IsPasswordRequired = false;
-                }
-            }
+            UserSession = new UserSession();
+
+            ApplicationContext db = new ApplicationContext();
+            Setting = db.Settings.FirstOrDefault();
+            IsRoleAccessEnabled = Setting?.RolesEnabled == 1;
+            IsPasswordRequired = Setting?.IsPasswordRequired == 1;
+            Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
         }
 
         public void ShowLogin()
@@ -48,21 +39,8 @@ namespace B6CRM.Services
             {
                 UserSession = new UserSession();
                 SetUserSessionForAdmin();
-                //SetUserSession();
             }
         }
-
-        /* public void SetUserSession()
-         {
-            try
-            {
-                Application.Current.Resources["UserSession"] = UserSession;
-            }
-             catch(Exception e)
-            {
-
-            }                      
-         }*/
 
         [Command]
         public void CloseForm(object p)
@@ -236,6 +214,7 @@ namespace B6CRM.Services
             UserSession.ExportData = true;
         }
 
+
         public bool HasAccess(RoleManagment role) => Employee?.IsDoctor == 1 && role.DoctorAccess == 1 || Employee?.IsReception == 1 && role.ReceptionAccess == 1;
 
 
@@ -270,8 +249,8 @@ namespace B6CRM.Services
 
 
         public ICollection<Employee> Employees { get; set; }
-        public bool IsPasswordRequired { get; set; }
-        private bool IsRoleAccessEnabled { get; set; }
+        public bool IsPasswordRequired { get; set; } = false;
+        private bool IsRoleAccessEnabled { get; set; } = false;
         private LoginWin LoginWin { get; set; }
         private bool CanLoginWinClosing { get; set; } = false;
 

@@ -35,7 +35,12 @@ namespace B6CRM.Views.About
             {
                 if (sender.GetType() != typeof(Hyperlink)) return;
                 string link = ((Hyperlink)sender).NavigateUri.ToString();
-                Process.Start(link);
+                var proc = new Process();
+                proc.StartInfo = new ProcessStartInfo(link)
+                {
+                    UseShellExecute = true
+                };
+                proc.Start();
             }
             catch
             {
