@@ -33,10 +33,10 @@ namespace B6CRM.ViewModels
                 NavigationService?.Navigate("B6CRM.Views.PatientCard.PatientsList", null, this);
                 if (p is TileBarItem clientsBtn) clientsBtn.IsSelected = true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 HandleConnectError(e);
-            }          
+            }
         }
 
         [Command]
@@ -44,17 +44,24 @@ namespace B6CRM.ViewModels
         {
             try
             {
+                if (!CheckConnect())
+                {
+                    NavigationService?.Navigate("B6CRM.Views.FailDBConnect");
+                    return;
+                }
+
                 if (!UserSessionLoaded)
                 {
                     new UserSessionLoading().Run();
                     UserSessionLoaded = true;
                 }
+
                 NavigationService?.Navigate(p.ToString(), null, this);
             }
             catch (Exception e)
             {
                 HandleConnectError(e);
-               // Log.ErrorHandler(e, "Раздел не найден!", true);
+                // Log.ErrorHandler(e, "Раздел не найден!", true);
             }
         }
 
@@ -74,7 +81,8 @@ namespace B6CRM.ViewModels
                 var proc = new Process();
                 proc.StartInfo = new ProcessStartInfo(path)
                 {
-                    UseShellExecute = true, CreateNoWindow = false
+                    UseShellExecute = true,
+                    CreateNoWindow = false
                 };
                 proc.Start();
             }
@@ -92,6 +100,8 @@ namespace B6CRM.ViewModels
             }
         }
 
+        private bool CheckConnect() => Task.Run(() => { new ApplicationContext().RolesManagment.FirstOrDefault(); }).Wait(7000);
+          
         /* флаг удачной загрузки сессий */
         public bool UserSessionLoaded { get; set; } = false;
     }

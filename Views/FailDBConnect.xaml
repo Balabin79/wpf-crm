@@ -121,6 +121,22 @@
                 </dxlc:LayoutGroup>
 
             </ScrollViewer>
+
+            <dx:WaitIndicator 
+                Grid.Row="1"
+                x:Name="WaitIndicator"
+                DeferedVisibility="{Binding IsWaitIndicatorVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                Content="Подключаемся к базе данных ..." 
+                VerticalAlignment="Center" >
+                <dx:WaitIndicator.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Ожидайте ответа" FontSize="20"/>
+                            <TextBlock Text="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dx:WaitIndicator.ContentTemplate>
+            </dx:WaitIndicator>
         </Grid>
     </Border>
 </UserControl>

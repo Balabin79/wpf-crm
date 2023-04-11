@@ -35,7 +35,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5" dx:ThemeManager.ThemeName="Office2019White" DataContext="{StaticResource vm}" x:Name="Border">
-
+        
         <Grid x:Name="gridMainClientGroups"  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="24"/>
@@ -114,6 +114,7 @@
             </DockPanel>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" >
+
                 <dx:DXTabControl Margin="5">
                     <dx:DXTabItem Header="Общие настройки" >
                         <dxlc:LayoutGroup View="Group" Orientation="Vertical" Margin="5">
@@ -895,8 +896,28 @@
                         </ScrollViewer>
                     </dx:DXTabItem>
 
-                </dx:DXTabControl>
+                    </dx:DXTabControl>
+
             </ScrollViewer>
+
+            <dx:WaitIndicator 
+                Grid.Row="1"
+                x:Name="WaitIndicator"
+                DataContext="{StaticResource conn}"
+                DeferedVisibility="{Binding IsWaitIndicatorVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                Content="Подключаемся к базе данных ..." 
+                VerticalAlignment="Center" >
+                <dx:WaitIndicator.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Ожидайте ответа" FontSize="20"/>
+                            <TextBlock Text="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dx:WaitIndicator.ContentTemplate>
+            </dx:WaitIndicator>
+            
         </Grid>
     </Border>
+    
 </UserControl>

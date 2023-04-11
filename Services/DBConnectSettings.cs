@@ -39,12 +39,15 @@ namespace B6CRM.Services
             if (PostgresConnect == null) PostgresConnect = new PostgresConnect();
         }
 
-        [Command]
-        public void SaveConfig()
+
+        [AsyncCommand]
+        public async Task SaveConfig()
         {
-            StoreConnectToDb connect = new StoreConnectToDb();
+            IsWaitIndicatorVisible = true;
+                   
             try
-            {
+            {              
+                StoreConnectToDb connect = new StoreConnectToDb();
                 // пытаемся применить новые параметры подключения
                 if (DbType == null || DbType == 0)
                 {
@@ -53,11 +56,16 @@ namespace B6CRM.Services
                     PostgresConnect = null;
                 }
                 else
-                {                 
-                    if (!CheckNetworkConnect.IsConnectSuccess(PostgresConnect?.Host, (PostgresConnect?.Port ?? 5432), Timeout))
+                {
+                    var isConnected = await Task<bool>.Run(() => { return TryingConnect(); });
+                    if (!isConnected)
                     {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Не удалось установить подключение к базе данных! Сохранить введенные параметры подключения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning, defaultButton:MessageBoxResult.No);
-                        if (response.ToString() == "No") return;
+                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Не удалось установить подключение к базе данных! Сохранить введенные параметры подключения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning, defaultButton: MessageBoxResult.No);
+                        if (response.ToString() == "No") 
+                        {
+                            IsWaitIndicatorVisible = false;
+                            return;
+                        }
                     }
 
                     Config.DbType = 1;
@@ -68,14 +76,17 @@ namespace B6CRM.Services
 
                 if (IsConfigChanged) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
 
-                IsConfigChanged = false;             
+                IsConfigChanged = false;  
             }           
             catch (Exception e)
             {
                 Log.ErrorHandler(e, "Не удалось сохранить настройки подключения к базе данных!", true);
             }         
+            IsWaitIndicatorVisible = false;
         }
 
+        private bool TryingConnect() => CheckNetworkConnect.IsConnectSuccess(PostgresConnect?.Host, (PostgresConnect?.Port ?? 5432), Timeout);
+  
         private void ConfigHandler()
         {
             // сравниваем значения из формы с теми что из файла, если изменились, то изменяем флаг оповещения
@@ -149,6 +160,12 @@ namespace B6CRM.Services
         {
             get { return GetProperty(() => Timeout); }
             set { SetProperty(() => Timeout, value); }
+        }
+
+        public bool IsWaitIndicatorVisible
+        {
+            get { return GetProperty(() => IsWaitIndicatorVisible); }
+            set { SetProperty(() => IsWaitIndicatorVisible, value); }
         }
     }
 }
