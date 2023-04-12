@@ -22,7 +22,12 @@ namespace B6CRM.Services
             string page = ""
             )
         {   
-            if (showMsg) ThemedMessageBox.Show(title: "Ошибка", text: publicError, messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            if (showMsg) ThemedMessageBox.Show(
+                title: "Ошибка", 
+                text: publicError + " Возможно, что данные были кем-то удалены или изменены во время сессии, перезагрузите раздел.", 
+                messageBoxButtons: MessageBoxButton.OK, 
+                icon: MessageBoxImage.Error
+                );
 
             string path = Path.Combine(Config.defaultPath, "log.txt");
             string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";

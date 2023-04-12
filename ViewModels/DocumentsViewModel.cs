@@ -76,7 +76,7 @@ namespace B6CRM.ViewModels
             }
             catch
             {
-                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" возникла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Ошибка", text: "При открытии формы \"Документы\" произошла ошибка!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
             }*/
         }
 

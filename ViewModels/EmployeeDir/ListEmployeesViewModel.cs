@@ -137,7 +137,7 @@ namespace B6CRM.ViewModels.EmployeeDir
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "При сохранении данных сотрудника возникла ошибка!", true);
+                Log.ErrorHandler(e, "При сохранении данных сотрудника произошла ошибка!", true);
             }
         }
 

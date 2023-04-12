@@ -670,7 +670,7 @@ namespace B6CRM.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" возникла ошибка!", true);
+                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" произошла ошибка!", true);
             }
         }
 
@@ -759,7 +759,7 @@ namespace B6CRM.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "При сохранении данных возникла ошибка!", true);
+                Log.ErrorHandler(e, "При сохранении данных произошла ошибка!", true);
             }
         }
 
