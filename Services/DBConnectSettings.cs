@@ -60,12 +60,9 @@ namespace B6CRM.Services
                     var isConnected = await Task<bool>.Run(() => { return TryingConnect(); });
                     if (!isConnected)
                     {
+                        IsWaitIndicatorVisible = false;
                         var response = ThemedMessageBox.Show(title: "Внимание!", text: "Не удалось установить подключение к базе данных! Сохранить введенные параметры подключения?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning, defaultButton: MessageBoxResult.No);
-                        if (response.ToString() == "No") 
-                        {
-                            IsWaitIndicatorVisible = false;
-                            return;
-                        }
+                        if (response.ToString() == "No")  return;                     
                     }
 
                     Config.DbType = 1;
@@ -81,8 +78,12 @@ namespace B6CRM.Services
             catch (Exception e)
             {
                 Log.ErrorHandler(e, "Не удалось сохранить настройки подключения к базе данных!", true);
-            }         
-            IsWaitIndicatorVisible = false;
+            }
+            finally
+            {
+                IsWaitIndicatorVisible = false;
+            }
+            
         }
 
         private bool TryingConnect() => CheckNetworkConnect.IsConnectSuccess(PostgresConnect?.Host, (PostgresConnect?.Port ?? 5432), Timeout);
