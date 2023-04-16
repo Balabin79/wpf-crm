@@ -655,10 +655,7 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => Appointments); }
             set { SetProperty(() => Appointments, value); }
         }
-        #endregion
 
-
-        #region Раздел карты "Дополнительные поля"
         [Command]
         public void OpenFormFields()
         {

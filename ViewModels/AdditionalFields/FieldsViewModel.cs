@@ -123,8 +123,14 @@ namespace B6CRM.ViewModels.AdditionalFields
             {
                 foreach (var i in Fields)
                 {
-                    var value = db.AdditionalClientValue.FirstOrDefault(f => f.AdditionalField.Label.ToString() == i.Label.ToString() && f.ClientId == client.Id);
+                    var value = db.AdditionalClientValue.Include(f => f.AdditionalField)
+                        .FirstOrDefault(
+                        f => f.AdditionalField.Label.ToString() == i.Label.ToString() 
+                         && 
+                         f.ClientId == client.Id
+                        );
                     var val = ((BaseEdit)i.Content).EditValue?.ToString();
+
                     if (value == null && val != null)
                     {
                         var item = new AdditionalClientValue() { ClientId = client.Id, Value = val, AdditionalFieldId = db.AdditionalClientFields.FirstOrDefault(f => f.Label.ToString() == i.Label.ToString()).Id };

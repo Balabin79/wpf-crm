@@ -225,6 +225,7 @@ namespace B6CRM.Reports
             this.lineTotal.StylePriority.UsePadding = false;
             this.lineTotal.StylePriority.UseTextAlignment = false;
             xrSummary1.Func = DevExpress.XtraReports.UI.SummaryFunc.Custom;
+            xrSummary1.IgnoreNullValues = true;
             this.lineTotal.Summary = xrSummary1;
             this.lineTotal.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleRight;
             this.lineTotal.TextFormatString = "{0:c2}";
@@ -838,7 +839,7 @@ namespace B6CRM.Reports
             // 
             // sqlDataSource1
             // 
-            this.sqlDataSource1.ConnectionName = "B6Crm";
+            this.sqlDataSource1.ConnectionName = "B6Crm SQLite";
             this.sqlDataSource1.Name = "sqlDataSource1";
             customSqlQuery1.Name = "Invoices_1";
             queryParameter1.Name = "Параметр1";
@@ -880,7 +881,7 @@ namespace B6CRM.Reports
             // calculatedField1
             // 
             this.calculatedField1.DataMember = "Invoices_1";
-            this.calculatedField1.Expression = "[Count]*[Price]";
+            this.calculatedField1.Expression = "[Price] * [Count]";
             this.calculatedField1.Name = "calculatedField1";
             // 
             // ServicesInvoiceReport
@@ -984,8 +985,8 @@ namespace B6CRM.Reports
         private DevExpress.XtraReports.UI.XRControlStyle evenDetailStyle;
         private DevExpress.XtraReports.UI.XRControlStyle oddDetailStyle;
         private DevExpress.XtraReports.UI.FormattingRule formattingRule1;
-        private DevExpress.XtraReports.UI.CalculatedField calculatedField1;
         private DevExpress.XtraReports.Parameters.Parameter parameter_logo;
+        private DevExpress.XtraReports.UI.CalculatedField calculatedField1;
     }
 
 }

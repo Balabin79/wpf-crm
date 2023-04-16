@@ -37,7 +37,7 @@ namespace B6CRM.Views.PatientCard
                 {
                     if (e.Row == null) return;
                     var items = ((PlanItem)e.Row)?.Plan?.PlanItems;
-                    decimal price = 0;
+                    decimal? price = 0;
                     if (items == null) return;
                     foreach (var item in items)
                     {

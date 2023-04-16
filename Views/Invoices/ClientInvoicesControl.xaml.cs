@@ -20,7 +20,7 @@ namespace B6CRM.Views.Invoices
                 {
                     if (e.Row == null) return;
                     var items = ((InvoiceItems)e.Row)?.Invoice?.InvoiceItems;
-                    decimal price = 0;
+                    decimal? price = 0;
                     if (items == null) return;
                     foreach (var item in items)
                     {

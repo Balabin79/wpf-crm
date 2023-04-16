@@ -286,17 +286,17 @@ namespace B6CRM.Models
             #endregion
 
             #region InvoiceItems seeding
-            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 1, Guid = "p2LTaLDRxunzKuLb1J3u", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 1, InvoiceId = 1, Code = "В01.065.008", Name = "Прием (осмотр, консультация) врача-стоматолога повторный", Price = 300 });
+            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 1, Guid = "p2LTaLDRxunzKuLb1J3u", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 1, InvoiceId = 1, Code = "В01.065.008", Name = "Прием (осмотр, консультация) врача-стоматолога повторный", Price = 300M });
 
-            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 2, Guid = "xHsPY1xZnW2y4waz6E2g", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 1, InvoiceId = 1, Code = "A01.07.001", Name = "Сбор анамнеза и жалоб при патологии полости рта", Price = 700 });
+            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 2, Guid = "xHsPY1xZnW2y4waz6E2g", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 1, InvoiceId = 1, Code = "A01.07.001", Name = "Сбор анамнеза и жалоб при патологии полости рта", Price = 700M });
 
-            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 3, Guid = "QLddnX2TJBqBBkUMCjVl", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 2, InvoiceId = 1, Code = "A123456", Name = "Бинт", Price = 50 });
+            modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 3, Guid = "QLddnX2TJBqBBkUMCjVl", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 2, InvoiceId = 1, Code = "A123456", Name = "Бинт", Price = 50M });
             #endregion
 
             #region PlanItems seeding
-            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 1, Guid = "1ZBGDukMywHRpCfCKcQn", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", Count = 1, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 500 });
+            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 1, Guid = "1ZBGDukMywHRpCfCKcQn", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", Count = 1, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 500M });
 
-            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 2, Guid = "CBOZoMwf1JEH3bdGkLxd", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A16.07.001", Name = "Удаление зуба", Count = 2, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 1000 });
+            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 2, Guid = "CBOZoMwf1JEH3bdGkLxd", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A16.07.001", Name = "Удаление зуба", Count = 2, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 1000M });
             #endregion
         }
 

@@ -135,8 +135,8 @@
 	 "ClientInfo"."Gender",
        "InvoiceItems"."Name",
        "InvoiceItems"."Code",
-       "InvoiceItems"."Count",
-       "InvoiceItems"."Price" from "Invoices" 
+       "InvoiceItems"."Count" as "Count",
+       "InvoiceItems"."Price" as "Price" from "Invoices" 
   inner join "ClientInfo" 
        on ("ClientInfo"."Id" = "Invoices"."ClientId")
   inner join "InvoiceItems" 

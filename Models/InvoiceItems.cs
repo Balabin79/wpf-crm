@@ -22,12 +22,13 @@ namespace B6CRM.Models
         public Invoice Invoice { get; set; }
         public int? InvoiceId { get; set; }
 
-        public int Count
+        public int? Count
         {
             get { return GetProperty(() => Count); }
             set { SetProperty(() => Count, value); }
         }
 
+        [Column(TypeName = "NUMERIC")]
         public decimal? Price
         {
             get { return GetProperty(() => Price); }

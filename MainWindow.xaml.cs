@@ -40,7 +40,7 @@ namespace B6CRM
                 // проверяем соединение
                 using (var db = new ApplicationContext())
                 {
-                    if (!CheckNetworkConnect.IsConnectSuccess(db?.Config?.Host, (db?.Config?.Port ?? 5432), 7))
+                    if (db.Config.DbType == 1 && !CheckNetworkConnect.IsConnectSuccess(db?.Config?.Host, (db?.Config?.Port ?? 5432), 7))
                     {
                         NavigationFrame.Source = "B6CRM.Views.FailDBConnect";
                         return;

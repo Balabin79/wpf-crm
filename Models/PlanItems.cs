@@ -24,7 +24,7 @@ namespace B6CRM.Models
         public Plan Plan { get; set; }
         public int? PlanId { get; set; }
 
-        public int Count
+        public int? Count
         {
             get { return GetProperty(() => Count); }
             set { SetProperty(() => Count, value); }
@@ -44,6 +44,7 @@ namespace B6CRM.Models
 
         public int? IsMovedToInvoice { get; set; } = 0;
 
+        [Column(TypeName = "NUMERIC")]
         public decimal? Price
         {
             get { return GetProperty(() => Price); }

@@ -100,7 +100,14 @@ namespace B6CRM.ViewModels
             }
         }
 
-        private bool CheckConnect() => Task.Run(() => { new ApplicationContext().RolesManagment.FirstOrDefault(); }).Wait(7000);
+        private bool CheckConnect() 
+        {
+            var db = new ApplicationContext();
+            // если SQLite, то пропускаем проверку, т.к. если даже отсутствует, то пересоздается локально
+            if (db.Config.DbType == 0) return true;
+
+            return Task.Run(() => { db.RolesManagment.FirstOrDefault(); }).Wait(7000); 
+        }
           
         /* флаг удачной загрузки сессий */
         public bool UserSessionLoaded { get; set; } = false;
