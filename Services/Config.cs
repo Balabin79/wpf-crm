@@ -30,9 +30,10 @@ namespace B6CRM.Services
                     var json = File.ReadAllText(PathToConfig).Trim();
                     if (json.Length > 10 && JsonSerializer.Deserialize(json, new StoreConnectToDb().GetType()) is StoreConnectToDb config)
                     {
-                        ConnectionString = config.ConnectionString;
+                        ConnectionString = config.ConnectionString ?? Path.Combine(defaultPath, DBName);
                         DbType = config.Db;
                         PathToProgram = defaultPath;
+
                         if (DbType == 1)
                         {
                             PathToProgram = Path.Combine("\\\\", config.PostgresConnect?.Host, "B6 Software", "B6 CRM");

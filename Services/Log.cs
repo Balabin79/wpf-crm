@@ -31,6 +31,8 @@ namespace B6CRM.Services
 
             string path = Path.Combine(Config.defaultPath, "log.txt");
             string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";
+
+            
             File.AppendAllText(path, msg);
         }
     }

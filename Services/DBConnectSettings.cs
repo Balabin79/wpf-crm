@@ -36,7 +36,11 @@ namespace B6CRM.Services
                 }
             }
 
-            if (PostgresConnect == null) PostgresConnect = new PostgresConnect();
+            if (PostgresConnect == null) {
+                //Config.ConnectionString =  Config.PathToDbDefault;
+               // Config.DbType = 0;
+                PostgresConnect = new PostgresConnect(); 
+            }
         }
 
 
@@ -109,9 +113,10 @@ namespace B6CRM.Services
                         ) return;
                 }
             }
+            
 
             var connect = new StoreConnectToDb();
-            if (DbType == 0)
+            if (DbType == 0 || DbType == null)
             {
                 connect.Db = 0;
                 connect.ConnectionString = Config.PathToDbDefault;

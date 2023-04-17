@@ -27,7 +27,9 @@ namespace B6CRM.Models
                 Config = new Config();
                 Database.EnsureCreated();
             }
-            catch{}
+            catch(Exception e)
+            {
+            }
         }
 
         public ApplicationContext(Config config)
