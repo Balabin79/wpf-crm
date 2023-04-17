@@ -64,9 +64,9 @@ namespace B6CRM.ViewModels.ClientDir
 
                 Init(Model);
 
-                ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
+                ClientCategoriesLoad();
                 Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
-                Advertisings = db.Advertising.ToObservableCollection();
+                AdvertisingLoad();
                 PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
             }
             catch (Exception e)
@@ -74,6 +74,12 @@ namespace B6CRM.ViewModels.ClientDir
                 Log.ErrorHandler(e, "Ошибка подключения к базе данных при попытке загрузить список клиентов!", true);
             }
         }
+
+        #region Загружаем справочники
+        public void ClientCategoriesLoad() => ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
+
+        public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
+        #endregion
 
         #region Права на выполнение команд
 
@@ -485,13 +491,22 @@ namespace B6CRM.ViewModels.ClientDir
 
         private string NewInvoiceNumberGenerate()
         {
-            if (int.TryParse(db.Invoices?.ToList()?.OrderByDescending(f => f.Id)?.FirstOrDefault()?.Number, out int invoicesNumber) &&
-                int.TryParse(ClientInvoices.LastOrDefault()?.Number, out int clientInvoicesNumber))
+            var numInvoices = db.Invoices?.ToList()?.OrderByDescending(f => f.Number)?.FirstOrDefault()?.Number;
+            var numClientInvoices = ClientInvoices.LastOrDefault()?.Number;
+
+            if (int.TryParse(numInvoices, out int invoicesNumber) && int.TryParse(numClientInvoices, out int clientInvoicesNumber))
             {
                 if (clientInvoicesNumber > invoicesNumber) return string.Format("{0:00000000}", ++clientInvoicesNumber);
                 return string.Format("{0:00000000}", ++invoicesNumber);
             }
+
+            //есть счета, но нет у пользователя счетов
+            if(numInvoices != null && numClientInvoices == null && int.TryParse(numInvoices, out int num)) return string.Format("{0:00000000}", ++num);
+
+            // вообще нет счетов
             return "00000001";
+            
+
         }
         #endregion
 
@@ -1300,6 +1315,7 @@ namespace B6CRM.ViewModels.ClientDir
         {
             PrintConditions = new ObservableCollection<PrintCondition>()
             {
+                new PrintCondition(){Name = "Не в архиве", Id = -3, Type = true.GetType()},
                 new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}
             };
             db.ClientCategories?.ToArray()?.ForEach(f => PrintConditions.Add(
@@ -1350,7 +1366,6 @@ namespace B6CRM.ViewModels.ClientDir
 
         public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
 
-
         private void SetSourceCollectttion()
         {
             try
@@ -1358,19 +1373,23 @@ namespace B6CRM.ViewModels.ClientDir
                 SourceCollection = new List<Client>();
                 var ctx = db.Clients;
                 var where = "";
+                var or = "";
 
                 if (PrintConditionsSelected is List<object> collection)
                 {
                     var marked = collection.OfType<PrintCondition>().ToArray();
+                    if (marked.Length > 0) where = " WHERE ";
+                    if (marked.Length > 1) or = " OR ";
 
-                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
-                    //ctx.Where(f => f.IsInArchive == true);
+                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " IsInArchive = 1";
+                    if (marked.FirstOrDefault(f => f.Id == -3) != null) 
+                        where +=  where.Length > 10 ? or + "IsInArchive = 0" : "IsInArchive = 0";
 
                     var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
 
                     if (cat.Length > 0)
                     {
-                        where += !string.IsNullOrEmpty(where) ? " OR" : " WHERE";
+                        where += !string.IsNullOrEmpty(where) ? " AND" : " WHERE";
                         where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
                     }
                 }

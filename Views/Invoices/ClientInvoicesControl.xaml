@@ -536,7 +536,7 @@
                     <DataTemplate>
                         <TextBlock 
                             HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                            Margin="0 3 0 0"  Text="{Binding Row.Date, StringFormat='{}{0:dd MMMM yyyy HH:mm}',  ConverterCulture=ru-RU, Converter={StaticResource DateToString}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>

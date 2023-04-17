@@ -1,4 +1,6 @@
 ﻿
+using DevExpress.Xpf.Editors.Helpers;
+
 namespace B6CRM.Reports
 {
     partial class ServicesInvoiceReport
@@ -649,7 +651,7 @@ namespace B6CRM.Reports
             this.invoiceDate.StylePriority.UseFont = false;
             this.invoiceDate.StylePriority.UseTextAlignment = false;
             this.invoiceDate.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopCenter;
-            this.invoiceDate.TextFormatString = "{0:dd.MM.yyyy}";
+            this.invoiceDate.TextFormatString = "{0:dd MMMM yyyy HH:mm}";
             this.invoiceDate.Weight = 0.98658791027190518D;
             // 
             // invoiceNumber

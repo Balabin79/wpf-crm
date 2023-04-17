@@ -216,7 +216,7 @@
 
             <DockPanel LastChildFill="True" Grid.Row="0">
                 <StackPanel Orientation="Horizontal">
-                    <dxe:ComboBoxEdit Width="200" Margin="5 2 5 0"
+                    <dxe:ComboBoxEdit Width="320" Margin="5 2 5 0"
                                   NullText="Фильтры печати" ShowNullText="True"
                                   ItemsSource="{Binding PrintConditions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="Name"
@@ -224,7 +224,7 @@
                                   NullValueButtonPlacement="EditBox"
                                   >
                         <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:CheckedComboBoxStyleSettings/>
+                            <dxe:CheckedTokenComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
 
                     </dxe:ComboBoxEdit>

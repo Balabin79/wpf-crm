@@ -220,7 +220,7 @@
 
                                     <dxg:GridColumn  Header="Время визита" MinWidth="80" MaxWidth="175" FieldName="Appointment"
                                                      HorizontalHeaderContentAlignment="Center">
-                                        <dxg:GridColumn.CellDisplayTemplate>
+                                        <dxg:GridColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid Width="175" MaxWidth="175">
                                                     <Grid.ColumnDefinitions>
@@ -228,10 +228,11 @@
                                                         <ColumnDefinition Width="25"/>
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Grid.Column="0" Width="150" 
-                                                             Text="{Binding Row.VisitDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                             Text="{Binding Row.VisitDate, Converter={StaticResource DateToString}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged,
+                                                        StringFormat='{}{0:dd MMMM yyyy HH:mm}',  ConverterCulture=ru-RU}"/>
                                                 </Grid>
                                             </DataTemplate>
-                                        </dxg:GridColumn.CellDisplayTemplate>
+                                        </dxg:GridColumn.CellTemplate>
 
                                         <dxg:GridColumn.CellEditTemplate>
                                             <DataTemplate>
@@ -583,7 +584,7 @@
                     <DataTemplate>
                         <TextBlock 
                             HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                            Margin="0 3 0 0"  Text="{Binding Row.Date, StringFormat='{}{0:dd MMMM yyyy HH:mm}',  ConverterCulture=ru-RU, Converter={StaticResource DateToString}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>

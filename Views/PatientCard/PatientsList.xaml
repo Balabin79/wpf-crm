@@ -58,15 +58,16 @@
             <DockPanel LastChildFill="True" Grid.Row="0">
 
                 <StackPanel Orientation="Horizontal">
-                    <dxe:ComboBoxEdit Width="200" Margin="5 2 5 0"
+                    <dxe:ComboBoxEdit Width="295" Margin="5 2 5 0"
                                   NullText="Фильтры печати" ShowNullText="True"
                                   ItemsSource="{Binding PrintConditions, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                  DisplayMember="Name"
+                                  DisplayMember="Name" 
+                                 
                                   EditValue="{Binding PrintConditionsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                   NullValueButtonPlacement="EditBox"
                                   >
                         <dxe:ComboBoxEdit.StyleSettings>
-                            <dxe:CheckedComboBoxStyleSettings/>
+                            <dxe:CheckedTokenComboBoxStyleSettings />
                         </dxe:ComboBoxEdit.StyleSettings>
 
                     </dxe:ComboBoxEdit>
@@ -109,9 +110,11 @@
                                     </dxb:BarButtonItem.GlyphTemplate>
                                 </dxb:BarButtonItem>
 
-                                <dxb:BarButtonItem Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
-                                           GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenWindowCommand}" 
+                                <dxb:BarButtonItem 
+                                    Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
+                                    GlyphSize="Small" Style="{Binding}"
+                                    CommandParameter="{Binding Source={StaticResource vm}}"
+                                    Command="{Binding OpenWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>
@@ -120,9 +123,11 @@
                                     </dxb:BarButtonItem.GlyphTemplate>
                                 </dxb:BarButtonItem>
 
-                                <dxb:BarButtonItem Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
-                                           GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenWClientCategoryWindowCommand}" 
+                                <dxb:BarButtonItem 
+                                    Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
+                                    GlyphSize="Small" Style="{Binding}"
+                                    CommandParameter="{Binding Source={StaticResource vm}}"
+                                    Command="{Binding OpenWClientCategoryWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>

@@ -322,7 +322,8 @@ namespace B6CRM.ViewModels.EmployeeDir
         {
             PrintConditions = new ObservableCollection<PrintCondition>()
             {
-                new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}
+                new PrintCondition(){Name = "Не в архиве", Id = -3, Type = true.GetType()},
+                new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}               
             };
             /*db.ClientCategories?.ToArray()?.ForEach(f => PrintConditions.Add(
                 new PrintCondition() { Name = f.Name, Id = f.Id, Type = f.GetType() }
@@ -380,12 +381,16 @@ namespace B6CRM.ViewModels.EmployeeDir
                 SourceCollection = new List<Employee>();
                 var ctx = db.Employes;
                 var where = "";
+                var or = "";
 
                 if (PrintConditionsSelected is List<object> collection)
                 {
                     var marked = collection.OfType<PrintCondition>().ToArray();
-
-                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " WHERE IsInArchive = 1";
+                    if (marked.Length > 0) where = " WHERE ";
+                    if (marked.Length > 1) or = " OR ";
+        
+                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " IsInArchive = 1";
+                    if (marked.FirstOrDefault(f => f.Id == -3) != null) where += or + "IsInArchive = 0";
                     //ctx.Where(f => f.IsInArchive == true);
 
                     /* var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();

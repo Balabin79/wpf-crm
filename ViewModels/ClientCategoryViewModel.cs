@@ -16,12 +16,17 @@ using System.Threading.Tasks;
 using System.Windows;
 using B6CRM.Models;
 using B6CRM.Services;
+using B6CRM.ViewModels.ClientDir;
 
 namespace B6CRM.ViewModels
 {
     class ClientCategoryViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
+
+        public delegate void ClientCategoryChanges();
+        public event ClientCategoryChanges EventClientCategoriesChanges;
+        
         public ClientCategoryViewModel()
         {
             try
@@ -35,15 +40,18 @@ namespace B6CRM.ViewModels
             }
         }
 
-        public bool CanOpenWClientCategoryWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsCategoryEditable;
+        public bool CanOpenWClientCategoryWindow(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsCategoryEditable;
 
         [Command]
-        public void OpenWClientCategoryWindow()
+        public void OpenWClientCategoryWindow(object p)
         {
             try
             {
                 db.ClientCategories?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
+                if (p is ClientsViewModel vm && vm != null)
+                    EventClientCategoriesChanges += vm.ClientCategoriesLoad;
+
                 new ClientCategoriesWindow() { DataContext = this }.Show();
                 //StatusWindow.Show();
             }
@@ -72,6 +80,7 @@ namespace B6CRM.ViewModels
                 {
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     SetCollection();
+                    EventClientCategoriesChanges?.Invoke();
                 }
             }
             catch (Exception e)
@@ -99,6 +108,7 @@ namespace B6CRM.ViewModels
                     {
                         new Notification() { Content = "Категория удалена из базы данных!" }.run();
                         SetCollection();
+                        EventClientCategoriesChanges?.Invoke();
                     }
                 }
             }

@@ -16,12 +16,17 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using B6CRM.Models;
 using B6CRM.Services;
+using B6CRM.ViewModels.ClientDir;
 
 namespace B6CRM.ViewModels
 {
     class AdvertisingViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
+
+        public delegate void AdvertisingChanges();
+        public event AdvertisingChanges EventAdvertisingChanges;
+
         public AdvertisingViewModel()
         {
             try
@@ -35,15 +40,18 @@ namespace B6CRM.ViewModels
             }
         }
 
-        public bool CanOpenWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;
+        public bool CanOpenWindow(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;
 
         [Command]
-        public void OpenWindow()
+        public void OpenWindow(object p)
         {
             try
             {
                 db.Advertising?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
+                if (p is ClientsViewModel vm && vm != null) 
+                    EventAdvertisingChanges += vm.AdvertisingLoad;
+                
                 new AdvertisingsWindow() { DataContext = this }.Show();
                 //StatusWindow.Show();
             }
@@ -72,6 +80,7 @@ namespace B6CRM.ViewModels
                 {
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     SetCollection();
+                    EventAdvertisingChanges?.Invoke();
                 }
             }
             catch (Exception e)
@@ -99,6 +108,7 @@ namespace B6CRM.ViewModels
                     {
                         new Notification() { Content = "Рекламный источник удален из базы данных!" }.run();
                         SetCollection();
+                        EventAdvertisingChanges?.Invoke();
                     }
                 }
             }
