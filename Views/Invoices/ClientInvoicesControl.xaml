@@ -59,7 +59,7 @@
                                     IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
                                     Command="{Binding ElementName=view, Path=DataContext.AddInvoiceItemCommand}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                    CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
                                             <dxb:BarButtonItem.GlyphTemplate>
                                                 <DataTemplate>
                                                     <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
@@ -78,7 +78,7 @@
                                             <dxb:BarButtonItem.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource multiPageInt}" >
                                                     <Binding ElementName="UTreatmentPlan"/>
-                                                    <Binding ElementName="grid" Path="CurrentItem.Id"/>
+                                                    <Binding ElementName="templ" Path="DataContext.Id"/>
                                                 </MultiBinding>
                                             </dxb:BarButtonItem.CommandParameter>
                                         </dxb:BarButtonItem>
