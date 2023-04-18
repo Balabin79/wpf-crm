@@ -133,28 +133,38 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="SysName" Header="Системное имя (латиницей)" Width="3*">
+                    
+                    <dxg:GridColumn FieldName="SysName" Header="Системное имя (латиницей)" Width="3*" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding Path=RowData.Row.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit Text="{Binding Path=RowData.Row.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <dxe:TextEdit
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Text="{Binding Path=RowData.Row.SysName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="TypeValue" Header="Тип поля" Width="3*">
+                    <dxg:GridColumn FieldName="TypeValue" Header="Тип поля" Width="3*" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.TypeValue.CaptionRu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock 
+                                    HorizontalAlignment="Center"
+                                    Text="{Binding Path=RowData.Row.TypeValue.CaptionRu, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:ComboBoxEdit ItemsSource="{Binding ElementName=gridAd, Path=DataContext.Templates}" 
+                                <dxe:ComboBoxEdit
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding ElementName=gridAd, Path=DataContext.Templates}" 
                                       DisplayMember="CaptionRu"
                                       SelectedItem="{Binding RowData.Row.TypeValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Выберите тип поля" IsTextEditable="False">
@@ -166,7 +176,8 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Sort"  Header="Порядок"  Width="70" MinWidth="70" HorizontalHeaderContentAlignment="Center">
+                    <dxg:GridColumn FieldName="Sort"  Header="Порядок"  Width="70" MinWidth="70" 
+                                    HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock

@@ -135,10 +135,12 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="DateFrom" Header="Начало периода"  Width="90" HorizontalHeaderContentAlignment="Left" >
+                    <dxg:GridColumn FieldName="DateFrom" Header="Начало периода"  Width="90" HorizontalHeaderContentAlignment="Center" >
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit IsReadOnly="True" 
+                                <dxe:TextEdit 
+                                    IsReadOnly="True" 
+                                    HorizontalAlignment="Center"          
                                     EditValue ="{Binding Path=RowData.Row.DateFrom, Mode=OneWay, Converter={StaticResource DateToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     Margin="3 0 0 0"  ShowBorder="False"/>
                             </DataTemplate>
@@ -150,10 +152,10 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn FieldName="DateTo" Header="Конец периода"  Width="90" >
+                    <dxg:GridColumn FieldName="DateTo" Header="Конец периода"  Width="90" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit IsReadOnly="True" 
+                                <dxe:TextEdit IsReadOnly="True" HorizontalContentAlignment="Center"
                                     Text ="{Binding Path=RowData.Row.DateTo, Mode=OneWay,  Converter={StaticResource DateToString},  UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     Margin="3 0 0 0" MaskType="DateTime" Mask="d" MaskCulture="ru-RU" ShowBorder="False"/>
                             </DataTemplate>
@@ -166,17 +168,17 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Cost" Header="Затраты"  Width="90">
+                    <dxg:GridColumn FieldName="Cost" Header="Затраты"  Width="90" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                                     Text="{Binding Path=RowData.Row.Cost, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True,
                                     StringFormat={}{0:c2}, ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture}}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>
                             <DataTemplate>
-                                <dxe:TextEdit 
+                                <dxe:TextEdit HorizontalContentAlignment="Center"
                                     EditValue="{Binding Path=RowData.Row.Cost, Mode=TwoWay, 
                                     UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                     Mask="C" MaskType="Numeric" MaskCulture="ru-RU"/>
