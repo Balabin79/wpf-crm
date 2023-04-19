@@ -76,9 +76,16 @@ namespace B6CRM.ViewModels.ClientDir
         }
 
         #region Загружаем справочники
-        public void ClientCategoriesLoad() => ClientCategories = db.ClientCategories?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
+        public void ClientCategoriesLoad() 
+        { 
+            ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();           
+        }
 
         public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
+
+        public void ClientCategoriesDeleteOrSave() { ClientCategoriesLoad(); LoadClients(); }
+
+        public void AdvertisingDeleteOrSave() { }
         #endregion
 
         #region Права на выполнение команд
@@ -1417,6 +1424,13 @@ namespace B6CRM.ViewModels.ClientDir
         public PrintClientsWindow PrintClientsWindow { get; set; }
 
         #endregion
+
+
+        public void ClientInvoicesUpdate(int id)
+        {
+            ClientInvoices.Where(f => f.AdvertisingId == id).ForEach(f => f.AdvertisingId = null);
+            db.SaveChanges();
+        }
     }
 
 }

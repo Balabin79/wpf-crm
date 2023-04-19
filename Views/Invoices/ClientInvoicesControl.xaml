@@ -318,6 +318,7 @@
                                             </KeyBinding>
 
                                         </dxg:TableView.InputBindings>
+
                                         <dxg:TableView.RowCellMenuCustomizations >
                                             <dxb:BarButtonItem 
                                                     GlyphSize="Small" 
@@ -446,27 +447,7 @@
                     VerticalScrollbarVisibility="Auto"
                     AllowPrintColumnHeaderImage="True" >
 
-                    <dxg:TableView.InputBindings>
-                        <KeyBinding Key="N" Modifiers="Ctrl"                                    
-                            Command="{Binding ElementName=grid, Path=DataContext.AddInvoiceCommand}" 
-                            CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                        <KeyBinding  Key="Delete"       
-                                     Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}"
-                                     CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-
-                        <KeyBinding  
-                            Gesture="Ctrl+P"  
-                            Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}">
-                            <KeyBinding.CommandParameter>
-                                <MultiBinding Converter="{StaticResource multiPageInt}" >
-                                    <Binding ElementName="UTreatmentPlan"/>
-                                    <Binding ElementName="grid" Path="CurrentItem.Id"/>
-                                </MultiBinding>
-                            </KeyBinding.CommandParameter>
-                        </KeyBinding>
-
-                    </dxg:TableView.InputBindings>
+                   
                     <dxg:TableView.RowCellMenuCustomizations >
                         
                         <dxb:BarButtonItem 
@@ -651,7 +632,7 @@
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceCommand}" 
-                                                   CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                                   CommandParameter="{Binding ElementName=grid, Path=Row}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>

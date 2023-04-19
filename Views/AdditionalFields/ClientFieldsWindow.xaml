@@ -211,7 +211,7 @@
                                            IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
-                                           CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}">
+                                           CommandParameter="{Binding Row}">
                                             <dxb:BarButtonItem.GlyphTemplate>
                                                 <DataTemplate>
                                                     <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />

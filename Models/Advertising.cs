@@ -12,7 +12,6 @@ namespace B6CRM.Models
     [Table("Advertising")]
     public class Advertising : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         public string Name { get; set; }
 
 

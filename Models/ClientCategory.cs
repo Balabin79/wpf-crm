@@ -9,7 +9,6 @@ namespace B6CRM.Models
     [Table("ClientCategories")]
     public class ClientCategory : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
         public string Name { get; set; }
 
         public string Error { get => string.Empty; }

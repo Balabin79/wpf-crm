@@ -172,7 +172,7 @@
                                            IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}" 
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=gridMainClientGroups, Path=DataContext.DeleteTelegramBotCommand}" 
-                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                           CommandParameter="{Binding RowData.Row}">
                                             <dxb:BarButtonItem.GlyphTemplate>
                                                 <DataTemplate>
                                                     <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />

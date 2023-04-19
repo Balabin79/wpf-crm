@@ -100,7 +100,7 @@
 
                                 <dxb:BarButtonItem 
                                     Name="deleteRow" 
-                                    IsEnabled="{DXBinding Expr='@e(grid).CurrentItem.Id > 0'}"
+                                    IsEnabled="{DXBinding Expr='CurrentItem.Id > 0'}"
                                     Content="Удалить" Command="{Binding ElementName=fileToolBar, Path=DataContext.DeleteCommand}" 
                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                                            KeyGesture="Ctrl+Delete" GlyphSize="Small" GlyphAlignment="Left" >
@@ -224,7 +224,7 @@
                                            GlyphSize="Small"
                                            Command="{Binding ElementName=gridMainClientGroups, Path=DataContext.DeleteCommand}" 
                                            IsEnabled="{DXBinding Expr='RowData.Row.Id > 0'}"
-                                           CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                           CommandParameter="{Binding Path=RowData.Row}">
                                             <dxb:BarButtonItem.GlyphTemplate>
                                                 <DataTemplate>
                                                     <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />

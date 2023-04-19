@@ -639,7 +639,7 @@
                                                         Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                         GlyphSize="Small"
                                                         Command="{Binding ElementName=gridAd, Path=DataContext.DeleteCommand}" 
-                                                        CommandParameter="{Binding ElementName=gridAd, Path=CurrentItem}">
+                                                        CommandParameter="{Binding RowData.Row}">
                                                             <dxb:BarButtonItem.GlyphTemplate>
                                                                 <DataTemplate>
                                                                     <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />

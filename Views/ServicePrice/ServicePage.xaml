@@ -478,11 +478,10 @@
 
                                     <dxb:BarButtonItem  
                                         IsEnabled="{DXBinding Expr='!@e(gridMain).DataContext.IsReadOnly', UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                               DataContext="{Binding ElementName=grid, Path=DataContext}"
                                                Content="Удалить"  
                                                GlyphSize="Small"
-                                               Command="{Binding DeleteCommand}" 
-                                               CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" >
+                                               Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}" 
+                                               CommandParameter="{Binding Row}" >
                                         <dxb:BarButtonItem.GlyphTemplate>
                                             <DataTemplate>
                                                 <dx:DXImage Source="/Resources/Icons/svg/trash-alt.svg" />

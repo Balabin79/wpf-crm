@@ -26,6 +26,7 @@ namespace B6CRM.ViewModels
 
         public delegate void ClientCategoryChanges();
         public event ClientCategoryChanges EventClientCategoriesChanges;
+        private ClientsViewModel ClientsViewModel { get; set; }
         
         public ClientCategoryViewModel()
         {
@@ -50,8 +51,11 @@ namespace B6CRM.ViewModels
                 db.ClientCategories?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
                 if (p is ClientsViewModel vm && vm != null)
-                    EventClientCategoriesChanges += vm.ClientCategoriesLoad;
-
+                {
+                    EventClientCategoriesChanges += vm.ClientCategoriesDeleteOrSave;
+                    ClientsViewModel = vm;
+                }
+                    
                 new ClientCategoriesWindow() { DataContext = this }.Show();
                 //StatusWindow.Show();
             }
@@ -99,6 +103,23 @@ namespace B6CRM.ViewModels
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
+
+                        EventClientCategoriesChanges?.Invoke();
+
+                        var clients = db.Clients.Where(f => f.ClientCategoryId == model.Id)?.ToArray();
+
+                        foreach(var i in clients?.ToArray())
+                        {
+                            i.ClientCategory = null;
+                            db.Update(i);
+                        }
+                        db.SaveChanges();
+                        //EventClientCategoriesChanges?.Invoke();
+
+                        ClientsViewModel.ClientInfoViewModel.ClientCategory = null;
+                        ClientsViewModel.Model.ClientCategory = null;
+                        
+
                         db.Entry(model).State = EntityState.Deleted;
                     }
 
@@ -124,6 +145,6 @@ namespace B6CRM.ViewModels
             set { SetProperty(() => Collection, value); }
         }
 
-        private void SetCollection() => Collection = db.ClientCategories.OrderBy(f => f.Name).ToObservableCollection();
+        private void SetCollection() => Collection = db.ClientCategories.OrderBy(f => f.Name)?.ToArray()?.ToObservableCollection();
     }
 }

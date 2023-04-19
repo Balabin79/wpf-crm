@@ -99,6 +99,9 @@ namespace B6CRM.ViewModels
                     if (model.Id != 0)
                     {
                         if (!new ConfirDeleteInCollection().run(0)) return;
+
+                        db.Invoices.Where(f => f.AdvertisingId == model.Id)?.ForEach(f => f.AdvertisingId = null);
+
                         db.Entry(model).State = EntityState.Deleted;
                     }
 

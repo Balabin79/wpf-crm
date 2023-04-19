@@ -10,7 +10,6 @@ namespace B6CRM.Models
     [Table("ShedulerStatuses")]
     public class ShedulerStatuses : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Заголовок"" обязательно для заполнения")]
         [Display(Name = "Заголовок")]
         public string Caption
         {

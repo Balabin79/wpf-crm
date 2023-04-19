@@ -9,14 +9,12 @@ namespace B6CRM.Models
     [Table("AdditionalClientFields")]
     public class AdditionalClientField : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Название поля"" обязательно для заполнения")]
         public string Label
         {
             get { return GetProperty(() => Label); }
             set { SetProperty(() => Label, value?.Trim()); }
         }
 
-        [Required(ErrorMessage = @"Поле ""Системное имя поля"" обязательно для заполнения")]
         public string SysName
         {
             get { return GetProperty(() => SysName); }

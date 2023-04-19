@@ -266,7 +266,7 @@
                                                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
                                     Command="{Binding ElementName=view, Path=DataContext.ShedulerOpeningCommand}"
-                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}">
+                                    CommandParameter="{Binding Row}">
                                                             <dxb:BarButtonItem.GlyphTemplate>
                                                                 <DataTemplate>
                                                                     <dx:DXImage Source="/Resources/Icons/main/calendar-alt.svg" />
@@ -650,7 +650,7 @@
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
                                                    Command="{Binding ElementName=view, Path=DataContext.DeletePlanCommand}" 
-                                                   CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                                   CommandParameter="{Binding Row}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>

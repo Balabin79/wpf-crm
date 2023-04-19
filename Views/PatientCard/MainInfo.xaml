@@ -237,7 +237,7 @@
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_New.svg}" 
                                             GlyphSize="Small"
                                             Command="{Binding ElementName=gridMainInfo, Path=DataContext.ExecuteFileCommand}"
-                                            CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
+                                            CommandParameter="{Binding Row}"/>
 
                                         <dxb:BarButtonItem  
                                             Content="Удалить файл" 
@@ -245,7 +245,7 @@
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                             GlyphSize="Small"
                                             Command="{Binding ElementName=gridControl, Path=DataContext.DeleteFileCommand}" 
-                                            CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
+                                            CommandParameter="{Binding Row}"/>
                                             <dxb:BarItemLinkSeparator />
                                         </dxb:ToolBarControl>
                                     </dxb:BarContainerControl>
@@ -263,21 +263,7 @@
                              AutoWidth="True"
                              ShowVerticalLines="False"
                              ShowHorizontalLines="False" >
-                            <dxg:TableView.InputBindings>
-                                
-                                <KeyBinding Key="Delete" 
-                                Command="{Binding ElementName=gridControl, Path=DataContext.DeleteFileCommand}"
-                                CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
-                                
-                                <KeyBinding Key="O"     
-                                Modifiers="Ctrl"
-                                Command="{Binding ElementName=gridControl, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
-                                
-                                <MouseBinding Gesture="LeftDoubleClick"      
-                                Command="{Binding ElementName=gridControl, Path=DataContext.ExecuteFileCommand}"
-                                CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
-                            </dxg:TableView.InputBindings>
+
 
                             <dxg:TableView.RowCellMenuCustomizations >
                                 <dxb:BarButtonItem 
@@ -293,7 +279,7 @@
                                     IsEnabled="{DXBinding  Expr='@e(gridControl).DataContext.Model.Id != 0 and !@e(gridControl).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Command="{Binding ElementName=gridControl,Path=DataContext.DeleteFileCommand}" 
                                     CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"
-                                    KeyGesture="Delete" 
+                                    KeyGesture="Ctrl+Delete" 
                                     GlyphSize="Small" 
                                     GlyphAlignment="Left" 
                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"/>
