@@ -7,20 +7,23 @@
     xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"  
     xmlns:tp ="clr-namespace:B6CRM.Views.PatientCard" 
     xmlns:doc ="clr-namespace:B6CRM.Views.Documents" 
-    xmlns:invoices ="clr-namespace:B6CRM.Views.Invoices" 
     xmlns:add ="clr-namespace:B6CRM.Views.AdditionalFields" 
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:commands ="clr-namespace:B6CRM.Infrastructures.Commands" 
     mc:Ignorable="d"
-    xmlns:vm="clr-namespace:B6CRM.ViewModels.ClientDir"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:vm="clr-namespace:B6CRM.ViewModels.ClientDir"
     dx:ThemeManager.ThemeName="Office2019White"
     x:Name="win">
     <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="dateToString" />
         <vm:AppointmentsViewModel x:Key="AppointmentsViewModel" />
+        <vm:ClientPlansViewModel x:Key="ClientPlansViewModel" />
+        <vm:ClientInvoicesViewModel x:Key="ClientInvoicesViewModel" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
                 <TextBlock Text="One"/>
@@ -44,13 +47,75 @@
             </Grid.RowDefinitions>
 
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <dx:DXImage Height="20" Width="20" Margin="5 0 0 0" Source="/Resources/Icons/svg/user2.svg"/>
-                    <TextBlock Text="{DXBinding Expr='ClientInfoViewModel.LastName + ` ` + ClientInfoViewModel.FirstName + ` ` + ClientInfoViewModel.MiddleName'}" FontSize="14" Padding="2 5 5 0" />
-                </StackPanel>
+                <dxb:BarContainerControl DockPanel.Dock="Left" HorizontalAlignment="Left" >
+                    <dxb:ToolBarControl ShowDragWidget="False" Background="Transparent"
+                        AllowQuickCustomization="False" 
+                        BarItemDisplayMode="ContentAndGlyph"  
+                        AllowCustomizationMenu="False">
+                    <dxb:BarLinkContainerItem  
+                        RibbonStyle="SmallWithoutText">
+                        <dxb:BarButtonItem 
+                            x:Name="mainInfo"
+                            GlyphAlignment="Left"
+                            Content="Карта" 
+                                       Glyph="/Resources/Icons/svg/icon_id-2.svg"
+                                       GlyphSize="Custom"
+                                       CustomGlyphSize="20,20"
+                            ItemClick="BarButtonItem_ItemClick"
+                            BorderBrush="Gray" 
+                            BorderThickness="0 0 0 1"/>
+                        
+                        <dxb:BarItemLinkSeparator />
+                            <dxb:BarButtonItem
+                                x:Name="clientInvoices"
+                                GlyphAlignment="Left"
+                                Content="Счета" 
+                                Glyph="/Resources/Icons/svg/icon_wallet.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"
+                                Command="{Binding Source={StaticResource ClientInvoicesViewModel}, Path=LoadCommand}" 
+                                CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemClick="BarButtonItem_ItemClick"
+                                />
+                        <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem
+                            x:Name="clientPlans"
+                            GlyphAlignment="Left"
+                                       Content="Планы работ" 
+                                       Glyph="/Resources/Icons/svg/icon_documents_alt.svg"
+                                       GlyphSize="Custom"
+                                       CustomGlyphSize="20,20"
+                            ItemClick="BarButtonItem_ItemClick"
+                            Command="{Binding Source={StaticResource ClientPlansViewModel}, Path=LoadCommand}" 
+                            CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                  />
+                        <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem
+                            x:Name="visits"
+                            GlyphAlignment="Left"
+                            Content="Посещения" 
+                            Glyph="/Resources/Icons/svg/icon_calendar.svg"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="20,20"  
+                            KeyGesture="Ctrl+S" 
+                            ItemClick="BarButtonItem_ItemClick"
+                            Command="{Binding Source={StaticResource AppointmentsViewModel}, Path=LoadCommand}" 
+                            CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <dxb:BarItemLinkSeparator />
+                            <dxb:BarButtonItem
+                            GlyphAlignment="Left"
+                                x:Name="addClientFields"
+                                       Content="Дополнительные поля"
+                                       Glyph="/Resources/Icons/svg/customizable.svg"
+                                       GlyphSize="Custom"
+                                       CustomGlyphSize="19,19"
+                                ItemClick="BarButtonItem_ItemClick"
+                                       KeyGesture="Ctrl+S" />
+                        </dxb:BarLinkContainerItem>
+                </dxb:ToolBarControl>
+                </dxb:BarContainerControl>
 
-                <dxb:BarContainerControl DockPanel.Dock="Top" HorizontalAlignment="Right">
-
+                <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
                     <dxb:ToolBarControl Background="Transparent"
                             x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
                             BarItemDisplayMode="Default">
@@ -88,6 +153,7 @@
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
+                           
             </DockPanel>
 
             <dxlc:LayoutControl  
@@ -105,28 +171,12 @@
                         </Style>
                     </dxlc:LayoutGroup.GroupBoxStyle>
 
-                    <dx:DXTabControl x:Name="tabs">
-                        <dx:DXTabItem Header="Административная" >
-                            <tp:MainInfo DataContext="{Binding}" />
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Счета" Name="invoicesTab">
-                            <invoices:ClientInvoicesControl DataContext="{Binding}"  x:Name="Invoices"/>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Посещения" >
-                            <tp:Services  DataContext="{Binding}"/>
-                        </dx:DXTabItem>
- 
-                        <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                            <add:ClientControl x:Name="Fields" DataContext="{Binding FieldsViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </dx:DXTabItem>
-
-                        <dx:DXTabItem Header="Планы работ" DataContext="{Binding}"  x:Name="Plans">
-                            <tp:PlanControl/>
-                        </dx:DXTabItem>
-
-                    </dx:DXTabControl>
+                    <tp:MainInfo DataContext="{Binding}" Visibility="Visible" x:Name="MainInfoControl" />
+                    <tp:ClientInvoicesControl  x:Name="ClientInvoicesControl" Visibility="Collapsed" DataContext="{Binding Source={StaticResource ClientInvoicesViewModel}}"/>
+                    <tp:PlanControl Visibility="Collapsed" x:Name="ClientPlansControl" DataContext="{Binding Source={StaticResource ClientPlansViewModel}}"/>
+                    <tp:Visits  Visibility="Collapsed" x:Name="VisitsControl" DataContext="{Binding Source={StaticResource AppointmentsViewModel}}"/>
+                        <add:ClientControl x:Name="AddClientFieldsControl" Visibility="Collapsed" DataContext="{Binding FieldsViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+               
                 </dxlc:LayoutGroup>
             </dxlc:LayoutControl>
         </Grid>

@@ -6,9 +6,9 @@ using B6CRM.Models;
 
 namespace B6CRM.Views.PatientCard
 {
-    public partial class Services : UserControl
+    public partial class Visits : UserControl
     {
-        public Services()
+        public Visits()
         {
             InitializeComponent();          
         }

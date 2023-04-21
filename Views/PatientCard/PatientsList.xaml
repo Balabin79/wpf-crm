@@ -97,7 +97,7 @@
                         </dxb:BarButtonItem>
 
 
-                        <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/pencil-ruler.svg" >
+                        <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_grid-2x2.svg" >
                             <dxb:BarSubItem.Items>
 
                                 <dxb:BarButtonItem Content="Дополнительные поля"                                        

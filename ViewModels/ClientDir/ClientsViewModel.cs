@@ -65,9 +65,9 @@ namespace B6CRM.ViewModels.ClientDir
                 Init(Model);
 
                 ClientCategoriesLoad();
-                Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
+                //Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
                 AdvertisingLoad();
-                PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
+                
             }
             catch (Exception e)
             {
@@ -78,7 +78,7 @@ namespace B6CRM.ViewModels.ClientDir
         #region Загружаем справочники
         public void ClientCategoriesLoad() 
         { 
-            ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();           
+            ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();          
         }
 
         public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
@@ -96,22 +96,6 @@ namespace B6CRM.ViewModels.ClientDir
         public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsDelitable;
         public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-
-        public bool CanAddInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDeleteInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDelitable;
-
-        public bool CanAddInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDeleteInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanPrintInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintInvoice;
-
-        public bool CanAddPlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanSavePlan() => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanDeletePlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanDelitable;
-
-        public bool CanAddPlanItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanDeletePlanItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanMovedToInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanPrintPlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintPlan;
 
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAddFieldsEditable;
         public bool CanPrintClients() => ((UserSession)Application.Current.Resources["UserSession"]).PrintClients;
@@ -145,14 +129,6 @@ namespace B6CRM.ViewModels.ClientDir
             foreach (var i in Employees) i.IsVisible = false;
         }
 
-        public void LoadPlans()
-        {
-            Plans = db.Plans?.Where(f => f.ClientId == Model.Id)?.
-                Include(f => f.Client).
-                Include(f => f.PlanStatus).
-                Include(f => f.PlanItems).
-                OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Plan>();
-        }
 
         public ObservableCollection<Client> Clients
         {
@@ -164,12 +140,6 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => Invoices); }
             set { SetProperty(() => Invoices, value); }
-        }
-
-        public ObservableCollection<Invoice> ClientInvoices
-        {
-            get { return GetProperty(() => ClientInvoices); }
-            set { SetProperty(() => ClientInvoices, value); }
         }
 
         public ObservableCollection<Employee> Employees
@@ -190,12 +160,6 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => Advertisings, value); }
         }
 
-        public ObservableCollection<Plan> Plans
-        {
-            get { return GetProperty(() => Plans); }
-            set { SetProperty(() => Plans, value); }
-        }
-
         #endregion
 
         #region Переход из списка инвойсов или списков клиентов (загрузка карты)
@@ -209,10 +173,10 @@ namespace B6CRM.ViewModels.ClientDir
                 {
                     Model = model;
                     Init(Model);
-                    if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                  /*  if (Application.Current.Resources["Router"] is MainViewModel nav &&
                           nav?.NavigationService is NavigationServiceBase service &&
                           service.Current is PatientsList page
-                          ) page.clientCard.tabs.SelectedIndex = 0;
+                          ) page.clientCard.tabs.SelectedIndex = 0;*/
                 }
 
                 if (p is Invoice invoice && invoice.Client != null)
@@ -226,11 +190,11 @@ namespace B6CRM.ViewModels.ClientDir
                      service.Current is PatientsList page
                      )
                     {
-                        page.clientCard.tabs.SelectedIndex = 1;
+                      /*  page.clientCard.tabs.SelectedIndex = 1;
                         if (page.invoicesList.grid.ItemsSource is ObservableCollection<Invoice> invoices)
                         {
                             page.clientCard.Invoices.grid.SelectedItem = invoice;
-                        }
+                        }*/
                     }
                 }
 
@@ -394,13 +358,8 @@ namespace B6CRM.ViewModels.ClientDir
 
                 // загружаем инвойсы и дневники отдельного клиента
 
-                ClientInvoices = model?.Id != 0 ? db.Invoices?.Where(f => f.ClientId == model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection() : new ObservableCollection<Invoice>();
                 // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
                 ShowPaid = null;
-
-
-                // загружаем встречи для вкладки "Посещения"
-                Appointments = db.Appointments.Where(f => f.ClientInfoId == model.Id).Include(f => f.Employee).Include(f => f.Service).OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Appointments>();
 
                 FieldsViewModel = new FieldsViewModel(model, db);
                 EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
@@ -411,7 +370,7 @@ namespace B6CRM.ViewModels.ClientDir
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
 
-                LoadPlans();
+                //LoadPlans();
             }
             catch (Exception e)
             {
@@ -422,246 +381,9 @@ namespace B6CRM.ViewModels.ClientDir
 
 
         #region Работа с разделом карты "Счета"
-        #region Счета
-        [Command]
-        public void AddInvoice(object p)
-        {
-            try
-            {
-                if (p is Client client)
-                {
-                    var date = DateTime.Now;
-                    var model = new Invoice
-                    {
-                        Number = NewInvoiceNumberGenerate(),
-                        Date = date.ToString(),
-                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                        Client = client,
-                        ClientId = client?.Id
-                    };
-
-                    db.Invoices.Add(model);
-                    if (db.SaveChanges() > 0)
-                    {
-                        ClientInvoices.Add(model);
-                        LoadInvoices();
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void DeleteInvoice(object p)
-        {
-            try
-            {
-                if (p is Invoice invoice)
-                {
-                    if (invoice.Id > 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить счет?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return;
-
-                        invoice.InvoiceItems = null;
-                        db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                        db.Entry(invoice).State = EntityState.Deleted;
-
-                    }
-                    else
-                    {
-                        db.Entry(invoice).State = EntityState.Detached;
-                    }
-                    if (db.SaveChanges() > 0)
-                    {
-                        new Notification() { Content = "Счет удален из базы данных!" }.run();
-                    }
-
-                    // удаляем из списков в карте и в общем списке счетов
-                    // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    var inv = Invoices.FirstOrDefault(f => f.Guid == invoice.Guid);
-                    if (inv != null) Invoices.Remove(inv);
-
-                    var clientInv = ClientInvoices.FirstOrDefault(f => f.Guid == invoice.Guid);
-                    if (clientInv != null) ClientInvoices.Remove(clientInv);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при попытке удалить счет из базы данных!", true);
-            }
-        }
-
-        private string NewInvoiceNumberGenerate()
-        {
-            var numInvoices = db.Invoices?.ToList()?.OrderByDescending(f => f.Number)?.FirstOrDefault()?.Number;
-            var numClientInvoices = ClientInvoices.LastOrDefault()?.Number;
-
-            if (int.TryParse(numInvoices, out int invoicesNumber) && int.TryParse(numClientInvoices, out int clientInvoicesNumber))
-            {
-                if (clientInvoicesNumber > invoicesNumber) return string.Format("{0:00000000}", ++clientInvoicesNumber);
-                return string.Format("{0:00000000}", ++invoicesNumber);
-            }
-
-            //есть счета, но нет у пользователя счетов
-            if(numInvoices != null && numClientInvoices == null && int.TryParse(numInvoices, out int num)) return string.Format("{0:00000000}", ++num);
-
-            // вообще нет счетов
-            return "00000001";
-            
-
-        }
-        #endregion
-
-        #region Позиция в смете
-        public object[] Prices { get; set; }
-
-        [Command]
-        public void SelectItemInField(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.CurrentItem is Service service)
-                    {
-                        if (service.IsDir == 1) return;
-                        parameters.Popup.EditValue = service;
-                        if (((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems item)
-                        {
-                            item.Price = service.Price;
-                            item.Code = service.Code;
-                        }
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void AddInvoiceItem(object p)
-        {
-            try
-            {
-                if (p is Invoice invoice)
-                {
-                    invoice.InvoiceItems.Add(new InvoiceItems() { Invoice = invoice, InvoiceId = invoice?.Id });
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void DeleteInvoiceItem(object p)
-        {
-            try
-            {
-                if (p is InvoiceItems item)
-                {
-                    var items = item.Invoice.InvoiceItems;
-                    if (item.Id > 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в счете?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return;
-                        item.Invoice = null;
-                        db.Entry(item).State = EntityState.Deleted;
-                        items.Remove(item);
-                        db.SaveChanges();
-                        new Notification() { Content = "Позиция удалена из счета!" }.run();
-                        return;
-                    }
-                    db.Entry(item).State = EntityState.Detached;
-                    items.Remove(item);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-        #endregion
-
-        #region Печать счета
-        [Command]
-        public void PrintInvoice(object p)
-        {
-            try
-            {
-                if (p is PageIntCommandParameters conv)
-                {
-                    ServicesInvoiceReport report = new ServicesInvoiceReport();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
-
-                    if (report?.DataSource is SqlDataSource source)
-                    {
-                        string connectionString = db.Database.GetConnectionString();
-                        var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1)
-                        {
-                            // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
-                            provider = "XpoProvider=Postgres;";
-                        }
-                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
-                    }
-
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
-            }
-        }
-        #endregion
 
         #region Работа с фильтрами во вкладке "Счета" в карте клиента
-        // фильтр показывать оплаченные/неоплаченные счета
-        [Command]
-        public void StatusChanged(object p)
-        {
-            try
-            {
-                if (int.TryParse(p?.ToString(), out int param))
-                {
-                    ShowPaid = param;
-                    if (param == -1)
-                    {
-                        ShowPaid = null;
-                        ClientInvoices = db.Invoices?.Where(f => f.ClientId == Model.Id)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection();
-                        return;
-                    }
 
-                    ClientInvoices = db.Invoices?.Where(f => f.ClientId == Model.Id && f.Paid == ShowPaid)?.Include(f => f.Employee)?.Include(f => f.Client)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt)?.ToObservableCollection();
-                    return;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
 
         public int? ShowPaid
         {
@@ -700,6 +422,12 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
+        [Command]
+        public void Editable()
+        {
+            IsReadOnly = !IsReadOnly;
+            EventChangeReadOnly?.Invoke(IsReadOnly || Model?.Id == 0);
+        }
 
         #region Карта клиента
 
@@ -712,22 +440,15 @@ namespace B6CRM.ViewModels.ClientDir
                 Init(Model);
                 SelectedItem();
 
-                if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                /*if (Application.Current.Resources["Router"] is MainViewModel nav &&
                     nav?.NavigationService is NavigationServiceBase service &&
                     service.Current is PatientsList page
-                    ) page.clientCard.tabs.SelectedIndex = 0;
+                    ) page.clientCard.tabs.SelectedIndex = 0;*/
             }
             catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
-        }
-
-        [Command]
-        public void Editable()
-        {
-            IsReadOnly = !IsReadOnly;
-            EventChangeReadOnly?.Invoke(IsReadOnly || Model?.Id == 0);
         }
 
         [Command]
@@ -1023,292 +744,6 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => Config, value); }
         }
 
-
-        #region Планы клиента
-        public ICollection<PlanStatus> PlanStatuses { get; private set; }
-
-        #region Планы работ
-        [Command]
-        public void AddPlan(object p)
-        {
-            try
-            {
-                if (p is Client client)
-                {
-                    var date = DateTime.Now;
-                    PlanStatus status = db.PlanStatuses.FirstOrDefault(s => s.Id == 5);
-
-                    var model = new Plan
-                    {
-                        Date = date.ToString(),
-                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                        Client = client,
-                        ClientId = client?.Id,
-                        PlanStatus = status,
-                        PlanStatusId = status?.Id
-                    };
-
-                    db.Add(model);
-                    Plans.Add(model);
-                }
-                if (db.SaveChanges() > 0) new Notification() { Content = "Добавлен новый план в базу данных!" }.run();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void SavePlan()
-        {
-            try
-            {
-                #region Lic
-                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                #endregion
-
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при попытке сохранить план в базе данных!", true);
-            }
-        }
-
-        [Command]
-        public void DeletePlan(object p)
-        {
-            try
-            {
-                if (p is Plan plan)
-                {
-                    if (plan.Id > 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить план?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return;
-
-                        plan.PlanItems = null;
-                        db.PlanItems.Where(f => f.PlanId == plan.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                        db.Entry(plan).State = EntityState.Deleted;
-
-                    }
-                    else
-                    {
-                        db.Entry(plan).State = EntityState.Detached;
-                    }
-                    if (db.SaveChanges() > 0)
-                    {
-                        new Notification() { Content = "План удален из базы данных!" }.run();
-                    }
-
-                    // удаляем из списков в карте и в общем списке счетов
-                    // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    var inv = Plans.FirstOrDefault(f => f.Guid == plan.Guid);
-                    if (inv != null) Plans.Remove(inv);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при попытке удалить план из базы данных!", true);
-            }
-        }
-
-        #endregion
-
-        #region Позиция в плане
-
-        [Command]
-        public void SelectPlanItemInField(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.CurrentItem is Service service)
-                    {
-                        if (service.IsDir == 1) return;
-                        parameters.Popup.EditValue = service;
-                        if (((GridCellData)parameters.Popup.DataContext).Row is PlanItem item)
-                        {
-                            item.Price = service.Price;
-                            item.Code = service.Code;
-                        }
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void AddPlanItem(object p)
-        {
-            try
-            {
-                if (p is Plan plan)
-                {
-                    plan.PlanItems.Add(new PlanItem() { Plan = plan, PlanId = plan?.Id });
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void DeletePlanItem(object p)
-        {
-            try
-            {
-                if (p is PlanItem item)
-                {
-                    var items = item.Plan.PlanItems;
-                    if (item.Id > 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить позицию в плане?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return;
-                        item.Plan = null;
-                        db.Entry(item).State = EntityState.Deleted;
-                        items.Remove(item);
-                        db.SaveChanges();
-                        new Notification() { Content = "Позиция удалена из плана!" }.run();
-                        return;
-                    }
-                    db.Entry(item).State = EntityState.Detached;
-                    items.Remove(item);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void ShedulerOpening(object p)
-        {
-            try
-            {
-                new ShedulerWindow().ShowDialog();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void MovedToInvoice(object p)
-        {
-            try
-            {
-                if (p is Plan plan)
-                {
-                    List<PlanItem> items = new List<PlanItem>();
-
-                    foreach (var item in plan.PlanItems)
-                    {
-                        if (item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
-                        {
-                            item.IsMovedToInvoice = 1;
-                            items.Add(item);
-                        }
-                    }
-
-                    if (items.Count > 0)
-                    {
-                        var date = DateTime.Now;
-                        var invoice = new Invoice
-                        {
-                            Number = NewInvoiceNumberGenerate(),
-                            Date = date.ToString(),
-                            DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                            Client = Model,
-                            ClientId = Model?.Id
-                        };
-
-                        items.ForEach(f => invoice.InvoiceItems.Add(new InvoiceItems()
-                        {
-                            Code = f.Code,
-                            Count = f.Count,
-                            Price = f.Price,
-                            Name = f.Name,
-                            Invoice = invoice
-                        }));
-
-                        db.Invoices.Add(invoice);
-                        if (db.SaveChanges() > 0)
-                        {
-                            ClientInvoices.Add(invoice);
-                            LoadInvoices();
-                            new Notification() { Content = $"Сформирован новый счет №{invoice.Number}" }.run();
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        #endregion
-
-        [Command]
-        public void PrintPlan(object p)
-        {
-            try
-            {
-                if (p is PageIntCommandParameters conv)
-                {
-                    Report2 report = new Report2();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-                    //report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
-
-                    if (report?.DataSource is SqlDataSource source)
-                    {
-                        string connectionString = db.Database.GetConnectionString();
-                        var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
-                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
-                    }
-
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
-            }
-        }
-        #endregion
-
         #region Печать
         public ObservableCollection<PrintCondition> PrintConditions
         {
@@ -1428,7 +863,7 @@ namespace B6CRM.ViewModels.ClientDir
 
         public void ClientInvoicesUpdate(int id)
         {
-            ClientInvoices.Where(f => f.AdvertisingId == id).ForEach(f => f.AdvertisingId = null);
+            //ClientInvoices.Where(f => f.AdvertisingId == id).ForEach(f => f.AdvertisingId = null);
             db.SaveChanges();
         }
     }

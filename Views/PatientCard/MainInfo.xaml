@@ -168,7 +168,7 @@
                 Margin="0 10 0 0" 
                 MaxHeight="800" 
                 View="GroupBox" 
-                Orientation="Vertical" 
+                Orientation="Vertical"             
                 ItemLabelsAlignment="Local" >
                 <dxlc:LayoutGroup.HeaderTemplate>
                     <DataTemplate >

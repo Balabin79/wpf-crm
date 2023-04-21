@@ -479,13 +479,14 @@
                                 CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                 Content="Создать план" 
                                 IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                >
-                                <dxb:BarButtonItem.GlyphTemplate>
-                                    <DataTemplate>
-                                        <dx:DXImage Source="/Resources/Icons/svg/file-invoice.svg" Height="15"/>
-                                    </DataTemplate>
-                                </dxb:BarButtonItem.GlyphTemplate>
-                            </dxb:BarButtonItem>
+                                Glyph="/Resources/Icons/svg/file-invoice.svg"
+                                />
+
+                            <dxb:BarButtonItem Style="{Binding}"
+                            Content="Сохранить" 
+                            IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                            Command="{Binding ElementName=grid, Path=DataContext.SavePlanCommand}"/>
 
                         </dxb:ToolBarControl>
                     </dxb:BarContainerControl>

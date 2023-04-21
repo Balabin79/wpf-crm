@@ -2,7 +2,7 @@
 using DevExpress.Xpf.Grid;
 using System.Windows.Controls;
 
-namespace B6CRM.Views.Invoices
+namespace B6CRM.Views.PatientCard
 {
 
     public partial class ClientInvoicesControl : UserControl

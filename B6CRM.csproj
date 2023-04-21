@@ -49,16 +49,28 @@
     <None Remove="Resources\Icons\svg\graph-pie.svg" />
     <None Remove="Resources\Icons\svg\graph.svg" />
     <None Remove="Resources\Icons\svg\graph_rising.svg" />
+    <None Remove="Resources\Icons\svg\icon_book.svg" />
     <None Remove="Resources\Icons\svg\icon_calendar.svg" />
+    <None Remove="Resources\Icons\svg\icon_clipboard.svg" />
+    <None Remove="Resources\Icons\svg\icon_contacts_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_creditcard.svg" />
+    <None Remove="Resources\Icons\svg\icon_documents_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_document_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_download.svg" />
     <None Remove="Resources\Icons\svg\icon_drawer.svg" />
     <None Remove="Resources\Icons\svg\icon_drawer_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_grid-2x2.svg" />
+    <None Remove="Resources\Icons\svg\icon_id-2.svg" />
     <None Remove="Resources\Icons\svg\icon_info.svg" />
     <None Remove="Resources\Icons\svg\icon_key.svg" />
     <None Remove="Resources\Icons\svg\icon_key_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
+    <None Remove="Resources\Icons\svg\icon_menu-square_alt2.svg" />
+    <None Remove="Resources\Icons\svg\icon_menu.svg" />
     <None Remove="Resources\Icons\svg\icon_tools.svg" />
     <None Remove="Resources\Icons\svg\icon_upload.svg" />
+    <None Remove="Resources\Icons\svg\icon_wallet.svg" />
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
@@ -214,7 +226,13 @@
     <Resource Include="Resources\Icons\svg\graph.svg" />
     <Resource Include="Resources\Icons\svg\graph_rising.svg" />
     <Resource Include="Resources\Icons\svg\hdd.svg" />
+    <Resource Include="Resources\Icons\svg\icon_book.svg" />
     <Resource Include="Resources\Icons\svg\icon_calendar.svg" />
+    <Resource Include="Resources\Icons\svg\icon_clipboard.svg" />
+    <Resource Include="Resources\Icons\svg\icon_contacts_alt.svg" />
+    <Resource Include="Resources\Icons\svg\icon_creditcard.svg" />
+    <Resource Include="Resources\Icons\svg\icon_documents_alt.svg" />
+    <Resource Include="Resources\Icons\svg\icon_document_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_download.svg" />
     <Resource Include="Resources\Icons\svg\icon_drawer.svg" />
     <Resource Include="Resources\Icons\svg\icon_drawer_alt.svg" />
@@ -222,6 +240,8 @@
     <Resource Include="Resources\Icons\svg\icon_flowchart_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-add_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_folder-open_alt.svg" />
+    <Resource Include="Resources\Icons\svg\icon_grid-2x2.svg" />
+    <Resource Include="Resources\Icons\svg\icon_id-2.svg" />
     <Resource Include="Resources\Icons\svg\icon_info.svg" />
     <Resource Include="Resources\Icons\svg\icon_key.svg" />
     <Resource Include="Resources\Icons\svg\icon_key_alt.svg">
@@ -232,8 +252,12 @@
       <CopyToOutputDirectory>
       </CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
+    <Resource Include="Resources\Icons\svg\icon_menu-square_alt2.svg" />
+    <Resource Include="Resources\Icons\svg\icon_menu.svg" />
     <Resource Include="Resources\Icons\svg\icon_tools.svg" />
     <Resource Include="Resources\Icons\svg\icon_upload.svg" />
+    <Resource Include="Resources\Icons\svg\icon_wallet.svg" />
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\image.svg" />
     <Resource Include="Resources\Icons\svg\images.svg" />
@@ -326,7 +350,7 @@
     <Compile Update="Views\About\LicenseExpiredWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Invoices\ClientInvoicesControl.xaml.cs">
+    <Compile Update="Views\PatientCard\ClientInvoicesControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PrintClientsWindow.xaml.cs">
@@ -338,7 +362,7 @@
     <Compile Update="Views\PatientCard\MainInfo.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\PatientCard\Services.xaml.cs">
+    <Compile Update="Views\PatientCard\Visits.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
@@ -384,7 +408,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Invoices\ClientInvoicesControl.xaml">
+    <Page Update="Views\PatientCard\ClientInvoicesControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -400,7 +424,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\PatientCard\Services.xaml">
+    <Page Update="Views\PatientCard\Visits.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -443,5 +467,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Invoices\" />
   </ItemGroup>
 </Project>

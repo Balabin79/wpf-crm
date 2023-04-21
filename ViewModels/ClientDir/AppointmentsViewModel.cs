@@ -14,9 +14,6 @@ namespace B6CRM.ViewModels.ClientDir
 {
     public class AppointmentsViewModel : ViewModelBase
     {
-        public AppointmentsViewModel() => Load(new object());
-
-
 
         [Command]
         public void Load(object p)
