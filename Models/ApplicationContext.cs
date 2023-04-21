@@ -308,7 +308,6 @@ namespace B6CRM.Models
 
         public DbSet<Appointments> Appointments { get; set; }
         public DbSet<LocationAppointment> LocationAppointment { get; set; }
-        public DbSet<ShedulerStatuses> ShedulerStatuses { get; set; }
         public DbSet<AppointmentStatus> AppointmentStatus { get; set; }
 
         public DbSet<Invoice> Invoices { get; set; }

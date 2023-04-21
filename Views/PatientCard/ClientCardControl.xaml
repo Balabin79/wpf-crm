@@ -12,6 +12,7 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:commands ="clr-namespace:B6CRM.Infrastructures.Commands" 
     mc:Ignorable="d"
+    xmlns:vm="clr-namespace:B6CRM.ViewModels.ClientDir"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
     dx:ThemeManager.ThemeName="Office2019White"
@@ -19,6 +20,7 @@
     <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="dateToString" />
+        <vm:AppointmentsViewModel x:Key="AppointmentsViewModel" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
                 <TextBlock Text="One"/>
@@ -113,7 +115,7 @@
                         </dx:DXTabItem>
 
                         <dx:DXTabItem Header="Посещения" >
-                            <tp:Services DataContext="{Binding}"/>
+                            <tp:Services  DataContext="{Binding}"/>
                         </dx:DXTabItem>
  
                         <dx:DXTabItem Header="Дополнительные поля" Visibility="{Binding AdditionalFieldsVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">

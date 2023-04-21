@@ -11,8 +11,6 @@ namespace B6CRM.Models
     [Table("AppointmentsStatuses")]
     public class AppointmentStatus : AbstractBaseModel, IDataErrorInfo
     {
-        [Required(ErrorMessage = @"Поле ""Название"" обязательно для заполнения")]
-        [MaxLength(255, ErrorMessage = @"Длина не более 255 символов")]
         [Display(Name = "Название")]
         public string Caption
         {
