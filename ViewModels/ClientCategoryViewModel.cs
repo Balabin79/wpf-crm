@@ -52,7 +52,7 @@ namespace B6CRM.ViewModels
                 SetCollection();
                 if (p is ClientsViewModel vm && vm != null)
                 {
-                    EventClientCategoriesChanges += vm.ClientCategoriesDeleteOrSave;
+                    //EventClientCategoriesChanges += vm.ClientCategoriesDeleteOrSave;
                     ClientsViewModel = vm;
                 }
                     
@@ -116,7 +116,7 @@ namespace B6CRM.ViewModels
                         db.SaveChanges();
                         //EventClientCategoriesChanges?.Invoke();
 
-                        ClientsViewModel.ClientInfoViewModel.ClientCategory = null;
+                        //ClientsViewModel.ClientInfoViewModel.ClientCategory = null;
                         ClientsViewModel.Model.ClientCategory = null;
                         
 

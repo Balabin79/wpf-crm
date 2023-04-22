@@ -14,27 +14,31 @@ namespace B6CRM.ViewModels.ClientDir
 {
     public class AppointmentsViewModel : ViewModelBase
     {
+        private readonly ApplicationContext db;
 
-        [Command]
-        public void Load(object p)
+        public AppointmentsViewModel(Client client)
         {
-            if (p is Client model) {
-            using (var db = new ApplicationContext())
-            {
-                Appointments = db.Appointments.Where(f => f.ClientInfoId == model.Id)
-                    .Include(f => f.Employee)
-                    .Include(f => f.Service)
-                    .OrderByDescending(f => f.CreatedAt).ToObservableCollection() 
-                    ?? 
-                    new ObservableCollection<Appointments>();
-                }
-            }
+            db = new ApplicationContext();
+            Client = client;
+            Load();
         }
+
+        public void Load()
+        {
+            Appointments = db.Appointments.Where(f => f.ClientInfoId == Client.Id)
+                .Include(f => f.Employee)
+                .Include(f => f.Service)
+                .OrderByDescending(f => f.CreatedAt).ToObservableCollection()
+                ??
+                new ObservableCollection<Appointments>();
+        }
+
+        public Client Client { get; set; }
 
         public ObservableCollection<Appointments> Appointments
         {
             get { return GetProperty(() => Appointments); }
             set { SetProperty(() => Appointments, value); }
-        } 
+        }
     }
 }

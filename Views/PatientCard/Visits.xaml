@@ -12,7 +12,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
     xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"
-    xmlns:vm="clr-namespace:B6CRM.ViewModels.ClientDir"
     xmlns:tree="clr-namespace:B6CRM.Infrastructures.TreeList"
     mc:Ignorable="d"
     d:DesignHeight="400"

@@ -17,15 +17,18 @@
        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
        xmlns:ext="clr-namespace:B6CRM.Infrastructures.Extensions" 
        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-       xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"
-       Loaded="Page_Loaded">
-
+       xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters">
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand 
+            EventName="Loaded" 
+            Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=InitCommand}"/>
+    </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
-                    <vm:ClientsViewModel x:Key="vm"/>
+                    <vm:ClientsListViewModel x:Key="vm"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
                     <services:ImportData x:Key="import"/>
@@ -85,17 +88,11 @@
                         ShowDragWidget="False"   ShowBackground="False"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False"  BarItemDisplayMode="ContentAndGlyph">
 
-                        <dxb:BarButtonItem Content="Добавить клиента"                                       
+                        <dxb:BarButtonItem Content="Добавить клиента" 
+                                           Glyph="/Resources/Icons/svg/plus-add.svg"
                                            GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding CreateCommand}"
-                                           >
-                            <dxb:BarButtonItem.GlyphTemplate>
-                                <DataTemplate>
-                                    <dx:DXImage Source="/Resources/Icons/svg/plus-add.svg" />
-                                </DataTemplate>
-                            </dxb:BarButtonItem.GlyphTemplate>
-                        </dxb:BarButtonItem>
-
+                                           ItemClick="BarButtonItem_CreateClient"
+                                           />
 
                         <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_grid-2x2.svg" >
                             <dxb:BarSubItem.Items>
@@ -175,8 +172,6 @@
                             </dxb:BarSubItem.Items>
                         </dxb:BarSubItem>
 
-
-
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
@@ -186,7 +181,7 @@
                 <DockPanel  >
                     <dx:DXTabControl Margin="2" >
                         <dx:DXTabItem Header="Клиенты"  >
-                            <Grid>
+                            <Grid x:Name="clientsList">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
                                     <RowDefinition/>
@@ -249,11 +244,7 @@
                                                         ToolTip="{Binding Row.Address}" 
                                                         Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay}"  />
                                                             </TextBlock>
-
-                                                           
-
-                                                   
-                                                    </StackPanel>
+                                                        </StackPanel>
                                                 </Border>
                                             </DataTemplate>
                                         </dxg:GridColumn.CellDisplayTemplate>
@@ -283,18 +274,25 @@
                                         SearchPanelHorizontalAlignment="Stretch"
                                         SearchPanelNullText="Фамилия клиента"                                       
                                         >
-                                        <dxg:TableView.InputBindings>
-                                            <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding Path=CreateCommand}"/>
-                                            <KeyBinding Key="Return" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=LoadCommand}" CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                            <dxg:TableView.InputBindings>
+                                                <KeyBinding 
+                                                    Key="Return" 
+                                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
+                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
+                                                <MouseBinding 
+                                                    Gesture="LeftDoubleClick" 
+                                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
+                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                         </dxg:TableView.InputBindings>
                                         
                                         <dxmvvm:Interaction.Behaviors>
                                             <dxmvvm:EventToCommand 
-                                                EventName="PreviewMouseDown" Command="{Binding LoadCommand}" PassEventArgsToCommand="True"
+                                                EventName="PreviewMouseDown" 
+                                                Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
                                             <dxmvvm:EventToCommand 
-                                                EventName="PreviewMouseDoubleClick" Command="{Binding LoadCommand}" PassEventArgsToCommand="True"
+                                                EventName="PreviewMouseDoubleClick" 
+                                                Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
                                                 CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                                         </dxmvvm:Interaction.Behaviors>
                                     </dxg:TableView>
@@ -308,7 +306,12 @@
                         </dx:DXTabItem>
                     </dx:DXTabControl>
 
-                    <local:ClientCardControl Margin="0 2 2 2" x:Name="clientCard" DataContext="{Binding}"/>
+                    <local:ClientCardControl 
+                        Margin="0 2 2 2" 
+                        x:Name="clientCard" 
+                        DataContext="{Binding SelectedClient, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        />
+
                 </DockPanel>
             </Border>
         </Grid>

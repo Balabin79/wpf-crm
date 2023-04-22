@@ -12,7 +12,6 @@
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:converter="clr-namespace:B6CRM.Infrastructures.Converters"
              xmlns:tree="clr-namespace:B6CRM.Infrastructures.TreeList"
-             xmlns:vm="clr-namespace:B6CRM.ViewModels"
              xmlns:commands ="clr-namespace:B6CRM.Infrastructures.Commands" 
              xmlns:sysglb="clr-namespace:System.Globalization;assembly=mscorlib"
              mc:Ignorable="d"

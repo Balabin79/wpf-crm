@@ -21,9 +21,7 @@
     <UserControl.Resources>
         <commands:PrintCommand x:Key="Print"/>
         <converter:DateToStringConverter x:Key="dateToString" />
-        <vm:AppointmentsViewModel x:Key="AppointmentsViewModel" />
-        <vm:ClientPlansViewModel x:Key="ClientPlansViewModel" />
-        <vm:ClientInvoicesViewModel x:Key="ClientInvoicesViewModel" />
+        <converter:ClientCardConverter x:Key="ClientCardConverter" />
         <DataTemplate x:Key="ItemHeaderTemplateOne">
             <Grid>
                 <TextBlock Text="One"/>
@@ -48,69 +46,107 @@
 
             <DockPanel LastChildFill="True">
                 <dxb:BarContainerControl DockPanel.Dock="Left" HorizontalAlignment="Left" >
-                    <dxb:ToolBarControl ShowDragWidget="False" Background="Transparent"
+                    <dxb:ToolBarControl 
+                        ShowDragWidget="False" 
+                        Background="Transparent" 
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         AllowQuickCustomization="False" 
                         BarItemDisplayMode="ContentAndGlyph"  
                         AllowCustomizationMenu="False">
                     <dxb:BarLinkContainerItem  
                         RibbonStyle="SmallWithoutText">
-                        <dxb:BarButtonItem 
+                            <dxb:BarButtonItem 
                             x:Name="mainInfo"
+                            BorderBrush="{Binding MainInfoBurButtonItemBorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            BorderThickness="{Binding MainInfoBurButtonItemBorderThickness, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             GlyphAlignment="Left"
                             Content="Карта" 
-                                       Glyph="/Resources/Icons/svg/icon_id-2.svg"
-                                       GlyphSize="Custom"
-                                       CustomGlyphSize="20,20"
-                            ItemClick="BarButtonItem_ItemClick"
-                            BorderBrush="Gray" 
-                            BorderThickness="0 0 0 1"/>
-                        
-                        <dxb:BarItemLinkSeparator />
+                            Glyph="/Resources/Icons/svg/icon_id-2.svg"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="20,20"
+                            Command="{Binding LoadCommand}" >
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ClientCardConverter}">
+                                        <Binding ElementName="mainInfo"/>
+                                        <Binding ElementName="win" Path="DataContext.Model"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+
+                            <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
                                 x:Name="clientInvoices"
+                                BorderBrush="{Binding ClientInvoicesBurButtonItemBorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{Binding ClientInvoicesBurButtonItemBorderThickness, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 GlyphAlignment="Left"
                                 Content="Счета" 
                                 Glyph="/Resources/Icons/svg/icon_wallet.svg"
                                 GlyphSize="Custom"
                                 CustomGlyphSize="20,20"
-                                Command="{Binding Source={StaticResource ClientInvoicesViewModel}, Path=LoadCommand}" 
-                                CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                ItemClick="BarButtonItem_ItemClick"
-                                />
-                        <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem
+                                Command="{Binding LoadCommand}">
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ClientCardConverter}">
+                                        <Binding ElementName="clientInvoices"/>
+                                        <Binding ElementName="win" Path="DataContext.Model"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+                            <dxb:BarItemLinkSeparator />
+                            <dxb:BarButtonItem
                             x:Name="clientPlans"
+                            BorderBrush="{Binding ClientPlansBurButtonItemBorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            BorderThickness="{Binding ClientPlansBurButtonItemBorderThickness, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             GlyphAlignment="Left"
-                                       Content="Планы работ" 
-                                       Glyph="/Resources/Icons/svg/icon_documents_alt.svg"
-                                       GlyphSize="Custom"
-                                       CustomGlyphSize="20,20"
-                            ItemClick="BarButtonItem_ItemClick"
-                            Command="{Binding Source={StaticResource ClientPlansViewModel}, Path=LoadCommand}" 
-                            CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                  />
-                        <dxb:BarItemLinkSeparator />
+                            Content="Планы работ" 
+                            Glyph="/Resources/Icons/svg/icon_documents_alt.svg"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="20,20"
+                            Command="{Binding LoadCommand}">
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ClientCardConverter}">
+                                        <Binding ElementName="clientPlans"/>
+                                        <Binding ElementName="win" Path="DataContext.Model"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+                            <dxb:BarItemLinkSeparator />
                         <dxb:BarButtonItem
                             x:Name="visits"
+                            BorderBrush="{Binding VisitsBurButtonItemBorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            BorderThickness="{Binding VisitsBurButtonItemBorderThickness, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             GlyphAlignment="Left"
                             Content="Посещения" 
                             Glyph="/Resources/Icons/svg/icon_calendar.svg"
                             GlyphSize="Custom"
                             CustomGlyphSize="20,20"  
                             KeyGesture="Ctrl+S" 
-                            ItemClick="BarButtonItem_ItemClick"
-                            Command="{Binding Source={StaticResource AppointmentsViewModel}, Path=LoadCommand}" 
-                            CommandParameter="{Binding ElementName=win, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <dxb:BarItemLinkSeparator />
+                            Command="{Binding LoadCommand}" >
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ClientCardConverter}">
+                                        <Binding ElementName="visits"/>
+                                        <Binding ElementName="win" Path="DataContext.Model"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
+                            <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
-                            GlyphAlignment="Left"
+                                GlyphAlignment="Left"
                                 x:Name="addClientFields"
-                                       Content="Дополнительные поля"
-                                       Glyph="/Resources/Icons/svg/customizable.svg"
-                                       GlyphSize="Custom"
-                                       CustomGlyphSize="19,19"
-                                ItemClick="BarButtonItem_ItemClick"
-                                       KeyGesture="Ctrl+S" />
+                                BorderBrush="{Binding AddClientFieldsBurButtonItemBorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{Binding AddClientFieldsBurButtonItemBorderThickness, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                Content="Дополнительные поля"
+                                Glyph="/Resources/Icons/svg/customizable.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="19,19"
+                                KeyGesture="Ctrl+S" 
+                                Command="{Binding LoadCommand}">
+                                <dxb:BarButtonItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ClientCardConverter}">
+                                        <Binding ElementName="addClientFields"/>
+                                        <Binding ElementName="win" Path="DataContext.Model"/>
+                                    </MultiBinding>
+                                </dxb:BarButtonItem.CommandParameter>
+                            </dxb:BarButtonItem>
                         </dxb:BarLinkContainerItem>
                 </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
@@ -160,7 +196,7 @@
                     Orientation="Vertical"  
                     Background="Transparent" 
                     Padding="5" VerticalAlignment="Stretch" Grid.Row="1">
-                <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox">
+                <dxlc:LayoutGroup Name="groupContainer" Orientation="Vertical" View="GroupBox" >
                     <dxlc:LayoutGroup.GroupBoxStyle>
                         <Style TargetType="dxlc:GroupBox">
                             <Setter Property="Background" Value="Transparent" />
@@ -171,11 +207,26 @@
                         </Style>
                     </dxlc:LayoutGroup.GroupBoxStyle>
 
-                    <tp:MainInfo DataContext="{Binding}" Visibility="Visible" x:Name="MainInfoControl" />
-                    <tp:ClientInvoicesControl  x:Name="ClientInvoicesControl" Visibility="Collapsed" DataContext="{Binding Source={StaticResource ClientInvoicesViewModel}}"/>
-                    <tp:PlanControl Visibility="Collapsed" x:Name="ClientPlansControl" DataContext="{Binding Source={StaticResource ClientPlansViewModel}}"/>
-                    <tp:Visits  Visibility="Collapsed" x:Name="VisitsControl" DataContext="{Binding Source={StaticResource AppointmentsViewModel}}"/>
-                        <add:ClientControl x:Name="AddClientFieldsControl" Visibility="Collapsed" DataContext="{Binding FieldsViewModel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <tp:MainInfo 
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=DataContext, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Source={StaticResource ClientCardDispatcher}, Path=MainInfoClientControlVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        x:Name="MainInfoControl" />
+                    <tp:ClientInvoicesControl
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=DataContext, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Source={StaticResource ClientCardDispatcher}, Path=ClientInvoicesClientControlVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="ClientInvoicesControl"/>
+                    <tp:PlanControl
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=DataContext, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Source={StaticResource ClientCardDispatcher}, Path=ClientPlansClientControlVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        x:Name="ClientPlansControl" />
+                    <tp:Visits
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=DataContext, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding Source={StaticResource ClientCardDispatcher}, Path=VisitsClientControlVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        x:Name="VisitsControl" />
+                    <add:ClientControl
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=DataContext, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        x:Name="AddClientFieldsControl" 
+                        Visibility="{Binding Source={StaticResource ClientCardDispatcher}, Path=AddClientFieldsClientControlVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                
                 </dxlc:LayoutGroup>
             </dxlc:LayoutControl>

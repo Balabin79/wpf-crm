@@ -29,10 +29,13 @@ namespace B6CRM.ViewModels.ClientDir
     {
         private readonly ApplicationContext db;
 
-        public ClientInvoicesViewModel()
+        public ClientInvoicesViewModel(Client client)
         {
             db = new ApplicationContext();
             Config = db.Config;
+            Client = client?.Id > 0 ? db.Clients.FirstOrDefault(f => f.Id == client.Id) : new Client();
+            Load();
+
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
             Advertisings = db.Advertising.ToObservableCollection();
         }
@@ -47,26 +50,21 @@ namespace B6CRM.ViewModels.ClientDir
         public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         #endregion
 
-        [Command]
-        public void Load(object p)
+        public void Load()
         {
-            if (p is Client client)
-            {
-                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id);
+            ClientInvoices = Client?.Id != 0 ? db.Invoices?.
+                Where(f => f.ClientId == Client.Id)?.
+                Include(f => f.Employee)?.
+                Include(f => f.Client)?.
+                Include(f => f.InvoiceItems)?.
+                OrderByDescending(f => f.CreatedAt)?.
+                ToObservableCollection()
+                :
+                new ObservableCollection<Invoice>();
 
-                ClientInvoices = client?.Id != 0 ? db.Invoices?.
-                    Where(f => f.ClientId == client.Id)?.
-                    Include(f => f.Employee)?.
-                    Include(f => f.Client)?.
-                    Include(f => f.InvoiceItems)?.
-                    OrderByDescending(f => f.CreatedAt)?.
-                    ToObservableCollection() 
-                    : 
-                    new ObservableCollection<Invoice>();
+            // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
+            ShowPaid = null;
 
-                // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
-                ShowPaid = null;
-            }
         }
 
         #region Счета
@@ -91,7 +89,7 @@ namespace B6CRM.ViewModels.ClientDir
                     if (db.SaveChanges() > 0)
                     {
                         ClientInvoices.Add(model);
-                        Load(Client);
+                        Load();
                         if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     }
                 }

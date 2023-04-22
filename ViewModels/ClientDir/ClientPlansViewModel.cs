@@ -29,11 +29,14 @@ namespace B6CRM.ViewModels.ClientDir
     {
         private readonly ApplicationContext db;
 
-        public ClientPlansViewModel()
+        public ClientPlansViewModel(Client client)
         {
             db = new ApplicationContext();
             Config = db.Config;
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
+
+            Client = client?.Id > 0 ? db.Clients.FirstOrDefault(f => f.Id == client.Id) : new Client();
+            Load();
         }
 
         #region Права на выполнение команд
@@ -48,19 +51,17 @@ namespace B6CRM.ViewModels.ClientDir
         #endregion
 
         [Command]
-        public void Load(object p)
+        public void Load()
         {
-            if (p is Client client)
-            {
-                Client = db.Clients.FirstOrDefault(f => f.Id == client.Id);
-                PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
 
-                Plans = db.Plans?.Where(f => f.ClientId == client.Id)?.
-                    Include(f => f.Client).
-                    Include(f => f.PlanStatus).
-                    Include(f => f.PlanItems).
-                    OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Plan>();
-            }
+            PlanStatuses = db.PlanStatuses.OrderBy(f => f.Sort).ToArray();
+
+            Plans = db.Plans?.Where(f => f.ClientId == Client.Id)?.
+                Include(f => f.Client).
+                Include(f => f.PlanStatus).
+                Include(f => f.PlanItems).
+                OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Plan>();
+
         }
 
         #region Планы работ

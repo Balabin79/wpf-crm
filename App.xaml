@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:B6CRM" 
              xmlns:serv="clr-namespace:B6CRM.Services" 
              xmlns:vm="clr-namespace:B6CRM.ViewModels"
+             xmlns:clientCard="clr-namespace:B6CRM.ViewModels.ClientDir"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui" 
@@ -13,6 +14,7 @@
 
     <Application.Resources>
         <vm:MainViewModel x:Key="Router"/>
+        <clientCard:ClientCardDispatcher x:Key="ClientCardDispatcher"/>
         <dxmvvm:OpenFileDialogService x:Key="OpenFileDialogService" />
 
         <dxmvvm:DispatcherService x:Key="BackgroundDispatcherService" DispatcherPriority="Background" />

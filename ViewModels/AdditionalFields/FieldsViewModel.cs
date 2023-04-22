@@ -19,11 +19,11 @@ namespace B6CRM.ViewModels.AdditionalFields
     public class FieldsViewModel : DevExpress.Mvvm.ViewModelBase
     {
         private readonly ApplicationContext db;
-        public FieldsViewModel(Client client, ApplicationContext ctx)
+        public FieldsViewModel(Client client)
         {
             try
             {
-                db = ctx;
+                db = new ApplicationContext();
                 ClientFieldsLoading(client);
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
             }

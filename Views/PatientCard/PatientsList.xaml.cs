@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Windows.Controls;
+using B6CRM.Models;
 using B6CRM.ViewModels.ClientDir;
 using DevExpress.Xpf.WindowsUI;
 
@@ -12,25 +13,29 @@ namespace B6CRM.Views.PatientCard
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e) => SelectedItem();
+        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+           // SelectedItem();
+        }
 
         public void SelectedItem()
         {
             try
             {
-                if (clientCard.DataContext is ClientsViewModel vm)
+                if (clientCard.DataContext is ClientsListViewModel vm)
                 {
-                    if (vm?.Model?.Id == 0)
+                    if (vm?.SelectedClient?.Id == 0)
                     {
                         grid.SelectedItem = null;
                         return;
                     }
                     else
                     {
-                        var model = vm?.Clients?.FirstOrDefault(f => f.Id == vm?.Model?.Id);
-                        grid.SelectedItem = model;
+                        grid.SelectedItem = vm?.Clients?.FirstOrDefault(f => f.Id == vm?.SelectedClient?.Id);
+                        return;
                     }
-                }               
+                }
+                grid.SelectedItem = null;
             }
             catch
             {
@@ -45,6 +50,22 @@ namespace B6CRM.Views.PatientCard
                 invoicesList.grid.SelectedItem = null;
             }
             catch { }
+        }
+
+       /* private void clientCard_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            if (((System.Windows.FrameworkElement)sender).Resources["MainInfoViewModel"] is MainInfoViewModel vm)
+            {
+                vm?.Load(e);
+            }
+        }*/
+
+        private void BarButtonItem_CreateClient(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            if (clientCard.Resources["MainInfoViewModel"] is MainInfoViewModel vm)
+            {
+                vm?.Create(clientCard);
+            }
         }
     }
 }

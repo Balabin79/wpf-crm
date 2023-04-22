@@ -56,15 +56,12 @@ namespace B6CRM.ViewModels.ClientDir
                 db = new ApplicationContext();
                 Db = db;
                 Config = db.Config;
-                LoadClients();
                 LoadInvoices();
                 LoadEmployees();
-                LoadPrintConditions();
+                
                 Model = new Client();
 
-                Init(Model);
-
-                ClientCategoriesLoad();
+                //ClientCategoriesLoad();
                 //Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
                 AdvertisingLoad();
                 
@@ -76,42 +73,23 @@ namespace B6CRM.ViewModels.ClientDir
         }
 
         #region Загружаем справочники
-        public void ClientCategoriesLoad() 
-        { 
-            ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();          
-        }
 
         public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
 
-        public void ClientCategoriesDeleteOrSave() { ClientCategoriesLoad(); LoadClients(); }
+        //public void ClientCategoriesDeleteOrSave() { ClientCategoriesLoad(); LoadClients(); }
 
         public void AdvertisingDeleteOrSave() { }
         #endregion
 
         #region Права на выполнение команд
-
-        public bool CanOpenDirectory(object p) => Model?.Id != 0;
-        public bool CanExecuteFile(object p) => Model?.Id != 0;
-
-        public bool CanCreate() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsDelitable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAddFieldsEditable;
         public bool CanPrintClients() => ((UserSession)Application.Current.Resources["UserSession"]).PrintClients;
-
-        public bool CanAttachmentFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         #endregion
 
         //это поле для привязки (используется в команде импорта данных)
         public ApplicationContext Db { get; set; }
 
         #region Загрузка списков клиентов и всех инвойсов 
-        public void LoadClients(int? isArhive = 0)
-        {
-            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
-        }
 
         public void LoadInvoices()
         {
@@ -129,13 +107,6 @@ namespace B6CRM.ViewModels.ClientDir
             foreach (var i in Employees) i.IsVisible = false;
         }
 
-
-        public ObservableCollection<Client> Clients
-        {
-            get { return GetProperty(() => Clients); }
-            set { SetProperty(() => Clients, value); }
-        }
-
         public ObservableCollection<Invoice> Invoices
         {
             get { return GetProperty(() => Invoices); }
@@ -146,12 +117,6 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => Employees); }
             set { SetProperty(() => Employees, value); }
-        }
-
-        public ObservableCollection<ClientCategory> ClientCategories
-        {
-            get { return GetProperty(() => ClientCategories); }
-            set { SetProperty(() => ClientCategories, value); }
         }
 
         public ObservableCollection<Advertising> Advertisings
@@ -172,7 +137,6 @@ namespace B6CRM.ViewModels.ClientDir
                 if (p is Client model)
                 {
                     Model = model;
-                    Init(Model);
                   /*  if (Application.Current.Resources["Router"] is MainViewModel nav &&
                           nav?.NavigationService is NavigationServiceBase service &&
                           service.Current is PatientsList page
@@ -183,7 +147,6 @@ namespace B6CRM.ViewModels.ClientDir
                 {
                     if (invoice.Client == null) return;
                     Model = invoice.Client;
-                    Init(invoice.Client);
 
                     if (Application.Current.Resources["Router"] is MainViewModel nav &&
                      nav?.NavigationService is NavigationServiceBase service &&
@@ -306,77 +269,10 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
-        #region Работа с фильтрами и поиском в списке клиентов
-        [Command]
-        public void ShowArchive()
-        {
-            try
-            {
-                IsArchiveList = !IsArchiveList;
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        public bool IsArchiveList
-        {
-            get { return GetProperty(() => IsArchiveList); }
-            set { SetProperty(() => IsArchiveList, value); }
-        }
-
-        public object LastNameSearch { get; set; }
-
-        [Command]
-        public void ClientsSearch()
-        {
-            try
-            {
-                Clients = db.Clients.Where(f => f.IsInArchive == (IsArchiveList ? 1 : 0)).OrderBy(f => f.LastName).ToObservableCollection();
-
-                if (!string.IsNullOrEmpty(LastNameSearch?.ToString()))
-                {
-                    Clients = Clients.Where(f => f.LastName.ToLower().Contains(LastNameSearch.ToString().ToLower())).OrderBy(f => f.LastName).ToObservableCollection();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        #endregion
+ 
 
         #region Работа с разделом карты "Административная"
-        private void Init(Client model)
-        {
-            try
-            {
-                ClientInfoViewModel = new ClientInfoViewModel(model);
-                IsReadOnly = model?.Id != 0;
-
-                // загружаем инвойсы и дневники отдельного клиента
-
-                // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
-                ShowPaid = null;
-
-                FieldsViewModel = new FieldsViewModel(model, db);
-                EventChangeReadOnly += FieldsViewModel.ChangedReadOnly;
-
-                FieldsViewModel.IsReadOnly = true;
-
-                SetTabVisibility(FieldsViewModel.AdditionalFieldsVisible);
-                PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-                Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() : new ObservableCollection<FileInfo>();
-
-                //LoadPlans();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
+      
         #endregion
 
 
@@ -431,149 +327,12 @@ namespace B6CRM.ViewModels.ClientDir
 
         #region Карта клиента
 
-        [Command]
-        public void Create()
-        {
-            try
-            {
-                Model = new Client();
-                Init(Model);
-                SelectedItem();
-
-                /*if (Application.Current.Resources["Router"] is MainViewModel nav &&
-                    nav?.NavigationService is NavigationServiceBase service &&
-                    service.Current is PatientsList page
-                    ) page.clientCard.tabs.SelectedIndex = 0;*/
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void Save()
-        {
-            try
-            {
-                ClientInfoViewModel.Copy(Model);
-
-                /************************/
-                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
-                {
-                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
-                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
-                    Environment.Exit(0);
-                }
-                /************************/
-
-                if (Model.Id == 0) // новый элемент
-                {
-                    db.Clients.Add(Model);
-                    // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                    if (IsArchiveList == (Model.IsInArchive == 1)) Clients?.Insert(0, Model);
-                    db.SaveChanges();
-                    EventChangeReadOnly?.Invoke(false); // разблокировать дополнительные поля
-                                                        //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
-                    PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Model?.Guid);
-                    new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
-                    SelectedItem();
-                }
-                else
-                { // редактирование су-щего эл-та
-                    FieldsViewModel?.Save(Model);
-                    if (db.SaveChanges() > 0)
-                    {
-                        LoadClients(Model.IsInArchive);
-                        IsArchiveList = Model.IsInArchive == 1;
-                        SelectedItem();
-                        new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "При сохранении данных произошла ошибка!", true);
-            }
-        }
-
-        [Command]
-        public void Delete()
-        {
-            try
-            {
-                var response = ThemedMessageBox.Show(title: "Внимание", text: "Удалить карту клиента из базы данных, без возможности восстановления? Также будут удалены счета, планы работ, записи в расписании и все файлы прикрепленные к карте клиента!",
-                messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-
-                if (response.ToString() == "No") return;
-
-                new UserFilesManagement(Model.Guid).DeleteDirectory();
-                var id = Model?.Id;
-
-                //удалить также в расписании, в планах и в счетах
-                db.Appointments.Where(f => f.ClientInfoId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-                db.Invoices.Include(f => f.InvoiceItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-                db.Plans.Include(f => f.PlanItems).Where(f => f.ClientId == Model.Id).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-                db.AdditionalClientValue.Where(f => f.ClientId == Model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
-
-                db.Entry(Model).State = EntityState.Deleted;
-                if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
-
-                // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                var item = Clients.FirstOrDefault(f => f.Guid == Model.Guid);
-                if (item != null) Clients.Remove(item);
-
-                db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                db.PlanItems.Where(f => f.PlanId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
-                db.SaveChanges();
-
-
-                // удаляем файлы 
-                if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);
-
-                //загружаем новую анкету
-                Model = new Client();
-                Init(Model);
-                SelectedItem();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "При удалении карты клиента произошла ошибка!", true);
-            }
-        }
-
-        [Command]
-        public void ClearDate(object p)
-        {
-            if (p is DateEdit field)
-            {
-                field.ClearError();
-                field.Clear();
-                field.ClosePopup();
-                field.EditValue = null;
-                ClientInfoViewModel.BirthDate = null;
-            }
-        }
+ 
 
         public Client Model
         {
             get { return GetProperty(() => Model); }
             set { SetProperty(() => Model, value); }
-        }
-
-        public ClientInfoViewModel ClientInfoViewModel
-        {
-            get { return GetProperty(() => ClientInfoViewModel); }
-            set { SetProperty(() => ClientInfoViewModel, value); }
         }
 
         public bool IsReadOnly
@@ -598,135 +357,6 @@ namespace B6CRM.ViewModels.ClientDir
         #endregion
 
 
-        #region команды, связанных с прикреплением файлов        
-        public string PathToUserFiles
-        {
-            get { return GetProperty(() => PathToUserFiles); }
-            set { SetProperty(() => PathToUserFiles, value); }
-        }
-
-        public ObservableCollection<FileInfo> Files
-        {
-            get { return GetProperty(() => Files); }
-            set { SetProperty(() => Files, value); }
-        }
-
-        [Command]
-        public void OpenDirectory(object p)
-        {
-            try
-            {
-                if (PathToUserFiles != null && Directory.Exists(PathToUserFiles))
-                {
-                    var proc = new Process();
-                    proc.StartInfo = new ProcessStartInfo(PathToUserFiles)
-                    {
-                        UseShellExecute = true
-                    };
-                    proc.Start();
-                }
-
-                //Process.Start(PathToUserFiles);
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Невозможно открыть содержащую файл директорию!", true);
-            }
-        }
-
-        [Command]
-        public void ExecuteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file)
-                {
-                    var proc = new Process();
-                    proc.StartInfo = new ProcessStartInfo(file.FullName)
-                    {
-                        UseShellExecute = true
-                    };
-                    proc.Start();
-                }
-                //Process.Start(file.FullName);
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "Невозможно выполнить загрузку файла!", true);
-            }
-        }
-
-        [Command]
-        public void AttachmentFile(object p)
-        {
-            try
-            {
-                var filePath = string.Empty;
-                using (System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    dialog.InitialDirectory = "c:\\";
-                    dialog.Filter = "All files (*.*)|*.*|All files (*.*)|*.*";
-                    dialog.FilterIndex = 2;
-                    dialog.RestoreDirectory = true;
-
-                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
-                    filePath = dialog.FileName;
-                    if (string.IsNullOrEmpty(filePath)) return;
-                }
-
-                FileInfo file = new FileInfo(filePath);
-
-                // проверяем на наличие существующего файла
-                foreach (var i in Files)
-                {
-                    if (string.Compare(i.Name, file.Name, StringComparison.CurrentCulture) == 0)
-                    {
-                        var response = ThemedMessageBox.Show(title: "Внимание!", text: "Файл с таким именем уже есть в списке прикрепленных файлов. Заменить текущий файл?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                        if (response.ToString() == "No") return; // не захотел, поэтому дальше ничего не делаем
-
-                        // Решил заменить файл, удаляем файл, добавляем новый и перезагружаем коллекцию
-                        i.Delete();
-                    }
-                }
-
-                if (PathToUserFiles != null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
-
-
-
-                File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
-                File.SetAttributes(Path.Combine(PathToUserFiles, file.Name), FileAttributes.Normal);
-
-                FileInfo newFile = new FileInfo(Path.Combine(PathToUserFiles, file.Name));
-                newFile.CreationTime = DateTime.Now;
-
-                Files = new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
-        public void DeleteFile(object p)
-        {
-            try
-            {
-                if (p is FileInfo file)
-                {
-                    var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить файл с компьютера?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
-                    if (response.ToString() == "No") return;
-                    File.SetAttributes(file.FullName, FileAttributes.Normal);
-                    file.Delete();
-                    Files = new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-        #endregion
 
         private void SelectedItem()
         {
@@ -743,122 +373,6 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => Config); }
             set { SetProperty(() => Config, value); }
         }
-
-        #region Печать
-        public ObservableCollection<PrintCondition> PrintConditions
-        {
-            get { return GetProperty(() => PrintConditions); }
-            set { SetProperty(() => PrintConditions, value); }
-        }
-
-        public object PrintConditionsSelected { get; set; }
-
-        private void LoadPrintConditions()
-        {
-            PrintConditions = new ObservableCollection<PrintCondition>()
-            {
-                new PrintCondition(){Name = "Не в архиве", Id = -3, Type = true.GetType()},
-                new PrintCondition(){Name = "В архиве", Id = -2, Type = true.GetType()}
-            };
-            db.ClientCategories?.ToArray()?.ForEach(f => PrintConditions.Add(
-                new PrintCondition() { Name = f.Name, Id = f.Id, Type = f.GetType() }
-                ));
-        }
-
-        [Command]
-        public void PrintClients()
-        {
-            PrintClientsWindow = new PrintClientsWindow() { DataContext = this };
-            PrintClientsWindow.Show();
-        }
-
-        [Command]
-        public void LoadDocForPrint()
-        {
-            try
-            {
-                // Create a link and assign a data source to it.
-                // Assign your data templates to different report areas.
-                CollectionViewLink link = new CollectionViewLink();
-                CollectionViewSource Source = new CollectionViewSource();
-
-                SetSourceCollectttion();
-
-                Source.Source = SourceCollection;
-
-                Source.GroupDescriptions.Add(new PropertyGroupDescription("ClientCategory.Name"));
-
-                link.CollectionView = Source.View;
-                link.GroupInfos.Add(new GroupInfo((DataTemplate)PrintClientsWindow.Resources["CategoryTemplate"]));
-                link.DetailTemplate = (DataTemplate)PrintClientsWindow.Resources["ProductTemplate"];
-
-                // Associate the link with the Document Preview control.
-                PrintClientsWindow.preview.DocumentSource = link;
-
-                // Generate the report document 
-                // and show pages as soon as they are created.
-                link.CreateDocument(true);
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-
-        }
-
-        public ICollection<Client> SourceCollection { get; set; } = new List<Client>();
-
-        private void SetSourceCollectttion()
-        {
-            try
-            {
-                SourceCollection = new List<Client>();
-                var ctx = db.Clients;
-                var where = "";
-                var or = "";
-
-                if (PrintConditionsSelected is List<object> collection)
-                {
-                    var marked = collection.OfType<PrintCondition>().ToArray();
-                    if (marked.Length > 0) where = " WHERE ";
-                    if (marked.Length > 1) or = " OR ";
-
-                    if (marked.FirstOrDefault(f => f.Id == -2) != null) where += " IsInArchive = 1";
-                    if (marked.FirstOrDefault(f => f.Id == -3) != null) 
-                        where +=  where.Length > 10 ? or + "IsInArchive = 0" : "IsInArchive = 0";
-
-                    var cat = marked.Where(f => f.Type == new ClientCategory().GetType())?.Select(f => f.Id)?.OfType<int?>().ToArray();
-
-                    if (cat.Length > 0)
-                    {
-                        where += !string.IsNullOrEmpty(where) ? " AND" : " WHERE";
-                        where += $" ClientCategoryId IN ({string.Join(",", cat)}) ";
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(where))
-                {
-                    SourceCollection = db.Clients.FromSqlRaw("SELECT * FROM ClientInfo" + where).
-                       Include(f => f.ClientCategory).
-                       OrderBy(f => f.ClientCategoryId).
-                       ThenBy(f => f.LastName).
-                       ToArray();
-                    return;
-                }
-                SourceCollection = db.Clients.
-                   Include(f => f.ClientCategory).
-                   OrderBy(f => f.ClientCategoryId).
-                   ThenBy(f => f.LastName).
-                   ToArray();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-        public PrintClientsWindow PrintClientsWindow { get; set; }
-
-        #endregion
 
 
         public void ClientInvoicesUpdate(int id)
