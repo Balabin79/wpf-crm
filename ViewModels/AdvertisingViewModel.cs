@@ -49,8 +49,8 @@ namespace B6CRM.ViewModels
             {
                 db.Advertising?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
-                if (p is ClientsViewModel vm && vm != null) 
-                    EventAdvertisingChanges += vm.AdvertisingLoad;
+                /*if (p is ClientsViewModel vm && vm != null) 
+                    EventAdvertisingChanges += vm.AdvertisingLoad;*/
                 
                 new AdvertisingsWindow() { DataContext = this }.Show();
                 //StatusWindow.Show();

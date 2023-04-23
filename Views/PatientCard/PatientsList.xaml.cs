@@ -13,11 +13,6 @@ namespace B6CRM.Views.PatientCard
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-           // SelectedItem();
-        }
-
         public void SelectedItem()
         {
             try

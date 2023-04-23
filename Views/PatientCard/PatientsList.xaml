@@ -28,7 +28,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <commands:PrintCommand x:Key="Print"/>
-                    <vm:ClientsListViewModel x:Key="vm"/>
+                    <vm:ClientsListViewModel x:Key="ClientsListViewModel"/>
+                    <vm:InvoicesListViewModel x:Key="InvoicesListViewModel"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
                     <services:ImportData x:Key="import"/>
@@ -50,7 +51,7 @@
     </UserControl.Resources>
 
     <Border BorderBrush="LightGray" BorderThickness="1" Margin="5 5 5 0">
-        <Grid DataContext="{StaticResource vm}"
+        <Grid
                   ScrollViewer.CanContentScroll="True" 
                   ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
@@ -58,7 +59,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DockPanel LastChildFill="True" Grid.Row="0">
+            <DockPanel LastChildFill="True" Grid.Row="0" DataContext="{StaticResource ClientsListViewModel}">
 
                 <StackPanel Orientation="Horizontal">
                     <dxe:ComboBoxEdit Width="295" Margin="5 2 5 0"
@@ -110,7 +111,7 @@
                                 <dxb:BarButtonItem 
                                     Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
                                     GlyphSize="Small" Style="{Binding}"
-                                    CommandParameter="{Binding Source={StaticResource vm}}"
+                                    CommandParameter="{Binding Source={StaticResource InvoicesListViewModel}}"
                                     Command="{Binding OpenWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
@@ -123,7 +124,7 @@
                                 <dxb:BarButtonItem 
                                     Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
                                     GlyphSize="Small" Style="{Binding}"
-                                    CommandParameter="{Binding Source={StaticResource vm}}"
+                                    CommandParameter="{Binding Source={StaticResource InvoicesListViewModel}}"
                                     Command="{Binding OpenWClientCategoryWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
@@ -151,7 +152,7 @@
                                     <dxb:BarButtonItem.CommandParameter >
                                         <MultiBinding Converter="{StaticResource exportConv}">
                                             <Binding Source="{x:Type model:Client}" />
-                                            <Binding Source="{StaticResource vm}" Path="Db"/>
+                                            <Binding Source="{StaticResource InvoicesListViewModel}" Path="Db"/>
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
                                 </dxb:BarButtonItem>
@@ -165,7 +166,7 @@
                                     <dxb:BarButtonItem.CommandParameter >
                                         <MultiBinding Converter="{StaticResource exportConv}">
                                             <Binding Source="{x:Type model:Client}" />
-                                            <Binding Source="{StaticResource vm}" Path="Db"/>
+                                            <Binding Source="{StaticResource InvoicesListViewModel}" Path="Db"/>
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
                                 </dxb:BarButtonItem>
@@ -177,10 +178,17 @@
                 </dxb:BarContainerControl>
             </DockPanel>
 
-            <Border VerticalAlignment="Stretch"  Grid.Row="1" MaxHeight="2800" BorderBrush="LightGray" Margin="3" BorderThickness="1" >
+            <Border 
+                VerticalAlignment="Stretch"  
+                Grid.Row="1" 
+                MaxHeight="2800" 
+                BorderBrush="LightGray" 
+                Margin="3" 
+                BorderThickness="1" >
                 <DockPanel  >
                     <dx:DXTabControl Margin="2" >
-                        <dx:DXTabItem Header="Клиенты"  >
+                        <dx:DXTabItem DataContext="{StaticResource ClientsListViewModel}"
+                            Header="Клиенты"  >
                             <Grid x:Name="clientsList">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"/>
@@ -301,7 +309,7 @@
                             </Grid>
                         </dx:DXTabItem>
                      
-                        <dx:DXTabItem Header="Счета" >
+                        <dx:DXTabItem Header="Счета" DataContext="{StaticResource InvoicesListViewModel}">
                             <local:InvoicesControl DataContext="{Binding}" Margin="0 2 2 2" x:Name="invoicesList"/>
                         </dx:DXTabItem>
                     </dx:DXTabControl>
