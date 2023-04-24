@@ -57,15 +57,15 @@
 
                         <dxlc:LayoutItem Label="*Фамилия:" LabelPosition="Top" IsRequired="True" >
                             <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="*Имя:" LabelPosition="Top" IsRequired="True" >
                             <dxe:TextEdit Text="{Binding ClientInfoViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Отчество:" LabelPosition="Top" >
                             <dxe:TextEdit Text="{Binding ClientInfoViewModel.MiddleName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                              IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                              IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
 
@@ -76,7 +76,7 @@
                                       DisplayFormatString="D"  x:Name="DateEdit"
                                       EditValue="{Binding ClientInfoViewModel.BirthDate, Mode=TwoWay, StringFormat=D,
                                                      UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                  IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         </dxe:DateEdit>
                     </dxlc:LayoutItem>
 
@@ -85,7 +85,7 @@
                             ItemsSource="{Binding ClientInfoViewModel.GenderList}"                                      
                                       SelectedItem="{Binding ClientInfoViewModel.Gender, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       NullText="Пол" IsTextEditable="False"
-                                      IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                      IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                 <dxe:RadioComboBoxStyleSettings />
                             </dxe:ComboBoxEdit.StyleSettings>
@@ -95,7 +95,7 @@
                 <dxlc:LayoutItem Label="Примечание:" LabelPosition="Top" >
                     <dxe:MemoEdit ShowIcon="False"  VerticalContentAlignment="Top"  ShowText="True" EditValue="{Binding ClientInfoViewModel.Note, Mode=TwoWay, 
                                                      UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                               IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
 
@@ -114,7 +114,7 @@
                                             Mask="+7(999) 000-0000"
                                             MaskUseAsDisplayFormat="True"
                                             EditValue="{Binding Path=ClientInfoViewModel.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                    IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
                                     Glyph="/Resources/Icons/svg/mobile-alt.svg" Margin="0 2 2 2"/>
                     </dxe:ButtonEdit>
@@ -127,7 +127,7 @@
                                             Mask="(\w|[\.\-])+@(\w|[\-]+\.)*(\w|[\-]){2,63}\.[a-zA-Z]{2,4}"
                                             EditValue="{Binding Path=ClientInfoViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             ValidateOnTextInput="True"
-                                            IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                         <dxe:ImageButtonInfo
                                     Glyph="/Resources/Icons/svg/envelope.svg"  Margin="0 2 3 2"/>
                     </dxe:ButtonEdit>
@@ -135,7 +135,7 @@
 
                 <dxlc:LayoutItem Label="Адрес проживания:" LabelPosition="Top" >
                     <dxe:MemoEdit VerticalContentAlignment="Top"  ShowText="True" ShowIcon="False"  EditValue="{Binding ClientInfoViewModel.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                               IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                               IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem Label="Категория клиентов:" LabelPosition="Top">
                     <dxe:ComboBoxEdit 
@@ -144,7 +144,7 @@
                                   ItemsSource="{Binding ClientCategories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                   DisplayMember="Name"
                                   EditValue="{Binding ClientInfoViewModel.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                   >
                         <dxe:ComboBoxEdit.StyleSettings>
                             <dxe:RadioComboBoxStyleSettings/>
@@ -156,7 +156,7 @@
                     <dxlc:LayoutItem  Label="Находится в архиве:" LabelPosition="Top" >
                         <dxe:ToggleSwitch ContentPlacement="Far" HorizontalAlignment="Left" CheckedStateContent="Да" UncheckedStateContent="Нет" 
                                   IsChecked="{Binding ClientInfoViewModel.IsInArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                  IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
                 
@@ -184,7 +184,7 @@
                                            GlyphSize="Small" 
                                            DataContext="{Binding ElementName=layoutGroup1}"
                                            Command="{Binding Path=DataContext.OpenDirectoryCommand}"
-                                           IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           IsEnabled="{DXBinding  Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                         >
                                         <dxb:BarButtonItem.GlyphTemplate>
                                             <DataTemplate>
@@ -198,7 +198,7 @@
                                         Command="{Binding DataContext.AttachmentFileCommand}" 
                                         Glyph="{dx:DXImage SvgImages/Outlook Inspired/AttachFile.svg}"
                                         Content="Прикрепить файл" 
-                                        IsEnabled="{DXBinding  Expr='DataContext.Model.Id != 0 and !DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                        IsEnabled="{DXBinding  Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                     />
 
                                 </dxb:ToolBarControl>
@@ -241,7 +241,7 @@
 
                                         <dxb:BarButtonItem  
                                             Content="Удалить файл" 
-                                            IsEnabled="{DXBinding  Expr='@e(gridControl).DataContext.Model.Id != 0 and !@e(gridControl).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
+                                            IsEnabled="{DXBinding  Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  
                                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                             GlyphSize="Small"
                                             Command="{Binding ElementName=gridControl, Path=DataContext.DeleteFileCommand}" 
@@ -276,7 +276,7 @@
                                     CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"/>
                                 <dxb:BarButtonItem 
                                     Content="Удалить файл"
-                                    IsEnabled="{DXBinding  Expr='@e(gridControl).DataContext.Model.Id != 0 and !@e(gridControl).DataContext.IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{DXBinding  Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Command="{Binding ElementName=gridControl,Path=DataContext.DeleteFileCommand}" 
                                     CommandParameter="{Binding ElementName=gridControl, Path=CurrentItem}"
                                     KeyGesture="Ctrl+Delete" 

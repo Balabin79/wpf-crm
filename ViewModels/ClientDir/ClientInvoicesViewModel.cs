@@ -38,6 +38,7 @@ namespace B6CRM.ViewModels.ClientDir
 
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
             Advertisings = db.Advertising.ToObservableCollection();
+            LoadEmployees(); 
         }
 
         #region Права на выполнение команд
@@ -304,7 +305,11 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
-        /********************************************************************/
+        public void LoadEmployees()
+        {
+            Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
+            foreach (var i in Employees) i.IsVisible = false;
+        }
 
         public ObservableCollection<Invoice> ClientInvoices
         {
@@ -324,6 +329,12 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => Config); }
             set { SetProperty(() => Config, value); }
+        }
+
+        public ObservableCollection<Employee> Employees
+        {
+            get { return GetProperty(() => Employees); }
+            set { SetProperty(() => Employees, value); }
         }
 
         public ObservableCollection<Advertising> Advertisings

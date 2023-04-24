@@ -27,6 +27,9 @@ namespace B6CRM.ViewModels.ClientDir
 {
     public class MainInfoViewModel : ViewModelBase
     {
+        public delegate void ClientChanged(Client client);
+        public event ClientChanged EventClientChanged;
+
         private readonly ApplicationContext db;
 
         public MainInfoViewModel(Client client)
@@ -48,7 +51,7 @@ namespace B6CRM.ViewModels.ClientDir
         public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
 
         public bool CanAttachmentFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
+        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;    
         #endregion
 
 
@@ -58,7 +61,6 @@ namespace B6CRM.ViewModels.ClientDir
             {
                 if (model == null) return;
                 ClientInfoViewModel = new ClientInfoViewModel(model);
-                IsReadOnly = model?.Id != 0;
               
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, model.Guid);
                 Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() 
@@ -91,7 +93,6 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
 
-
         [Command]
         public void Save(object p)
         {
@@ -120,8 +121,10 @@ namespace B6CRM.ViewModels.ClientDir
                     // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
                     //if (IsArchiveList == (Client.IsInArchive == 1)) Clients?.Insert(0, Client);
                     db.SaveChanges();
-                    //EventChangeReadOnly?.Invoke(false); // разблокировать дополнительные поля
-                                                        //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
+                    EventClientChanged?.Invoke(Client); 
+                    // разблокировать дополнительные поля
+                    //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
+
                     PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Client?.Guid);
                     new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
                     if (p is BarButtonItem item)
@@ -208,8 +211,6 @@ namespace B6CRM.ViewModels.ClientDir
                 ClientInfoViewModel.BirthDate = null;
             }
         }
-
-
 
         #region команды, связанных с прикреплением файлов        
         public string PathToUserFiles
@@ -341,6 +342,7 @@ namespace B6CRM.ViewModels.ClientDir
 
         public void ClientCategoriesLoad() => ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
 
+
         public Client Client
         {
             get { return GetProperty(() => Client); }
@@ -357,12 +359,6 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => ClientCategories); }
             set { SetProperty(() => ClientCategories, value); }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return GetProperty(() => IsReadOnly); }
-            set { SetProperty(() => IsReadOnly, value); }
         }
 
         public Config Config

@@ -55,7 +55,7 @@
 
                                         <dxb:BarButtonItem 
                                     Content="Добавить"                                                           
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     GlyphSize="Small"
                                     Command="{Binding ElementName=view, Path=DataContext.AddInvoiceItemCommand}"
                                     CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
@@ -69,7 +69,6 @@
                                         <dxb:BarItemSeparator/>
                                         <dxb:BarButtonItem 
                                     Content="Печать"                                                            
-                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                     Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                     GlyphSize="Small"
                                     Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"
@@ -114,7 +113,7 @@
                                         <dxg:GridColumn.CellEditTemplate>
                                             <DataTemplate>
                                                 <dxe:PopupBaseEdit 
-                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                        IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                         x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True" 
                                                         NullValueButtonPlacement="EditBox"                                            
                                                         EditValue="{Binding Path=Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
@@ -209,7 +208,7 @@
                                         <dxg:GridColumn.CellEditTemplate>
                                             <DataTemplate>
                                                 <dxe:TextEdit Mask="d" MaskType="Numeric" HorizontalContentAlignment="Center"
-                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         EditValue="{Binding Path=Row.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </DataTemplate>
                                         </dxg:GridColumn.CellEditTemplate>
@@ -231,7 +230,7 @@
                                             <DataTemplate>
                                                 <dxe:TextEdit HorizontalAlignment="Stretch"
                                                         Mask="c2" MaskType="Numeric" HorizontalContentAlignment="Center"
-                                                        IsEnabled="{DXBinding Expr='@e(view).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                         EditValue="{Binding Path=Row.Price, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />
                                             </DataTemplate>
                                         </dxg:GridColumn.CellEditTemplate>
@@ -265,11 +264,12 @@
                                                             AllowQuickCustomization="False"
                                                             Background="Transparent">
 
-                                                        <dxb:BarButtonItem Content="Удалить" 
-                                                                               IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                               GlyphSize="Small"
-                                                                               Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}" 
-                                                                               CommandParameter="{Binding RowData.Row, Mode=TwoWay}">
+                                                        <dxb:BarButtonItem
+                                                            Content="Удалить" 
+                                                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            GlyphSize="Small"
+                                                            Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}" 
+                                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}">
                                                             <dxb:BarButtonItem.GlyphTemplate>
                                                                 <DataTemplate>
                                                                     <dx:DXImage Source="/Resources/Icons/svg/times.svg" />
@@ -324,7 +324,7 @@
                                                     GlyphAlignment="Left"
                                                     KeyGesture="Ctrl+N"
                                                     Command="{Binding ElementName=view, Path=DataContext.AddInvoiceItemCommand}"
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Content="Добавить позицию" 
                                                     CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem.Invoice }">
                                                 <dxb:BarButtonItem.GlyphTemplate>
@@ -338,7 +338,7 @@
                                             <dxb:BarButtonItem 
                                                     Content="Удалить" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                                    IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     KeyGesture="Delete"     
                                                     Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}"
                                                     CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"/>
@@ -393,13 +393,12 @@
                                 CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                 Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
                                 Content="Создать счет" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                 />
 
                             <dxb:BarButtonItem 
                                 Content="Все счета"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
                                 CommandParameter="1"
@@ -407,7 +406,6 @@
 
                             <dxb:BarButtonItem 
                                 Content="Оплаченные" 
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
@@ -416,7 +414,6 @@
 
                             <dxb:BarButtonItem 
                                 Content="Не оплаченные"
-                                IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsVisible="{DXBinding '@e(UTreatmentPlan).DataContext.ShowPaid == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                 GlyphSize="Small"
                                 Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
@@ -455,7 +452,7 @@
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
                             Content="Создать счет" 
                             KeyGesture="Ctrl+N"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
 
                         <dxb:BarButtonItem  
@@ -464,11 +461,10 @@
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <dxb:BarButtonItem 
                             Content="Печать"                                                            
-                            IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false and @e(UTreatmentPlan).DataContext.Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                             KeyGesture="Ctrl+P" GlyphSize="Small" GlyphAlignment="Left" 
                             Command="{Binding ElementName=grid, Path=DataContext.PrintInvoiceCommand}"
@@ -502,7 +498,7 @@
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
                         <dxe:TextEdit
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Margin="0 3 0 0"  
                             HorizontalAlignment="Stretch"
                             EditValue="{ Binding Row.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -523,7 +519,7 @@
                     <DataTemplate>
                         <dxe:DateEdit
                             HorizontalAlignment="Stretch"
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Margin="0,0,8,0" Mask="f" MaskType="DateTime" 
                             DisplayFormatString="D"  x:Name="DateEdit"
                             EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D,
@@ -560,7 +556,7 @@
                             ValidateOnTextInput="False"
                             SelectedItem ="{Binding Row.Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                             EditValue ="{Binding Row.Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                     <dxe:RadioComboBoxStyleSettings />
                                 </dxe:ComboBoxEdit.StyleSettings>
@@ -579,7 +575,7 @@
                 <dxg:GridColumn.CellEditTemplate>
                     <DataTemplate>
                         <dxe:CheckEdit
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             HorizontalAlignment="Center"
                             EditValue="{Binding Row.Paid, Mode=TwoWay, Converter={StaticResource boolToInt}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                     </DataTemplate>
@@ -609,7 +605,7 @@
                                         ValidateOnTextInput="False"
                                         SelectedItem ="{Binding Row.Advertising, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                         EditValue ="{Binding Row.Advertising, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == true or @e(UTreatmentPlan).DataContext.Model.Id == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
                             <dxe:ComboBoxEdit.StyleSettings>
                                 <dxe:RadioComboBoxStyleSettings />
                             </dxe:ComboBoxEdit.StyleSettings>
@@ -626,8 +622,9 @@
                                 x:Name="fileToolBar" ShowDragWidget="False" Caption="File" Background="Transparent"
                                 AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
-                                <dxb:BarButtonItem Content="Удалить счет" 
-                                                   IsEnabled="{DXBinding Expr='@e(UTreatmentPlan).DataContext.IsReadOnly == false', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                <dxb:BarButtonItem 
+                                    Content="Удалить счет" 
+                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceCommand}" 

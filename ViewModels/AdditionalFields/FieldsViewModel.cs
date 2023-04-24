@@ -13,6 +13,7 @@ using B6CRM.Infrastructures.Converters;
 using System.Windows.Data;
 using B6CRM.Models;
 using B6CRM.Services;
+using B6CRM.ViewModels.ClientDir;
 
 namespace B6CRM.ViewModels.AdditionalFields
 {
@@ -26,6 +27,11 @@ namespace B6CRM.ViewModels.AdditionalFields
                 db = new ApplicationContext();
                 ClientFieldsLoading(client);
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
+
+                if (Application.Current.Resources["ClientCardDispatcher"] is ClientCardDispatcher dispatcher) 
+                {
+                    IsReadOnly = client?.Id == 0 ? true : dispatcher.IsReadOnly;
+                } 
             }
             catch (Exception e)
             {

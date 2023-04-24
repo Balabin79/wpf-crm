@@ -56,22 +56,23 @@
                     <dxb:BarLinkContainerItem  
                         RibbonStyle="SmallWithoutText">
                             <dxb:BarButtonItem 
-                            x:Name="mainInfo"
-                            BorderBrush="{DXBinding Expr='UserControlName == `MainInfoControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            BorderThickness="{DXBinding Expr='UserControlName == `MainInfoControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            GlyphAlignment="Left"
-                            Content="Карта" 
-                            Glyph="/Resources/Icons/svg/icon_id-2.svg"
-                            GlyphSize="Custom"
-                            CustomGlyphSize="20,20"
-                            CommandParameter="MainInfoControl"
-                            Command="{Binding LoadCommand}" />
+                                x:Name="mainInfo"
+                                BorderBrush="{DXBinding Expr='UserControlName == `MainInfoControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='UserControlName == `MainInfoControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                           
+                                GlyphAlignment="Left"
+                                Content="Карта" 
+                                Glyph="/Resources/Icons/svg/icon_id-2.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"
+                                CommandParameter="MainInfoControl"
+                                Command="{Binding LoadCommand}" />
 
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
                                 x:Name="clientInvoices"
                                 BorderBrush="{DXBinding Expr='UserControlName == `ClientInvoicesControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 BorderThickness="{DXBinding Expr='UserControlName == `ClientInvoicesControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@StaticResource(ClientCardDispatcher).Client.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 GlyphAlignment="Left"
                                 Content="Счета" 
                                 Glyph="/Resources/Icons/svg/icon_wallet.svg"
@@ -83,30 +84,32 @@
 
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
-                            x:Name="clientPlans"
-                            BorderBrush="{DXBinding Expr='UserControlName==`ClientPlansControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            BorderThickness="{DXBinding Expr='UserControlName==`ClientPlansControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            GlyphAlignment="Left"
-                            Content="Планы работ" 
-                            Glyph="/Resources/Icons/svg/icon_documents_alt.svg"
-                            GlyphSize="Custom"
-                            CustomGlyphSize="20,20"
-                            CommandParameter="ClientPlansControl"    
-                            Command="{Binding LoadCommand}"/>
+                                x:Name="clientPlans"
+                                BorderBrush="{DXBinding Expr='UserControlName==`ClientPlansControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='UserControlName==`ClientPlansControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@StaticResource(ClientCardDispatcher).Client.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                GlyphAlignment="Left"
+                                Content="Планы работ" 
+                                Glyph="/Resources/Icons/svg/icon_documents_alt.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"
+                                CommandParameter="ClientPlansControl"    
+                                Command="{Binding LoadCommand}"/>
 
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
-                            x:Name="visits"
-                            BorderBrush="{DXBinding Expr='UserControlName == `VisitsControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            BorderThickness="{DXBinding Expr='UserControlName == `VisitsControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            GlyphAlignment="Left"
-                            Content="Посещения" 
-                            Glyph="/Resources/Icons/svg/icon_calendar.svg"
-                            GlyphSize="Custom"
-                            CustomGlyphSize="20,20"  
-                            KeyGesture="Ctrl+S" 
-                            CommandParameter="VisitsControl"    
-                            Command="{Binding LoadCommand}" />
+                                x:Name="visits"
+                                BorderBrush="{DXBinding Expr='UserControlName == `VisitsControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='UserControlName == `VisitsControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@StaticResource(ClientCardDispatcher).Client.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                GlyphAlignment="Left"
+                                Content="Посещения" 
+                                Glyph="/Resources/Icons/svg/icon_calendar.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"  
+                                KeyGesture="Ctrl+S" 
+                                CommandParameter="VisitsControl"    
+                                Command="{Binding LoadCommand}" />
 
                             <dxb:BarItemLinkSeparator />
                             <dxb:BarButtonItem
@@ -114,6 +117,7 @@
                                 x:Name="addClientFields"
                                 BorderBrush="{DXBinding Expr='UserControlName == `AddClientFieldsControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 BorderThickness="{DXBinding Expr='UserControlName == `AddClientFieldsControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{DXBinding Expr='@StaticResource(ClientCardDispatcher).Client.Id > 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                 Content="Дополнительные поля"
                                 Glyph="/Resources/Icons/svg/customizable.svg"
                                 GlyphSize="Custom"
@@ -132,6 +136,7 @@
                             BarItemDisplayMode="Default">
 
                         <dxb:BarButtonItem Style="{Binding}"
+                                           DataContext="{StaticResource ClientCardDispatcher}"
                                            IsVisible="{DXBinding Expr='!IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Закрыть для редактирования" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Show.svg}" 
@@ -140,6 +145,7 @@
                                            Command="{Binding EditableCommand}"/>
 
                         <dxb:BarButtonItem Style="{Binding}"
+                                           DataContext="{StaticResource ClientCardDispatcher}"
                             IsVisible="{DXBinding Expr='IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Content="Редактировать данные" 
                                            Glyph="{dx:DXImage SvgImages/XAF/State_ItemVisibility_Hide.svg}" 
@@ -147,20 +153,24 @@
                                            CustomGlyphSize="21,21"   
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem Style="{Binding}"
-                            Content="Сохранить" 
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and !string.IsNullOrEmpty(ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(ClientInfoViewModel.FirstName)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Content="Сохранить"
+                            DataContext="{StaticResource ClientCardDispatcher}"                           
+                            IsEnabled="{DXBinding Expr='(!IsReadOnly and !string.IsNullOrEmpty(Context.ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(Context.ClientInfoViewModel.FirstName) )', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="21,21" 
-                                           Command="{Binding SaveCommand}"/>
+                                           Command="{Binding Path=Context.SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
-                        <dxb:BarButtonItem  Content="Удалить" Style="{Binding}"
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and Model.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        <dxb:BarButtonItem  
+                            Content="Удалить" Style="{Binding}"
+                            DataContext="{StaticResource ClientCardDispatcher}"
+                                           IsEnabled="{DXBinding Expr='!IsReadOnly and Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                            GlyphSize="Custom"
                                            CustomGlyphSize="21,21"   
-                                           Command="{Binding DeleteCommand}"/>
+                                           Command="{Binding Path=Context.DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

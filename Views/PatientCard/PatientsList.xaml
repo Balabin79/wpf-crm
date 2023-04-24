@@ -21,7 +21,8 @@
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:EventToCommand 
             EventName="Loaded" 
-            Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=InitCommand}"/>
+            Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=InitCommand}"
+            CommandParameter="{Binding ElementName=grid}"/>
     </dxmvvm:Interaction.Behaviors>
     <UserControl.Resources>
         <ResourceDictionary>
@@ -91,8 +92,10 @@
 
                         <dxb:BarButtonItem Content="Добавить клиента" 
                                            Glyph="/Resources/Icons/svg/plus-add.svg"
-                                           GlyphSize="Small" Style="{Binding}"
-                                           ItemClick="BarButtonItem_CreateClient"
+                                           GlyphSize="Small" 
+                                           Style="{Binding}"
+                                           Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=InitCommand}"
+                                           CommandParameter="{Binding ElementName=grid}"
                                            />
 
                         <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_grid-2x2.svg" >

@@ -46,9 +46,6 @@ namespace B6CRM.ViewModels.ClientDir
     {
         private readonly ApplicationContext db;
 
-        public delegate void ChangeReadOnly(bool status);
-        public event ChangeReadOnly EventChangeReadOnly;
-
         public ClientsViewModel()
         {
             try
@@ -162,12 +159,7 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
-        [Command]
-        public void Editable()
-        {
-            IsReadOnly = !IsReadOnly;
-            EventChangeReadOnly?.Invoke(IsReadOnly || Model?.Id == 0);
-        }
+
 
         #region Карта клиента
 
@@ -199,16 +191,6 @@ namespace B6CRM.ViewModels.ClientDir
 
         public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
         #endregion
-
-
-
-        private void SelectedItem()
-        {
-            if (Application.Current.Resources["Router"] is MainViewModel nav &&
-                     nav?.NavigationService is NavigationServiceBase service &&
-                     service.Current is PatientsList page
-                     ) page.SelectedItem();
-        }
 
         private INavigationService NavigationService { get { return GetService<INavigationService>(); } }
 
