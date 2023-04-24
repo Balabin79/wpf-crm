@@ -153,16 +153,29 @@
                                            CustomGlyphSize="21,21"   
                                            Command="{Binding EditableCommand}"/>
 
-                        <dxb:BarButtonItem 
+                        <dxb:BarButtonItem                            
                             Style="{Binding}"
                             Content="Сохранить"
                             DataContext="{StaticResource ClientCardDispatcher}"                           
                             IsEnabled="{DXBinding Expr='(!IsReadOnly and !string.IsNullOrEmpty(Context.ClientInfoViewModel.LastName) and !string.IsNullOrEmpty(Context.ClientInfoViewModel.FirstName) )', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                           Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="21,21" 
-                                           Command="{Binding Path=Context.SaveCommand}"/>
+                            IsVisible="{DXBinding Expr='UserControlName == `MainInfoControl`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="21,21" 
+                            Command="{Binding Path=Context.SaveCommand}"/>
+
+                        <dxb:BarButtonItem 
+                            Style="{Binding}"
+                            Content="Сохранить"
+                            DataContext="{StaticResource ClientCardDispatcher}"                           
+                            IsEnabled="{DXBinding Expr='!IsReadOnly and Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsVisible="{DXBinding Expr='UserControlName != `MainInfoControl`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"              
+                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="21,21" 
+                            Command="{Binding Path=Context.SaveCommand}"/>
                         <dxb:BarItemLinkSeparator />
+
                         <dxb:BarButtonItem  
                             Content="Удалить" Style="{Binding}"
                             DataContext="{StaticResource ClientCardDispatcher}"
