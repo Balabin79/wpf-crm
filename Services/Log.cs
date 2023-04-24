@@ -28,9 +28,10 @@ namespace B6CRM.Services
                 messageBoxButtons: MessageBoxButton.OK, 
                 icon: MessageBoxImage.Error
                 );
+            string innnerError = !string.IsNullOrEmpty(e?.InnerException?.Message) ? e?.InnerException?.Message + "\n" : "";
 
             string path = Path.Combine(Config.defaultPath, "log.txt");
-            string msg = DateTime.Now + "\n" + e.Message + "\n" + e.Source + "\n\n";
+            string msg = DateTime.Now + "\n" + e.Message + "\n" + innnerError + e.Source + "\n\n";
 
             
             File.AppendAllText(path, msg);
