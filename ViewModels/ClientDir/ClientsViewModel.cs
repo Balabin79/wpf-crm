@@ -154,7 +154,7 @@ namespace B6CRM.ViewModels.ClientDir
 
         public void UpdateFields()
         {
-            FieldsViewModel.ClientFieldsLoading(Model);
+            //FieldsViewModel.ClientFieldsLoading(Model);
             AdditionalFieldsVisible = FieldsViewModel?.Fields.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
         #endregion

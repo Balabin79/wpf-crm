@@ -46,7 +46,7 @@ namespace B6CRM.ViewModels.ClientDir
             Invoices = db.Invoices?.
                 Include(f => f.Employee).
                 Include(f => f.Client).
-                Include(f => f.InvoiceItems).
+                //Include(f => f.InvoiceItems).
                 OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
 

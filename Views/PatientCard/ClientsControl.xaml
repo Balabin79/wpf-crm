@@ -48,7 +48,7 @@
                                            Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
             </dxb:ToolBarControl>
 
-            <dxe:ButtonEdit Width="194"  AllowDefaultButton="false" Margin="0 0 0 5" NullText="Фамилия клиента" DockPanel.Dock="Left"
+            <dxe:ButtonEdit Width="184"  AllowDefaultButton="false" Margin="0 0 0 5" NullText="Фамилия клиента" DockPanel.Dock="Left"
                                 EditValue="{Binding LastNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
 
             <dx:SimpleButton Command="{Binding ClientsSearchCommand}" DockPanel.Dock="Right" 
@@ -59,7 +59,7 @@
         <dxg:GridControl 
             VirtualizingPanel.IsVirtualizing="True"
             ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
-            DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
+            DockPanel.Dock="Left" Width="340" HorizontalAlignment="Left" 
             AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
             MaxHeight="1800"
             ItemsSource="{Binding Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

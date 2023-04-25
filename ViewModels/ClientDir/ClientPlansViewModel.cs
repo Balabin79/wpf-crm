@@ -96,7 +96,7 @@ namespace B6CRM.ViewModels.ClientDir
         }
 
         [Command]
-        public void SavePlan()
+        public void Save()
         {
             try
             {
@@ -119,7 +119,7 @@ namespace B6CRM.ViewModels.ClientDir
             }
             catch (Exception e)
             {
-                Log.ErrorHandler(e, "Ошибка при попытке сохранить план в базе данных!", true);
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить план в базу данных!", true);
             }
         }
 

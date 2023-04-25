@@ -1,7 +1,9 @@
 ﻿using B6CRM.Models;
 using B6CRM.Services;
 using DevExpress.Mvvm;
+using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,12 +22,10 @@ namespace B6CRM.ViewModels.ClientDir
             try
             {
                 db = new ApplicationContext();
-                //Db = db;
-                // Config = db.Config;
-                //SelectedClient = new Client();
-                //LoadClients();
+                LoadPlans();
+                PlanStatuses = db.PlanStatuses.ToArray();
+                LoadClients();
                 //LoadPrintConditions();
-                LoadEmployees();
             }
             catch (Exception e)
             {
@@ -33,16 +33,110 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
 
-        public void LoadEmployees()
+        public void LoadPlans()
         {
-            Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
-            foreach (var i in Employees) i.IsVisible = false;
+            // общие планы
+            Plans = db.Plans?.
+                Include(f => f.Client).
+                OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Plan>();
         }
 
-        public ObservableCollection<Employee> Employees
+        public void LoadClients(int? isArhive = 0) =>
+            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
+
+
+        #region Работа с фильтрами и поиском в списке инвойсов
+        public object ClientSearch { get; set; }
+        public object DateFromSearch { get; set; }
+        public object DateToSearch { get; set; }
+        public object PlanNameSearch { get; set; }
+        public object PlanStatusSearch { get; set; }
+
+
+        [Command]
+        public void Search()
         {
-            get { return GetProperty(() => Employees); }
-            set { SetProperty(() => Employees, value); }
+            try
+            {
+                List<string> where = new List<string>();
+                long dateFrom = new DateTimeOffset(new DateTime(1970, 1, 1)).ToUnixTimeSeconds();
+                long dateTo = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
+
+                var date = DateTimeOffset.FromUnixTimeSeconds(dateTo).LocalDateTime;
+
+                if (int.TryParse(ClientSearch?.ToString(), out int clientId) && clientId != 0) where.Add("ClientId=" + clientId.ToString());
+                if (int.TryParse(PlanStatusSearch?.ToString(), out int statusId) && statusId != 0) where.Add("PlanStatusId=" + statusId.ToString());
+
+                if (DateFromSearch != null && DateTime.TryParse(DateFromSearch?.ToString(), out DateTime dateTimeFrom))
+                {
+                    dateFrom = new DateTimeOffset(dateTimeFrom).ToUnixTimeSeconds();
+                }
+
+                if (DateToSearch != null && DateTime.TryParse(DateToSearch?.ToString(), out DateTime dateTimeTo))
+                {
+                    dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
+                }
+
+                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
+                string parameters = "WHERE ";
+                for (int i = 0; i < where.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        parameters += where[i];
+                        continue;
+                    }
+                    parameters += " AND " + where[i];
+                }
+                if (where.Count > 0) parameters += " AND ";
+                parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
+
+                //SqlParameter param = SqlParameter("@name", "%Samsung%");
+                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
+                Plans = db.Plans.FromSqlRaw("SELECT * FROM Plans " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
+                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+                if (!string.IsNullOrEmpty(PlanNameSearch?.ToString()))
+                {
+                    Plans = Plans.Where(f => f.Name.Contains(PlanNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
+                }
+
+                /*if (Application.Current.Resources["Router"] is MainViewModel nav &&
+                     nav?.NavigationService is NavigationServiceBase service &&
+                     service.Current is PatientsList page
+                     )
+                {
+                    page.SelectedInvoiceItem();
+                }*/
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e);
+            }
+        }
+        #endregion
+
+        public ObservableCollection<Plan> Plans
+        {
+            get { return GetProperty(() => Plans); }
+            set { SetProperty(() => Plans, value); }
+        }
+
+        public ICollection<PlanStatus> PlanStatuses
+        {
+            get { return GetProperty(() => PlanStatuses); }
+            set { SetProperty(() => PlanStatuses, value); }
+        }
+
+        public ObservableCollection<Advertising> Advertisings
+        {
+            get { return GetProperty(() => Advertisings); }
+            set { SetProperty(() => Advertisings, value); }
+        }
+
+        public ObservableCollection<Client> Clients
+        {
+            get { return GetProperty(() => Clients); }
+            set { SetProperty(() => Clients, value); }
         }
     }
 }

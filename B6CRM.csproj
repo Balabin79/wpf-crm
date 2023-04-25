@@ -371,6 +371,9 @@
     <Compile Update="Views\PatientCard\ClientInvoicesControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PatientCard\PlansControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PatientCard\PrintClientsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

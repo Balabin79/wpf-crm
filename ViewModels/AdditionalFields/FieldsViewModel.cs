@@ -14,6 +14,9 @@ using System.Windows.Data;
 using B6CRM.Models;
 using B6CRM.Services;
 using B6CRM.ViewModels.ClientDir;
+using DevExpress.Mvvm.DataAnnotations;
+using Telegram.Bot.Types.Payments;
+using B6CRM.Infrastructures.Extensions.Notifications;
 
 namespace B6CRM.ViewModels.AdditionalFields
 {
@@ -25,12 +28,13 @@ namespace B6CRM.ViewModels.AdditionalFields
             try
             {
                 db = new ApplicationContext();
-                ClientFieldsLoading(client);
+                Client = client;
+                ClientFieldsLoading();
                 if (Fields.Count > 0) AdditionalFieldsVisible = Visibility.Visible;
 
                 if (Application.Current.Resources["ClientCardDispatcher"] is ClientCardDispatcher dispatcher) 
                 {
-                    IsReadOnly = client?.Id == 0 ? true : dispatcher.IsReadOnly;
+                    IsReadOnly = Client?.Id == 0 ? true : dispatcher.IsReadOnly;
                 } 
             }
             catch (Exception e)
@@ -39,7 +43,7 @@ namespace B6CRM.ViewModels.AdditionalFields
             }
         }
 
-        public void ClientFieldsLoading(Client client)
+        public void ClientFieldsLoading()
         {
             Fields = new ObservableCollection<LayoutItem>();
             var additionalClientFields = db.AdditionalClientFields.Include(f => f.TypeValue).OrderBy(f => f.Sort).ToArray();
@@ -47,11 +51,11 @@ namespace B6CRM.ViewModels.AdditionalFields
             if (additionalClientFields.Count() == 0) return;
 
             // загружаем значения полей
-            var AdditionalClientValues = client != null ? db.AdditionalClientValue?.Where(f => f.ClientId == client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
+            var AdditionalClientValues = Client != null ? db.AdditionalClientValue?.Where(f => f.ClientId == Client.Id)?.ToObservableCollection() ?? new ObservableCollection<AdditionalClientValue>() : new ObservableCollection<AdditionalClientValue>();
 
             foreach (var i in additionalClientFields)
             {
-                var model = AdditionalClientValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id && f.ClientId == client.Id);
+                var model = AdditionalClientValues.FirstOrDefault(f => f.AdditionalFieldId == i.Id && f.ClientId == Client.Id);
                 var binding = new Binding()
                 {                  
                     Source = this,
@@ -126,7 +130,8 @@ namespace B6CRM.ViewModels.AdditionalFields
 
         }
 
-        public void Save(Client client)
+        [Command]
+        public void Save()
         {
             try
             {
@@ -139,13 +144,13 @@ namespace B6CRM.ViewModels.AdditionalFields
 
 
                         var value = db.AdditionalClientValue.Include(f => f.AdditionalField).Where(
-                            f => f.AdditionalField.SysName == sysName && f.ClientId == client.Id).FirstOrDefault();
+                            f => f.AdditionalField.SysName == sysName && f.ClientId == Client.Id).FirstOrDefault();
 
                         if (value == null && val != null)
                         {
                             var item = new AdditionalClientValue() 
                             {
-                                ClientId = client.Id, 
+                                ClientId = Client.Id, 
                                 Value = val, 
                                 AdditionalFieldId = db.AdditionalClientFields.FirstOrDefault(f => f.SysName == sysName).Id 
                             };
@@ -154,12 +159,15 @@ namespace B6CRM.ViewModels.AdditionalFields
                         if (value != null) value.Value = val;
                     }
                 }
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();             
             }
             catch (Exception e)
             {
                 Log.ErrorHandler(e);
             }
         }
+
+        public Client Client { get; set; }
 
         public ObservableCollection<LayoutItem> Fields
         {

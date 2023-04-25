@@ -48,7 +48,7 @@ namespace B6CRM.ViewModels.ClientDir
         public bool CanAddInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDeleteInvoiceItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanPrintInvoice(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PrintInvoice;
-        public bool CanSaveInvoice() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         #endregion
 
         public void Load()
@@ -98,6 +98,34 @@ namespace B6CRM.ViewModels.ClientDir
             catch (Exception e)
             {
                 Log.ErrorHandler(e);
+            }
+        }
+
+        [Command]
+        public void Save()
+        {
+            try
+            {
+                #region Lic
+                if (Status.Licensed && Status.HardwareID != Status.License_HardwareID)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                if (!Status.Licensed && Status.Evaluation_Time_Current > Status.Evaluation_Time)
+                {
+                    ThemedMessageBox.Show(title: "Ошибка", text: "Пробный период истек! Вам необходимо приобрести лицензию.",
+                        messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                    Environment.Exit(0);
+                }
+                #endregion
+
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить счет в базу данных!", true);
             }
         }
 

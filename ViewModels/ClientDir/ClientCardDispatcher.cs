@@ -159,6 +159,20 @@ namespace B6CRM.ViewModels.ClientDir
                 EventReadOnlyChanged?.Invoke(IsReadOnly);
         }
 
+        //переход из левого списка счетов (все счета) в карту клиента во вкладку счета клиента
+        [Command]
+        public void LoadClientInvoices(object p)
+        {
+
+        }
+
+        //переход из левого списка планов (все планы) в карту клиента во вкладку планы клиента
+        [Command]
+        public void LoadClientPlans(object p)
+        {
+
+        }
+
         //вызывается по событию когда изменяются данные в MainInfoViewModel
         public void SetClientChanged(Client client)
         {

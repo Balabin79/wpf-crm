@@ -19,6 +19,7 @@ namespace B6CRM.ViewModels.AdditionalFields
         public delegate void FieldChanges();
         public event FieldChanges EventFieldChanges;
 
+        //это ViewModel управляет справочником "Дополнительные поля" вызывается как отдельное окно
         public AdditionalClientFieldsViewModel(ApplicationContext ctx)
         {
             try

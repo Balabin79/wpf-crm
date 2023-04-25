@@ -253,14 +253,20 @@
                             DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=ContextLeftList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <local:InvoicesControl Grid.Row="1"
-                            Margin="0 2 2 2" 
-                            x:Name="invoicesList"
+                            Margin="2" 
+                            x:Name="InvoicesList"
                             Visibility="{DXBinding Expr='(@StaticResource(ClientCardDispatcher).ActiveLeftPanel == `ClientsInvoices`) ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=ContextLeftList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <local:PlansControl Grid.Row="1"
+                            Margin="2" 
+                            x:Name="PlansList"
+                            Visibility="{DXBinding Expr='(@StaticResource(ClientCardDispatcher).ActiveLeftPanel == `ClientsPlans`) ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=ContextLeftList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
                     <local:ClientCardControl 
-                        Margin="0 2 2 2" 
+                        Margin="2" 
                         x:Name="clientCard" 
                         DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=Client, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         />
