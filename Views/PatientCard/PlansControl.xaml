@@ -103,8 +103,7 @@
                                         IsCaseSensitiveFilter="False"
                                         ValidateOnTextInput="False"
                                         ValueMember="Id"
-                                        EditValue ="{Binding PlanStatusSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                        EditValue ="{Binding PlanStatusSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
                     <dxe:ComboBoxEdit.StyleSettings>
                         <dxe:RadioComboBoxStyleSettings />
                     </dxe:ComboBoxEdit.StyleSettings>

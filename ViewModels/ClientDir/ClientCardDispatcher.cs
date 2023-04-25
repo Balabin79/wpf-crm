@@ -148,6 +148,7 @@ namespace B6CRM.ViewModels.ClientDir
                     Context = clientPlansViewModel;
                     UserControlName = userControlName;
                     clientPlansViewModel.SelectedItem = selectedItem;
+                    clientPlansViewModel.EventPlansReload += PlansReload;
                     break;
                 case "VisitsControl":
                     Context = new AppointmentsViewModel(Client);

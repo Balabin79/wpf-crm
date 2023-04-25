@@ -29,6 +29,9 @@ namespace B6CRM.ViewModels.ClientDir
     {
         private readonly ApplicationContext db;
 
+        public delegate void PlansReload();
+        public event PlansReload EventPlansReload;
+
         public ClientPlansViewModel(Client client)
         {
             db = new ApplicationContext();
@@ -115,7 +118,11 @@ namespace B6CRM.ViewModels.ClientDir
                 }
                 #endregion
 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) 
+                { 
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                    EventPlansReload?.Invoke();
+                }
             }
             catch (Exception e)
             {
@@ -147,6 +154,7 @@ namespace B6CRM.ViewModels.ClientDir
                     if (db.SaveChanges() > 0)
                     {
                         new Notification() { Content = "План удален из базы данных!" }.run();
+                        EventPlansReload?.Invoke();
                     }
 
                     // удаляем из списков в карте и в общем списке счетов

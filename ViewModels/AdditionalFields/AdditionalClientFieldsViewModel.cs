@@ -10,6 +10,7 @@ using B6CRM.Infrastructures.Extensions.Notifications;
 using System;
 using B6CRM.Models;
 using B6CRM.Services;
+using B6CRM.Views.AdditionalFields;
 
 namespace B6CRM.ViewModels.AdditionalFields
 {
@@ -20,11 +21,11 @@ namespace B6CRM.ViewModels.AdditionalFields
         public event FieldChanges EventFieldChanges;
 
         //это ViewModel управляет справочником "Дополнительные поля" вызывается как отдельное окно
-        public AdditionalClientFieldsViewModel(ApplicationContext ctx)
+        public AdditionalClientFieldsViewModel()
         {
             try
             {
-                db = ctx;
+                db = new ApplicationContext();
                 SetCollection();
                 Templates = db.TemplateType.ToArray();
             }
@@ -104,6 +105,19 @@ namespace B6CRM.ViewModels.AdditionalFields
 
         [Command]
         public void Add() => Collection.Add(new AdditionalClientField());
+
+        [Command]
+        public void OpenFormFields()
+        {
+            try
+            {
+                new ClientFieldsWindow() { DataContext = this }?.Show();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" произошла ошибка!", true);
+            }
+        }
 
         private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
 

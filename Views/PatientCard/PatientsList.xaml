@@ -11,6 +11,7 @@
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:B6CRM.ViewModels.ClientDir"
        xmlns:adv ="clr-namespace:B6CRM.ViewModels"
+       xmlns:addFields ="clr-namespace:B6CRM.ViewModels.AdditionalFields"
        xmlns:local ="clr-namespace:B6CRM.Views.PatientCard"
        xmlns:model ="clr-namespace:B6CRM.Models"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
@@ -33,6 +34,7 @@
                     <vm:InvoicesListViewModel x:Key="InvoicesListViewModel"/>
                     <adv:AdvertisingViewModel x:Key="adv"/>
                     <adv:ClientCategoryViewModel x:Key="ccv"/>
+                    <addFields:AdditionalClientFieldsViewModel x:Key="addFields"/>
                     <services:ImportData x:Key="import"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                     <converter:ExportDataConverter x:Key="exportConv"/>
@@ -102,7 +104,7 @@
 
                                 <dxb:BarButtonItem Content="Дополнительные поля"                                        
                                            GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding OpenFormFieldsCommand}">
+                                           Command="{Binding Source={StaticResource addFields}, Path=OpenFormFieldsCommand}">
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>
                                             <dx:DXImage Source="/Resources/Icons/svg/bars.svg" />

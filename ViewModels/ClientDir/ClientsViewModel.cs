@@ -130,35 +130,6 @@ namespace B6CRM.ViewModels.ClientDir
         #endregion
 
 
-        #region Работа с разделом карты "Дополнительные поля"
-        public ObservableCollection<Appointments> Appointments
-        {
-            get { return GetProperty(() => Appointments); }
-            set { SetProperty(() => Appointments, value); }
-        }
-
-        [Command]
-        public void OpenFormFields()
-        {
-            try
-            {
-                var vm = new AdditionalClientFieldsViewModel(db);
-                vm.EventFieldChanges += UpdateFields;
-                new ClientFieldsWindow() { DataContext = vm }?.Show();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" произошла ошибка!", true);
-            }
-        }
-
-        public void UpdateFields()
-        {
-            //FieldsViewModel.ClientFieldsLoading(Model);
-            AdditionalFieldsVisible = FieldsViewModel?.Fields.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-        }
-        #endregion
-
 
 
         #region Карта клиента
@@ -177,19 +148,6 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => IsReadOnly, value); }
         }
 
-        public Visibility AdditionalFieldsVisible
-        {
-            get { return GetProperty(() => AdditionalFieldsVisible); }
-            set { SetProperty(() => AdditionalFieldsVisible, value); }
-        }
-
-        public FieldsViewModel FieldsViewModel
-        {
-            get { return GetProperty(() => FieldsViewModel); }
-            set { SetProperty(() => FieldsViewModel, value); }
-        }
-
-        public void SetTabVisibility(Visibility visibility) => AdditionalFieldsVisible = visibility;
         #endregion
 
         private INavigationService NavigationService { get { return GetService<INavigationService>(); } }
