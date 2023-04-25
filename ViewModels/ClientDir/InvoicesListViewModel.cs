@@ -5,6 +5,7 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.WindowsUI.Navigation;
+using License;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,6 @@ namespace B6CRM.ViewModels.ClientDir
             Invoices = db.Invoices?.
                 Include(f => f.Employee).
                 Include(f => f.Client).
-                //Include(f => f.InvoiceItems).
                 OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
 

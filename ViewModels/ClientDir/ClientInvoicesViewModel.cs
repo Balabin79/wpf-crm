@@ -22,12 +22,17 @@ using DevExpress.XtraReports.Parameters;
 using System.Diagnostics;
 using Telegram.Bot.Types.Payments;
 using Invoice = B6CRM.Models.Invoice;
+using static B6CRM.ViewModels.ClientDir.ClientInvoicesViewModel;
 
 namespace B6CRM.ViewModels.ClientDir
 {
     public class ClientInvoicesViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
+
+        public delegate void InvoicesReload();
+        public event InvoicesReload EventInvoicesReload;
+
 
         public ClientInvoicesViewModel(Client client)
         {
@@ -121,7 +126,11 @@ namespace B6CRM.ViewModels.ClientDir
                 }
                 #endregion
 
-                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) 
+                {
+                    EventInvoicesReload?.Invoke();
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
+                }
             }
             catch (Exception e)
             {
@@ -152,14 +161,11 @@ namespace B6CRM.ViewModels.ClientDir
                     }
                     if (db.SaveChanges() > 0)
                     {
+                        EventInvoicesReload?.Invoke();
                         new Notification() { Content = "Счет удален из базы данных!" }.run();
                     }
 
-                    // удаляем из списков в карте и в общем списке счетов
-                    // может не оказаться этого эл-та в списке, например, он в другом статусе
-                    //var inv = Invoices.FirstOrDefault(f => f.Guid == invoice.Guid);
-                    //if (inv != null) Invoices.Remove(inv);
-
+                    //удаляем в списках клиента
                     var clientInv = ClientInvoices.FirstOrDefault(f => f.Guid == invoice.Guid);
                     if (clientInv != null) ClientInvoices.Remove(clientInv);
                 }

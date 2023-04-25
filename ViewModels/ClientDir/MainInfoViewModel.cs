@@ -30,6 +30,9 @@ namespace B6CRM.ViewModels.ClientDir
         public delegate void ClientChanged(Client client);
         public event ClientChanged EventClientChanged;
 
+        public delegate void ClientDeleted();
+        public event ClientDeleted EventClientDeleted;
+
         private readonly ApplicationContext db;
 
         public MainInfoViewModel(Client client)
@@ -114,36 +117,18 @@ namespace B6CRM.ViewModels.ClientDir
                     Environment.Exit(0);
                 }
                 /************************/
-
+                var mes = "Отредактированные данные сохранены в базу данных!";
                 if (Client.Id == 0) // новый элемент
                 {
                     db.Clients.Add(Client);
-                    // если статус анкеты (в архиве или нет) не отличается от текущего статуса списка, то тогда добавить
-                    //if (IsArchiveList == (Client.IsInArchive == 1)) Clients?.Insert(0, Client);
-                    db.SaveChanges();
-                    EventClientChanged?.Invoke(Client); 
-                    // разблокировать дополнительные поля
-                    //EventNewClientSaved?.Invoke(Model); // разблокировать команды счетов
-
                     PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Client?.Guid);
-                    new Notification() { Content = "Новый клиент успешно записан в базу данных!" }.run();
-                    if (p is BarButtonItem item)
-                    {
-                        //SelectedItem();
-                    }
-                    
-                }
-                else
-                { // редактирование су-щего эл-та
-                    //FieldsViewModel?.Save(Model);
-                    if (db.SaveChanges() > 0)
-                    {
-                        //LoadClients(Model.IsInArchive);
-                        //IsArchiveList = Model.IsInArchive == 1;
-                        //SelectedItem();
-                        new Notification() { Content = "Отредактированные данные сохранены в базу данных!" }.run();
-                    }
-                }
+                    mes = "Новый клиент успешно записан в базу данных!";
+                }                   
+                if (db.SaveChanges() > 0)
+                {
+                     EventClientChanged?.Invoke(Client);
+                     new Notification() { Content = mes }.run();
+                }               
             }
             catch (Exception e)
             {
@@ -188,10 +173,12 @@ namespace B6CRM.ViewModels.ClientDir
                 // удаляем файлы 
                 if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);
 
+
+                EventClientDeleted?.Invoke();
                 //загружаем новую анкету
-                Client = new Client();
-                Init(Client);
-               // SelectedItem();
+                //Client = new Client();
+                //Init(Client);
+                // SelectedItem();
             }
             catch (Exception e)
             {

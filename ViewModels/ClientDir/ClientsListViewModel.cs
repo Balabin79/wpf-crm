@@ -22,14 +22,17 @@ namespace B6CRM.ViewModels.ClientDir
     {
         private readonly ApplicationContext db;
 
-        public ClientsListViewModel()
+
+        public ClientsListViewModel() : this(0) { }
+
+        public ClientsListViewModel(int? isArhive = 0)
         {
             try
             {
                 db = new ApplicationContext();
                 Db = db;
                 Config = db.Config;
-                LoadClients();
+                LoadClients(isArhive);
                 LoadPrintConditions();
             }
             catch (Exception e)

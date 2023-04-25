@@ -36,9 +36,8 @@ namespace B6CRM.ViewModels.ClientDir
             switch (controlName)
             {
                 case "ClientsList":
-                    ContextLeftList = new ClientsListViewModel();
+                    ContextLeftList = new ClientsListViewModel(Client?.IsInArchive);
                     ActiveLeftPanel = controlName;
-                    //CreateClient();
                     break;
                 case "ClientsInvoices":
                     ContextLeftList = new InvoicesListViewModel();
@@ -55,6 +54,12 @@ namespace B6CRM.ViewModels.ClientDir
         public void SetSelectedClient(Client client)
         {
             Client = client;
+        }
+
+        public void DeleteClientCard() // перезагрузка карты и контекста, вызываемая по событию удаления карты
+        {
+            CreateClient();
+            if (ContextLeftList is ClientsListViewModel) ToggleList("ClientsList");           
         }
 
         public string ActiveLeftPanel
@@ -129,12 +134,14 @@ namespace B6CRM.ViewModels.ClientDir
                     Context = mainInfoViewMode;
                     UserControlName = userControlName;
                     mainInfoViewMode.EventClientChanged += SetClientChanged;
+                    mainInfoViewMode.EventClientDeleted += DeleteClientCard;
                     break;
                 case "ClientInvoicesControl":
                     var clientInvoicesViewModel = new ClientInvoicesViewModel(Client);
                     Context = clientInvoicesViewModel;
                     UserControlName = userControlName;
                     clientInvoicesViewModel.SelectedItem = selectedItem;
+                    clientInvoicesViewModel.EventInvoicesReload += InvoicesReload;
                     break;
                 case "ClientPlansControl":
                     var clientPlansViewModel = new ClientPlansViewModel(Client);
@@ -192,6 +199,19 @@ namespace B6CRM.ViewModels.ClientDir
         public void SetClientChanged(Client client)
         {
             if (client != null) Client = client;
+            if (ContextLeftList is ClientsListViewModel) ToggleList("ClientsList");
+        }
+
+        //вызывается по событию когда изменяются данные в ClientInvoicesControl
+        public void InvoicesReload()
+        {
+            if (ContextLeftList is InvoicesListViewModel) ToggleList("ClientsInvoices");
+        }
+
+        //вызывается по событию когда изменяются данные в ClientPlansControl
+        public void PlansReload()
+        {
+            if (ContextLeftList is PlansListViewModel) ToggleList("ClientsPlans");
         }
 
         public string UserControlName
