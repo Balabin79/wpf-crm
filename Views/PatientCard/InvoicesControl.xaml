@@ -230,10 +230,14 @@
                     SearchColumns="Name">
                     <dxmvvm:Interaction.Behaviors>
                         <dxmvvm:EventToCommand 
-                            EventName="PreviewMouseDown" Command="{Binding ElementName=user_control, Path=DataContext.LoadCommand}" PassEventArgsToCommand="True"
+                            EventName="PreviewMouseDown" 
+                            Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadClientInvoicesCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            PassEventArgsToCommand="False"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
                         <dxmvvm:EventToCommand 
-                            EventName="PreviewMouseDoubleClick" Command="{Binding ElementName=user_control, Path=DataContext.LoadCommand}" PassEventArgsToCommand="True"
+                            EventName="PreviewMouseDoubleClick" 
+                            Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadClientInvoicesCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            PassEventArgsToCommand="False"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
                     </dxmvvm:Interaction.Behaviors>
                 </dxg:TableView>

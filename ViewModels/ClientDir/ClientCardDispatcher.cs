@@ -111,7 +111,6 @@ namespace B6CRM.ViewModels.ClientDir
             SetUserControl(p.ToString());
         }
 
-
         [Command]
         public void CreateClient()
         {
@@ -120,7 +119,7 @@ namespace B6CRM.ViewModels.ClientDir
             IsReadOnly = false;           
         }
 
-        private void SetUserControl(string userControlName = "MainInfoControl")
+        private void SetUserControl(string userControlName = "MainInfoControl", object selectedItem = null)
         {
             //включаем видимость контрола и подчеркиваем кнопку активного контрола
             switch (userControlName)
@@ -132,12 +131,16 @@ namespace B6CRM.ViewModels.ClientDir
                     mainInfoViewMode.EventClientChanged += SetClientChanged;
                     break;
                 case "ClientInvoicesControl":
-                    Context = new ClientInvoicesViewModel(Client);
+                    var clientInvoicesViewModel = new ClientInvoicesViewModel(Client);
+                    Context = clientInvoicesViewModel;
                     UserControlName = userControlName;
+                    clientInvoicesViewModel.SelectedItem = selectedItem;
                     break;
                 case "ClientPlansControl":
-                    Context = new ClientPlansViewModel(Client);
+                    var clientPlansViewModel = new ClientPlansViewModel(Client);
+                    Context = clientPlansViewModel;
                     UserControlName = userControlName;
+                    clientPlansViewModel.SelectedItem = selectedItem;
                     break;
                 case "VisitsControl":
                     Context = new AppointmentsViewModel(Client);
@@ -163,14 +166,26 @@ namespace B6CRM.ViewModels.ClientDir
         [Command]
         public void LoadClientInvoices(object p)
         {
-
+            if(p is Invoice invoice && invoice.Client != null)
+            {
+                Client = invoice.Client;
+                SetUserControl("ClientInvoicesControl", invoice);
+                IsReadOnly = true;
+                return;
+            }
         }
 
         //переход из левого списка планов (все планы) в карту клиента во вкладку планы клиента
         [Command]
         public void LoadClientPlans(object p)
         {
-
+            if (p is Plan plan && plan.Client != null)
+            {
+                Client = plan.Client;
+                SetUserControl("ClientPlansControl", plan);
+                IsReadOnly = true;
+                return;
+            }
         }
 
         //вызывается по событию когда изменяются данные в MainInfoViewModel

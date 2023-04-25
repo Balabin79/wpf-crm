@@ -105,7 +105,7 @@
                                 </dxb:BarContainerControl>
 
                             </DockPanel>
-                            <dxg:GridControl Grid.Row="1"
+                            <dxg:GridControl Grid.Row="1" 
                                     x:Name="ServiceItems" 
                                     CustomSummary="CustomSummary"                  
                                     ItemsSource="{Binding Path=PlanItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -486,8 +486,15 @@
             </DataTemplate>
         </dxlc:LayoutGroup.HeaderTemplate>
 
-        <dxg:GridControl Grid.Row="1" AutoGenerateColumns="None"  Name="grid" MaxHeight="2000" VerticalAlignment="Stretch"
-                         ItemsSource="{Binding Plans, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="2" >
+        <dxg:GridControl 
+            Grid.Row="1" 
+            AutoGenerateColumns="None"  
+            Name="grid" 
+            MaxHeight="2000" 
+            VerticalAlignment="Stretch"
+            ItemsSource="{Binding Plans, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+            Margin="2" 
+            SelectedItem="{Binding SelectedItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <dxg:GridControl.View >
                 <dxg:TableView  UseAnimationWhenExpanding="True"
                     Name="view" 

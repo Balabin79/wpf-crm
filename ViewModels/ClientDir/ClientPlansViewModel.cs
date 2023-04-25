@@ -387,5 +387,11 @@ namespace B6CRM.ViewModels.ClientDir
         }
 
         public object[] Prices { get; set; }
+
+        public object SelectedItem
+        {
+            get { return GetProperty(() => SelectedItem); }
+            set { SetProperty(() => SelectedItem, value); }
+        }
     }
 }
