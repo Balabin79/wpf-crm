@@ -94,8 +94,7 @@
                                            Glyph="/Resources/Icons/svg/plus-add.svg"
                                            GlyphSize="Small" 
                                            Style="{Binding}"
-                                           Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=InitCommand}"
-                                           CommandParameter="{Binding ElementName=grid}"
+                                           Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=CreateClientCommand}"
                                            />
 
                         <dxb:BarSubItem Content="Справочники" GlyphSize="Small" Style="{Binding}" Glyph="/Resources/Icons/svg/icon_grid-2x2.svg" >
@@ -184,143 +183,86 @@
             <Border 
                 VerticalAlignment="Stretch"  
                 Grid.Row="1" 
-                MaxHeight="2800" 
+                MaxHeight="3800" 
                 BorderBrush="LightGray" 
                 Margin="3" 
                 BorderThickness="1" >
-                <DockPanel  >
-                    <dx:DXTabControl Margin="2" >
-                        <dx:DXTabItem DataContext="{StaticResource ClientsListViewModel}"
-                            Header="Клиенты"  >
-                            <Grid x:Name="clientsList">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                <DockPanel >
+                    <Grid DataContext="{StaticResource ClientsListViewModel}" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <dxb:BarContainerControl  HorizontalAlignment="Left" Grid.Row="0" Margin="0 3 0 0">
+                            <dxb:ToolBarControl 
+                        ShowDragWidget="False" 
+                        Background="Transparent" 
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        AllowQuickCustomization="False" 
+                        BarItemDisplayMode="ContentAndGlyph"  
+                        AllowCustomizationMenu="False">
+                                <dxb:BarLinkContainerItem  
+                        RibbonStyle="SmallWithoutText">
+                                    <dxb:BarButtonItem 
+                                x:Name="clientsCards"
+                                BorderBrush="{DXBinding Expr='ActiveLeftPanel == `ClientsList` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='ActiveLeftPanel == `ClientsList` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                           
+                                GlyphAlignment="Left"
+                                Content="Клиенты" 
+                                Glyph="/Resources/Icons/svg/icon_contacts_alt.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"
+                                CommandParameter="ClientsList"
+                                Command="{Binding ToggleListCommand}" />
 
-                            <StackPanel Orientation="Horizontal">
-                                    <dxb:ToolBarControl Width="90" ShowDragWidget="False" Caption="File" Background="Transparent"
-                                        AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
+                                    <dxb:BarItemLinkSeparator />
+                                    <dxb:BarButtonItem
+                                x:Name="ClientsInvoices"
+                                BorderBrush="{DXBinding Expr='ActiveLeftPanel == `ClientsInvoices` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='ActiveLeftPanel == `ClientsInvoices` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                GlyphAlignment="Left"
+                                Content="Все счета" 
+                                Glyph="/Resources/Icons/svg/receipt.svg"
+                                GlyphSize="Custom"
+                                CustomGlyphSize="20,20"
+                                CommandParameter="ClientsInvoices"
+                                Command="{Binding ToggleListCommand}"/>
 
-                                        <dxb:BarButtonItem Style="{Binding}"
-                                            Content="Активные" Margin="0 0 5 0"
-                                           IsVisible="{DXBinding '!IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
-                                           Command="{Binding ShowArchiveCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"
-                                           />
+                                    <dxb:BarItemLinkSeparator />
+                                    <dxb:BarButtonItem
+                                x:Name="clientsPlans"
+                                BorderBrush="{DXBinding Expr='ActiveLeftPanel ==`ClientsPlans` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                BorderThickness="{DXBinding Expr='ActiveLeftPanel ==`ClientsPlans` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                GlyphAlignment="Left"
+                                Content="Все планы" 
+                                Glyph="/Resources/Icons/svg/schedule.svg"
+                                GlyphSize="Custom" 
+                                CustomGlyphSize="20,20"
+                                CommandParameter="ClientsPlans"    
+                                Command="{Binding ToggleListCommand}"/>
+                                </dxb:BarLinkContainerItem>
+                            </dxb:ToolBarControl>
+                        </dxb:BarContainerControl>
 
-                                        <dxb:BarButtonItem Style="{Binding}"
-                                            Content="В архиве" Margin="0 0 5 0"
-                                           IsVisible="{DXBinding 'IsArchiveList', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                           GlyphSize="Small"
-                                           Command="{Binding ShowArchiveCommand}"
-                                           Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
-                                    </dxb:ToolBarControl>
 
-                                    <dxe:ButtonEdit Width="194"  AllowDefaultButton="false" Margin="0 0 0 5" NullText="Фамилия клиента" DockPanel.Dock="Left"
-                                EditValue="{Binding LastNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
+                        <local:ClientsControl Grid.Row="1"
+                            BorderThickness="1" BorderBrush="LightGray" Margin="3" Padding="3" 
+                            VerticalContentAlignment="Stretch" VerticalAlignment="Stretch"
+                            x:Name="ClientsList" 
+                            Visibility="{DXBinding Expr='(@StaticResource(ClientCardDispatcher).ActiveLeftPanel == `ClientsList`) ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=ContextLeftList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <dx:SimpleButton Command="{Binding ClientsSearchCommand}" DockPanel.Dock="Right" 
-                                 Height="23" Content="Поиск" VerticalContentAlignment="Center" Margin="5 0 0 5" Width="60" HorizontalAlignment="Right"/>
-                                
-                                </StackPanel>
-                                
-                            <dxg:GridControl 
-                                VirtualizingPanel.IsVirtualizing="True"
-                                ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="1"
-                                DockPanel.Dock="Left" Width="350" HorizontalAlignment="Left" 
-                                AutoGenerateColumns="None" dx:ThemeManager.ThemeName="Office2019White"                                                             
-                                MaxHeight="1800"
-                                ItemsSource="{Binding Clients, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
-                                ShowBorder="True" x:Name="grid"
-                                             >
-                                <dxg:GridControl.GroupSummary>
-                                    <dxg:GridSummaryItem SummaryType="Count" />
-                                </dxg:GridControl.GroupSummary>
-                                <dxg:GridControl.Columns>
-
-                                    <dxg:GridColumn FieldName="LastName" Header="ФИО" Width="2*" UnboundType="String" ReadOnly="True" 
-                                        PrintCellStyle="{StaticResource ResourceKey=TextEditFirstColumnPrintingStyle}"
-                                        PrintColumnHeaderStyle="{StaticResource ResourceKey=TextPrintFirstColumnHeaderStyle}">
-
-                                        <dxg:GridColumn.CellDisplayTemplate>
-                                            <DataTemplate>
-                                                <Border BorderBrush="DimGray" Margin="2">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Margin="0 2 0 0" TextWrapping="Wrap" TextTrimming="CharacterEllipsis">
-                                                    <Run FontSize="12"
-                                                        FontWeight="DemiBold"
-                                                        ToolTip="{Binding Row.Address}" 
-                                                        Text="{DXBinding Expr='Row.LastName + ` ` + Row.FirstName + ` ` + Row.MiddleName', Mode=OneWay}"  />
-                                                            </TextBlock>
-                                                        </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellDisplayTemplate>
-                                    </dxg:GridColumn>
-                                </dxg:GridControl.Columns>
-
-                                <dxg:GridControl.TotalSummary>
-                                    <dxg:GridSummaryItem SummaryType="Count" Alignment="Right" />
-                                    <dxg:GridSummaryItem FieldName="FullName" SummaryType="Count" />
-                                </dxg:GridControl.TotalSummary>
-                                <dxg:GridControl.View>
-                                    <dxg:TableView                                       
-                                        ShowVerticalLines="False"
-                                        ShowColumnHeaders="False"
-                                        ShowGroupPanel="False"
-                                        ShowFixedTotalSummary="True"                           
-                                        AllowScrollAnimation="True"
-                                        Name="view"
-                                        ShowSearchPanelMode="Never"
-                                        SearchPanelAllowFilter="False"
-                                        UseLegacyFilterPanel="True"
-                                        AllowFixedGroups="True"
-                                        NavigationStyle="Row"
-                                        AllowPrintColumnHeaderImage="True"
-                                        HighlightItemOnHover="True"
-                                        SearchColumns="LastName"
-                                        SearchPanelHorizontalAlignment="Stretch"
-                                        SearchPanelNullText="Фамилия клиента"                                       
-                                        >
-                                            <dxg:TableView.InputBindings>
-                                                <KeyBinding 
-                                                    Key="Return" 
-                                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
-                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                                <MouseBinding 
-                                                    Gesture="LeftDoubleClick" 
-                                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
-                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                        </dxg:TableView.InputBindings>
-                                        
-                                        <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm:EventToCommand 
-                                                EventName="PreviewMouseDown" 
-                                                Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}" />
-                                            <dxmvvm:EventToCommand 
-                                                EventName="PreviewMouseDoubleClick" 
-                                                Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=LoadCommand}" 
-                                                CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"/>
-                                        </dxmvvm:Interaction.Behaviors>
-                                    </dxg:TableView>
-                                </dxg:GridControl.View>
-                            </dxg:GridControl>
-                            </Grid>
-                        </dx:DXTabItem>
-                     
-                        <dx:DXTabItem Header="Счета" DataContext="{StaticResource InvoicesListViewModel}">
-                            <local:InvoicesControl DataContext="{Binding}" Margin="0 2 2 2" x:Name="invoicesList"/>
-                        </dx:DXTabItem>
-                    </dx:DXTabControl>
+                        <local:InvoicesControl Grid.Row="1"
+                            Margin="0 2 2 2" 
+                            x:Name="invoicesList"
+                            Visibility="{DXBinding Expr='(@StaticResource(ClientCardDispatcher).ActiveLeftPanel == `ClientsInvoices`) ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=ContextLeftList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
 
                     <local:ClientCardControl 
                         Margin="0 2 2 2" 
                         x:Name="clientCard" 
-                        DataContext="{Binding SelectedClient, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                        DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=Client, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         />
 
                 </DockPanel>

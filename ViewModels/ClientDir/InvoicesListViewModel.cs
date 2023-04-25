@@ -29,10 +29,9 @@ namespace B6CRM.ViewModels.ClientDir
                 LoadInvoices();
                 LoadEmployees();
                 AdvertisingLoad();
-                //Db = db;
-                // Config = db.Config;
+
                 //SelectedClient = new Client();
-                //LoadClients();
+                LoadClients();
                 //LoadPrintConditions();
             }
             catch (Exception e)
@@ -50,6 +49,9 @@ namespace B6CRM.ViewModels.ClientDir
                 Include(f => f.InvoiceItems).
                 OrderByDescending(f => f.CreatedAt).ToObservableCollection() ?? new ObservableCollection<Invoice>();
         }
+
+        public void LoadClients(int? isArhive = 0) =>
+            Clients = db.Clients.Where(f => f.IsInArchive == isArhive).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
 
         public void LoadEmployees()
         {
@@ -163,6 +165,12 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => Advertisings); }
             set { SetProperty(() => Advertisings, value); }
+        }
+
+        public ObservableCollection<Client> Clients
+        {
+            get { return GetProperty(() => Clients); }
+            set { SetProperty(() => Clients, value); }
         }
 
     }

@@ -22,8 +22,11 @@
     <None Remove="Resources\Icons\svg\arrow-up.svg" />
     <None Remove="Resources\Icons\svg\bars2.svg" />
     <None Remove="Resources\Icons\svg\blackboard_graph.svg" />
+    <None Remove="Resources\Icons\svg\briefcase2.svg" />
     <None Remove="Resources\Icons\svg\browser.svg" />
     <None Remove="Resources\Icons\svg\calendar.svg" />
+    <None Remove="Resources\Icons\svg\card.svg" />
+    <None Remove="Resources\Icons\svg\case_2.svg" />
     <None Remove="Resources\Icons\svg\chart-bar.svg" />
     <None Remove="Resources\Icons\svg\chart-line2.svg" />
     <None Remove="Resources\Icons\svg\chart-line3.svg" />
@@ -50,7 +53,9 @@
     <None Remove="Resources\Icons\svg\graph.svg" />
     <None Remove="Resources\Icons\svg\graph_rising.svg" />
     <None Remove="Resources\Icons\svg\icon_book.svg" />
+    <None Remove="Resources\Icons\svg\icon_calculator_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_calendar.svg" />
+    <None Remove="Resources\Icons\svg\icon_calulator.svg" />
     <None Remove="Resources\Icons\svg\icon_clipboard.svg" />
     <None Remove="Resources\Icons\svg\icon_contacts_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_creditcard.svg" />
@@ -68,6 +73,7 @@
     <None Remove="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
     <None Remove="Resources\Icons\svg\icon_menu-square_alt2.svg" />
     <None Remove="Resources\Icons\svg\icon_menu.svg" />
+    <None Remove="Resources\Icons\svg\icon_toolbox_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_tools.svg" />
     <None Remove="Resources\Icons\svg\icon_upload.svg" />
     <None Remove="Resources\Icons\svg\icon_wallet.svg" />
@@ -78,6 +84,8 @@
     <None Remove="Resources\Icons\svg\preview.svg" />
     <None Remove="Resources\Icons\svg\question2.svg" />
     <None Remove="Resources\Icons\svg\question_2.svg" />
+    <None Remove="Resources\Icons\svg\receipt.svg" />
+    <None Remove="Resources\Icons\svg\schedule.svg" />
     <None Remove="Resources\Icons\svg\server.svg" />
     <None Remove="Resources\Icons\svg\settings.svg" />
     <None Remove="Resources\Icons\svg\stack.svg" />
@@ -92,6 +100,7 @@
     <None Remove="Resources\Icons\svg\th-list.svg" />
     <None Remove="Resources\Icons\svg\th.svg" />
     <None Remove="Resources\Icons\svg\theater-masks.svg" />
+    <None Remove="Resources\Icons\svg\to-do.svg" />
     <None Remove="Resources\Icons\svg\tools.svg" />
     <None Remove="Resources\Icons\svg\tooth.svg" />
     <None Remove="Resources\Icons\svg\user-circle.svg" />
@@ -175,9 +184,12 @@
     <Resource Include="Resources\Icons\svg\blackboard_graph.svg" />
     <Resource Include="Resources\Icons\svg\boxes.svg" />
     <Resource Include="Resources\Icons\svg\briefcase.svg" />
+    <Resource Include="Resources\Icons\svg\briefcase2.svg" />
     <Resource Include="Resources\Icons\svg\browser.svg" />
     <Resource Include="Resources\Icons\svg\bullhorn.svg" />
     <Resource Include="Resources\Icons\svg\calendar.svg" />
+    <Resource Include="Resources\Icons\svg\card.svg" />
+    <Resource Include="Resources\Icons\svg\case_2.svg" />
     <Resource Include="Resources\Icons\svg\chart-bar.svg" />
     <Resource Include="Resources\Icons\svg\chart-line.svg" />
     <Resource Include="Resources\Icons\svg\chart-line2.svg" />
@@ -227,7 +239,9 @@
     <Resource Include="Resources\Icons\svg\graph_rising.svg" />
     <Resource Include="Resources\Icons\svg\hdd.svg" />
     <Resource Include="Resources\Icons\svg\icon_book.svg" />
+    <Resource Include="Resources\Icons\svg\icon_calculator_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_calendar.svg" />
+    <Resource Include="Resources\Icons\svg\icon_calulator.svg" />
     <Resource Include="Resources\Icons\svg\icon_clipboard.svg" />
     <Resource Include="Resources\Icons\svg\icon_contacts_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_creditcard.svg" />
@@ -255,6 +269,7 @@
     <Resource Include="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
     <Resource Include="Resources\Icons\svg\icon_menu-square_alt2.svg" />
     <Resource Include="Resources\Icons\svg\icon_menu.svg" />
+    <Resource Include="Resources\Icons\svg\icon_toolbox_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_tools.svg" />
     <Resource Include="Resources\Icons\svg\icon_upload.svg" />
     <Resource Include="Resources\Icons\svg\icon_wallet.svg" />
@@ -287,8 +302,10 @@
     <Resource Include="Resources\Icons\svg\printer.svg" />
     <Resource Include="Resources\Icons\svg\question.svg" />
     <Resource Include="Resources\Icons\svg\question_2.svg" />
+    <Resource Include="Resources\Icons\svg\receipt.svg" />
     <Resource Include="Resources\Icons\svg\reg1.svg" />
     <Resource Include="Resources\Icons\svg\sale.svg" />
+    <Resource Include="Resources\Icons\svg\schedule.svg" />
     <Resource Include="Resources\Icons\svg\search-dollar.svg" />
     <Resource Include="Resources\Icons\svg\server.svg" />
     <Resource Include="Resources\Icons\svg\settings.svg" />
@@ -311,6 +328,7 @@
     <Resource Include="Resources\Icons\svg\theater-masks.svg" />
     <Resource Include="Resources\Icons\svg\times-circle.svg" />
     <Resource Include="Resources\Icons\svg\times.svg" />
+    <Resource Include="Resources\Icons\svg\to-do.svg" />
     <Resource Include="Resources\Icons\svg\tools.svg" />
     <Resource Include="Resources\Icons\svg\tooth.svg" />
     <Resource Include="Resources\Icons\svg\trash-alt.svg" />

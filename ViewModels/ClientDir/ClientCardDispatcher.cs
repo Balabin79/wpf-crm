@@ -27,29 +27,75 @@ namespace B6CRM.ViewModels.ClientDir
 
         public bool CanEditable() => Client?.Id > 0;
 
-        public ClientCardDispatcher()
+        #region Упраление боковыми списками (клиенты, счета, планы)
+        [Command]
+        public void ToggleList(object p) //переключить список
         {
-            UserControlName = "MainInfoControl";
-            SetUserControl();
-            IsReadOnly = false;
+            //включаем видимость контрола и подчеркиваем кнопку активного контрола
+            var controlName = p.ToString();
+            switch (controlName)
+            {
+                case "ClientsList":
+                    ContextLeftList = new ClientsListViewModel();
+                    ActiveLeftPanel = controlName;
+                    //CreateClient();
+                    break;
+                case "ClientsInvoices":
+                    ContextLeftList = new InvoicesListViewModel();
+                    ActiveLeftPanel = controlName;
+                    break;
+                case "ClientsPlans":
+                    ContextLeftList = new PlansListViewModel();
+                    ActiveLeftPanel = controlName;
+                    break;
+            }
         }
 
+        [Command]
+        public void SetSelectedClient(Client client)
+        {
+            Client = client;
+        }
+
+        public string ActiveLeftPanel
+        {
+            get { return GetProperty(() => ActiveLeftPanel); }
+            set { SetProperty(() => ActiveLeftPanel, value); }
+        }
+
+        public object ContextLeftList
+        {
+            get { return GetProperty(() => ContextLeftList); }
+            set { SetProperty(() => ContextLeftList, value); }
+        }
+
+
+        public Invoice SelectedInvoiceToInvoicesList
+        {
+            get { return GetProperty(() => SelectedInvoiceToInvoicesList); }
+            set { SetProperty(() => SelectedInvoiceToInvoicesList, value); }
+        }
+        #endregion
+
+        #region Упраление картой клиента
         [Command]
         public void Init(object p) //вызывается при переходе по кнопке "Клиенты" - первая загрузка
         {
             Client = new Client();
             UserControlName = "MainInfoControl";
+            ActiveLeftPanel = "ClientsList";
             IsReadOnly = false;
             //без параметров, значит по-умолчанию
             SetUserControl();
-
+            // загружаем список клиентов в боковую панель
+            ToggleList("ClientsList");
             // снимаем выделение в списке клиентов
-            if (p is GridControl grid)
+            /*if (p is GridControl grid)
             {
                 grid.SelectedItem = null;
-            }
+            }*/
         }
-
+        
         [Command]
         public void Load(object p)
         {
@@ -65,6 +111,14 @@ namespace B6CRM.ViewModels.ClientDir
             SetUserControl(p.ToString());
         }
 
+
+        [Command]
+        public void CreateClient()
+        {
+            Client = new Client();
+            SetUserControl("MainInfoControl");
+            IsReadOnly = false;           
+        }
 
         private void SetUserControl(string userControlName = "MainInfoControl")
         {
@@ -140,5 +194,6 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => IsSaveEnabled); }
             set { SetProperty(() => IsSaveEnabled, value); }
         }
+        #endregion
     }
 }

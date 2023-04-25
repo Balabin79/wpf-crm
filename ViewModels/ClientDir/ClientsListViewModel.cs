@@ -29,7 +29,6 @@ namespace B6CRM.ViewModels.ClientDir
                 db = new ApplicationContext();
                 Db = db;
                 Config = db.Config;
-                SelectedClient = new Client();
                 LoadClients();
                 LoadPrintConditions();
             }
@@ -39,11 +38,6 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
 
-        [Command]
-        public void SetSelectedClient(Client client)
-        {
-            SelectedClient = client;
-        }
 
         [Command]
         public void Load(object p) => LoadClients();
@@ -227,10 +221,5 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => Clients, value); }
         }
 
-        public Client SelectedClient
-        {
-            get { return GetProperty(() => SelectedClient); }
-            set { SetProperty(() => SelectedClient, value); }
-        }
     }
 }
