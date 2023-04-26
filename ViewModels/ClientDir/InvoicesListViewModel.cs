@@ -29,7 +29,7 @@ namespace B6CRM.ViewModels.ClientDir
                 db = new ApplicationContext();
                 LoadInvoices();
                 LoadEmployees();
-                AdvertisingLoad();
+                //AdvertisingLoad();
 
                 //SelectedClient = new Client();
                 LoadClients();
@@ -59,7 +59,7 @@ namespace B6CRM.ViewModels.ClientDir
             foreach (var i in Employees) i.IsVisible = false;
         }
 
-        public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
+       // public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
 
         #region Работа с фильтрами и поиском в списке инвойсов
         public object EmployeeSearch { get; set; }
@@ -161,11 +161,11 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => Employees, value); }
         }
 
-        public ObservableCollection<Advertising> Advertisings
+       /* public ObservableCollection<Advertising> Advertisings
         {
             get { return GetProperty(() => Advertisings); }
             set { SetProperty(() => Advertisings, value); }
-        }
+        }*/
 
         public ObservableCollection<Client> Clients
         {

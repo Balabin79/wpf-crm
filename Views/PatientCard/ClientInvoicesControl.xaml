@@ -269,7 +269,7 @@
                                                             IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                             GlyphSize="Small"
                                                             Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}" 
-                                                            CommandParameter="{Binding RowData.Row, Mode=TwoWay}">
+                                                            CommandParameter="{Binding RowData.Row, Mode=OneWay}">
                                                             <dxb:BarButtonItem.GlyphTemplate>
                                                                 <DataTemplate>
                                                                     <dx:DXImage Source="/Resources/Icons/svg/times.svg" />
@@ -634,7 +634,7 @@
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceCommand}" 
-                                                   CommandParameter="{Binding ElementName=grid, Path=Row}"/>
+                                                   CommandParameter="{Binding Row}"/>
                                 <dxb:BarItemLinkSeparator />
                             </dxb:ToolBarControl>
                         </dxb:BarContainerControl>

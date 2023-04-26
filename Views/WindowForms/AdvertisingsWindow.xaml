@@ -17,6 +17,7 @@
         xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:services="clr-namespace:B6CRM.Services"
+        x:Name="win"
         Icon="{x:Static services:ParamsApp.Icon}" 
         Title="{x:Static services:ParamsApp.Title}"
         >
@@ -65,7 +66,7 @@
                 <dxg:GridControl  AutoGenerateColumns="None" 
                                   MaxHeight="2000" 
                                   Name="grid"  
-                                  ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                  ItemsSource="{Binding Collection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                                   Margin="2">
 
                     <dxg:GridControl.View>
@@ -96,10 +97,9 @@
                                 </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem GlyphSize="Small" GlyphAlignment="Left" Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}" 
-                            Name="saveRow" KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding ElementName=fileToolBar, Path=DataContext.SaveCommand}" />
+                            KeyGesture="Ctrl+S" Content="Сохранить"  Command="{Binding ElementName=fileToolBar, Path=DataContext.SaveCommand}" />
 
-                                <dxb:BarButtonItem 
-                                    Name="deleteRow" 
+                                <dxb:BarButtonItem  
                                     IsEnabled="{DXBinding Expr='CurrentItem.Id > 0'}"
                                     Content="Удалить" Command="{Binding ElementName=fileToolBar, Path=DataContext.DeleteCommand}" 
                                                    CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
@@ -125,7 +125,7 @@
                         </dxg:GridColumn.HeaderTemplate>
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
+                                <TextBlock Text="{Binding Path=RowData.Row.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="3 0 0 0" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                         <dxg:GridColumn.CellEditTemplate>

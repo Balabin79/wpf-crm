@@ -10,8 +10,6 @@
        d:DesignHeight="400" d:DesignWidth="800" mc:Ignorable="d"
        dx:ThemeManager.ThemeName="Office2019White"
        xmlns:vm ="clr-namespace:B6CRM.ViewModels.ClientDir"
-       xmlns:adv ="clr-namespace:B6CRM.ViewModels"
-       xmlns:addFields ="clr-namespace:B6CRM.ViewModels.AdditionalFields"
        xmlns:local ="clr-namespace:B6CRM.Views.PatientCard"
        xmlns:model ="clr-namespace:B6CRM.Models"
        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
@@ -32,9 +30,6 @@
                     <commands:PrintCommand x:Key="Print"/>
                     <vm:ClientsListViewModel x:Key="ClientsListViewModel"/>
                     <vm:InvoicesListViewModel x:Key="InvoicesListViewModel"/>
-                    <adv:AdvertisingViewModel x:Key="adv"/>
-                    <adv:ClientCategoryViewModel x:Key="ccv"/>
-                    <addFields:AdditionalClientFieldsViewModel x:Key="addFields"/>
                     <services:ImportData x:Key="import"/>
                     <converter:BirthDateConverter x:Key="birthToDateString" />
                     <converter:ExportDataConverter x:Key="exportConv"/>
@@ -104,7 +99,7 @@
 
                                 <dxb:BarButtonItem Content="Дополнительные поля"                                        
                                            GlyphSize="Small" Style="{Binding}"
-                                           Command="{Binding Source={StaticResource addFields}, Path=OpenFormFieldsCommand}">
+                                           Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=OpenFormFieldsCommand}">
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>
                                             <dx:DXImage Source="/Resources/Icons/svg/bars.svg" />
@@ -113,10 +108,9 @@
                                 </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem 
-                                    Content="Рекламные источники" DataContext="{StaticResource adv}"                                        
+                                    Content="Рекламные источники"                                         
                                     GlyphSize="Small" Style="{Binding}"
-                                    CommandParameter="{Binding Source={StaticResource InvoicesListViewModel}}"
-                                    Command="{Binding OpenWindowCommand}" 
+                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=OpenAdvertisingsWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>
@@ -126,10 +120,9 @@
                                 </dxb:BarButtonItem>
 
                                 <dxb:BarButtonItem 
-                                    Content="Категории клиентов" DataContext="{StaticResource ccv}"                                        
+                                    Content="Категории клиентов"                                         
                                     GlyphSize="Small" Style="{Binding}"
-                                    CommandParameter="{Binding Source={StaticResource InvoicesListViewModel}}"
-                                    Command="{Binding OpenWClientCategoryWindowCommand}" 
+                                    Command="{Binding Source={StaticResource ClientCardDispatcher}, Path=OpenClientCategoriesWindowCommand}" 
                                            >
                                     <dxb:BarButtonItem.GlyphTemplate>
                                         <DataTemplate>

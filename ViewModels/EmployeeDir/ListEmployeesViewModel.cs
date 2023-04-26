@@ -162,6 +162,8 @@ namespace B6CRM.ViewModels.EmployeeDir
                     //удалить также в расписании и в счетах
                     db.Appointments.Where(f => f.EmployeeId == model.Id)?.ForEach(f => db.Entry(f).State = EntityState.Deleted);
 
+                    db.Invoices.Where(f => f.EmployeeId == model.Id)?.ForEach(f => f.EmployeeId = null);
+
                     db.Entry(model).State = EntityState.Deleted;
                     if (db.SaveChanges() > 0)
                     {

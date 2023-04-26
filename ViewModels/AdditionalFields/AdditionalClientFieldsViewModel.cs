@@ -106,18 +106,7 @@ namespace B6CRM.ViewModels.AdditionalFields
         [Command]
         public void Add() => Collection.Add(new AdditionalClientField());
 
-        [Command]
-        public void OpenFormFields()
-        {
-            try
-            {
-                new ClientFieldsWindow() { DataContext = this }?.Show();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" произошла ошибка!", true);
-            }
-        }
+
 
         private void SetCollection() => Collection = db.AdditionalClientFields.OrderBy(f => f.Label).Include(f => f.TypeValue).ToObservableCollection() ?? new ObservableCollection<AdditionalClientField>();
 

@@ -24,42 +24,25 @@ namespace B6CRM.ViewModels
     {
         private readonly ApplicationContext db;
 
-        public delegate void AdvertisingChanges();
-        public event AdvertisingChanges EventAdvertisingChanges;
+        public delegate void AdvertisingsChanged();
+        public event AdvertisingsChanged EventAdvertisingsChanged;
+
+        public delegate void AdvertisingsDeleted();
+        public event AdvertisingsDeleted EventAdvertisingsDeleted;
 
         public AdvertisingViewModel()
         {
             try
             {
                 db = new ApplicationContext();
+                db.Advertising?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
             }
             catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Рекламные источники\"!", true);
             }
-        }
-
-        public bool CanOpenWindow(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;
-
-        [Command]
-        public void OpenWindow(object p)
-        {
-            try
-            {
-                db.Advertising?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
-                SetCollection();
-                /*if (p is ClientsViewModel vm && vm != null) 
-                    EventAdvertisingChanges += vm.AdvertisingLoad;*/
-                
-                new AdvertisingsWindow() { DataContext = this }.Show();
-                //StatusWindow.Show();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
+        }      
 
         [Command]
         public void Add(object p) => Collection?.Add(new Advertising());
@@ -80,7 +63,7 @@ namespace B6CRM.ViewModels
                 {
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     SetCollection();
-                    EventAdvertisingChanges?.Invoke();
+                    EventAdvertisingsChanged?.Invoke();
                 }
             }
             catch (Exception e)
@@ -106,12 +89,12 @@ namespace B6CRM.ViewModels
                     }
 
                     else db.Entry(model).State = EntityState.Detached;
-
+                    EventAdvertisingsDeleted?.Invoke();
                     if (db.SaveChanges() > 0)
-                    {
+                    {                        
                         new Notification() { Content = "Рекламный источник удален из базы данных!" }.run();
                         SetCollection();
-                        EventAdvertisingChanges?.Invoke();
+                        EventAdvertisingsDeleted?.Invoke();
                     }
                 }
             }

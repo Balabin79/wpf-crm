@@ -19,6 +19,7 @@
         xmlns:services="clr-namespace:B6CRM.Services"
         Icon="{x:Static services:ParamsApp.Icon}" 
         Title="{x:Static services:ParamsApp.Title}"
+        x:Name="win"
         >
     <Window.Resources>
         <commands:PrintCommand x:Key="Print"/>

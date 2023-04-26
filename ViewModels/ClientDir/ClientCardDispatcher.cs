@@ -1,7 +1,10 @@
 ﻿using B6CRM.Infrastructures.Converters;
 using B6CRM.Models;
+using B6CRM.Services;
 using B6CRM.ViewModels.AdditionalFields;
+using B6CRM.Views.AdditionalFields;
 using B6CRM.Views.PatientCard;
+using B6CRM.Views.WindowForms;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Xpf.Bars;
@@ -25,7 +28,12 @@ namespace B6CRM.ViewModels.ClientDir
         public delegate void ReadOnlyChanged(bool status);
         public event ReadOnlyChanged EventReadOnlyChanged;
 
+        #region Права на выполнение команд
         public bool CanEditable() => Client?.Id > 0;
+        public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAddFieldsEditable;
+        public bool CanOpenAdvertisingsWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;
+        public bool CanOpenClientCategoriesWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsCategoryEditable;
+        #endregion
 
         #region Упраление боковыми списками (клиенты, счета, планы)
         [Command]
@@ -243,6 +251,61 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => IsSaveEnabled); }
             set { SetProperty(() => IsSaveEnabled, value); }
+        }
+        #endregion
+
+        #region Открытие форм справочников (window)
+        public AdvertisingViewModel AdvertisingViewModel { get; set; }
+        public ClientCategoryViewModel ClientCategoryViewModel { get; set; }
+        public AdditionalClientFieldsViewModel AdditionalClientFieldsViewModel { get; set; }
+
+        [Command]
+        public void OpenAdvertisingsWindow()
+        {
+            try
+            {
+                AdvertisingViewModel = new AdvertisingViewModel();
+                if (Context is ClientInvoicesViewModel vm) 
+                { 
+                    AdvertisingViewModel.EventAdvertisingsChanged += vm.LoadAdvertisings; 
+                    AdvertisingViewModel.EventAdvertisingsDeleted += vm.AdvertisingsDeleted; 
+                }
+                new AdvertisingsWindow() { DataContext = AdvertisingViewModel }?.Show();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e, "При открытии формы \"Рекламные источники\" произошла ошибка!", true);
+            }
+        }
+
+        [Command]
+        public void OpenClientCategoriesWindow()
+        {
+            try
+            {
+                ClientCategoryViewModel = new ClientCategoryViewModel();
+                if (Context is MainInfoViewModel vm) ClientCategoryViewModel.EventClientCategoriesChanges += vm.ClientCategoriesChanged;
+                new ClientCategoriesWindow() { DataContext = ClientCategoryViewModel }?.Show();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e, "При открытии формы \"Категории клиентов\" произошла ошибка!", true);
+            }
+        }
+
+        [Command]
+        public void OpenFormFields()
+        {
+            try
+            {
+                AdditionalClientFieldsViewModel = new AdditionalClientFieldsViewModel();
+                if(Context is FieldsViewModel vm) AdditionalClientFieldsViewModel.EventFieldChanges += vm.ClientFieldsLoading;
+                new ClientFieldsWindow() { DataContext = AdditionalClientFieldsViewModel }?.Show();
+            }
+            catch (Exception e)
+            {
+                Log.ErrorHandler(e, "При открытии формы \"Дополнительные поля\" произошла ошибка!", true);
+            }
         }
         #endregion
     }

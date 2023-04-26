@@ -125,7 +125,7 @@ namespace B6CRM.ViewModels.ClientDir
                     mes = "Новый клиент успешно записан в базу данных!";
                 }                   
                 if (db.SaveChanges() > 0)
-                {
+                {                   
                      EventClientChanged?.Invoke(Client);
                      new Notification() { Content = mes }.run();
                 }               
@@ -328,6 +328,14 @@ namespace B6CRM.ViewModels.ClientDir
 
 
         public void ClientCategoriesLoad() => ClientCategories = db.ClientCategories?.ToArray()?.ToObservableCollection() ?? new ObservableCollection<ClientCategory>();
+
+        public void ClientCategoriesChanged()
+        {
+            ClientCategoriesLoad();
+            if (ClientCategories.FirstOrDefault(f => f.Id == Client.ClientCategoryId) == null)
+                Client.ClientCategoryId = null;
+            db.SaveChanges();
+        }
 
 
         public Client Client

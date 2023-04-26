@@ -42,7 +42,7 @@ namespace B6CRM.ViewModels.ClientDir
             Load();
 
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
-            Advertisings = db.Advertising.ToObservableCollection();
+            LoadAdvertisings();
             LoadEmployees(); 
         }
 
@@ -73,22 +73,51 @@ namespace B6CRM.ViewModels.ClientDir
 
         }
 
+        public void LoadAdvertisings() => Advertisings = db.Advertising.ToObservableCollection();
+
+        // вызывается по событию, когда обновляется справочник
+        public void AdvertisingsChanged() => LoadAdvertisings();
+
+        // вызывается по событию, когда удаляется позиция в справочнике справочник
+        public void AdvertisingsDeleted()
+        {
+            try
+            {
+                LoadAdvertisings();
+
+                foreach (var item in ClientInvoices)
+                {
+                    if (item.Advertising != null && Advertisings.FirstOrDefault(f => f.Id == item.AdvertisingId) != null)
+                    {
+                        item.Advertising = null;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+
+            db.SaveChanges();
+        }
+        
+
         #region Счета
         [Command]
         public void AddInvoice(object p)
         {
             try
             {
-                if (p is Client client)
-                {
+                if (Client == null) return;
+                
                     var date = DateTime.Now;
                     var model = new Invoice
                     {
                         Number = NewInvoiceNumberGenerate(),
                         Date = date.ToString(),
                         DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                        Client = client,
-                        ClientId = client?.Id
+                        Client = Client,
+                        ClientId = Client?.Id
                     };
 
                     db.Invoices.Add(model);
@@ -98,7 +127,7 @@ namespace B6CRM.ViewModels.ClientDir
                         Load();
                         if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     }
-                }
+                
             }
             catch (Exception e)
             {

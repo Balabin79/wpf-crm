@@ -26,6 +26,7 @@ namespace B6CRM.ViewModels
 
         public delegate void ClientCategoryChanges();
         public event ClientCategoryChanges EventClientCategoriesChanges;
+
         private ClientsViewModel ClientsViewModel { get; set; }
         
         public ClientCategoryViewModel()
@@ -33,35 +34,12 @@ namespace B6CRM.ViewModels
             try
             {
                 db = new ApplicationContext();
+                db.ClientCategories?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
                 SetCollection();
             }
             catch (Exception e)
             {
                 Log.ErrorHandler(e, "Данные в базе данных повреждены! Программа может работать некорректно с разделом \"Категории клиентов\"!", true);
-            }
-        }
-
-        public bool CanOpenWClientCategoryWindow(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsCategoryEditable;
-
-        [Command]
-        public void OpenWClientCategoryWindow(object p)
-        {
-            try
-            {
-                db.ClientCategories?.ForEach(f => db.Entry(f).State = EntityState.Unchanged);
-                SetCollection();
-                if (p is ClientsViewModel vm && vm != null)
-                {
-                    //EventClientCategoriesChanges += vm.ClientCategoriesDeleteOrSave;
-                    ClientsViewModel = vm;
-                }
-                    
-                new ClientCategoriesWindow() { DataContext = this }.Show();
-                //StatusWindow.Show();
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
             }
         }
 
@@ -117,7 +95,7 @@ namespace B6CRM.ViewModels
                         //EventClientCategoriesChanges?.Invoke();
 
                         //ClientsViewModel.ClientInfoViewModel.ClientCategory = null;
-                        ClientsViewModel.Model.ClientCategory = null;
+                       // ClientsViewModel.Model.ClientCategory = null;
                         
 
                         db.Entry(model).State = EntityState.Deleted;
