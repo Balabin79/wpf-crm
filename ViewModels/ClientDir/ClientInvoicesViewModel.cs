@@ -37,13 +37,14 @@ namespace B6CRM.ViewModels.ClientDir
         public ClientInvoicesViewModel(Client client)
         {
             db = new ApplicationContext();
+            Db = db;
             Config = db.Config;
             Client = client?.Id > 0 ? db.Clients.FirstOrDefault(f => f.Id == client.Id) : new Client();
             Load();
 
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
             LoadAdvertisings();
-            LoadEmployees(); 
+            LoadEmployees();
         }
 
         #region Права на выполнение команд
@@ -100,7 +101,7 @@ namespace B6CRM.ViewModels.ClientDir
 
             db.SaveChanges();
         }
-        
+
 
         #region Счета
         [Command]
@@ -109,25 +110,25 @@ namespace B6CRM.ViewModels.ClientDir
             try
             {
                 if (Client == null) return;
-                
-                    var date = DateTime.Now;
-                    var model = new Invoice
-                    {
-                        Number = NewInvoiceNumberGenerate(),
-                        Date = date.ToString(),
-                        DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                        Client = Client,
-                        ClientId = Client?.Id
-                    };
 
-                    db.Invoices.Add(model);
-                    if (db.SaveChanges() > 0)
-                    {
-                        ClientInvoices.Add(model);
-                        Load();
-                        if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
-                    }
-                
+                var date = DateTime.Now;
+                var model = new Invoice
+                {
+                    Number = NewInvoiceNumberGenerate(),
+                    Date = date.ToString(),
+                    DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                    Client = Client,
+                    ClientId = Client?.Id
+                };
+
+                db.Invoices.Add(model);
+                if (db.SaveChanges() > 0)
+                {
+                    ClientInvoices.Add(model);
+                    Load();
+                    if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                }
+
             }
             catch (Exception e)
             {
@@ -155,10 +156,10 @@ namespace B6CRM.ViewModels.ClientDir
                 }
                 #endregion
 
-                if (db.SaveChanges() > 0) 
+                if (db.SaveChanges() > 0)
                 {
                     EventInvoicesReload?.Invoke();
-                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run(); 
+                    new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
             catch (Exception e)
@@ -413,5 +414,8 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
         }
+
+        //это поле для привязки (используется в команде импорта данных)
+        public ApplicationContext Db { get; set; }
     }
 }

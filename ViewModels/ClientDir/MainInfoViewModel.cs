@@ -54,7 +54,7 @@ namespace B6CRM.ViewModels.ClientDir
         public bool CanSave(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
 
         public bool CanAttachmentFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
-        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;    
+        public bool CanDeleteFile(object p) => ((UserSession)Application.Current.Resources["UserSession"]).ClientsEditable;
         #endregion
 
 
@@ -64,10 +64,10 @@ namespace B6CRM.ViewModels.ClientDir
             {
                 if (model == null) return;
                 ClientInfoViewModel = new ClientInfoViewModel(model);
-              
+
                 PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, model.Guid);
-                Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection() 
-                    : 
+                Files = Directory.Exists(PathToUserFiles) ? new DirectoryInfo(PathToUserFiles).GetFiles().ToObservableCollection()
+                    :
                     new ObservableCollection<FileInfo>();
             }
             catch (Exception e)
@@ -84,11 +84,6 @@ namespace B6CRM.ViewModels.ClientDir
                 Client = new Client();
                 ClientInfoViewModel = new ClientInfoViewModel(Client);
                 Init(Client);
-                
-                if(p is ClientCardControl clientCardControl)
-                {
-                    //clientCardControl.Load("mainInfo");
-                }
             }
             catch (Exception e)
             {
@@ -123,12 +118,12 @@ namespace B6CRM.ViewModels.ClientDir
                     db.Clients.Add(Client);
                     PathToUserFiles = Path.Combine(Config.PathToFilesDirectory, Client?.Guid);
                     mes = "Новый клиент успешно записан в базу данных!";
-                }                   
+                }
                 if (db.SaveChanges() > 0)
-                {                   
-                     EventClientChanged?.Invoke(Client);
-                     new Notification() { Content = mes }.run();
-                }               
+                {
+                    EventClientChanged?.Invoke(Client);
+                    new Notification() { Content = mes }.run();
+                }
             }
             catch (Exception e)
             {
@@ -161,24 +156,14 @@ namespace B6CRM.ViewModels.ClientDir
                 db.Entry(Client).State = EntityState.Deleted;
                 if (db.SaveChanges() > 0) new Notification() { Content = "Карта клиента полностью удалена из базы данных!" }.run();
 
-                // может не оказаться этого эл-та в списке, например, он в статусе "В архиве"
-                //var item = Clients.FirstOrDefault(f => f.Guid == Client.Guid);
-               // if (item != null) Clients.Remove(item);
-
                 db.InvoiceItems.Where(f => f.InvoiceId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.PlanItems.Where(f => f.PlanId == null).ForEach(f => db.Entry(f).State = EntityState.Deleted);
                 db.SaveChanges();
 
-
                 // удаляем файлы 
                 if (Directory.Exists(PathToUserFiles)) Directory.Delete(PathToUserFiles);
 
-
                 EventClientDeleted?.Invoke();
-                //загружаем новую анкету
-                //Client = new Client();
-                //Init(Client);
-                // SelectedItem();
             }
             catch (Exception e)
             {
@@ -289,8 +274,6 @@ namespace B6CRM.ViewModels.ClientDir
 
                 if (PathToUserFiles != null && !Directory.Exists(PathToUserFiles)) Directory.CreateDirectory(PathToUserFiles);
 
-
-
                 File.Copy(file.FullName, Path.Combine(PathToUserFiles, file.Name), true);
                 File.SetAttributes(Path.Combine(PathToUserFiles, file.Name), FileAttributes.Normal);
 
@@ -361,6 +344,5 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => Config); }
             set { SetProperty(() => Config, value); }
         }
-
     }
 }

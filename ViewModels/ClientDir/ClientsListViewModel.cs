@@ -41,6 +41,9 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
 
+        #region Права на выполнение команд
+        public bool CanPrintClients() => ((UserSession)Application.Current.Resources["UserSession"]).PrintClients;
+        #endregion
 
         [Command]
         public void Load(object p) => LoadClients();
@@ -89,7 +92,6 @@ namespace B6CRM.ViewModels.ClientDir
                 Log.ErrorHandler(e);
             }
         }
-
         #endregion
 
 

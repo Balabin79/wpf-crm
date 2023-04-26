@@ -118,8 +118,8 @@ namespace B6CRM.ViewModels.ClientDir
                 }
                 #endregion
 
-                if (db.SaveChanges() > 0) 
-                { 
+                if (db.SaveChanges() > 0)
+                {
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                     EventPlansReload?.Invoke();
                 }
@@ -215,32 +215,6 @@ namespace B6CRM.ViewModels.ClientDir
         }
 
         [Command]
-        public void SelectItemInField(object p)
-        {
-            try
-            {
-                if (p is FindCommandParameters parameters)
-                {
-                    if (parameters.Tree.CurrentItem is Service service)
-                    {
-                        if (service.IsDir == 1) return;
-                        parameters.Popup.EditValue = service;
-                        if (((GridCellData)parameters.Popup.DataContext).Row is InvoiceItems item)
-                        {
-                            item.Price = service.Price;
-                            item.Code = service.Code;
-                        }
-                    }
-                    parameters.Popup.ClosePopup();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.ErrorHandler(e);
-            }
-        }
-
-        [Command]
         public void DeletePlanItem(object p)
         {
             try
@@ -287,49 +261,47 @@ namespace B6CRM.ViewModels.ClientDir
         {
             try
             {
-                /*  if (p is Plan plan)
-                  {
-                      List<PlanItem> items = new List<PlanItem>();
+                if (p is Plan plan)
+                {
+                    List<PlanItem> items = new List<PlanItem>();
 
-                      foreach (var item in plan.PlanItems)
-                      {
-                          if (item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
-                          {
-                              item.IsMovedToInvoice = 1;
-                              items.Add(item);
-                          }
-                      }
+                    foreach (var item in plan.PlanItems)
+                    {
+                        if (item.IsInInvoice == 1 && item.IsMovedToInvoice != 1)
+                        {
+                            item.IsMovedToInvoice = 1;
+                            items.Add(item);
+                        }
+                    }
 
-                      if (items.Count > 0)
-                      {
-                          var date = DateTime.Now;
-                          var invoice = new Invoice
-                          {
-                              Number = NewInvoiceNumberGenerate(),
-                              Date = date.ToString(),
-                              DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
-                              Client = Model,
-                              ClientId = Model?.Id
-                          };
+                    if (items.Count > 0)
+                    {
+                        var date = DateTime.Now;
+                        var invoice = new Invoice
+                        {
+                            Number = NewInvoiceNumberGenerate(),
+                            Date = date.ToString(),
+                            DateTimestamp = new DateTimeOffset(date).ToUnixTimeSeconds(),
+                            Client = Client,
+                            ClientId = Client?.Id
+                        };
 
-                          items.ForEach(f => invoice.InvoiceItems.Add(new InvoiceItems()
-                          {
-                              Code = f.Code,
-                              Count = f.Count,
-                              Price = f.Price,
-                              Name = f.Name,
-                              Invoice = invoice
-                          }));
+                        items.ForEach(f => invoice.InvoiceItems.Add(new InvoiceItems()
+                        {
+                            Code = f.Code,
+                            Count = f.Count,
+                            Price = f.Price,
+                            Name = f.Name,
+                            Invoice = invoice
+                        }));
 
-                          db.Invoices.Add(invoice);
-                          if (db.SaveChanges() > 0)
-                          {
-                              ClientInvoices.Add(invoice);
-                              LoadInvoices();
-                              new Notification() { Content = $"Сформирован новый счет №{invoice.Number}" }.run();
-                          }
-                      }
-                  }*/
+                        db.Invoices.Add(invoice);
+                        if (db.SaveChanges() > 0)
+                        {
+                            new Notification() { Content = $"Сформирован новый счет №{invoice.Number}" }.run();
+                        }
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -337,6 +309,18 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
 
+        private string NewInvoiceNumberGenerate()
+        {
+            var numInvoices = db.Invoices?.ToList()?.OrderByDescending(f => f.Number)?.FirstOrDefault()?.Number;
+            //var numClientInvoices = ClientInvoices.LastOrDefault()?.Number;
+
+            if (int.TryParse(numInvoices, out int invoicesNumber))
+            {
+                return string.Format("{0:00000000}", ++invoicesNumber);
+            }
+            // вообще нет счетов
+            return "00000001";
+        }
         #endregion
 
         [Command]
@@ -358,7 +342,7 @@ namespace B6CRM.ViewModels.ClientDir
                     report.RequestParameters = false;
                     report.Parameters.Add(parameter);
                     report.FilterString = "[Id] = [Parameters.Id]";
-                    //report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
 
                     if (report?.DataSource is SqlDataSource source)
                     {
@@ -376,7 +360,6 @@ namespace B6CRM.ViewModels.ClientDir
                 Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
             }
         }
-
 
         public ObservableCollection<Plan> Plans
         {

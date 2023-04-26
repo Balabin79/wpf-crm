@@ -149,7 +149,7 @@
                                     <dxb:BarButtonItem.CommandParameter >
                                         <MultiBinding Converter="{StaticResource exportConv}">
                                             <Binding Source="{x:Type model:Client}" />
-                                            <Binding Source="{StaticResource InvoicesListViewModel}" Path="Db"/>
+                                            <Binding Source="{StaticResource ClientsListViewModel}" Path="Db"/>
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
                                 </dxb:BarButtonItem>
@@ -163,7 +163,7 @@
                                     <dxb:BarButtonItem.CommandParameter >
                                         <MultiBinding Converter="{StaticResource exportConv}">
                                             <Binding Source="{x:Type model:Client}" />
-                                            <Binding Source="{StaticResource InvoicesListViewModel}" Path="Db"/>
+                                            <Binding Source="{StaticResource ClientsListViewModel}" Path="Db"/>
                                         </MultiBinding>
                                     </dxb:BarButtonItem.CommandParameter>
                                 </dxb:BarButtonItem>

@@ -29,11 +29,8 @@ namespace B6CRM.ViewModels.ClientDir
                 db = new ApplicationContext();
                 LoadInvoices();
                 LoadEmployees();
-                //AdvertisingLoad();
 
-                //SelectedClient = new Client();
                 LoadClients();
-                //LoadPrintConditions();
             }
             catch (Exception e)
             {
@@ -58,8 +55,6 @@ namespace B6CRM.ViewModels.ClientDir
             Employees = db.Employes.OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
             foreach (var i in Employees) i.IsVisible = false;
         }
-
-       // public void AdvertisingLoad() => Advertisings = db.Advertising.ToObservableCollection();
 
         #region Работа с фильтрами и поиском в списке инвойсов
         public object EmployeeSearch { get; set; }
@@ -111,7 +106,6 @@ namespace B6CRM.ViewModels.ClientDir
                     dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
                 }
 
-                //DateTimeOffset.FromUnixTimeSeconds(dateFrom).LocalDateTime
                 string parameters = "WHERE ";
                 for (int i = 0; i < where.Count; i++)
                 {
@@ -125,22 +119,12 @@ namespace B6CRM.ViewModels.ClientDir
                 if (where.Count > 0) parameters += " AND ";
                 parameters += "DateTimestamp >= " + dateFrom + " AND DateTimestamp <= " + dateTo;
 
-                //SqlParameter param = SqlParameter("@name", "%Samsung%");
-                //var phones = db.Database.SqlQuery<Phone>("SELECT * FROM Phones WHERE Name LIKE @name", param);
                 Invoices = db.Invoices.FromSqlRaw("SELECT * FROM Invoices " + parameters + " ORDER BY DateTimestamp DESC").ToObservableCollection();
-                //Invoices = query?.Include(f => f.Client)?.Include(f => f.Employee)?.Include(f => f.InvoiceItems)?.OrderByDescending(f => f.CreatedAt).ToObservableCollection();
+
                 if (!string.IsNullOrEmpty(InvoiceNameSearch?.ToString()))
                 {
                     Invoices = Invoices.Where(f => f.Number.Contains(InvoiceNameSearch?.ToString().ToLower())).OrderByDescending(f => f.DateTimestamp).ToObservableCollection();
                 }
-
-                /*if (Application.Current.Resources["Router"] is MainViewModel nav &&
-                     nav?.NavigationService is NavigationServiceBase service &&
-                     service.Current is PatientsList page
-                     )
-                {
-                    page.SelectedInvoiceItem();
-                }*/
             }
             catch (Exception e)
             {
@@ -161,17 +145,10 @@ namespace B6CRM.ViewModels.ClientDir
             set { SetProperty(() => Employees, value); }
         }
 
-       /* public ObservableCollection<Advertising> Advertisings
-        {
-            get { return GetProperty(() => Advertisings); }
-            set { SetProperty(() => Advertisings, value); }
-        }*/
-
         public ObservableCollection<Client> Clients
         {
             get { return GetProperty(() => Clients); }
             set { SetProperty(() => Clients, value); }
         }
-
     }
 }

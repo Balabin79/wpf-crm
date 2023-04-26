@@ -26,8 +26,6 @@ namespace B6CRM.ViewModels
 
         public delegate void ClientCategoryChanges();
         public event ClientCategoryChanges EventClientCategoriesChanges;
-
-        private ClientsViewModel ClientsViewModel { get; set; }
         
         public ClientCategoryViewModel()
         {
@@ -92,11 +90,6 @@ namespace B6CRM.ViewModels
                             db.Update(i);
                         }
                         db.SaveChanges();
-                        //EventClientCategoriesChanges?.Invoke();
-
-                        //ClientsViewModel.ClientInfoViewModel.ClientCategory = null;
-                       // ClientsViewModel.Model.ClientCategory = null;
-                        
 
                         db.Entry(model).State = EntityState.Deleted;
                     }
