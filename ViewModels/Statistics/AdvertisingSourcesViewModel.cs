@@ -103,7 +103,6 @@ namespace B6CRM.ViewModels.Statistics
                     dateTo = new DateTimeOffset(dateTimeTo).ToUnixTimeSeconds();
                 }
 
-
                 if (int.TryParse(InvoicesSearchMode?.ToString(), out int paimentStatus)) if (paimentStatus == 2) paimentStatus = 0;
 
                 var invoices = InvoicesSearchMode != null ?

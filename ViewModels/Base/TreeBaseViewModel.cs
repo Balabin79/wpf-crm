@@ -149,6 +149,7 @@ namespace B6CRM.ViewModels.Base
                     DelItems.Add(node);
                 }
             }
+
             db.Entry(model).State = EntityState.Deleted;
             DelItems.Add(model);
         }

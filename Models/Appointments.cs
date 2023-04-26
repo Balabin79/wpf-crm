@@ -1,5 +1,6 @@
 using B6CRM.Models.Base;
 using DevExpress.Mvvm;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,6 +30,8 @@ namespace B6CRM.Models
         public string LocationName { get; set; }
 
         public int? ServiceId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Service Service { get; set; }
 
         public int? LocationId { get; set; }
