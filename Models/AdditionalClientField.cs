@@ -1,5 +1,6 @@
 using B6CRM.Models.Base;
 using DevExpress.Mvvm;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,6 +22,7 @@ namespace B6CRM.Models
             set { SetProperty(() => SysName, value?.Trim()); }
         }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public TemplateType TypeValue
         {
             get { return GetProperty(() => TypeValue); }

@@ -1,5 +1,6 @@
 using B6CRM.Models.Base;
 using DevExpress.Mvvm;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -29,12 +30,15 @@ namespace B6CRM.Models
         }
 
         public int? PlanStatusId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public PlanStatus PlanStatus { get; set; }
 
         public string Name { get; set; }
 
         public int? IsMovedToInvoice { get; set; } = 0;
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Client Client
         {
             get { return GetProperty(() => Client); }

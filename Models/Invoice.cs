@@ -1,5 +1,6 @@
 using B6CRM.Models.Base;
 using DevExpress.Mvvm;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -33,6 +34,8 @@ namespace B6CRM.Models
             get { return GetProperty(() => AdvertisingId); }
             set { SetProperty(() => AdvertisingId, value); }
         }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Advertising Advertising
         {
             get { return GetProperty(() => Advertising); }
@@ -42,6 +45,7 @@ namespace B6CRM.Models
         public string Number { get; set; }
         public int? Paid { get; set; } = 0;
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Client Client
         {
             get { return GetProperty(() => Client); }
@@ -49,6 +53,7 @@ namespace B6CRM.Models
         }
         public int? ClientId { get; set; }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Employee Employee
         {
             get { return GetProperty(() => Employee); }
@@ -62,6 +67,7 @@ namespace B6CRM.Models
             set { SetProperty(() => InvoiceItems, value); }
         }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Discount Discount
         {
             get { return GetProperty(() => Discount); }

@@ -1,18 +1,24 @@
 ﻿using B6CRM.Infrastructures.Converters;
+using B6CRM.Infrastructures.Extensions.Notifications;
 using B6CRM.Models;
 using B6CRM.Services;
+using B6CRM.Services.Files;
 using B6CRM.ViewModels.AdditionalFields;
 using B6CRM.Views.AdditionalFields;
 using B6CRM.Views.PatientCard;
 using B6CRM.Views.WindowForms;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using DevExpress.XtraBars;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -258,6 +264,7 @@ namespace B6CRM.ViewModels.ClientDir
         public AdvertisingViewModel AdvertisingViewModel { get; set; }
         public ClientCategoryViewModel ClientCategoryViewModel { get; set; }
         public AdditionalClientFieldsViewModel AdditionalClientFieldsViewModel { get; set; }
+        public string PathToUserFiles { get; private set; }
 
         [Command]
         public void OpenAdvertisingsWindow()
@@ -308,5 +315,20 @@ namespace B6CRM.ViewModels.ClientDir
             }
         }
         #endregion
+
+        //Удаление карты клиента
+        [Command]
+        public void Delete()
+        {
+            if (ContextLeftList is MainInfoViewModel vm) 
+            { 
+                vm.EventClientDeleted += DeleteClientCard;
+                vm.Delete();
+                return; 
+            }
+            var vm2 = new MainInfoViewModel(Client);
+            vm2.EventClientDeleted += DeleteClientCard;
+            vm2.Delete();
+        }
     }
 }

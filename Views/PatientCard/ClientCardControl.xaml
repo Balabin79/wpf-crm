@@ -179,11 +179,11 @@
                         <dxb:BarButtonItem  
                             Content="Удалить" Style="{Binding}"
                             DataContext="{StaticResource ClientCardDispatcher}"
-                                           IsEnabled="{DXBinding Expr='!IsReadOnly and Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                           Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                           GlyphSize="Custom"
-                                           CustomGlyphSize="21,21"   
-                                           Command="{Binding Path=Context.DeleteCommand}"/>
+                            IsEnabled="{DXBinding Expr='!IsReadOnly and Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
+                            GlyphSize="Custom"
+                            CustomGlyphSize="21,21"   
+                            Command="{Binding DeleteCommand}"/>
                         <dxb:BarItemLinkSeparator />
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>

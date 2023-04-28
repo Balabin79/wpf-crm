@@ -1,4 +1,5 @@
 using B6CRM.Models.Base;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -21,7 +22,9 @@ namespace B6CRM.Models
             set { SetProperty(() => Code, value); }
         }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Plan Plan { get; set; }
+
         public int? PlanId { get; set; }
 
         public int? Count

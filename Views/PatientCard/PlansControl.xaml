@@ -132,7 +132,7 @@
             </StackPanel>
             <DockPanel>
                 <dxe:ButtonEdit Width="285"  AllowDefaultButton="false" Margin="0 5 0 5" NullText="Название плана" DockPanel.Dock="Left"
-                                EditValue="{Binding InvoiceNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
+                                EditValue="{Binding PlanNameSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" NullValueButtonPlacement="EditBox" />
                 
 
                 <dx:SimpleButton Command="{Binding SearchCommand}" DockPanel.Dock="Right" 

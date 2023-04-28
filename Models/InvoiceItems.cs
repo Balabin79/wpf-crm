@@ -1,4 +1,5 @@
 using B6CRM.Models.Base;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -19,7 +20,9 @@ namespace B6CRM.Models
             set { SetProperty(() => Code, value); }
         }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Invoice Invoice { get; set; }
+
         public int? InvoiceId { get; set; }
 
         public int? Count

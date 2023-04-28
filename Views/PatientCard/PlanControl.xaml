@@ -563,7 +563,7 @@
                 </dxg:GridColumn.HeaderTemplate>
                 <dxg:GridColumn.CellTemplate>
                     <DataTemplate>
-                        <TextBlock Margin="0 3 0 0"  Text="{ DXBinding Expr='Row.Name', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
+                        <TextBlock Margin="0 3 0 0" Text="{ DXBinding Expr='Row.Name', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
                     </DataTemplate>
                 </dxg:GridColumn.CellTemplate>
                 <dxg:GridColumn.CellEditTemplate>

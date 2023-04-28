@@ -14,7 +14,6 @@ namespace B6CRM.Models
     {
         public string Name { get; set; }
 
-
         public string DateFrom
         {
             get { return GetProperty(() => DateFrom); }
@@ -31,7 +30,6 @@ namespace B6CRM.Models
                 SetProperty(() => DateFrom, value);
             }
         }
-
 
         public string DateTo
         {

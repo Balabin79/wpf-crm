@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace B6CRM.Models
 {
@@ -30,6 +30,7 @@ namespace B6CRM.Models
         public string Note { get; set; }
         public int? IsInArchive { get; set; } = 0;
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public ClientCategory ClientCategory
         {
             get { return GetProperty(() => ClientCategory); }

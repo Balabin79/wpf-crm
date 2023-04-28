@@ -35,17 +35,25 @@ namespace B6CRM.Models
         public Service Service { get; set; }
 
         public int? LocationId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public LocationAppointment Location { get; set; }
 
         public int? ClientInfoId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Client ClientInfo { get; set; }
 
         public int? EmployeeId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public Employee Employee { get; set; }
 
         public int LabelId { get; set; }
 
         public int? StatusId { get; set; }
+
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public AppointmentStatus Status { get; set; }
 
 

@@ -1,4 +1,5 @@
 using B6CRM.Models.Base;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace B6CRM.Models
@@ -20,6 +21,7 @@ namespace B6CRM.Models
             set { SetProperty(() => TelegramBotId, value); }
         }
 
+        [DeleteBehavior(DeleteBehavior.SetNull)]
         public TelegramBot TelegramBot
         {
             get { return GetProperty(() => TelegramBot); }
