@@ -87,6 +87,7 @@
             this.baseControlStyle = new DevExpress.XtraReports.UI.XRControlStyle();
             this.sqlDataSource2 = new DevExpress.DataAccess.Sql.SqlDataSource(this.components);
             this.sum = new DevExpress.XtraReports.UI.CalculatedField();
+            this.parameter_logo = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this.detailTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.invoiceInfoTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).BeginInit();
@@ -649,6 +650,13 @@
             this.sum.Expression = "[Count]*[Price]";
             this.sum.Name = "sum";
             // 
+            // parameter_logo
+            // 
+            this.parameter_logo.AllowNull = true;
+            this.parameter_logo.Description = "parameter_logo";
+            this.parameter_logo.Name = "parameter_logo";
+            this.parameter_logo.Visible = false;
+            // 
             // Report2
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -667,6 +675,8 @@
             this.DataSource = this.sqlDataSource2;
             this.Font = new System.Drawing.Font("Arial", 9.75F);
             this.Margins = new System.Drawing.Printing.Margins(101, 100, 100, 75);
+            this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.parameter_logo});
             this.StyleSheet.AddRange(new DevExpress.XtraReports.UI.XRControlStyle[] {
             this.baseControlStyle});
             this.Version = "21.2";
@@ -736,5 +746,6 @@
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell1;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell3;
         private DevExpress.XtraReports.UI.XRTableCell xrTableCell2;
+        private DevExpress.XtraReports.Parameters.Parameter parameter_logo;
     }
 }

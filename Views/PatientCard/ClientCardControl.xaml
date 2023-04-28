@@ -204,7 +204,6 @@
                             <Setter Property="TitleVisibility" Value="Collapsed" />
                         </Style>
                     </dxlc:LayoutGroup.GroupBoxStyle>
-
                     <tp:MainInfo 
                         DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{DXBinding Expr='@StaticResource(ClientCardDispatcher).UserControlName == `MainInfoControl` ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 

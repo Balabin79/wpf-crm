@@ -21,7 +21,7 @@ using System.Windows;
 using DevExpress.Xpf.Printing;
 using DevExpress.XtraReports.Parameters;
 using System.Diagnostics;
-
+using System.Threading.Tasks;
 
 namespace B6CRM.ViewModels.ClientDir
 {
@@ -40,6 +40,7 @@ namespace B6CRM.ViewModels.ClientDir
 
             Client = client?.Id > 0 ? db.Clients.FirstOrDefault(f => f.Id == client.Id) : new Client();
             Load();
+            IsWaitIndicatorVisible = false;
         }
 
         #region Права на выполнение команд
@@ -323,40 +324,57 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
-        [Command]
-        public void PrintPlan(object p)
+        [AsyncCommand]
+        public async Task PrintPlan(object p)
         {
             try
             {
                 if (p is PageIntCommandParameters conv)
                 {
-                    Report2 report = new Report2();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+                    IsWaitIndicatorVisible = true;
 
-                    if (report?.DataSource is SqlDataSource source)
+                    var result = await Task<Report2>.Run(() =>
                     {
-                        string connectionString = db.Database.GetConnectionString();
-                        var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
-                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
-                    }
 
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                        Report2 report = new Report2();
+
+                        var parameter = new Parameter()
+                        {
+                            Name = "Id",
+                            Description = "Id:",
+                            Type = typeof(int),
+                            Value = conv.Param,
+                            Visible = false
+                        };
+
+                        report.RequestParameters = false;
+
+                        report.Parameters.Add(parameter);
+                        report.FilterString = "[Id] = [Parameters.Id]";
+
+
+                        report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+
+                        report.Parameters["parameter_logo"].Visible = false;
+
+
+                        if (report?.DataSource is SqlDataSource source)
+                        {
+                            string connectionString = db.Database.GetConnectionString();
+                            var provider = "XpoProvider=SQLite;";
+                            if (Config.DbType == 1) provider = "XpoProvider=Postgres;";
+                            source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
+                        }
+                        return report;
+                    });
+
+                    IsWaitIndicatorVisible = false;
+                    PrintHelper.ShowPrintPreview(conv.Page, result);
                 }
             }
             catch (Exception e)
             {
+                IsWaitIndicatorVisible = false;
                 Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
             }
         }
@@ -383,6 +401,12 @@ namespace B6CRM.ViewModels.ClientDir
         {
             get { return GetProperty(() => SelectedItem); }
             set { SetProperty(() => SelectedItem, value); }
+        }
+
+        public bool IsWaitIndicatorVisible
+        {
+            get { return GetProperty(() => IsWaitIndicatorVisible); }
+            set { SetProperty(() => IsWaitIndicatorVisible, value); }
         }
     }
 }

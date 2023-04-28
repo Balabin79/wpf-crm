@@ -73,7 +73,9 @@ namespace B6CRM.ViewModels.ClientDir
         public void DeleteClientCard() // перезагрузка карты и контекста, вызываемая по событию удаления карты
         {
             CreateClient();
-            if (ContextLeftList is ClientsListViewModel) ToggleList("ClientsList");           
+            if (ContextLeftList is ClientsListViewModel) ToggleList("ClientsList");
+            if (ContextLeftList is InvoicesListViewModel) ToggleList("ClientsInvoices");
+            if (ContextLeftList is PlansListViewModel) ToggleList("ClientsPlans");
         }
 
         public string ActiveLeftPanel
@@ -215,6 +217,8 @@ namespace B6CRM.ViewModels.ClientDir
         {
             if (client != null) Client = client;
             if (ContextLeftList is ClientsListViewModel) ToggleList("ClientsList");
+            if (ContextLeftList is InvoicesListViewModel) ToggleList("ClientsInvoices");
+            if (ContextLeftList is PlansListViewModel) ToggleList("ClientsPlans");
         }
 
         //вызывается по событию когда изменяются данные в ClientInvoicesControl

@@ -20,6 +20,7 @@ using B6CRM.Views.WindowForms;
 using B6CRM.Infrastructures.Converters;
 using DevExpress.Xpf.Printing;
 using B6CRM.Models.Base;
+using DevExpress.Xpf.RichEdit;
 
 namespace B6CRM.ViewModels
 {
@@ -37,7 +38,7 @@ namespace B6CRM.ViewModels
             Clients = db.Clients.Where(f => f.IsInArchive != 1).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Client>();
 
             Employees = db.Employes.Where(f => f.IsInArchive != 1).OrderBy(f => f.LastName).ToObservableCollection() ?? new ObservableCollection<Employee>();
-
+            IsWaitIndicatorVisible = false;
             //foreach (var i in Employees) i.IsVisible = false;
             LoadDocuments();            
         }
@@ -127,9 +128,10 @@ namespace B6CRM.ViewModels
                 string fileName = p?.ToString();
                 if (fileName != null && File.Exists(fileName))
                 {
+                    //IsWaitIndicatorVisible
                     DocWindow = new IDSWindow() { DataContext = this };
-                    DocWindow.RichEdit.LoadDocument(fileName, GetDocumentFormat(fileName));
                     DocWindow.Show();
+                    DocWindow.RichEdit.LoadDocument(fileName, GetDocumentFormat(fileName));                    
                 }
             }
             catch(Exception e)
@@ -225,19 +227,22 @@ namespace B6CRM.ViewModels
         {
             try
             {
-                if (p is FileInfo file && file != null )
+              /*  if (p is FileInfo file && file != null )
                 {
                     DocWindow = new IDSWindow() { DataContext = this };
+ 
                     var richEdit = DocWindow.RichEdit;
                     richEdit.ReadOnly = true;
                     richEdit.LoadDocument(file.FullName, GetDocumentFormat(file.FullName));
                     richEdit.DocumentSaveOptions.CurrentFileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), file.Name);
-                    richEdit.RtfText = new RtfParse(richEdit.RtfText, ClientSearch, EmployeeSearch).Run();
+
+                    richEdit.RtfText = new RtfParse(richEdit.RtfText, ClientSearch, EmployeeSearch).Run();                  
                     DocWindow.Show();
-                }
+                }*/
             }
             catch(Exception e)
             {
+                //IsWaitIndicatorVisible = false;
                 Log.ErrorHandler(e, "Ошибка при попытке открыть форму документа!", true);
             }
         }
@@ -269,8 +274,8 @@ namespace B6CRM.ViewModels
         }
 
         #region Печать
-        [Command]
-        public void Print(object p)
+        [AsyncCommand]
+        public async Task Print(object p)
         {
             var pathToFile = p?.ToString();
 
@@ -278,21 +283,34 @@ namespace B6CRM.ViewModels
 
             if (File.Exists(pathToFile))
             {
-                RichEditDocumentServer docServer = new RichEditDocumentServer();
+                IsWaitIndicatorVisible = true;
 
-                //Pass the document content to the server  
-                docServer.LoadDocument(pathToFile, GetDocumentFormat(pathToFile));
-                docServer.HtmlText = new RtfParse(docServer.HtmlText, ClientSearch, EmployeeSearch).Run();
+                try
+                {
+                    var printableComponent = await Task<LegacyPrintableComponentLink>.Run(() => {
+                        RichEditDocumentServer docServer = new RichEditDocumentServer();
 
-                //Create a new component link 
-                LegacyPrintableComponentLink printableComponent = new LegacyPrintableComponentLink(docServer);
+                        //Pass the document content to the server  
+                        docServer.LoadDocument(pathToFile, GetDocumentFormat(pathToFile));
+                        docServer.HtmlText = new RtfParse(docServer.HtmlText, ClientSearch, EmployeeSearch).Run();
 
-                //Create a document to print 
-                printableComponent.CreateDocument(true);
-                printableComponent.ShowPrintPreview(new DocumentPrint());
+                        //Create a new component link 
+                        LegacyPrintableComponentLink printableComponent = new LegacyPrintableComponentLink(docServer);
+
+                        return printableComponent;
+                    });
+
+                    IsWaitIndicatorVisible = false;
+                    //Create a document to print 
+                    printableComponent.CreateDocument(true);
+                    printableComponent.ShowPrintPreview(new DocumentPrint());
+                }
+                catch
+                {
+                    IsWaitIndicatorVisible = false;
+                }
             }
         }
-
 
         public Employee EmployeeSearch { get; set; }
         public Client ClientSearch { get; set; }
@@ -310,14 +328,15 @@ namespace B6CRM.ViewModels
             set { SetProperty(() => Employees, value); }
         }
 
-
         virtual protected string PathToDir { get; }
         virtual protected string Guid { get; }
 
-
         public IDSWindow DocWindow { get; set; }
 
-
-
+        public bool IsWaitIndicatorVisible
+        {
+            get { return GetProperty(() => IsWaitIndicatorVisible); }
+            set { SetProperty(() => IsWaitIndicatorVisible, value); }
+        }
     }
 }

@@ -23,6 +23,8 @@ using System.Diagnostics;
 using Telegram.Bot.Types.Payments;
 using Invoice = B6CRM.Models.Invoice;
 using static B6CRM.ViewModels.ClientDir.ClientInvoicesViewModel;
+using System.Threading.Tasks;
+using DevExpress.Xpf.Data.Native;
 
 namespace B6CRM.ViewModels.ClientDir
 {
@@ -45,6 +47,7 @@ namespace B6CRM.ViewModels.ClientDir
             Prices = db.Services.Where(f => f.IsHidden != 1)?.OrderBy(f => f.Sort).ToArray();
             LoadAdvertisings();
             LoadEmployees();
+            IsWaitIndicatorVisible = false;
         }
 
         #region Права на выполнение команд
@@ -300,44 +303,52 @@ namespace B6CRM.ViewModels.ClientDir
         #endregion
 
         #region Печать счета
-        [Command]
-        public void PrintInvoice(object p)
+        [AsyncCommand]
+        public async Task PrintInvoice(object p)
         {
             try
             {
                 if (p is PageIntCommandParameters conv)
                 {
-                    ServicesInvoiceReport report = new ServicesInvoiceReport();
-                    var parameter = new Parameter()
-                    {
-                        Name = "Id",
-                        Description = "Id:",
-                        Type = typeof(int),
-                        Value = conv.Param,
-                        Visible = false
-                    };
-                    report.RequestParameters = false;
-                    report.Parameters.Add(parameter);
-                    report.FilterString = "[Id] = [Parameters.Id]";
-                    report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
+                    IsWaitIndicatorVisible = true;
 
-                    if (report?.DataSource is SqlDataSource source)
-                    {
-                        string connectionString = db.Database.GetConnectionString();
-                        var provider = "XpoProvider=SQLite;";
-                        if (Config.DbType == 1)
+                    var result = await Task<ServicesInvoiceReport>.Run(() => {
+
+                        ServicesInvoiceReport report = new ServicesInvoiceReport();
+                        var parameter = new Parameter()
                         {
-                            // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
-                            provider = "XpoProvider=Postgres;";
-                        }
-                        source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
-                    }
+                            Name = "Id",
+                            Description = "Id:",
+                            Type = typeof(int),
+                            Value = conv.Param,
+                            Visible = false
+                        };
+                        report.RequestParameters = false;
+                        report.Parameters.Add(parameter);
+                        report.FilterString = "[Id] = [Parameters.Id]";
+                        report.Parameters["parameter_logo"].Value = Config.GetPathToLogo();
 
-                    PrintHelper.ShowPrintPreview(conv.Page, report);
+                        if (report?.DataSource is SqlDataSource source)
+                        {
+                            string connectionString = db.Database.GetConnectionString();
+                            var provider = "XpoProvider=SQLite;";
+                            if (Config.DbType == 1)
+                            {
+                                // connectionString = "Server=127.0.0.1;Port=5433;User ID=postgres;Password=657913;Database=B6Crm;Encoding=UNICODE";
+                                provider = "XpoProvider=Postgres;";
+                            }
+                            source.ConnectionParameters = new CustomStringConnectionParameters(provider + connectionString);
+                        }
+                        return report;
+                    });
+
+                    IsWaitIndicatorVisible = false;
+                    PrintHelper.ShowPrintPreview(conv.Page, result);
                 }
             }
             catch (Exception e)
             {
+                IsWaitIndicatorVisible = false;
                 Log.ErrorHandler(e, "Ошибка при загрузке счета на печать!", true);
             }
         }
@@ -417,5 +428,11 @@ namespace B6CRM.ViewModels.ClientDir
 
         //это поле для привязки (используется в команде импорта данных)
         public ApplicationContext Db { get; set; }
+
+        public bool IsWaitIndicatorVisible
+        {
+            get { return GetProperty(() => IsWaitIndicatorVisible); }
+            set { SetProperty(() => IsWaitIndicatorVisible, value); }
+        }
     }
 }

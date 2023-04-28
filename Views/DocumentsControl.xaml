@@ -44,7 +44,6 @@
 
             <DockPanel LastChildFill="True">
 
-
                 <dxg:LookUpEdit
                     Width="200" Margin="0 0 10 0"
                     EditValue="{Binding ClientSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -99,14 +98,8 @@
                     </dxg:LookUpEdit.StyleSettings>
                 </dxg:LookUpEdit>
 
-
-
-
-
                 <StackPanel  DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
             
-          
-
                     <dxb:BarContainerControl  BarItemDisplayMode="ContentAndGlyph" >
                     <dxb:ToolBarControl ShowDragWidget="False" Caption="File" Background="Transparent"
                                         AllowCustomizationMenu="False" AllowQuickCustomization="False" BarItemDisplayMode="ContentAndGlyph">
@@ -296,7 +289,21 @@
                     </dxg:TableView>
                 </dxg:GridControl.View>
             </dxg:GridControl>
-
+            <dx:WaitIndicator 
+                Grid.Row="1"
+                x:Name="WaitIndicator"
+                DeferedVisibility="{Binding IsWaitIndicatorVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                Content="Загружаем документ ..." 
+                VerticalAlignment="Center" >
+                <dx:WaitIndicator.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Ожидайте ответа" FontSize="20"/>
+                            <TextBlock Text="{Binding}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </dx:WaitIndicator.ContentTemplate>
+            </dx:WaitIndicator>
         </Grid>
     </Border>
 </UserControl>

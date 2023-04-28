@@ -94,7 +94,6 @@ namespace B6CRM.ViewModels.ClientDir
         }
         #endregion
 
-
         #region Печать
         public ObservableCollection<PrintCondition> PrintConditions
         {
@@ -225,6 +224,5 @@ namespace B6CRM.ViewModels.ClientDir
             get { return GetProperty(() => Clients); }
             set { SetProperty(() => Clients, value); }
         }
-
     }
 }

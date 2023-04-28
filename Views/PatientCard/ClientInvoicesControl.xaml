@@ -86,11 +86,12 @@
                                 </dxb:BarContainerControl>
 
                             </DockPanel>
+                            
                             <dxg:GridControl Grid.Row="1"
                                     x:Name="ServiceItems" 
                                     CustomSummary="CustomSummary"                  
                                     ItemsSource="{Binding Path=InvoiceItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                    MinHeight="50" VerticalAlignment="Stretch" MaxHeight="1500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    MinHeight="50" VerticalAlignment="Stretch" MaxHeight="3500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                                 <dxg:GridControl.Columns>
                                     <dxg:GridColumn  Width="9*" MinWidth="300" FieldName="Name" x:Name="ServiceField">
@@ -358,6 +359,21 @@
                                     <dxg:GridSummaryItem DisplayFormat=" {0:c2}" FieldName="Price" SummaryType="Custom" />
                                 </dxg:GridControl.TotalSummary>
                             </dxg:GridControl>
+                            <dx:WaitIndicator 
+                                Grid.Row="1"
+                                x:Name="WaitIndicator"
+                                DeferedVisibility="{Binding ElementName=UTreatmentPlan, Path=DataContext.IsWaitIndicatorVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                Content="Загружаем счет ..." 
+                                VerticalAlignment="Center" >
+                                <dx:WaitIndicator.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="Ожидайте ответа" FontSize="20"/>
+                                            <TextBlock Text="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </dx:WaitIndicator.ContentTemplate>
+                            </dx:WaitIndicator>
                         </Grid>
 
                     </DataTemplate>
