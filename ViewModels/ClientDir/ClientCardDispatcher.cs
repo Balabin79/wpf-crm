@@ -35,6 +35,8 @@ namespace B6CRM.ViewModels.ClientDir
         public event ReadOnlyChanged EventReadOnlyChanged;
 
         #region Права на выполнение команд
+        public bool CanDelete() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsDelitable;
+
         public bool CanEditable() => Client?.Id > 0;
         public bool CanOpenFormFields() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAddFieldsEditable;
         public bool CanOpenAdvertisingsWindow() => ((UserSession)Application.Current.Resources["UserSession"]).ClientsAdvertisingEditable;

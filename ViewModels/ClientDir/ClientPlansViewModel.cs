@@ -45,7 +45,7 @@ namespace B6CRM.ViewModels.ClientDir
 
         #region Права на выполнение команд
         public bool CanAddPlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
-        public bool CanSavePlan() => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
         public bool CanDeletePlan(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanDelitable;
 
         public bool CanAddPlanItem(object p) => ((UserSession)Application.Current.Resources["UserSession"]).PlanEditable;
