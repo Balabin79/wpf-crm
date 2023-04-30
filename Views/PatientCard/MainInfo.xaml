@@ -32,28 +32,27 @@
 
         
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto"  >
-        <Grid x:Name="gridMainInfo">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
 
-            <dxlc:LayoutGroup Name="layoutGroup1" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="0" Margin="0 0 10 0" >
+        <Grid x:Name="gridMainInfo">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">    
+        <dxlc:LayoutGroup ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"  Orientation="Horizontal" ItemLabelsAlignment="Local"> 
+          
+            <dxlc:LayoutGroup  
+            Name="layoutGroup1" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local"  >
                 <dxlc:LayoutGroup.HeaderTemplate>
                     <DataTemplate >
                         <TextBlock Text="Общая информация" VerticalAlignment="Center" Height="22"/>
                     </DataTemplate>
                 </dxlc:LayoutGroup.HeaderTemplate>
+            
                 <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
 
 
-                    <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
+                <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
 
                         <dxlc:LayoutItem Label="*Фамилия:" LabelPosition="Top" IsRequired="True" >
                             <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
@@ -70,7 +69,8 @@
                     </dxlc:LayoutGroup>
 
                 </dxlc:LayoutGroup>
-                <dxlc:LayoutGroup Orientation="Horizontal">
+
+            <dxlc:LayoutGroup Orientation="Horizontal">
                     <dxlc:LayoutItem Label="Дата рождения:" LabelPosition="Top">
                         <dxe:DateEdit Margin="0,0,8,0" Mask="D" MaskType="DateTime" 
                                       DisplayFormatString="D"  x:Name="DateEdit"
@@ -99,8 +99,8 @@
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
 
-            <dxlc:LayoutGroup Name="layoutGroup11" View="GroupBox" Orientation="Vertical"
-                                      ItemLabelsAlignment="Local" Grid.Row="0" Grid.Column="1" >
+            <dxlc:LayoutGroup 
+                Name="layoutGroup11" View="GroupBox" Orientation="Vertical" ItemLabelsAlignment="Local" >
                 <dxlc:LayoutGroup.HeaderTemplate>
                     <DataTemplate >
                         <TextBlock Text="Дополнительно" VerticalAlignment="Center" Height="22"/>
@@ -161,8 +161,13 @@
                 </dxlc:LayoutGroup>
                 
             </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+        </ScrollViewer>
 
-            <dxlc:LayoutGroup  
+        <dxlc:LayoutGroup
+                ScrollBars="Auto"
+                ScrollViewer.CanContentScroll="True" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
                 Grid.Row="2" 
                 Grid.ColumnSpan="2"
                 Margin="0 10 0 0" 
@@ -208,7 +213,9 @@
                     </DataTemplate>
                 </dxlc:LayoutGroup.HeaderTemplate>
 
-                <dxg:GridControl  
+                <dxg:GridControl 
+                ScrollViewer.CanContentScroll="True" 
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ItemsSource="{Binding Files, Mode=TwoWay}" 
                     DataContext="{Binding}" 
                     Name="gridControl"
@@ -290,6 +297,7 @@
                     </dxg:GridControl.View>
                 </dxg:GridControl>
             </dxlc:LayoutGroup>
+              
         </Grid>
-    </ScrollViewer>
+
 </UserControl>

@@ -205,6 +205,7 @@
                         </Style>
                     </dxlc:LayoutGroup.GroupBoxStyle>
                     <tp:MainInfo 
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                         DataContext="{Binding Source={StaticResource ClientCardDispatcher}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{DXBinding Expr='@StaticResource(ClientCardDispatcher).UserControlName == `MainInfoControl` ? `Visible` : `Collapsed`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         x:Name="MainInfoControl" />
