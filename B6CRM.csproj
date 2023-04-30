@@ -13,6 +13,12 @@
     </DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Views\Invoices\**" />
+    <EmbeddedResource Remove="Views\Invoices\**" />
+    <None Remove="Views\Invoices\**" />
+    <Page Remove="Views\Invoices\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Remove="Reports\Report1.cs" />
     <Compile Remove="Reports\Report1.Designer.cs" />
   </ItemGroup>
@@ -488,8 +494,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Invoices\" />
   </ItemGroup>
 </Project>

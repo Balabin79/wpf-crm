@@ -113,64 +113,15 @@
                 </ContentControl>
             </dxnav:TileBarItem>
 
-            <dxnav:TileBarItem  
-                Size="Auto" Background="#f5f5f5" x:Name="stat" Click="stat_Click" >
+            <dxnav:TileBarItem Name="stat"
+                Command="{Binding NavigateCommand}" CommandParameter="B6CRM.Views.Statistic.MainControl"  Size="Auto" Background="#f5f5f5">
                 <ContentControl>
                     <StackPanel >
-                        <dx:DXImage Source="/Resources/Icons/svg/graph_rising.svg" Width="30" Height="30"/>
+                        <dx:DXImage  Source="/Resources/Icons/svg/graph_rising.svg" Width="30" Height="30"/>
                         <TextBlock Text="Статистика" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
-                <dxnav:TileBarItem.FlyoutContentTemplate >
-                    <DataTemplate >
-                        <dxnav:TileBar Background="#FFE8E8E8" Height="90" Padding="5"  HorizontalAlignment="Center"  >
-                                <dxnav:TileBarItem 
-                                DataContext="{Binding ElementName=stat, Path=DataContext}"
-                                Click="stat_Click"
-                                Command="{Binding NavigateCommand}" 
-                                CommandParameter="B6CRM.Views.Statistic.LineControl" 
-                                 Size="Auto" Background="#f5f5f5">
-                                    <ContentControl>
-                                        <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/graph-line.svg" Width="30" Height="30"/>
-                                            <TextBlock Text="Общий доход" Foreground="#666666" FontWeight="DemiBold"/>
-                                        </StackPanel>
-                                    </ContentControl>
-                                </dxnav:TileBarItem>
-
-                                <dxnav:TileBarItem 
-                                Click="stat_Click"
-                                DataContext="{Binding ElementName=stat, Path=DataContext}"
-                                Command="{Binding NavigateCommand}" 
-                                CommandParameter="B6CRM.Views.Statistic.ProfitByEmployeesControl" 
-                                 Size="Auto" Background="#f5f5f5">
-                                    <ContentControl>
-                                        <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/graph-bar.svg" Width="30" Height="30"/>
-                                            <TextBlock Text="Доход по врачам" Foreground="#666666" FontWeight="DemiBold"/>
-                                        </StackPanel>
-                                    </ContentControl>
-                                </dxnav:TileBarItem>
-
-                                <dxnav:TileBarItem
-                                Click="stat_Click"
-                                DataContext="{Binding ElementName=stat, Path=DataContext}"
-                                Command="{Binding NavigateCommand}" 
-                                CommandParameter="B6CRM.Views.Statistic.AdvertisingSourcesControl" 
-                                 Size="Auto" Background="#f5f5f5">
-                                    <ContentControl>
-                                        <StackPanel >
-                                            <dx:DXImage Source="/Resources/Icons/svg/graph-pie.svg" Width="30" Height="30"/>
-                                            <TextBlock Text="Рекламные источники" Foreground="#666666" FontWeight="DemiBold"/>
-                                        </StackPanel>
-                                    </ContentControl>
-                                </dxnav:TileBarItem>
-                            </dxnav:TileBar>
-                    </DataTemplate>
-                    
-                </dxnav:TileBarItem.FlyoutContentTemplate>
             </dxnav:TileBarItem>
-
 
             <dxnav:TileBarItem Name="settingsBtn"
                 Command="{Binding NavigateCommand}" CommandParameter="B6CRM.Views.Settings.SettingsPage" Size="Auto" 
