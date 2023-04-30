@@ -81,8 +81,6 @@ namespace B6CRM
            Application.Current.Shutdown();         
         }
 
-        private void stat_Click(object sender, EventArgs e) => stat.IsSelected = true;
-
         private void Restart()
         {
             try

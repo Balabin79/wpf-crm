@@ -100,9 +100,12 @@
                 ContentPlacement="Inside" HorizontalAlignment="Right" CheckedStateContent="Кол-во счетов" UncheckedStateContent="Суммы по счетам" 
                                   IsChecked="{Binding IsCnt, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
-                    <dxb:ToolBarControl  ShowDragWidget="False" Caption="File" Background="Transparent"
+                    <dxb:ToolBarControl
+                        BarItemDisplayMode="ContentAndGlyph"
+                        ShowDragWidget="False" Caption="File" Background="Transparent"
                                 AllowCustomizationMenu="False" AllowQuickCustomization="False">
-                        <dxb:BarButtonItem 
+                        <dxb:BarButtonItem
+                            Style="{Binding}"
                                     Content="Печать"                                                            
                                     Glyph="{dx:DXImage SvgImages/XAF/Action_Printing_Print.svg}" 
                                     GlyphSize="Small"
