@@ -78,9 +78,11 @@
     <None Remove="Resources\Icons\svg\icon_key.svg" />
     <None Remove="Resources\Icons\svg\icon_key_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_lock_alt.svg" />
+    <None Remove="Resources\Icons\svg\icon_mail_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
     <None Remove="Resources\Icons\svg\icon_menu-square_alt2.svg" />
     <None Remove="Resources\Icons\svg\icon_menu.svg" />
+    <None Remove="Resources\Icons\svg\icon_mobile.svg" />
     <None Remove="Resources\Icons\svg\icon_toolbox_alt.svg" />
     <None Remove="Resources\Icons\svg\icon_tools.svg" />
     <None Remove="Resources\Icons\svg\icon_upload.svg" />
@@ -89,6 +91,7 @@
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
     <None Remove="Resources\Icons\svg\pencil-ruler.svg" />
+    <None Remove="Resources\Icons\svg\phone1.svg" />
     <None Remove="Resources\Icons\svg\preview.svg" />
     <None Remove="Resources\Icons\svg\question2.svg" />
     <None Remove="Resources\Icons\svg\question_2.svg" />
@@ -276,9 +279,11 @@
       <CopyToOutputDirectory>
       </CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Icons\svg\icon_mail_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_menu-circle_alt2.svg" />
     <Resource Include="Resources\Icons\svg\icon_menu-square_alt2.svg" />
     <Resource Include="Resources\Icons\svg\icon_menu.svg" />
+    <Resource Include="Resources\Icons\svg\icon_mobile.svg" />
     <Resource Include="Resources\Icons\svg\icon_toolbox_alt.svg" />
     <Resource Include="Resources\Icons\svg\icon_tools.svg" />
     <Resource Include="Resources\Icons\svg\icon_upload.svg" />
@@ -302,6 +307,7 @@
     <Resource Include="Resources\Icons\svg\pen.svg" />
     <Resource Include="Resources\Icons\svg\pencil-ruler.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
+    <Resource Include="Resources\Icons\svg\phone1.svg" />
     <Resource Include="Resources\Icons\svg\plus-add.svg" />
     <Resource Include="Resources\Icons\svg\plus.svg" />
     <Resource Include="Resources\Icons\svg\podcast.svg" />

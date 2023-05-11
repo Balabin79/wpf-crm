@@ -80,25 +80,6 @@
                         </dxb:BarLinkContainerItem>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
-
-                <dxb:BarContainerControl DockPanel.Dock="Right" HorizontalAlignment="Right">
-                    <dxb:ToolBarControl Background="Transparent"
-                            x:Name="fileToolBar" ShowDragWidget="False" Caption="File" AllowCustomizationMenu="False" AllowQuickCustomization="False"
-                            BarItemDisplayMode="Default">
-
-                        <dxb:BarButtonItem 
-                            Style="{Binding}"
-                            Content="Сохранить"
-                            DataContext="{StaticResource vm}"                                         
-                            Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
-                            GlyphSize="Custom"
-                            CustomGlyphSize="21,21" 
-                            Command="{Binding Path=Context.SaveCommand}"/>
-                        <dxb:BarItemLinkSeparator />
-
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-
             </DockPanel>
 
             <dxlc:LayoutControl  

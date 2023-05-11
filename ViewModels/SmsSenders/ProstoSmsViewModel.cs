@@ -40,7 +40,7 @@ namespace B6CRM.ViewModels.SmsSenders
         }
 
         #region Права на выполнение команд
-        public bool CanAdd(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDelitable;
         public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
         #endregion
@@ -69,11 +69,10 @@ namespace B6CRM.ViewModels.SmsSenders
 
         #region Рассылки
         [Command]
-        public void Add(object p)
+        public void Add()
         {
             try
             {
-
                 var date = DateTime.Now;
                 var model = new Sms
                 {
@@ -83,7 +82,6 @@ namespace B6CRM.ViewModels.SmsSenders
                 db.Sms.Add(model);
                 if (db.SaveChanges() > 0)
                 {
-                    //ClientInvoices.Add(model);
                     Load();
                     if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
@@ -131,30 +129,32 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             try
             {
-                if (p is Invoice invoice)
+                if (p is Sms sms)
                 {
-                    if (invoice.Id > 0)
+                    if (sms.Id > 0)
                     {
                         var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить рассылку?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                         if (response.ToString() == "No") return;
 
-                        invoice.InvoiceItems = null;
-                        db.InvoiceItems.Where(f => f.InvoiceId == invoice.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
-                        db.Entry(invoice).State = EntityState.Deleted;
+                        sms.Employee = null;
+                        sms.Channel = null;
+                        sms.ClientCategory = null;
+                        sms.SendingStatus = null;
+
+                        db.SmsRecipients.Where(f => f.SmsId == sms.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.Entry(sms).State = EntityState.Deleted;
 
                     }
                     else
                     {
-                        db.Entry(invoice).State = EntityState.Detached;
+                        db.Entry(sms).State = EntityState.Detached;
                     }
                     if (db.SaveChanges() > 0)
                     {
                         new Notification() { Content = "Рассылка удалена из базы данных!" }.run();
-                    }
 
-                    //удаляем в списках клиента
-                    //var clientInv = ClientInvoices.FirstOrDefault(f => f.Guid == invoice.Guid);
-                    //if (clientInv != null) ClientInvoices.Remove(clientInv);
+                    }
+                    Load();
                 }
             }
             catch (Exception e)

@@ -223,9 +223,8 @@
 
                                             <dxb:BarButtonItem
                                                             Content="Удалить" 
-                                                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                             GlyphSize="Small"
-                                                            Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}" 
+                                                            Command="{Binding ElementName=view, Path=DataContext.DeleteItemCommand}" 
                                                             CommandParameter="{Binding RowData.Row, Mode=OneWay}">
                                                 <dxb:BarButtonItem.GlyphTemplate>
                                                     <DataTemplate>
@@ -289,9 +288,8 @@
                                 <dxb:BarButtonItem 
                                                     Content="Удалить" 
                                                     Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                     KeyGesture="Delete"     
-                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceItemCommand}"
+                                                    Command="{Binding ElementName=view, Path=DataContext.DeleteItemCommand}"
                                                     CommandParameter="{Binding ElementName=ServiceItems, Path=CurrentItem}"/>
                             </dxg:TableView.RowCellMenuCustomizations>
 
@@ -403,35 +401,43 @@
 
                                     <dxb:BarButtonItem 
                                         Style="{Binding}"
-                                Command="{Binding ElementName=grid, Path=DataContext.AddCommand}" 
-                                CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                Glyph="/Resources/Icons/svg/telegram-plane.svg"
-                                Content="Создать рассылку" 
-                                />
+                                        Command="{Binding ElementName=grid, Path=DataContext.AddCommand}" 
+                                        Glyph="/Resources/Icons/svg/telegram-plane.svg"
+                                        Content="Создать рассылку" />
+                                    
+                                    <dxb:BarItemLinkSeparator/>
 
                                     <dxb:BarButtonItem 
-                                Content="Все рассылки"
-                                IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="1"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
+                                        Style="{Binding}"
+                                        Content="Сохранить"                                       
+                                        Glyph="{dx:DXImage SvgImages/Outlook Inspired/Save.svg}"
+                                        Command="{Binding ElementName=grid, Path=DataContext.SaveCommand}" />
+                                    
+                                    <dxb:BarItemLinkSeparator/>
+                                    
+                                    <dxb:BarButtonItem 
+                                        Content="Все рассылки"
+                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        GlyphSize="Small"
+                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                        CommandParameter="1"
+                                        Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
 
                                     <dxb:BarButtonItem 
-                                Content="Отправленные" 
-                                IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="0"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
+                                        Content="Отправленные" 
+                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        GlyphSize="Small"
+                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                        CommandParameter="0"
+                                        Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
                                     <dxb:BarButtonItem 
-                                Content="Не отправленные"
-                                IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                                GlyphSize="Small"
-                                Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                CommandParameter="-1"
-                                Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
+                                        Content="Не отправленные"
+                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        GlyphSize="Small"
+                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
+                                        CommandParameter="-1"
+                                        Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
 
                                 </dxb:ToolBarControl>
                             </dxb:BarContainerControl>
@@ -468,19 +474,19 @@
                                 <dxb:BarButtonItem 
                             Command="{Binding ElementName=grid, Path=DataContext.AddCommand}" 
                             CommandParameter="{Binding ElementName=UTreatmentPlan, Path=DataContext.Model, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                            Glyph="{dx:DXImage SvgImages/Icon Builder/Shopping_CashVoucher.svg}"
+                            Glyph="/Resources/Icons/svg/telegram-plane.svg"
                             Content="Создать рассылку" 
                             KeyGesture="Ctrl+N"
-                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                            IsEnabled="{DXBinding Expr='!@StaticResource(vm).IsReadOnly', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                             />
 
                                 <dxb:BarButtonItem  
                             Content="Удалить рассылку"
-                            Command="{Binding ElementName=grid, Path=DataContext.DeleteInvoiceCommand}"
+                            Command="{Binding ElementName=grid, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding ElementName=grid, Path=CurrentItem}"
                             KeyGesture="Delete" GlyphSize="Small" GlyphAlignment="Left" 
                             Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
-                            IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    />
 
                             </dxg:TableView.RowCellMenuCustomizations>
                         </dxg:TableView>
@@ -642,11 +648,10 @@
                                 AllowCustomizationMenu="False" AllowQuickCustomization="False">
 
                                         <dxb:BarButtonItem 
-                                    Content="Удалить рассылку" 
-                                    IsEnabled="{DXBinding Expr='!@StaticResource(ClientCardDispatcher).IsReadOnly and @StaticResource(ClientCardDispatcher).Client.Id != 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    Content="Удалить рассылку"                                   
                                                    Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Trash.svg}"
                                                    GlyphSize="Small"
-                                                   Command="{Binding ElementName=view, Path=DataContext.DeleteInvoiceCommand}" 
+                                                   Command="{Binding ElementName=view, Path=DataContext.DeleteCommand}" 
                                                    CommandParameter="{Binding Row}"/>
                                         <dxb:BarItemLinkSeparator />
                                     </dxb:ToolBarControl>
