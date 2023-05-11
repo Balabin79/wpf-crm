@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace B6CRM.Models
 {
-    [Table("Providers")]
-    public class Provider : AbstractBaseModel
+    [Table("SendingStatuses")]
+    public class SendingStatus : AbstractBaseModel
     {
         public string Name { get; set; }
     }

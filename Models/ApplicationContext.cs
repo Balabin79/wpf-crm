@@ -335,6 +335,7 @@ namespace B6CRM.Models
 
         public DbSet<Sms> Sms { get; set; }
         public DbSet<SmsRecipient> SmsRecipients { get; set; }
-        public DbSet<Provider> Providers { get; set; }
+        public DbSet<Channel> Channels { get; set; }
+        public DbSet<SendingStatus> SendingStatuses { get; set; }
     }
 }

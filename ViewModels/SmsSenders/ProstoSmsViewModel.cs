@@ -33,6 +33,9 @@ namespace B6CRM.ViewModels.SmsSenders
 
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
+            SendingStatuses = db.SendingStatuses.ToArray();
+            Channels = db.Channels.ToArray();
+
             IsWaitIndicatorVisible = false;
         }
 
@@ -54,7 +57,12 @@ namespace B6CRM.ViewModels.SmsSenders
                 ToObservableCollection();
                 :*/
             //db.Clients?.Include(f => f.ClientCategory)?.ToObservableCollection();
-            Sms = db.Sms?.Include(f => f.Employee)?.Include(f => f.Provider)?.ToObservableCollection();
+            Sms = db.Sms
+                ?.Include(f => f.Employee)
+                ?.Include(f => f.ClientCategory)
+                ?.Include(f => f.SendingStatus)
+                ?.Include(f => f.Channel)
+                ?.ToObservableCollection();
 
             // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
         }
@@ -168,6 +176,18 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => ClientCategories); }
             set { SetProperty(() => ClientCategories, value); }
+        }
+
+        public ICollection<SendingStatus> SendingStatuses
+        {
+            get { return GetProperty(() => SendingStatuses); }
+            set { SetProperty(() => SendingStatuses, value); }
+        }
+                
+        public ICollection<Channel> Channels
+        {
+            get { return GetProperty(() => Channels); }
+            set { SetProperty(() => Channels, value); }
         }
 
         public ObservableCollection<Client> RecipientsList
