@@ -332,5 +332,9 @@ namespace B6CRM.Models
         public DbSet<TelegramNotification> TelegramNotifications { get; set; }
         public DbSet<NotificationEvent> NotificationEvents { get; set; }
         public DbSet<TelegramBot> TelegramBots { get; set; }
+
+        public DbSet<Sms> Sms { get; set; }
+        public DbSet<SmsRecipient> SmsRecipients { get; set; }
+        public DbSet<Provider> Providers { get; set; }
     }
 }

@@ -48,7 +48,7 @@
                         BorderBrush="{DXBinding Expr='UserControlName == `ProfitByEmployeesControl` ? `Gray` : `White`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         BorderThickness="{DXBinding Expr='UserControlName == `ProfitByEmployeesControl` ? `0 0 0 1` : `0 0 0 0`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                           
                         GlyphAlignment="Left"
-                        Content="Доход по врачам" 
+                        Content="Доход по сотрудникам" 
                         Glyph="/Resources/Icons/svg/graph-bar.svg"
                         GlyphSize="Custom"
                         CustomGlyphSize="20,20"

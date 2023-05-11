@@ -20,9 +20,9 @@
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxwuin="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
-                 xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
-                 xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
-                 Closing="ThemedWindow_Closing"
+    xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+    Closing="ThemedWindow_Closing"
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"
@@ -109,6 +109,26 @@
                     <StackPanel >
                         <dx:DXImage  Source="/Resources/Icons/svg/archive.svg" Width="30" Height="30"/>
                         <TextBlock Text="Документы" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Name="smsSendersBtn"
+                Command="{Binding NavigateCommand}" CommandParameter="B6CRM.Views.SmsSendersViews.MainControl"  Size="Auto" Background="#f5f5f5">
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage  Source="/Resources/Icons/main/broadcast.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Рассылки" Foreground="#666666" FontWeight="DemiBold"/>
+                    </StackPanel>
+                </ContentControl>
+            </dxnav:TileBarItem>
+
+            <dxnav:TileBarItem Name="callsBtn" Visibility="Collapsed"
+                Command="{Binding NavigateCommand}" CommandParameter="B6CRM.Views.DocumentsControl"  Size="Auto" Background="#f5f5f5">
+                <ContentControl>
+                    <StackPanel >
+                        <dx:DXImage  Source="/Resources/Icons/main/phone.svg" Width="30" Height="30"/>
+                        <TextBlock Text="Обзвоны" Foreground="#666666" FontWeight="DemiBold"/>
                     </StackPanel>
                 </ContentControl>
             </dxnav:TileBarItem>

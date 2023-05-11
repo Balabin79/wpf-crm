@@ -23,6 +23,8 @@
     <Compile Remove="Reports\Report1.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\Icons\main\broadcast.svg" />
+    <None Remove="Resources\Icons\main\phone.svg" />
     <None Remove="Resources\Icons\svg\archive.svg" />
     <None Remove="Resources\Icons\svg\arrow-down.svg" />
     <None Remove="Resources\Icons\svg\arrow-up.svg" />
@@ -169,6 +171,7 @@
     <Resource Include="Resources\Icons\Lightning.png" />
     <Resource Include="Resources\Icons\logoFile.png" />
     <Resource Include="Resources\Icons\main\address-card.svg" />
+    <Resource Include="Resources\Icons\main\broadcast.svg" />
     <Resource Include="Resources\Icons\main\calendar-alt.svg" />
     <Resource Include="Resources\Icons\main\calendar-check.svg" />
     <Resource Include="Resources\Icons\main\cart.svg" />
@@ -176,6 +179,7 @@
     <Resource Include="Resources\Icons\main\document2.svg" />
     <Resource Include="Resources\Icons\main\gear.svg" />
     <Resource Include="Resources\Icons\main\help.svg" />
+    <Resource Include="Resources\Icons\main\phone.svg" />
     <Resource Include="Resources\Icons\main\question-circle2.svg" />
     <Resource Include="Resources\Icons\main\user-group.svg" />
     <Resource Include="Resources\Icons\org.png" />
