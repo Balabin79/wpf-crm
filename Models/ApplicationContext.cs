@@ -104,85 +104,96 @@ namespace B6CRM.Models
 
             modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 5, Guid = "BiGLr7B4fEm8z3iQJYW9", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Documents", PageTitle = "Документы", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 0, IsCategory = 1, Num = 5 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 6, Guid = "BiGLr7B4fEm8z3iQJYWb", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Statistics", PageTitle = "Статистика", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 0, IsCategory = 1, Num = 6 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 6, Guid = "BiGLr7B4fEm8z3iQJYWb", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Statistics", PageTitle = "Статистика", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 0, IsCategory = 1, Num = 9 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 7, Guid = "BiGLr7B4fEm8z3iQJ100", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Settings", PageTitle = "Настройки", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 0, IsCategory = 1, Num = 7 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 7, Guid = "BiGLr7B4fEm8z3iQJ100", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Settings", PageTitle = "Настройки", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 0, IsCategory = 1, Num = 10 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 8, Guid = "BiGLr7B4fEm8z3iQJ101", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSheduler", PageTitle = "Отображать в меню \"Расписание\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 8 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 8, Guid = "BiGLr7B4fEm8z3iQJ101", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSheduler", PageTitle = "Отображать в меню \"Расписание\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 11 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 9, Guid = "BiGLr7B4fEm8z3iQJ102", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "AppointmentEditable", PageTitle = "Добавление и редактирование визитов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 9 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 9, Guid = "BiGLr7B4fEm8z3iQJ102", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "AppointmentEditable", PageTitle = "Добавление и редактирование визитов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 12 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 10, Guid = "BiGLr7B4fEm8z3iQJ103", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "AppointmentDeletable", PageTitle = "Удаление визитов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 10 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 10, Guid = "BiGLr7B4fEm8z3iQJ103", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "AppointmentDeletable", PageTitle = "Удаление визитов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 13 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 11, Guid = "BiGLr7B4fEm8z3iQJ104", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintSheduler", PageTitle = "Печать расписания", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 11 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 11, Guid = "BiGLr7B4fEm8z3iQJ104", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintSheduler", PageTitle = "Печать расписания", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 1, IsCategory = 0, Num = 14 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 12, Guid = "BiGLr7B4fEm8z3iQJ105", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerStatusEditable", PageTitle = "Редактирование справочника \"Статусы\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 12 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 12, Guid = "BiGLr7B4fEm8z3iQJ105", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerStatusEditable", PageTitle = "Редактирование справочника \"Статусы\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 15 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 13, Guid = "BiGLr7B4fEm8z3iQJ106", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerLocationEditable", PageTitle = "Редактирование справочника \"Локации\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 13 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 13, Guid = "BiGLr7B4fEm8z3iQJ106", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerLocationEditable", PageTitle = "Редактирование справочника \"Локации\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 16 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 14, Guid = "BiGLr7B4fEm8z3iQJ107", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerWorkTimeEditable", PageTitle = "Редактирование справочника \"Рабочее время\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 14 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 14, Guid = "BiGLr7B4fEm8z3iQJ107", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShedulerWorkTimeEditable", PageTitle = "Редактирование справочника \"Рабочее время\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 1, IsCategory = 0, Num = 17 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 15, Guid = "BiGLr7B4fEm8z3iQJ108", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowClients", PageTitle = "Отображать в меню \"Клиенты\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 15 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 15, Guid = "BiGLr7B4fEm8z3iQJ108", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowClients", PageTitle = "Отображать в меню \"Клиенты\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 18 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 16, Guid = "BiGLr7B4fEm8z3iQJ109", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsEditable", PageTitle = "Добавление и редактирование клиентов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 16 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 16, Guid = "BiGLr7B4fEm8z3iQJ109", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsEditable", PageTitle = "Добавление и редактирование клиентов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 19 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 17, Guid = "BiGLr7B4fEm8z3iQJ110", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsDelitable", PageTitle = "Удаление клиентов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 17 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 17, Guid = "BiGLr7B4fEm8z3iQJ110", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsDelitable", PageTitle = "Удаление клиентов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 20 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 18, Guid = "BiGLr7B4fEm8z3iQJ111", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "InvoiceEditable", PageTitle = "Добавление и редактирование счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 18 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 18, Guid = "BiGLr7B4fEm8z3iQJ111", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "InvoiceEditable", PageTitle = "Добавление и редактирование счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 21 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 19, Guid = "BiGLr7B4fEm8z3iQJ112", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "InvoiceDelitable", PageTitle = "Удаление счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 19 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 19, Guid = "BiGLr7B4fEm8z3iQJ112", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "InvoiceDelitable", PageTitle = "Удаление счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 22 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 20, Guid = "BiGLr7B4fEm8z3iQJ113", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintInvoice", PageTitle = "Печать счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 20 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 20, Guid = "BiGLr7B4fEm8z3iQJ113", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintInvoice", PageTitle = "Печать счетов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 23 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 21, Guid = "BiGLr7B4fEm8z3iQJ114", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PlanEditable", PageTitle = "Добавление и редактирование планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 21 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 21, Guid = "BiGLr7B4fEm8z3iQJ114", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PlanEditable", PageTitle = "Добавление и редактирование планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 24 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 22, Guid = "BiGLr7B4fEm8z3iQJ115", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PlanDelitable", PageTitle = "Удаление планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 22 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 22, Guid = "BiGLr7B4fEm8z3iQJ115", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PlanDelitable", PageTitle = "Удаление планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 25 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 23, Guid = "BiGLr7B4fEm8z3iQJ116", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintPlan", PageTitle = "Печать планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 23 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 23, Guid = "BiGLr7B4fEm8z3iQJ116", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintPlan", PageTitle = "Печать планов", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 26 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 24, Guid = "BiGLr7B4fEm8z3iQJ117", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsImport", PageTitle = "Импорт клиентов и сотрудников", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 24 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 24, Guid = "BiGLr7B4fEm8z3iQJ117", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsImport", PageTitle = "Импорт клиентов и сотрудников", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 27 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 25, Guid = "BiGLr7B4fEm8z3iQJ118", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsAddFieldsEditable", PageTitle = "Редактирование справочника \"Дополнительные поля\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 25 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 25, Guid = "BiGLr7B4fEm8z3iQJ118", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsAddFieldsEditable", PageTitle = "Редактирование справочника \"Дополнительные поля\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 28 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 26, Guid = "BiGLr7B4fEm8z3iQJ119", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsCategoryEditable", PageTitle = "Редактирование справочника \"Категории клиентов\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 26 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 26, Guid = "BiGLr7B4fEm8z3iQJ119", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsCategoryEditable", PageTitle = "Редактирование справочника \"Категории клиентов\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 29 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 27, Guid = "BiGLr7B4fEm8z3iQJ120", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsAdvertisingEditable", PageTitle = "Редактирование справочника \"Рекламные источники\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 27 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 27, Guid = "BiGLr7B4fEm8z3iQJ120", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ClientsAdvertisingEditable", PageTitle = "Редактирование справочника \"Рекламные источники\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 2, IsCategory = 0, Num = 30 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 28, Guid = "BiGLr7B4fEm8z3iQJ121", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowEmployees", PageTitle = "Отображать в меню \"Сотрудники\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 3, IsCategory = 0, Num = 28 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 28, Guid = "BiGLr7B4fEm8z3iQJ121", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowEmployees", PageTitle = "Отображать в меню \"Сотрудники\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 3, IsCategory = 0, Num = 31 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 29, Guid = "BiGLr7B4fEm8z3iQJ122", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "EmployeeEditable", PageTitle = "Добавление и редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 29 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 29, Guid = "BiGLr7B4fEm8z3iQJ122", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "EmployeeEditable", PageTitle = "Добавление и редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 32 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 30, Guid = "BiGLr7B4fEm8z3iQJ123", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "EmployeeDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 30 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 30, Guid = "BiGLr7B4fEm8z3iQJ123", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "EmployeeDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 33 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 31, Guid = "BiGLr7B4fEm8z3iQJ124", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintEmployees", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 31 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 31, Guid = "BiGLr7B4fEm8z3iQJ124", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintEmployees", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 3, IsCategory = 0, Num = 34 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 33, Guid = "BiGLr7B4fEm8z3iQJ126", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowPrices", PageTitle = "Отображать в меню \"Прайсы\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 4, IsCategory = 0, Num = 33 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 33, Guid = "BiGLr7B4fEm8z3iQJ126", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowPrices", PageTitle = "Отображать в меню \"Прайсы\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 4, IsCategory = 0, Num = 36 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 34, Guid = "BiGLr7B4fEm8z3iQJ127", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PriceEditable", PageTitle = "Добавление и редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 4, IsCategory = 0, Num = 34 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 34, Guid = "BiGLr7B4fEm8z3iQJ127", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PriceEditable", PageTitle = "Добавление и редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 4, IsCategory = 0, Num = 37 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 35, Guid = "BiGLr7B4fEm8z3iQJ128", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PriceDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 4, IsCategory = 0, Num = 35 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 35, Guid = "BiGLr7B4fEm8z3iQJ128", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PriceDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 4, IsCategory = 0, Num = 38 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 36, Guid = "BiGLr7B4fEm8z3iQJ129", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintPrices", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 4, IsCategory = 0, Num = 36 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 36, Guid = "BiGLr7B4fEm8z3iQJ129", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintPrices", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 4, IsCategory = 0, Num = 39 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 37, Guid = "BiGLr7B4fEm8z3iQJ130", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowDocuments", PageTitle = "Отображать в меню \"Документы\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 37 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 37, Guid = "BiGLr7B4fEm8z3iQJ130", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowDocuments", PageTitle = "Отображать в меню \"Документы\"", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 40 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 38, Guid = "BiGLr7B4fEm8z3iQJ131", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentImport", PageTitle = "Импорт", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 38 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 38, Guid = "BiGLr7B4fEm8z3iQJ131", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentImport", PageTitle = "Импорт", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 41 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 39, Guid = "BiGLr7B4fEm8z3iQJ132", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentEditable", PageTitle = "Редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 39 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 39, Guid = "BiGLr7B4fEm8z3iQJ132", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentEditable", PageTitle = "Редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 42 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 40, Guid = "BiGLr7B4fEm8z3iQJ133", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 40 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 40, Guid = "BiGLr7B4fEm8z3iQJ133", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "DocumentDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 43 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 41, Guid = "BiGLr7B4fEm8z3iQJ134", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintDocument", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 41 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 41, Guid = "BiGLr7B4fEm8z3iQJ134", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintDocument", PageTitle = "Печать", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 5, IsCategory = 0, Num = 44 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 42, Guid = "BiGLr7B4fEm8z3iQJ135", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowStatistics", PageTitle = "Отображать в меню \"Статистика\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 6, IsCategory = 0, Num = 42 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 42, Guid = "BiGLr7B4fEm8z3iQJ135", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowStatistics", PageTitle = "Отображать в меню \"Статистика\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 6, IsCategory = 0, Num = 45 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 43, Guid = "BiGLr7B4fEm8z3iQJ136", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSettings", PageTitle = "Отображать в меню \"Настройки\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 43 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 43, Guid = "BiGLr7B4fEm8z3iQJ136", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSettings", PageTitle = "Отображать в меню \"Настройки\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 46 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 44, Guid = "BiGLr7B4fEm8z3iQJ137", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintClients", PageTitle = "Печать списка клиентов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 44 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 44, Guid = "BiGLr7B4fEm8z3iQJ137", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "PrintClients", PageTitle = "Печать списка клиентов", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 2, IsCategory = 0, Num = 47 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 45, Guid = "BiGLr7B4fEm8z3iQJ138", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ImportData", PageTitle = "Импорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 45 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 45, Guid = "BiGLr7B4fEm8z3iQJ138", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ImportData", PageTitle = "Импорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 48 });
 
-            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 46, Guid = "BiGLr7B4fEm8z3iQJ139", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ExportData", PageTitle = "Экспорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 46 });
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 46, Guid = "BiGLr7B4fEm8z3iQJ139", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ExportData", PageTitle = "Экспорт данных (клиенты, сотрудники, прайсы)", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 0, ParentId = 7, IsCategory = 0, Num = 49 });
+
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 47, Guid = "BiGLr7B4fEm8z3iQJ140", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "Sms", PageTitle = "Рассылки", AdminAccess = 1, DoctorAccess = 1, ReceptionAccess = 1, ParentId = 0, IsCategory = 1, Num = 6 });
+
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 48, Guid = "BiGLr7B4fEm8z3iQJ141", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "ShowSmsSenders", PageTitle = "Отображать в меню \"Рассылки\"", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 47, IsCategory = 0, Num = 50 });
+
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 49, Guid = "BiGLr7B4fEm8z3iQJ141", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "SmsEditable", PageTitle = "Создание и редактирование", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 47, IsCategory = 0, Num = 51 });
+
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 50, Guid = "BiGLr7B4fEm8z3iQJ142", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "SmsDelitable", PageTitle = "Удаление", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 47, IsCategory = 0, Num = 52 });
+
+            modelBuilder.Entity<RoleManagment>().HasData(new RoleManagment { Id = 51, Guid = "BiGLr7B4fEm8z3iQJ143", CreatedAt = 1657035967, UpdatedAt = 1657035967, PageName = "SmsSending", PageTitle = "Рассылка сообщений", AdminAccess = 1, DoctorAccess = 0, ReceptionAccess = 1, ParentId = 47, IsCategory = 0, Num = 53 });
+
             #endregion
 
             #region NotificationEvent seeding
@@ -295,10 +306,24 @@ namespace B6CRM.Models
             modelBuilder.Entity<InvoiceItems>().HasData(new InvoiceItems { Id = 3, Guid = "QLddnX2TJBqBBkUMCjVl", CreatedAt = 1649579905, UpdatedAt = 1649579905, Count = 2, InvoiceId = 1, Code = "A123456", Name = "Бинт", Price = 50M });
             #endregion
 
-            #region PlanItems seeding
-            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 1, Guid = "1ZBGDukMywHRpCfCKcQn", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "B01.067.001", Name = "Прием (осмотр, консультация) врача-стоматолога-хирурга первичный", Count = 1, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 500M });
+            #region Channels seeding
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 1, Guid = "IUAoR5QCigKWIXeyDsRT", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Sms", ProstoSms = 1, SmsCenter = 1, Unisender = 1 });
 
-            modelBuilder.Entity<PlanItem>().HasData(new PlanItem { Id = 2, Guid = "CBOZoMwf1JEH3bdGkLxd", CreatedAt = 1649579905, UpdatedAt = 1649579905, Code = "A16.07.001", Name = "Удаление зуба", Count = 2, IsInInvoice = 0, IsMovedToInvoice = 0, PlanId = 1, Price = 1000M });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 2, Guid = "IUAoR5QCigKWIXeyDsIK", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Email", ProstoSms = 0, SmsCenter = 1, Unisender = 1 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 3, Guid = "IUAoR5QCigKWIXeyDsWa", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "WhatsApp", ProstoSms = 1, SmsCenter = 0, Unisender = 0 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 4, Guid = "IUAoR5QCigKWIXeyDs01", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Viber", ProstoSms = 0, SmsCenter = 1, Unisender = 1 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 5, Guid = "IUAoR5QCigKWIXeyDs02", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Telegram", ProstoSms = 1, SmsCenter = 0, Unisender = 1 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 6, Guid = "IUAoR5QCigKWIXeyDs03", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "ВКонтакте", ProstoSms = 1, SmsCenter = 1, Unisender = 0 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 7, Guid = "IUAoR5QCigKWIXeyDs04", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Одноклассники", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 8, Guid = "IUAoR5QCigKWIXeyDs05", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Голосовые рассылки", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 9, Guid = "IUAoR5QCigKWIXeyDs06", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Mms", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
             #endregion
         }
 
@@ -337,5 +362,6 @@ namespace B6CRM.Models
         public DbSet<SmsRecipient> SmsRecipients { get; set; }
         public DbSet<Channel> Channels { get; set; }
         public DbSet<SendingStatus> SendingStatuses { get; set; }
+        public DbSet<ServicePass> ServicesPasses { get; set; }
     }
 }

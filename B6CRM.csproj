@@ -23,6 +23,7 @@
     <Compile Remove="Reports\Report1.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Resources\Icons\.png" />
     <None Remove="Resources\Icons\main\broadcast.svg" />
     <None Remove="Resources\Icons\main\phone.svg" />
     <None Remove="Resources\Icons\svg\archive.svg" />
@@ -43,6 +44,8 @@
     <None Remove="Resources\Icons\svg\chart-pie4.svg" />
     <None Remove="Resources\Icons\svg\chart-pipe.svg" />
     <None Remove="Resources\Icons\svg\chart-pipe3.svg" />
+    <None Remove="Resources\Icons\svg\clockwise.svg" />
+    <None Remove="Resources\Icons\svg\conversation.svg" />
     <None Remove="Resources\Icons\svg\customizable.svg" />
     <None Remove="Resources\Icons\svg\direction.svg" />
     <None Remove="Resources\Icons\svg\document-edit.svg" />
@@ -90,12 +93,15 @@
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
+    <None Remove="Resources\Icons\svg\odnoklassniki-square.svg" />
+    <None Remove="Resources\Icons\svg\paper-plane.svg" />
     <None Remove="Resources\Icons\svg\pencil-ruler.svg" />
     <None Remove="Resources\Icons\svg\phone1.svg" />
     <None Remove="Resources\Icons\svg\preview.svg" />
     <None Remove="Resources\Icons\svg\question2.svg" />
     <None Remove="Resources\Icons\svg\question_2.svg" />
     <None Remove="Resources\Icons\svg\receipt.svg" />
+    <None Remove="Resources\Icons\svg\rocket.svg" />
     <None Remove="Resources\Icons\svg\schedule.svg" />
     <None Remove="Resources\Icons\svg\server.svg" />
     <None Remove="Resources\Icons\svg\settings.svg" />
@@ -117,6 +123,9 @@
     <None Remove="Resources\Icons\svg\user-circle.svg" />
     <None Remove="Resources\Icons\svg\user.svg" />
     <None Remove="Resources\Icons\svg\user2.svg" />
+    <None Remove="Resources\Icons\svg\viber.svg" />
+    <None Remove="Resources\Icons\svg\whatsapp-square.svg" />
+    <None Remove="Resources\Icons\svg\whatsapp.svg" />
     <None Remove="Resources\Icons\svg\window-maximize.svg" />
     <None Remove="Resources\Icons\svg\window-restore.svg" />
   </ItemGroup>
@@ -164,10 +173,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icons\adv3.png" />
-    <Resource Include="Resources\Icons\clients3.png" />
-    <Resource Include="Resources\Icons\emp3.png" />
-    <Resource Include="Resources\Icons\info5.png" />
     <Resource Include="Resources\Icons\invoice_green.png" />
     <Resource Include="Resources\Icons\invoice_red.png" />
     <Resource Include="Resources\Icons\invoice_yel.png" />
@@ -185,10 +190,7 @@
     <Resource Include="Resources\Icons\main\phone.svg" />
     <Resource Include="Resources\Icons\main\question-circle2.svg" />
     <Resource Include="Resources\Icons\main\user-group.svg" />
-    <Resource Include="Resources\Icons\org.png" />
     <Resource Include="Resources\Icons\Page.png" />
-    <Resource Include="Resources\Icons\service2.png" />
-    <Resource Include="Resources\Icons\sheduler.png" />
     <Resource Include="Resources\Icons\svg\archive.svg" />
     <Resource Include="Resources\Icons\svg\arrow-down.svg" />
     <Resource Include="Resources\Icons\svg\arrow-up.svg" />
@@ -212,8 +214,10 @@
     <Resource Include="Resources\Icons\svg\chart-pie4.svg" />
     <Resource Include="Resources\Icons\svg\chart-pipe.svg" />
     <Resource Include="Resources\Icons\svg\chart-pipe3.svg" />
+    <Resource Include="Resources\Icons\svg\clockwise.svg" />
     <Resource Include="Resources\Icons\svg\clone.svg" />
     <Resource Include="Resources\Icons\svg\cogs.svg" />
+    <Resource Include="Resources\Icons\svg\conversation.svg" />
     <Resource Include="Resources\Icons\svg\customizable.svg" />
     <Resource Include="Resources\Icons\svg\database.svg" />
     <Resource Include="Resources\Icons\svg\direction.svg" />
@@ -303,7 +307,9 @@
     <Resource Include="Resources\Icons\svg\mobile-alt.svg" />
     <Resource Include="Resources\Icons\svg\mobile.svg" />
     <Resource Include="Resources\Icons\svg\network-wired.svg" />
+    <Resource Include="Resources\Icons\svg\odnoklassniki-square.svg" />
     <Resource Include="Resources\Icons\svg\odnoklassniki.svg" />
+    <Resource Include="Resources\Icons\svg\paper-plane.svg" />
     <Resource Include="Resources\Icons\svg\pen.svg" />
     <Resource Include="Resources\Icons\svg\pencil-ruler.svg" />
     <Resource Include="Resources\Icons\svg\phone.svg" />
@@ -320,6 +326,7 @@
     <Resource Include="Resources\Icons\svg\question_2.svg" />
     <Resource Include="Resources\Icons\svg\receipt.svg" />
     <Resource Include="Resources\Icons\svg\reg1.svg" />
+    <Resource Include="Resources\Icons\svg\rocket.svg" />
     <Resource Include="Resources\Icons\svg\sale.svg" />
     <Resource Include="Resources\Icons\svg\schedule.svg" />
     <Resource Include="Resources\Icons\svg\search-dollar.svg" />
@@ -356,7 +363,10 @@
     <Resource Include="Resources\Icons\svg\user1.svg" />
     <Resource Include="Resources\Icons\svg\user2.svg" />
     <Resource Include="Resources\Icons\svg\users.svg" />
+    <Resource Include="Resources\Icons\svg\viber.svg" />
     <Resource Include="Resources\Icons\svg\vk.svg" />
+    <Resource Include="Resources\Icons\svg\whatsapp-square.svg" />
+    <Resource Include="Resources\Icons\svg\whatsapp.svg" />
     <Resource Include="Resources\Icons\svg\window-maximize.svg" />
     <Resource Include="Resources\Icons\svg\window-restore.svg" />
     <Resource Include="Resources\Icons\te4.ico" />

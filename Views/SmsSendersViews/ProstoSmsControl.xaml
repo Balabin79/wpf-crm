@@ -28,33 +28,121 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
+                <DockPanel Grid.Row="0" Margin="0 0 0 2">
 
-                <DockPanel Grid.Row="0" Margin="0 12 0 2">
+                    <dxlc:LayoutGroup View="GroupBox" Header="Параметры рассылки"
+                        Orientation="Vertical" VerticalAlignment="Top" Margin="2" 
+                                      >
 
-                    <dxlc:LayoutGroup Orientation="Vertical" VerticalAlignment="Top" Margin="0">
 
-                        <dxlc:LayoutItem Label="Сотрудник:" LabelPosition="Top" >
-                            <dxe:ComboBoxEdit
+                        <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top" >
+
+                            <dxlc:LayoutItem Label="Категория клиентов:" LabelPosition="Top" Margin="0 0 0 2">
+                                <dxe:ComboBoxEdit
+                                    Height="27"
                             HorizontalAlignment="Stretch"
                             NullValueButtonPlacement="EditBox"
-                            ItemsSource="{Binding ElementName=grid, Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                            NullText="Сотрудники" 
+                            ItemsSource="{Binding ElementName=grid, Path=DataContext.ClientCategories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                            NullText="Категория клиентов" 
                             IsTextEditable="False"
-                            DisplayMember="Fio"
+                            DisplayMember="Name"
                             IncrementalFiltering="True"
                             IncrementalSearch="True"
                             IsCaseSensitiveFilter="False"
                             ValidateOnTextInput="False"
-                            SelectedItem ="{Binding Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                            EditValue ="{Binding Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            SelectedItem ="{Binding ClientCategory, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                            EditValue ="{Binding ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                             IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                <dxe:ComboBoxEdit.StyleSettings>
-                                    <dxe:RadioComboBoxStyleSettings />
-                                </dxe:ComboBoxEdit.StyleSettings>
-                            </dxe:ComboBoxEdit>
-                        </dxlc:LayoutItem>
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
+                            </dxlc:LayoutItem>
 
-                        <dxlc:LayoutItem Label="*Сообщение:" LabelPosition="Top" IsRequired="True" >
+                            <dxlc:LayoutItem Label="Канал доставки:" LabelPosition="Top" Margin="0 0 0 2">
+                                <dxe:ComboBoxEdit
+                                    Height="27"
+                            HorizontalAlignment="Stretch"
+                            NullValueButtonPlacement="EditBox"
+                            ItemsSource="{Binding ElementName=grid, Path=DataContext.Channels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                            NullText="Каналы рассылки" 
+                            IsTextEditable="False"
+                            DisplayMember="Name"
+                            IncrementalFiltering="True"
+                            IncrementalSearch="True"
+                            IsCaseSensitiveFilter="False"
+                            ValidateOnTextInput="False" 
+                            SelectedItem ="{Binding Channel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                            EditValue ="{Binding Channel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <dxe:ComboBoxEdit.StyleSettings>
+                                        <dxe:RadioComboBoxStyleSettings />
+                                    </dxe:ComboBoxEdit.StyleSettings>
+                                </dxe:ComboBoxEdit>
+                            </dxlc:LayoutItem>
+
+
+                            <dxb:BarContainerControl
+                            Margin="0 18 0 0"
+                            DockPanel.Dock="Top" HorizontalAlignment="Right"  >
+                                <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph"
+                                ShowDragWidget="False" Caption="File" Background="Transparent"
+                                AllowCustomizationMenu="False" AllowQuickCustomization="False">
+                                    <dxb:BarButtonItem
+                                    Padding="5"
+                                    Margin="0 0 3 0"
+                                    BorderThickness="1" 
+                                    BorderBrush="LightGray"
+                                    Background="#FCFCFC"
+                                    Content="Загрузить список клиентов"                                                           
+                                    GlyphSize="Small"
+                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
+                                        <dxb:BarButtonItem.GlyphTemplate>
+                                            <DataTemplate>
+                                                <dx:DXImage Source="/Resources/Icons/svg/download.svg" />
+                                            </DataTemplate>
+                                        </dxb:BarButtonItem.GlyphTemplate>
+                                    </dxb:BarButtonItem>
+
+                                    <dxb:BarButtonItem
+                                    Padding="5"
+                                    Margin="0 0 3 0"
+                                    BorderThickness="1" 
+                                    BorderBrush="LightGray"
+                                    Background="#FCFCFC"
+                                    Content="Отправить рассылку"                                                           
+                                    GlyphSize="Small"
+                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
+                                        <dxb:BarButtonItem.GlyphTemplate>
+                                            <DataTemplate>
+                                                <dx:DXImage Source="/Resources/Icons/svg/paper-plane.svg" />
+                                            </DataTemplate>
+                                        </dxb:BarButtonItem.GlyphTemplate>
+                                    </dxb:BarButtonItem>
+
+                                    <dxb:BarButtonItem 
+                                    Padding="5"
+                                    BorderThickness="1"
+                                    Background="#FCFCFC"
+                                    BorderBrush="LightGray"
+                                    Content="Повторить рассылку"                                                           
+                                    GlyphSize="Small"
+                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
+                                        <dxb:BarButtonItem.GlyphTemplate>
+                                            <DataTemplate>
+                                                <dx:DXImage Source="/Resources/Icons/svg/clockwise.svg" />
+                                            </DataTemplate>
+                                        </dxb:BarButtonItem.GlyphTemplate>
+                                    </dxb:BarButtonItem>
+
+                                </dxb:ToolBarControl>
+                            </dxb:BarContainerControl>
+                        </dxlc:LayoutGroup>
+
+                        <dxlc:LayoutItem Label="Сообщение:" LabelPosition="Top" >
                             <dxe:MemoEdit 
                                 HorizontalAlignment="Stretch"
                                 VerticalContentAlignment="Top"
@@ -69,18 +157,15 @@
 
                     </dxlc:LayoutGroup>
 
-
-
-
                 </DockPanel>
 
                 <dxg:GridControl Grid.Row="1"
                                     x:Name="ServiceItems"                  
-                                    ItemsSource="{Binding Path=InvoiceItems, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                    ItemsSource="{Binding Path=SmsRecipients, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                     MinHeight="50" VerticalAlignment="Stretch" MaxHeight="3500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                     <dxg:GridControl.Columns>
-                        <dxg:GridColumn  Width="9*" MinWidth="300" FieldName="Name" x:Name="ServiceField">
+                        <dxg:GridColumn  Width="9*" MinWidth="300" FieldName="Client" x:Name="ServiceField">
                             <dxg:GridColumn.HeaderTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal"  >
@@ -328,9 +413,6 @@
     </UserControl.Resources>
     
     
-    
-    
-    
     <Border BorderThickness="1" BorderBrush="LightGray">
         <Grid>
             <Grid.RowDefinitions>
@@ -350,32 +432,28 @@
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
 
-                    <dxlc:LayoutGroup Orientation="Vertical">
+                    <dxlc:LayoutGroup Orientation="Vertical" DataContext="{Binding ElementName=ProstoSmsUserControl}">
                         <dxlc:LayoutGroup Orientation="Horizontal">
-                        <dxlc:LayoutItem Label="Логин:" LabelPosition="Top" >
-                            <dxe:TextEdit Text="{Binding ClientInfoViewModel.LastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
-                                IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
-                            <dxe:TextEdit Text="{Binding ClientInfoViewModel.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
-                                      IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        </dxlc:LayoutItem>
-              
-                                <Button Height="23" Width="90" Content="Сохранить" Margin="0 18 0 0"/>
-     
+                            <dxlc:LayoutItem Label="Логин:" LabelPosition="Top" >
+                                <dxe:TextEdit Text="{Binding Path=DataContext.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                />
+                            </dxlc:LayoutItem>
+
+                            <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top" >
+                                <dxe:TextEdit
+                                    Height="22"
+                                    Text="{Binding Path=DataContext.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" 
+                                      />
+                            </dxlc:LayoutItem>
+
+                            <Button 
+                                    Height="23" Width="90" Content="Сохранить" Margin="0 18 0 0"
+                                    Command="{Binding ElementName=grid, Path=DataContext.SavePassCommand}"/>
+
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
+                </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-            </dxlc:LayoutGroup>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -539,70 +617,6 @@
                                         <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
                                     </dxe:DateEdit.StyleSettings>
                                 </dxe:DateEdit>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellEditTemplate>
-                    </dxg:GridColumn>
-
-                    <dxg:GridColumn FieldName="Channel"  Header="Канал"  MinWidth="150" Width="2*" HorizontalHeaderContentAlignment="Center">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock 
-                            HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.Channel.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <dxe:ComboBoxEdit
-                            HorizontalAlignment="Stretch"
-                            NullValueButtonPlacement="EditBox"
-                            ItemsSource="{Binding ElementName=grid, Path=DataContext.Channels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                            NullText="Каналы рассылки" 
-                            IsTextEditable="False"
-                            DisplayMember="Name"
-                            IncrementalFiltering="True"
-                            IncrementalSearch="True"
-                            IsCaseSensitiveFilter="False"
-                            ValidateOnTextInput="False"
-                            SelectedItem ="{Binding Row.Channel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                            EditValue ="{Binding Row.Channel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <dxe:ComboBoxEdit.StyleSettings>
-                                        <dxe:RadioComboBoxStyleSettings />
-                                    </dxe:ComboBoxEdit.StyleSettings>
-                                </dxe:ComboBoxEdit>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellEditTemplate>
-                    </dxg:GridColumn>
-
-                    <dxg:GridColumn FieldName="ClientCategory"  Header="Категория"  Width="1*" HorizontalHeaderContentAlignment="Center">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock 
-                            HorizontalAlignment="Center"
-                            Margin="0 3 0 0"  Text="{Binding Row.ClientCategory.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <dxe:ComboBoxEdit
-                            HorizontalAlignment="Stretch"
-                            NullValueButtonPlacement="EditBox"
-                            ItemsSource="{Binding ElementName=grid, Path=DataContext.ClientCategories, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
-                            NullText="Категория клиентов" 
-                            IsTextEditable="False"
-                            DisplayMember="Name"
-                            IncrementalFiltering="True"
-                            IncrementalSearch="True"
-                            IsCaseSensitiveFilter="False"
-                            ValidateOnTextInput="False"
-                            SelectedItem ="{Binding Row.ClientCategory, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                            EditValue ="{Binding Row.ClientCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <dxe:ComboBoxEdit.StyleSettings>
-                                        <dxe:RadioComboBoxStyleSettings />
-                                    </dxe:ComboBoxEdit.StyleSettings>
-                                </dxe:ComboBoxEdit>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

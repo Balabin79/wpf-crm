@@ -112,6 +112,7 @@ namespace B6CRM
             documentsBtn.Visibility = userSession.ShowDocuments ? Visibility.Visible : Visibility.Collapsed;
             settingsBtn.Visibility = userSession.ShowSettings ? Visibility.Visible : Visibility.Collapsed;
             stat.Visibility = userSession.ShowStatistics ? Visibility.Visible : Visibility.Collapsed;
+            smsSendersBtn.Visibility = userSession.ShowSmsSenders ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Login()

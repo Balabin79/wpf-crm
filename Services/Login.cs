@@ -147,6 +147,11 @@ namespace B6CRM.Services
                                 case "DocumentDelitable": UserSession.DocumentDelitable = HasAccess(role); break;
                                 case "PrintDocument": UserSession.PrintDocument = HasAccess(role); break;
 
+                                case "ShowSmsSenders": UserSession.ShowSmsSenders = HasAccess(role); break;
+                                case "SmsEditable": UserSession.SmsEditable = HasAccess(role); break;
+                                case "SmsDelitable": UserSession.SmsDelitable = HasAccess(role); break;
+                                case "SmsSending": UserSession.SmsSending = HasAccess(role); break;
+
                                 case "ShowStatistics": UserSession.ShowStatistics = HasAccess(role); break;
                                 case "ShowSettings": UserSession.ShowSettings = HasAccess(role); break;
 
@@ -208,8 +213,14 @@ namespace B6CRM.Services
             UserSession.DocumentDelitable = true;
             UserSession.PrintDocument = true;
 
+            UserSession.ShowSmsSenders = true;
+            UserSession.SmsEditable = true;
+            UserSession.SmsDelitable = true;
+            UserSession.SmsSending = true;
+
             UserSession.ShowStatistics = true;
             UserSession.ShowSettings = true;
+
             UserSession.ImportData = true;
             UserSession.ExportData = true;
         }

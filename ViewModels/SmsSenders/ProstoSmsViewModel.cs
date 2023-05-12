@@ -3,6 +3,7 @@ using B6CRM.Infrastructures.Extensions.Notifications;
 using B6CRM.Models;
 using B6CRM.Reports;
 using B6CRM.Services;
+using B6CRM.Services.SmsServices;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Sql;
 using DevExpress.Mvvm;
@@ -15,7 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,38 +37,71 @@ namespace B6CRM.ViewModels.SmsSenders
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             SendingStatuses = db.SendingStatuses.ToArray();
-            Channels = db.Channels.ToArray();
+            Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
+            ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == "ProstoSms") ?? new ServicePass() { Name = "ProstoSms" };
+
+            try
+            {
+                if (!string.IsNullOrEmpty(ServicePass.Pass)) 
+                    ServicePass.PassDecr = Encoding.Unicode.GetString(Convert.FromBase64String(ServicePass.Pass));
+            }
+            catch 
+            {
+                ServicePass.PassDecr = ServicePass.Pass;
+            }
 
             IsWaitIndicatorVisible = false;
         }
 
         #region Права на выполнение команд
-        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
-        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceDelitable;
-        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).InvoiceEditable;
+        public bool CanAdd() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+        public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsDelitable;
+        public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+        public bool CanSavePass() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
         #endregion
 
-        public void Load()
+        private void Load()
         {
-            /*RecipientsList = Client?.Id != 0 ? 
-                db.Invoices?.
-                Where(f => f.ClientId == Client.Id)?.
-                Include(f => f.Employee)?.
-                Include(f => f.Client)?.
-                Include(f => f.InvoiceItems)?.
-                OrderByDescending(f => f.CreatedAt)?.
-                ToObservableCollection();
-                :*/
-            //db.Clients?.Include(f => f.ClientCategory)?.ToObservableCollection();
             Sms = db.Sms
-                ?.Include(f => f.Employee)
                 ?.Include(f => f.ClientCategory)
                 ?.Include(f => f.SendingStatus)
                 ?.Include(f => f.Channel)
+                ?.Include(f => f.SmsRecipients)
                 ?.ToObservableCollection();
 
             // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
         }
+
+        [Command]
+        public void LoadRecipients(object p) 
+        {
+            try
+            {
+
+            }
+            catch (Exception e) 
+            { 
+
+            }
+
+
+
+           /* RecipientsList = clientCategory != null 
+                ? 
+                db.Clients?.
+                Include(f => f.ClientCategory)?.
+                Where(f => f.ClientCategoryId == clientCategory)?.
+                OrderByDescending(f => f.LastName)?.
+                Select(f => new ProstoSmsRecipients() { })?.
+                ToObservableCollection()
+                :
+                db.Clients?.
+                Include(f => f.ClientCategory)?.
+                OrderByDescending(f => f.LastName)?.
+                Select(f => new ProstoSmsRecipients() { })?.
+                ToObservableCollection(); */           
+        }
+
 
         #region Рассылки
         [Command]
@@ -136,10 +172,10 @@ namespace B6CRM.ViewModels.SmsSenders
                         var response = ThemedMessageBox.Show(title: "Внимание!", text: "Удалить рассылку?", messageBoxButtons: MessageBoxButton.YesNo, icon: MessageBoxImage.Warning);
                         if (response.ToString() == "No") return;
 
-                        sms.Employee = null;
                         sms.Channel = null;
                         sms.ClientCategory = null;
                         sms.SendingStatus = null;
+                        sms.SmsRecipients = null;
 
                         db.SmsRecipients.Where(f => f.SmsId == sms.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                         db.Entry(sms).State = EntityState.Deleted;
@@ -163,8 +199,35 @@ namespace B6CRM.ViewModels.SmsSenders
             }
         }
 
+        [Command]
+        public void SavePass()
+        {
+            try
+            {
+                if (ServicePass.Id == 0 && (!string.IsNullOrEmpty(ServicePass.Pass) || !string.IsNullOrEmpty(ServicePass.Login)))
+                {
+                    db.ServicesPasses.Add(ServicePass);
+                }
+
+                if (!string.IsNullOrEmpty(ServicePass.PassDecr)) ServicePass.Pass = Convert.ToBase64String(Encoding.Unicode.GetBytes( ServicePass.PassDecr));
+
+                if (db.SaveChanges() > 0) 
+                {
+                    new Notification() { Content = "Настройки \"ProstoSms\" сохранены в базу данных!" }.run();
+                }
+            }
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить настройки \"ProstoSms\" в базу данных!", true);
+            }
+        }
         #endregion
 
+        public ServicePass ServicePass
+        {
+            get { return GetProperty(() => ServicePass); }
+            set { SetProperty(() => ServicePass, value); }
+        }
 
         public ICollection<Employee> Employees
         {
@@ -190,7 +253,7 @@ namespace B6CRM.ViewModels.SmsSenders
             set { SetProperty(() => Channels, value); }
         }
 
-        public ObservableCollection<Client> RecipientsList
+        public ObservableCollection<ProstoSmsRecipients> RecipientsList
         {
             get { return GetProperty(() => RecipientsList); }
             set { SetProperty(() => RecipientsList, value); }

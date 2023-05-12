@@ -52,6 +52,12 @@ namespace B6CRM.Services
             set { SetProperty(() => ShowSettings, value); }
         }
 
+        public bool ShowSmsSenders
+        {
+            get { return GetProperty(() => ShowSmsSenders); }
+            set { SetProperty(() => ShowSmsSenders, value); }
+        }
+
         public bool AppointmentEditable { get; set; } = false;
         public bool AppointmentDeletable { get; set; } = false;
         public bool PrintSheduler { get; set; } = false;
@@ -88,6 +94,10 @@ namespace B6CRM.Services
         public bool PrintDocument { get; set; } = false;
 
         public bool ImportData { get; set; } = false;
-        public bool ExportData { get; set; } = false;     
+        public bool ExportData { get; set; } = false;
+
+        public bool SmsEditable { get; set; } = false;
+        public bool SmsDelitable { get; set; } = false;
+        public bool SmsSending { get; set; } = false;
     }
 }

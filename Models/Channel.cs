@@ -7,5 +7,8 @@ namespace B6CRM.Models
     public class Channel : AbstractBaseModel
     {
         public string Name { get; set; }
+        public int ProstoSms { get; set; }
+        public int SmsCenter { get; set; }
+        public int Unisender { get; set; }
     }
 }
