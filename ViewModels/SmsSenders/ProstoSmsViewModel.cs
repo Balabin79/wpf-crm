@@ -33,6 +33,7 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             db = new ApplicationContext();
             Load();
+          
 
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
@@ -58,17 +59,38 @@ namespace B6CRM.ViewModels.SmsSenders
         public bool CanDelete(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsDelitable;
         public bool CanSave() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
         public bool CanSavePass() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+
+        public bool CanLoadRecipients(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+        public bool CanSending() => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
+        public bool CanResending() => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
+        public bool CanDeleteClientFromRecipientsList(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
         #endregion
 
-        private void Load()
+        private void Load(int? sendingStatus = null)
         {
-            Sms = db.Sms
-                ?.Include(f => f.ClientCategory)
-                ?.Include(f => f.SendingStatus)
-                ?.Include(f => f.Channel)
-                ?.Include(f => f.SmsRecipients)
-                ?.ToObservableCollection();
+            try
+            {
+                Sms = sendingStatus == null
+                    ?
+                    db.Sms
+                        ?.Include(f => f.ClientCategory)
+                        ?.Include(f => f.SendingStatus)
+                        ?.Include(f => f.Channel)
+                        ?.Include(f => f.SmsRecipients)?.ThenInclude(f => f.Client)?.ThenInclude(f => f.ClientCategory)
+                        ?.ToObservableCollection()
+                    :
+                    db.Sms
+                        ?.Where(f => f.SendingStatus.Id == ((int)sendingStatus))
+                        ?.Include(f => f.ClientCategory)
+                        ?.Include(f => f.SendingStatus)
+                        ?.Include(f => f.Channel)
+                        ?.Include(f => f.SmsRecipients)?.ThenInclude(f => f.Client)?.ThenInclude(f => f.ClientCategory)
+                        ?.ToObservableCollection();
+            }
+            catch(Exception ex)
+            {
 
+            }
             // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
         }
 
@@ -77,7 +99,23 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             try
             {
+                if (p is Sms sms)
+                {
+                    if (sms.Id == 0 || sms.SendingStatus?.Id != 2)
+                    {
+                        var status = db.SendingStatuses?.FirstOrDefault(f => f.Id == 2);
 
+                        sms.SmsRecipients = sms.ClientCategory?.Id != null
+                            ?
+                            db.Clients?.Where(f => f.ClientCategoryId == sms.ClientCategory.Id)
+                            ?.Select(f => new SmsRecipient() { Client = f, Sms = sms })
+                            ?.ToObservableCollection()
+                            :
+                            db.Clients
+                            ?.Select(f => new SmsRecipient() { Client = f, Sms = sms })
+                            ?.ToObservableCollection();
+                    }
+                }
             }
             catch (Exception e) 
             { 
@@ -221,7 +259,78 @@ namespace B6CRM.ViewModels.SmsSenders
                 Log.ErrorHandler(e, "Ошибка при попытке сохранить настройки \"ProstoSms\" в базу данных!", true);
             }
         }
+
+        [AsyncCommand]
+        public async Task Sending(object p)
+        {
+            try
+            {
+                if (p is Sms sms)
+                {
+
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        [AsyncCommand]
+        public async Task Resending(object p)
+        {
+            try
+            {
+                if (p is Sms sms)
+                {
+
+                }
+            }
+            catch
+            {
+
+            }
+        }
         #endregion
+
+        [Command]
+        public void SetFilter(object p)
+        {
+            if(int.TryParse(p?.ToString(), out int result))
+            {
+                Load(result);
+                IsShowSmsSenders = result;
+            }
+            else
+            {
+                Load();
+                IsShowSmsSenders = null;
+            }
+        }
+
+        [Command]
+        public void DeleteClientFromRecipientsList(object p)
+        {
+            if (p is SmsRecipient smsRecipient)
+            {
+                try
+                {
+                    var list = smsRecipient.Sms?.SmsRecipients?.ToObservableCollection();
+                    list?.Remove(smsRecipient);
+                    smsRecipient.Sms.SmsRecipients = list;
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
+        }
+
+        public string GetClientContact(string channel, object p)
+        {
+            if (p is Client client) return channel == "Email" ? client.Email : client.Phone;           
+            return "";
+        }
 
         public ServicePass ServicePass
         {

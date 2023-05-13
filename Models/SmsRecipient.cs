@@ -17,6 +17,6 @@ namespace B6CRM.Models
 
         public string Contact { get; set; }
 
-        public string Status { get; set; } //статус доставки до получател€ (клиента)
+        public string Status { get; set; } = "Ќе отправлено"; //статус доставки до получател€ (клиента)
     }
 }

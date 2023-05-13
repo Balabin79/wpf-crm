@@ -49,7 +49,6 @@ namespace B6CRM.Models
             get { return GetProperty(() => Print); }
             set { SetProperty(() => Print, value); }
         }
-
         public object Clone() => (Client)MemberwiseClone();
     }
 }

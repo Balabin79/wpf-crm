@@ -30,7 +30,7 @@
 
                 <DockPanel Grid.Row="0" Margin="0 0 0 2">
 
-                    <dxlc:LayoutGroup View="GroupBox" Header="Параметры рассылки"
+                    <dxlc:LayoutGroup View="GroupBox" Header="Параметры рассылки" IsCollapsed="False" IsCollapsible="True"
                         Orientation="Vertical" VerticalAlignment="Top" Margin="2" 
                                       >
 
@@ -60,7 +60,7 @@
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Канал доставки:" LabelPosition="Top" Margin="0 0 0 2">
-                                <dxe:ComboBoxEdit
+                                <dxe:ComboBoxEdit x:Name="channels"
                                     Height="27"
                             HorizontalAlignment="Stretch"
                             NullValueButtonPlacement="EditBox"
@@ -96,7 +96,7 @@
                                     Background="#FCFCFC"
                                     Content="Загрузить список клиентов"                                                           
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    Command="{Binding ElementName=view, Path=DataContext.LoadRecipientsCommand}"
                                     CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
                                         <dxb:BarButtonItem.GlyphTemplate>
                                             <DataTemplate>
@@ -113,7 +113,7 @@
                                     Background="#FCFCFC"
                                     Content="Отправить рассылку"                                                           
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    Command="{Binding ElementName=view, Path=DataContext.SendingCommand}"
                                     CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
                                         <dxb:BarButtonItem.GlyphTemplate>
                                             <DataTemplate>
@@ -129,7 +129,7 @@
                                     BorderBrush="LightGray"
                                     Content="Повторить рассылку"                                                           
                                     GlyphSize="Small"
-                                    Command="{Binding ElementName=view, Path=DataContext.AddItemCommand}"
+                                    Command="{Binding ElementName=view, Path=DataContext.ResendingCommand}"
                                     CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}">
                                         <dxb:BarButtonItem.GlyphTemplate>
                                             <DataTemplate>
@@ -159,12 +159,13 @@
 
                 </DockPanel>
 
-                <dxg:GridControl Grid.Row="1"
+                <dxg:GridControl Grid.Row="1"                                 
                                     x:Name="ServiceItems"                  
                                     ItemsSource="{Binding Path=SmsRecipients, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                                     MinHeight="50" VerticalAlignment="Stretch" MaxHeight="3500" Width="auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                     <dxg:GridControl.Columns>
+
                         <dxg:GridColumn  Width="9*" MinWidth="300" FieldName="Client" x:Name="ServiceField">
                             <dxg:GridColumn.HeaderTemplate>
                                 <DataTemplate>
@@ -177,124 +178,45 @@
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock 
-                                                        Margin="3 0 0 0" 
-                                                        x:Name="PART_Editor" TextWrapping="Wrap" 
-                                                        Text="{Binding Row.Client.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
+                                        Margin="3 0 0 0"
+                                        VerticalAlignment="Center" 
+                                        Text="{Binding Path=Row.Client.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
-                            <dxg:GridColumn.CellEditTemplate>
-                                <DataTemplate>
-                                    <dxe:PopupBaseEdit 
-                                                        x:Name="popup" SelectAllOnMouseUp="True" SelectAllOnGotFocus="True" 
-                                                        NullValueButtonPlacement="EditBox"                                            
-                                                        EditValue="{Binding Path=Row.Client.FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"                                           
-                                                        NullText="Выберите позицию" IsTextEditable="False">
-                                        <dxe:PopupBaseEdit.PopupContentTemplate>
-                                            <ControlTemplate>
-                                                <dxg:TreeListControl 
-                                                                    x:Name="grid"
-                                                                    AutoGenerateColumns="None" MaxHeight="2000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                                    ItemsSource="{Binding ElementName=view, Path=DataContext.RecipientsList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                                    >
-                                                    <dxg:TreeListControl.View>
-                                                        <dxg:TreeListView                                                          
-                                                                            x:Name="tree_view"
-                                                                            KeyFieldName="Id"
-                                                                            ParentFieldName="ParentID"
-                                                                            TreeDerivationMode="Selfreference" 
-                                                                            ShowTotalSummary="False" 
-                                                                            PrintNodeImages="True"
-                                                                            ShowNodeImages="True"
-                                                                            NodeImageSize="15,15"
-                                                                            ShowSearchPanelMode="Never"
-                                                                            SearchPanelAllowFilter="True"
-                                                                            AllowResizing="True"
-                                                                            VerticalScrollbarVisibility="Auto"
-                                                                            AllowPrintColumnHeaderImage="True"                                                 
-                                                                            ExpandNodesOnFiltering="True"   
-                                                                            ImmediateUpdateRowPosition="True"
-                                                                            VerticalAlignment="Stretch"                                                                                                                 
-                                                                            AllowPerPixelScrolling="True"
-                                                                            UseLegacyFilterPanel="True"
-                                                                            ShowColumnHeaders="False"
-                                                                            AllowScrollToFocusedRow="True"
-                                                                            ShowVerticalLines="False"                                                      
-                                                                            NavigationStyle="Row">
-                                                            <dxmvvm:Interaction.Behaviors>
-                                                                <dxmvvm:EventToCommand EventName="MouseDoubleClick"
-                                                                                                        
-                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectItemInFieldCommand }">
-                             
-                                                                </dxmvvm:EventToCommand>
-
-                                                                <dxmvvm:EventToCommand EventName="MouseDown" 
-                                                                                                        Command="{Binding ElementName=view, Path=DataContext.SelectItemInFieldCommand }">
-                                                      
-                                                                </dxmvvm:EventToCommand>
-                                                            </dxmvvm:Interaction.Behaviors>
-
-                                                            <dxg:TreeListView.NodeImageSelector>
-                                                                <tree:NodeImageSelector Closed="{dx:DXImage Image=Close_32x32.png}" Open="{dx:DXImage Image=Open_32x32.png}" />
-                                                            </dxg:TreeListView.NodeImageSelector>
-
-                                                        </dxg:TreeListView>
-                                                    </dxg:TreeListControl.View>
-
-                                                    <dxg:TreeListColumn Width="auto" MinWidth="150" FieldName="FullName" HorizontalHeaderContentAlignment="Stretch">
-                                                        <dxg:TreeListColumn.CellDisplayTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock TextWrapping="Wrap" Name="PART_Editor" HorizontalAlignment="Stretch"
-                                                                                           Text="{Binding Path=RowData.Row.FullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-                                                            </DataTemplate>
-                                                        </dxg:TreeListColumn.CellDisplayTemplate>
-                                                    </dxg:TreeListColumn>
-
-                                                </dxg:TreeListControl>
-                                            </ControlTemplate>
-                                        </dxe:PopupBaseEdit.PopupContentTemplate>
-                                    </dxe:PopupBaseEdit>
-                                </DataTemplate>
-                            </dxg:GridColumn.CellEditTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn Header="Категория" HorizontalHeaderContentAlignment="Center" FieldName="Count" Width="150">
+                        <dxg:GridColumn Header="Категория" HorizontalHeaderContentAlignment="Center"  Width="1*">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock 
-                                                    TextAlignment="Center" 
-                                                    VerticalAlignment="Center" 
-                                                    Text="{Binding Path=Row.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        TextAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Text="{Binding Path=Row.Client.ClientCategory.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
-                            <dxg:GridColumn.CellEditTemplate>
-                                <DataTemplate>
-                                    <dxe:TextEdit Mask="d" MaskType="Numeric" HorizontalContentAlignment="Center"
-                                                        IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        EditValue="{Binding Path=Row.Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellEditTemplate>
                         </dxg:GridColumn>
 
-                        <dxg:GridColumn HorizontalHeaderContentAlignment="Center" FieldName="Price" Header="Статус доставки" Width="150" DataContext="{Binding ElementName=ServiceField}">
+                        <dxg:GridColumn Header="Контакт" HorizontalHeaderContentAlignment="Center" Width="1*">
+                            <dxg:GridColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock 
+                                        TextAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Text="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.GetClientContact(@e(channels).SelectedItem.Name, Row.Client)', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </DataTemplate>
+                            </dxg:GridColumn.CellTemplate>
+                        </dxg:GridColumn>
+
+                        <dxg:GridColumn HorizontalHeaderContentAlignment="Center" Header="Статус доставки" Width="1*" DataContext="{Binding ElementName=ServiceField}">
                             <dxg:GridColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock  
-                                                    TextWrapping="Wrap" 
-                                                    TextAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{Binding Path=Row.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2},
-              
-                                                                ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture} }"/>
+                                        TextWrapping="Wrap" 
+                                        TextAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Path=Row.Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged }"/>
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
-                            <dxg:GridColumn.CellEditTemplate>
-                                <DataTemplate>
-                                    <dxe:TextEdit HorizontalAlignment="Stretch"
-                                                        Mask="c2" MaskType="Numeric" HorizontalContentAlignment="Center"
-                                                        IsReadOnly="{Binding Source={StaticResource ClientCardDispatcher}, Path=IsReadOnly, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                        EditValue="{Binding Path=Row.Price, Mode=TwoWay,  UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellEditTemplate>
                         </dxg:GridColumn>
 
                         <dxg:GridColumn Width="auto" AllowPrinting="False">
@@ -309,7 +231,7 @@
                                             <dxb:BarButtonItem
                                                             Content="Удалить" 
                                                             GlyphSize="Small"
-                                                            Command="{Binding ElementName=view, Path=DataContext.DeleteItemCommand}" 
+                                                            Command="{Binding ElementName=view, Path=DataContext.DeleteClientFromRecipientsListCommand}" 
                                                             CommandParameter="{Binding RowData.Row, Mode=OneWay}">
                                                 <dxb:BarButtonItem.GlyphTemplate>
                                                     <DataTemplate>
@@ -497,24 +419,23 @@
                                         Content="Все рассылки"
                                         IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == null', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                         GlyphSize="Small"
-                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                        CommandParameter="1"
+                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"
+                                        CommandParameter="2"
                                         Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"/>
 
                                     <dxb:BarButtonItem 
                                         Content="Отправленные" 
-                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 2', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         GlyphSize="Small"
-                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                        CommandParameter="0"
+                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"
+                                        CommandParameter="1"
                                         Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"/>
 
                                     <dxb:BarButtonItem 
                                         Content="Не отправленные"
-                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 0', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
+                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 1', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                                       
                                         GlyphSize="Small"
-                                        Command="{Binding ElementName=UTreatmentPlan, Path=DataContext.StatusChangedCommand}"
-                                        CommandParameter="-1"
+                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"                                        
                                         Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"/>
 
                                 </dxb:ToolBarControl>
@@ -525,7 +446,6 @@
 
                 <dxg:GridControl 
             Grid.Row="1"
-            SelectedItem="{Binding SelectedItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
             AutoGenerateColumns="None" 
             Name="grid" 
             MaxHeight="2000" 
@@ -595,7 +515,7 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="Date"  Header="Дата"  Width="100"  HorizontalHeaderContentAlignment="Center">
+                    <dxg:GridColumn FieldName="Date"  Header="Дата"  Width="1*"  HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock 
@@ -621,7 +541,7 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn FieldName="SendingStatus"  Header="Отправлено"  Width="150" HorizontalHeaderContentAlignment="Center">
+                    <dxg:GridColumn FieldName="SendingStatus"  Header="Отправлено"  Width="1*" HorizontalHeaderContentAlignment="Center">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock 
