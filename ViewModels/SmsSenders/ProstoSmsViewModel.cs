@@ -34,12 +34,13 @@ namespace B6CRM.ViewModels.SmsSenders
             db = new ApplicationContext();
             Load();
           
-
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             SendingStatuses = db.SendingStatuses.ToArray();
             Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
             ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == "ProstoSms") ?? new ServicePass() { Name = "ProstoSms" };
+
+            IsReadOnly = true;
 
             try
             {
@@ -61,8 +62,9 @@ namespace B6CRM.ViewModels.SmsSenders
         public bool CanSavePass() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
 
         public bool CanLoadRecipients(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
-        public bool CanSending() => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
-        public bool CanResending() => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
+        public bool CanEditable() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+        public bool CanSending(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
+        public bool CanResending(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
         public bool CanDeleteClientFromRecipientsList(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
         #endregion
 
@@ -87,9 +89,9 @@ namespace B6CRM.ViewModels.SmsSenders
                         ?.Include(f => f.SmsRecipients)?.ThenInclude(f => f.Client)?.ThenInclude(f => f.ClientCategory)
                         ?.ToObservableCollection();
             }
-            catch(Exception ex)
+            catch(Exception e)
             {
-
+                Log.ErrorHandler(e, "Загрузка списка получателей sms!", true);
             }
             // сбрасываем фильтр счетов в вкарте клиента на значение по умолчание
         }
@@ -118,8 +120,8 @@ namespace B6CRM.ViewModels.SmsSenders
                 }
             }
             catch (Exception e) 
-            { 
-
+            {
+                Log.ErrorHandler(e, "Ошибка при загрузке списка получателей sms!", true);
             }
 
 
@@ -319,12 +321,15 @@ namespace B6CRM.ViewModels.SmsSenders
                     list?.Remove(smsRecipient);
                     smsRecipient.Sms.SmsRecipients = list;
                 }
-                catch(Exception e)
+                catch
                 {
 
                 }
             }
         }
+
+        [Command]
+        public void Editable() => IsReadOnly = !IsReadOnly;      
 
         public string GetClientContact(string channel, object p)
         {
@@ -390,6 +395,12 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => IsShowSmsSenders); }
             set { SetProperty(() => IsShowSmsSenders, value); }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return GetProperty(() => IsReadOnly); }
+            set { SetProperty(() => IsReadOnly, value); }
         }
     }
 }

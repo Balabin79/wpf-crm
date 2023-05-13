@@ -23,7 +23,7 @@ namespace B6CRM.Services
                 PingReply reply = pingSender.Send(host, timeout, buffer, options);
                 return reply.Status == IPStatus.Success;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
