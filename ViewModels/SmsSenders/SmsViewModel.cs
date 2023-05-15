@@ -40,19 +40,9 @@ namespace B6CRM.ViewModels.SmsSenders
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             SendingStatuses = db.SendingStatuses.ToArray();
 
-            ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == ServiceName) ?? new ServicePass() { Name = ServiceName };
+            ServicePassVM = new ServicePassViewModel(serviceName);
 
             IsReadOnly = true;
-
-            try
-            {
-                if (!string.IsNullOrEmpty(ServicePass.Pass)) 
-                    ServicePass.PassDecr = Encoding.Unicode.GetString(Convert.FromBase64String(ServicePass.Pass));
-            }
-            catch 
-            {
-                ServicePass.PassDecr = ServicePass.Pass;
-            }
 
             IsWaitIndicatorVisible = false;
         }
@@ -229,29 +219,6 @@ namespace B6CRM.ViewModels.SmsSenders
             }
         }
 
-        [Command]
-        public void SavePass()
-        {
-            try
-            {
-                if (ServicePass.Id == 0 && (!string.IsNullOrEmpty(ServicePass.Pass) || !string.IsNullOrEmpty(ServicePass.Login)))
-                {
-                    db.ServicesPasses.Add(ServicePass);
-                }
-
-                if (!string.IsNullOrEmpty(ServicePass.PassDecr)) ServicePass.Pass = Convert.ToBase64String(Encoding.Unicode.GetBytes( ServicePass.PassDecr));
-
-                if (db.SaveChanges() > 0) 
-                {
-                    new Notification() { Content = "Настройки \"" + ServiceName + "\" сохранены в базу данных!" }.run();
-                }
-            }
-            catch(Exception e)
-            {
-                Log.ErrorHandler(e, "Ошибка при попытке сохранить настройки \"" + ServiceName + "\" в базу данных!", true);
-            }
-        }
-
         [AsyncCommand]
         public async Task Sending(object p)
         {
@@ -286,7 +253,7 @@ namespace B6CRM.ViewModels.SmsSenders
 
         private bool BeforeSendChecking(Sms sms)
         {
-            if (string.IsNullOrEmpty(ServicePass.Login) || string.IsNullOrEmpty(ServicePass.Pass))
+            if (string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Login) || string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Pass))
             {
                 ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"" + ServiceName  + "\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 return false;
@@ -365,13 +332,7 @@ namespace B6CRM.ViewModels.SmsSenders
             if (p is Client client) return channel == "Email" ? client.Email : client.Phone;           
             return "";
         }
-
-        public ServicePass ServicePass
-        {
-            get { return GetProperty(() => ServicePass); }
-            set { SetProperty(() => ServicePass, value); }
-        }
-
+      
         public ICollection<Employee> Employees
         {
             get { return GetProperty(() => Employees); }
@@ -438,7 +399,13 @@ namespace B6CRM.ViewModels.SmsSenders
             set { SetProperty(() => ServiceName, value); }
         }
         
-        private int ServiceId;          
+        private int ServiceId;
+
+        public ServicePassViewModel ServicePassVM
+        {
+            get { return GetProperty(() => ServicePassVM); }
+            set { SetProperty(() => ServicePassVM, value); }
+        }
     }
 
     public enum SmsServices {ProstoSms = 1, SmsCenter = 2, Unisender = 3 };

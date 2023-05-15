@@ -375,18 +375,18 @@
                     <dxlc:LayoutGroup DataContext="{Binding ElementName=ProstoSmsUserControl}" Orientation="Vertical">
                         <dxlc:LayoutGroup Orientation="Horizontal">
                             <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                                <dxe:TextEdit Text="{Binding Path=DataContext.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
                             </dxlc:LayoutItem>
 
                             <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top">
-                                <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePassVM.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
                             </dxlc:LayoutItem>
 
                             <Button
                                 Width="90"
                                 Height="23"
                                 Margin="0,18,0,0"
-                                Command="{Binding ElementName=grid, Path=DataContext.SavePassCommand}"
+                                Command="{Binding ElementName=grid, Path=DataContext.ServicePassVM.SavePassCommand}"
                                 Content="Сохранить" />
 
                         </dxlc:LayoutGroup>

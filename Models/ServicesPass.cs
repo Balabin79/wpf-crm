@@ -27,8 +27,8 @@ namespace B6CRM.Models
         [NotMapped]
         public string PassDecr
         {
-            get { return GetProperty(() => Pass); }
-            set { SetProperty(() => Pass, value); }
+            get { return GetProperty(() => PassDecr); }
+            set { SetProperty(() => PassDecr, value); }
         }
     }
 }
