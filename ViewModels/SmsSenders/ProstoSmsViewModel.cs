@@ -122,24 +122,7 @@ namespace B6CRM.ViewModels.SmsSenders
             catch (Exception e) 
             {
                 Log.ErrorHandler(e, "Ошибка при загрузке списка получателей sms!", true);
-            }
-
-
-
-           /* RecipientsList = clientCategory != null 
-                ? 
-                db.Clients?.
-                Include(f => f.ClientCategory)?.
-                Where(f => f.ClientCategoryId == clientCategory)?.
-                OrderByDescending(f => f.LastName)?.
-                Select(f => new ProstoSmsRecipients() { })?.
-                ToObservableCollection()
-                :
-                db.Clients?.
-                Include(f => f.ClientCategory)?.
-                OrderByDescending(f => f.LastName)?.
-                Select(f => new ProstoSmsRecipients() { })?.
-                ToObservableCollection(); */           
+            }          
         }
 
 
@@ -191,6 +174,8 @@ namespace B6CRM.ViewModels.SmsSenders
 
                 if (db.SaveChanges() > 0)
                 {
+                    db.SmsRecipients.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.SaveChanges();
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
             }
@@ -227,8 +212,9 @@ namespace B6CRM.ViewModels.SmsSenders
                     }
                     if (db.SaveChanges() > 0)
                     {
+                        db.SmsRecipients.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.SaveChanges();
                         new Notification() { Content = "Рассылка удалена из базы данных!" }.run();
-
                     }
                     Load();
                 }
@@ -269,7 +255,7 @@ namespace B6CRM.ViewModels.SmsSenders
             {
                 if (p is Sms sms)
                 {
-
+                    if (!BeforeSendChecking(sms)) return;
                 }
             }
             catch
@@ -285,7 +271,7 @@ namespace B6CRM.ViewModels.SmsSenders
             {
                 if (p is Sms sms)
                 {
-
+                    if (!BeforeSendChecking(sms)) return;
                 }
             }
             catch
@@ -293,6 +279,23 @@ namespace B6CRM.ViewModels.SmsSenders
 
             }
         }
+
+        private bool BeforeSendChecking(Sms sms)
+        {
+            if (string.IsNullOrEmpty(ServicePass.Login) || string.IsNullOrEmpty(ServicePass.Pass))
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"ProstoSms\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+
+            if (sms.SmsRecipients?.Count() < 1)
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Cписок получателей для отправки пуст!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
         #endregion
 
         [Command]

@@ -54,6 +54,7 @@
                                 Label="Категория клиентов:"
                                 LabelPosition="Top">
                                 <dxe:ComboBoxEdit
+                                    x:Name="clientCategoriesField"
                                     Height="27"
                                     HorizontalAlignment="Stretch"
                                     DisplayMember="Name"
@@ -122,7 +123,7 @@
                                 CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"
                                 Content="Отправить рассылку"
                                 Glyph="/Resources/Icons/svg/paper-plane.svg"
-                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly',
+                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly and @e(clientCategoriesField).EditValue != null and @e(channels).EditValue != null',
                                                       Mode=OneWay,
                                                       UpdateSourceTrigger=PropertyChanged}" />
 
@@ -133,7 +134,7 @@
                                 CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"
                                 Content="Повторить рассылку"
                                 Glyph="/Resources/Icons/svg/clockwise.svg"
-                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly',
+                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly and @e(clientCategoriesField).EditValue != null and @e(channels).EditValue != null',
                                                       Mode=OneWay,
                                                       UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutGroup>

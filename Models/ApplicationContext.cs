@@ -317,13 +317,19 @@ namespace B6CRM.Models
 
             modelBuilder.Entity<Channel>().HasData(new Channel { Id = 5, Guid = "IUAoR5QCigKWIXeyDs02", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Telegram", ProstoSms = 1, SmsCenter = 0, Unisender = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 6, Guid = "IUAoR5QCigKWIXeyDs03", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "ВКонтакте", ProstoSms = 1, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 6, Guid = "IUAoR5QCigKWIXeyDs03", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "VK", ProstoSms = 1, SmsCenter = 1, Unisender = 0 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 7, Guid = "IUAoR5QCigKWIXeyDs04", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Одноклассники", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 7, Guid = "IUAoR5QCigKWIXeyDs04", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "OK", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
 
             modelBuilder.Entity<Channel>().HasData(new Channel { Id = 8, Guid = "IUAoR5QCigKWIXeyDs05", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Голосовые рассылки", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
 
             modelBuilder.Entity<Channel>().HasData(new Channel { Id = 9, Guid = "IUAoR5QCigKWIXeyDs06", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Mms", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+            #endregion
+
+            #region SendingStatuses seeding
+            modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 1, Guid = "TmbXjWKTyJ3hNPzpU04Y", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Ожидает отправки" });
+
+            modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 2, Guid = "TmbXjWKTyJ3hNPzpU09K", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Отправлено" });
             #endregion
         }
 
