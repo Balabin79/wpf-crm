@@ -27,6 +27,8 @@ namespace B6CRM.Models
         public SendingStatus SendingStatus { get; set; }
         public int? SendingStatusId { get; set; }
 
+        public int ServiceId { get; set; }
+
         public ObservableCollection<SmsRecipient> SmsRecipients
         {
             get { return GetProperty(() => SmsRecipients); }

@@ -25,20 +25,22 @@ using System.Windows;
 
 namespace B6CRM.ViewModels.SmsSenders
 {
-    public class ProstoSmsViewModel : ViewModelBase
+    public class SmsViewModel : ViewModelBase
     {
         private readonly ApplicationContext db;
 
-        public ProstoSmsViewModel()
+        public SmsViewModel(string serviceName)
         {
             db = new ApplicationContext();
+            SetService(serviceName);
+            
             Load();
           
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             SendingStatuses = db.SendingStatuses.ToArray();
-            Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
-            ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == "ProstoSms") ?? new ServicePass() { Name = "ProstoSms" };
+
+            ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == ServiceName) ?? new ServicePass() { Name = ServiceName };
 
             IsReadOnly = true;
 
@@ -75,6 +77,7 @@ namespace B6CRM.ViewModels.SmsSenders
                 Sms = sendingStatus == null
                     ?
                     db.Sms
+                        ?.Where(f => f.ServiceId == ServiceId)
                         ?.Include(f => f.ClientCategory)
                         ?.Include(f => f.SendingStatus)
                         ?.Include(f => f.Channel)
@@ -82,7 +85,7 @@ namespace B6CRM.ViewModels.SmsSenders
                         ?.ToObservableCollection()
                     :
                     db.Sms
-                        ?.Where(f => f.SendingStatus.Id == ((int)sendingStatus))
+                        ?.Where(f => f.ServiceId == ServiceId && f.SendingStatus.Id == ((int)sendingStatus))
                         ?.Include(f => f.ClientCategory)
                         ?.Include(f => f.SendingStatus)
                         ?.Include(f => f.Channel)
@@ -136,6 +139,7 @@ namespace B6CRM.ViewModels.SmsSenders
                 var model = new Sms
                 {
                     Date = date.ToString(),
+                    ServiceId = ServiceId
                 };
 
                 db.Sms.Add(model);
@@ -239,12 +243,12 @@ namespace B6CRM.ViewModels.SmsSenders
 
                 if (db.SaveChanges() > 0) 
                 {
-                    new Notification() { Content = "Настройки \"ProstoSms\" сохранены в базу данных!" }.run();
+                    new Notification() { Content = "Настройки \"" + ServiceName + "\" сохранены в базу данных!" }.run();
                 }
             }
             catch(Exception e)
             {
-                Log.ErrorHandler(e, "Ошибка при попытке сохранить настройки \"ProstoSms\" в базу данных!", true);
+                Log.ErrorHandler(e, "Ошибка при попытке сохранить настройки \"" + ServiceName + "\" в базу данных!", true);
             }
         }
 
@@ -284,7 +288,7 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             if (string.IsNullOrEmpty(ServicePass.Login) || string.IsNullOrEmpty(ServicePass.Pass))
             {
-                ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"ProstoSms\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"" + ServiceName  + "\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 return false;
             }
 
@@ -294,6 +298,28 @@ namespace B6CRM.ViewModels.SmsSenders
                 return false;
             }
             return true;
+        }
+
+        private void SetService(string channelName)
+        {
+            ServiceName = channelName;
+            switch (channelName)
+            {
+                case "ProstoSms": 
+                    Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
+                    ServiceId = (int)SmsServices.ProstoSms;                  
+                    break;
+
+                case "SmsCenter": 
+                    Channels = db.Channels?.Where(f => f.SmsCenter == 1)?.ToArray();
+                    ServiceId = (int)SmsServices.SmsCenter;
+                    break;
+
+                case "Unisender":
+                    Channels = db.Channels?.Where(f => f.Unisender == 1)?.ToArray();
+                    ServiceId = (int)SmsServices.Unisender;
+                    break;
+            }
         }
 
         #endregion
@@ -405,5 +431,15 @@ namespace B6CRM.ViewModels.SmsSenders
             get { return GetProperty(() => IsReadOnly); }
             set { SetProperty(() => IsReadOnly, value); }
         }
+
+        public string ServiceName
+        {
+            get { return GetProperty(() => ServiceName); }
+            set { SetProperty(() => ServiceName, value); }
+        }
+        
+        private int ServiceId;          
     }
+
+    public enum SmsServices {ProstoSms = 1, SmsCenter = 2, Unisender = 3 };
 }

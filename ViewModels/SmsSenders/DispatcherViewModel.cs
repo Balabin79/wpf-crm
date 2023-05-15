@@ -31,10 +31,10 @@ namespace B6CRM.ViewModels.SmsSenders
             //включаем видимость контрола и подчеркиваем кнопку активного контрола
             UserControlName = userControlName;
             switch (userControlName)
-            {             
-                case "ProstoSmsControl": Context = new ProstoSmsViewModel(); break;
-                case "SmsCenterControl": Context = new SmsCenterViewModel(); break;
-                case "UnisenderControl": Context = new UnisenderViewModel(); break;
+            {
+                case "ProstoSmsControl": Context = new SmsViewModel("ProstoSms"); break;
+                case "SmsCenterControl": Context = new SmsViewModel("SmsCenter"); break;
+                case "UnisenderControl": Context = new SmsViewModel("Unisender"); break;
             }
         }
 
