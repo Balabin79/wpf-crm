@@ -62,7 +62,8 @@ namespace B6CRM.ViewModels.SmsSenders
                     db.ServicesPasses.Add(ServicePass);
                 }
 
-                if (!string.IsNullOrEmpty(ServicePass.PassDecr)) ServicePass.Pass = PassEncrypt();
+                if (!string.IsNullOrEmpty(ServicePass.PassDecr)) 
+                    ServicePass.Pass = PassEncrypt();
 
                 if (db.SaveChanges() > 0)
                 {

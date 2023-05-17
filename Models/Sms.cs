@@ -11,9 +11,23 @@ namespace B6CRM.Models
     {
         public Sms() => SmsRecipients = new ObservableCollection<SmsRecipient>();
         
-        public string Name { get; set; }
-        public string Date { get; set; }
-        public string Msg { get; set; }
+        public string Name
+        {
+            get { return GetProperty(() => Name); }
+            set { SetProperty(() => Name, value); }
+        }
+
+        public string Date
+        {
+            get { return GetProperty(() => Date); }
+            set { SetProperty(() => Date, value); }
+        }
+
+        public string Msg
+        {
+            get { return GetProperty(() => Msg); }
+            set { SetProperty(() => Msg, value); }
+        }
 
         [DeleteBehavior(DeleteBehavior.SetNull)]
         public Channel Channel { get; set; }

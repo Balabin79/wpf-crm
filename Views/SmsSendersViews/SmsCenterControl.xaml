@@ -127,32 +127,34 @@
                                                       Mode=OneWay,
                                                       UpdateSourceTrigger=PropertyChanged}" />
 
-                            <dx:SimpleButton
-                                Height="27"
-                                Margin="0,17,0,0"
-                                Command="{Binding ElementName=view, Path=DataContext.ResendingCommand}"
-                                CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"
-                                Content="Повторить рассылку"
-                                Glyph="/Resources/Icons/svg/clockwise.svg"
-                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly and @e(clientCategoriesField).EditValue != null and @e(channels).EditValue != null',
-                                                      Mode=OneWay,
-                                                      UpdateSourceTrigger=PropertyChanged}" />
                         </dxlc:LayoutGroup>
 
-                        <dxlc:LayoutItem Label="Сообщение:" LabelPosition="Top">
-                            <dxe:MemoEdit
-                                MinHeight="70"
-                                HorizontalAlignment="Stretch"
-                                VerticalContentAlignment="Top"
-                                IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
-                                                       Mode=OneWay,
-                                                       UpdateSourceTrigger=PropertyChanged}"
-                                MemoTextWrapping="Wrap"
-                                ShowIcon="False"
-                                ShowText="True"
-                                Text="{Binding Path=Msg}"
+                        <dxlc:LayoutGroup Orientation="Vertical">
+
+                            <dxlc:LayoutItem Label="{DXBinding Expr='`Сообщение: (cимволов в сообщении: ` + @e(grid).DataContext.MsgLength(Msg) +`)`', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" LabelPosition="Top">
+
+                                <dxe:MemoEdit
+                                    x:Name="msg"
+                                    MinHeight="70"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalContentAlignment="Top"
+                                    EditValue="{Binding Path=Msg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
+                                                           Mode=OneWay,
+                                                           UpdateSourceTrigger=PropertyChanged}"
+                                    MemoTextWrapping="Wrap"
+                                    ShowIcon="False"
+                                    ShowText="True"
+                                    TextWrapping="Wrap" />
+
+                            </dxlc:LayoutItem>
+
+                            <TextBlock
+                                FontSize="11"
+                                Foreground="DarkRed"
+                                Text="* Максимальная длина 11 сегментов (737 символов кирилицей, либо 1683 латиницей), длинее передавать не рекомендуется, т.к. SMS может разбится на части, либо доставка будет не полностью!"
                                 TextWrapping="Wrap" />
-                        </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
 
                     </dxlc:LayoutGroup>
 
@@ -219,22 +221,6 @@
                                                          Mode=OneWay,
                                                          UpdateSourceTrigger=PropertyChanged}"
                                         TextAlignment="Center" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-
-                        <dxg:GridColumn
-                            Width="1*"
-                            DataContext="{Binding ElementName=ServiceField}"
-                            Header="Статус доставки"
-                            HorizontalHeaderContentAlignment="Center">
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Path=Row.Status, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        TextAlignment="Center"
-                                        TextWrapping="Wrap" />
                                 </DataTemplate>
                             </dxg:GridColumn.CellTemplate>
                         </dxg:GridColumn>

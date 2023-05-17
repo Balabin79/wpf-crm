@@ -16,7 +16,5 @@ namespace B6CRM.Models
         public int? ClientId { get; set; }
 
         public string Contact { get; set; }
-
-        public string Status { get; set; } = "Не отправлено"; //статус доставки до получателя (клиента)
     }
 }

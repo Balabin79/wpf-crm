@@ -72,24 +72,6 @@
                                 GlyphSize="Custom"
                                 ToolTip="SmsCenter" />
 
-                            <dxb:BarItemLinkSeparator />
-                            <dxb:BarButtonItem
-                                x:Name="unisender"
-                                BorderBrush="{DXBinding Expr='UserControlName==`UnisenderControl` ? `Gray` : `White`',
-                                                        Mode=OneWay,
-                                                        UpdateSourceTrigger=PropertyChanged}"
-                                BorderThickness="{DXBinding Expr='UserControlName==`UnisenderControl` ? `0 0 0 1` : `0 0 0 0`',
-                                                            Mode=OneWay,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                Command="{Binding LoadCommand}"
-                                CommandParameter="UnisenderControl"
-                                Content="Unisender"
-                                CustomGlyphSize="20,20"
-                                Glyph="/Resources/Icons/svg/envelope.svg"
-                                GlyphAlignment="Left"
-                                GlyphSize="Custom"
-                                ToolTip="Unisender" />
-
                         </dxb:BarLinkContainerItem>
                     </dxb:ToolBarControl>
                 </dxb:BarContainerControl>
@@ -126,12 +108,6 @@
                         x:Name="SmsCenterControl"
                         DataContext="{Binding Source={StaticResource vm}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{DXBinding Expr='@StaticResource(vm).UserControlName == `SmsCenterControl` ? `Visible` : `Collapsed`',
-                                               Mode=OneWay,
-                                               UpdateSourceTrigger=PropertyChanged}" />
-                    <local:UnisenderControl
-                        x:Name="UnisenderControl"
-                        DataContext="{Binding Source={StaticResource vm}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{DXBinding Expr='@StaticResource(vm).UserControlName == `UnisenderControl` ? `Visible` : `Collapsed`',
                                                Mode=OneWay,
                                                UpdateSourceTrigger=PropertyChanged}" />
                 </dxlc:LayoutGroup>

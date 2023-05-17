@@ -5,6 +5,7 @@ using B6CRM.Reports;
 using B6CRM.Services;
 using B6CRM.Services.SmsServices;
 using DevExpress.DataAccess.ConnectionParameters;
+using DevExpress.DataAccess.Native.Web;
 using DevExpress.DataAccess.Sql;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
@@ -18,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -226,32 +228,54 @@ namespace B6CRM.ViewModels.SmsSenders
             {
                 if (p is Sms sms)
                 {
-                    if (!BeforeSendChecking(sms)) return;
+                    var contacts = sms.Channel?.Name == "Email" ? GetEmails(sms) : GetPhones(sms);
+
+                    if (!BeforeSendChecking(sms, contacts)) return;                   
+
+
+                    var send = new ProstoSms(
+                        servicePassVm: ServicePassVM,
+                        contacts: contacts,
+                        sms: sms
+                        );
+
+                    HttpResponseMessage result = await send.SendMsg();
+                    string responseText = await result.Content.ReadAsStringAsync();
                 }
             }
-            catch
+            catch (Exception e)
             {
 
             }
         }
 
-        [AsyncCommand]
-        public async Task Resending(object p)
+        private string GetPhones(Sms sms)
         {
-            try
-            {
-                if (p is Sms sms)
-                {
-                    if (!BeforeSendChecking(sms)) return;
-                }
-            }
-            catch
-            {
+            var list = new List<string>();
 
+            foreach (var i in sms.SmsRecipients?.ToArray())
+            {
+                if (!string.IsNullOrEmpty(i.Client?.Phone))
+                    list.Add(i.Client?.Phone);
             }
+            if (list.Count() > 0) return string.Join(",", list);
+            return "";
         }
 
-        private bool BeforeSendChecking(Sms sms)
+        private string GetEmails(Sms sms)
+        {
+            var list = new List<string>();
+
+            foreach (var i in sms.SmsRecipients?.ToArray())
+            {
+                if (!string.IsNullOrEmpty(i.Client?.Email))
+                    list.Add(i.Client?.Email);
+            }
+            if (list.Count() > 0) return string.Join(",", list);
+            return "";
+        }
+
+        private bool BeforeSendChecking(Sms sms, string contacts)
         {
             if (string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Login) || string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Pass))
             {
@@ -264,6 +288,19 @@ namespace B6CRM.ViewModels.SmsSenders
                 ThemedMessageBox.Show(title: "Внимание!", text: "Cписок получателей для отправки пуст!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 return false;
             }
+
+            if (string.IsNullOrEmpty(sms.Msg))
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Попытка отправить пустое сообщение!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(contacts))
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Список контактов получателей сообщения пуст!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+
             return true;
         }
 
@@ -280,11 +317,6 @@ namespace B6CRM.ViewModels.SmsSenders
                 case "SmsCenter": 
                     Channels = db.Channels?.Where(f => f.SmsCenter == 1)?.ToArray();
                     ServiceId = (int)SmsServices.SmsCenter;
-                    break;
-
-                case "Unisender":
-                    Channels = db.Channels?.Where(f => f.Unisender == 1)?.ToArray();
-                    ServiceId = (int)SmsServices.Unisender;
                     break;
             }
         }
@@ -332,6 +364,8 @@ namespace B6CRM.ViewModels.SmsSenders
             if (p is Client client) return channel == "Email" ? client.Email : client.Phone;           
             return "";
         }
+
+        public int MsgLength(string msg) => msg?.Length ?? 0;
       
         public ICollection<Employee> Employees
         {
@@ -408,5 +442,7 @@ namespace B6CRM.ViewModels.SmsSenders
         }
     }
 
-    public enum SmsServices {ProstoSms = 1, SmsCenter = 2, Unisender = 3 };
+    public enum SmsServices {ProstoSms = 1, SmsCenter = 2 };
+
+
 }

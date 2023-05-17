@@ -307,23 +307,23 @@ namespace B6CRM.Models
             #endregion
 
             #region Channels seeding
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 1, Guid = "IUAoR5QCigKWIXeyDsRT", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Sms", ProstoSms = 1, SmsCenter = 1, Unisender = 1 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 1, Guid = "IUAoR5QCigKWIXeyDsRT", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Sms", ProstoSms = 1, SmsCenter = 1});
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 2, Guid = "IUAoR5QCigKWIXeyDsIK", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Email", ProstoSms = 0, SmsCenter = 1, Unisender = 1 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 2, Guid = "IUAoR5QCigKWIXeyDsIK", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Email", ProstoSms = 0, SmsCenter = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 3, Guid = "IUAoR5QCigKWIXeyDsWa", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "WhatsApp", ProstoSms = 1, SmsCenter = 0, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 3, Guid = "IUAoR5QCigKWIXeyDsWa", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "WhatsApp", ProstoSms = 1, SmsCenter = 0 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 4, Guid = "IUAoR5QCigKWIXeyDs01", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Viber", ProstoSms = 0, SmsCenter = 1, Unisender = 1 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 4, Guid = "IUAoR5QCigKWIXeyDs01", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Viber", ProstoSms = 0, SmsCenter = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 5, Guid = "IUAoR5QCigKWIXeyDs02", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Telegram", ProstoSms = 1, SmsCenter = 0, Unisender = 1 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 5, Guid = "IUAoR5QCigKWIXeyDs02", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Telegram", ProstoSms = 1, SmsCenter = 0 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 6, Guid = "IUAoR5QCigKWIXeyDs03", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "VK", ProstoSms = 1, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 6, Guid = "IUAoR5QCigKWIXeyDs03", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "VK", ProstoSms = 1, SmsCenter = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 7, Guid = "IUAoR5QCigKWIXeyDs04", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "OK", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 7, Guid = "IUAoR5QCigKWIXeyDs04", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "OK", ProstoSms = 0, SmsCenter = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 8, Guid = "IUAoR5QCigKWIXeyDs05", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Голосовые рассылки", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 8, Guid = "IUAoR5QCigKWIXeyDs05", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Голосовые рассылки", ProstoSms = 0, SmsCenter = 1 });
 
-            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 9, Guid = "IUAoR5QCigKWIXeyDs06", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Mms", ProstoSms = 0, SmsCenter = 1, Unisender = 0 });
+            modelBuilder.Entity<Channel>().HasData(new Channel { Id = 9, Guid = "IUAoR5QCigKWIXeyDs06", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Mms", ProstoSms = 0, SmsCenter = 1 });
             #endregion
 
             #region SendingStatuses seeding

@@ -24,6 +24,12 @@ namespace B6CRM.Models
             set { SetProperty(() => Pass, value); }
         }
 
+        public string SenderName
+        {
+            get { return GetProperty(() => SenderName); }
+            set { SetProperty(() => SenderName, value); }
+        }
+
         [NotMapped]
         public string PassDecr
         {
