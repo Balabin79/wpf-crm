@@ -11,6 +11,7 @@ namespace B6CRM.Models
         public string Date { get; set; }
 
         [DeleteBehavior(DeleteBehavior.SetNull)]
+        public Sms Sms { get; set; }       
         public int? SmsId { get; set; } = 0;
     }
 

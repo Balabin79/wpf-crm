@@ -13,7 +13,9 @@ namespace B6CRM.Models
 
         public int? ProviderId { get; set; } = 1;
 
-        public int Num { get; set; } = 0;
+        public int? IsActive { get; set; }
+
+        public int? Num { get; set; } = 0;
     }
 
 }

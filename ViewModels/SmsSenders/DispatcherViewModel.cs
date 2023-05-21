@@ -22,7 +22,7 @@ namespace B6CRM.ViewModels.SmsSenders
         public void Load(object p)
         {
             //вызывается при переходе по кнопкам 
-            SetUserControl(p.ToString());
+            SetUserControl(p?.ToString() ?? "ProstoSmsControl");
         }
 
 

@@ -332,18 +332,17 @@ namespace B6CRM.Models
             modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 2, Guid = "TmbXjWKTyJ3hNPzpU09K", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Отправлено" });
             #endregion
 
-            #region Channels seeding
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 1, Guid = "WjqwQSno8iB3bu3xFA11", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "СМС", ProviderId = 1, Abbr = "sms" });
+            #region CascadeRouting seeding
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 1, Guid = "WjqwQSno8iB3bu3xFA11", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "СМС", ProviderId = 1, Abbr = "sms", Num = 1 });
 
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 2, Guid = "WjqwQSno8iB3bu3xFAuP", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Telegram", ProviderId = 1, Abbr = "tg" });
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 2, Guid = "WjqwQSno8iB3bu3xFAuP", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Telegram", ProviderId = 1, Abbr = "tg", Num = 2 });
 
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 3, Guid = "WjqwQSno8iB3bu3xFArf", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Передача кода с помощью голоса", ProviderId = 1, Abbr = "vb" });
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 3, Guid = "WjqwQSno8iB3bu3xFArf", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Viber", ProviderId = 1, Abbr = "vb", Num = 3 });
 
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 4, Guid = "WjqwQSno8iB3bu3xFA12", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "ВКонтакте", ProviderId = 1, Abbr = "vk" });
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 4, Guid = "WjqwQSno8iB3bu3xFA12", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "ВКонтакте", ProviderId = 1, Abbr = "vk", Num = 4 });
 
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 5, Guid = "WjqwQSno8iB3bu3xFA87", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "WhatsApp", ProviderId = 1, Abbr = "wp" });
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 5, Guid = "WjqwQSno8iB3bu3xFA87", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "WhatsApp", ProviderId = 1, Abbr = "wp", Num = 5 });
 
-            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 6, Guid = "WjqwQSno8iB3bu3xFAQh", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Авторизация абонента звонком", ProviderId = 1, Abbr = "wait_call" });
             #endregion
         }
 

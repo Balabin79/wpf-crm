@@ -396,6 +396,17 @@
                                         FontSize="35"
                                         IsReadOnly="True"
                                         Text="{Binding Path=DataContext.Balance, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture}}" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run
+                                            FontSize="18"
+                                            FontStyle="Italic"
+                                            Foreground="SlateGray"
+                                            Text="Использовано: " />
+                                        <Run
+                                            FontSize="18"
+                                            Foreground="SlateGray"
+                                            Text="{Binding Path=DataContext.CreditUsed, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture}}" />
+                                    </TextBlock>
 
                                     <dx:SimpleButton
                                         Height="23"
@@ -403,16 +414,10 @@
                                         VerticalAlignment="Bottom"
                                         Command="{Binding Path=DataContext.GetBalanceCommand}"
                                         Content="Баланс на счете" />
-
                                     <dx:SimpleButton
                                         Height="23"
                                         VerticalAlignment="Bottom"
-                                        Command="{Binding Path=DataContext.GetTarifsCommand}"
-                                        Content="Тарифы оператора" />
-                                    <dx:SimpleButton
-                                        Height="23"
-                                        VerticalAlignment="Bottom"
-                                        Command=""
+                                        Command="{Binding Path=DataContext.OpenCascadeRoutingFormCommand}"
                                         Content="Каскадная маршрутизация" />
                                 </dxlc:LayoutGroup>
                             </Border>

@@ -5,6 +5,7 @@ using B6CRM.Reports;
 using B6CRM.Services;
 using B6CRM.Services.SmsServices;
 using B6CRM.Services.SmsServices.ProstoSmsService.BalanceMethod;
+using B6CRM.Views.WindowForms;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Native.Web;
 using DevExpress.DataAccess.Sql;
@@ -50,7 +51,7 @@ namespace B6CRM.ViewModels.SmsSenders
 
             IsWaitIndicatorVisible = false;
 
-            Balance = 0;
+            GetBalance();
         }
 
         #region Права на выполнение команд
@@ -64,6 +65,8 @@ namespace B6CRM.ViewModels.SmsSenders
         public bool CanSending(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
         public bool CanResending(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsSending;
         public bool CanDeleteClientFromRecipientsList(object p) => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
+
+        public bool CanOpenCascadeRoutingForm() => ((UserSession)Application.Current.Resources["UserSession"]).SmsEditable;
         #endregion
 
         private void Load(int? sendingStatus = null)
@@ -87,6 +90,8 @@ namespace B6CRM.ViewModels.SmsSenders
                         ?.Include(f => f.Channel)
                         ?.Include(f => f.SmsRecipients)?.ThenInclude(f => f.Client)?.ThenInclude(f => f.ClientCategory)
                         ?.ToObservableCollection();
+
+
             }
             catch(Exception e)
             {
@@ -241,6 +246,9 @@ namespace B6CRM.ViewModels.SmsSenders
 
                     HttpResponseMessage result = await send.SendMsg(contacts: contacts, text: sms.Msg);
                     string responseText = await result.Content.ReadAsStringAsync();
+
+                    // результат отправки либо окно Error, либо Notification
+                    GetBalance();
                 }
             }
             catch (Exception e)
@@ -258,7 +266,9 @@ namespace B6CRM.ViewModels.SmsSenders
             string json = await result.Content.ReadAsStringAsync();
 
             var balance = JsonConvert.DeserializeObject<Balance>(json);
+
             Balance = balance?.response?.data?.credits ?? 0;
+            CreditUsed = balance?.response?.data?.credits_used ?? 0;
 
             if (balance?.response?.msg?.err_code != 0) ShowError(balance?.response?.msg?.text);
         }
@@ -331,17 +341,25 @@ namespace B6CRM.ViewModels.SmsSenders
         private void SetService(string channelName)
         {
             ServiceName = channelName;
-            switch (channelName)
+            try
             {
-                case "ProstoSms": 
-                    Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
-                    ServiceId = (int)SmsServices.ProstoSms;                  
-                    break;
+                switch (channelName)
+                {
+                    case "ProstoSms":
+                        Channels = db.Channels?.Where(f => f.ProstoSms == 1)?.ToArray();
+                        ServiceId = (int)SmsServices.ProstoSms;
+                        CascadeRoutingList = db.CascadeRouting.Where(f => f.ProviderId == 1).ToList() ?? new List<CascadeRouting>();
+                        break;
 
-                case "SmsCenter": 
-                    Channels = db.Channels?.Where(f => f.SmsCenter == 1)?.ToArray();
-                    ServiceId = (int)SmsServices.SmsCenter;
-                    break;
+                    case "SmsCenter":
+                        Channels = db.Channels?.Where(f => f.SmsCenter == 1)?.ToArray();
+                        ServiceId = (int)SmsServices.SmsCenter;
+                        break;
+                }
+            }
+            catch(Exception e)
+            {
+                Log.ErrorHandler(e, "Ошибка при попытке установки значений сервиса!", true);
             }
         }
 
@@ -381,7 +399,24 @@ namespace B6CRM.ViewModels.SmsSenders
         }
 
         [Command]
-        public void Editable() => IsReadOnly = !IsReadOnly;      
+        public void Editable() => IsReadOnly = !IsReadOnly;
+
+        [Command]
+        public void OpenCascadeRoutingForm() => new CascadeRoutingWindow() { DataContext = this }.Show();
+        
+
+        [Command]
+        public void SaveCascadeRouting()
+        {
+            try
+            {
+               if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+            }
+            catch
+            {
+
+            }
+        }
 
         public string GetClientContact(string channel, object p)
         {
@@ -419,6 +454,13 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => RecipientsList); }
             set { SetProperty(() => RecipientsList, value); }
+        }
+
+        // актуально для ProstoSms
+        public ICollection<CascadeRouting> CascadeRoutingList
+        {
+            get { return GetProperty(() => CascadeRoutingList); }
+            set { SetProperty(() => CascadeRoutingList, value); }
         }
 
         public ObservableCollection<Sms> Sms
@@ -469,6 +511,12 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => Balance); }
             set { SetProperty(() => Balance, value); }
+        }        
+        
+        public Decimal CreditUsed
+        {
+            get { return GetProperty(() => CreditUsed); }
+            set { SetProperty(() => CreditUsed, value); }
         }
     }
 
