@@ -9,6 +9,6 @@ namespace B6CRM.Services.SmsServices
 {
     public interface ISmsSending
     {
-        Task<HttpResponseMessage> SendMsg();
+        Task<HttpResponseMessage> SendMsg(string text, string contacts);
     }
 }

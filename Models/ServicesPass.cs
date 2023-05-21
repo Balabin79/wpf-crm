@@ -30,6 +30,12 @@ namespace B6CRM.Models
             set { SetProperty(() => SenderName, value); }
         }
 
+        public int? IsCascadeRoutingEnabled
+        {
+            get { return GetProperty(() => IsCascadeRoutingEnabled); }
+            set { SetProperty(() => IsCascadeRoutingEnabled, value); }
+        }
+
         [NotMapped]
         public string PassDecr
         {

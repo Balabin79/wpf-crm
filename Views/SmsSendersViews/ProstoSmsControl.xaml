@@ -353,28 +353,71 @@
                             <TextBlock
                                 Height="22"
                                 VerticalAlignment="Center"
-                                Text="Настройки сервиса ProstoSms" />
+                                Text="Настройки сервиса SmsCenter" />
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
+                    <dxlc:LayoutGroup DataContext="{Binding ElementName=ProstoSmsUserControl}" Orientation="Horizontal">
 
-                    <dxlc:LayoutGroup DataContext="{Binding ElementName=ProstoSmsUserControl}" Orientation="Vertical">
                         <dxlc:LayoutGroup Orientation="Horizontal">
-                            <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                                <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-                            </dxlc:LayoutItem>
+                            <Border
+                                Padding="5"
+                                BorderBrush="LightGray"
+                                BorderThickness="1">
 
-                            <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top">
-                                <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePassVM.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-                            </dxlc:LayoutItem>
+                                <dxlc:LayoutGroup Width="auto" Orientation="Vertical">
+                                    <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
+                                        <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutItem>
 
-                            <Button
-                                Width="90"
-                                Height="23"
-                                Margin="0,18,0,0"
-                                Command="{Binding ElementName=grid, Path=DataContext.ServicePassVM.SavePassCommand}"
-                                Content="Сохранить" />
+                                    <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top">
+                                        <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePassVM.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem Label="Имя отправителя:" LabelPosition="Top">
+                                        <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.SenderName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutItem>
+                                    <Button
+                                        Width="100"
+                                        Height="23"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding ElementName=grid, Path=DataContext.ServicePassVM.SavePassCommand}"
+                                        Content="Сохранить" />
+                                </dxlc:LayoutGroup>
+                            </Border>
+                            <Border
+                                Width="250"
+                                Padding="5"
+                                BorderBrush="LightGray"
+                                BorderThickness="1">
+                                <dxlc:LayoutGroup Orientation="Vertical">
+                                    <TextBox
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        BorderThickness="0"
+                                        FontSize="35"
+                                        IsReadOnly="True"
+                                        Text="{Binding Path=DataContext.Balance, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:c2}, ConverterCulture={x:Static sysglb:CultureInfo.CurrentCulture}}" />
 
+                                    <dx:SimpleButton
+                                        Height="23"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding Path=DataContext.GetBalanceCommand}"
+                                        Content="Баланс на счете" />
+
+                                    <dx:SimpleButton
+                                        Height="23"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding Path=DataContext.GetTarifsCommand}"
+                                        Content="Тарифы оператора" />
+                                    <dx:SimpleButton
+                                        Height="23"
+                                        VerticalAlignment="Bottom"
+                                        Command=""
+                                        Content="Каскадная маршрутизация" />
+                                </dxlc:LayoutGroup>
+                            </Border>
                         </dxlc:LayoutGroup>
+
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>

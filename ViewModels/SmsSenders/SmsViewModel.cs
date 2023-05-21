@@ -4,6 +4,7 @@ using B6CRM.Models;
 using B6CRM.Reports;
 using B6CRM.Services;
 using B6CRM.Services.SmsServices;
+using B6CRM.Services.SmsServices.ProstoSmsService.BalanceMethod;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Native.Web;
 using DevExpress.DataAccess.Sql;
@@ -14,6 +15,7 @@ using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using License;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -47,6 +49,8 @@ namespace B6CRM.ViewModels.SmsSenders
             IsReadOnly = true;
 
             IsWaitIndicatorVisible = false;
+
+            Balance = 0;
         }
 
         #region Права на выполнение команд
@@ -233,13 +237,9 @@ namespace B6CRM.ViewModels.SmsSenders
                     if (!BeforeSendChecking(sms, contacts)) return;                   
 
 
-                    var send = new ProstoSms(
-                        servicePassVm: ServicePassVM,
-                        contacts: contacts,
-                        sms: sms
-                        );
+                    var send = new ProstoSms(servicePassVm: ServicePassVM);
 
-                    HttpResponseMessage result = await send.SendMsg();
+                    HttpResponseMessage result = await send.SendMsg(contacts: contacts, text: sms.Msg);
                     string responseText = await result.Content.ReadAsStringAsync();
                 }
             }
@@ -247,6 +247,30 @@ namespace B6CRM.ViewModels.SmsSenders
             {
 
             }
+        }
+
+        [AsyncCommand]
+        public async Task GetBalance()
+        {
+            var send = new ProstoSms(servicePassVm: ServicePassVM);
+
+            HttpResponseMessage result = await send.GetAccountBalance();
+            string json = await result.Content.ReadAsStringAsync();
+
+            var balance = JsonConvert.DeserializeObject<Balance>(json);
+            Balance = balance?.response?.data?.credits ?? 0;
+
+            if (balance?.response?.msg?.err_code != 0) ShowError(balance?.response?.msg?.text);
+        }
+
+        private void ShowError(string message)
+        {
+            ThemedMessageBox.Show(
+                title: "Ошибка",
+                text: message,
+                messageBoxButtons: MessageBoxButton.OK,
+                icon: MessageBoxImage.Error
+                );
         }
 
         private string GetPhones(Sms sms)
@@ -439,6 +463,12 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => ServicePassVM); }
             set { SetProperty(() => ServicePassVM, value); }
+        }
+
+        public Decimal Balance
+        {
+            get { return GetProperty(() => Balance); }
+            set { SetProperty(() => Balance, value); }
         }
     }
 

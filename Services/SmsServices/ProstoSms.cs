@@ -20,26 +20,21 @@ namespace B6CRM.Services.SmsServices
     {
         private readonly string login;
         private readonly string password;
-        private readonly string text;
         private readonly string apiUrl = "https://ssl.bs00.ru";
         private readonly string apiKey;
-        private readonly string contacts;
         private readonly string senderName;
 
         private readonly HttpClient httpClient;
 
         public ProstoSms(
-            ServicePassViewModel servicePassVm,
-            string contacts,
-            Sms sms
+            ServicePassViewModel servicePassVm
             )
         {
             this.login = servicePassVm?.ServicePass?.Login?.Trim();
             this.password = servicePassVm?.ServicePass?.PassDecr?.Trim();
             this.senderName = servicePassVm?.ServicePass?.SenderName?.Trim();
 
-            this.text = sms.Msg;
-            this.contacts = contacts;
+            
 
             /*if (apiKey != null)
                 this.apiKey = apiKey;*/
@@ -47,7 +42,7 @@ namespace B6CRM.Services.SmsServices
             httpClient = new HttpClient() { BaseAddress = new Uri(this.apiUrl) };
         }
 
-        public async Task<HttpResponseMessage> SendMsg()
+        public async Task<HttpResponseMessage> SendMsg(string text, string contacts)
         {
             string request = $"{apiUrl}/?method=push_msg&email={login}&password={password}&text={text}&phone={contacts}&format=json";
 
@@ -78,25 +73,6 @@ namespace B6CRM.Services.SmsServices
             // отправляем запрос
             var response = await httpClient.GetAsync(request);
             return response;
-        }
-
-        //Получение информации по стоимости СМС(метод get_prices)
-        public async Task<HttpResponseMessage>  GetPrice()
-        {
-            string request = $"{apiUrl}/?method=get_prices&email={login}&password={password}&format=json";
-
-            // отправляем запрос
-            var response = await httpClient.GetAsync(request);
-            return response;
-        }
-
-        private string GetChannelParam(string channelName)
-        {
-            switch(channelName) 
-            {
-                case "sms": return "sms";
-                default: return "sms";
-            }
         }
     }
 }

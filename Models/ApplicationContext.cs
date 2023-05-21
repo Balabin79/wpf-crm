@@ -331,6 +331,20 @@ namespace B6CRM.Models
 
             modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 2, Guid = "TmbXjWKTyJ3hNPzpU09K", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Отправлено" });
             #endregion
+
+            #region Channels seeding
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 1, Guid = "WjqwQSno8iB3bu3xFA11", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "СМС", ProviderId = 1, Abbr = "sms" });
+
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 2, Guid = "WjqwQSno8iB3bu3xFAuP", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Telegram", ProviderId = 1, Abbr = "tg" });
+
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 3, Guid = "WjqwQSno8iB3bu3xFArf", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Передача кода с помощью голоса", ProviderId = 1, Abbr = "vb" });
+
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 4, Guid = "WjqwQSno8iB3bu3xFA12", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "ВКонтакте", ProviderId = 1, Abbr = "vk" });
+
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 5, Guid = "WjqwQSno8iB3bu3xFA87", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "WhatsApp", ProviderId = 1, Abbr = "wp" });
+
+            modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 6, Guid = "WjqwQSno8iB3bu3xFAQh", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "Авторизация абонента звонком", ProviderId = 1, Abbr = "wait_call" });
+            #endregion
         }
 
         public DbSet<Employee> Employes { get; set; }
@@ -369,5 +383,7 @@ namespace B6CRM.Models
         public DbSet<Channel> Channels { get; set; }
         public DbSet<SendingStatus> SendingStatuses { get; set; }
         public DbSet<ServicePass> ServicesPasses { get; set; }
+        public DbSet<CascadeRouting> CascadeRouting { get; set; }
+        public DbSet<SmsSendingDate> SmsSendingDate { get; set; }
     }
 }
