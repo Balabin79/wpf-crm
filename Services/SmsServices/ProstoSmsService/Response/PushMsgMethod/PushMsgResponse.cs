@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B6CRM.Services.SmsServices.ProstoSmsService.BalanceMethod
+namespace B6CRM.Services.SmsServices.ProstoSmsService.Response.PushMsgMethod
 {
     [Serializable]
-    public class BalanceResponse
+    public class PushMsgResponse
     {
         public Msg msg { get; set; }
-        public BalanceData data { get; set; }
+        public PushMsgData data { get; set; }
     }
 }

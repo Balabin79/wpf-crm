@@ -1,4 +1,5 @@
 ﻿using B6CRM.Models;
+using B6CRM.Services.SmsServices.ProstoSmsService;
 using B6CRM.ViewModels.SmsSenders;
 using Newtonsoft.Json;
 using System;
@@ -44,13 +45,29 @@ namespace B6CRM.Services.SmsServices
 
         public async Task<HttpResponseMessage> SendMsg(string text, string contacts)
         {
-            string request = $"{apiUrl}/?method=push_msg&email={login}&password={password}&text={text}&phone={contacts}&format=json";
+            /*string request = $"{apiUrl}/?method=push_msg&email={login}&password={password}&text={text}&phone={contacts}&format=json";
 
             if (!string.IsNullOrWhiteSpace(this.senderName)) request += $"&sender_name={senderName}";
             
 
             // отправляем запрос
             var response = await httpClient.GetAsync(request);
+            return response;*/
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["method"] = "push_msg",
+                ["email"] = login,
+                ["password"] = password,
+                ["text"] = text,
+                ["phone"] = contacts,
+                ["format"] = "json"
+            };
+            if (!string.IsNullOrWhiteSpace(this.senderName)) data["sender_name"] = senderName;
+
+            // создаем объект HttpContent
+            HttpContent contentForm = new FormUrlEncodedContent(data);
+            // отправляем запрос
+            var response = await httpClient.PostAsync(new Uri(apiUrl), contentForm);
             return response;
         }
       
@@ -74,5 +91,6 @@ namespace B6CRM.Services.SmsServices
             var response = await httpClient.GetAsync(request);
             return response;
         }
+
     }
 }

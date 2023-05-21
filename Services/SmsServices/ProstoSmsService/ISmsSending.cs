@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B6CRM.Services.SmsServices
+namespace B6CRM.Services.SmsServices.ProstoSmsService
 {
     public interface ISmsSending
     {

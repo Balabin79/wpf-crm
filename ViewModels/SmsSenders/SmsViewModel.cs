@@ -4,9 +4,11 @@ using B6CRM.Models;
 using B6CRM.Reports;
 using B6CRM.Services;
 using B6CRM.Services.SmsServices;
-using B6CRM.Services.SmsServices.ProstoSmsService.BalanceMethod;
+using B6CRM.Services.SmsServices.ProstoSmsService.Response.BalanceMethod;
+using B6CRM.Services.SmsServices.ProstoSmsService.Response.PushMsgMethod;
 using B6CRM.Views.WindowForms;
 using DevExpress.DataAccess.ConnectionParameters;
+using DevExpress.DataAccess.Native.Sql.MasterDetail;
 using DevExpress.DataAccess.Native.Web;
 using DevExpress.DataAccess.Sql;
 using DevExpress.Mvvm;
@@ -14,6 +16,7 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using License;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -38,9 +41,9 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             db = new ApplicationContext();
             SetService(serviceName);
-            
+
             Load();
-          
+
             ClientCategories = db.ClientCategories.ToArray();
             Employees = db.Employes.OrderBy(f => f.LastName).ToArray();
             SendingStatuses = db.SendingStatuses.ToArray();
@@ -93,7 +96,7 @@ namespace B6CRM.ViewModels.SmsSenders
 
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Загрузка списка получателей sms!", true);
             }
@@ -101,7 +104,7 @@ namespace B6CRM.ViewModels.SmsSenders
         }
 
         [Command]
-        public void LoadRecipients(object p) 
+        public void LoadRecipients(object p)
         {
             try
             {
@@ -123,10 +126,10 @@ namespace B6CRM.ViewModels.SmsSenders
                     }
                 }
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при загрузке списка получателей sms!", true);
-            }          
+            }
         }
 
 
@@ -237,18 +240,37 @@ namespace B6CRM.ViewModels.SmsSenders
             {
                 if (p is Sms sms)
                 {
+
                     var contacts = sms.Channel?.Name == "Email" ? GetEmails(sms) : GetPhones(sms);
 
-                    if (!BeforeSendChecking(sms, contacts)) return;                   
+                    if (!BeforeSendChecking(sms, contacts)) return;
 
 
                     var send = new ProstoSms(servicePassVm: ServicePassVM);
 
                     HttpResponseMessage result = await send.SendMsg(contacts: contacts, text: sms.Msg);
-                    string responseText = await result.Content.ReadAsStringAsync();
 
-                    // результат отправки либо окно Error, либо Notification
-                    GetBalance();
+                    string json = await result.Content.ReadAsStringAsync();
+
+
+                    var response = JsonConvert.DeserializeObject<PushMsg>(json);
+
+                    if (response?.response?.msg?.err_code != 0) ShowError(response?.response?.msg?.text);
+                    else
+                    {
+                        var msg = $"Всего отправлено: {response?.response?.data?.n_raw_sms ?? 0} шт.\n Израсходовано: {string.Format(response?.response?.data?.credits?.ToString(), "C2")}";
+                        ShowSuccess(msg);
+
+                        var smsSending = new SmsSendingDate
+                        {
+                            IDSms = response?.response?.data?.id,
+                            Date = DateTime.Now.ToString(),
+                            Sms = sms
+                        };
+                        db.SmsSendingDate.Add(smsSending);
+                        db.SaveChanges();
+                    }
+                    //GetBalance();
                 }
             }
             catch (Exception e)
@@ -283,6 +305,16 @@ namespace B6CRM.ViewModels.SmsSenders
                 );
         }
 
+        private void ShowSuccess(string message)
+        {
+            ThemedMessageBox.Show(
+                title: "Успешно отправлено",
+                text: message,
+                messageBoxButtons: MessageBoxButton.OK,
+                icon: MessageBoxImage.Information
+                );
+        }
+
         private string GetPhones(Sms sms)
         {
             var list = new List<string>();
@@ -313,7 +345,7 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             if (string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Login) || string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Pass))
             {
-                ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"" + ServiceName  + "\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"" + ServiceName + "\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
                 return false;
             }
 
@@ -357,7 +389,7 @@ namespace B6CRM.ViewModels.SmsSenders
                         break;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.ErrorHandler(e, "Ошибка при попытке установки значений сервиса!", true);
             }
@@ -368,7 +400,7 @@ namespace B6CRM.ViewModels.SmsSenders
         [Command]
         public void SetFilter(object p)
         {
-            if(int.TryParse(p?.ToString(), out int result))
+            if (int.TryParse(p?.ToString(), out int result))
             {
                 Load(result);
                 IsShowSmsSenders = result;
@@ -403,14 +435,14 @@ namespace B6CRM.ViewModels.SmsSenders
 
         [Command]
         public void OpenCascadeRoutingForm() => new CascadeRoutingWindow() { DataContext = this }.Show();
-        
+
 
         [Command]
         public void SaveCascadeRouting()
         {
             try
             {
-               if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
+                if (db.SaveChanges() > 0) new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
             }
             catch
             {
@@ -420,12 +452,12 @@ namespace B6CRM.ViewModels.SmsSenders
 
         public string GetClientContact(string channel, object p)
         {
-            if (p is Client client) return channel == "Email" ? client.Email : client.Phone;           
+            if (p is Client client) return channel == "Email" ? client.Email : client.Phone;
             return "";
         }
 
         public int MsgLength(string msg) => msg?.Length ?? 0;
-      
+
         public ICollection<Employee> Employees
         {
             get { return GetProperty(() => Employees); }
@@ -443,7 +475,7 @@ namespace B6CRM.ViewModels.SmsSenders
             get { return GetProperty(() => SendingStatuses); }
             set { SetProperty(() => SendingStatuses, value); }
         }
-                
+
         public ICollection<Channel> Channels
         {
             get { return GetProperty(() => Channels); }
@@ -498,7 +530,7 @@ namespace B6CRM.ViewModels.SmsSenders
             get { return GetProperty(() => ServiceName); }
             set { SetProperty(() => ServiceName, value); }
         }
-        
+
         private int ServiceId;
 
         public ServicePassViewModel ServicePassVM
@@ -511,8 +543,8 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => Balance); }
             set { SetProperty(() => Balance, value); }
-        }        
-        
+        }
+
         public Decimal CreditUsed
         {
             get { return GetProperty(() => CreditUsed); }
@@ -520,7 +552,7 @@ namespace B6CRM.ViewModels.SmsSenders
         }
     }
 
-    public enum SmsServices {ProstoSms = 1, SmsCenter = 2 };
+    public enum SmsServices { ProstoSms = 1, SmsCenter = 2 };
 
 
 }
