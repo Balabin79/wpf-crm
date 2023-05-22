@@ -6,6 +6,7 @@ using B6CRM.Services;
 using B6CRM.Services.SmsServices;
 using B6CRM.Services.SmsServices.ProstoSmsService.Response.BalanceMethod;
 using B6CRM.Services.SmsServices.ProstoSmsService.Response.PushMsgMethod;
+using B6CRM.Services.SmsServices.SmscService;
 using B6CRM.Views.WindowForms;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Native.Sql.MasterDetail;
@@ -139,10 +140,9 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             try
             {
-                var date = DateTime.Now;
                 var model = new Sms
                 {
-                    Date = date.ToString(),
+                    Name = "Новая рассылка",
                     ServiceId = ServiceId
                 };
 
@@ -183,6 +183,7 @@ namespace B6CRM.ViewModels.SmsSenders
                 if (db.SaveChanges() > 0)
                 {
                     db.SmsRecipients.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                    db.SmsSendingDate.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                     db.SaveChanges();
                     new Notification() { Content = "Изменения сохранены в базу данных!" }.run();
                 }
@@ -209,10 +210,13 @@ namespace B6CRM.ViewModels.SmsSenders
                         sms.ClientCategory = null;
                         sms.SendingStatus = null;
                         sms.SmsRecipients = null;
+                        sms.SmsSendingDate = null;
 
                         db.SmsRecipients.Where(f => f.SmsId == sms.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        
+                        db.SmsSendingDate.Where(f => f.SmsId == sms.Id).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        
                         db.Entry(sms).State = EntityState.Deleted;
-
                     }
                     else
                     {
@@ -221,6 +225,7 @@ namespace B6CRM.ViewModels.SmsSenders
                     if (db.SaveChanges() > 0)
                     {
                         db.SmsRecipients.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
+                        db.SmsSendingDate.Where(f => f.SmsId == null).ToArray().ForEach(i => db.Entry(i).State = EntityState.Deleted);
                         db.SaveChanges();
                         new Notification() { Content = "Рассылка удалена из базы данных!" }.run();
                     }
@@ -248,7 +253,7 @@ namespace B6CRM.ViewModels.SmsSenders
 
                     var send = new ProstoSms(servicePassVm: ServicePassVM);
 
-                    HttpResponseMessage result = await send.SendMsg(contacts: contacts, text: sms.Msg);
+                    HttpResponseMessage result = await send.SendMsg(contacts: contacts, sms:sms);
 
                     string json = await result.Content.ReadAsStringAsync();
 
@@ -258,19 +263,20 @@ namespace B6CRM.ViewModels.SmsSenders
                     if (response?.response?.msg?.err_code != 0) ShowError(response?.response?.msg?.text);
                     else
                     {
-                        var msg = $"Всего отправлено: {response?.response?.data?.n_raw_sms ?? 0} шт.\n Израсходовано: {string.Format(response?.response?.data?.credits?.ToString(), "C2")}";
+                        var msg = $"Всего отправлено: {response?.response?.data?.n_raw_sms ?? 0} шт.\n" +
+                            string.Format("Израсходовано: {0:C2}", response?.response?.data?.credits);
                         ShowSuccess(msg);
 
                         var smsSending = new SmsSendingDate
                         {
                             IDSms = response?.response?.data?.id,
-                            Date = DateTime.Now.ToString(),
+                            Date =  sms?.Date ?? DateTime.Now.ToString(),
                             Sms = sms
                         };
                         db.SmsSendingDate.Add(smsSending);
                         db.SaveChanges();
                     }
-                    //GetBalance();
+                    GetBalance();
                 }
             }
             catch (Exception e)
@@ -343,6 +349,12 @@ namespace B6CRM.ViewModels.SmsSenders
 
         private bool BeforeSendChecking(Sms sms, string contacts)
         {
+            if(!PingService.IsNetworkAvailable())
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Отсутствует подключение к интернету!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+
             if (string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Login) || string.IsNullOrEmpty(ServicePassVM?.ServicePass?.Pass))
             {
                 ThemedMessageBox.Show(title: "Внимание!", text: "Не заполнены логин или пароль к сервису \"" + ServiceName + "\"!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
@@ -367,7 +379,13 @@ namespace B6CRM.ViewModels.SmsSenders
                 return false;
             }
 
-            return true;
+            if (!string.IsNullOrWhiteSpace(sms?.Date) && DateTime.TryParse(sms?.Date, out DateTime date2) && date2 < DateTime.Now)
+            {
+                ThemedMessageBox.Show(title: "Внимание!", text: "Дата отложенной доставки не может быть меньше текущей даты!", messageBoxButtons: MessageBoxButton.OK, icon: MessageBoxImage.Error);
+                return false;
+            }
+
+                return true;
         }
 
         private void SetService(string channelName)

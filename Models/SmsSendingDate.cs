@@ -12,6 +12,8 @@ namespace B6CRM.Models
 
         [DeleteBehavior(DeleteBehavior.SetNull)]
         public Sms Sms { get; set; }       
+        public int? SmsId { get; set; }   
+        
         public int? IDSms { get; set; }
     }
 

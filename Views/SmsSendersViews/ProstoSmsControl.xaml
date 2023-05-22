@@ -23,6 +23,7 @@
     <UserControl.Resources>
         <converter:DateToStringConverter x:Key="DateToString" />
         <converter:LongDateToStringConverter x:Key="birthToDateString" />
+        <converter:BoolIntConverter x:Key="boolConverter" />
         <DataTemplate x:Key="ContentDetail" x:Name="dataTemplate">
 
             <Grid
@@ -104,6 +105,33 @@
                                         <dxe:RadioComboBoxStyleSettings />
                                     </dxe:ComboBoxEdit.StyleSettings>
                                 </dxe:ComboBoxEdit>
+                            </dxlc:LayoutItem>
+
+                            <dxlc:LayoutItem
+                                Margin="0,0,0,2"
+                                Label="Дата отложенной доставки:"
+                                LabelPosition="Top">
+                                <dxe:DateEdit
+                                    x:Name="DateEdit"
+                                    Height="27"
+                                    Margin="0,0,8,0"
+                                    HorizontalAlignment="Stretch"
+                                    DisplayFormatString="D"
+                                    EditValue="{Binding Date, Mode=TwoWay, StringFormat=D, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}"
+                                    IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
+                                                           Mode=OneWay,
+                                                           UpdateSourceTrigger=PropertyChanged}"
+                                    Mask="f"
+                                    MaskType="DateTime"
+                                    MinValue="{Binding Source={x:Static sys:DateTime.Now}}"
+                                    NullText="Дата отложенной доставки"
+                                    NullValueButtonPlacement="EditBox"
+                                    ShowClearButton="True"
+                                    ShowToday="True">
+                                    <dxe:DateEdit.StyleSettings>
+                                        <dxe:DateEditNavigatorWithTimePickerStyleSettings />
+                                    </dxe:DateEdit.StyleSettings>
+                                </dxe:DateEdit>
                             </dxlc:LayoutItem>
 
                             <dx:SimpleButton
@@ -375,12 +403,19 @@
                                     <dxlc:LayoutItem Label="Имя отправителя:" LabelPosition="Top">
                                         <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.SenderName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
                                     </dxlc:LayoutItem>
-                                    <Button
-                                        Width="100"
-                                        Height="23"
-                                        HorizontalAlignment="Left"
-                                        Command="{Binding ElementName=grid, Path=DataContext.ServicePassVM.SavePassCommand}"
-                                        Content="Сохранить" />
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <Button
+                                            Width="100"
+                                            Height="23"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding ElementName=grid, Path=DataContext.ServicePassVM.SavePassCommand}"
+                                            Content="Сохранить" />
+                                        <dxe:CheckEdit
+                                            Margin="3,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            Content="Включить каскадную маршрутизацию"
+                                            EditValue="{Binding Path=DataContext.ServicePassVM.ServicePass.IsCascadeRoutingEnabled, Mode=TwoWay, Converter={StaticResource boolConverter}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                    </dxlc:LayoutGroup>
                                 </dxlc:LayoutGroup>
                             </Border>
                             <Border
@@ -426,9 +461,6 @@
                     </dxlc:LayoutGroup>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
-
-
-
 
             <dxlc:LayoutGroup
                 Grid.Row="1"
@@ -611,41 +643,6 @@
                                     HorizontalAlignment="Stretch"
                                     EditValue="{Binding Row.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     TextWrapping="Wrap" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellEditTemplate>
-                    </dxg:GridColumn>
-
-                    <dxg:GridColumn
-                        Width="1*"
-                        FieldName="Date"
-                        Header="Дата"
-                        HorizontalHeaderContentAlignment="Center">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,3,0,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding Row.Date, StringFormat='{}{0:dd MMMM yyyy HH:mm}', ConverterCulture=ru-RU, Converter={StaticResource DateToString}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    TextWrapping="Wrap" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <dxe:DateEdit
-                                    x:Name="DateEdit"
-                                    Margin="0,0,8,0"
-                                    HorizontalAlignment="Stretch"
-                                    DisplayFormatString="D"
-                                    EditValue="{Binding Row.Date, Mode=TwoWay, StringFormat=D, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}"
-                                    IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
-                                                           Mode=OneWay,
-                                                           UpdateSourceTrigger=PropertyChanged}"
-                                    Mask="f"
-                                    MaskType="DateTime">
-                                    <dxe:DateEdit.StyleSettings>
-                                        <dxe:DateEditNavigatorWithTimePickerStyleSettings />
-                                    </dxe:DateEdit.StyleSettings>
-                                </dxe:DateEdit>
                             </DataTemplate>
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>

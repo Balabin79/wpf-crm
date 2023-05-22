@@ -1,5 +1,6 @@
 ﻿using B6CRM.Models;
 using B6CRM.Services.SmsServices.ProstoSmsService;
+using B6CRM.Services.SmsServices.SmscService;
 using B6CRM.ViewModels.SmsSenders;
 using Newtonsoft.Json;
 using System;
@@ -17,13 +18,14 @@ using System.Threading.Tasks;
 
 namespace B6CRM.Services.SmsServices
 {
-    public class ProstoSms : ISmsSending
+    public class ProstoSms
     {
         private readonly string login;
         private readonly string password;
         private readonly string apiUrl = "https://ssl.bs00.ru";
         private readonly string apiKey;
         private readonly string senderName;
+        private readonly bool isCascadeRouting;
 
         private readonly HttpClient httpClient;
 
@@ -34,35 +36,56 @@ namespace B6CRM.Services.SmsServices
             this.login = servicePassVm?.ServicePass?.Login?.Trim();
             this.password = servicePassVm?.ServicePass?.PassDecr?.Trim();
             this.senderName = servicePassVm?.ServicePass?.SenderName?.Trim();
-
-            
-
+            this.isCascadeRouting = servicePassVm?.ServicePass?.IsCascadeRoutingEnabled == 1;
             /*if (apiKey != null)
                 this.apiKey = apiKey;*/
 
-            httpClient = new HttpClient() { BaseAddress = new Uri(this.apiUrl) };
+            httpClient = HttpClientInstance.getInstance();
         }
 
-        public async Task<HttpResponseMessage> SendMsg(string text, string contacts)
+        public async Task<HttpResponseMessage> SendMsg(string contacts, Sms sms)
         {
-            /*string request = $"{apiUrl}/?method=push_msg&email={login}&password={password}&text={text}&phone={contacts}&format=json";
-
-            if (!string.IsNullOrWhiteSpace(this.senderName)) request += $"&sender_name={senderName}";
-            
-
-            // отправляем запрос
-            var response = await httpClient.GetAsync(request);
-            return response;*/
             Dictionary<string, string> data = new Dictionary<string, string>
             {
                 ["method"] = "push_msg",
                 ["email"] = login,
                 ["password"] = password,
-                ["text"] = text,
+                ["text"] = sms?.Msg ?? "",
                 ["phone"] = contacts,
                 ["format"] = "json"
             };
             if (!string.IsNullOrWhiteSpace(this.senderName)) data["sender_name"] = senderName;
+
+            // если установлена дата отложенной доставки
+            if (!string.IsNullOrWhiteSpace(sms?.Date) && DateTime.TryParse(sms?.Date, out DateTime date2))
+            {
+                data["set_aside_time"] = new DateTimeOffset(date2).ToUnixTimeSeconds().ToString();
+                data["time"] = "local";
+            }
+
+            data["route"] = GetRouting(sms);
+
+
+
+            // создаем объект HttpContent
+            HttpContent contentForm = new FormUrlEncodedContent(data);
+            // отправляем запрос
+            var response = await httpClient.PostAsync(new Uri(apiUrl), contentForm);
+            return response;
+            //return new HttpResponseMessage();
+        }
+
+
+        //Получение информации об остатке баланса(метод get_profile)
+        public async Task<HttpResponseMessage> GetAccountBalance()
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["method"] = "get_profile",
+                ["email"] = login,
+                ["password"] = password,
+                ["format"] = "json"
+            };
 
             // создаем объект HttpContent
             HttpContent contentForm = new FormUrlEncodedContent(data);
@@ -70,26 +93,47 @@ namespace B6CRM.Services.SmsServices
             var response = await httpClient.PostAsync(new Uri(apiUrl), contentForm);
             return response;
         }
-      
-
-        //Получение информации об остатке баланса(метод get_profile)
-        public async Task<HttpResponseMessage> GetAccountBalance()
-        {
-            string request = $"{apiUrl}/?method=get_profile&email={login}&password={password}&format=json";
-
-            // отправляем запрос
-            var response = await httpClient.GetAsync(request);
-            return response;
-        }
 
         //Получение статусов самостоятельно (метод get_msg_report)
         public async Task<HttpResponseMessage> GetMsgReport(int smsId)
         {
-            string request = $"{apiUrl}/?method=get_msg_report&email={login}&password={password}&format=json&id={smsId}";
+            Dictionary<string, string> data = new Dictionary<string, string>
+            {
+                ["method"] = "get_msg_report",
+                ["email"] = login,
+                ["password"] = password,
+                ["format"] = "json"
+            };
 
+            // создаем объект HttpContent
+            HttpContent contentForm = new FormUrlEncodedContent(data);
             // отправляем запрос
-            var response = await httpClient.GetAsync(request);
+            var response = await httpClient.PostAsync(new Uri(apiUrl), contentForm);
             return response;
+        }
+
+        private string GetRouting(Sms sms)
+        {
+            using (var db = new ApplicationContext())
+            {
+                if (isCascadeRouting)
+                {
+                    var route = db.CascadeRouting?.Where(f => f.ProviderId == 1 && f.IsActive == 1)?.OrderBy(f => f.Num)?.Select(f => f.Abbr)?.ToArray() ?? new string[0];
+
+                    var param = string.Join("-", route);
+                    if (!string.IsNullOrEmpty(param)) return param;
+                }
+                switch (sms?.Channel?.Name)
+                {
+                    case "Sms": return "sms";
+                    case "Telegram": return "tg";
+                    case "Viber": return "vb";
+                    case "WhatsApp": return "wp";
+                    case "VK": return "vk";
+
+                    default: return "sms";
+                }
+            }
         }
 
     }

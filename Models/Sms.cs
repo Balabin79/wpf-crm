@@ -9,7 +9,11 @@ namespace B6CRM.Models
     [Table("Sms")]
     public class Sms : AbstractBaseModel
     {
-        public Sms() => SmsRecipients = new ObservableCollection<SmsRecipient>();
+        public Sms() 
+        { 
+            SmsRecipients = new ObservableCollection<SmsRecipient>();
+            SmsSendingDate = new ObservableCollection<SmsSendingDate>();
+        }
         
         public string Name
         {
@@ -47,6 +51,12 @@ namespace B6CRM.Models
         {
             get { return GetProperty(() => SmsRecipients); }
             set { SetProperty(() => SmsRecipients, value); }
+        }
+
+        public ObservableCollection<SmsSendingDate> SmsSendingDate
+        {
+            get { return GetProperty(() => SmsSendingDate); }
+            set { SetProperty(() => SmsSendingDate, value); }
         }
     }
 }
