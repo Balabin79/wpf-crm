@@ -339,7 +339,7 @@
                     Grid.Row="1"
                     VerticalAlignment="Center"
                     Content="Загружаем рассылку ..."
-                    DeferedVisibility="{Binding ElementName=UTreatmentPlan, Path=DataContext.IsWaitIndicatorVisible, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                    DeferedVisibility="False">
                     <dx:WaitIndicator.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -392,16 +392,40 @@
                                 BorderThickness="1">
 
                                 <dxlc:LayoutGroup Width="auto" Orientation="Vertical">
-                                    <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
-                                        <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutGroup Orientation="Horizontal">
+                                        <dxlc:LayoutItem Label="Логин:" LabelPosition="Top">
+                                            <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                        </dxlc:LayoutItem>
 
-                                    <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top">
-                                        <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePassVM.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
-                                    </dxlc:LayoutItem>
+                                        <dxlc:LayoutItem Label="Пароль:" LabelPosition="Top">
+                                            <dxe:TextEdit Height="22" Text="{Binding Path=DataContext.ServicePassVM.ServicePass.PassDecr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
+                                        </dxlc:LayoutItem>
+                                    </dxlc:LayoutGroup>
+
                                     <dxlc:LayoutItem Label="Имя отправителя:" LabelPosition="Top">
                                         <dxe:TextEdit Text="{Binding Path=DataContext.ServicePassVM.ServicePass.SenderName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" />
                                     </dxlc:LayoutItem>
+
+                                    <dxlc:LayoutItem Label="Часовой пояс:" LabelPosition="Top">
+                                        <dxe:ComboBoxEdit
+                                            HorizontalAlignment="Stretch"
+                                            DisplayMember="FullName"
+                                            EditValue="{Binding Path=DataContext.ServicePassVM.ServicePass.TimeZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            IncrementalFiltering="True"
+                                            IncrementalSearch="True"
+                                            IsCaseSensitiveFilter="False"
+                                            IsTextEditable="False"
+                                            ItemsSource="{Binding Path=DataContext.ServicePassVM.TimeZones, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                            NullText="Часовой пояс"
+                                            NullValueButtonPlacement="EditBox"
+                                            SelectedItem="{Binding Path=DataContext.ServicePassVM.ServicePass.TimeZone, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            ValidateOnTextInput="False">
+                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                <dxe:RadioComboBoxStyleSettings />
+                                            </dxe:ComboBoxEdit.StyleSettings>
+                                        </dxe:ComboBoxEdit>
+                                    </dxlc:LayoutItem>
+
                                     <dxlc:LayoutGroup Orientation="Horizontal">
                                         <Button
                                             Width="100"

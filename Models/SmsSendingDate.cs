@@ -18,6 +18,8 @@ namespace B6CRM.Models
 
         public int? Count { get; set; }
 
+        public string ChannelName { get; set; }
+
         [Column(TypeName = "NUMERIC")]
         public decimal? Cost
         {

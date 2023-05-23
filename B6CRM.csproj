@@ -419,6 +419,9 @@
     <Compile Update="Views\PatientCard\PatientsList.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\WindowForms\SmsSendingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\WindowForms\ClientCategoriesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -485,6 +488,9 @@
     <Page Update="Views\PatientCard\PatientsList.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\WindowForms\SmsSendingsWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\WindowForms\ClientCategoriesWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

@@ -338,6 +338,30 @@ namespace B6CRM.Models
             modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 5, Guid = "WjqwQSno8iB3bu3xFA87", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "WhatsApp", ProviderId = 1, Abbr = "wp", Num = 5 });
 
             #endregion
+
+            #region TimeZone seeding
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 1, Guid = "uYkNLJlQE9mdDIggvfR1", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Калининград", TZ = -1, UTC = 2 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 2, Guid = "uYkNLJlQE9mdDIggvfR2", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Москва", TZ = 0, UTC = 3 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 3, Guid = "uYkNLJlQE9mdDIggvfR3", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Самара", TZ = 1, UTC = 4 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 4, Guid = "uYkNLJlQE9mdDIggvfR4", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Екатеринбург", TZ = 2, UTC = 5 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 5, Guid = "uYkNLJlQE9mdDIggvfR5", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Омск", TZ = 3, UTC = 6 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 6, Guid = "uYkNLJlQE9mdDIggvfR6", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Красноярск", TZ = 4, UTC = 7 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 7, Guid = "uYkNLJlQE9mdDIggvfR7", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Иркутск", TZ = 5, UTC = 8 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 8, Guid = "uYkNLJlQE9mdDIggvfR8", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Якутск", TZ = 6, UTC = 9 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 9, Guid = "uYkNLJlQE9mdDIggvfR9", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Владивосток", TZ = 7, UTC = 10 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 10, Guid = "uYkNLJlQE9mdDIggvf10", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Магадан", TZ = 8, UTC = 11 });
+
+            modelBuilder.Entity<TimeZone>().HasData(new TimeZone { Id = 11, Guid = "uYkNLJlQE9mdDIggvf11", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Камчатка", TZ = 9, UTC = 12 });
+            #endregion
         }
 
         public DbSet<Employee> Employes { get; set; }
@@ -377,5 +401,6 @@ namespace B6CRM.Models
         public DbSet<ServicePass> ServicesPasses { get; set; }
         public DbSet<CascadeRouting> CascadeRouting { get; set; }
         public DbSet<SmsSendingDate> SmsSendingDate { get; set; }
+        public DbSet<TimeZone> TimeZones { get; set; }
     }
 }

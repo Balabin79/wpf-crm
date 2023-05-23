@@ -20,6 +20,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using TimeZone = B6CRM.Models.TimeZone;
 
 namespace B6CRM.ViewModels.SmsSenders
 {
@@ -36,6 +37,7 @@ namespace B6CRM.ViewModels.SmsSenders
             ClientCategories = db.ClientCategories.ToArray();
             CascadeRoutingList = db.CascadeRouting.Where(f => f.ProviderId == 1).ToList() ?? new List<CascadeRouting>();
             Channels = db.Channels?.Where(f => f.ProstoSms == 1).ToArray();
+            SmsSendings = new ObservableCollection<SmsSendingDate>();
 
             ServicePassVM = new ServicePassViewModel("ProstoSms");
 
@@ -234,7 +236,8 @@ namespace B6CRM.ViewModels.SmsSenders
                             Date = sms?.Date ?? DateTime.Now.ToString(),
                             Sms = sms,
                             Cost = response?.response?.data?.credits ?? 0,
-                            Count = response?.response?.data?.n_raw_sms ?? 0
+                            Count = response?.response?.data?.n_raw_sms ?? 0,
+                            ChannelName = sms?.Channel?.Name ?? "Каскадная рассылка"
                         };
                         db.SmsSendingDate.Add(smsSending);
                         db.SaveChanges();
@@ -384,7 +387,6 @@ namespace B6CRM.ViewModels.SmsSenders
         [Command]
         public void OpenCascadeRoutingForm() => new CascadeRoutingWindow() { DataContext = this }.Show();
 
-
         [Command]
         public void SaveCascadeRouting()
         {
@@ -403,9 +405,18 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             try
             {
+                if (p is Sms sms)
+                {
+                    SmsSendings = db.SmsSendingDate
+                        ?.Where(f => f.SmsId == sms.Id)
+                        .Include(f => f.Sms)
+                        ?.ThenInclude(f => f.Channel)
+                        ?.ToObservableCollection();
 
+                    new SmsSendingsWindow() { DataContext = this }.Show();
+                }
             }
-            catch
+            catch (Exception e)
             {
 
             }
@@ -479,5 +490,12 @@ namespace B6CRM.ViewModels.SmsSenders
             get { return GetProperty(() => CreditUsed); }
             set { SetProperty(() => CreditUsed, value); }
         }
+
+        public ObservableCollection<SmsSendingDate> SmsSendings
+        {
+            get { return GetProperty(() => SmsSendings); }
+            set { SetProperty(() => SmsSendings, value); }
+        }
+
     }
 }

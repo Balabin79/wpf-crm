@@ -3,11 +3,15 @@ using B6CRM.Models;
 using B6CRM.Services;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
+using DevExpress.Mvvm.Native;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimeZone = B6CRM.Models.TimeZone;
 
 namespace B6CRM.ViewModels.SmsSenders
 {
@@ -20,7 +24,11 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             db = new ApplicationContext();
             ServiceName = serviceName;
-            ServicePass = db.ServicesPasses.FirstOrDefault(f => f.Name == ServiceName) ?? new ServicePass() { Name = ServiceName };
+
+            ServicePass = db.ServicesPasses?.Include(f => f.TimeZone)?.FirstOrDefault(f => f.Name == ServiceName) ?? new ServicePass() { Name = ServiceName };
+
+            TimeZones = db.TimeZones?.ToObservableCollection() ?? new ObservableCollection<TimeZone>();
+
             ServicePass.PassDecr = PassDecrypt();
         }
 
@@ -80,6 +88,12 @@ namespace B6CRM.ViewModels.SmsSenders
         {
             get { return GetProperty(() => ServicePass); }
             set { SetProperty(() => ServicePass, value); }
+        }
+
+        public ObservableCollection<TimeZone> TimeZones
+        {
+            get { return GetProperty(() => TimeZones); }
+            set { SetProperty(() => TimeZones, value); }
         }
     }
 }

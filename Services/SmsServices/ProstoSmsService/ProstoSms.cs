@@ -25,6 +25,7 @@ namespace B6CRM.Services.SmsServices
         private readonly string apiUrl = "https://ssl.bs00.ru";
         private readonly string senderName;
         private readonly bool isCascadeRouting;
+        private readonly int timeZone = 0;
 
         private readonly HttpClient httpClient;
 
@@ -36,6 +37,7 @@ namespace B6CRM.Services.SmsServices
             this.password = servicePassVm?.ServicePass?.PassDecr?.Trim();
             this.senderName = servicePassVm?.ServicePass?.SenderName?.Trim();
             this.isCascadeRouting = servicePassVm?.ServicePass?.IsCascadeRoutingEnabled == 1;
+            this.timeZone = servicePassVm?.ServicePass?.TimeZone?.TZ ?? 0;
             /*if (apiKey != null)
                 this.apiKey = apiKey;*/
 
@@ -58,7 +60,14 @@ namespace B6CRM.Services.SmsServices
             // если установлена дата отложенной доставки
             if (!string.IsNullOrWhiteSpace(sms?.Date) && DateTime.TryParse(sms?.Date, out DateTime date2))
             {
-                data["set_aside_time"] = new DateTimeOffset(date2).ToUnixTimeSeconds().ToString();
+                var timestamp = new DateTimeOffset(date2).ToUnixTimeSeconds();
+                var time = timeZone == 0
+                    ? timestamp
+                    : timeZone < 0
+                    ? timestamp + Math.Abs(timeZone) * 3600
+                    : timestamp - Math.Abs(timeZone) * 3600; // timeZone ед-цы часов * кол-во секунд в часе
+
+                data["set_aside_time"] = time.ToString();
                 data["time"] = "local";
             }
 
