@@ -41,10 +41,6 @@ namespace B6CRM.Models
         public ClientCategory ClientCategory { get; set; }
         public int? ClientCategoryId { get; set; }
 
-        [DeleteBehavior(DeleteBehavior.SetNull)]
-        public SendingStatus SendingStatus { get; set; }
-        public int? SendingStatusId { get; set; }
-
         public int ServiceId { get; set; }
 
         public ObservableCollection<SmsRecipient> SmsRecipients

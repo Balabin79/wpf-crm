@@ -23,7 +23,6 @@ namespace B6CRM.Services.SmsServices
         private readonly string login;
         private readonly string password;
         private readonly string apiUrl = "https://ssl.bs00.ru";
-        private readonly string apiKey;
         private readonly string senderName;
         private readonly bool isCascadeRouting;
 

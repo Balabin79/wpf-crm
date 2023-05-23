@@ -326,12 +326,6 @@ namespace B6CRM.Models
             modelBuilder.Entity<Channel>().HasData(new Channel { Id = 9, Guid = "IUAoR5QCigKWIXeyDs06", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Mms", ProstoSms = 0, SmsCenter = 1 });
             #endregion
 
-            #region SendingStatuses seeding
-            modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 1, Guid = "TmbXjWKTyJ3hNPzpU04Y", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Ожидает отправки" });
-
-            modelBuilder.Entity<SendingStatus>().HasData(new SendingStatus { Id = 2, Guid = "TmbXjWKTyJ3hNPzpU09K", CreatedAt = 1649579905, UpdatedAt = 1649579905, Name = "Отправлено" });
-            #endregion
-
             #region CascadeRouting seeding
             modelBuilder.Entity<CascadeRouting>().HasData(new CascadeRouting { Id = 1, Guid = "WjqwQSno8iB3bu3xFA11", CreatedAt = 1649579905, UpdatedAt = 1649579905, Channel = "СМС", ProviderId = 1, Abbr = "sms", Num = 1 });
 
@@ -380,7 +374,6 @@ namespace B6CRM.Models
         public DbSet<Sms> Sms { get; set; }
         public DbSet<SmsRecipient> SmsRecipients { get; set; }
         public DbSet<Channel> Channels { get; set; }
-        public DbSet<SendingStatus> SendingStatuses { get; set; }
         public DbSet<ServicePass> ServicesPasses { get; set; }
         public DbSet<CascadeRouting> CascadeRouting { get; set; }
         public DbSet<SmsSendingDate> SmsSendingDate { get; set; }

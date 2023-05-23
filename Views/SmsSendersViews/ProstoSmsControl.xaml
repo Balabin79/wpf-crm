@@ -381,7 +381,7 @@
                             <TextBlock
                                 Height="22"
                                 VerticalAlignment="Center"
-                                Text="Настройки сервиса SmsCenter" />
+                                Text="Настройки сервиса &quot;ProstoSms&quot;" />
                         </DataTemplate>
                     </dxlc:LayoutGroup.HeaderTemplate>
                     <dxlc:LayoutGroup DataContext="{Binding ElementName=ProstoSmsUserControl}" Orientation="Horizontal">
@@ -525,37 +525,6 @@
                                                               UpdateSourceTrigger=PropertyChanged}"
                                         Style="{Binding}" />
 
-                                    <dxb:BarItemLinkSeparator />
-
-                                    <dxb:BarButtonItem
-                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"
-                                        CommandParameter="2"
-                                        Content="Все рассылки"
-                                        Glyph="{dx:DXImage SvgImages/Dashboards/MasterFilter.svg}"
-                                        GlyphSize="Small"
-                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == null',
-                                                              Mode=OneWay,
-                                                              UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <dxb:BarButtonItem
-                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"
-                                        CommandParameter="1"
-                                        Content="Отправленные"
-                                        Glyph="{dx:DXImage SvgImages/Dashboards/MultipleMasterFilter.svg}"
-                                        GlyphSize="Small"
-                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 2',
-                                                              Mode=OneWay,
-                                                              UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <dxb:BarButtonItem
-                                        Command="{Binding ElementName=ProstoSmsUserControl, Path=DataContext.SetFilterCommand}"
-                                        Content="Не отправленные"
-                                        Glyph="{dx:DXImage SvgImages/Dashboards/IgnoreMasterFilters.svg}"
-                                        GlyphSize="Small"
-                                        IsVisible="{DXBinding Expr='@e(ProstoSmsUserControl).DataContext.IsShowSmsSenders == 1',
-                                                              Mode=OneWay,
-                                                              UpdateSourceTrigger=PropertyChanged}" />
-
                                 </dxb:ToolBarControl>
                             </dxb:BarContainerControl>
                         </DockPanel>
@@ -647,46 +616,6 @@
                         </dxg:GridColumn.CellEditTemplate>
                     </dxg:GridColumn>
 
-                    <dxg:GridColumn
-                        Width="1*"
-                        FieldName="SendingStatus"
-                        Header="Отправлено"
-                        HorizontalHeaderContentAlignment="Center">
-                        <dxg:GridColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Margin="0,3,0,0"
-                                    HorizontalAlignment="Center"
-                                    Text="{Binding Row.SendingStatus.Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    TextWrapping="Wrap" />
-                            </DataTemplate>
-                        </dxg:GridColumn.CellTemplate>
-                        <dxg:GridColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <dxe:ComboBoxEdit
-                                    HorizontalAlignment="Stretch"
-                                    DisplayMember="Name"
-                                    EditValue="{Binding Row.SendingStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    IncrementalFiltering="True"
-                                    IncrementalSearch="True"
-                                    IsCaseSensitiveFilter="False"
-                                    IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
-                                                           Mode=OneWay,
-                                                           UpdateSourceTrigger=PropertyChanged}"
-                                    IsTextEditable="False"
-                                    ItemsSource="{Binding ElementName=grid, Path=DataContext.SendingStatuses, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                    NullText="Статус"
-                                    NullValueButtonPlacement="EditBox"
-                                    SelectedItem="{Binding Row.SendingStatus, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    ValidateOnTextInput="False">
-                                    <dxe:ComboBoxEdit.StyleSettings>
-                                        <dxe:RadioComboBoxStyleSettings />
-                                    </dxe:ComboBoxEdit.StyleSettings>
-                                </dxe:ComboBoxEdit>
-                            </DataTemplate>
-                        </dxg:GridColumn.CellEditTemplate>
-                    </dxg:GridColumn>
-
                     <dxg:GridColumn Width="20">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -701,6 +630,15 @@
                                         Background="Transparent"
                                         Caption="File"
                                         ShowDragWidget="False">
+                                        <dxb:BarButtonItem
+                                            Command="{Binding ElementName=view, Path=DataContext.InfoCommand}"
+                                            CommandParameter="{Binding Row}"
+                                            Content="Информация о рассылке"
+                                            Glyph="/Resources/Icons/svg/information.svg"
+                                            GlyphSize="Small"
+                                            IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly',
+                                                                  Mode=OneWay,
+                                                                  UpdateSourceTrigger=PropertyChanged}" />
 
                                         <dxb:BarButtonItem
                                             Command="{Binding ElementName=view, Path=DataContext.DeleteCommand}"
