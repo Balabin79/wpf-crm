@@ -90,6 +90,8 @@
     <None Remove="Resources\Icons\svg\icon_tools.svg" />
     <None Remove="Resources\Icons\svg\icon_upload.svg" />
     <None Remove="Resources\Icons\svg\icon_wallet.svg" />
+    <None Remove="Resources\Icons\svg\info-circle.svg" />
+    <None Remove="Resources\Icons\svg\info2.svg" />
     <None Remove="Resources\Icons\svg\information.svg" />
     <None Remove="Resources\Icons\svg\lock.svg" />
     <None Remove="Resources\Icons\svg\network-wired.svg" />
@@ -295,7 +297,9 @@
     <Resource Include="Resources\Icons\svg\id-badge.svg" />
     <Resource Include="Resources\Icons\svg\image.svg" />
     <Resource Include="Resources\Icons\svg\images.svg" />
+    <Resource Include="Resources\Icons\svg\info-circle.svg" />
     <Resource Include="Resources\Icons\svg\info.svg" />
+    <Resource Include="Resources\Icons\svg\info2.svg" />
     <Resource Include="Resources\Icons\svg\information.svg" />
     <Resource Include="Resources\Icons\svg\list-alt.svg" />
     <Resource Include="Resources\Icons\svg\list.svg" />

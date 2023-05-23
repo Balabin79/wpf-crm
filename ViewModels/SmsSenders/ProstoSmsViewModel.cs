@@ -35,12 +35,13 @@ namespace B6CRM.ViewModels.SmsSenders
 
             ClientCategories = db.ClientCategories.ToArray();
             CascadeRoutingList = db.CascadeRouting.Where(f => f.ProviderId == 1).ToList() ?? new List<CascadeRouting>();
+            Channels = db.Channels?.Where(f => f.ProstoSms == 1).ToArray();
 
             ServicePassVM = new ServicePassViewModel("ProstoSms");
 
             IsReadOnly = true;
 
-            GetBalance();
+            Task.Run(GetBalance);
         }
 
         #region Права на выполнение команд
@@ -87,7 +88,7 @@ namespace B6CRM.ViewModels.SmsSenders
                     sms.SmsRecipients = sms.ClientCategory?.Id != null
                         ?
                         db.Clients?.Where(f => f.ClientCategoryId == sms.ClientCategory.Id)
-                        ?.Select(f => new SmsRecipient() { Client = f, Sms = sms })
+                        ?.Select(f => new SmsRecipient() { Client = f, Sms = sms})
                         ?.ToObservableCollection()
                         :
                         db.Clients
@@ -216,6 +217,7 @@ namespace B6CRM.ViewModels.SmsSenders
 
                     var send = new ProstoSms(servicePassVm: ServicePassVM);
                     HttpResponseMessage result = await send.SendMsg(contacts: contacts, sms: sms);
+                   
                     string json = await result.Content.ReadAsStringAsync();
                     var response = JsonConvert.DeserializeObject<PushMsg>(json);
 
@@ -223,20 +225,23 @@ namespace B6CRM.ViewModels.SmsSenders
                     else
                     {
                         var msg = $"Всего отправлено: {response?.response?.data?.n_raw_sms ?? 0} шт.\n" +
-                            string.Format("Израсходовано: {0:C2}", response?.response?.data?.credits);
+                            string.Format("Израсходовано: {0:C2}", response?.response?.data?.credits ?? 0);
                         ShowSuccess(msg);
 
                         var smsSending = new SmsSendingDate
                         {
                             IDSms = response?.response?.data?.id,
                             Date = sms?.Date ?? DateTime.Now.ToString(),
-                            Sms = sms
+                            Sms = sms,
+                            Cost = response?.response?.data?.credits ?? 0,
+                            Count = response?.response?.data?.n_raw_sms ?? 0
                         };
                         db.SmsSendingDate.Add(smsSending);
                         db.SaveChanges();
                     }
-                    GetBalance();
+                    await GetBalance();                 
                 }
+                return;
             }
             catch (Exception e)
             {

@@ -64,8 +64,6 @@ namespace B6CRM.Services.SmsServices
 
             data["route"] = GetRouting(sms);
 
-
-
             // создаем объект HttpContent
             HttpContent contentForm = new FormUrlEncodedContent(data);
             // отправляем запрос

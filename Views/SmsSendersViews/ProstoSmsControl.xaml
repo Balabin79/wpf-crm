@@ -117,13 +117,12 @@
                                     Margin="0,0,8,0"
                                     HorizontalAlignment="Stretch"
                                     DisplayFormatString="D"
-                                    EditValue="{Binding Date, Mode=TwoWay, StringFormat=D, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}, ValidatesOnDataErrors=True}"
+                                    EditValue="{Binding Date, Mode=TwoWay, StringFormat=D, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource birthToDateString}}"
                                     IsReadOnly="{DXBinding Expr='@e(grid).DataContext.IsReadOnly',
                                                            Mode=OneWay,
                                                            UpdateSourceTrigger=PropertyChanged}"
                                     Mask="f"
                                     MaskType="DateTime"
-                                    MinValue="{Binding Source={x:Static sys:DateTime.Now}}"
                                     NullText="Дата отложенной доставки"
                                     NullValueButtonPlacement="EditBox"
                                     ShowClearButton="True"
@@ -152,7 +151,7 @@
                                 CommandParameter="{Binding ElementName=templ, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"
                                 Content="Отправить рассылку"
                                 Glyph="/Resources/Icons/svg/paper-plane.svg"
-                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly and @e(clientCategoriesField).EditValue != null and @e(channels).EditValue != null',
+                                IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly',
                                                       Mode=OneWay,
                                                       UpdateSourceTrigger=PropertyChanged}" />
 
@@ -436,7 +435,7 @@
                                             FontSize="18"
                                             FontStyle="Italic"
                                             Foreground="SlateGray"
-                                            Text="Использовано: " />
+                                            Text="Потрачено: " />
                                         <Run
                                             FontSize="18"
                                             Foreground="SlateGray"
@@ -634,8 +633,9 @@
                                             Command="{Binding ElementName=view, Path=DataContext.InfoCommand}"
                                             CommandParameter="{Binding Row}"
                                             Content="Информация о рассылке"
-                                            Glyph="/Resources/Icons/svg/information.svg"
-                                            GlyphSize="Small"
+                                            CustomGlyphSize="14 14"
+                                            Glyph="/Resources/Icons/svg/info-circle.svg"
+                                            GlyphSize="Custom"
                                             IsEnabled="{DXBinding Expr='!@e(view).DataContext.IsReadOnly',
                                                                   Mode=OneWay,
                                                                   UpdateSourceTrigger=PropertyChanged}" />

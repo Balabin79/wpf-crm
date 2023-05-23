@@ -14,7 +14,5 @@ namespace B6CRM.Models
         [DeleteBehavior(DeleteBehavior.SetNull)]
         public  Client Client { get; set; }
         public int? ClientId { get; set; }
-
-        public string Contact { get; set; }
     }
 }

@@ -15,6 +15,15 @@ namespace B6CRM.Models
         public int? SmsId { get; set; }   
         
         public int? IDSms { get; set; }
+
+        public int? Count { get; set; }
+
+        [Column(TypeName = "NUMERIC")]
+        public decimal? Cost
+        {
+            get { return GetProperty(() => Cost); }
+            set { SetProperty(() => Cost, value); }
+        }
     }
 
 }
