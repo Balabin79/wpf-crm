@@ -378,7 +378,8 @@
                     <dxlc:LayoutGroup.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock
-                                Height="22"
+                                Height="20"
+                                Margin="0 2 0 0"
                                 VerticalAlignment="Center"
                                 Text="Настройки сервиса &quot;ProstoSms&quot;" />
                         </DataTemplate>

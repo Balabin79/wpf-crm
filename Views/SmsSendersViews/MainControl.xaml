@@ -23,60 +23,13 @@
     <Border BorderBrush="LightGray" BorderThickness="1">
         <Grid x:Name="gridPC" ScrollViewer.CanContentScroll="True">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="27" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <DockPanel LastChildFill="True">
-                <dxb:BarContainerControl HorizontalAlignment="Left" DockPanel.Dock="Left">
-                    <dxb:ToolBarControl
-                        AllowCustomizationMenu="False"
-                        AllowQuickCustomization="False"
-                        Background="Transparent"
-                        BarItemDisplayMode="ContentAndGlyph"
-                        DataContext="{Binding Source={StaticResource vm}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        ShowDragWidget="False">
-                        <dxb:BarLinkContainerItem RibbonStyle="SmallWithoutText">
-                            <dxb:BarButtonItem
-                                x:Name="prostoSms"
-                                BorderBrush="{DXBinding Expr='UserControlName == `ProstoSmsControl` ? `Gray` : `White`',
-                                                        Mode=OneWay,
-                                                        UpdateSourceTrigger=PropertyChanged}"
-                                BorderThickness="{DXBinding Expr='UserControlName == `ProstoSmsControl` ? `0 0 0 1` : `0 0 0 0`',
-                                                            Mode=OneWay,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                Command="{Binding LoadCommand}"
-                                CommandParameter="ProstoSmsControl"
-                                Content="ProstoSms"
-                                CustomGlyphSize="20,20"
-                                Glyph="/Resources/Icons/svg/mobile-alt.svg"
-                                GlyphAlignment="Left"
-                                GlyphSize="Custom"
-                                ToolTip="ProstoSms" />
-
-                            <dxb:BarItemLinkSeparator />
-                            <dxb:BarButtonItem
-                                x:Name="smsCenter"
-                                BorderBrush="{DXBinding Expr='UserControlName == `SmsCenterControl` ? `Gray` : `White`',
-                                                        Mode=OneWay,
-                                                        UpdateSourceTrigger=PropertyChanged}"
-                                BorderThickness="{DXBinding Expr='UserControlName == `SmsCenterControl` ? `0 0 0 1` : `0 0 0 0`',
-                                                            Mode=OneWay,
-                                                            UpdateSourceTrigger=PropertyChanged}"
-                                Command="{Binding LoadCommand}"
-                                CommandParameter="SmsCenterControl"
-                                Content="SmsCenter"
-                                CustomGlyphSize="20,20"
-                                Glyph="/Resources/Icons/svg/direction.svg"
-                                GlyphAlignment="Left"
-                                GlyphSize="Custom"
-                                ToolTip="SmsCenter" />
-
-                        </dxb:BarLinkContainerItem>
-                    </dxb:ToolBarControl>
-                </dxb:BarContainerControl>
-            </DockPanel>
-
+            <TextBlock
+                Padding="7,2,5,0"
+                FontSize="16"
+                Text="Рассылки" />
             <dxlc:LayoutControl
                 Grid.Row="1"
                 Padding="5"
@@ -101,13 +54,6 @@
                         x:Name="ProstoSmsControl"
                         DataContext="{Binding Source={StaticResource vm}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                         Visibility="{DXBinding Expr='@StaticResource(vm).UserControlName == `ProstoSmsControl` ? `Visible` : `Collapsed`',
-                                               Mode=OneWay,
-                                               UpdateSourceTrigger=PropertyChanged}" />
-
-                    <local:SmsCenterControl
-                        x:Name="SmsCenterControl"
-                        DataContext="{Binding Source={StaticResource vm}, Path=Context, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{DXBinding Expr='@StaticResource(vm).UserControlName == `SmsCenterControl` ? `Visible` : `Collapsed`',
                                                Mode=OneWay,
                                                UpdateSourceTrigger=PropertyChanged}" />
                 </dxlc:LayoutGroup>

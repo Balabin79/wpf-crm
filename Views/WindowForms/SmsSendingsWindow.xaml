@@ -85,7 +85,7 @@
                         Width="3*"
                         MinWidth="200"
                         FieldName="Name"
-                        Header="Название">
+                        Header="Текст сообщения">
                         <dxg:GridColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -98,7 +98,7 @@
                             <DataTemplate>
                                 <TextBlock
                                     Margin="3,0,0,0"
-                                    Text="{Binding Path=RowData.Row.Sms.Msg, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                    Text="{Binding Path=RowData.Row.Msg, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     TextWrapping="Wrap" />
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>

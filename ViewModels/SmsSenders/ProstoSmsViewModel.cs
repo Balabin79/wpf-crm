@@ -223,7 +223,11 @@ namespace B6CRM.ViewModels.SmsSenders
                     string json = await result.Content.ReadAsStringAsync();
                     var response = JsonConvert.DeserializeObject<PushMsg>(json);
 
-                    if (response?.response?.msg?.err_code != 0) ShowError(response?.response?.msg?.text);
+                    if (response?.response?.msg?.err_code != 0)
+                    { 
+                        ShowError(response?.response?.msg?.text);
+                        return;
+                    }
                     else
                     {
                         var msg = $"Всего отправлено: {response?.response?.data?.n_raw_sms ?? 0} шт.\n" +
@@ -237,7 +241,8 @@ namespace B6CRM.ViewModels.SmsSenders
                             Sms = sms,
                             Cost = response?.response?.data?.credits ?? 0,
                             Count = response?.response?.data?.n_raw_sms ?? 0,
-                            ChannelName = sms?.Channel?.Name ?? "Каскадная рассылка"
+                            ChannelName = sms?.Channel?.Name ?? "Каскадная рассылка",
+                            Msg = sms?.Msg
                         };
                         db.SmsSendingDate.Add(smsSending);
                         db.SaveChanges();
@@ -442,7 +447,7 @@ namespace B6CRM.ViewModels.SmsSenders
             set { SetProperty(() => Channels, value); }
         }
 
-        public ObservableCollection<ProstoSmsRecipients> RecipientsList
+        public ObservableCollection<SmsRecipients> RecipientsList
         {
             get { return GetProperty(() => RecipientsList); }
             set { SetProperty(() => RecipientsList, value); }

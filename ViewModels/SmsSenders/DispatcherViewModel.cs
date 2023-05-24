@@ -33,7 +33,7 @@ namespace B6CRM.ViewModels.SmsSenders
             switch (userControlName)
             {
                 case "ProstoSmsControl": Context = new ProstoSmsViewModel(); break;
-                case "SmsCenterControl": Context = new SmsCenterViewModel(); break;
+                //case "SmsCenterControl": Context = new SmsCenterViewModel(); break;
             }
         }
 

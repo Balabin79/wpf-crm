@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace B6CRM.Services.SmsServices
 {
-    public class ProstoSmsRecipients
+    public class SmsRecipients
     {
         public string Contact { get; set; }
         public string Fio { get; set; }

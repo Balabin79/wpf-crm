@@ -1,6 +1,6 @@
 ﻿using B6CRM.Models;
 using B6CRM.Services.SmsServices.ProstoSmsService;
-using B6CRM.Services.SmsServices.SmscService;
+using B6CRM.Services.SmsServices;
 using B6CRM.ViewModels.SmsSenders;
 using Newtonsoft.Json;
 using System;
