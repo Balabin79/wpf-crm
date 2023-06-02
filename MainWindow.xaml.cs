@@ -130,5 +130,8 @@ namespace B6CRM
         }
 
         private void AuthBtn_Click(object sender, EventArgs e) => Restart();
+
+        private void win_Loaded(object sender, RoutedEventArgs e) => clientsBtn.IsSelected = true;
+        
     }
 }

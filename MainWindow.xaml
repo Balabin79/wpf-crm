@@ -23,6 +23,7 @@
     xmlns:lc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
     Closing="ThemedWindow_Closing"
+    Loaded="win_Loaded"                 
     WindowStartupLocation="CenterScreen"
     DataContext="{StaticResource Router}"
     Name="win"

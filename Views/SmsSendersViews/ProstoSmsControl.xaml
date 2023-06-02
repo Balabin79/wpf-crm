@@ -179,7 +179,7 @@
                             <TextBlock
                                 FontSize="11"
                                 Foreground="DarkRed"
-                                Text="* Максимальная длина 11 сегментов (737 символов кирилицей, либо 1683 латиницей), длинее передавать не рекомендуется, т.к. SMS может разбится на части, либо доставка будет не полностью!"
+                                Text="* Максимальная длина 160 латинских символов или 70 русских, длинее передавать не рекомендуется, т.к. SMS может разбится на части, либо доставка будет не полностью!"
                                 TextWrapping="Wrap" />
                         </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
@@ -379,7 +379,7 @@
                         <DataTemplate>
                             <TextBlock
                                 Height="20"
-                                Margin="0 2 0 0"
+                                Margin="0,2,0,0"
                                 VerticalAlignment="Center"
                                 Text="Настройки сервиса &quot;ProstoSms&quot;" />
                         </DataTemplate>
